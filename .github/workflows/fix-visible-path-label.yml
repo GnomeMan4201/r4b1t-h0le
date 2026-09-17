@@ -1,0 +1,91 @@
+name: One-shot visible path label repair
+
+on:
+  push:
+    branches: [fix/repo-path-consistency]
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repair branch
+        uses: actions/checkout@v6
+        with:
+          ref: fix/repo-path-consistency
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Add regression for stale visible Pages label
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('tests/path-consistency.test.js')
+          text = path.read_text()
+          guard = """
+
+test('README does not display the dead pre-rename GitHub Pages path', () => {
+  assert.ok(!read('README.md').includes('gnomeman4201.github.io/r4b1t/'));
+});
+"""
+          if 'README does not display the dead pre-rename GitHub Pages path' not in text:
+              path.write_text(text.rstrip() + guard)
+          PY
+
+      - name: RED — visible stale label is reproduced
+        shell: bash
+        run: |
+          set +e
+          node --test tests/path-consistency.test.js
+          status=$?
+          set -e
+          if [ "$status" -eq 0 ]; then
+            echo "Expected the new visible-label regression to fail before repair." >&2
+            exit 1
+          fi
+
+      - name: Correct visible Pages label
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('README.md')
+          text = path.read_text()
+          old = '>gnomeman4201.github.io/r4b1t/</a>'
+          new = '>gnomeman4201.github.io/r4b1t-h0le/</a>'
+          if old not in text:
+              raise SystemExit('Expected stale visible label was not found')
+          path.write_text(text.replace(old, new))
+          PY
+
+      - name: GREEN — path regression passes
+        run: node --test tests/path-consistency.test.js
+
+      - name: Run full unit suite
+        run: npm run test:unit
+
+      - name: Commit verified label repair
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md tests/path-consistency.test.js
+          git diff --cached --check
+          git commit -m "fix: correct displayed GitHub Pages path"
+          git push origin HEAD:fix/repo-path-consistency
