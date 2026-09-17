@@ -157,10 +157,10 @@ jobs:
           CI: 'true'
         run: npm test
 
-      - name: Commit repaired paths and remove one-shot workflow
+      - name: Commit verified source repair
         shell: bash
         run: |
-          rm .github/workflows/fix-path-consistency.yml
+          git checkout HEAD -- .github/workflows/test.yml .github/workflows/fix-path-consistency.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
