@@ -57,3 +57,7 @@ test('contributor guidance names the current deployed project path', () => {
   assert.ok(contributing.includes('`/r4b1t-h0le/`'));
   assert.ok(!contributing.includes('`/r4b1t/`'));
 });
+
+test('README does not display the dead pre-rename GitHub Pages path', () => {
+  assert.ok(!read('README.md').includes('gnomeman4201.github.io/r4b1t/'));
+});

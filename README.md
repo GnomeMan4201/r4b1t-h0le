@@ -408,7 +408,7 @@ The software is distributed under the MIT License and provided **“AS IS”**, 
 
 <table>
 <tr><td><strong>Project site</strong></td><td><a href="https://r4b1t.badbananaresearch.com">r4b1t.badbananaresearch.com</a></td></tr>
-<tr><td><strong>Live application</strong></td><td><a href="https://gnomeman4201.github.io/r4b1t-h0le/">gnomeman4201.github.io/r4b1t/</a></td></tr>
+<tr><td><strong>Live application</strong></td><td><a href="https://gnomeman4201.github.io/r4b1t-h0le/">gnomeman4201.github.io/r4b1t-h0le/</a></td></tr>
 <tr><td><strong>Original DEV write-up</strong></td><td><a href="https://dev.to/gnomeman4201/r4b1th0l3-5aa3">r4b1t_h0l3 — 53,000+ curated links for security and OSINT</a></td></tr>
 <tr><td><strong>DEV profile</strong></td><td><a href="https://dev.to/gnomeman4201">dev.to/gnomeman4201</a></td></tr>
 <tr><td><strong>Releases</strong></td><td><a href="https://github.com/GnomeMan4201/r4b1t-h0le/releases">GitHub Releases</a></td></tr>
