@@ -34,15 +34,9 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-
           path = Path('tests/path-consistency.test.js')
           text = path.read_text()
-          guard = """
-
-test('README does not display the dead pre-rename GitHub Pages path', () => {
-  assert.ok(!read('README.md').includes('gnomeman4201.github.io/r4b1t/'));
-});
-"""
+          guard = "\n\ntest('README does not display the dead pre-rename GitHub Pages path', () => {\n  assert.ok(!read('README.md').includes('gnomeman4201.github.io/r4b1t/'));\n});\n"
           if 'README does not display the dead pre-rename GitHub Pages path' not in text:
               path.write_text(text.rstrip() + guard)
           PY
@@ -64,7 +58,6 @@ test('README does not display the dead pre-rename GitHub Pages path', () => {
         run: |
           python - <<'PY'
           from pathlib import Path
-
           path = Path('README.md')
           text = path.read_text()
           old = '>gnomeman4201.github.io/r4b1t/</a>'
