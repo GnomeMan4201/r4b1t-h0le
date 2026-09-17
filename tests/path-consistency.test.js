@@ -1,5 +1,6 @@
 'use strict';
 
+// Regression guard for the repository rename and GitHub Pages deployment path.
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
