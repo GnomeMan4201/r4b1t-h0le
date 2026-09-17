@@ -77,7 +77,7 @@
       '<main class="r4m-shell" aria-label="r4b1t mobile interface">',
         '<header class="r4m-header">',
           '<div class="r4m-wordmark"><span>R4B1T_</span>H0L3</div>',
-          '<a class="r4m-zip" href="https://github.com/GnomeMan4201/r4b1t/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a>',
+          '<a class="r4m-zip" href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a>',
         '</header>',
         '<section class="r4m-filter-strip" aria-label="Terrain filter">',
           '<div><small>TERRAIN FILTER</small><strong id="r4mFilterLabel">ALL SIGNALS</strong></div>',

@@ -9,7 +9,7 @@ Low-ceremony. One maintainer. Contributions are welcome when they fit the projec
 The most valuable contribution is a URL worth adding to the pool.
 
 **Via the tool:** click **SUBMIT URL** inside r4b1t.  
-**Via GitHub:** [open an issue](https://github.com/GnomeMan4201/r4b1t/issues/new?labels=url-submission) with the label `url-submission`.
+**Via GitHub:** [open an issue](https://github.com/GnomeMan4201/r4b1t-h0le/issues/new?labels=url-submission) with the label `url-submission`.
 
 ### What gets considered
 
@@ -59,7 +59,7 @@ Supporting tooling lives in `tools/` and `pool_sweep.py`; the service worker is 
 - test the mobile layout
 - preserve the no-tracking/no-account model
 - do not introduce new production JavaScript dependencies without a demonstrated need
-- preserve the deployed `/r4b1t/` path behavior
+- preserve the deployed `/r4b1t-h0le/` path behavior
 - make targeted changes and verify the affected output before committing
 
 Prefer small, reviewable PRs over framework migrations or unrelated rewrites.

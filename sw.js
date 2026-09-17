@@ -1,25 +1,25 @@
-const CACHE = 'r4b1t-v16-motion-token-precache';
+const CACHE = 'r4b1t-v17-path-consistency';
 const PRECACHE = [
-  '/r4b1t/',
-  '/r4b1t/index.html',
-  '/r4b1t/anime.min.js',
-  '/r4b1t/anime-core.min.js',
-  '/r4b1t/motion-tokens.js',
-  '/r4b1t/dual-shell.js',
-  '/r4b1t/dual-shell.css',
-  '/r4b1t/trail-manifest.js',
-  '/r4b1t/trail-runtime.js',
-  '/r4b1t/blind-manifest.js',
-  '/r4b1t/blind-runtime.js',
-  '/r4b1t/trail-topology.js',
-  '/r4b1t/topology-runtime.js',
-  '/r4b1t/trail-wear.js',
-  '/r4b1t/trail-wear.css',
-  '/r4b1t/rabbit-aperture.svg',
-  '/r4b1t/banana-note.svg',
-  '/r4b1t/favicon.ico',
-  '/r4b1t/favicon.svg',
-  '/r4b1t/manifest.json'
+  './',
+  './index.html',
+  './anime.min.js',
+  './anime-core.min.js',
+  './motion-tokens.js',
+  './dual-shell.js',
+  './dual-shell.css',
+  './trail-manifest.js',
+  './trail-runtime.js',
+  './blind-manifest.js',
+  './blind-runtime.js',
+  './trail-topology.js',
+  './topology-runtime.js',
+  './trail-wear.js',
+  './trail-wear.css',
+  './rabbit-aperture.svg',
+  './banana-note.svg',
+  './favicon.ico',
+  './favicon.svg',
+  './manifest.json'
 ];
 
 self.addEventListener('install', e => {
