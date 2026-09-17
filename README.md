@@ -22,18 +22,18 @@
 <p align="center">
   <a href="https://r4b1t.badbananaresearch.com"><strong>PROJECT SITE</strong></a>
   &nbsp;·&nbsp;
-  <a href="https://gnomeman4201.github.io/r4b1t/"><strong>LAUNCH APP</strong></a>
+  <a href="https://gnomeman4201.github.io/r4b1t-h0le/"><strong>LAUNCH APP</strong></a>
   &nbsp;·&nbsp;
   <a href="https://dev.to/gnomeman4201/r4b1th0l3-5aa3"><strong>DEV WRITE-UP</strong></a>
   &nbsp;·&nbsp;
-  <a href="https://github.com/GnomeMan4201/r4b1t/releases"><strong>RELEASES</strong></a>
+  <a href="https://github.com/GnomeMan4201/r4b1t-h0le/releases"><strong>RELEASES</strong></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/GnomeMan4201/r4b1t/actions/workflows/test.yml"><img alt="Playwright E2E" src="https://github.com/GnomeMan4201/r4b1t/actions/workflows/test.yml/badge.svg"></a>
-  <a href="https://github.com/GnomeMan4201/r4b1t/actions/workflows/corpus-quality.yml"><img alt="Corpus quality" src="https://github.com/GnomeMan4201/r4b1t/actions/workflows/corpus-quality.yml/badge.svg"></a>
-  <a href="https://github.com/GnomeMan4201/r4b1t/actions/workflows/deploy.yml"><img alt="Deploy" src="https://github.com/GnomeMan4201/r4b1t/actions/workflows/deploy.yml/badge.svg"></a>
-  <a href="./LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/GnomeMan4201/r4b1t?style=flat-square"></a>
+  <a href="https://github.com/GnomeMan4201/r4b1t-h0le/actions/workflows/test.yml"><img alt="Playwright E2E" src="https://github.com/GnomeMan4201/r4b1t-h0le/actions/workflows/test.yml/badge.svg"></a>
+  <a href="https://github.com/GnomeMan4201/r4b1t-h0le/actions/workflows/corpus-quality.yml"><img alt="Corpus quality" src="https://github.com/GnomeMan4201/r4b1t-h0le/actions/workflows/corpus-quality.yml/badge.svg"></a>
+  <a href="https://github.com/GnomeMan4201/r4b1t-h0le/actions/workflows/deploy.yml"><img alt="Deploy" src="https://github.com/GnomeMan4201/r4b1t-h0le/actions/workflows/deploy.yml/badge.svg"></a>
+  <a href="./LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/GnomeMan4201/r4b1t-h0le?style=flat-square"></a>
   <img alt="Local-first" src="https://img.shields.io/badge/state-device--local-111111?style=flat-square">
   <img alt="Vanilla JavaScript" src="https://img.shields.io/badge/client-vanilla%20JS-d71920?style=flat-square">
 </p>
@@ -176,7 +176,7 @@ History is useful when it reflects your movement rather than a platform's model 
 
 Keyboard-first controls, expanded route context, branch topology, history, trail tooling, and the larger investigative surface.
 
-<p align="center"><a href="https://gnomeman4201.github.io/r4b1t/"><strong>LAUNCH WORKSTATION ↗</strong></a></p>
+<p align="center"><a href="https://gnomeman4201.github.io/r4b1t-h0le/"><strong>LAUNCH WORKSTATION ↗</strong></a></p>
 
 </td>
 <td width="50%" valign="top">
@@ -187,7 +187,7 @@ Keyboard-first controls, expanded route context, branch topology, history, trail
 
 First-contact clarity, compact route cards, thumb-first controls, terrain sheets, branching, and the device-local ledger.
 
-<p align="center"><a href="https://gnomeman4201.github.io/r4b1t/"><strong>LAUNCH FIELD SHELL ↗</strong></a></p>
+<p align="center"><a href="https://gnomeman4201.github.io/r4b1t-h0le/"><strong>LAUNCH FIELD SHELL ↗</strong></a></p>
 
 </td>
 </tr>
@@ -334,7 +334,7 @@ The production surface is static HTML, CSS, and JavaScript. Node.js exists prima
 https://r4b1t.badbananaresearch.com
 
 **Direct application**  
-https://gnomeman4201.github.io/r4b1t/
+https://gnomeman4201.github.io/r4b1t-h0le/
 
 </td>
 <td width="50%" valign="top">
@@ -408,12 +408,12 @@ The software is distributed under the MIT License and provided **“AS IS”**, 
 
 <table>
 <tr><td><strong>Project site</strong></td><td><a href="https://r4b1t.badbananaresearch.com">r4b1t.badbananaresearch.com</a></td></tr>
-<tr><td><strong>Live application</strong></td><td><a href="https://gnomeman4201.github.io/r4b1t/">gnomeman4201.github.io/r4b1t/</a></td></tr>
+<tr><td><strong>Live application</strong></td><td><a href="https://gnomeman4201.github.io/r4b1t-h0le/">gnomeman4201.github.io/r4b1t-h0le/</a></td></tr>
 <tr><td><strong>Original DEV write-up</strong></td><td><a href="https://dev.to/gnomeman4201/r4b1th0l3-5aa3">r4b1t_h0l3 — 53,000+ curated links for security and OSINT</a></td></tr>
 <tr><td><strong>DEV profile</strong></td><td><a href="https://dev.to/gnomeman4201">dev.to/gnomeman4201</a></td></tr>
-<tr><td><strong>Releases</strong></td><td><a href="https://github.com/GnomeMan4201/r4b1t/releases">GitHub Releases</a></td></tr>
+<tr><td><strong>Releases</strong></td><td><a href="https://github.com/GnomeMan4201/r4b1t-h0le/releases">GitHub Releases</a></td></tr>
 <tr><td><strong>Changelog</strong></td><td><a href="./CHANGELOG.md">CHANGELOG.md</a></td></tr>
-<tr><td><strong>Issues / URL submissions</strong></td><td><a href="https://github.com/GnomeMan4201/r4b1t/issues">GitHub Issues</a></td></tr>
+<tr><td><strong>Issues / URL submissions</strong></td><td><a href="https://github.com/GnomeMan4201/r4b1t-h0le/issues">GitHub Issues</a></td></tr>
 <tr><td><strong>Contributing</strong></td><td><a href="./CONTRIBUTING.md">CONTRIBUTING.md</a></td></tr>
 <tr><td><strong>Security</strong></td><td><a href="./SECURITY.md">SECURITY.md</a></td></tr>
 </table>

@@ -37,20 +37,20 @@ jobs:
       - name: Install Chromium and system dependencies
         run: npx playwright install --with-deps chromium
 
-      - name: Stage site under /r4b1t/ path
+      - name: Stage site under /r4b1t-h0le/ path
         run: |
-          mkdir -p test-site/r4b1t
+          mkdir -p test-site/r4b1t-h0le
           rsync -a \
             --exclude='.git' \
             --exclude='node_modules' \
             --exclude='test-site' \
             --exclude='playwright-report' \
             --exclude='test-results' \
-            ./ test-site/r4b1t/
+            ./ test-site/r4b1t-h0le/
 
       - name: Run desktop and mobile browser tests
         env:
-          BASE_URL: http://127.0.0.1:8080/r4b1t/
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
           CI: 'true'
         run: npm test
 
