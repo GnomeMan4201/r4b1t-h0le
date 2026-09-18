@@ -1,4 +1,4 @@
-const CACHE = 'r4b1t-v17-path-consistency';
+const CACHE = 'r4b1t-v18-network-first';
 const PRECACHE = [
   './',
   './index.html',
@@ -35,11 +35,34 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Network first for the corpus and Worker API calls; cache first for shell assets.
-  if (e.request.url.includes('urls.txt') || e.request.url.includes('workers.dev')) {
+  if (e.request.method !== 'GET') return;
+
+  const url = new URL(e.request.url);
+
+  // Corpus reads and Worker traffic must always use their explicit network policy.
+  if (
+    url.origin !== self.location.origin ||
+    url.pathname.endsWith('/urls.txt') ||
+    url.hostname.endsWith('workers.dev')
+  ) {
     return;
   }
-  e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
-  );
+
+  // Prefer current deployed bytes. The precache remains an offline fallback.
+  e.respondWith((async () => {
+    try {
+      const response = await fetch(e.request);
+      if (response.ok) {
+        const cache = await caches.open(CACHE);
+        await cache.put(e.request, response.clone());
+      }
+      return response;
+    } catch {
+      const cached = await caches.match(e.request);
+      return cached || new Response('Offline', {
+        status: 503,
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      });
+    }
+  })());
 });
