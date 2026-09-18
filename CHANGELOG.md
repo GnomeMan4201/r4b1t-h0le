@@ -7,19 +7,48 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+No changes queued.
+
+---
+
+## [1.1.0] — 2026-09-18
+
+### Added
+
+- dual desktop/mobile shells over the same discovery engine
+- reproducible content-addressed trails with verifiable parent/fork lineage
+- Blind Descent commit/reveal flow with concealed-step commitments and deterministic reveal verification
+- local verified Trail Topology atlas and persistent trail-wear visualization
+- mobile motion diagnostics and transition-specific trail states
+- production Worker trust-boundary documentation, audit tooling, and release evidence
+- production-shadow verification tooling
+- automated public-claim verification
+- corpus-quality and report-only pool-sweep workflows
+- browser regression coverage across desktop and mobile Chromium
+- security policy, issue templates, pull-request template, and repository quality controls
+
 ### Changed
 
-- added production-shadow CI for live critical-asset parity and Worker boundary drift
-- added a versioned release-evidence record and automated public-claim verification
-- aligned the README, Worker trust documentation, audit tooling, and live deployment contract
-- aligned local and CI browser-test serving paths
-- made pool-sweep HTTP behavior tests fully offline and deterministic
-- refreshed repository metadata, contribution templates, and ignore rules
-- removed obsolete one-off patch scripts and unreferenced legacy screenshots
+- current verified corpus baseline is 50,109 structurally valid URLs across 12,396 unique hosts
+- PWA shell now prefers current network bytes and uses cache as offline fallback
+- repository and Pages paths were normalized to `r4b1t-h0le`
+- Worker browser/client contract was aligned to the deployed versioned Worker hostname
+- first-party GitHub Actions are pinned to immutable commit SHAs
+- desktop controls, Help/Tor dialogs, Session History, Trail Ledger, Blind Descent, and Trail Topology now preserve native keyboard semantics and complete modal focus lifecycles
+- obsolete one-off patch scripts, stale screenshots, dead bookmark UI, and redundant public glue were removed
 
 ### Security
 
-- documented private vulnerability reporting and kept generated evidence and local environment files out of version control
+- Worker rejects private/loopback and non-HTTP targets, revalidates redirects, bounds redirects/response sizes/outbound time, enforces the documented Origin policy, and uses fail-closed production rate limiting
+- old Worker `/api` behavior is retired with HTTP 410
+- public-claim, Worker-boundary, dependency, secret-scan, browser, and deployment checks are now part of the verification surface
+
+### Release gate
+
+- package version is `1.1.0`
+- repository/browser/Pages baselines are green on current `main`
+- **GitHub Release publication remains blocked until one real Production Shadow workflow run completes successfully against the release candidate**
+
 
 ---
 
