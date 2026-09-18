@@ -57,11 +57,71 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test ! -e .dev.vars
-          test ! -e .env
-          test ! -e .env.local
-          if git grep -nE -- 'CLOUDFLARE_API_TOKEN=|CLOUDFLARE_ACCOUNT_ID=|-----BEGIN (RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----'; then
-            echo 'Potential deployment secret material found in tracked source.' >&2
+
+          tracked_secret_files="$(git ls-files | grep -E '(^|/)(\.dev\.vars|\.env(\..*)?)
+      - name: Deploy versioned Worker
+        run: npx --yes wrangler@4.125.0 deploy --config wrangler.toml
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Verify production trust boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://r4b1t-proxy.gnomeman4201.workers.dev'
+          allowed='https://gnomeman4201.github.io'
+
+          status=$(curl --silent --show-error --output /tmp/og.json --write-out '%{http_code}' \
+            -H "Origin: $allowed" \
+            "$base/og?url=https%3A%2F%2Fexample.com")
+          test "$status" = '200'
+          grep -q '"title"' /tmp/og.json
+
+          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+            -H 'Origin: https://r4b1t.badbananaresearch.com' \
+            "$base/og?url=https%3A%2F%2Fexample.com")
+          test "$status" = '200'
+
+          status=$(curl --silent --show-error --head --output /dev/null --write-out '%{http_code}' \
+            -H "Origin: $allowed" \
+            "$base/og?url=https%3A%2F%2Fexample.com")
+          test "$status" = '200'
+
+          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+            -H 'Origin: https://evil.example' \
+            "$base/og?url=https%3A%2F%2Fexample.com")
+          test "$status" = '403'
+
+          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+            -H "Origin: $allowed" \
+            "$base/proxy?url=http%3A%2F%2F127.0.0.1%2F")
+          test "$status" = '403'
+
+          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+            -H "Origin: $allowed" \
+            "$base/proxy?url=file%3A%2F%2F%2Fetc%2Fpasswd")
+          test "$status" = '400'
+
+          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+            -H "Origin: $allowed" \
+            "$base/api")
+          test "$status" = '410'
+
+          headers=$(curl --silent --show-error --dump-header - --output /dev/null \
+            -H "Origin: $allowed" \
+            "$base/og?url=https%3A%2F%2Fexample.com")
+          grep -qi '^x-content-type-options:[[:space:]]*nosniff' <<< "$headers"
+          grep -qi '^referrer-policy:[[:space:]]*no-referrer' <<< "$headers"
+ || true)"
+          if [ -n "$tracked_secret_files" ]; then
+            echo 'Tracked environment/secret file detected:' >&2
+            printf '%s\n' "$tracked_secret_files" >&2
+            exit 1
+          fi
+
+          if git grep -nE -- '-----BEGIN (RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----'; then
+            echo 'Tracked private key material detected.' >&2
             exit 1
           fi
 
