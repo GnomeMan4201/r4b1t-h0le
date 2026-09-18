@@ -64,6 +64,11 @@ test('Worker deploy workflow stages the browser suite at the deployed Pages path
   assert.ok(workflow.includes("CI: 'true'"));
 });
 
+test('Worker deploy secret scan excludes the workflow that defines the scan', () => {
+  const workflow = read('.github/workflows/deploy-worker.yml');
+  assert.ok(workflow.includes("':!.github/workflows/deploy-worker.yml'"));
+});
+
 test('tooling examples use the renamed repository directory', () => {
   const classifier = read('tools/r4b1t_classifier.py');
   assert.ok(classifier.includes('~/r4b1t-h0le/tools/generate_branch_injection.py'));
