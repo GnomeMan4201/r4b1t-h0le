@@ -32,6 +32,26 @@ The following behavior was verified externally on 2026-09-18:
 
 No rate-limit headers were observed. The documented 60 requests/minute limit was deliberately not stress-tested.
 
+## Reproducing the black-box checks
+
+The repository includes a no-dependency probe for the deployed boundary:
+
+```bash
+npm run worker:audit
+```
+
+That command verifies the currently documented contract: the GitHub Pages Origin is accepted, unrelated and prefix-confusion Origins are rejected, representative private/local targets and non-HTTP schemes are blocked, the redirect-to-loopback check remains blocked, `/og` accepts a normal public target, and `/api` still reports its disabled state.
+
+To additionally require the canonical custom domain to be accepted by the Worker, run:
+
+```bash
+npm run worker:audit:custom-origin
+```
+
+As of 2026-09-18, that stricter command is expected to fail because `https://r4b1t.badbananaresearch.com` is rejected. The current custom-domain shell does not call this Worker, so that is a contract mismatch rather than a live outage.
+
+The probe is intentionally bounded and does not stress-test the documented rate limit. It performs sequential requests with a delay between checks. A passing black-box run still does not replace source review.
+
 ## What is not proven by black-box testing
 
 The following controls cannot be established confidently without source:
