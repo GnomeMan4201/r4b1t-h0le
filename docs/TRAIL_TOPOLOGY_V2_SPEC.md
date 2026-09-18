@@ -12,6 +12,8 @@ The topology view must describe structure that already exists in trail artifacts
 
 The view is an instrument panel, not a feed.
 
+**record → verify → visualize → inspect → export → independently verify → replay/import**
+
 ## Existing baseline
 
 The current topology implementation already:
@@ -180,6 +182,36 @@ The canonical export must include, directly or by embedded manifest payload:
 A rendered PNG/SVG may accompany the export, but an image alone is not a verifiable trail artifact.
 
 The machine-verifiable export is authoritative; rendered visuals are presentation.
+
+### Projection trust model
+
+Trail cards and other visual exports are deterministic projections of the canonical machine-verifiable artifact. They are not independent evidence formats and must not define a second source of truth.
+
+Projection is one-way:
+
+```text
+canonical trail/topology artifact
+            |
+            | deterministic projection
+            v
+       visual trail card
+```
+
+Rendering must never upgrade trust. A projection may only display the verification result established for its source artifact during the render operation.
+
+Allowed projection trust states:
+
+- `VERIFIED` — the canonical source artifact successfully verified during rendering. A verified card must carry the exact digest of the artifact that was verified.
+- `REJECTED` — verification was attempted and failed. The projection must render as a diagnostic artifact, include the failure reason where available, and must not use the normal verified-card visual treatment.
+- `UNVERIFIED` — verification could not be completed because required proof material was unavailable or incomplete. This state must remain distinct from `REJECTED`.
+
+A `VERIFIED` badge must not mean merely that r4b1t generated the image. It asserts that a specific canonical source artifact verified at render time. A detached image or screenshot is not itself a verifiable artifact and must not imply otherwise.
+
+Rejected or unverifiable projections must use structurally distinct diagnostic presentation rather than merely swapping a badge label. Diagnostic rendering is observation only.
+
+Rendering a `REJECTED` or `UNVERIFIED` artifact must never write that artifact into the verified local atlas, mutate trusted graph state, alter sampler state, affect corpus eligibility, or influence future route selection.
+
+If a portable visual package is added, it should bundle the projection with the authoritative canonical artifact rather than introduce a second lightweight evidence schema.
 
 ## Local-first behavior
 
@@ -363,7 +395,10 @@ Topology v2 does not add:
 3. Replace the current linear card stack with a deterministic lineage graph.
 4. Add node inspection and proof diagnostics.
 5. Add import/export round-trip verification.
-6. Add accessibility coverage for graph navigation.
-7. Add contract regression tests proving topology cannot steer selection.
+6. Add initial contract-boundary regression skeleton proving topology/export cannot steer selection, mutate sampler weighting, or alter corpus eligibility.
+7. Add independent verifier fixture against exported artifacts.
+8. Add export UX for canonical machine-verifiable artifacts.
+9. Add accessibility coverage for graph navigation and proof inspection.
+10. Expand the contract regression suite and perform the final contract audit.
 
 Each implementation slice should land independently and preserve the current sampler behavior.
