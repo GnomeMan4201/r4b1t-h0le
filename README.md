@@ -396,6 +396,8 @@ The application itself is deliberately local-first: no r4b1t account is required
 
 No r4b1t analytics, profile, or engagement tracking is used. The browser shell does not load third-party analytics, remote web fonts, Google favicon services, or Microlink. Automatic metadata, favicon, preview-image, and optional Wikipedia enrichment requests are sent through the project-controlled, origin-locked Worker, which performs bounded outbound retrieval on the client's behalf. The browser therefore does not contact those enrichment providers or target image hosts directly.
 
+Worker source and verification status are tracked in [`docs/WORKER_TRUST_BOUNDARY.md`](./docs/WORKER_TRUST_BOUNDARY.md). The versioned Worker implementation is not claimed to match production until issue #36 completes its deployment-equivalence gate.
+
 That boundary ends when you leave the application origin.
 
 Third-party destinations may log requests, set cookies, require authentication, run analytics, redirect, disappear, change ownership, or become compromised. Inclusion in the corpus is not an endorsement, certification, guarantee of safety, or statement that a resource remains unchanged after review.
