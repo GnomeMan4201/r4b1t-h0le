@@ -82,6 +82,26 @@ The deploy workflow is intentionally manual and main-branch-only. It runs the co
 
 A platform-level 60 requests/minute per-IP limit is still not reproduced in repository configuration. If that control exists in Cloudflare WAF/rate-limiting configuration, it remains part of the external trust boundary and must be documented before issue #38 closes.
 
+## Reproducing the deployed and versioned contracts
+
+The repository includes a bounded black-box probe for the live Worker:
+
+```bash
+npm run worker:audit
+```
+
+That mode checks the contract observed on 2026-09-18: the GitHub Pages Origin is allowed, the custom-domain Origin is rejected, legacy `/api` reports its disabled response, representative private/local targets and non-HTTP schemes are blocked, and a redirect toward loopback remains blocked.
+
+After intentionally deploying the versioned replacement candidate, run:
+
+```bash
+npm run worker:audit:versioned
+```
+
+The versioned mode expects the replacement contract from `worker/r4b1t-proxy.mjs`: both documented browser Origins are accepted, legacy `/api` returns HTTP 410, POST is rejected, allowed preflight succeeds, the adversarial target checks remain blocked, and the production response exposes the expected security headers.
+
+The probe is intentionally rate-safe and sequential. It does not stress-test Cloudflare rate limiting and does not replace the deterministic source-level tests in `tests/worker-security.test.mjs`.
+
 ## Current documentation drift
 
 The historical changelog describes `/api` as an active OG metadata route. The deployed Worker currently reports that route as disabled. Treat the deployed behavior as authoritative until the Worker source and deployment procedure are versioned.
