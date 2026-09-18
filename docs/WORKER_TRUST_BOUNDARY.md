@@ -3,7 +3,7 @@
 Date: 2026-09-18  
 Deployment: `https://r4b1t-proxy.gnomeman4201.workers.dev`
 
-This document records black-box observations of the deployed Worker that supports the GitHub Pages application. It is not a source audit: the Worker source is not currently versioned in this repository.
+This document records black-box observations of the deployed Worker that supports the GitHub Pages application. At the time of that audit, the Worker source was not versioned. A replacement/reference implementation is now versioned at [`worker/r4b1t-proxy.mjs`](../worker/r4b1t-proxy.mjs), but it is **not** claimed to match production until the deployment-equivalence gate in issue #38 is completed.
 
 ## Why this matters
 
@@ -67,6 +67,20 @@ When the Worker source is added to the repository, the implementation should mak
 14. An explicit request/log retention policy.
 15. Deterministic adversarial tests for the controls above.
 16. Deployment instructions that tie the deployed Worker to a repository commit.
+
+## Versioned replacement candidate
+
+The repository now contains a source-level replacement candidate at [`worker/r4b1t-proxy.mjs`](../worker/r4b1t-proxy.mjs), deterministic adversarial coverage in [`tests/worker-security.test.mjs`](../tests/worker-security.test.mjs), and a manual production deployment workflow in [`.github/workflows/deploy-worker.yml`](../.github/workflows/deploy-worker.yml).
+
+The candidate makes the previously unverified controls reviewable in code: target normalization, HTTP/HTTPS-only fetching, public-address DNS checks, private/reserved IPv4 and IPv6 rejection, redirect re-validation, redirect limits, timeouts, bounded response sizes, route-specific media-type policy, explicit caching, and no target-URL logging.
+
+Its intended browser caller policy deliberately differs from the currently observed production Worker in one place: it allows both `https://gnomeman4201.github.io` and `https://r4b1t.badbananaresearch.com`. That policy remains a browser abuse/CORS control, not authentication.
+
+The replacement contract is `GET`, `HEAD`, and `OPTIONS` for supported routes. Undocumented `POST` is rejected. The legacy `/api` route returns HTTP 410.
+
+The deploy workflow is intentionally manual and main-branch-only. It runs the complete test suite before deployment, uses GitHub secrets for Cloudflare credentials, and performs post-deploy checks against the live Worker. Merging this source does **not** deploy it automatically.
+
+A platform-level 60 requests/minute per-IP limit is still not reproduced in repository configuration. If that control exists in Cloudflare WAF/rate-limiting configuration, it remains part of the external trust boundary and must be documented before issue #38 closes.
 
 ## Current documentation drift
 
