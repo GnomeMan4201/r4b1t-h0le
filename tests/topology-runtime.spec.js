@@ -170,3 +170,73 @@ test('topology renderer contains no ranking or force-layout semantics', async ({
   expect(lowered).toContain('data-depth');
   expect(lowered).toContain('relationship_state');
 });
+
+
+test('proof inspector exposes categorical artifact, relationship, and stop facts only', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openTrailWearSample === 'function');
+
+  await page.evaluate(async () => window.openTrailWearSample());
+  await page.locator('.topology-inspect').first().click();
+
+  const state = await page.evaluate(() => {
+    const panel = document.getElementById('trailTopologyInspector');
+    return {
+      hidden: panel.hidden,
+      proofState: panel.getAttribute('data-proof-state'),
+      text: panel.textContent,
+      stopStates: Array.from(panel.querySelectorAll('.topology-inspector-stop'))
+        .map((node) => node.getAttribute('data-proof-state')),
+    };
+  });
+
+  expect(state.hidden).toBe(false);
+  expect(state.proofState).toBe('VERIFIED');
+  expect(state.text).toContain('ARTIFACT');
+  expect(state.text).toContain('VERIFIED');
+  expect(state.stopStates.length).toBeGreaterThan(0);
+  expect(state.stopStates.every((value) => value === 'CONCEALED' || value === 'REVEALED')).toBe(true);
+
+  const lowered = state.text.toLowerCase();
+  for (const banned of ['confidence', 'percent', 'score', 'recommended', 'interesting']) {
+    expect(lowered.includes(banned)).toBe(false);
+  }
+});
+
+test('rejected local artifacts stay out of the graph and surface only as diagnostics', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.R4b1tTrail && typeof window.openTrailTopology === 'function');
+
+  const state = await page.evaluate(async () => {
+    const trail = window.R4b1tTrail;
+    const manifest = await trail.createManifest({
+      created_at: '2026-09-18T19:00:00.000Z',
+      corpus_revision: 'sha256:' + 'a'.repeat(64),
+      seed: 'rejected-local',
+      terrain: 'RESEARCH',
+      routes: [{ url: 'https://example.org/original', action: 'ROLL' }],
+      parent: null,
+    });
+    const snapshot = await trail.envelope(manifest);
+    snapshot.manifest.routes[0].url = 'https://attacker.invalid/';
+    localStorage.setItem('r4b1t_topology_atlas_v1', JSON.stringify([snapshot]));
+
+    await window.openTrailTopology();
+
+    const diagnostics = document.getElementById('trailTopologyDiagnostics');
+    return {
+      diagnosticHidden: diagnostics.hidden,
+      diagnosticText: diagnostics.textContent,
+      rejectedCount: diagnostics.querySelectorAll('[data-proof-state="REJECTED"]').length,
+      graphCards: document.querySelectorAll('.topology-card').length,
+      savedAtlas: JSON.parse(localStorage.getItem('r4b1t_topology_atlas_v1') || '[]').length,
+    };
+  });
+
+  expect(state.diagnosticHidden).toBe(false);
+  expect(state.diagnosticText).toContain('REJECTED ARTIFACTS');
+  expect(state.diagnosticText).toContain('Route ID mismatch');
+  expect(state.rejectedCount).toBe(1);
+  expect(state.graphCards).toBe(0);
+  expect(state.savedAtlas).toBe(0);
+});
