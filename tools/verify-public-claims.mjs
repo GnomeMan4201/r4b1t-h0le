@@ -31,6 +31,40 @@ function excludes(content, value, label) {
   claim(!content.includes(value), `${label}: stale value still present: ${value}`);
 }
 
+function verifyCorpusClaims(readme) {
+  const lines = read('urls.txt').split(/\r?\n/);
+  let validUrls = 0;
+  const hosts = new Set();
+
+  for (const rawLine of lines) {
+    const value = rawLine.trim();
+    if (!value) continue;
+
+    try {
+      const parsed = new URL(value);
+      if (!['http:', 'https:'].includes(parsed.protocol) || !parsed.hostname) continue;
+      validUrls += 1;
+      hosts.add(parsed.hostname.replace(/\.$/, '').toLowerCase());
+    } catch {
+      // Invalid entries are accounted for by corpus-health CI; they are not public valid-URL claims.
+    }
+  }
+
+  const validLabel = validUrls.toLocaleString('en-US');
+  const hostLabel = hosts.size.toLocaleString('en-US');
+
+  claim(
+    readme.includes(`Structurally valid URLs | **${validLabel}**`) &&
+      readme.includes(`<strong>${validLabel}</strong><br><sub>structurally valid URLs</sub>`),
+    `README corpus count drift: expected ${validLabel} structurally valid URLs`,
+  );
+  claim(
+    readme.includes(`Unique hosts | **${hostLabel}**`) &&
+      readme.includes(`<strong>${hostLabel}</strong><br><sub>unique hosts</sub>`),
+    `README host count drift: expected ${hostLabel} unique hosts`,
+  );
+}
+
 async function fetchWithTimeout(url, init = {}, timeoutMs = 12_000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -54,6 +88,7 @@ function verifyStaticClaims() {
   includes(readme, APP, 'README');
   excludes(readme, OLD_REPO, 'README');
   excludes(readme, OLD_WORKER, 'README');
+  verifyCorpusClaims(readme);
 
   includes(index, WORKER, 'index.html');
   excludes(index, OLD_WORKER, 'index.html');
