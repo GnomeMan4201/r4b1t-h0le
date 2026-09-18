@@ -11,6 +11,7 @@ const read = (file) => fs.readFileSync(path.join(ROOT, file), 'utf8');
 
 const legacyRepoUrl = /https:\/\/github\.com\/GnomeMan4201\/r4b1t(?=[/?#"'\s<]|$)/;
 const legacyPagesUrl = 'https://gnomeman4201.github.io/r4b1t/';
+const staleTrailOrigin = /gnomeman4201\.github\.io\/r4b1t(?!-h0le)/;
 
 const repoLinkedFiles = [
   'README.md',
@@ -32,6 +33,10 @@ test('public surfaces do not reference the dead pre-rename GitHub Pages URL', ()
   }
 });
 
+test('trail exports do not stamp the pre-rename project origin', () => {
+  assert.doesNotMatch(read('index.html'), staleTrailOrigin);
+});
+
 test('PWA paths are deployment-relative instead of tied to the old repository slug', () => {
   const manifest = JSON.parse(read('manifest.json'));
   assert.equal(manifest.start_url, './');
@@ -50,6 +55,12 @@ test('CI stages the site at the current GitHub Pages repository path', () => {
   assert.ok(workflow.includes('test-site/r4b1t-h0le'));
   assert.ok(workflow.includes('http://127.0.0.1:8080/r4b1t-h0le/'));
   assert.ok(!workflow.includes('test-site/r4b1t/'));
+});
+
+test('tooling examples use the renamed repository directory', () => {
+  const classifier = read('tools/r4b1t_classifier.py');
+  assert.ok(classifier.includes('~/r4b1t-h0le/tools/generate_branch_injection.py'));
+  assert.ok(!classifier.includes('~/r4b1t/tools/generate_branch_injection.py'));
 });
 
 test('contributor guidance names the current deployed project path', () => {

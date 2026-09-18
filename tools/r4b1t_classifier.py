@@ -318,7 +318,7 @@ def main():
 
     print(f"\nNext steps:")
     print(f"  cp {args.output} tagged_final.json")
-    print(f"  python3 ~/r4b1t/tools/generate_branch_injection.py \\")
+    print(f"  python3 ~/r4b1t-h0le/tools/generate_branch_injection.py \\")
     print(f"    --tagged tagged_final.json --output branch_injection.js")
     print(f"  # Then re-inject branch_injection.js into index.html")
 
