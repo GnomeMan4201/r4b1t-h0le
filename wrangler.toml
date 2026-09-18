@@ -1,8 +1,16 @@
 name = "r4b1t-proxy"
 main = "worker/r4b1t-proxy.mjs"
 compatibility_date = "2026-09-18"
+compatibility_flags = ["global_fetch_strictly_public"]
 workers_dev = true
 
-# Production-equivalence note:
-# Rate limiting or other dashboard/WAF controls are not represented here yet.
-# Do not treat this file alone as proof of the currently deployed Worker config.
+[vars]
+REQUIRE_RATE_LIMIT = "true"
+
+[[ratelimits]]
+name = "R4B1T_RATE_LIMITER"
+namespace_id = "1262395939"
+
+[ratelimits.simple]
+limit = 60
+period = 60
