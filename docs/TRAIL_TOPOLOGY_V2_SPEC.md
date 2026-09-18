@@ -109,6 +109,10 @@ Forbidden layout inputs:
 
 A different visual position must never imply "better," "recommended," or "more relevant."
 
+Rendering and layout are not exempt from Contract clause 4. Readability transformations are allowed only when their inputs are objective graph structure or an explicit user-selected display setting. Geometry, node size, spacing, edge weight, opacity, ordering, and emphasis must not be driven by inferred importance, interestingness, engagement, popularity, or behavioral signals.
+
+Topology v2 should prefer deterministic lineage geometry whose visual structure corresponds directly to recorded parent/fork relationships. More complex layouts, including force-directed layouts, require an explicit specification of what each visual signal means before adoption; determinism alone does not make a layout contract-compliant.
+
 ## Visual emphasis
 
 Visual emphasis is permitted only when it encodes an objective, declared state.
@@ -150,6 +154,8 @@ Topology v2 must expose enough evidence for a user to distinguish:
 - divergent segment
 
 A topology export must preserve the proof-relevant data required by Contract clause 3.
+
+Proof diagnostics are categorical, not probabilistic. Allowed diagnostic states include `VERIFIED`, `REJECTED`, `PARENT ABSENT`, `CONCEALED`, and `REVEALED` where applicable. Topology v2 must not assign percentages, confidence bands, quality scores, or language such as "high confidence" or "strong trail." The underlying verification operations establish discrete integrity facts; they do not produce a spectrum of trust.
 
 Verification establishes integrity of the recorded artifact and claimed sequence. It does not prove that a human viewed, understood, or interacted with every destination.
 
@@ -352,7 +358,7 @@ Topology v2 does not add:
 
 ## Initial implementation slices
 
-1. Define a stable topology export schema and golden vectors.
+1. Define a stable topology export schema and golden vectors. The golden-vector set must include at least one fixture for every categorical proof state, including `VERIFIED`, `REJECTED`, `PARENT ABSENT`, `CONCEALED`, and `REVEALED`, so proof-state derivation receives complete baseline coverage from its first implementation.
 2. Add explicit proof-state model to topology derivation.
 3. Replace the current linear card stack with a deterministic lineage graph.
 4. Add node inspection and proof diagnostics.
