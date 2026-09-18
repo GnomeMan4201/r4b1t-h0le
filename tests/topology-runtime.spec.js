@@ -56,3 +56,40 @@ test('sample topology shows revealed, concealed, inherited, and divergent wear t
   expect(state.creases).toBeGreaterThan(0);
   expect(state.sampleStatus).toContain('NOT SAVED TO LOCAL ATLAS');
 });
+
+test('Trail Topology traps focus, closes with Escape, and restores opener', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openTrailTopology === 'function');
+
+  await page.evaluate(async () => {
+    const opener = document.createElement('button');
+    opener.id = 'topologyFocusOpener';
+    opener.textContent = 'open topology';
+    document.body.appendChild(opener);
+    opener.focus();
+    await window.openTrailTopology();
+  });
+
+  const overlay = page.locator('#trailTopologyOverlay');
+  await expect(overlay).toHaveClass(/open/);
+  await expect(overlay).toHaveAttribute('aria-hidden', 'false');
+
+  const focusInside = await page.evaluate(() => document.querySelector('#trailTopologyOverlay').contains(document.activeElement));
+  expect(focusInside).toBe(true);
+
+  const last = overlay.locator('button:visible').last();
+  await last.focus();
+  await page.keyboard.press('Tab');
+  const wrapped = await page.evaluate(() => {
+    const overlay = document.querySelector('#trailTopologyOverlay');
+    const focusables = Array.from(overlay.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])'))
+      .filter((el) => !el.disabled && el.getAttribute('aria-hidden') !== 'true' && el.offsetParent !== null);
+    return document.activeElement === focusables[0];
+  });
+  expect(wrapped).toBe(true);
+
+  await page.keyboard.press('Escape');
+  await expect(overlay).not.toHaveClass(/open/);
+  await expect(overlay).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('#topologyFocusOpener')).toBeFocused();
+});
