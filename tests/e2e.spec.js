@@ -336,3 +336,40 @@ test('desktop focused controls keep native Enter behavior', async ({ page }, tes
   await page.keyboard.press('Enter');
   await expect(page.locator('html')).not.toHaveClass(/\blight\b/);
 });
+
+test('desktop Help dialog traps focus, closes with Escape, and restores opener focus', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitForApplicationReady(page);
+
+  const theme = page.locator('#themeBtn');
+  await theme.focus();
+  await expect(theme).toBeFocused();
+
+  await page.evaluate(() => window.toggleHelp());
+  const help = page.locator('#helpOverlay');
+  await expect(help).toHaveClass(/\bopen\b/);
+  await expect(help).toHaveAttribute('role', 'dialog');
+  await expect(help).toHaveAttribute('aria-modal', 'true');
+  await expect(help).toHaveAttribute('aria-hidden', 'false');
+
+  const focusInside = await page.evaluate(() => document.querySelector('#helpOverlay').contains(document.activeElement));
+  expect(focusInside).toBe(true);
+
+  const close = page.locator('#helpOverlay .help-close');
+  await close.focus();
+  await page.keyboard.press('Tab');
+  const wrappedToFirst = await page.evaluate(() => {
+    const overlay = document.querySelector('#helpOverlay');
+    const focusables = Array.from(overlay.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])'))
+      .filter((el) => !el.disabled && el.getAttribute('aria-hidden') !== 'true' && el.offsetParent !== null);
+    return document.activeElement === focusables[0];
+  });
+  expect(wrappedToFirst).toBe(true);
+
+  await page.keyboard.press('Escape');
+  await expect(help).not.toHaveClass(/\bopen\b/);
+  await expect(help).toHaveAttribute('aria-hidden', 'true');
+  await expect(theme).toBeFocused();
+});
