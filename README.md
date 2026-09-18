@@ -391,6 +391,14 @@ npm run claims:verify:live
 
 The frozen deployment evidence for the current Worker baseline is recorded in [`docs/releases/2026-09-18-worker-verification.md`](./docs/releases/2026-09-18-worker-verification.md).
 
+Production shadow CI separately compares the exact bytes served by GitHub Pages for critical application assets against the repository checkout, then rechecks the public front door and Worker security headers:
+
+```bash
+npm run shadow:verify
+```
+
+That check runs every six hours and can also be triggered manually. It is intended to catch stale, partial, or mismatched deployments that source-only CI cannot detect.
+
 > [!WARNING]
 > A green workflow verifies the tested behavior for that revision. It does **not** certify the safety or continued availability of every external destination in the corpus.
 
