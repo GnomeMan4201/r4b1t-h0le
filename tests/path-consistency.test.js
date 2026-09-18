@@ -146,3 +146,13 @@ test('first-party GitHub Actions are pinned to immutable commits', () => {
     assert.equal(content.match(floating), null, workflow + ' contains a floating first-party Action tag');
   }
 });
+
+test('session history is a keyboard-accessible dialog with reachable empty state', () => {
+  const index = read('index.html');
+  assert.ok(index.includes('id="historyOverlay" role="dialog" aria-modal="true" aria-labelledby="historyTitle" aria-hidden="true" tabindex="-1"'));
+  assert.ok(index.includes('var _helpFocus=null,_torFocus=null,_historyFocus=null;'));
+  assert.ok(index.includes('document.createElement("button")'));
+  assert.ok(index.includes('o.style.display="flex"'));
+  assert.ok(index.includes('no history yet — roll some URLs'));
+  assert.ok(index.includes('_trapDialogKey(t,a,toggleHistory)'));
+});

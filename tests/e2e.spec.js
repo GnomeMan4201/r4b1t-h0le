@@ -373,3 +373,41 @@ test('desktop Help dialog traps focus, closes with Escape, and restores opener f
   await expect(help).toHaveAttribute('aria-hidden', 'true');
   await expect(theme).toBeFocused();
 });
+
+test('desktop Session History opens empty, traps focus, and restores opener', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitForApplicationReady(page);
+
+  const historyButton = page.locator('button', { hasText: 'history' }).first();
+  await historyButton.focus();
+  await expect(historyButton).toBeFocused();
+
+  await historyButton.press('Enter');
+  const history = page.locator('#historyOverlay');
+  await expect(history).toHaveCSS('display', 'flex');
+  await expect(history).toHaveAttribute('role', 'dialog');
+  await expect(history).toHaveAttribute('aria-modal', 'true');
+  await expect(history).toHaveAttribute('aria-hidden', 'false');
+  await expect(page.locator('#historyList')).toContainText('no history yet');
+
+  const focusInside = await page.evaluate(() => document.querySelector('#historyOverlay').contains(document.activeElement));
+  expect(focusInside).toBe(true);
+
+  const close = page.locator('#historyOverlay button').last();
+  await close.focus();
+  await page.keyboard.press('Tab');
+  const wrapped = await page.evaluate(() => {
+    const overlay = document.querySelector('#historyOverlay');
+    const focusables = Array.from(overlay.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])'))
+      .filter((el) => !el.disabled && el.getAttribute('aria-hidden') !== 'true' && el.offsetParent !== null);
+    return document.activeElement === focusables[0];
+  });
+  expect(wrapped).toBe(true);
+
+  await page.keyboard.press('Escape');
+  await expect(history).toHaveCSS('display', 'none');
+  await expect(history).toHaveAttribute('aria-hidden', 'true');
+  await expect(historyButton).toBeFocused();
+});
