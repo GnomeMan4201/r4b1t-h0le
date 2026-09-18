@@ -176,7 +176,10 @@ function jsonResponse(value, status = 200, extra = {}) {
 function textResponse(value, status = 200) {
   return new Response(value, {
     status,
-    headers: securityHeaders({ 'Content-Type': 'text/plain; charset=utf-8' }),
+    headers: securityHeaders({
+      'Content-Type': 'text/plain; charset=utf-8',
+      ...(status >= 400 ? { 'Cache-Control': 'no-store' } : {}),
+    }),
   });
 }
 
@@ -441,7 +444,10 @@ async function maybeCached(request, ctx, build) {
 export async function handleRequest(request, env = {}, ctx = {}, deps = {}) {
   if (request.method === 'OPTIONS') {
     if (!isAllowedCaller(request)) return textResponse('forbidden', 403);
-    return new Response(null, { status: 204, headers: securityHeaders() });
+    return new Response(null, {
+      status: 204,
+      headers: securityHeaders({ 'Cache-Control': 'no-store' }),
+    });
   }
   if (request.method !== 'GET') return textResponse('method not allowed', 405);
   if (!isAllowedCaller(request)) return textResponse('forbidden', 403);
