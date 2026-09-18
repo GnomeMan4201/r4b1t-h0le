@@ -87,3 +87,41 @@ test('forks a replayed trail with verifiable parent lineage', async ({ page }) =
   expect(result.inheritedRoute).toBe(result.parentRoute);
   expect(result.status).toBe('FORKED / STEP 001');
 });
+
+test('Trail Ledger traps focus, closes with Escape, and restores opener', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openTrailLedger === 'function');
+
+  await page.evaluate(() => {
+    const opener = document.createElement('button');
+    opener.id = 'trailFocusOpener';
+    opener.textContent = 'open trail';
+    document.body.appendChild(opener);
+    opener.focus();
+    window.openTrailLedger();
+  });
+
+  const overlay = page.locator('#trailLedgerOverlay');
+  await expect(overlay).toHaveCSS('display', 'flex');
+  await expect(overlay).toHaveAttribute('aria-hidden', 'false');
+
+  const focusInside = await page.evaluate(() => document.querySelector('#trailLedgerOverlay').contains(document.activeElement));
+  expect(focusInside).toBe(true);
+
+  const buttons = overlay.locator('button:visible');
+  const last = buttons.last();
+  await last.focus();
+  await page.keyboard.press('Tab');
+  const wrapped = await page.evaluate(() => {
+    const overlay = document.querySelector('#trailLedgerOverlay');
+    const focusables = Array.from(overlay.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])'))
+      .filter((el) => !el.disabled && el.getAttribute('aria-hidden') !== 'true' && el.offsetParent !== null);
+    return document.activeElement === focusables[0];
+  });
+  expect(wrapped).toBe(true);
+
+  await page.keyboard.press('Escape');
+  await expect(overlay).toHaveCSS('display', 'none');
+  await expect(overlay).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('#trailFocusOpener')).toBeFocused();
+});
