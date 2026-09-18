@@ -1,9 +1,10 @@
+import dns from 'node:dns';
+
 const ALLOWED_CALLER_ORIGINS = new Set([
   'https://gnomeman4201.github.io',
   'https://r4b1t.badbananaresearch.com',
 ]);
 
-const DOH_ENDPOINT = 'https://cloudflare-dns.com/dns-query';
 const MAX_REDIRECTS = 4;
 const OUTBOUND_TIMEOUT_MS = 8_000;
 const MAX_HTML_BYTES = 1_000_000;
@@ -244,7 +245,7 @@ export function canonicalizeTarget(rawUrl) {
   return url;
 }
 
-export async function resolvePublicHost(hostname, fetchImpl = fetch) {
+export async function resolvePublicHost(hostname, dnsApi = dns.promises) {
   const host = normalizeHostname(hostname);
   const literalPublic = isPublicIp(host);
   if (literalPublic !== null) {
@@ -252,31 +253,12 @@ export async function resolvePublicHost(hostname, fetchImpl = fetch) {
     return [host];
   }
 
-  const lookups = await Promise.all(['A', 'AAAA'].map(async (type) => {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 3_000);
-    try {
-      const response = await fetchImpl(
-        `${DOH_ENDPOINT}?name=${encodeURIComponent(host)}&type=${type}`,
-        {
-          headers: { Accept: 'application/dns-json' },
-          redirect: 'error',
-          signal: controller.signal,
-        },
-      );
-      if (!response.ok) return [];
-      const body = await response.json();
-      return (body.Answer || [])
-        .filter((answer) => answer.type === (type === 'A' ? 1 : 28))
-        .map((answer) => String(answer.data));
-    } catch {
-      return [];
-    } finally {
-      clearTimeout(timer);
-    }
-  }));
+  const lookups = await Promise.all([
+    dnsApi.resolve4(host).catch(() => []),
+    dnsApi.resolve6(host).catch(() => []),
+  ]);
 
-  const addresses = lookups.flat();
+  const addresses = lookups.flat().map((address) => String(address));
   if (!addresses.length) throw new BoundaryError('target host did not resolve publicly', 502);
   if (addresses.some((address) => isPublicIp(address) !== true)) {
     throw new BoundaryError('target DNS includes a non-public address', 403);
@@ -296,7 +278,7 @@ function isRedirect(status) {
 
 export async function safeFetch(rawUrl, {
   fetchImpl = fetch,
-  resolver = (host) => resolvePublicHost(host, fetchImpl),
+  resolver = (host) => resolvePublicHost(host),
   accept = '*/*',
   maxRedirects = MAX_REDIRECTS,
   timeoutMs = OUTBOUND_TIMEOUT_MS,

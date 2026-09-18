@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const BASE = process.env.R4B1T_WORKER_URL || 'https://r4b1t-proxy.gnomeman4201.workers.dev';
+const BASE = process.env.R4B1T_WORKER_URL || 'https://r4b1t-proxy.badbanana6969.workers.dev';
 const PAGES_ORIGIN = 'https://gnomeman4201.github.io';
 const CUSTOM_ORIGIN = 'https://r4b1t.badbananaresearch.com';
 const JSON_OUTPUT = process.argv.includes('--json');
