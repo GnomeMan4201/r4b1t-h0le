@@ -40,3 +40,10 @@ test('privacy documentation states the controlled network boundary', () => {
   assert.ok(readme.includes('Origin checking is a browser/CORS abuse-control boundary, not authentication.'));
   assert.ok(readme.includes('docs/WORKER_TRUST_BOUNDARY.md'));
 });
+
+test('new-tab navigation explicitly isolates the opener', () => {
+  const index = read('index.html');
+  assert.ok(index.includes('target="_blank" rel="noopener noreferrer"'));
+  assert.ok(index.includes('window.open(issue,"_blank","noopener,noreferrer")'));
+  assert.ok(!index.includes('window.open(issue,"_blank");'));
+});
