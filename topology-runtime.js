@@ -101,6 +101,8 @@
     branch.setAttribute('data-trail-id', snapshot.trail_id);
     branch.setAttribute('data-depth', String(depth));
     branch.setAttribute('data-proof-state', snapshot.proof_state || 'VERIFIED');
+    branch.setAttribute('role', 'treeitem');
+    branch.setAttribute('aria-level', String(depth + 1));
 
     if (snapshot.parent && snapshot.relationship_state === 'PARENT ABSENT') {
       var stub = document.createElement('div');
@@ -171,6 +173,7 @@
     if (childNodes.length) {
       var childrenMount = document.createElement('div');
       childrenMount.className = 'topology-children';
+      childrenMount.setAttribute('role', 'group');
       childrenMount.setAttribute('aria-label', 'Verified child trails');
       childNodes.forEach(function (child) {
         var childBranch = renderNode(child, graph, forest, visited, depth + 1);
