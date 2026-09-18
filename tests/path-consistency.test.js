@@ -57,6 +57,13 @@ test('CI stages the site at the current GitHub Pages repository path', () => {
   assert.ok(!workflow.includes('test-site/r4b1t/'));
 });
 
+test('Worker deploy workflow stages the browser suite at the deployed Pages path', () => {
+  const workflow = read('.github/workflows/deploy-worker.yml');
+  assert.ok(workflow.includes('test-site/r4b1t-h0le'));
+  assert.ok(workflow.includes('BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/'));
+  assert.ok(workflow.includes("CI: 'true'"));
+});
+
 test('tooling examples use the renamed repository directory', () => {
   const classifier = read('tools/r4b1t_classifier.py');
   assert.ok(classifier.includes('~/r4b1t-h0le/tools/generate_branch_injection.py'));
