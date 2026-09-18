@@ -205,6 +205,8 @@
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
     overlay.setAttribute('aria-labelledby', 'blindDescentTitle');
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.setAttribute('tabindex', '-1');
     overlay.innerHTML = '<div class="blind-grid">' +
       '<header class="blind-head"><div><div class="blind-kicker">APERTURE / BLIND</div><h2 class="blind-title" id="blindDescentTitle">BLIND DESCENT</h2></div><div class="blind-depth" id="blindDepth">000<small>DEPTH / COMMITTED</small></div></header>' +
       '<div><article class="blind-card" id="blindCard"><div class="blind-state" id="blindStatus">READY / NOTHING SELECTED</div><div class="blind-message" id="blindMessage">DESCEND WITHOUT <span>LOOKING.</span></div><div class="blind-proof" id="blindProof">Selection happens before reveal. Reveal cannot reroll, replace, filter, or reject.</div></article><div class="blind-wear" id="blindWear" aria-label="Persistent trail wear"></div></div>' +
@@ -270,16 +272,60 @@
     render('REJECTED / ' + String(error && error.message || error).toUpperCase());
   }
 
+  var overlayFocus = null;
+
+  function overlayFocusables(overlay) {
+    return Array.from(overlay.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])'))
+      .filter(function (el) { return !el.disabled && el.getAttribute('aria-hidden') !== 'true' && el.offsetParent !== null; });
+  }
+
+  function focusOverlay(overlay) {
+    var items = overlayFocusables(overlay);
+    (items[0] || overlay).focus();
+  }
+
+  function trapOverlayTab(event, overlay) {
+    if (event.code !== 'Tab') return false;
+    var items = overlayFocusables(overlay);
+    if (!items.length) {
+      event.preventDefault();
+      overlay.focus();
+      return true;
+    }
+    var first = items[0], last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+      return true;
+    }
+    if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+      return true;
+    }
+    return false;
+  }
+
   async function open() {
     ensureOverlay();
     await ready();
     render('READY / COMMIT LOCALLY');
-    document.getElementById('blindDescentOverlay').classList.add('open');
+    var overlay = document.getElementById('blindDescentOverlay');
+    overlayFocus = document.activeElement;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    setTimeout(function () { focusOverlay(overlay); }, 0);
   }
 
   function close() {
     var overlay = document.getElementById('blindDescentOverlay');
-    if (overlay) overlay.classList.remove('open');
+    if (overlay) {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+    var restore = overlayFocus;
+    overlayFocus = null;
+    if (restore && typeof restore.focus === 'function') setTimeout(function () { restore.focus(); }, 0);
   }
 
   window.openBlindDescent = open;
@@ -297,12 +343,21 @@
 
   document.addEventListener('keydown', function (event) {
     var overlay = document.getElementById('blindDescentOverlay');
-    if (!overlay || !overlay.classList.contains('open') ||
-        (event.target.closest && event.target.closest('input, textarea, select'))) return;
-    if (!['Escape', 'Space', 'Enter', 'Backspace'].includes(event.code)) return;
+    if (!overlay || !overlay.classList.contains('open')) return;
+    if (event.code === 'Escape') {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      close();
+      return;
+    }
+    if (trapOverlayTab(event, overlay)) {
+      event.stopImmediatePropagation();
+      return;
+    }
+    if (event.target.closest && event.target.closest('button,a,input,textarea,select,[contenteditable=true]')) return;
+    if (!['Space', 'Enter', 'Backspace'].includes(event.code)) return;
     event.preventDefault();
     event.stopImmediatePropagation();
-    if (event.code === 'Escape') close();
     if (event.code === 'Space') descend().catch(showError);
     if (event.code === 'Enter') reveal().catch(showError);
     if (event.code === 'Backspace') returnTowardSurface().catch(showError);

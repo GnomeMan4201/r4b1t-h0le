@@ -192,6 +192,8 @@
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
     overlay.setAttribute('aria-labelledby', 'trailLedgerTitle');
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.setAttribute('tabindex', '-1');
     overlay.style.cssText = 'display:none;position:fixed;inset:0;background:#000000e8;z-index:10020;align-items:center;justify-content:center;padding:18px';
     overlay.innerHTML = '<div style="background:#141210;border:1px solid #2a2825;border-top:2px solid #cc1111;padding:24px;width:min(560px,96vw);max-height:86vh;display:flex;flex-direction:column;gap:14px">' +
       '<div id="trailLedgerTitle" style="font-family:Bebas Neue,sans-serif;font-size:1.35rem;letter-spacing:.12em">REPRODUCIBLE RABBIT TRAIL</div>' +
@@ -251,15 +253,59 @@
     renderPanel('REJECTED / ' + String(error && error.message || error).toUpperCase());
   }
 
+  var panelFocus = null;
+
+  function panelFocusables(panel) {
+    return Array.from(panel.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])'))
+      .filter(function (el) { return !el.disabled && el.getAttribute('aria-hidden') !== 'true' && el.offsetParent !== null; });
+  }
+
+  function focusPanel(panel) {
+    var items = panelFocusables(panel);
+    (items[0] || panel).focus();
+  }
+
+  function trapPanelTab(event, panel) {
+    if (event.code !== 'Tab') return false;
+    var items = panelFocusables(panel);
+    if (!items.length) {
+      event.preventDefault();
+      panel.focus();
+      return true;
+    }
+    var first = items[0], last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+      return true;
+    }
+    if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+      return true;
+    }
+    return false;
+  }
+
   function openPanel() {
     ensurePanel();
     renderPanel();
-    document.getElementById('trailLedgerOverlay').style.display = 'flex';
+    var panel = document.getElementById('trailLedgerOverlay');
+    panelFocus = document.activeElement;
+    panel.style.display = 'flex';
+    panel.setAttribute('aria-hidden', 'false');
+    setTimeout(function () { focusPanel(panel); }, 0);
   }
 
   function closePanel() {
     var panel = document.getElementById('trailLedgerOverlay');
-    if (panel) panel.style.display = 'none';
+    if (panel) {
+      panel.style.display = 'none';
+      panel.setAttribute('aria-hidden', 'true');
+    }
+    var restore = panelFocus;
+    panelFocus = null;
+    if (restore && typeof restore.focus === 'function') setTimeout(function () { restore.focus(); }, 0);
   }
 
   restore();
@@ -284,11 +330,18 @@
   });
 
   document.addEventListener('keydown', function (event) {
-    if (event.code === 'Escape' && document.getElementById('trailLedgerOverlay')?.style.display === 'flex') {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      closePanel();
-      return;
+    var panel = document.getElementById('trailLedgerOverlay');
+    if (panel?.style.display === 'flex') {
+      if (event.code === 'Escape') {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        closePanel();
+        return;
+      }
+      if (trapPanelTab(event, panel)) {
+        event.stopImmediatePropagation();
+        return;
+      }
     }
     if ((event.code === 'Space' || event.code === 'KeyS') &&
         !event.target.closest('input, textarea, select, button, a') &&

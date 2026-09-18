@@ -156,3 +156,18 @@ test('session history is a keyboard-accessible dialog with reachable empty state
   assert.ok(index.includes('no history yet — roll some URLs'));
   assert.ok(index.includes('_trapDialogKey(t,a,toggleHistory)'));
 });
+
+test('generated runtime dialogs expose full focus lifecycle semantics', () => {
+  const trail = read('trail-runtime.js');
+  const blind = read('blind-runtime.js');
+  const topology = read('topology-runtime.js');
+
+  for (const source of [trail, blind, topology]) {
+    assert.ok(source.includes("setAttribute('aria-hidden', 'true')"));
+    assert.ok(source.includes("setAttribute('tabindex', '-1')"));
+    assert.ok(source.includes("setAttribute('aria-hidden', 'false')"));
+    assert.ok(source.includes("event.code !== 'Tab'"));
+  }
+
+  assert.ok(blind.includes("event.target.closest('button,a,input,textarea,select,[contenteditable=true]')"));
+});
