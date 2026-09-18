@@ -80,7 +80,7 @@ The replacement contract is `GET`, `HEAD`, and `OPTIONS` for supported routes. U
 
 The deploy workflow is intentionally manual and main-branch-only. It runs the complete test suite before deployment, uses GitHub secrets for Cloudflare credentials, and performs post-deploy checks against the live Worker. Merging this source does **not** deploy it automatically.
 
-A platform-level 60 requests/minute per-IP limit is still not reproduced in repository configuration. If that control exists in Cloudflare WAF/rate-limiting configuration, it remains part of the external trust boundary and must be documented before issue #38 closes.
+The versioned candidate now reproduces the historical 60 requests/minute per-IP control through a Cloudflare Workers rate-limit binding in `wrangler.toml`. Production sets `REQUIRE_RATE_LIMIT=true`, so the Worker fails closed if that binding or Cloudflare client identity is unavailable. The same config enables `global_fetch_strictly_public` as defense in depth for outbound fetch routing. These are source/configuration guarantees only until the replacement Worker is deliberately deployed and the production-equivalence audit passes.
 
 ## Reproducing the deployed and versioned contracts
 

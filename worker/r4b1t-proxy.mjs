@@ -195,6 +195,27 @@ function textResponse(value, status = 200) {
   });
 }
 
+async function enforceRateLimit(request, env) {
+  if (String(env.REQUIRE_RATE_LIMIT || 'false') !== 'true') return null;
+
+  const limiter = env.R4B1T_RATE_LIMITER;
+  if (!limiter || typeof limiter.limit !== 'function') {
+    return textResponse('rate limiter unavailable', 503);
+  }
+
+  const clientIp = request.headers.get('CF-Connecting-IP');
+  if (!clientIp) {
+    return textResponse('rate limiter identity unavailable', 503);
+  }
+
+  const result = await limiter.limit({ key: clientIp });
+  if (!result || result.success !== true) {
+    return textResponse('rate limit exceeded', 429);
+  }
+
+  return null;
+}
+
 export function canonicalizeTarget(rawUrl) {
   let url;
   try {
@@ -463,6 +484,9 @@ export async function handleRequest(request, env = {}, ctx = {}, deps = {}) {
   }
   if (!['GET', 'HEAD'].includes(request.method)) return textResponse('method not allowed', 405);
   if (!isAllowedCaller(request)) return textResponse('forbidden', 403);
+
+  const rateLimitResponse = await enforceRateLimit(request, env);
+  if (rateLimitResponse) return rateLimitResponse;
 
   const url = new URL(request.url);
   if (url.pathname === '/api') {

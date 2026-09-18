@@ -192,3 +192,42 @@ test('versioned Worker source contains no request logging of target URLs', () =>
   assert.ok(!source.includes('console.log'));
   assert.ok(!source.includes('console.error'));
 });
+
+
+test('production rate limit fails closed when required binding is unavailable', async () => {
+  const response = await handleRequest(
+    req('/api', { Origin: allowedOrigin }),
+    { REQUIRE_RATE_LIMIT: 'true' },
+  );
+  assert.equal(response.status, 503);
+});
+
+test('production rate limit uses CF-Connecting-IP and returns 429 when exhausted', async () => {
+  let seenKey = null;
+  const response = await handleRequest(
+    req('/api', {
+      Origin: allowedOrigin,
+      'CF-Connecting-IP': '203.0.113.55',
+    }),
+    {
+      REQUIRE_RATE_LIMIT: 'true',
+      R4B1T_RATE_LIMITER: {
+        async limit({ key }) {
+          seenKey = key;
+          return { success: false };
+        },
+      },
+    },
+  );
+  assert.equal(seenKey, '203.0.113.55');
+  assert.equal(response.status, 429);
+});
+
+test('Worker deployment config pins public-only fetch routing and 60-per-minute limiter', () => {
+  const config = read('wrangler.toml');
+  assert.ok(config.includes('global_fetch_strictly_public'));
+  assert.ok(config.includes('REQUIRE_RATE_LIMIT = "true"'));
+  assert.ok(config.includes('name = "R4B1T_RATE_LIMITER"'));
+  assert.ok(config.includes('limit = 60'));
+  assert.ok(config.includes('period = 60'));
+});
