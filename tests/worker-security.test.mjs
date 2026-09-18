@@ -12,6 +12,7 @@ import {
   parseOpenGraph,
   safeFetch,
   validateTarget,
+  resolvePublicHost,
 } from '../worker/r4b1t-proxy.mjs';
 
 const ROOT = path.resolve('.');
@@ -74,6 +75,44 @@ test('URL parser canonicalization blocks alternate loopback spellings and unsafe
     'http://example.com:22/',
   ]) {
     assert.throws(() => canonicalizeTarget(target), BoundaryError, target);
+  }
+});
+
+test('native DNS resolver accepts public A/AAAA answers', async () => {
+  const answers = await resolvePublicHost('example.com', {
+    resolve4: async () => ['93.184.216.34'],
+    resolve6: async () => ['2606:2800:220:1:248:1893:25c8:1946'],
+  });
+  assert.deepEqual(answers, ['93.184.216.34', '2606:2800:220:1:248:1893:25c8:1946']);
+});
+
+test('native DNS resolver rejects mixed public/private answers', async () => {
+  await assert.rejects(
+    () => resolvePublicHost('example.com', {
+      resolve4: async () => ['93.184.216.34', '127.0.0.1'],
+      resolve6: async () => [],
+    }),
+    /non-public/,
+  );
+});
+
+test('native DNS resolver fails closed when no address records resolve', async () => {
+  await assert.rejects(
+    () => resolvePublicHost('example.invalid', {
+      resolve4: async () => [],
+      resolve6: async () => [],
+    }),
+    /did not resolve publicly/,
+  );
+});
+
+test('versioned Worker and browser use the deployed badbanana6969 Worker hostname', () => {
+  const index = read('index.html');
+  const audit = read('tools/audit-worker-boundary.mjs');
+  const deploy = read('.github/workflows/deploy-worker.yml');
+  for (const content of [index, audit, deploy]) {
+    assert.ok(content.includes('r4b1t-proxy.badbanana6969.workers.dev'));
+    assert.ok(!content.includes('r4b1t-proxy.gnomeman4201.workers.dev'));
   }
 });
 
