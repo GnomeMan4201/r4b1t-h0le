@@ -166,7 +166,7 @@ test('generated runtime dialogs expose full focus lifecycle semantics', () => {
     assert.ok(source.includes("setAttribute('aria-hidden', 'true')"));
     assert.ok(source.includes("setAttribute('tabindex', '-1')"));
     assert.ok(source.includes("setAttribute('aria-hidden', 'false')"));
-    assert.ok(source.includes("event.code === 'Tab'"));
+    assert.ok(source.includes("event.code !== 'Tab'"));
   }
 
   assert.ok(blind.includes("event.target.closest('button,a,input,textarea,select,[contenteditable=true]')"));
