@@ -19,7 +19,7 @@ const read = (file) => fs.readFileSync(path.join(ROOT, file), 'utf8');
 const allowedOrigin = 'https://gnomeman4201.github.io';
 
 function req(pathname, headers = {}, method = 'GET') {
-  return new Request('https://r4b1t-proxy.gnomeman4201.workers.dev' + pathname, { headers, method });
+  return new Request('https://r4b1t-proxy.badbanana6969.workers.dev' + pathname, { headers, method });
 }
 
 test('caller lock accepts the two published origins and rejects unknown or absent callers', () => {
