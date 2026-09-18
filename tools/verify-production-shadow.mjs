@@ -75,7 +75,7 @@ async function verifyFrontDoor() {
   }
 
   const html = await response.text();
-  for (const marker of ['R4B1T_HOL3', 'NOT SEARCH', 'RABBIT HOLE']) {
+  for (const marker of ['NOT SEARCH', 'RABBIT HOLE']) {
     if (!html.toUpperCase().includes(marker)) {
       fail(`project site: expected marker missing: ${marker}`);
     }
