@@ -47,7 +47,17 @@ test('PWA paths are deployment-relative instead of tied to the old repository sl
 
   const sw = read('sw.js');
   assert.ok(!sw.includes("'/r4b1t/"));
-  assert.match(sw, /const CACHE = 'r4b1t-v17-path-consistency'/);
+  assert.match(sw, /const CACHE = 'r4b1t-v18-network-first'/);
+});
+
+
+test('PWA shell prefers current network bytes and uses cache only as offline fallback', () => {
+  const sw = read('sw.js');
+  assert.ok(sw.includes('const response = await fetch(e.request);'));
+  assert.ok(sw.includes('await cache.put(e.request, response.clone());'));
+  assert.ok(sw.includes('const cached = await caches.match(e.request);'));
+  assert.ok(!sw.includes('cached || fetch(e.request)'));
+  assert.ok(sw.includes("url.pathname.endsWith('/urls.txt')"));
 });
 
 test('CI stages the site at the current GitHub Pages repository path', () => {
