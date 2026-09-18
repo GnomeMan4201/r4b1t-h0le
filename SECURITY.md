@@ -15,7 +15,7 @@ Include the affected commit/deployment surface, reproduction steps, expected and
 
 Reports are especially useful for issues involving:
 
-- backend/proxy origin or authorization controls;
+- backend/proxy Origin allowlist or authorization controls (browser Origin checks are not authentication);
 - unintended disclosure of request/session data;
 - XSS or unsafe rendering of third-party metadata;
 - service-worker/PWA cache behavior that exposes stale or unintended content;
@@ -29,6 +29,8 @@ Third-party URLs in the discovery corpus are external resources, not code mainta
 ## Supported state
 
 Report findings against the current default branch and, for deployment-specific behavior, include the observed deployment URL and date. Corpus reachability changes are normal maintenance events and are not security defects by themselves.
+
+The deployed Worker is currently audited as a black-box service because its source is not yet versioned in this repository. See [`docs/WORKER_TRUST_BOUNDARY.md`](./docs/WORKER_TRUST_BOUNDARY.md) for the observed contract and limits of that verification.
 
 ## Disclosure
 

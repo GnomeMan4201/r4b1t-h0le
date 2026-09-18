@@ -394,7 +394,7 @@ The browser suite covers shell selection, viewport switching, roll propagation, 
 
 The application itself is deliberately local-first: no r4b1t account is required for exploration, route/session state is designed to remain device-local, and the core selection loop does not depend on a personalized server-side feed.
 
-No r4b1t analytics, profile, or engagement tracking is used. The browser shell does not load third-party analytics, remote web fonts, Google favicon services, or Microlink. Automatic metadata, favicon, preview-image, and optional Wikipedia enrichment requests are sent through the project-controlled, origin-locked Worker, which performs bounded outbound retrieval on the client's behalf. The browser therefore does not contact those enrichment providers or target image hosts directly.
+No r4b1t analytics, profile, or engagement tracking is used. The browser shell does not load third-party analytics, remote web fonts, Google favicon services, or Microlink. Automatic metadata, favicon, preview-image, and optional Wikipedia enrichment requests are sent through the project-controlled Worker, whose browser Origin allowlist limits which web origins can call it. Origin checking is a browser/CORS abuse-control boundary, not authentication. The browser therefore does not contact those enrichment providers or target image hosts directly. The current deployed Worker contract and its source-verification gap are documented in [`docs/WORKER_TRUST_BOUNDARY.md`](./docs/WORKER_TRUST_BOUNDARY.md).
 
 That boundary ends when you leave the application origin.
 
