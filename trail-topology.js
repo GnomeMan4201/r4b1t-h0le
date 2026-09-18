@@ -12,6 +12,14 @@
 
   if (!trail || !blind) throw new Error('Trail v0.1 and v0.2 APIs are required');
 
+  var PROOF_STATES = Object.freeze({
+    VERIFIED: 'VERIFIED',
+    REJECTED: 'REJECTED',
+    PARENT_ABSENT: 'PARENT ABSENT',
+    CONCEALED: 'CONCEALED',
+    REVEALED: 'REVEALED'
+  });
+
   function clone(value) {
     return JSON.parse(JSON.stringify(value));
   }
@@ -33,6 +41,32 @@
     throw new TypeError('Unsupported trail format');
   }
 
+  function safeTrailId(input) {
+    try {
+      var value = typeof input === 'string' ? JSON.parse(input) : input;
+      return value && typeof value.trail_id === 'string' ? value.trail_id : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  async function classify(input) {
+    try {
+      return {
+        proof_state: PROOF_STATES.VERIFIED,
+        snapshot: await verifyAny(input),
+        reason: null
+      };
+    } catch (error) {
+      return {
+        proof_state: PROOF_STATES.REJECTED,
+        snapshot: null,
+        trail_id: safeTrailId(input),
+        reason: error && error.message ? error.message : String(error)
+      };
+    }
+  }
+
   function parentOf(snapshot) {
     var manifest = snapshot.manifest;
     if (manifest.format === trail.FORMAT) {
@@ -50,6 +84,23 @@
     } : null;
   }
 
+  function relationshipState(snapshot, known) {
+    var parent = parentOf(snapshot);
+    if (!parent) return null;
+    return known && known[parent.trail_id]
+      ? PROOF_STATES.VERIFIED
+      : PROOF_STATES.PARENT_ABSENT;
+  }
+
+  function stopProofState(step) {
+    if (!step || (step.state !== 'concealed' && step.state !== 'revealed')) {
+      throw new TypeError('Topology stop state is invalid');
+    }
+    return step.state === 'concealed'
+      ? PROOF_STATES.CONCEALED
+      : PROOF_STATES.REVEALED;
+  }
+
   function stopsOf(snapshot) {
     var manifest = snapshot.manifest;
     var parent = parentOf(snapshot);
@@ -58,6 +109,7 @@
         return {
           index: position,
           state: 'revealed',
+          proof_state: PROOF_STATES.REVEALED,
           label: host(route.url),
           url: route.url,
           action: route.action,
@@ -69,6 +121,7 @@
       return {
         index: position,
         state: step.state,
+        proof_state: stopProofState(step),
         label: step.state === 'revealed' ? host(step.route.url) : 'concealed',
         url: step.state === 'revealed' ? step.route.url : null,
         action: step.state === 'revealed' ? 'REVEAL' : 'COMMIT',
@@ -114,7 +167,9 @@
           format: format,
           created_at: format === trail.FORMAT ? snapshot.manifest.created_at : snapshot.manifest.genesis.created_at,
           terrain: format === trail.FORMAT ? snapshot.manifest.terrain : snapshot.manifest.genesis.terrain,
+          proof_state: PROOF_STATES.VERIFIED,
           parent: parent,
+          relationship_state: relationshipState(snapshot, known),
           parent_known: !parent || Boolean(known[parent.trail_id]),
           stops: stopsOf(snapshot)
         };
@@ -123,8 +178,12 @@
   }
 
   return {
+    PROOF_STATES: PROOF_STATES,
     verifyAny: verifyAny,
+    classify: classify,
     parentOf: parentOf,
+    relationshipState: relationshipState,
+    stopProofState: stopProofState,
     stopsOf: stopsOf,
     build: build,
     shortId: shortId
