@@ -60,7 +60,7 @@ jobs:
           test ! -e .dev.vars
           test ! -e .env
           test ! -e .env.local
-          if git grep -nE -- 'CLOUDFLARE_API_TOKEN=|CLOUDFLARE_ACCOUNT_ID=|-----BEGIN (RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----'; then
+          if git grep -nE -- 'CLOUDFLARE_API_TOKEN=|CLOUDFLARE_ACCOUNT_ID=|-----BEGIN (RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----' -- ':!.github/workflows/deploy-worker.yml'; then
             echo 'Potential deployment secret material found in tracked source.' >&2
             exit 1
           fi
