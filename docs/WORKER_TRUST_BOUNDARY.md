@@ -1,7 +1,7 @@
 # Worker trust-boundary audit
 
 Date: 2026-09-18  
-Deployment: `https://r4b1t-proxy.gnomeman4201.workers.dev`
+Deployment: `https://r4b1t-proxy.badbanana6969.workers.dev`
 
 This document records black-box observations of the deployed Worker that supports the GitHub Pages application. At the time of that audit, the Worker source was not versioned. A replacement/reference implementation is now versioned at [`worker/r4b1t-proxy.mjs`](../worker/r4b1t-proxy.mjs), but it is **not** claimed to match production until the deployment-equivalence gate in issue #38 is completed.
 
