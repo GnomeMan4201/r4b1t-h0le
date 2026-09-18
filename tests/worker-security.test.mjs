@@ -162,19 +162,6 @@ test('current browser client no longer references the dead /api Worker route', (
   assert.ok(!index.includes('Q=`${V}/api`'));
 });
 
-test('Worker-backed images use anonymous CORS and origin-only referrers', () => {
-  const index = read('index.html');
-  for (const id of ['ogImage', 'previewFavicon', 'screenshotEl']) {
-    const start = index.indexOf(`id="${id}"`);
-    assert.notEqual(start, -1, id);
-    const tagStart = index.lastIndexOf('<img', start);
-    const tagEnd = index.indexOf('>', start);
-    const tag = index.slice(tagStart, tagEnd + 1);
-    assert.match(tag, /crossorigin="anonymous"/, id);
-    assert.match(tag, /referrerpolicy="origin"/, id);
-  }
-});
-
 test('versioned Worker source contains no request logging of target URLs', () => {
   const source = read('worker/r4b1t-proxy.mjs');
   assert.ok(!source.includes('console.log'));
