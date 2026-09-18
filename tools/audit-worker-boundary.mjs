@@ -5,12 +5,12 @@ const PAGES_ORIGIN = 'https://gnomeman4201.github.io';
 const CUSTOM_ORIGIN = 'https://r4b1t.badbananaresearch.com';
 const JSON_OUTPUT = process.argv.includes('--json');
 const contractArg = process.argv.find((arg) => arg.startsWith('--contract='));
-const CONTRACT = contractArg ? contractArg.split('=', 2)[1] : 'deployed';
+const CONTRACT = contractArg ? contractArg.split('=', 2)[1] : 'current';
 const TIMEOUT_MS = Number.parseInt(process.env.R4B1T_WORKER_AUDIT_TIMEOUT_MS || '8000', 10);
 const DELAY_MS = Number.parseInt(process.env.R4B1T_WORKER_AUDIT_DELAY_MS || '200', 10);
 
-if (!['deployed', 'versioned'].includes(CONTRACT)) {
-  console.error('Usage: node tools/audit-worker-boundary.mjs [--contract=deployed|versioned] [--json]');
+if (!['current', 'legacy'].includes(CONTRACT)) {
+  console.error('Usage: node tools/audit-worker-boundary.mjs [--contract=current|legacy] [--json]');
   process.exit(2);
 }
 
@@ -147,14 +147,14 @@ const cases = [
     name: 'custom-domain Origin',
     path: route('/og', SAFE_HTML),
     origin: CUSTOM_ORIGIN,
-    expect: CONTRACT === 'versioned' ? 'allow' : 'reject-origin',
+    expect: CONTRACT === 'current' ? 'allow' : 'reject-origin',
   },
 
   {
     name: 'legacy /api contract',
     path: '/api',
     origin: PAGES_ORIGIN,
-    expect: CONTRACT === 'versioned' ? 'api-gone' : 'api-disabled',
+    expect: CONTRACT === 'current' ? 'api-gone' : 'api-disabled',
   },
 
   { name: 'loopback IPv4', path: route('/proxy', 'http://127.0.0.1/'), origin: PAGES_ORIGIN, expect: 'block-target' },
@@ -183,7 +183,7 @@ const cases = [
   { name: '/og loopback', path: route('/og', 'http://127.0.0.1/'), origin: PAGES_ORIGIN, expect: 'block-target' },
 ];
 
-if (CONTRACT === 'versioned') {
+if (CONTRACT === 'current') {
   cases.push(
     { name: 'allowed preflight', path: route('/og', SAFE_HTML), origin: PAGES_ORIGIN, method: 'OPTIONS', expect: 'preflight' },
     { name: 'POST is rejected', path: route('/og', SAFE_HTML), origin: PAGES_ORIGIN, method: 'POST', expect: 'method-not-allowed' },
