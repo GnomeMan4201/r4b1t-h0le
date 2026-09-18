@@ -153,7 +153,7 @@ export function isAllowedCaller(request) {
 function securityHeaders(extra = {}) {
   return {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400',
     'Cache-Control': `public, max-age=${CACHE_SECONDS}`,
@@ -449,25 +449,37 @@ export async function handleRequest(request, env = {}, ctx = {}, deps = {}) {
       headers: securityHeaders({ 'Cache-Control': 'no-store' }),
     });
   }
-  if (request.method !== 'GET') return textResponse('method not allowed', 405);
+  if (!['GET', 'HEAD'].includes(request.method)) return textResponse('method not allowed', 405);
   if (!isAllowedCaller(request)) return textResponse('forbidden', 403);
 
   const url = new URL(request.url);
-  if (url.pathname === '/api') return textResponse('legacy route removed', 410);
+  if (url.pathname === '/api') {
+    const response = textResponse('legacy route removed', 410);
+    return request.method === 'HEAD'
+      ? new Response(null, { status: response.status, headers: response.headers })
+      : response;
+  }
   if (!['/proxy', '/og'].includes(url.pathname)) return textResponse('not found', 404);
 
   const target = url.searchParams.get('url');
   if (!target) return textResponse('missing url', 400);
 
   try {
-    return await maybeCached(request, ctx, () => (
+    const response = await maybeCached(request, ctx, () => (
       url.pathname === '/proxy'
         ? proxyRoute(target, deps)
         : ogRoute(target, deps)
     ));
+    return request.method === 'HEAD'
+      ? new Response(null, { status: response.status, headers: response.headers })
+      : response;
   } catch (error) {
-    if (error instanceof BoundaryError) return textResponse(error.message, error.status);
-    return textResponse('upstream request failed', 502);
+    const response = error instanceof BoundaryError
+      ? textResponse(error.message, error.status)
+      : textResponse('upstream request failed', 502);
+    return request.method === 'HEAD'
+      ? new Response(null, { status: response.status, headers: response.headers })
+      : response;
   }
 }
 
