@@ -93,3 +93,80 @@ test('Trail Topology traps focus, closes with Escape, and restores opener', asyn
   await expect(overlay).toHaveAttribute('aria-hidden', 'true');
   await expect(page.locator('#topologyFocusOpener')).toBeFocused();
 });
+
+
+test('sample topology renders deterministic verified lineage depth', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openTrailWearSample === 'function');
+  const state = await page.evaluate(async () => {
+    await window.openTrailWearSample();
+    const forest = document.querySelector('.topology-forest');
+    const branches = Array.from(document.querySelectorAll('.topology-branch'));
+    return {
+      treeRole: forest && forest.getAttribute('role'),
+      depths: branches.map((node) => Number(node.getAttribute('data-depth'))),
+      ariaLevels: branches.map((node) => Number(node.getAttribute('aria-level'))),
+      nestedChildren: document.querySelectorAll('.topology-children > .topology-branch').length,
+      verifiedCards: document.querySelectorAll('.topology-card[data-proof-state="VERIFIED"]').length,
+      legacyLines: document.querySelectorAll('.topology-line').length,
+    };
+  });
+
+  expect(state.treeRole).toBe('tree');
+  expect(state.depths).toEqual([0, 1]);
+  expect(state.ariaLevels).toEqual([1, 2]);
+  expect(state.nestedChildren).toBe(1);
+  expect(state.verifiedCards).toBe(2);
+  expect(state.legacyLines).toBe(0);
+});
+
+test('topology renders PARENT ABSENT as an explicit structural stub', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.R4b1tTrail && window.openTrailTopology);
+
+  const state = await page.evaluate(async () => {
+    const trail = window.R4b1tTrail;
+    const manifest = await trail.createManifest({
+      created_at: '2026-09-18T18:00:00.000Z',
+      corpus_revision: 'sha256:' + 'a'.repeat(64),
+      seed: 'missing-parent-browser',
+      terrain: 'RESEARCH',
+      routes: [{ url: 'https://example.org/child', action: 'ROLL' }],
+      parent: { trail_id: 'sha256:' + 'b'.repeat(64), fork_at: 1 },
+    });
+    const snapshot = await trail.envelope(manifest);
+    await window.openTrailTopology(snapshot);
+    const stub = document.querySelector('.topology-parent-stub');
+    const branch = document.querySelector('.topology-branch');
+    return {
+      stubText: stub && stub.textContent,
+      stubState: stub && stub.getAttribute('data-proof-state'),
+      branchDepth: branch && branch.getAttribute('data-depth'),
+    };
+  });
+
+  expect(state.stubState).toBe('PARENT ABSENT');
+  expect(state.stubText).toContain('PARENT ABSENT');
+  expect(state.branchDepth).toBe('0');
+});
+
+test('topology renderer contains no ranking or force-layout semantics', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  const source = await page.evaluate(async () => (await fetch('./topology-runtime.js')).text());
+  const lowered = source.toLowerCase();
+
+  for (const banned of [
+    'force-directed',
+    'force simulation',
+    'interestingness',
+    'recommended next',
+    'popularity score',
+    'engagement score',
+  ]) {
+    expect(lowered.includes(banned)).toBe(false);
+  }
+
+  expect(lowered).toContain('lineageforest');
+  expect(lowered).toContain('data-depth');
+  expect(lowered).toContain('relationship_state');
+});

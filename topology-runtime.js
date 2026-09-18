@@ -36,14 +36,16 @@
       '.topology-note{font-size:9px;line-height:1.6;color:#9a8f7a;max-width:620px}.topology-controls{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}' +
       '.topology-controls button{border:1px solid #49312c;background:#141210;color:#e8e0d0;padding:12px;font:9px "DM Mono",monospace;letter-spacing:.1em}.topology-controls .topology-sample{border-color:#cc1111;color:#ff3333}' +
       '.topology-map{padding:28px 0 70px}.topology-empty{border:1px dashed #49312c;padding:30px;color:#9a8f7a;font-size:10px}' +
-      '.topology-line{position:relative;padding:0 0 34px 46px}.topology-line:before{content:"";position:absolute;left:14px;top:0;bottom:0;width:4px;background:#cc1111}' +
-      '.topology-line:after{content:"";position:absolute;left:7px;top:23px;width:16px;height:16px;border-radius:50%;background:#090807;border:4px solid #ff3333}' +
-      '.topology-line.forked{margin-left:28px}.topology-line.forked:before{transform:rotate(-2deg);transform-origin:top}.topology-line.forked:after{border-radius:0;transform:rotate(45deg)}' +
+      '.topology-forest{display:grid;gap:28px}.topology-branch{position:relative;min-width:0}' +
+      '.topology-node-wrap{position:relative;padding-left:28px}.topology-node-wrap:before{content:"";position:absolute;left:8px;top:0;bottom:-16px;width:2px;background:#49312c}.topology-node-wrap:after{content:"";position:absolute;left:8px;top:28px;width:20px;height:2px;background:#49312c}' +
+      '.topology-children{margin:18px 0 0 34px;padding-left:20px;border-left:2px solid #49312c;display:grid;gap:22px}' +
+      '.topology-parent-stub{margin:0 0 10px 28px;border:1px dashed #80564d;background:#0d0b0a;padding:9px 11px;font-size:8px;color:#cc9b7f;letter-spacing:.08em}' +
       '.topology-card{border:1px solid #49312c;background:#141210;padding:17px;box-shadow:7px 7px 0 #250b09}' +
       '.topology-card-head{display:flex;justify-content:space-between;gap:12px}.topology-id{font:28px "Bebas Neue",sans-serif;letter-spacing:.08em}.topology-format{font-size:8px;color:#ff3333;letter-spacing:.15em}' +
+      '.topology-proof{display:inline-block;margin-top:8px;border:1px solid #49312c;padding:5px 7px;font-size:8px;letter-spacing:.12em;color:#e8e0d0}.topology-proof[data-proof-state="PARENT ABSENT"]{border-style:dashed;color:#cc9b7f}' +
       '.topology-meta{font-size:8px;color:#9a8f7a;margin-top:5px;overflow-wrap:anywhere}.topology-parent{margin:12px 0;padding:8px;border-left:3px solid #cc1111;background:#0d0b0a;font-size:8px;color:#9a8f7a}' +
       '.topology-parent.missing{border-left-style:dashed;color:#cc9b7f}.topology-wear{margin-top:14px}.topology-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:8px;color:#9a8f7a}.topology-legend b{color:#e8e0d0}' +
-      '@media(max-width:600px){.topology-shell{padding:16px 13px}.topology-title{font-size:44px}.topology-head{position:static;display:block}.topology-controls{justify-content:flex-start;margin-top:12px}.topology-card-head{display:block}.topology-line{padding-left:30px}.topology-line:before{left:8px}.topology-line:after{left:1px}.topology-line.forked{margin-left:12px}}';
+      '@media(max-width:600px){.topology-shell{padding:16px 13px}.topology-title{font-size:44px}.topology-head{position:static;display:block}.topology-controls{justify-content:flex-start;margin-top:12px}.topology-card-head{display:block}.topology-node-wrap{padding-left:18px}.topology-node-wrap:before{left:4px}.topology-node-wrap:after{left:4px;width:14px}.topology-children{margin-left:14px;padding-left:12px}.topology-parent-stub{margin-left:18px}}';
     document.head.appendChild(style);
     var overlay = document.createElement('section');
     overlay.id = 'trailTopologyOverlay';
@@ -52,7 +54,7 @@
     overlay.setAttribute('aria-labelledby', 'trailTopologyTitle');
     overlay.setAttribute('aria-hidden', 'true');
     overlay.setAttribute('tabindex', '-1');
-    overlay.innerHTML = '<div class="topology-shell"><header class="topology-head"><div><div class="topology-kicker">LOCAL ATLAS / VERIFIED SNAPSHOTS</div><h2 class="topology-title" id="trailTopologyTitle">TRAIL TOPOLOGY</h2><div class="topology-note">Wear is evidence at rest: folds encode depth, crease weight encodes accumulated handling, black-red blocks remain concealed, and inherited paper continues to the fork before the child diverges.</div></div><div class="topology-controls"><button class="topology-sample" type="button">VIEW SAMPLE</button><button class="topology-close" type="button">CLOSE</button></div></header><main class="topology-map" id="trailTopologyMap"></main><div class="topology-legend"><span><b>PAPER</b> REVEALED</span><span><b>BLACK-RED</b> CONCEALED</span><span><b>WHITE EDGE</b> INHERITED</span><span><b>RED EDGE</b> DIVERGENT</span></div></div>';
+    overlay.innerHTML = '<div class="topology-shell"><header class="topology-head"><div><div class="topology-kicker">LOCAL ATLAS / VERIFIED SNAPSHOTS</div><h2 class="topology-title" id="trailTopologyTitle">TRAIL TOPOLOGY</h2><div class="topology-note">Geometry follows verified parent/fork structure only. Wear remains diagnostic: black-red blocks stay concealed, inherited paper continues to the fork, and divergent paper begins after it.</div></div><div class="topology-controls"><button class="topology-sample" type="button">VIEW SAMPLE</button><button class="topology-close" type="button">CLOSE</button></div></header><main class="topology-map" id="trailTopologyMap"></main><div class="topology-legend"><span><b>PAPER</b> REVEALED</span><span><b>BLACK-RED</b> CONCEALED</span><span><b>WHITE EDGE</b> INHERITED</span><span><b>RED EDGE</b> DIVERGENT</span></div></div>';
     overlay.querySelector('.topology-close').addEventListener('click', close);
     overlay.querySelector('.topology-sample').addEventListener('click', function () { sample().catch(showError); });
     overlay.addEventListener('click', function (event) { if (event.target === overlay) close(); });
@@ -62,6 +64,125 @@
   function findParent(snapshot, graph) {
     if (!snapshot.parent || !snapshot.parent_known) return null;
     return graph.snapshots.find(function (candidate) { return candidate.trail_id === snapshot.parent.trail_id; }) || null;
+  }
+
+  function lineageForest(graph) {
+    var byId = Object.create(null);
+    var children = Object.create(null);
+    graph.snapshots.forEach(function (snapshot) {
+      byId[snapshot.trail_id] = snapshot;
+      children[snapshot.trail_id] = [];
+    });
+    var roots = [];
+    graph.snapshots.forEach(function (snapshot) {
+      if (snapshot.parent && snapshot.parent_known && byId[snapshot.parent.trail_id]) {
+        children[snapshot.parent.trail_id].push(snapshot);
+      } else {
+        roots.push(snapshot);
+      }
+    });
+    return { roots: roots, byId: byId, children: children };
+  }
+
+  function renderProofBadge(state) {
+    var badge = document.createElement('div');
+    badge.className = 'topology-proof';
+    badge.setAttribute('data-proof-state', state || 'VERIFIED');
+    badge.textContent = 'PROOF / ' + (state || 'VERIFIED');
+    return badge;
+  }
+
+  function renderNode(snapshot, graph, forest, visited, depth) {
+    if (visited[snapshot.trail_id]) return null;
+    visited[snapshot.trail_id] = true;
+
+    var branch = document.createElement('section');
+    branch.className = 'topology-branch';
+    branch.setAttribute('data-trail-id', snapshot.trail_id);
+    branch.setAttribute('data-depth', String(depth));
+    branch.setAttribute('data-proof-state', snapshot.proof_state || 'VERIFIED');
+    branch.setAttribute('role', 'treeitem');
+    branch.setAttribute('aria-level', String(depth + 1));
+
+    if (snapshot.parent && snapshot.relationship_state === 'PARENT ABSENT') {
+      var stub = document.createElement('div');
+      stub.className = 'topology-parent-stub';
+      stub.setAttribute('data-proof-state', 'PARENT ABSENT');
+      stub.textContent = 'PARENT ABSENT / ' + api.shortId(snapshot.parent.trail_id) +
+        ' / FORK ' + String(snapshot.parent.fork_at).padStart(3, '0');
+      branch.appendChild(stub);
+    }
+
+    var nodeWrap = document.createElement('div');
+    nodeWrap.className = 'topology-node-wrap';
+
+    var parentSnapshot = findParent(snapshot, graph);
+    var displayStops = wear.composeFork(snapshot, parentSnapshot);
+    var card = document.createElement('article');
+    card.className = 'topology-card';
+    card.setAttribute('data-proof-state', snapshot.proof_state || 'VERIFIED');
+    card.setAttribute('aria-label', 'Trail ' + snapshot.short_id + ', proof state ' + (snapshot.proof_state || 'VERIFIED'));
+
+    var head = document.createElement('div');
+    head.className = 'topology-card-head';
+    var id = document.createElement('div');
+    id.className = 'topology-id';
+    id.textContent = 'TRAIL / ' + snapshot.short_id;
+    var format = document.createElement('div');
+    format.className = 'topology-format';
+    format.textContent = snapshot.format.toUpperCase();
+    head.appendChild(id);
+    head.appendChild(format);
+    card.appendChild(head);
+    card.appendChild(renderProofBadge(snapshot.proof_state));
+
+    var meta = document.createElement('div');
+    meta.className = 'topology-meta';
+    meta.textContent = snapshot.terrain + ' / ' + displayStops.length + ' VISIBLE SEGMENTS / DEPTH ' +
+      String(depth).padStart(2, '0') + ' / ' + snapshot.created_at;
+    card.appendChild(meta);
+
+    if (snapshot.parent) {
+      var parent = document.createElement('div');
+      parent.className = 'topology-parent' + (snapshot.parent_known ? '' : ' missing');
+      parent.setAttribute('data-proof-state', snapshot.relationship_state || 'PARENT ABSENT');
+      parent.textContent = (snapshot.parent_known ? 'VERIFIED PARENT PRESENT / ' : 'DECLARED PARENT ABSENT / ') +
+        api.shortId(snapshot.parent.trail_id) + ' / FORK ' + String(snapshot.parent.fork_at).padStart(3, '0');
+      card.appendChild(parent);
+    }
+
+    var mount = document.createElement('div');
+    mount.className = 'topology-wear';
+    wear.render(mount, {
+      stops: displayStops,
+      parent: snapshot.parent,
+      depth: displayStops.length,
+      crease_count: displayStops.length + (snapshot.parent ? snapshot.parent.fork_at + 1 : 0),
+      fold_size: Math.min(28, 4 + displayStops.length * 2)
+    }, {
+      onOpen: function (url) {
+        if (typeof window.selectUrl === 'function') window.selectUrl(url);
+        close();
+      }
+    });
+    card.appendChild(mount);
+    nodeWrap.appendChild(card);
+    branch.appendChild(nodeWrap);
+
+    var childNodes = forest.children[snapshot.trail_id] || [];
+    if (childNodes.length) {
+      var childrenMount = document.createElement('div');
+      childrenMount.className = 'topology-children';
+      childrenMount.setAttribute('role', 'group');
+      childrenMount.setAttribute('aria-label', 'Verified child trails');
+      childNodes.forEach(function (child) {
+        var childBranch = renderNode(child, graph, forest, visited, depth + 1);
+        if (childBranch) childrenMount.appendChild(childBranch);
+      });
+      branch.appendChild(childrenMount);
+    }
+
+    return branch;
   }
 
   function render(graph, status) {
@@ -78,47 +199,27 @@
       map.innerHTML += '<div class="topology-empty">NO VERIFIED SNAPSHOTS IN THIS LOCAL ATLAS. CHOOSE VIEW SAMPLE TO INSPECT EVERY WEAR STATE.</div>';
       return;
     }
-    graph.snapshots.forEach(function (snapshot) {
-      var parentSnapshot = findParent(snapshot, graph);
-      var displayStops = wear.composeFork(snapshot, parentSnapshot);
-      var line = document.createElement('section');
-      line.className = 'topology-line' + (snapshot.parent ? ' forked' : '');
-      var card = document.createElement('article');
-      card.className = 'topology-card';
-      var head = document.createElement('div');
-      head.className = 'topology-card-head';
-      var id = document.createElement('div');
-      id.className = 'topology-id'; id.textContent = 'TRAIL / ' + snapshot.short_id;
-      var format = document.createElement('div');
-      format.className = 'topology-format'; format.textContent = snapshot.format.toUpperCase();
-      head.appendChild(id); head.appendChild(format); card.appendChild(head);
-      var meta = document.createElement('div');
-      meta.className = 'topology-meta';
-      meta.textContent = snapshot.terrain + ' / ' + displayStops.length + ' VISIBLE SEGMENTS / ' + snapshot.created_at;
-      card.appendChild(meta);
-      if (snapshot.parent) {
-        var parent = document.createElement('div');
-        parent.className = 'topology-parent' + (snapshot.parent_known ? '' : ' missing');
-        parent.textContent = (snapshot.parent_known ? 'VERIFIED PARENT PRESENT / ' : 'DECLARED PARENT ABSENT / ') +
-          api.shortId(snapshot.parent.trail_id) + ' / FORK ' + String(snapshot.parent.fork_at).padStart(3, '0');
-        card.appendChild(parent);
-      }
-      var mount = document.createElement('div');
-      mount.className = 'topology-wear';
-      wear.render(mount, {
-        stops: displayStops,
-        parent: snapshot.parent,
-        depth: displayStops.length,
-        crease_count: displayStops.length + (snapshot.parent ? snapshot.parent.fork_at + 1 : 0),
-        fold_size: Math.min(28, 4 + displayStops.length * 2)
-      }, {
-        onOpen: function (url) {
-          if (typeof window.selectUrl === 'function') window.selectUrl(url);
-          close();
-        }
-      });
-      card.appendChild(mount); line.appendChild(card); map.appendChild(line);
+
+    var forest = lineageForest(graph);
+    var mount = document.createElement('div');
+    mount.className = 'topology-forest';
+    mount.setAttribute('role', 'tree');
+    mount.setAttribute('aria-label', 'Verified trail lineage');
+    var visited = Object.create(null);
+
+    forest.roots.forEach(function (root) {
+      var branch = renderNode(root, graph, forest, visited, 0);
+      if (branch) mount.appendChild(branch);
     });
+
+    graph.snapshots.forEach(function (snapshot) {
+      if (!visited[snapshot.trail_id]) {
+        var branch = renderNode(snapshot, graph, forest, visited, 0);
+        if (branch) mount.appendChild(branch);
+      }
+    });
+
+    map.appendChild(mount);
   }
 
   async function validLocalGraph(current) {
