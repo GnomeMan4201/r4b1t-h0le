@@ -50,6 +50,9 @@ test('private, local, reserved, and link-local IP literals are rejected', () => 
     'fd12::1',
     'fe80::1',
     '::ffff:127.0.0.1',
+    '::127.0.0.1',
+    '64:ff9b::7f00:1',
+    '64:ff9b:1::7f00:1',
   ]) {
     assert.equal(isPublicIp(host), false, host);
   }
@@ -62,6 +65,8 @@ test('URL parser canonicalization blocks alternate loopback spellings and unsafe
     'http://2130706433/',
     'http://0x7f000001/',
     'http://127.1/',
+    'http://[::127.0.0.1]/',
+    'http://[64:ff9b::7f00:1]/',
     'file:///etc/passwd',
     'gopher://example.com/',
     'http://localhost/',
