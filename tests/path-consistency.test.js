@@ -103,3 +103,13 @@ test('desktop branch and trail interactions use native keyboard controls', () =>
   assert.ok(!index.includes('document.createElement("span");r.className="trail-item"'));
   assert.ok(!index.includes('document.createElement("div");o.className="branch-item"'));
 });
+
+test('Help and Tor overlays expose modal dialog semantics and focus management', () => {
+  const index = read('index.html');
+  assert.ok(index.includes('id="torModal" role="dialog" aria-modal="true" aria-labelledby="torModalTitle" aria-hidden="true" tabindex="-1"'));
+  assert.ok(index.includes('id="helpOverlay" role="dialog" aria-modal="true" aria-labelledby="helpTitle" aria-hidden="true" tabindex="-1"'));
+  assert.ok(index.includes('function _trapDialogKey('));
+  assert.ok(index.includes('setAttribute("aria-hidden","false")'));
+  assert.ok(index.includes('_restoreDialogFocus('));
+  assert.ok(index.includes('_trapDialogKey(t,n,M)||_trapDialogKey(t,o,D)'));
+});
