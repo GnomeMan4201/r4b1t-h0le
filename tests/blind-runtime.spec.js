@@ -119,3 +119,46 @@ test('wear is persistent and descend, return, and reveal remain visually distinc
   expect(result.inkCard).toBe(true);
   expect(result.revealed).toBe(1);
 });
+
+test('Blind Descent traps focus, restores opener, and keeps focused buttons native', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openBlindDescent === 'function');
+
+  await page.evaluate(async () => {
+    const opener = document.createElement('button');
+    opener.id = 'blindFocusOpener';
+    opener.textContent = 'open blind';
+    document.body.appendChild(opener);
+    opener.focus();
+    await window.openBlindDescent();
+  });
+
+  const overlay = page.locator('#blindDescentOverlay');
+  await expect(overlay).toHaveClass(/open/);
+  await expect(overlay).toHaveAttribute('aria-hidden', 'false');
+
+  const focusInside = await page.evaluate(() => document.querySelector('#blindDescentOverlay').contains(document.activeElement));
+  expect(focusInside).toBe(true);
+
+  const descend = overlay.locator('[data-blind-action="descend"]');
+  await descend.focus();
+  await descend.press('Enter');
+  await expect(page.locator('#blindDepth')).toContainText('001');
+  await expect(page.locator('#blindStatus')).toHaveText('CONCEALED / COMMITMENT PRESENT');
+
+  const last = overlay.locator('button:visible').last();
+  await last.focus();
+  await page.keyboard.press('Tab');
+  const wrapped = await page.evaluate(() => {
+    const overlay = document.querySelector('#blindDescentOverlay');
+    const focusables = Array.from(overlay.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])'))
+      .filter((el) => !el.disabled && el.getAttribute('aria-hidden') !== 'true' && el.offsetParent !== null);
+    return document.activeElement === focusables[0];
+  });
+  expect(wrapped).toBe(true);
+
+  await page.keyboard.press('Escape');
+  await expect(overlay).not.toHaveClass(/open/);
+  await expect(overlay).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('#blindFocusOpener')).toBeFocused();
+});
