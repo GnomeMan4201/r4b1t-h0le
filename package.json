@@ -5,7 +5,7 @@
   "description": "Chance-driven, local-first web discovery with verifiable trails.",
   "scripts": {
     "test": "npm run test:unit && npm run test:e2e",
-    "test:unit": "node --test tests/trail-manifest.test.js tests/blind-manifest.test.js tests/topology.test.js tests/trail-wear.test.js tests/path-consistency.test.js tests/privacy-boundary.test.js tests/worker-policy.test.js tests/worker-handler.test.js",
+    "test:unit": "node --test tests/trail-manifest.test.js tests/blind-manifest.test.js tests/topology.test.js tests/trail-wear.test.js tests/path-consistency.test.js tests/privacy-boundary.test.js tests/worker-policy.test.js tests/worker-handler.test.js tests/worker-config.test.js",
     "test:e2e": "playwright test",
     "trail:verify": "node tools/verify-trail.js"
   },
