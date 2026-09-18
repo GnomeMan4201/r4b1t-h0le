@@ -71,6 +71,16 @@ jobs:
           grep -q '"title"' /tmp/og.json
 
           status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+            -H 'Origin: https://r4b1t.badbananaresearch.com' \
+            "$base/og?url=https%3A%2F%2Fexample.com")
+          test "$status" = '200'
+
+          status=$(curl --silent --show-error --head --output /dev/null --write-out '%{http_code}' \
+            -H "Origin: $allowed" \
+            "$base/og?url=https%3A%2F%2Fexample.com")
+          test "$status" = '200'
+
+          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
             -H 'Origin: https://evil.example' \
             "$base/og?url=https%3A%2F%2Fexample.com")
           test "$status" = '403'
