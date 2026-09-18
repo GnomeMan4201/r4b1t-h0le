@@ -21,7 +21,9 @@ test('target policy rejects credentials and non-HTTP schemes', async () => {
     'javascript:alert(1)',
     'ftp://example.com/',
     'gopher://example.com/',
-    'https://user:pass@example.com/'
+    'https://user:pass@example.com/',
+    'https://example.com:8443/',
+    'http://example.com:8080/'
   ]) {
     assert.throws(() => validateTargetUrl(value));
   }
@@ -87,4 +89,29 @@ test('redirect policy re-validates every hop and rejects private redirect destin
     'https://example.com/next'
   );
   assert.throws(() => resolveRedirectTarget('https://example.com/a', 'http://127.0.0.1/'));
+});
+
+test('DNS resolver fails closed when a hostname resolves to any private address', async () => {
+  const { resolvePublicHost } = await policy();
+  const fakeFetch = async (url) => {
+    const type = new URL(url).searchParams.get('type');
+    if (type === 'A') {
+      return new Response(JSON.stringify({
+        Status: 0,
+        Answer: [
+          { type: 1, data: '93.184.216.34' },
+          { type: 1, data: '127.0.0.1' }
+        ]
+      }), { status: 200, headers: { 'Content-Type': 'application/dns-json' } });
+    }
+    return new Response(JSON.stringify({ Status: 0, Answer: [] }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/dns-json' }
+    });
+  };
+
+  await assert.rejects(
+    () => resolvePublicHost('example.com', fakeFetch, { timeoutMs: 1000 }),
+    /private|blocked|dns/i
+  );
 });
