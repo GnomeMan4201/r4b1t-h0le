@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://r4b1t.badbananaresearch.com/schema/trail-topology-export-v0.1.json",
+  "title": "r4b1t_h0le Trail Topology Export v0.1",
+  "description": "Machine-verifiable topology export. Rendering is presentation; this document carries proof-relevant structure only.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "created_at", "nodes", "edges", "diagnostics"],
+  "properties": {
+    "format": { "const": "r4b1t-topology-export/v0.1" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "nodes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/node" }
+    },
+    "edges": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/edge" }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/diagnostic" }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "artifactState": {
+      "enum": ["VERIFIED"]
+    },
+    "relationshipState": {
+      "enum": ["VERIFIED", "PARENT ABSENT"]
+    },
+    "stopState": {
+      "enum": ["CONCEALED", "REVEALED"]
+    },
+    "diagnosticState": {
+      "enum": ["REJECTED"]
+    },
+    "manifest": {
+      "type": "object",
+      "description": "Complete original trail manifest. Its format-specific verifier remains authoritative.",
+      "additionalProperties": true
+    },
+    "stop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "proof_state", "commitment"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 0 },
+        "proof_state": { "$ref": "#/$defs/stopState" },
+        "commitment": {
+          "anyOf": [
+            { "$ref": "#/$defs/sha256" },
+            { "type": "null" }
+          ]
+        },
+        "route_id": {
+          "anyOf": [
+            { "$ref": "#/$defs/sha256" },
+            { "type": "null" }
+          ]
+        },
+        "url": {
+          "anyOf": [
+            { "type": "string", "format": "uri" },
+            { "type": "null" }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "proof_state": { "const": "CONCEALED" } } },
+          "then": {
+            "properties": {
+              "route_id": { "type": "null" },
+              "url": { "type": "null" }
+            }
+          }
+        }
+      ]
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trail_id",
+        "manifest_format",
+        "proof_state",
+        "manifest",
+        "relationship_state",
+        "parent",
+        "stops"
+      ],
+      "properties": {
+        "trail_id": { "$ref": "#/$defs/sha256" },
+        "manifest_format": {
+          "enum": ["r4b1t-trail/v0.1", "r4b1t-trail/v0.2"]
+        },
+        "proof_state": { "$ref": "#/$defs/artifactState" },
+        "manifest": { "$ref": "#/$defs/manifest" },
+        "relationship_state": {
+          "anyOf": [
+            { "$ref": "#/$defs/relationshipState" },
+            { "type": "null" }
+          ]
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["trail_id", "fork_at"],
+              "properties": {
+                "trail_id": { "$ref": "#/$defs/sha256" },
+                "fork_at": { "type": "integer", "minimum": 0 }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
+        "stops": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/stop" }
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "fork_at", "proof_state"],
+      "properties": {
+        "from": { "$ref": "#/$defs/sha256" },
+        "to": { "$ref": "#/$defs/sha256" },
+        "fork_at": { "type": "integer", "minimum": 0 },
+        "proof_state": { "$ref": "#/$defs/relationshipState" }
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["proof_state", "reason"],
+      "properties": {
+        "proof_state": { "$ref": "#/$defs/diagnosticState" },
+        "reason": { "type": "string", "minLength": 1 },
+        "trail_id": {
+          "anyOf": [
+            { "$ref": "#/$defs/sha256" },
+            { "type": "null" }
+          ]
+        }
+      }
+    }
+  }
+}
