@@ -121,6 +121,18 @@ function ipv6IsPublic(groups) {
     ];
     return ipv4IsPublic(v4);
   }
+
+  // Block deprecated IPv4-compatible IPv6 (::/96) rather than allowing
+  // alternate IPv4 spellings to bypass the IPv4 policy.
+  if (groups.slice(0, 6).every((value) => value === 0)) return false;
+
+  // Block IPv4/IPv6 translation prefixes. A translated address can encode
+  // a private IPv4 destination even though the outer IPv6 prefix is global.
+  const nat64WellKnown = groups[0] === 0x0064 && groups[1] === 0xff9b &&
+    groups[2] === 0 && groups[3] === 0 && groups[4] === 0 && groups[5] === 0;
+  const nat64LocalUse = groups[0] === 0x0064 && groups[1] === 0xff9b && groups[2] === 1;
+  if (nat64WellKnown || nat64LocalUse) return false;
+
   return true;
 }
 
