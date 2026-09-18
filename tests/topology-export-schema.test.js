@@ -47,18 +47,21 @@ for (const vector of vectors.cases) {
 
     if (vector.expected_state === 'VERIFIED') {
       assert.equal(node.trail_id, vector.input[0].trail_id);
+      assert.equal(node.proof_state, 'VERIFIED');
       return;
     }
 
     if (vector.expected_state === 'PARENT ABSENT') {
       assert.ok(node.parent);
       assert.equal(node.parent_known, false);
+      assert.equal(node.relationship_state, 'PARENT ABSENT');
       return;
     }
 
     assert.equal(node.stops.length, 1);
     if (vector.expected_state === 'CONCEALED') {
       assert.equal(node.stops[0].state, 'concealed');
+      assert.equal(node.stops[0].proof_state, 'CONCEALED');
       assert.equal(node.stops[0].url, null);
       assert.equal(JSON.stringify(node).includes('example.net/concealed'), false);
       return;
@@ -66,6 +69,7 @@ for (const vector of vectors.cases) {
 
     if (vector.expected_state === 'REVEALED') {
       assert.equal(node.stops[0].state, 'revealed');
+      assert.equal(node.stops[0].proof_state, 'REVEALED');
       assert.equal(node.stops[0].url, 'https://example.net/concealed');
       return;
     }
