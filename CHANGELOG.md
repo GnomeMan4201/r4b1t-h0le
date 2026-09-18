@@ -9,6 +9,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+- versioned the `r4b1t-proxy` Worker source and added deterministic trust-boundary tests
+- documented the current `/api` route as disabled; active browser integration uses `/og` and `/proxy`
 - aligned local and CI browser-test serving paths
 - made pool-sweep HTTP behavior tests fully offline and deterministic
 - refreshed repository metadata, contribution templates, and ignore rules
