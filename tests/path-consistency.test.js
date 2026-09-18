@@ -129,3 +129,20 @@ test('internal branch sprout remains without redundant global alias', () => {
   assert.ok(index.includes('window.sprout=v'));
   assert.ok(!index.includes('window.triggerSprout='));
 });
+
+test('first-party GitHub Actions are pinned to immutable commits', () => {
+  const workflows = [
+    '.github/workflows/deploy.yml',
+    '.github/workflows/pool-sweep.yml',
+    '.github/workflows/public-claims.yml',
+    '.github/workflows/corpus-quality.yml',
+    '.github/workflows/production-shadow.yml',
+    '.github/workflows/test.yml',
+    '.github/workflows/deploy-worker.yml',
+  ];
+  const floating = /uses:\s*actions\/[A-Za-z0-9._-]+@v\d+\b/g;
+  for (const workflow of workflows) {
+    const content = read(workflow);
+    assert.equal(content.match(floating), null, workflow + ' contains a floating first-party Action tag');
+  }
+});
