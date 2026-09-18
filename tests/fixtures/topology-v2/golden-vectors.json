@@ -1,0 +1,164 @@
+{
+  "format": "r4b1t-topology-golden-vectors/v0.1",
+  "states": ["VERIFIED", "REJECTED", "PARENT ABSENT", "CONCEALED", "REVEALED"],
+  "cases": [
+    {
+      "name": "verified-v01",
+      "expected_state": "VERIFIED",
+      "input": [
+        {
+          "trail_id": "sha256:68ec2a77a8badfa61abe38c2a7c3e9686743a22fc31b87b69d9331814af5520d",
+          "manifest": {
+            "format": "r4b1t-trail/v0.1",
+            "created_at": "2026-09-18T12:00:00.000Z",
+            "corpus_revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "sampler": {
+              "algorithm": "uniform-with-repeat-guard-v1",
+              "prng": "mulberry32-v1",
+              "seed": "golden-verified"
+            },
+            "terrain": "RESEARCH",
+            "routes": [
+              {
+                "index": 1,
+                "route_id": "sha256:f968990b0753d0cd54124d87df479b2927e95c4c5947c6290a45ac6ecd66f1a5",
+                "url": "https://example.org/verified",
+                "action": "ROLL"
+              }
+            ],
+            "parent": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "rejected-tampered-v01",
+      "expected_state": "REJECTED",
+      "expected_error": "Route ID mismatch",
+      "input": [
+        {
+          "trail_id": "sha256:68ec2a77a8badfa61abe38c2a7c3e9686743a22fc31b87b69d9331814af5520d",
+          "manifest": {
+            "format": "r4b1t-trail/v0.1",
+            "created_at": "2026-09-18T12:00:00.000Z",
+            "corpus_revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "sampler": {
+              "algorithm": "uniform-with-repeat-guard-v1",
+              "prng": "mulberry32-v1",
+              "seed": "golden-verified"
+            },
+            "terrain": "RESEARCH",
+            "routes": [
+              {
+                "index": 1,
+                "route_id": "sha256:f968990b0753d0cd54124d87df479b2927e95c4c5947c6290a45ac6ecd66f1a5",
+                "url": "https://attacker.invalid/",
+                "action": "ROLL"
+              }
+            ],
+            "parent": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "parent-absent-v01",
+      "expected_state": "PARENT ABSENT",
+      "input": [
+        {
+          "trail_id": "sha256:acc716d0cde07f43483405e5a6f243f68bda02617a925343d3f9ccb822211f51",
+          "manifest": {
+            "format": "r4b1t-trail/v0.1",
+            "created_at": "2026-09-18T14:00:00.000Z",
+            "corpus_revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "sampler": {
+              "algorithm": "uniform-with-repeat-guard-v1",
+              "prng": "mulberry32-v1",
+              "seed": "golden-parent-absent"
+            },
+            "terrain": "RESEARCH",
+            "routes": [
+              {
+                "index": 1,
+                "route_id": "sha256:965069fd709d15fc57d1f57c82351ae9be0e7f5673e9604ebddd021fd135ac9c",
+                "url": "https://example.com/child",
+                "action": "ROLL"
+              }
+            ],
+            "parent": {
+              "trail_id": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "fork_at": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "concealed-v02",
+      "expected_state": "CONCEALED",
+      "input": [
+        {
+          "trail_id": "sha256:7926fe1104dcc77520ca6ee097d95c173f3fc7029b0b9f2b81d8f06b6374e502",
+          "manifest": {
+            "format": "r4b1t-trail/v0.2",
+            "genesis": {
+              "domain": "r4b1t-genesis/v0.2",
+              "format": "r4b1t-trail/v0.2",
+              "created_at": "2026-09-18T13:00:00.000Z",
+              "corpus_revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "terrain": "RESEARCH",
+              "sampler_algorithm": "uniform-csprng-rejection-v1",
+              "trail_salt": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "parent": null
+            },
+            "genesis_id": "sha256:387fd4b085128a9ee85ce2f2851f756724be64a973d1eda58d4ac026993c7a07",
+            "steps": [
+              {
+                "index": 0,
+                "state": "concealed",
+                "commitment": "sha256:6760036720ac5abcaa9057ab09d2a86873c3f667b36e795c314e2ed6304b0e16"
+              }
+            ],
+            "migration": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "revealed-v02",
+      "expected_state": "REVEALED",
+      "input": [
+        {
+          "trail_id": "sha256:7c7f6625200e4f0bd6c30f95859c7e76eabc8c26dcd5ea8cc570e9c2d48ec055",
+          "manifest": {
+            "format": "r4b1t-trail/v0.2",
+            "genesis": {
+              "domain": "r4b1t-genesis/v0.2",
+              "format": "r4b1t-trail/v0.2",
+              "created_at": "2026-09-18T13:00:00.000Z",
+              "corpus_revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "terrain": "RESEARCH",
+              "sampler_algorithm": "uniform-csprng-rejection-v1",
+              "trail_salt": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "parent": null
+            },
+            "genesis_id": "sha256:387fd4b085128a9ee85ce2f2851f756724be64a973d1eda58d4ac026993c7a07",
+            "steps": [
+              {
+                "index": 0,
+                "state": "revealed",
+                "commitment": "sha256:6760036720ac5abcaa9057ab09d2a86873c3f667b36e795c314e2ed6304b0e16",
+                "route": {
+                  "route_id": "sha256:e58fadb7f92609a72db6cc3e35b50d4089da9c91725d2cc29d7b22f4fce1b8e8",
+                  "url": "https://example.net/concealed"
+                },
+                "nonce": "AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE"
+              }
+            ],
+            "migration": null
+          }
+        }
+      ]
+    }
+  ]
+}
