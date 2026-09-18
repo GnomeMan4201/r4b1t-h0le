@@ -121,3 +121,11 @@ test('removed legacy UI residue stays absent', () => {
   assert.ok(!index.includes('.bookmark-hint'));
   assert.ok(!index.includes('#iframeEl{'));
 });
+
+test('internal branch sprout remains without redundant global alias', () => {
+  const index = read('index.html');
+  assert.ok(index.includes('triggerSprout:()=>Re'));
+  assert.ok(index.includes('t=>t.triggerSprout()'));
+  assert.ok(index.includes('window.sprout=v'));
+  assert.ok(!index.includes('window.triggerSprout='));
+});
