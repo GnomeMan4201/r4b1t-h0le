@@ -321,3 +321,18 @@ test('mobile connective motion covers press pending counter ledger and copy stat
   await expect(page.locator('#historyOverlay')).toHaveClass(/\bledger-open\b/);
   await expect(page.locator('#historyList > .r4m-ledger-row.row-in').first()).toBeVisible();
 });
+
+test('desktop focused controls keep native Enter behavior', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitForApplicationReady(page);
+
+  const theme = page.locator('#themeBtn');
+  await theme.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('html')).toHaveClass(/\blight\b/);
+
+  await page.keyboard.press('Enter');
+  await expect(page.locator('html')).not.toHaveClass(/\blight\b/);
+});
