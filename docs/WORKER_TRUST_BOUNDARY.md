@@ -22,6 +22,7 @@ The old `/api` path is treated as removed and returns HTTP 410 in the versioned 
 The versioned Worker:
 
 - accepts callers only from the published GitHub Pages origin or `r4b1t.badbananaresearch.com`, using `Origin` with a `Referer` fallback for image requests;
+  - this is a browser caller-control, not authentication; arbitrary HTTP clients can spoof those headers, so abuse controls such as rate limiting remain necessary;
 - permits only HTTP and HTTPS targets;
 - rejects embedded credentials and non-web ports;
 - rejects localhost, private, carrier-grade NAT, link-local, multicast, reserved, and documentation IP ranges covered by the validator;
