@@ -39,9 +39,9 @@
 
   <!-- ── Preview card ────────────────────────────────────────────────────── -->
     <div id="preview" style="border:1px solid #2a2825;border-top:2px solid #cc1111;margin-bottom:14px">
-    <div id="ogImageWrap" style="width:100%;height:0;overflow:hidden;transition:height 0.15s;background:#0e0d0b"><img id="ogImage" crossorigin="anonymous" referrerpolicy="origin" alt="" style="width:100%;display:block;object-fit:cover;background:#0e0d0b"></div>
+    <div id="ogImageWrap" style="width:100%;height:0;overflow:hidden;transition:height 0.15s;background:#0e0d0b"><img id="ogImage" alt="" style="width:100%;display:block;object-fit:cover;background:#0e0d0b"></div>
     <div style="display:flex;align-items:flex-start;gap:12px;padding:16px 18px 10px">
-      <img id="previewFavicon" src="" crossorigin="anonymous" referrerpolicy="origin" alt="" style="width:28px;height:28px;flex-shrink:0;border-radius:3px;background:#1c1a16;object-fit:contain;margin-top:3px" onerror="this.style.display='none';document.getElementById('faviconPlaceholder').style.display='flex'">
+      <img id="previewFavicon" src="" alt="" style="width:28px;height:28px;flex-shrink:0;border-radius:3px;background:#1c1a16;object-fit:contain;margin-top:3px" onerror="this.style.display='none';document.getElementById('faviconPlaceholder').style.display='flex'">
       <div id="faviconPlaceholder" style="display:none;width:28px;height:28px;flex-shrink:0;background:#1c1a16;border:1px solid #2a2825;border-radius:3px;align-items:center;justify-content:center;font-size:.48rem;color:#3a342a;margin-top:3px">?</div>
       <div style="flex:1;min-width:0">
         <div id="previewDomain" style="font-family:var(--font-head);font-size:1.45rem;letter-spacing:.05em;color:#e8e0d0;line-height:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</div>
@@ -127,7 +127,7 @@
     <button class="iframe-btn danger" onclick="closeIframe()">← back</button>
   </div>
   <div id="screenshotLoading" style="flex:1;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.5rem;letter-spacing:.15em;color:#3a342a;text-transform:uppercase">generating preview…</div>
-  <img id="screenshotEl" crossorigin="anonymous" referrerpolicy="origin" style="display:none;width:100%;height:100%;flex:1;object-fit:cover;object-position:top;background:#0e0d0b" alt="site preview image">
+  <img id="screenshotEl" style="display:none;width:100%;height:100%;flex:1;object-fit:cover;object-position:top;background:#0e0d0b" alt="site preview image">
   <div id="iframeFallback" style="display:none;position:absolute;bottom:50px;left:50%;transform:translateX(-50%);background:#141210;border:1px solid #2a2825;padding:10px 20px;font-family:var(--font-mono);font-size:.5rem;letter-spacing:.1em;color:#6a5f52;text-align:center;white-space:nowrap">preview image unavailable — use OPEN TAB ↗</div>
 </div>
 
