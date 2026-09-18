@@ -278,7 +278,7 @@ function isRedirect(status) {
 
 export async function safeFetch(rawUrl, {
   fetchImpl = fetch,
-  resolver = (host) => resolvePublicHost(host, fetchImpl),
+  resolver = (host) => resolvePublicHost(host),
   accept = '*/*',
   maxRedirects = MAX_REDIRECTS,
   timeoutMs = OUTBOUND_TIMEOUT_MS,
