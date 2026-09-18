@@ -2,6 +2,9 @@ name: Production Shadow
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '47 */6 * * *'
 
