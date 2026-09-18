@@ -3,107 +3,89 @@
 Date: 2026-09-18  
 Deployment: `https://r4b1t-proxy.badbanana6969.workers.dev`
 
-This document records black-box observations of the deployed Worker that supports the GitHub Pages application. At the time of that audit, the Worker source was not versioned. A replacement/reference implementation is now versioned at [`worker/r4b1t-proxy.mjs`](../worker/r4b1t-proxy.mjs), but it is **not** claimed to match production until the deployment-equivalence gate in issue #38 is completed.
+The Worker that supports the browser application is now versioned in this repository at [`worker/r4b1t-proxy.mjs`](../worker/r4b1t-proxy.mjs), deployed through [`.github/workflows/deploy-worker.yml`](../.github/workflows/deploy-worker.yml), and verified against production after deployment.
 
-## Why this matters
+The current deployment is **production-equivalent** to the reviewed repository contract recorded in [`docs/releases/2026-09-18-worker-verification.md`](./releases/2026-09-18-worker-verification.md).
 
-The browser shell routes automatic metadata, favicon, preview-image, and optional Wikipedia enrichment requests through the Worker. That keeps those third-party fetches out of the browser, but it concentrates trust in the Worker implementation.
+## Why this boundary exists
 
-Browser Origin checks are an abuse-control and CORS boundary. They are **not authentication**: non-browser clients can forge an `Origin` header.
+The browser shell routes automatic metadata, favicon, preview-image, and optional Wikipedia enrichment requests through the project-controlled Worker. This keeps those automatic third-party requests out of the browser while concentrating the external-fetch trust boundary in one reviewable component.
 
-## Observed deployed contract
+Browser Origin checks are an abuse-control and CORS boundary. They are **not authentication**: a non-browser client can forge an `Origin` header.
 
-The following behavior was verified externally on 2026-09-18:
+## Current deployed contract
+
+The current production contract was verified on 2026-09-18:
 
 - `https://gnomeman4201.github.io` is accepted as a browser Origin.
+- `https://r4b1t.badbananaresearch.com` is accepted as a browser Origin.
 - missing, `null`, unrelated, and prefix-confusion Origins are rejected.
-- `https://r4b1t.badbananaresearch.com` is rejected. The current custom-domain shell does not call this Worker, so this is not presently a production break.
-- `/proxy` accepted a normal public HTTPS target.
-- `/proxy` rejected tested loopback, RFC1918, and link-local targets.
-- decimal, hexadecimal, and octal loopback forms were rejected.
-- tested `file:`, `data:`, `javascript:`, `ftp:`, and `gopher:` targets were rejected.
-- a tested public redirect to loopback was rejected.
-- `/og` rejected a loopback target.
-- `/og` accepted a normal public HTTPS target and returned metadata JSON.
-- `/api` currently returns a disabled-route response.
-- `/og` advertises `GET, POST, OPTIONS` and also responds to `HEAD`.
-- `/og` returned `Cache-Control: public, max-age=3600`.
-- `/proxy` was observed returning a Cloudflare cache HIT.
+- supported routes accept `GET`, `HEAD`, and `OPTIONS`; undocumented `POST` is rejected.
+- legacy `/api` returns HTTP 410.
+- `/og` accepts normal public HTTPS targets and returns bounded metadata JSON.
+- `/proxy` accepts allowed public content classes and rejects unsupported media types.
+- loopback, RFC1918, link-local, reserved/private IPv4 and IPv6, alternate loopback spellings, and non-HTTP(S) schemes are blocked.
+- DNS answers are validated before fetches and redirect destinations are revalidated on every hop.
+- redirects, outbound duration, and buffered response sizes are bounded.
+- `X-Content-Type-Options: nosniff` and `Referrer-Policy: no-referrer` are emitted.
+- a Cloudflare rate-limit binding enforces 60 requests per 60 seconds per client key.
+- production fails closed if the required rate-limit binding or client identity is unavailable.
+- `global_fetch_strictly_public` is enabled as defense in depth.
 
-No rate-limit headers were observed. The documented 60 requests/minute limit was deliberately not stress-tested.
+The source performs no application-level request logging of target URLs. Cloudflare platform-level logging or analytics, if enabled at the account level, is a separate operational concern.
 
-## What is not proven by black-box testing
+## DNS and SSRF boundary
 
-The following controls cannot be established confidently without source:
+The Worker uses Cloudflare Workers' native `node:dns` support to resolve A and AAAA records before outbound requests. Every returned address must satisfy the public-address policy. Redirect targets are canonicalized, resolved, and rechecked before the next request.
 
-- DNS resolution and DNS-rebinding defenses;
-- redirect re-validation on every hop;
-- redirect-count limits;
-- outbound request timeouts;
-- maximum response size before buffering;
-- exact content-type policy for each route;
-- cache-key construction and cache-poisoning resistance;
-- request/log retention behavior;
-- whether every private/reserved IPv6 range is blocked;
-- whether the deployed Worker corresponds to a reviewable repository commit.
+This is paired with `global_fetch_strictly_public` so global `fetch()` uses public-Internet routing. These controls materially reduce SSRF and rebinding risk, but the documentation deliberately does not claim that every possible DNS race is mathematically impossible.
 
-## Required source-level baseline
+## Rate-limit boundary
 
-When the Worker source is added to the repository, the implementation should make these controls explicit and testable:
+`wrangler.toml` defines the `R4B1T_RATE_LIMITER` binding at 60 requests per 60 seconds. The Worker keys the limiter with Cloudflare's `CF-Connecting-IP` value.
 
-1. HTTP/HTTPS target schemes only.
-2. URL normalization before policy checks.
-3. Loopback, RFC1918, link-local, multicast/reserved, and private/local IPv6 blocking.
-4. DNS resolution checks before outbound fetches.
-5. Redirect target re-validation on every hop.
-6. A bounded redirect count.
-7. An outbound request timeout.
-8. A response-size limit before buffering.
-9. Route-specific content-type handling.
-10. An exact browser Origin allowlist.
-11. Documentation that Origin allowlisting is not authentication.
-12. `GET`/`HEAD`/`OPTIONS` only unless `POST` has a documented requirement.
-13. Explicit cache TTLs and cache-key rules.
-14. An explicit request/log retention policy.
-15. Deterministic adversarial tests for the controls above.
-16. Deployment instructions that tie the deployed Worker to a repository commit.
+With `REQUIRE_RATE_LIMIT=true`:
 
-## Versioned replacement candidate
+- missing rate-limit binding → HTTP 503;
+- missing client identity → HTTP 503;
+- exhausted limit → HTTP 429.
 
-The repository now contains a source-level replacement candidate at [`worker/r4b1t-proxy.mjs`](../worker/r4b1t-proxy.mjs), deterministic adversarial coverage in [`tests/worker-security.test.mjs`](../tests/worker-security.test.mjs), and a manual production deployment workflow in [`.github/workflows/deploy-worker.yml`](../.github/workflows/deploy-worker.yml).
+## Reproducing the contract
 
-The candidate makes the previously unverified controls reviewable in code: target normalization, HTTP/HTTPS-only fetching, public-address DNS checks, private/reserved IPv4 and IPv6 rejection, redirect re-validation, redirect limits, timeouts, bounded response sizes, route-specific media-type policy, explicit caching, and no target-URL logging.
+Static/source checks:
 
-Its intended browser caller policy deliberately differs from the currently observed production Worker in one place: it allows both `https://gnomeman4201.github.io` and `https://r4b1t.badbananaresearch.com`. That policy remains a browser abuse/CORS control, not authentication.
+```bash
+npm run test:unit
+npm run claims:verify
+```
 
-The replacement contract is `GET`, `HEAD`, and `OPTIONS` for supported routes. Undocumented `POST` is rejected. The legacy `/api` route returns HTTP 410.
-
-The deploy workflow is intentionally manual and main-branch-only. It runs the complete test suite before deployment, uses GitHub secrets for Cloudflare credentials, and performs post-deploy checks against the live Worker. Merging this source does **not** deploy it automatically.
-
-The versioned candidate now reproduces the historical 60 requests/minute per-IP control through a Cloudflare Workers rate-limit binding in `wrangler.toml`. Production sets `REQUIRE_RATE_LIMIT=true`, so the Worker fails closed if that binding or Cloudflare client identity is unavailable. The same config enables `global_fetch_strictly_public` as defense in depth for outbound fetch routing. These are source/configuration guarantees only until the replacement Worker is deliberately deployed and the production-equivalence audit passes.
-
-## Reproducing the deployed and versioned contracts
-
-The repository includes a bounded black-box probe for the live Worker:
+Bounded live Worker audit:
 
 ```bash
 npm run worker:audit
 ```
 
-That mode checks the contract observed on 2026-09-18: the GitHub Pages Origin is allowed, the custom-domain Origin is rejected, legacy `/api` reports its disabled response, representative private/local targets and non-HTTP schemes are blocked, and a redirect toward loopback remains blocked.
-
-After intentionally deploying the versioned replacement candidate, run:
+Live public-claim verification:
 
 ```bash
-npm run worker:audit:versioned
+npm run claims:verify:live
 ```
 
-The versioned mode expects the replacement contract from `worker/r4b1t-proxy.mjs`: both documented browser Origins are accepted, legacy `/api` returns HTTP 410, POST is rejected, allowed preflight succeeds, the adversarial target checks remain blocked, and the production response exposes the expected security headers.
+The live probes are deliberately bounded and sequential. They do not stress-test the rate limiter.
 
-The probe is intentionally rate-safe and sequential. It does not stress-test Cloudflare rate limiting and does not replace the deterministic source-level tests in `tests/worker-security.test.mjs`.
+## Deployment evidence
 
-## Current documentation drift
+The verified production baseline is frozen at:
 
-The historical changelog describes `/api` as an active OG metadata route. The deployed Worker currently reports that route as disabled. Treat the deployed behavior as authoritative until the Worker source and deployment procedure are versioned.
+- repository commit `76cfcb3f9dad365889272891ed1f3cd01b42a602`;
+- Cloudflare Worker version `959f8e67-cd44-425e-96e9-01fd25da5d10`;
+- successful deployment workflow `deploy r4b1t worker #9`;
+- closed tracking issue `#38`.
 
-Tracking issue: #38.
+Later commits or Worker versions require their own verification rather than inheriting these claims automatically.
+
+## Historical note
+
+Earlier revisions of this document described a black-box Worker whose source was not yet versioned, rejected the custom-domain Origin, accepted undocumented POST behavior, and exposed a disabled legacy `/api` response instead of HTTP 410. Those observations remain useful history, but they are no longer the current production contract.
+
+The historical changelog may describe the old `/api` route because it records earlier releases. Current behavior is defined by the versioned Worker, tests, deployment workflow, and live verification above.

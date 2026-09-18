@@ -342,8 +342,8 @@ https://gnomeman4201.github.io/r4b1t-h0le/
 ### Local preview
 
 ```bash
-git clone https://github.com/GnomeMan4201/r4b1t.git
-cd r4b1t
+git clone https://github.com/GnomeMan4201/r4b1t-h0le.git
+cd r4b1t-h0le
 python3 -m http.server 8080
 ```
 
@@ -382,6 +382,15 @@ python -m unittest discover -s tests -p 'test_*.py' -v
 
 The browser suite covers shell selection, viewport switching, roll propagation, filtering, branching, route fidelity, overflow containment, trail behavior, Blind Descent leak prevention, topology/tamper cases, and desktop preservation.
 
+Public claims are also checked against repository invariants on every normal test run. A separate scheduled verifier checks the live project site, GitHub Pages client, and Worker contract:
+
+```bash
+npm run claims:verify
+npm run claims:verify:live
+```
+
+The frozen deployment evidence for the current Worker baseline is recorded in [`docs/releases/2026-09-18-worker-verification.md`](./docs/releases/2026-09-18-worker-verification.md).
+
 > [!WARNING]
 > A green workflow verifies the tested behavior for that revision. It does **not** certify the safety or continued availability of every external destination in the corpus.
 
@@ -394,7 +403,7 @@ The browser suite covers shell selection, viewport switching, roll propagation, 
 
 The application itself is deliberately local-first: no r4b1t account is required for exploration, route/session state is designed to remain device-local, and the core selection loop does not depend on a personalized server-side feed.
 
-No r4b1t analytics, profile, or engagement tracking is used. The browser shell does not load third-party analytics, remote web fonts, Google favicon services, or Microlink. Automatic metadata, favicon, preview-image, and optional Wikipedia enrichment requests are sent through the project-controlled Worker, whose browser Origin allowlist limits which web origins can call it. Origin checking is a browser/CORS abuse-control boundary, not authentication. The browser therefore does not contact those enrichment providers or target image hosts directly. The current deployed Worker contract and its source-verification gap are documented in [`docs/WORKER_TRUST_BOUNDARY.md`](./docs/WORKER_TRUST_BOUNDARY.md).
+No r4b1t analytics, profile, or engagement tracking is used. The browser shell does not load third-party analytics, remote web fonts, Google favicon services, or Microlink. Automatic metadata, favicon, preview-image, and optional Wikipedia enrichment requests are sent through the project-controlled Worker, whose browser Origin allowlist limits which web origins can call it. Origin checking is a browser/CORS abuse-control boundary, not authentication. The browser therefore does not contact those enrichment providers or target image hosts directly. The deployed Worker is versioned in this repository and its production-equivalent contract is documented in [`docs/WORKER_TRUST_BOUNDARY.md`](./docs/WORKER_TRUST_BOUNDARY.md).
 
 That boundary ends when you leave the application origin.
 
