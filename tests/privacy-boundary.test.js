@@ -36,5 +36,7 @@ test('favicon and preview images are loaded through the controlled Worker proxy'
 test('privacy documentation states the controlled network boundary', () => {
   const readme = read('README.md');
   assert.ok(readme.includes('No r4b1t analytics, profile, or engagement tracking is used.'));
-  assert.ok(readme.includes('origin-locked Worker'));
+  assert.ok(readme.includes('browser Origin allowlist'));
+  assert.ok(readme.includes('Origin checking is a browser/CORS abuse-control boundary, not authentication.'));
+  assert.ok(readme.includes('docs/WORKER_TRUST_BOUNDARY.md'));
 });
