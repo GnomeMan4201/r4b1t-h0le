@@ -50,6 +50,8 @@
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
     overlay.setAttribute('aria-labelledby', 'trailTopologyTitle');
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.setAttribute('tabindex', '-1');
     overlay.innerHTML = '<div class="topology-shell"><header class="topology-head"><div><div class="topology-kicker">LOCAL ATLAS / VERIFIED SNAPSHOTS</div><h2 class="topology-title" id="trailTopologyTitle">TRAIL TOPOLOGY</h2><div class="topology-note">Wear is evidence at rest: folds encode depth, crease weight encodes accumulated handling, black-red blocks remain concealed, and inherited paper continues to the fork before the child diverges.</div></div><div class="topology-controls"><button class="topology-sample" type="button">VIEW SAMPLE</button><button class="topology-close" type="button">CLOSE</button></div></header><main class="topology-map" id="trailTopologyMap"></main><div class="topology-legend"><span><b>PAPER</b> REVEALED</span><span><b>BLACK-RED</b> CONCEALED</span><span><b>WHITE EDGE</b> INHERITED</span><span><b>RED EDGE</b> DIVERGENT</span></div></div>';
     overlay.querySelector('.topology-close').addEventListener('click', close);
     overlay.querySelector('.topology-sample').addEventListener('click', function () { sample().catch(showError); });
@@ -129,9 +131,50 @@
     return api.build(valid);
   }
 
+  var topologyFocus = null;
+
+  function topologyFocusables(overlay) {
+    return Array.from(overlay.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])'))
+      .filter(function (el) { return !el.disabled && el.getAttribute('aria-hidden') !== 'true' && el.offsetParent !== null; });
+  }
+
+  function focusTopology(overlay) {
+    var items = topologyFocusables(overlay);
+    (items[0] || overlay).focus();
+  }
+
+  function trapTopologyTab(event, overlay) {
+    if (event.code !== 'Tab') return false;
+    var items = topologyFocusables(overlay);
+    if (!items.length) {
+      event.preventDefault();
+      overlay.focus();
+      return true;
+    }
+    var first = items[0], last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+      return true;
+    }
+    if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+      return true;
+    }
+    return false;
+  }
+
+  function activateTopology(overlay) {
+    topologyFocus = document.activeElement;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    setTimeout(function () { focusTopology(overlay); }, 0);
+  }
+
   async function open(current) {
     ensureOverlay(); render(await validLocalGraph(current));
-    document.getElementById('trailTopologyOverlay').classList.add('open');
+    activateTopology(document.getElementById('trailTopologyOverlay'));
   }
 
   async function sample() {
@@ -163,14 +206,23 @@
     childManifest = await blind.reveal(childStep.manifest, childStep.secret);
     var child = await blind.envelope(childManifest);
     render(await api.build([parent, child]), 'SAMPLE / VALID ARTIFACTS / NOT SAVED TO LOCAL ATLAS');
-    document.getElementById('trailTopologyOverlay').classList.add('open');
+    activateTopology(document.getElementById('trailTopologyOverlay'));
   }
 
   function showError(error) {
     var map = document.getElementById('trailTopologyMap');
     if (map) map.textContent = 'REJECTED / ' + String(error && error.message || error).toUpperCase();
   }
-  function close() { var overlay = document.getElementById('trailTopologyOverlay'); if (overlay) overlay.classList.remove('open'); }
+  function close() {
+    var overlay = document.getElementById('trailTopologyOverlay');
+    if (overlay) {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+    var restore = topologyFocus;
+    topologyFocus = null;
+    if (restore && typeof restore.focus === 'function') setTimeout(function () { restore.focus(); }, 0);
+  }
   function clear() { localStorage.removeItem(STORAGE_KEY); return open(); }
 
   window.openTrailTopology = open;
@@ -181,8 +233,13 @@
   document.addEventListener('DOMContentLoaded', ensureOverlay);
   document.addEventListener('keydown', function (event) {
     var overlay = document.getElementById('trailTopologyOverlay');
-    if (event.code === 'Escape' && overlay && overlay.classList.contains('open')) {
-      event.preventDefault(); event.stopImmediatePropagation(); close();
+    if (!overlay || !overlay.classList.contains('open')) return;
+    if (event.code === 'Escape') {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      close();
+      return;
     }
+    if (trapTopologyTab(event, overlay)) event.stopImmediatePropagation();
   }, true);
 })();
