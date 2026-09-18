@@ -11,6 +11,7 @@ const read = (file) => fs.readFileSync(path.join(ROOT, file), 'utf8');
 
 const legacyRepoUrl = /https:\/\/github\.com\/GnomeMan4201\/r4b1t(?=[/?#"'\s<]|$)/;
 const legacyPagesUrl = 'https://gnomeman4201.github.io/r4b1t/';
+const staleTrailOrigin = /gnomeman4201\.github\.io\/r4b1t(?!-h0le)/;
 
 const repoLinkedFiles = [
   'README.md',
@@ -30,6 +31,10 @@ test('public surfaces do not reference the dead pre-rename GitHub Pages URL', ()
   for (const file of ['README.md', 'r4b1t.html']) {
     assert.ok(!read(file).includes(legacyPagesUrl), file);
   }
+});
+
+test('trail exports do not stamp the pre-rename project origin', () => {
+  assert.doesNotMatch(read('index.html'), staleTrailOrigin);
 });
 
 test('PWA paths are deployment-relative instead of tied to the old repository slug', () => {
