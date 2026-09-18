@@ -9,6 +9,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+- added a versioned release-evidence record and automated public-claim verification
+- aligned the README, Worker trust documentation, audit tooling, and live deployment contract
 - aligned local and CI browser-test serving paths
 - made pool-sweep HTTP behavior tests fully offline and deterministic
 - refreshed repository metadata, contribution templates, and ignore rules
