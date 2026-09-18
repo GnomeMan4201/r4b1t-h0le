@@ -18,8 +18,8 @@ const ROOT = path.resolve('.');
 const read = (file) => fs.readFileSync(path.join(ROOT, file), 'utf8');
 const allowedOrigin = 'https://gnomeman4201.github.io';
 
-function req(pathname, headers = {}) {
-  return new Request('https://r4b1t-proxy.gnomeman4201.workers.dev' + pathname, { headers });
+function req(pathname, headers = {}, method = 'GET') {
+  return new Request('https://r4b1t-proxy.gnomeman4201.workers.dev' + pathname, { headers, method });
 }
 
 test('caller lock accepts the two published origins and rejects unknown or absent callers', () => {
@@ -150,6 +150,26 @@ test('OG parser returns bounded metadata and resolves relative images', () => {
   assert.equal(parsed.desc, 'Desc');
   assert.equal(parsed.image, 'https://example.com/cover.png');
   assert.equal(parsed.site_name, 'Site');
+});
+
+test('replacement contract supports HEAD and rejects undocumented POST', async () => {
+  const resolver = async () => ['93.184.216.34'];
+  const fetchImpl = async () => new Response('<html><head><title>Example</title></head></html>', {
+    status: 200,
+    headers: { 'Content-Type': 'text/html' },
+  });
+
+  const head = await handleRequest(
+    req('/og?url=' + encodeURIComponent('https://example.com/'), { Origin: allowedOrigin }, 'HEAD'),
+    {}, {}, { fetchImpl, resolver },
+  );
+  assert.equal(head.status, 200);
+  assert.equal(await head.text(), '');
+
+  const post = await handleRequest(
+    req('/og?url=' + encodeURIComponent('https://example.com/'), { Origin: allowedOrigin }, 'POST'),
+  );
+  assert.equal(post.status, 405);
 });
 
 test('legacy /api route is explicitly gone', async () => {
