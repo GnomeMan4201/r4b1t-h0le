@@ -180,8 +180,8 @@ test('proof-state model derives CONCEALED and REVEALED for Blind Descent stops',
   const concealedGraph = await topology.build([concealed]);
   assert.equal(concealedGraph.snapshots[0].stops[0].proof_state, 'CONCEALED');
 
-  const revealedManifest = await blind.reveal(committed.manifest, NONCE);
-  const revealed = await blind.envelope(revealedManifest.manifest);
+  const revealedManifest = await blind.reveal(committed.manifest, committed.secret);
+  const revealed = await blind.envelope(revealedManifest);
   const revealedGraph = await topology.build([revealed]);
   assert.equal(revealedGraph.snapshots[0].stops[0].proof_state, 'REVEALED');
 });
