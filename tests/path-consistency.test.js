@@ -113,3 +113,11 @@ test('Help and Tor overlays expose modal dialog semantics and focus management',
   assert.ok(index.includes('_restoreDialogFocus('));
   assert.ok(index.includes('_trapDialogKey(t,n,M)||_trapDialogKey(t,o,D)'));
 });
+
+test('removed legacy UI residue stays absent', () => {
+  const index = read('index.html');
+  assert.ok(!index.includes('id="bookmarkHint"'));
+  assert.ok(!index.includes('id="bookmarkAnchor"'));
+  assert.ok(!index.includes('.bookmark-hint'));
+  assert.ok(!index.includes('#iframeEl{'));
+});
