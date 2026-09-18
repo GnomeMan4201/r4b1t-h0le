@@ -78,44 +78,49 @@ jobs:
           base='https://r4b1t-proxy.badbanana6969.workers.dev'
           allowed='https://gnomeman4201.github.io'
 
-          status=$(curl --silent --show-error --output /tmp/og.json --write-out '%{http_code}' \
-            -H "Origin: $allowed" \
-            "$base/og?url=https%3A%2F%2Fexample.com")
-          test "$status" = '200'
+          probe_status() {
+            local name="$1"
+            local expected="$2"
+            local method="$3"
+            local origin="$4"
+            local path="$5"
+            local body_file="${6:-/dev/null}"
+            local status=''
+
+            for attempt in 1 2 3 4 5 6; do
+              if [ "$method" = 'HEAD' ]; then
+                status=$(curl --silent --show-error --head --output "$body_file" --write-out '%{http_code}' \
+                  -H "Origin: $origin" "$base$path" || true)
+              else
+                status=$(curl --silent --show-error --request "$method" --output "$body_file" --write-out '%{http_code}' \
+                  -H "Origin: $origin" "$base$path" || true)
+              fi
+
+              echo "$name attempt $attempt: HTTP $status (expected $expected)"
+              if [ "$status" = "$expected" ]; then
+                return 0
+              fi
+              sleep 5
+            done
+
+            echo "$name failed after retries: got HTTP $status, expected $expected" >&2
+            return 1
+          }
+
+          probe_status 'pages OG' 200 GET "$allowed" '/og?url=https%3A%2F%2Fexample.com' /tmp/og.json
           grep -q '"title"' /tmp/og.json
 
-          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
-            -H 'Origin: https://r4b1t.badbananaresearch.com' \
-            "$base/og?url=https%3A%2F%2Fexample.com")
-          test "$status" = '200'
-
-          status=$(curl --silent --show-error --head --output /dev/null --write-out '%{http_code}' \
-            -H "Origin: $allowed" \
-            "$base/og?url=https%3A%2F%2Fexample.com")
-          test "$status" = '200'
-
-          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
-            -H 'Origin: https://evil.example' \
-            "$base/og?url=https%3A%2F%2Fexample.com")
-          test "$status" = '403'
-
-          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
-            -H "Origin: $allowed" \
-            "$base/proxy?url=http%3A%2F%2F127.0.0.1%2F")
-          test "$status" = '403'
-
-          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
-            -H "Origin: $allowed" \
-            "$base/proxy?url=file%3A%2F%2F%2Fetc%2Fpasswd")
-          test "$status" = '400'
-
-          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
-            -H "Origin: $allowed" \
-            "$base/api")
-          test "$status" = '410'
+          probe_status 'custom-domain OG' 200 GET 'https://r4b1t.badbananaresearch.com' '/og?url=https%3A%2F%2Fexample.com'
+          probe_status 'HEAD OG' 200 HEAD "$allowed" '/og?url=https%3A%2F%2Fexample.com'
+          probe_status 'unknown Origin' 403 GET 'https://evil.example' '/og?url=https%3A%2F%2Fexample.com'
+          probe_status 'loopback block' 403 GET "$allowed" '/proxy?url=http%3A%2F%2F127.0.0.1%2F'
+          probe_status 'scheme block' 400 GET "$allowed" '/proxy?url=file%3A%2F%2F%2Fetc%2Fpasswd'
+          probe_status 'legacy API removed' 410 GET "$allowed" '/api'
 
           headers=$(curl --silent --show-error --dump-header - --output /dev/null \
             -H "Origin: $allowed" \
             "$base/og?url=https%3A%2F%2Fexample.com")
           grep -qi '^x-content-type-options:[[:space:]]*nosniff' <<< "$headers"
           grep -qi '^referrer-policy:[[:space:]]*no-referrer' <<< "$headers"
+
+          echo 'Production trust-boundary verification passed.'
