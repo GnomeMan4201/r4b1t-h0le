@@ -45,6 +45,8 @@
       '.topology-proof{display:inline-block;margin-top:8px;border:1px solid #49312c;padding:5px 7px;font-size:8px;letter-spacing:.12em;color:#e8e0d0}.topology-proof[data-proof-state="PARENT ABSENT"]{border-style:dashed;color:#cc9b7f}' +
       '.topology-meta{font-size:8px;color:#9a8f7a;margin-top:5px;overflow-wrap:anywhere}.topology-parent{margin:12px 0;padding:8px;border-left:3px solid #cc1111;background:#0d0b0a;font-size:8px;color:#9a8f7a}' +
       '.topology-parent.missing{border-left-style:dashed;color:#cc9b7f}.topology-wear{margin-top:14px}.topology-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:8px;color:#9a8f7a}.topology-legend b{color:#e8e0d0}' +
+      '.topology-inspect{margin-top:14px;border:1px solid #49312c;background:#0d0b0a;color:#e8e0d0;padding:9px 11px;font:8px "DM Mono",monospace;letter-spacing:.12em}.topology-inspect:focus{outline:2px solid #ff3333;outline-offset:2px}' +
+      '.topology-inspector{margin:0 0 24px;border:1px solid #49312c;background:#0d0b0a;padding:16px}.topology-inspector[hidden]{display:none}.topology-inspector h3{font:28px "Bebas Neue",sans-serif;letter-spacing:.08em;margin:0 0 10px}.topology-inspector-grid{display:grid;grid-template-columns:minmax(110px,160px) 1fr;gap:7px 14px;font-size:8px;line-height:1.5}.topology-inspector-grid dt{color:#9a8f7a}.topology-inspector-grid dd{margin:0;overflow-wrap:anywhere}.topology-inspector-stops{margin-top:12px;border-top:1px solid #49312c;padding-top:10px;font-size:8px}.topology-inspector-stop{padding:5px 0;border-bottom:1px dotted #49312c}.topology-diagnostics{margin:0 0 24px;border:1px dashed #80564d;background:#0d0b0a;padding:12px;color:#cc9b7f;font-size:8px}.topology-diagnostics[hidden]{display:none}.topology-diagnostic{margin-top:6px;overflow-wrap:anywhere}' +
       '@media(max-width:600px){.topology-shell{padding:16px 13px}.topology-title{font-size:44px}.topology-head{position:static;display:block}.topology-controls{justify-content:flex-start;margin-top:12px}.topology-card-head{display:block}.topology-node-wrap{padding-left:18px}.topology-node-wrap:before{left:4px}.topology-node-wrap:after{left:4px;width:14px}.topology-children{margin-left:14px;padding-left:12px}.topology-parent-stub{margin-left:18px}}';
     document.head.appendChild(style);
     var overlay = document.createElement('section');
@@ -54,7 +56,7 @@
     overlay.setAttribute('aria-labelledby', 'trailTopologyTitle');
     overlay.setAttribute('aria-hidden', 'true');
     overlay.setAttribute('tabindex', '-1');
-    overlay.innerHTML = '<div class="topology-shell"><header class="topology-head"><div><div class="topology-kicker">LOCAL ATLAS / VERIFIED SNAPSHOTS</div><h2 class="topology-title" id="trailTopologyTitle">TRAIL TOPOLOGY</h2><div class="topology-note">Geometry follows verified parent/fork structure only. Wear remains diagnostic: black-red blocks stay concealed, inherited paper continues to the fork, and divergent paper begins after it.</div></div><div class="topology-controls"><button class="topology-sample" type="button">VIEW SAMPLE</button><button class="topology-close" type="button">CLOSE</button></div></header><main class="topology-map" id="trailTopologyMap"></main><div class="topology-legend"><span><b>PAPER</b> REVEALED</span><span><b>BLACK-RED</b> CONCEALED</span><span><b>WHITE EDGE</b> INHERITED</span><span><b>RED EDGE</b> DIVERGENT</span></div></div>';
+    overlay.innerHTML = '<div class="topology-shell"><header class="topology-head"><div><div class="topology-kicker">LOCAL ATLAS / VERIFIED SNAPSHOTS</div><h2 class="topology-title" id="trailTopologyTitle">TRAIL TOPOLOGY</h2><div class="topology-note">Geometry follows verified parent/fork structure only. Wear remains diagnostic: black-red blocks stay concealed, inherited paper continues to the fork, and divergent paper begins after it.</div></div><div class="topology-controls"><button class="topology-sample" type="button">VIEW SAMPLE</button><button class="topology-close" type="button">CLOSE</button></div></header><aside class="topology-inspector" id="trailTopologyInspector" aria-live="polite" hidden></aside><section class="topology-diagnostics" id="trailTopologyDiagnostics" aria-label="Rejected trail diagnostics" hidden></section><main class="topology-map" id="trailTopologyMap"></main><div class="topology-legend"><span><b>PAPER</b> REVEALED</span><span><b>BLACK-RED</b> CONCEALED</span><span><b>WHITE EDGE</b> INHERITED</span><span><b>RED EDGE</b> DIVERGENT</span></div></div>';
     overlay.querySelector('.topology-close').addEventListener('click', close);
     overlay.querySelector('.topology-sample').addEventListener('click', function () { sample().catch(showError); });
     overlay.addEventListener('click', function (event) { if (event.target === overlay) close(); });
@@ -90,6 +92,75 @@
     badge.setAttribute('data-proof-state', state || 'VERIFIED');
     badge.textContent = 'PROOF / ' + (state || 'VERIFIED');
     return badge;
+  }
+
+  function textRow(grid, label, value) {
+    var term = document.createElement('dt');
+    term.textContent = label;
+    var detail = document.createElement('dd');
+    detail.textContent = value === null || typeof value === 'undefined' ? 'NONE' : String(value);
+    grid.appendChild(term);
+    grid.appendChild(detail);
+  }
+
+  function inspectNode(snapshot) {
+    var panel = document.getElementById('trailTopologyInspector');
+    if (!panel) return;
+    panel.innerHTML = '';
+    panel.hidden = false;
+    panel.setAttribute('data-proof-state', snapshot.proof_state || 'VERIFIED');
+
+    var title = document.createElement('h3');
+    title.textContent = 'PROOF INSPECTOR / ' + snapshot.short_id;
+    panel.appendChild(title);
+
+    var grid = document.createElement('dl');
+    grid.className = 'topology-inspector-grid';
+    textRow(grid, 'ARTIFACT', snapshot.proof_state || 'VERIFIED');
+    textRow(grid, 'FORMAT', snapshot.format);
+    textRow(grid, 'TRAIL ID', snapshot.trail_id);
+    textRow(grid, 'CREATED', snapshot.created_at);
+    textRow(grid, 'TERRAIN', snapshot.terrain);
+    textRow(grid, 'RELATIONSHIP', snapshot.relationship_state || 'ROOT');
+    textRow(grid, 'PARENT ID', snapshot.parent ? snapshot.parent.trail_id : null);
+    textRow(grid, 'FORK POSITION', snapshot.parent ? snapshot.parent.fork_at : null);
+    panel.appendChild(grid);
+
+    var stops = document.createElement('div');
+    stops.className = 'topology-inspector-stops';
+    var heading = document.createElement('div');
+    heading.textContent = 'RECORDED STOPS / CATEGORICAL STATE';
+    stops.appendChild(heading);
+    snapshot.stops.forEach(function (stop) {
+      var row = document.createElement('div');
+      row.className = 'topology-inspector-stop';
+      row.setAttribute('data-proof-state', stop.proof_state);
+      row.textContent = String(stop.index).padStart(3, '0') + ' / ' + stop.proof_state +
+        (stop.proof_state === 'REVEALED' && stop.url ? ' / ' + stop.url : '');
+      stops.appendChild(row);
+    });
+    panel.appendChild(stops);
+  }
+
+  function renderDiagnostics(diagnostics) {
+    var panel = document.getElementById('trailTopologyDiagnostics');
+    if (!panel) return;
+    panel.innerHTML = '';
+    if (!diagnostics || !diagnostics.length) {
+      panel.hidden = true;
+      return;
+    }
+    panel.hidden = false;
+    var heading = document.createElement('strong');
+    heading.textContent = 'REJECTED ARTIFACTS / NOT ADMITTED TO VERIFIED GRAPH';
+    panel.appendChild(heading);
+    diagnostics.forEach(function (diagnostic) {
+      var row = document.createElement('div');
+      row.className = 'topology-diagnostic';
+      row.setAttribute('data-proof-state', 'REJECTED');
+      row.textContent = 'REJECTED / ' + (diagnostic.trail_id || 'UNKNOWN TRAIL') + ' / ' + diagnostic.reason;
+      panel.appendChild(row);
+    });
   }
 
   function renderNode(snapshot, graph, forest, visited, depth) {
@@ -151,6 +222,14 @@
       card.appendChild(parent);
     }
 
+    var inspect = document.createElement('button');
+    inspect.type = 'button';
+    inspect.className = 'topology-inspect';
+    inspect.textContent = 'INSPECT PROOF';
+    inspect.setAttribute('aria-label', 'Inspect proof for trail ' + snapshot.short_id);
+    inspect.addEventListener('click', function () { inspectNode(snapshot); });
+    card.appendChild(inspect);
+
     var mount = document.createElement('div');
     mount.className = 'topology-wear';
     wear.render(mount, {
@@ -189,6 +268,9 @@
     ensureOverlay();
     var map = document.getElementById('trailTopologyMap');
     map.innerHTML = '';
+    var inspector = document.getElementById('trailTopologyInspector');
+    if (inspector) { inspector.hidden = true; inspector.innerHTML = ''; }
+    renderDiagnostics(graph.diagnostics || []);
     if (status) {
       var banner = document.createElement('div');
       banner.className = 'topology-parent';
@@ -224,12 +306,20 @@
 
   async function validLocalGraph(current) {
     if (current) await remember(current);
-    var valid = [], values = readAtlas();
+    var valid = [], diagnostics = [], values = readAtlas();
     for (var index = 0; index < values.length; index += 1) {
-      try { valid.push(await api.verifyAny(values[index])); } catch (_) {}
+      var classified = await api.classify(values[index]);
+      if (classified.proof_state === 'VERIFIED') valid.push(classified.snapshot);
+      else diagnostics.push({
+        proof_state: 'REJECTED',
+        trail_id: classified.trail_id,
+        reason: classified.reason
+      });
     }
     writeAtlas(valid);
-    return api.build(valid);
+    var graph = await api.build(valid);
+    graph.diagnostics = diagnostics;
+    return graph;
   }
 
   var topologyFocus = null;
