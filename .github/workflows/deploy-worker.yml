@@ -75,7 +75,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base='https://r4b1t-proxy.gnomeman4201.workers.dev'
+          base='https://r4b1t-proxy.badbanana6969.workers.dev'
           allowed='https://gnomeman4201.github.io'
 
           status=$(curl --silent --show-error --output /tmp/og.json --write-out '%{http_code}' \
