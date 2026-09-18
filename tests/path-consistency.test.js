@@ -94,3 +94,12 @@ test('contributor guidance names the current deployed project path', () => {
 test('README does not display the dead pre-rename GitHub Pages path', () => {
   assert.ok(!read('README.md').includes('gnomeman4201.github.io/r4b1t/'));
 });
+
+test('desktop branch and trail interactions use native keyboard controls', () => {
+  const index = read('index.html');
+  assert.ok(index.includes('document.createElement("button");r.type="button",r.className="trail-item"'));
+  assert.ok(index.includes('document.createElement("button");o.type="button",o.className="branch-item"'));
+  assert.ok(index.includes('t.target.closest("button,a,input,textarea,select,[contenteditable=true]")'));
+  assert.ok(!index.includes('document.createElement("span");r.className="trail-item"'));
+  assert.ok(!index.includes('document.createElement("div");o.className="branch-item"'));
+});
