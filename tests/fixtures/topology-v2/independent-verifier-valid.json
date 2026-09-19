@@ -1,0 +1,44 @@
+{
+  "format": "r4b1t-topology-export/v0.1",
+  "created_at": "2026-09-19T03:20:00.000Z",
+  "nodes": [
+    {
+      "trail_id": "sha256:68ec2a77a8badfa61abe38c2a7c3e9686743a22fc31b87b69d9331814af5520d",
+      "manifest_format": "r4b1t-trail/v0.1",
+      "proof_state": "VERIFIED",
+      "manifest": {
+        "format": "r4b1t-trail/v0.1",
+        "created_at": "2026-09-18T12:00:00.000Z",
+        "corpus_revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sampler": {
+          "algorithm": "uniform-with-repeat-guard-v1",
+          "prng": "mulberry32-v1",
+          "seed": "golden-verified"
+        },
+        "terrain": "RESEARCH",
+        "routes": [
+          {
+            "index": 1,
+            "route_id": "sha256:f968990b0753d0cd54124d87df479b2927e95c4c5947c6290a45ac6ecd66f1a5",
+            "url": "https://example.org/verified",
+            "action": "ROLL"
+          }
+        ],
+        "parent": null
+      },
+      "relationship_state": null,
+      "parent": null,
+      "stops": [
+        {
+          "index": 0,
+          "proof_state": "REVEALED",
+          "commitment": null,
+          "route_id": "sha256:f968990b0753d0cd54124d87df479b2927e95c4c5947c6290a45ac6ecd66f1a5",
+          "url": "https://example.org/verified"
+        }
+      ]
+    }
+  ],
+  "edges": [],
+  "diagnostics": []
+}
