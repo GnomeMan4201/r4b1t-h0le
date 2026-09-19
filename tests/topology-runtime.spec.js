@@ -354,3 +354,88 @@ test('EXPORT TOPOLOGY downloads canonical JSON and keeps rejected input diagnost
   expect(artifact.diagnostics[0].reason).toContain('Route ID mismatch');
   expect(JSON.stringify(artifact)).not.toContain('attacker.invalid');
 });
+
+
+test('topology tree uses roving tabindex and deterministic keyboard traversal', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openTrailWearSample === 'function');
+
+  await page.evaluate(async () => window.openTrailWearSample());
+
+  const items = page.locator('[role="treeitem"]');
+  await expect(items).toHaveCount(2);
+
+  const initial = await items.evaluateAll((nodes) => nodes.map((node) => ({
+    tabindex: node.getAttribute('tabindex'),
+    selected: node.getAttribute('aria-selected'),
+    level: node.getAttribute('aria-level'),
+  })));
+
+  expect(initial).toEqual([
+    { tabindex: '0', selected: 'true', level: '1' },
+    { tabindex: '-1', selected: 'false', level: '2' },
+  ]);
+
+  await items.nth(0).focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(items.nth(1)).toBeFocused();
+  await expect(items.nth(1)).toHaveAttribute('aria-selected', 'true');
+
+  await page.keyboard.press('ArrowUp');
+  await expect(items.nth(0)).toBeFocused();
+
+  await page.keyboard.press('ArrowRight');
+  await expect(items.nth(1)).toBeFocused();
+
+  await page.keyboard.press('ArrowLeft');
+  await expect(items.nth(0)).toBeFocused();
+
+  await page.keyboard.press('End');
+  await expect(items.nth(1)).toBeFocused();
+
+  await page.keyboard.press('Home');
+  await expect(items.nth(0)).toBeFocused();
+});
+
+test('topology tree Enter opens proof inspector and moves focus into it', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openTrailWearSample === 'function');
+
+  await page.evaluate(async () => window.openTrailWearSample());
+
+  const first = page.locator('[role="treeitem"]').first();
+  await first.focus();
+  await page.keyboard.press('Enter');
+
+  const inspector = page.locator('#trailTopologyInspector');
+  await expect(inspector).toBeVisible();
+  await expect(inspector).toBeFocused();
+  await expect(inspector).toHaveAttribute('data-proof-state', 'VERIFIED');
+  await expect(inspector).toHaveAttribute('data-trail-id', /sha256:/);
+});
+
+test('topology tree Space opens the selected node proof inspector without changing graph order', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openTrailWearSample === 'function');
+
+  await page.evaluate(async () => window.openTrailWearSample());
+
+  const before = await page.locator('[role="treeitem"]').evaluateAll((nodes) =>
+    nodes.map((node) => node.getAttribute('data-trail-id'))
+  );
+
+  const second = page.locator('[role="treeitem"]').nth(1);
+  await second.focus();
+  await page.keyboard.press('Space');
+
+  const inspector = page.locator('#trailTopologyInspector');
+  await expect(inspector).toBeFocused();
+
+  const selectedId = await inspector.getAttribute('data-trail-id');
+  expect(selectedId).toBe(before[1]);
+
+  const after = await page.locator('[role="treeitem"]').evaluateAll((nodes) =>
+    nodes.map((node) => node.getAttribute('data-trail-id'))
+  );
+  expect(after).toEqual(before);
+});

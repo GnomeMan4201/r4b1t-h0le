@@ -8,6 +8,7 @@
   var STORAGE_KEY = 'r4b1t_topology_atlas_v1';
   var LIMIT = 64;
   var activeExportInputs = [];
+  var currentGraph = null;
 
   function readAtlas() {
     try {
@@ -37,7 +38,7 @@
       '.topology-note{font-size:9px;line-height:1.6;color:#9a8f7a;max-width:620px}.topology-controls{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}' +
       '.topology-controls button{border:1px solid #49312c;background:#141210;color:#e8e0d0;padding:12px;font:9px "DM Mono",monospace;letter-spacing:.1em}.topology-controls .topology-sample{border-color:#cc1111;color:#ff3333}.topology-controls .topology-export{border-color:#8b7767}.topology-controls button:disabled{opacity:.45;cursor:not-allowed}' +
       '.topology-map{padding:28px 0 70px}.topology-empty{border:1px dashed #49312c;padding:30px;color:#9a8f7a;font-size:10px}' +
-      '.topology-forest{display:grid;gap:28px}.topology-branch{position:relative;min-width:0}' +
+      '.topology-forest{display:grid;gap:28px}.topology-branch{position:relative;min-width:0}.topology-branch:focus{outline:2px solid #ff3333;outline-offset:6px}.topology-branch[aria-selected="true"]>.topology-node-wrap>.topology-card{border-color:#80564d}' +
       '.topology-node-wrap{position:relative;padding-left:28px}.topology-node-wrap:before{content:"";position:absolute;left:8px;top:0;bottom:-16px;width:2px;background:#49312c}.topology-node-wrap:after{content:"";position:absolute;left:8px;top:28px;width:20px;height:2px;background:#49312c}' +
       '.topology-children{margin:18px 0 0 34px;padding-left:20px;border-left:2px solid #49312c;display:grid;gap:22px}' +
       '.topology-parent-stub{margin:0 0 10px 28px;border:1px dashed #80564d;background:#0d0b0a;padding:9px 11px;font-size:8px;color:#cc9b7f;letter-spacing:.08em}' +
@@ -47,7 +48,7 @@
       '.topology-meta{font-size:8px;color:#9a8f7a;margin-top:5px;overflow-wrap:anywhere}.topology-parent{margin:12px 0;padding:8px;border-left:3px solid #cc1111;background:#0d0b0a;font-size:8px;color:#9a8f7a}' +
       '.topology-parent.missing{border-left-style:dashed;color:#cc9b7f}.topology-wear{margin-top:14px}.topology-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:8px;color:#9a8f7a}.topology-legend b{color:#e8e0d0}' +
       '.topology-inspect{margin-top:14px;border:1px solid #49312c;background:#0d0b0a;color:#e8e0d0;padding:9px 11px;font:8px "DM Mono",monospace;letter-spacing:.12em}.topology-inspect:focus{outline:2px solid #ff3333;outline-offset:2px}' +
-      '.topology-inspector{margin:0 0 24px;border:1px solid #49312c;background:#0d0b0a;padding:16px}.topology-inspector[hidden]{display:none}.topology-inspector h3{font:28px "Bebas Neue",sans-serif;letter-spacing:.08em;margin:0 0 10px}.topology-inspector-grid{display:grid;grid-template-columns:minmax(110px,160px) 1fr;gap:7px 14px;font-size:8px;line-height:1.5}.topology-inspector-grid dt{color:#9a8f7a}.topology-inspector-grid dd{margin:0;overflow-wrap:anywhere}.topology-inspector-stops{margin-top:12px;border-top:1px solid #49312c;padding-top:10px;font-size:8px}.topology-inspector-stop{padding:5px 0;border-bottom:1px dotted #49312c}.topology-diagnostics{margin:0 0 24px;border:1px dashed #80564d;background:#0d0b0a;padding:12px;color:#cc9b7f;font-size:8px}.topology-diagnostics[hidden]{display:none}.topology-diagnostic{margin-top:6px;overflow-wrap:anywhere}' +
+      '.topology-inspector{margin:0 0 24px;border:1px solid #49312c;background:#0d0b0a;padding:16px}.topology-inspector:focus{outline:2px solid #ff3333;outline-offset:2px}.topology-inspector[hidden]{display:none}.topology-inspector h3{font:28px "Bebas Neue",sans-serif;letter-spacing:.08em;margin:0 0 10px}.topology-inspector-grid{display:grid;grid-template-columns:minmax(110px,160px) 1fr;gap:7px 14px;font-size:8px;line-height:1.5}.topology-inspector-grid dt{color:#9a8f7a}.topology-inspector-grid dd{margin:0;overflow-wrap:anywhere}.topology-inspector-stops{margin-top:12px;border-top:1px solid #49312c;padding-top:10px;font-size:8px}.topology-inspector-stop{padding:5px 0;border-bottom:1px dotted #49312c}.topology-diagnostics{margin:0 0 24px;border:1px dashed #80564d;background:#0d0b0a;padding:12px;color:#cc9b7f;font-size:8px}.topology-diagnostics[hidden]{display:none}.topology-diagnostic{margin-top:6px;overflow-wrap:anywhere}' +
       '@media(max-width:600px){.topology-shell{padding:16px 13px}.topology-title{font-size:44px}.topology-head{position:static;display:block}.topology-controls{justify-content:flex-start;margin-top:12px}.topology-card-head{display:block}.topology-node-wrap{padding-left:18px}.topology-node-wrap:before{left:4px}.topology-node-wrap:after{left:4px;width:14px}.topology-children{margin-left:14px;padding-left:12px}.topology-parent-stub{margin-left:18px}}';
     document.head.appendChild(style);
     var overlay = document.createElement('section');
@@ -112,7 +113,9 @@
     if (!panel) return;
     panel.innerHTML = '';
     panel.hidden = false;
+    panel.setAttribute('tabindex', '-1');
     panel.setAttribute('data-proof-state', snapshot.proof_state || 'VERIFIED');
+    panel.setAttribute('data-trail-id', snapshot.trail_id);
 
     var title = document.createElement('h3');
     title.textContent = 'PROOF INSPECTOR / ' + snapshot.short_id;
@@ -178,6 +181,16 @@
     branch.setAttribute('data-proof-state', snapshot.proof_state || 'VERIFIED');
     branch.setAttribute('role', 'treeitem');
     branch.setAttribute('aria-level', String(depth + 1));
+    branch.setAttribute('tabindex', '-1');
+    branch.setAttribute('aria-selected', 'false');
+    branch.setAttribute('aria-label', 'Trail ' + snapshot.short_id + ', proof ' + (snapshot.proof_state || 'VERIFIED') + ', depth ' + String(depth + 1));
+    branch.addEventListener('keyup', function (event) {
+      if (event.code === 'Space' || event.key === 'Space' || event.key === ' ' || event.key === 'Spacebar') {
+        event.preventDefault();
+        event.stopPropagation();
+        activateTreeItem(branch);
+      }
+    });
 
     if (snapshot.parent && snapshot.relationship_state === 'PARENT ABSENT') {
       var stub = document.createElement('div');
@@ -231,7 +244,12 @@
     inspect.className = 'topology-inspect';
     inspect.textContent = 'INSPECT PROOF';
     inspect.setAttribute('aria-label', 'Inspect proof for trail ' + snapshot.short_id);
-    inspect.addEventListener('click', function () { inspectNode(snapshot); });
+    inspect.addEventListener('click', function () {
+      selectTreeItem(branch);
+      inspectNode(snapshot);
+      var panel = document.getElementById('trailTopologyInspector');
+      if (panel) panel.focus();
+    });
     card.appendChild(inspect);
 
     var mount = document.createElement('div');
@@ -266,6 +284,91 @@
     }
 
     return branch;
+  }
+
+  function treeItems() {
+    return Array.from(document.querySelectorAll('#trailTopologyMap [role="treeitem"]'));
+  }
+
+  function selectTreeItem(item) {
+    treeItems().forEach(function (node) {
+      var selected = node === item;
+      node.setAttribute('aria-selected', selected ? 'true' : 'false');
+      node.setAttribute('tabindex', selected ? '0' : '-1');
+    });
+  }
+
+  function initializeTreeFocus() {
+    var items = treeItems();
+    if (!items.length) return;
+    var selected = items.find(function (item) { return item.getAttribute('aria-selected') === 'true'; }) || items[0];
+    selectTreeItem(selected);
+  }
+
+  function focusTreeItem(item) {
+    if (!item) return false;
+    selectTreeItem(item);
+    item.focus();
+    return true;
+  }
+
+  function directChildTreeItem(item) {
+    var group = Array.from(item.children).find(function (child) {
+      return child.getAttribute && child.getAttribute('role') === 'group';
+    });
+    if (!group) return null;
+    return Array.from(group.children).find(function (child) {
+      return child.getAttribute && child.getAttribute('role') === 'treeitem';
+    }) || null;
+  }
+
+  function parentTreeItem(item) {
+    var group = item.parentElement;
+    if (!group || group.getAttribute('role') !== 'group') return null;
+    return group.parentElement && group.parentElement.getAttribute('role') === 'treeitem'
+      ? group.parentElement
+      : null;
+  }
+
+  function snapshotForTreeItem(item) {
+    var id = item && item.getAttribute('data-trail-id');
+    return currentGraph && currentGraph.snapshots
+      ? currentGraph.snapshots.find(function (snapshot) { return snapshot.trail_id === id; }) || null
+      : null;
+  }
+
+  function activateTreeItem(item) {
+    var snapshot = snapshotForTreeItem(item);
+    if (!snapshot) return false;
+    selectTreeItem(item);
+    inspectNode(snapshot);
+    var panel = document.getElementById('trailTopologyInspector');
+    if (panel) panel.focus();
+    return true;
+  }
+
+  function handleTreeKey(event) {
+    var item = event.target && event.target.getAttribute &&
+      event.target.getAttribute('role') === 'treeitem' ? event.target : null;
+    if (!item) return false;
+
+    var items = treeItems();
+    var index = items.indexOf(item);
+    var target = null;
+
+    if (event.code === 'ArrowDown') target = items[Math.min(items.length - 1, index + 1)];
+    else if (event.code === 'ArrowUp') target = items[Math.max(0, index - 1)];
+    else if (event.code === 'Home') target = items[0];
+    else if (event.code === 'End') target = items[items.length - 1];
+    else if (event.code === 'ArrowRight') target = directChildTreeItem(item);
+    else if (event.code === 'ArrowLeft') target = parentTreeItem(item);
+    else if (event.code === 'Enter' || event.key === 'Enter') {
+      event.preventDefault();
+      return activateTreeItem(item);
+    } else return false;
+
+    event.preventDefault();
+    return focusTreeItem(target || item);
   }
 
   function updateExportControl() {
@@ -303,6 +406,7 @@
 
   function render(graph, status) {
     ensureOverlay();
+    currentGraph = graph;
     var map = document.getElementById('trailTopologyMap');
     map.innerHTML = '';
     var inspector = document.getElementById('trailTopologyInspector');
@@ -340,6 +444,7 @@
     });
 
     map.appendChild(mount);
+    initializeTreeFocus();
   }
 
   async function validLocalGraph(current) {
@@ -467,6 +572,10 @@
   document.addEventListener('keydown', function (event) {
     var overlay = document.getElementById('trailTopologyOverlay');
     if (!overlay || !overlay.classList.contains('open')) return;
+    if (handleTreeKey(event)) {
+      event.stopImmediatePropagation();
+      return;
+    }
     if (event.code === 'Escape') {
       event.preventDefault();
       event.stopImmediatePropagation();
