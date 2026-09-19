@@ -1,9 +1,9 @@
 (function (root, factory) {
   'use strict';
-  var api = factory(root.R4b1tTrailComparison, root.R4b1tTrailComparisonRenderer);
+  var api = factory(root, root.R4b1tTrailComparison, root.R4b1tTrailComparisonRenderer);
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root) root.R4b1tTrailComparisonImport = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function (comparisonCore, comparisonRenderer) {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root, comparisonCore, comparisonRenderer) {
   'use strict';
 
   var previousFocus = null;
