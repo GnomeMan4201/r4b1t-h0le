@@ -29,5 +29,8 @@ jobs:
           node-version: '24'
           package-manager-cache: false
 
-      - name: Verify production asset parity and boundary
+      - name: Run production-shadow regression tests
+        run: node --test tests/production-shadow.test.js
+
+      - name: Verify serving-layer parity, redirects, cache headers, and boundary
         run: node tools/verify-production-shadow.mjs
