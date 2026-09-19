@@ -1,12 +1,25 @@
 # Proof Sessions v1 — Final Acceptance Record
 
-Status: ACCEPTED / READY TO FREEZE  
+Status: ACCEPTED / FROZEN  
 Contract baseline: `CONTRACT.md` v1.0  
 Normative spec: `docs/PROOF_SESSIONS_V1_SPEC.md`
 
-## Acceptance target
+## Accepted implementation baseline
 
-This record becomes the accepted Proof Sessions v1 implementation baseline when the final contract-audit PR merges after all required exact-head gates pass.
+Final contract-audit merge SHA:
+
+`6a2984c84376659592a4047aa7273dc7c572a34b`
+
+The exact final-audit PR head:
+
+`480afaa398f22cbba6def80aeb4833e1bb53268a`
+
+passed all required gates before merge:
+
+- Proof Sessions v1 Audit — run #11
+- Trail Comparison v1 Audit — run #27
+- Trail Cards v1 Audit — run #21
+- Playwright E2E — run #378
 
 The accepted feature family consists of:
 
@@ -70,9 +83,11 @@ Any future change that weakens or expands these boundaries requires an explicit 
 
 ## Freeze gate
 
-After this audit is accepted and merged, a separate freeze PR must:
+This freeze PR makes documentation-only status changes and records the accepted final-audit evidence.
 
-1. change the Proof Sessions v1 spec status from DRAFT to FROZEN,
-2. update this record with the accepted final-audit merge SHA and exact acceptance evidence,
-3. make no functional product changes,
-4. pass Proof Sessions v1 Audit and full Playwright E2E on the exact freeze head before merge.
+The freeze PR itself must pass:
+
+- Proof Sessions v1 Audit
+- full Playwright E2E
+
+on its exact head before merge. A cancelled or superseded run is not freeze evidence.

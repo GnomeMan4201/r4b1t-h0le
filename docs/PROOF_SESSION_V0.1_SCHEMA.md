@@ -1,6 +1,6 @@
 # r4b1t-proof-session/v0.1 — Projection Schema
 
-Status: DRAFT — governed by Proof Sessions v1
+Status: FROZEN — governed by Proof Sessions v1
 Governed by: `docs/PROOF_SESSIONS_V1_SPEC.md`
 Spec baseline: `620f035e4ccf537dc4971e854e79a35ca972e3d0`
 Machine schema: `docs/schema/proof-session-v0.1.schema.json`
