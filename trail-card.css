@@ -1,0 +1,157 @@
+.trail-card {
+  width: 100%;
+  max-width: 620px;
+  overflow-wrap: anywhere;
+  background: var(--surface, #141210);
+  color: var(--text, #e8e0d0);
+  border: 1px solid var(--border, #2a2825);
+  font-family: var(--font-mono, "Courier New", monospace);
+  outline: none;
+}
+.trail-card:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+.trail-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border, #2a2825);
+}
+.trail-card-state-marker {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border: 2px solid currentColor;
+  font-weight: 700;
+}
+.trail-card-kicker,
+.trail-card-field-label {
+  font-size: .44rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.trail-card-kicker { color: var(--text-dim, #6a5f52); }
+.trail-card-state {
+  margin: 2px 0 0;
+  font-size: 1rem;
+  letter-spacing: .12em;
+}
+.trail-card-body { padding: 16px 18px 18px; }
+.trail-card-body-diagnostic {
+  border-left: 6px double currentColor;
+}
+.trail-card-diagnostic-banner {
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 2px solid currentColor;
+}
+.trail-card-diagnostic-title {
+  display: block;
+  font-size: .72rem;
+  letter-spacing: .08em;
+}
+.trail-card-diagnostic-reason {
+  margin: 8px 0 0;
+  font-size: .62rem;
+  line-height: 1.55;
+}
+.trail-card-field {
+  display: grid;
+  grid-template-columns: minmax(92px, .42fr) minmax(0, 1fr);
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border2, #1e1c18);
+}
+.trail-card-field-label { color: var(--text-dim, #6a5f52); }
+.trail-card-field-value {
+  min-width: 0;
+  font-size: .58rem;
+  line-height: 1.45;
+}
+.trail-card-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 16px 0 10px;
+}
+.trail-card-summary .trail-card-field {
+  display: block;
+  padding: 9px;
+  border: 1px solid var(--border, #2a2825);
+}
+.trail-card-summary .trail-card-field-value {
+  display: block;
+  margin-top: 5px;
+  font-size: .78rem;
+}
+.trail-card-stops,
+.trail-card-branches {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+}
+.trail-card-stop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 2px;
+  border-bottom: 1px solid var(--border2, #1e1c18);
+}
+.trail-card-stop-index,
+.trail-card-stop-state,
+.trail-card-branch-counts,
+.trail-card-branch-parent {
+  font-size: .52rem;
+  letter-spacing: .08em;
+}
+.trail-card-stop-concealed {
+  border-left: 3px dashed currentColor;
+  padding-left: 9px;
+}
+.trail-card-branch {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border2, #1e1c18);
+}
+.trail-card-branch[data-relationship-state="PARENT ABSENT"] {
+  border-left: 4px double currentColor;
+  padding-left: 10px;
+}
+.trail-card-branch-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.trail-card-branch-id,
+.trail-card-relationship-state {
+  font-size: .56rem;
+  letter-spacing: .06em;
+}
+.trail-card-relationship-state { font-weight: 700; }
+.trail-card-branch-counts,
+.trail-card-branch-parent {
+  margin-top: 5px;
+  color: var(--text-dim, #6a5f52);
+}
+.trail-card-notice {
+  margin: 16px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--border, #2a2825);
+  font-size: .5rem;
+  line-height: 1.6;
+  color: var(--text-dim, #6a5f52);
+}
+.trail-card-rejected .trail-card-header,
+.trail-card-unverified .trail-card-header {
+  border-bottom-style: double;
+  border-bottom-width: 4px;
+}
+@media (max-width: 600px) {
+  .trail-card-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .trail-card-field { grid-template-columns: minmax(84px, .45fr) minmax(0, 1fr); }
+  .trail-card-body { padding: 14px; }
+  .trail-card-header { padding: 14px; }
+}
