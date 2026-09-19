@@ -18,6 +18,8 @@ on:
       - 'tests/proof-session-schema.test.js'
       - 'tests/proof-session-core.test.js'
       - 'tests/proof-session-bundle.test.js'
+      - 'tests/proof-sessions-final-contract-audit.test.js'
+      - 'docs/PROOF_SESSIONS_V1_AUDIT.md'
       - 'tests/proof-session-renderer.spec.js'
       - 'tests/proof-session-import.spec.js'
       - 'package.json'
@@ -41,6 +43,8 @@ on:
       - 'tests/proof-session-schema.test.js'
       - 'tests/proof-session-core.test.js'
       - 'tests/proof-session-bundle.test.js'
+      - 'tests/proof-sessions-final-contract-audit.test.js'
+      - 'docs/PROOF_SESSIONS_V1_AUDIT.md'
       - 'tests/proof-session-renderer.spec.js'
       - 'tests/proof-session-import.spec.js'
       - 'package.json'
@@ -64,5 +68,5 @@ jobs:
         run: npm ci
       - name: Check Proof Sessions module syntax
         run: node --check proof-session-renderer.js && node --check proof-session-import.js && node --check proof-session-bundle.js && node --check tools/create-proof-session-bundle.js && node --check tools/inspect-proof-session-bundle.js
-      - name: Run Proof Sessions schema, core, and portable-file-set tests
-        run: node --test tests/proof-session-schema.test.js tests/proof-session-core.test.js tests/proof-session-bundle.test.js
+      - name: Run Proof Sessions final contract audit suite
+        run: node --test tests/proof-session-schema.test.js tests/proof-session-core.test.js tests/proof-session-bundle.test.js tests/proof-sessions-final-contract-audit.test.js
