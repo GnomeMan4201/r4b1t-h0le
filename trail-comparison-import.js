@@ -130,19 +130,37 @@
       .filter(function (node) { return !node.disabled && node.offsetParent !== null; });
   }
 
+  function resetOverlayState() {
+    var overlay = document.getElementById('trailComparisonOverlay');
+    if (!overlay) return;
+    var files = overlay.querySelectorAll('.trail-comparison-import-file');
+    files.forEach(function (input) { input.value = ''; });
+    var result = overlay.querySelector('.trail-comparison-import-result');
+    if (result) result.replaceChildren();
+    var status = overlay.querySelector('.trail-comparison-import-status');
+    if (status) status.textContent = '';
+    var compareButton = overlay.querySelector('.trail-comparison-import-actions .trail-comparison-import-button');
+    if (compareButton) compareButton.disabled = true;
+  }
+
   function openOverlay() {
     var overlay = document.getElementById('trailComparisonOverlay');
     if (!overlay) return;
     previousFocus = document.activeElement;
     overlay.hidden = false;
     overlay.setAttribute('aria-hidden', 'false');
-    var list = focusables(overlay);
-    (list[0] || overlay).focus();
+    var firstFile = overlay.querySelector('.trail-comparison-import-file');
+    if (firstFile) firstFile.focus();
+    else {
+      var list = focusables(overlay);
+      (list[0] || overlay).focus();
+    }
   }
 
   function closeOverlay() {
     var overlay = document.getElementById('trailComparisonOverlay');
     if (!overlay) return;
+    resetOverlayState();
     overlay.hidden = true;
     overlay.setAttribute('aria-hidden', 'true');
     if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
