@@ -1,6 +1,7 @@
 # Trail Cards v1 — Normative Specification
 
-Status: DRAFT
+Status: FROZEN — Trail Cards v1 accepted after final contract audit
+Acceptance baseline: 226f99ffcbccd08733e20652979c2139cd321037
 Scope: docs/TRAIL_CARDS_V1_SPEC.md
 Contract clauses touched: 3, 4, 5, 6, 7, 9
 Depends on: docs/TRAIL_TOPOLOGY_V2_SPEC.md (frozen), CONTRACT.md v1.0 (frozen)
