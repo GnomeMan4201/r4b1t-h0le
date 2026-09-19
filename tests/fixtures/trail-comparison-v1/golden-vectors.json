@@ -1,0 +1,313 @@
+{
+  "format": "r4b1t-trail-comparison-golden-vectors/v0.1",
+  "verification_states": [
+    "VERIFIED",
+    "REJECTED",
+    "UNVERIFIED"
+  ],
+  "position_states": [
+    "MATCH_REVEALED",
+    "DIFFER_REVEALED",
+    "LEFT_CONCEALED",
+    "RIGHT_CONCEALED",
+    "BOTH_CONCEALED_SAME_COMMITMENT",
+    "BOTH_CONCEALED_DIFFERENT_COMMITMENT",
+    "LEFT_ONLY",
+    "RIGHT_ONLY"
+  ],
+  "lineage_states": [
+    "SAME_TRAIL",
+    "LEFT_PARENT_OF_RIGHT",
+    "RIGHT_PARENT_OF_LEFT",
+    "SHARED_ANCESTRY_NOT_PROVEN",
+    "NO_SHARED_PREFIX",
+    "INDETERMINATE"
+  ],
+  "cases": [
+    {
+      "name": "verified-revealed-divergence",
+      "expected_left_state": "VERIFIED",
+      "expected_right_state": "VERIFIED",
+      "projection": {
+        "format": "r4b1t-trail-comparison/v0.1",
+        "sources": {
+          "left": {
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+          },
+          "right": {
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          }
+        },
+        "verification": {
+          "left": {
+            "state": "VERIFIED",
+            "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "verified_at": "2026-09-19T21:00:00.000Z",
+            "verifier": "r4b1t-trail-verifier/v0.1",
+            "reason": null
+          },
+          "right": {
+            "state": "VERIFIED",
+            "verified_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "verified_at": "2026-09-19T21:00:00.000Z",
+            "verifier": "r4b1t-trail-verifier/v0.1",
+            "reason": null
+          }
+        },
+        "comparison": {
+          "left_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "right_trail_id": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "lineage_state": "SHARED_ANCESTRY_NOT_PROVEN",
+          "direct_fork_at": null,
+          "shared_prefix_length": 1,
+          "first_divergence_index": 1,
+          "left_stop_count": 2,
+          "right_stop_count": 2,
+          "positions": [
+            {
+              "index": 0,
+              "state": "MATCH_REVEALED",
+              "left": {
+                "state": "REVEALED",
+                "route_id": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+                "commitment": null
+              },
+              "right": {
+                "state": "REVEALED",
+                "route_id": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+                "commitment": null
+              }
+            },
+            {
+              "index": 1,
+              "state": "DIFFER_REVEALED",
+              "left": {
+                "state": "REVEALED",
+                "route_id": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+                "commitment": null
+              },
+              "right": {
+                "state": "REVEALED",
+                "route_id": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+                "commitment": null
+              }
+            }
+          ]
+        },
+        "notice": "Comparison describes two independently verified source artifacts identified by their digests. It does not replace either source artifact. Re-verify both sources to confirm current validity."
+      }
+    },
+    {
+      "name": "verified-concealed-difference",
+      "expected_left_state": "VERIFIED",
+      "expected_right_state": "VERIFIED",
+      "projection": {
+        "format": "r4b1t-trail-comparison/v0.1",
+        "sources": {
+          "left": {
+            "artifact_format": "r4b1t-trail/v0.2",
+            "artifact_digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+          },
+          "right": {
+            "artifact_format": "r4b1t-trail/v0.2",
+            "artifact_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          }
+        },
+        "verification": {
+          "left": {
+            "state": "VERIFIED",
+            "verified_digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+            "verified_at": "2026-09-19T21:01:00.000Z",
+            "verifier": "r4b1t-blind-verifier/v0.2",
+            "reason": null
+          },
+          "right": {
+            "state": "VERIFIED",
+            "verified_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+            "verified_at": "2026-09-19T21:01:00.000Z",
+            "verifier": "r4b1t-blind-verifier/v0.2",
+            "reason": null
+          }
+        },
+        "comparison": {
+          "left_trail_id": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "right_trail_id": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "lineage_state": "NO_SHARED_PREFIX",
+          "direct_fork_at": null,
+          "shared_prefix_length": 0,
+          "first_divergence_index": 0,
+          "left_stop_count": 1,
+          "right_stop_count": 1,
+          "positions": [
+            {
+              "index": 0,
+              "state": "BOTH_CONCEALED_DIFFERENT_COMMITMENT",
+              "left": {
+                "state": "CONCEALED",
+                "route_id": null,
+                "commitment": "sha256:8888888888888888888888888888888888888888888888888888888888888888"
+              },
+              "right": {
+                "state": "CONCEALED",
+                "route_id": null,
+                "commitment": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+              }
+            }
+          ]
+        },
+        "notice": "Comparison describes two independently verified source artifacts identified by their digests. It does not replace either source artifact. Re-verify both sources to confirm current validity."
+      }
+    },
+    {
+      "name": "verified-left-parent-of-right",
+      "expected_left_state": "VERIFIED",
+      "expected_right_state": "VERIFIED",
+      "projection": {
+        "format": "r4b1t-trail-comparison/v0.1",
+        "sources": {
+          "left": {
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "right": {
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        },
+        "verification": {
+          "left": {
+            "state": "VERIFIED",
+            "verified_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "verified_at": "2026-09-19T21:02:00.000Z",
+            "verifier": "r4b1t-trail-verifier/v0.1",
+            "reason": null
+          },
+          "right": {
+            "state": "VERIFIED",
+            "verified_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "verified_at": "2026-09-19T21:02:00.000Z",
+            "verifier": "r4b1t-trail-verifier/v0.1",
+            "reason": null
+          }
+        },
+        "comparison": {
+          "left_trail_id": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "right_trail_id": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "lineage_state": "LEFT_PARENT_OF_RIGHT",
+          "direct_fork_at": 1,
+          "shared_prefix_length": 1,
+          "first_divergence_index": 1,
+          "left_stop_count": 1,
+          "right_stop_count": 2,
+          "positions": [
+            {
+              "index": 0,
+              "state": "MATCH_REVEALED",
+              "left": {
+                "state": "REVEALED",
+                "route_id": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+                "commitment": null
+              },
+              "right": {
+                "state": "REVEALED",
+                "route_id": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+                "commitment": null
+              }
+            },
+            {
+              "index": 1,
+              "state": "RIGHT_ONLY",
+              "left": {
+                "state": "ABSENT",
+                "route_id": null,
+                "commitment": null
+              },
+              "right": {
+                "state": "REVEALED",
+                "route_id": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+                "commitment": null
+              }
+            }
+          ]
+        },
+        "notice": "Comparison describes two independently verified source artifacts identified by their digests. It does not replace either source artifact. Re-verify both sources to confirm current validity."
+      }
+    },
+    {
+      "name": "rejected-left-diagnostic",
+      "expected_left_state": "REJECTED",
+      "expected_right_state": "VERIFIED",
+      "projection": {
+        "format": "r4b1t-trail-comparison/v0.1",
+        "sources": {
+          "left": {
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "right": {
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+          }
+        },
+        "verification": {
+          "left": {
+            "state": "REJECTED",
+            "verified_digest": null,
+            "verified_at": "2026-09-19T21:03:00.000Z",
+            "verifier": "r4b1t-trail-verifier/v0.1",
+            "reason": "Route ID mismatch at step 1"
+          },
+          "right": {
+            "state": "VERIFIED",
+            "verified_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+            "verified_at": "2026-09-19T21:03:00.000Z",
+            "verifier": "r4b1t-trail-verifier/v0.1",
+            "reason": null
+          }
+        },
+        "comparison": null,
+        "notice": "Comparison describes two independently verified source artifacts identified by their digests. It does not replace either source artifact. Re-verify both sources to confirm current validity.",
+        "diagnostic_notice": "THIS RESULT DOES NOT ESTABLISH TRAIL COMPARISON FACTS."
+      }
+    },
+    {
+      "name": "unverified-right-diagnostic",
+      "expected_left_state": "VERIFIED",
+      "expected_right_state": "UNVERIFIED",
+      "projection": {
+        "format": "r4b1t-trail-comparison/v0.1",
+        "sources": {
+          "left": {
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+          },
+          "right": {
+            "artifact_format": "r4b1t-trail/v9.9",
+            "artifact_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          }
+        },
+        "verification": {
+          "left": {
+            "state": "VERIFIED",
+            "verified_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "verified_at": "2026-09-19T21:04:00.000Z",
+            "verifier": "r4b1t-trail-verifier/v0.1",
+            "reason": null
+          },
+          "right": {
+            "state": "UNVERIFIED",
+            "verified_digest": null,
+            "verified_at": null,
+            "verifier": "r4b1t-comparison-verifier/v0.1",
+            "reason": "Unsupported source artifact format"
+          }
+        },
+        "comparison": null,
+        "notice": "Comparison describes two independently verified source artifacts identified by their digests. It does not replace either source artifact. Re-verify both sources to confirm current validity.",
+        "diagnostic_notice": "THIS RESULT DOES NOT ESTABLISH TRAIL COMPARISON FACTS."
+      }
+    }
+  ]
+}
