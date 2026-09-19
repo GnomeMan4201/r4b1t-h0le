@@ -501,38 +501,210 @@ v1 defines no such network transfer feature.
 
 The only persistence path in v1 is explicit user export.
 
-An exported Proof Session MAY contain:
+An exported Proof Session MUST remain a file set.
 
-- every unique exact canonical source file,
-- deterministic source-slot metadata,
-- deterministic pairwise Trail Comparison v1 projections,
-- deterministic session summary,
-- deterministic direct-relationship graph projection,
-- a README explaining authority boundaries.
+It MUST NOT become a new canonical evidence artifact or evidence manifest.
 
-The export MUST remain a file set.
+### 17.1 Portable file layout
 
-It MUST NOT become a new canonical evidence artifact.
+The v1 portable file set SHALL contain:
 
-The canonical source files remain authoritative.
+- `sources/` — one exact canonical source file for every unique exact source-byte digest,
+- `comparisons/` — one stored frozen Trail Comparison v1 projection for every eligible VERIFIED unordered pair,
+- `proof-session.json` — the stored derived `r4b1t-proof-session/v0.1` projection,
+- `README.txt` — human-readable authority and inspection instructions.
 
-Every comparison projection remains derived presentation.
+Source filenames MUST be deterministic and collision-resistant.
 
-The session summary and graph remain derived presentation.
+A source filename MUST be derived from session-local slot plus exact source digest, for example:
 
-### 17.1 Export inspection
+`sources/S1--sha256-<64 lowercase hex>.json`
 
-A future session export inspector implemented under this spec MUST:
+Comparison filenames MUST be deterministic from their two session-local endpoints and stored Comparison projection digest, for example:
 
-1. recover the exact bundled canonical source files,
-2. independently re-verify every source,
-3. recompute the eligible verified pair set,
-4. invoke frozen Trail Comparison v1 for each verified pair,
-5. recompute the direct relationship graph,
-6. recompute the fixed session summary,
-7. compare recomputed presentation with the stored derived projection.
+`comparisons/S1--S2--sha256-<64 lowercase hex>.json`
+
+Filenames are transport organization only.
+
+They MUST NOT become canonical artifact identity.
+
+### 17.2 Authority of bundled files
+
+The exact files under `sources/` remain the only canonical evidence inputs in the portable file set.
+
+Every file under `comparisons/` is derived presentation.
+
+`proof-session.json` is derived presentation.
+
+`README.txt` is non-normative human documentation.
+
+The README:
+
+- MAY describe the bundle format version and expected file layout for a human reader,
+- MAY list authority boundaries and inspection instructions,
+- MUST NOT be parsed to determine bundle validity,
+- MUST NOT supply schema identity,
+- MUST NOT supply source identity,
+- MUST NOT supply comparison identity,
+- MUST NOT alter recomputation behavior,
+- MAY be missing or modified without changing evidentiary conclusions.
+
+Machine inspection MUST derive all normative facts from exact source files and fixed implementation/spec constants, never from README content.
+
+### 17.3 Export construction
+
+An exporter MUST:
+
+1. begin from the exact source byte sequences currently held by the ephemeral session,
+2. independently verify those exact bytes,
+3. deterministically deduplicate exact duplicate source bytes,
+4. invoke frozen Trail Comparison v1 for every eligible VERIFIED unordered pair,
+5. build the direct relationship graph only from those pair results,
+6. compute the fixed session summary,
+7. emit `proof-session.json`,
+8. emit each exact source file unchanged,
+9. emit each validated Comparison v1 projection,
+10. emit the non-normative README.
+
+The exporter MUST NOT accept a previously stored Proof Session projection as sufficient input for export.
+
+Export creation therefore repeats the same proof derivation used by the live session instead of serializing arbitrary UI state.
+
+### 17.4 Offline inspection sequence
+
+A Proof Session inspector MUST treat the stored derived files as untrusted until fresh recomputation completes.
+
+The inspection sequence is fixed:
+
+1. discover the portable file set using the fixed v1 file layout,
+2. load the exact files under `sources/`,
+3. independently re-verify every exact source byte sequence,
+4. deterministically reconstruct session-local slots from the portable source ordering defined by the exporter,
+5. recompute the complete eligible VERIFIED unordered pair set,
+6. invoke frozen Trail Comparison v1 for every eligible pair,
+7. recompute every Comparison projection digest,
+8. recompute the direct relationship graph,
+9. recompute the fixed session summary,
+10. build a fresh `r4b1t-proof-session/v0.1` projection,
+11. only then parse and validate stored files under `comparisons/` and stored `proof-session.json` for comparison against the fresh result,
+12. classify the portable file set.
+
+Fresh recomputation is authoritative for inspection.
+
+Stored comparison projections and stored `proof-session.json` are comparison targets only.
+
+### 17.5 No pre-recomputation factual rendering
+
+Before step 10 in section 17.4 completes, the inspector MUST NOT render:
+
+- stored session summary counts,
+- stored relationship edges,
+- stored pair classifications,
+- stored verification states,
+- stored canonical trail identities,
+- stored comparison facts,
+- any VERIFIED session badge derived from stored presentation.
+
+The inspector MAY render only a non-factual progress state such as:
+
+`RECOMPUTING LOCAL PROOF SESSION…`
+
+This requirement prevents attacker-modified derived files from being temporarily presented as verified facts.
+
+There is no stored-summary fallback in v1.
+
+### 17.6 Stored-versus-fresh equivalence
+
+After fresh recomputation, the inspector MUST compare stored derived material with recomputed derived material.
+
+Comparison MUST include at least:
+
+- source-slot count and slot-to-source-digest binding,
+- source proof states,
+- canonical trail IDs for VERIFIED sources,
+- complete eligible pair set,
+- each pair's Comparison projection digest,
+- each stored Comparison projection's full validated semantic content,
+- complete direct relationship edge set,
+- all ten fixed summary labels and counts,
+- fixed notice text,
+- projection format version.
+
+Equivalence MUST ignore only fields explicitly defined as runtime-generated non-semantic metadata by their governing frozen specs.
+
+No field may be ignored merely because it is inconvenient to reproduce.
+
+### 17.7 Portable inspection classifications
+
+Inspection returns exactly one portable-file-set classification:
+
+- `MATCH`
+- `MISMATCH`
+- `UNREADABLE`
+
+`MATCH` means every required source was freshly processed and every required stored derived artifact is semantically equivalent to fresh recomputation.
+
+`MISMATCH` means fresh recomputation completed, but at least one required stored derived artifact differs from the fresh result.
+
+`UNREADABLE` means inspection could not complete because the required portable file structure or one or more required files could not be read or parsed sufficiently to perform fresh recomputation.
+
+These are portable-file-set inspection classifications.
+
+They MUST NOT replace or alter the source-level `VERIFIED`, `REJECTED`, and `UNVERIFIED` proof states.
+
+### 17.8 Mismatch handling is diagnostic, not silent repair
+
+When classification is `MISMATCH`:
+
+- the inspector MUST render the freshly recomputed session facts,
+- the inspector MUST visibly and structurally mark the portable file set as `MISMATCH`,
+- the inspector MUST state that stored derived presentation did not match fresh recomputation,
+- the inspector MAY identify which derived file or deterministic field disagreed,
+- the inspector MUST NOT silently overwrite the mismatch in memory and present the file set as `MATCH`,
+- the inspector MUST NOT upgrade, repair, rewrite, or regenerate the user's portable files automatically.
+
+A mismatch is therefore visible diagnostic information about the portable file set.
+
+It is not a reason to distrust freshly re-verified canonical source artifacts merely because stored derived presentation was altered.
+
+If fresh source verification itself produces source-level diagnostic states, those states remain visible according to the ordinary Proof Sessions rules.
+
+### 17.9 Missing or altered README
+
+Because `README.txt` is non-normative, a missing or altered README:
+
+- MUST NOT change source verification,
+- MUST NOT change pairwise comparison,
+- MUST NOT change session summary,
+- MUST NOT create `MISMATCH`,
+- MUST NOT create `UNREADABLE`,
+- MAY produce a separate human-documentation warning.
+
+### 17.10 Stored presentation is never authority
 
 Stored session presentation MUST NOT be trusted merely because it was exported by r4b1t.
+
+The trust direction remains one-way:
+
+    exact bundled canonical source bytes
+               |
+               | independently verify
+               v
+      fresh VERIFIED/diagnostic slots
+               |
+               | frozen Comparison v1
+               v
+       fresh pairwise projections
+               |
+               | deterministic aggregation
+               v
+       fresh Proof Session projection
+               |
+               | compare only
+               v
+       stored derived presentation
+
+There is no reverse path from stored session presentation into canonical proof state.
 
 ## 18. Renderer and interaction requirements
 
