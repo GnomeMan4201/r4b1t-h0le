@@ -217,3 +217,146 @@ test('proof-state vocabulary contains no probabilistic confidence semantics', ()
     assert.equal(serialized.includes(banned), false);
   }
 });
+
+
+test('topology export is deterministic and round-trips through independent re-verification', async () => {
+  const parent = await v01({
+    created_at: '2026-09-18T20:00:00.000Z',
+    seed: 'roundtrip-parent',
+    routes: [{ url: 'https://example.org/one', action: 'ROLL' }],
+  });
+  const child = await v01({
+    created_at: '2026-09-18T20:01:00.000Z',
+    seed: 'roundtrip-child',
+    routes: [
+      { url: 'https://example.org/one', action: 'ROLL' },
+      { url: 'https://example.net/two', action: 'BRANCH' },
+    ],
+    parent: { trail_id: parent.trail_id, fork_at: 1 },
+  });
+
+  const options = { created_at: '2026-09-18T20:05:00.000Z' };
+  const first = await topology.exportTopology([child, parent], options);
+  const second = await topology.exportTopology([child, parent], options);
+
+  assert.equal(topology.EXPORT_FORMAT, 'r4b1t-topology-export/v0.1');
+  assert.equal(trail.canonicalJson(first), trail.canonicalJson(second));
+  assert.equal(first.nodes.length, 2);
+  assert.equal(first.edges.length, 1);
+  assert.equal(first.edges[0].proof_state, 'VERIFIED');
+
+  const imported = await topology.importTopology(JSON.stringify(first));
+  assert.equal(imported.graph.snapshots.length, 2);
+  assert.equal(imported.diagnostics.length, 0);
+  assert.equal(trail.canonicalJson(imported.export), trail.canonicalJson(first));
+
+  const rebuilt = await topology.exportTopology(imported.snapshots, options);
+  assert.equal(trail.canonicalJson(rebuilt), trail.canonicalJson(first));
+});
+
+test('topology export preserves concealed commitments without leaking route identity', async () => {
+  const manifest = await blind.create({
+    created_at: '2026-09-18T20:10:00.000Z',
+    corpus_revision: CORPUS,
+    terrain: 'RESEARCH',
+    trail_salt: SALT,
+  });
+  const committed = await blind.commit(manifest, 'https://secret.example/private', NONCE);
+  const snapshot = await blind.envelope(committed.manifest);
+
+  const exported = await topology.exportTopology([snapshot], {
+    created_at: '2026-09-18T20:11:00.000Z',
+  });
+  const stop = exported.nodes[0].stops[0];
+
+  assert.equal(stop.proof_state, 'CONCEALED');
+  assert.equal(stop.route_id, null);
+  assert.equal(stop.url, null);
+  assert.match(stop.commitment, /^sha256:[0-9a-f]{64}$/);
+  assert.equal(JSON.stringify(exported).includes('secret.example'), false);
+
+  const imported = await topology.importTopology(exported);
+  assert.equal(imported.graph.snapshots[0].stops[0].proof_state, 'CONCEALED');
+  assert.equal(imported.graph.snapshots[0].stops[0].url, null);
+});
+
+test('topology export keeps rejected artifacts diagnostics-only', async () => {
+  const valid = await v01({
+    created_at: '2026-09-18T20:20:00.000Z',
+    seed: 'roundtrip-valid',
+    routes: [{ url: 'https://example.org/valid', action: 'ROLL' }],
+  });
+  const rejected = JSON.parse(JSON.stringify(valid));
+  rejected.manifest.routes[0].url = 'https://attacker.invalid/';
+
+  const exported = await topology.exportTopology([valid, rejected], {
+    created_at: '2026-09-18T20:21:00.000Z',
+  });
+
+  assert.equal(exported.nodes.length, 1);
+  assert.equal(exported.nodes[0].trail_id, valid.trail_id);
+  assert.equal(exported.diagnostics.length, 1);
+  assert.equal(exported.diagnostics[0].proof_state, 'REJECTED');
+  assert.equal(exported.diagnostics[0].trail_id, rejected.trail_id);
+  assert.match(exported.diagnostics[0].reason, /Route ID mismatch/);
+
+  const imported = await topology.importTopology(exported);
+  assert.equal(imported.graph.snapshots.length, 1);
+  assert.equal(imported.diagnostics.length, 1);
+});
+
+test('topology import rejects tampered canonical manifests', async () => {
+  const snapshot = await v01({
+    created_at: '2026-09-18T20:30:00.000Z',
+    seed: 'roundtrip-tamper-manifest',
+    routes: [{ url: 'https://example.org/original', action: 'ROLL' }],
+  });
+  const exported = await topology.exportTopology([snapshot], {
+    created_at: '2026-09-18T20:31:00.000Z',
+  });
+
+  exported.nodes[0].manifest.routes[0].url = 'https://attacker.invalid/';
+  await assert.rejects(() => topology.importTopology(exported), /Route ID mismatch/);
+});
+
+test('topology import rejects tampered derived node and edge claims', async () => {
+  const parent = await v01({
+    created_at: '2026-09-18T20:40:00.000Z',
+    seed: 'roundtrip-derived-parent',
+    routes: [{ url: 'https://example.org/one', action: 'ROLL' }],
+  });
+  const child = await v01({
+    created_at: '2026-09-18T20:41:00.000Z',
+    seed: 'roundtrip-derived-child',
+    routes: [
+      { url: 'https://example.org/one', action: 'ROLL' },
+      { url: 'https://example.net/two', action: 'BRANCH' },
+    ],
+    parent: { trail_id: parent.trail_id, fork_at: 1 },
+  });
+
+  const original = await topology.exportTopology([parent, child], {
+    created_at: '2026-09-18T20:42:00.000Z',
+  });
+
+  const nodeTamper = JSON.parse(JSON.stringify(original));
+  nodeTamper.nodes[1].stops[1].url = 'https://attacker.invalid/';
+  await assert.rejects(() => topology.importTopology(nodeTamper), /node derivation mismatch/);
+
+  const edgeTamper = JSON.parse(JSON.stringify(original));
+  edgeTamper.edges[0].fork_at = 0;
+  await assert.rejects(() => topology.importTopology(edgeTamper), /edge derivation mismatch/);
+});
+
+test('topology export requires explicit deterministic creation metadata', async () => {
+  const snapshot = await v01({
+    created_at: '2026-09-18T20:50:00.000Z',
+    seed: 'roundtrip-explicit-time',
+    routes: [{ url: 'https://example.org/time', action: 'ROLL' }],
+  });
+
+  await assert.rejects(
+    () => topology.exportTopology([snapshot], {}),
+    /Topology export creation time must be an ISO timestamp/,
+  );
+});
