@@ -20,10 +20,32 @@ const CRITICAL_ASSETS = [
   'blind-manifest.js',
   'topology-runtime.js',
   'trail-topology.js',
+  'trail-card.js',
+  'trail-card-renderer.js',
+  'trail-card-share.js',
+  'trail-card.css',
+  'trail-card-share.css',
+  'trail-comparison.js',
+  'trail-comparison-renderer.js',
+  'trail-comparison-import.js',
+  'trail-comparison.css',
+  'trail-comparison-import.css',
+  'proof-session.js',
+  'proof-session-renderer.js',
+  'proof-session-import.js',
+  'proof-session.css',
+  'proof-session-import.css',
   'trail-wear.js',
   'trail-wear.css',
   'sw.js',
   'manifest.json',
+];
+
+const ROOT_MARKERS = [
+  'proof-session-import.js',
+  'trail-comparison-import.js',
+  'trail-card-share.js',
+  'trail-topology.js',
 ];
 
 const failures = [];
@@ -40,44 +62,131 @@ async function fetchWithTimeout(url, init = {}, timeoutMs = 12_000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    return await fetch(url, { ...init, signal: controller.signal, redirect: 'follow' });
+    return await fetch(url, { ...init, signal: controller.signal, redirect: init.redirect || 'follow' });
   } finally {
     clearTimeout(timer);
   }
 }
 
+function logServingHeaders(label, response) {
+  const headers = {
+    'cache-control': response.headers.get('cache-control') || 'missing',
+    etag: response.headers.get('etag') || 'missing',
+    'last-modified': response.headers.get('last-modified') || 'missing',
+  };
+  console.log(
+    `SERVING ${label} url=${response.url} cache-control="${headers['cache-control']}" etag="${headers.etag}" last-modified="${headers['last-modified']}"`,
+  );
+}
+
+async function verifyHttpRedirect() {
+  const httpUrl = SITE.replace(/^https:/, 'http:');
+  const response = await fetchWithTimeout(httpUrl, { redirect: 'manual' });
+  const location = response.headers.get('location');
+
+  if (![301, 302, 307, 308].includes(response.status)) {
+    fail(`custom-domain redirect: expected HTTP redirect from ${httpUrl}, got ${response.status}`);
+    return;
+  }
+
+  if (!location) {
+    fail('custom-domain redirect: missing Location header');
+    return;
+  }
+
+  const resolved = new URL(location, httpUrl);
+  if (resolved.protocol !== 'https:') {
+    fail(`custom-domain redirect: expected HTTPS target, got ${resolved.href}`);
+  }
+  if (resolved.hostname !== new URL(SITE).hostname) {
+    fail(`custom-domain redirect: unexpected host ${resolved.hostname}`);
+  } else {
+    console.log(`REDIRECT ${httpUrl} -> ${resolved.href}`);
+  }
+}
+
+async function fetchAsset(origin, file, label) {
+  const response = await fetchWithTimeout(new URL(file, origin));
+
+  if (!response.ok) {
+    fail(`${file}: ${label} returned HTTP ${response.status}`);
+    return null;
+  }
+
+  if (!response.url.startsWith('https://')) {
+    fail(`${file}: ${label} did not terminate on HTTPS (${response.url})`);
+  }
+
+  const expectedHost = new URL(origin).hostname;
+  if (new URL(response.url).hostname !== expectedHost) {
+    fail(`${file}: ${label} unexpectedly redirected to ${response.url}`);
+  }
+
+  logServingHeaders(`${label}:${file}`, response);
+
+  return Buffer.from(await response.arrayBuffer());
+}
+
 async function verifyAssetParity() {
   for (const file of CRITICAL_ASSETS) {
     const local = fs.readFileSync(path.join(ROOT, file));
-    const response = await fetchWithTimeout(new URL(file, APP));
-    if (!response.ok) {
-      fail(`${file}: live asset returned HTTP ${response.status}`);
-      continue;
+    const [pages, site] = await Promise.all([
+      fetchAsset(APP, file, 'pages'),
+      fetchAsset(SITE, file, 'custom-domain'),
+    ]);
+
+    if (!pages || !site) continue;
+
+    const localHash = sha256(local);
+    const pagesHash = sha256(pages);
+    const siteHash = sha256(site);
+
+    if (localHash !== pagesHash) {
+      fail(`${file}: pages hash ${pagesHash} != repository hash ${localHash}`);
+    }
+    if (localHash !== siteHash) {
+      fail(`${file}: custom-domain hash ${siteHash} != repository hash ${localHash}`);
+    }
+    if (pagesHash !== siteHash) {
+      fail(`${file}: pages hash ${pagesHash} != custom-domain hash ${siteHash}`);
     }
 
-    const live = Buffer.from(await response.arrayBuffer());
-    const localHash = sha256(local);
-    const liveHash = sha256(live);
-
-    if (localHash !== liveHash) {
-      fail(`${file}: production hash ${liveHash} != repository hash ${localHash}`);
-    } else {
-      console.log(`PARITY ${file} ${liveHash}`);
+    if (localHash === pagesHash && pagesHash === siteHash) {
+      console.log(`PARITY ${file} ${siteHash}`);
     }
   }
 }
 
-async function verifyFrontDoor() {
-  const response = await fetchWithTimeout(SITE);
-  if (!response.ok) {
-    fail(`project site: expected 2xx, got HTTP ${response.status}`);
-    return;
-  }
+async function verifyFrontDoors() {
+  const [pagesResponse, siteResponse] = await Promise.all([
+    fetchWithTimeout(APP),
+    fetchWithTimeout(SITE),
+  ]);
 
-  const html = await response.text();
-  for (const marker of ['NOT SEARCH', 'RABBIT HOLE']) {
-    if (!html.toUpperCase().includes(marker)) {
-      fail(`project site: expected marker missing: ${marker}`);
+  for (const [label, response, origin] of [
+    ['pages', pagesResponse, APP],
+    ['custom-domain', siteResponse, SITE],
+  ]) {
+    if (!response.ok) {
+      fail(`${label} root: expected 2xx, got HTTP ${response.status}`);
+      continue;
+    }
+
+    if (!response.url.startsWith('https://')) {
+      fail(`${label} root: HTTPS termination failed at ${response.url}`);
+    }
+
+    if (new URL(response.url).hostname !== new URL(origin).hostname) {
+      fail(`${label} root: unexpected redirect to ${response.url}`);
+    }
+
+    logServingHeaders(`${label}:root`, response);
+
+    const html = await response.text();
+    for (const marker of ROOT_MARKERS) {
+      if (!html.includes(marker)) {
+        fail(`${label} root: release-critical entry point missing: ${marker}`);
+      }
     }
   }
 }
@@ -105,8 +214,9 @@ async function verifyWorkerHeaders() {
 }
 
 try {
+  await verifyHttpRedirect();
+  await verifyFrontDoors();
   await verifyAssetParity();
-  await verifyFrontDoor();
   await verifyWorkerHeaders();
 } catch (error) {
   fail(`production-shadow exception: ${error?.message || error}`);
@@ -118,4 +228,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Production-shadow verification passed for ${CRITICAL_ASSETS.length} critical assets.`);
+console.log(`Production-shadow verification passed for ${CRITICAL_ASSETS.length} release-critical assets.`);
