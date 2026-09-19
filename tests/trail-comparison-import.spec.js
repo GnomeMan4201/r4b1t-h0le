@@ -111,6 +111,45 @@ test('unsupported or rejected input remains diagnostic in local import UX', asyn
   await expect(result).not.toContainText('SHARED PREFIX');
 });
 
+test('closing the comparison dialog discards selected files and rendered result', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.R4b1tTrailComparisonImport);
+
+  const makeTrail = async (seed) => page.evaluate(async (seed) => {
+    const manifest = await window.R4b1tTrail.createManifest({
+      created_at: '2026-09-19T23:15:00.000Z',
+      corpus_revision: 'sha256:' + 'e'.repeat(64),
+      seed,
+      terrain: 'RESEARCH',
+      routes: [{ url: 'https://example.org/' + seed, action: 'ROLL' }],
+      parent: null,
+    });
+    return JSON.stringify(await window.R4b1tTrail.envelope(manifest));
+  }, seed);
+
+  const left = await makeTrail('left-clear');
+  const right = await makeTrail('right-clear');
+
+  await page.getByRole('button', { name: 'compare trails' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Trail comparison' });
+  const leftInput = dialog.getByLabel('Left trail JSON');
+  const rightInput = dialog.getByLabel('Right trail JSON');
+
+  await leftInput.setInputFiles({ name: 'left.json', mimeType: 'application/json', buffer: Buffer.from(left) });
+  await rightInput.setInputFiles({ name: 'right.json', mimeType: 'application/json', buffer: Buffer.from(right) });
+  await dialog.getByRole('button', { name: 'Compare locally' }).click();
+  await expect(dialog.locator('.trail-comparison')).toHaveCount(1);
+
+  await dialog.getByRole('button', { name: 'close' }).click();
+  await expect(dialog).toBeHidden();
+
+  await page.getByRole('button', { name: 'compare trails' }).click();
+  await expect(leftInput).toHaveValue('');
+  await expect(rightInput).toHaveValue('');
+  await expect(dialog.locator('.trail-comparison')).toHaveCount(0);
+  await expect(dialog.getByRole('button', { name: 'Compare locally' })).toBeDisabled();
+});
+
 test('comparison modal supports keyboard close and restores focus', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   const button = page.getByRole('button', { name: 'compare trails' });
