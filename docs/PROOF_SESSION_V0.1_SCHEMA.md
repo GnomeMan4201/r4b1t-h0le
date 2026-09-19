@@ -126,3 +126,9 @@ Frozen Trail Comparison v1 projections remain the pairwise derived presentation 
 The Proof Session projection only organizes those sources and references.
 
 A later export inspector must independently re-verify source bytes, recompute pair projections, rebuild direct edges, and recompute summary counts before accepting stored session presentation.
+
+The inspector must not render stored session facts before fresh recomputation completes.
+
+Stored `proof-session.json` and stored Comparison projections are comparison targets only. A semantic difference between stored and freshly recomputed derived presentation is a visible portable-file-set `MISMATCH`, not a silent correction.
+
+`README.txt` is non-normative human documentation and is never consulted for machine validity, schema identity, source identity, comparison identity, or recomputation behavior.
