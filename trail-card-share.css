@@ -1,0 +1,35 @@
+.trail-card-handoff {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.trail-card-handoff-button {
+  appearance: none;
+  border: 1px solid var(--border, #2a2825);
+  background: transparent;
+  color: var(--text-mid, #9a8f7a);
+  font-family: var(--font-mono, "Courier New", monospace);
+  font-size: .48rem;
+  letter-spacing: .12em;
+  padding: 9px 11px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.trail-card-handoff-button:hover,
+.trail-card-handoff-button:focus-visible {
+  color: var(--text, #e8e0d0);
+  border-color: currentColor;
+}
+.trail-card-handoff-status {
+  flex-basis: 100%;
+  min-height: 1.2em;
+  font-family: var(--font-mono, "Courier New", monospace);
+  font-size: .46rem;
+  color: var(--text-dim, #6a5f52);
+}
+@media (max-width: 600px) {
+  .trail-card-handoff-button {
+    flex: 1 1 100%;
+  }
+}
