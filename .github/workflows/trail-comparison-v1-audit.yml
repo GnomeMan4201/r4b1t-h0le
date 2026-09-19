@@ -1,0 +1,46 @@
+name: Trail Comparison v1 Audit
+
+on:
+  pull_request:
+    paths:
+      - 'trail-comparison.js'
+      - 'docs/TRAIL_COMPARISON_V1_SPEC.md'
+      - 'docs/TRAIL_COMPARISON_V0.1_SCHEMA.md'
+      - 'docs/schema/trail-comparison-v0.1.schema.json'
+      - 'tests/fixtures/trail-comparison-v1/**'
+      - 'tests/trail-comparison-schema.test.js'
+      - 'tests/trail-comparison-projection.test.js'
+      - 'package.json'
+      - '.github/workflows/trail-comparison-v1-audit.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'trail-comparison.js'
+      - 'docs/TRAIL_COMPARISON_V1_SPEC.md'
+      - 'docs/TRAIL_COMPARISON_V0.1_SCHEMA.md'
+      - 'docs/schema/trail-comparison-v0.1.schema.json'
+      - 'tests/fixtures/trail-comparison-v1/**'
+      - 'tests/trail-comparison-schema.test.js'
+      - 'tests/trail-comparison-projection.test.js'
+      - 'package.json'
+      - '.github/workflows/trail-comparison-v1-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Run Trail Comparison schema and core tests
+        run: node --test tests/trail-comparison-schema.test.js tests/trail-comparison-projection.test.js
