@@ -1,8 +1,19 @@
-'use strict';
+(function (root, factory) {
+  'use strict';
+  var commonJs = typeof module === 'object' && module.exports;
+  var api = factory(
+    commonJs ? require('./trail-manifest.js') : root && root.R4b1tTrail,
+    commonJs ? require('./blind-manifest.js') : root && root.R4b1tBlind,
+    commonJs ? require('./topology-independent-verifier.js') : root && root.R4b1tTopologyIndependentVerifier
+  );
+  if (commonJs) module.exports = api;
+  if (root) root.R4b1tTrailCard = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (trail, blind, topologyVerifier) {
+  'use strict';
 
-const trail = require('./trail-manifest.js');
-const blind = require('./blind-manifest.js');
-const topologyVerifier = require('./tools/verify-topology-export.js');
+  if (!trail || !blind || !topologyVerifier) {
+    throw new Error('Trail Card projection dependencies are required');
+  }
 
 const FORMAT = 'r4b1t-trail-card/v0.1';
 const TOPOLOGY_FORMAT = 'r4b1t-topology-export/v0.1';
@@ -283,7 +294,7 @@ function validateProjection(card) {
   return card;
 }
 
-module.exports = {
+return {
   FORMAT,
   TOPOLOGY_FORMAT,
   NOTICE,
@@ -291,4 +302,5 @@ module.exports = {
   project,
   validateProjection,
   digestOf,
-};
+  };
+});

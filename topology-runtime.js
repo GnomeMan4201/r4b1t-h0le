@@ -568,6 +568,7 @@
   window.rememberTopologySnapshot = remember;
   window.clearTrailTopology = clear;
   window.exportTrailTopology = exportCurrentTopology;
+  window.buildTrailTopologyExport = buildExportArtifact;
   document.addEventListener('DOMContentLoaded', ensureOverlay);
   document.addEventListener('keydown', function (event) {
     var overlay = document.getElementById('trailTopologyOverlay');
