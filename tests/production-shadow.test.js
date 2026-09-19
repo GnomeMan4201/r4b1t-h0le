@@ -27,8 +27,8 @@ test('production shadow includes Prove & Show proof-critical assets', () => {
 });
 
 test('production shadow compares GitHub Pages and custom-domain bytes for every critical asset', () => {
-  assert.match(source, /new URL\(file, APP\)/);
-  assert.match(source, /new URL\(file, SITE\)/);
+  assert.match(source, /fetchAsset\(APP, file, ['"]pages['"]\)/);
+  assert.match(source, /fetchAsset\(SITE, file, ['"]custom-domain['"]\)/);
   assert.match(source, /pagesHash/);
   assert.match(source, /siteHash/);
   assert.match(source, /pagesHash\s*!==\s*siteHash/);
