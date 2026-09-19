@@ -1,0 +1,449 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://r4b1t.badbananaresearch.com/schema/proof-session-v0.1.json",
+  "title": "r4b1t_h0le Proof Session Projection v0.1",
+  "description": "Deterministic derived presentation for an ephemeral local working set of independently verified canonical artifacts. This projection is not evidence authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "sources",
+    "pairs",
+    "relationships",
+    "summary",
+    "notice"
+  ],
+  "properties": {
+    "format": {
+      "const": "r4b1t-proof-session/v0.1"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sourceSlot"
+      }
+    },
+    "pairs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/pairRef"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/directRelationship"
+      }
+    },
+    "summary": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "count"
+          ],
+          "properties": {
+            "label": {
+              "const": "SOURCES"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "count"
+          ],
+          "properties": {
+            "label": {
+              "const": "VERIFIED"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "count"
+          ],
+          "properties": {
+            "label": {
+              "const": "REJECTED"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "count"
+          ],
+          "properties": {
+            "label": {
+              "const": "UNVERIFIED"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "count"
+          ],
+          "properties": {
+            "label": {
+              "const": "VERIFIED PAIRS"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "count"
+          ],
+          "properties": {
+            "label": {
+              "const": "DIRECT RELATIONSHIPS"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "count"
+          ],
+          "properties": {
+            "label": {
+              "const": "DIVERGENT PAIRS"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "count"
+          ],
+          "properties": {
+            "label": {
+              "const": "IDENTICAL TRAIL PAIRS"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "count"
+          ],
+          "properties": {
+            "label": {
+              "const": "SHARED PREFIX ONLY PAIRS"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "count"
+          ],
+          "properties": {
+            "label": {
+              "const": "NO SHARED PREFIX PAIRS"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      ],
+      "items": false
+    },
+    "notice": {
+      "const": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "slotId": {
+      "type": "string",
+      "pattern": "^S[1-9][0-9]*$"
+    },
+    "sourceSlot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slot_id",
+        "artifact_format",
+        "artifact_digest",
+        "canonical_trail_id",
+        "supplied_count",
+        "verification"
+      ],
+      "properties": {
+        "slot_id": {
+          "$ref": "#/$defs/slotId",
+          "description": "Session-local address only. It is not evidence identity and is not globally portable identity."
+        },
+        "artifact_format": {
+          "anyOf": [
+            {
+              "enum": [
+                "r4b1t-trail/v0.1",
+                "r4b1t-trail/v0.2"
+              ]
+            },
+            {
+              "type": "string",
+              "pattern": "^r4b1t-[a-z0-9-]+/v[0-9]+\\.[0-9]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "artifact_digest": {
+          "$ref": "#/$defs/sha256",
+          "description": "SHA-256 of the exact UTF-8 source bytes supplied for this unique source slot."
+        },
+        "canonical_trail_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "supplied_count": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of times these exact source bytes were explicitly supplied during this ephemeral session."
+        },
+        "verification": {
+          "$ref": "#/$defs/verificationResult"
+        }
+      }
+    },
+    "verificationResult": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/verifiedResult"
+        },
+        {
+          "$ref": "#/$defs/rejectedResult"
+        },
+        {
+          "$ref": "#/$defs/unverifiedResult"
+        }
+      ]
+    },
+    "verifiedResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "verified_digest",
+        "verified_at",
+        "verifier",
+        "reason"
+      ],
+      "properties": {
+        "state": {
+          "const": "VERIFIED"
+        },
+        "verified_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "verifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "null"
+        }
+      }
+    },
+    "rejectedResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "verified_digest",
+        "verified_at",
+        "verifier",
+        "reason"
+      ],
+      "properties": {
+        "state": {
+          "const": "REJECTED"
+        },
+        "verified_digest": {
+          "type": "null"
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "verifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "unverifiedResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "verified_digest",
+        "verified_at",
+        "verifier",
+        "reason"
+      ],
+      "properties": {
+        "state": {
+          "const": "UNVERIFIED"
+        },
+        "verified_digest": {
+          "type": "null"
+        },
+        "verified_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "pairRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "left_slot",
+        "right_slot",
+        "comparison_format",
+        "comparison_projection_digest"
+      ],
+      "properties": {
+        "left_slot": {
+          "$ref": "#/$defs/slotId"
+        },
+        "right_slot": {
+          "$ref": "#/$defs/slotId"
+        },
+        "comparison_format": {
+          "const": "r4b1t-trail-comparison/v0.1"
+        },
+        "comparison_projection_digest": {
+          "$ref": "#/$defs/sha256",
+          "description": "SHA-256 of the stored frozen Trail Comparison v1 projection for this verified unordered pair."
+        }
+      }
+    },
+    "directRelationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "parent_slot",
+        "child_slot",
+        "comparison_projection_digest"
+      ],
+      "properties": {
+        "type": {
+          "const": "DIRECT_PARENT"
+        },
+        "parent_slot": {
+          "$ref": "#/$defs/slotId"
+        },
+        "child_slot": {
+          "$ref": "#/$defs/slotId"
+        },
+        "comparison_projection_digest": {
+          "$ref": "#/$defs/sha256",
+          "description": "Digest of the frozen Trail Comparison v1 projection that directly establishes this edge."
+        }
+      }
+    }
+  }
+}
