@@ -1,6 +1,6 @@
 # Trail Topology v2 — Prove & Show Specification
 
-Status: Draft for implementation  
+Status: Implemented; final acceptance requires the contract-audit gate in `docs/TRAIL_TOPOLOGY_V2_AUDIT.md`  
 Contract baseline: `CONTRACT.md` Product Contract v1.0  
 Scope: presentation and verification only
 
