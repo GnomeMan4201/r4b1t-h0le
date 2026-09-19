@@ -53,14 +53,43 @@ here as normative for trail cards specifically:
   failed (tampering, digest mismatch, broken commitment chain,
   broken lineage, or any other verifier-detected failure).
 - **UNVERIFIED** — verification could not be completed (missing proof
-  material, missing parent artifact, unsupported schema version, or
-  any condition short of cryptographic rejection). UNVERIFIED is not a
-  catch-all for rejection and MUST NOT be used in place of REJECTED
-  when the verifier positively detected tampering.
+  material required by the applicable verifier to complete
+  verification, unsupported schema version, or any condition short of
+  cryptographic rejection). UNVERIFIED is not a catch-all for
+  rejection and MUST NOT be used in place of REJECTED when the
+  verifier positively detected tampering. A relationship the canonical
+  format explicitly and correctly represents as absent (e.g. a
+  topology export's PARENT ABSENT state, when the artifact's own
+  format declares that absence rather than omitting the field) is not
+  missing proof material and does not by itself force UNVERIFIED —
+  source-artifact integrity and relationship state are separate
+  claims; see §3.1.
 
 No other verification state exists in v1. A renderer encountering a
 condition it cannot classify into one of these three MUST fail closed
 into UNVERIFIED, never into VERIFIED.
+
+### 3.1 Source integrity vs. relationship state
+
+For artifact formats that can represent a declared-absent
+relationship (e.g. a topology export's parent-lineage field), source
+artifact integrity and relationship state are separate claims and
+MUST be evaluated separately:
+
+- **Source artifact integrity** — whether the artifact itself
+  verifies (digest matches, no tampering, internally consistent). This
+  drives `verification.state` (VERIFIED / REJECTED / UNVERIFIED).
+- **Relationship state** — whether a specific referenced relationship
+  (e.g. parent) is present, absent-and-declared, or absent-and-
+  undeclared. A relationship the format explicitly declares absent
+  (PARENT ABSENT) is a fully verified fact about the artifact, not a
+  gap in verification.
+
+A card MUST NOT collapse "source verifies, relationship declared
+absent" into UNVERIFIED. The card's `verification.state` reflects
+source integrity; relationship state (when applicable) is carried in
+`display` as its own field, distinct from and not overriding
+`verification.state`.
 
 ## 4. What VERIFIED is allowed to mean
 
