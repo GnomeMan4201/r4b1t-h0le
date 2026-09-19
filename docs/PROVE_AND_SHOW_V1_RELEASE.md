@@ -1,6 +1,6 @@
 # Prove & Show v1 — Release Baseline
 
-Status: RELEASE CANDIDATE  
+Status: RELEASE BLOCKED — PRODUCTION DEPLOYMENT MISMATCH  
 Product Contract: `CONTRACT.md` v1.0  
 Release tag target: `prove-show-v1.0.0`
 
@@ -135,15 +135,15 @@ This is the Product Contract clause 6 default applied to release acceptance.
 
 Record the exact production candidate commit before testing.
 
-- [ ] Production candidate commit recorded below.
-- [ ] Public deployment resolves to the intended candidate asset set.
+- [x] Production candidate commit recorded below.
+- [ ] Public deployment resolves to the intended candidate asset set. **FAIL — live UI differs from candidate.**
 - [ ] Existing exploration flow still selects without history-dependent steering.
 - [ ] Existing exploration route behavior is unchanged by proof features.
 - [ ] Trail Topology v2 renders canonical lineage correctly.
 - [ ] Trail Card creation produces expected VERIFIED / REJECTED / UNVERIFIED treatment.
 - [ ] Trail Comparison accepts two explicit local files and produces frozen semantics.
 - [ ] Concealed Comparison positions do not reveal route identity.
-- [ ] Proof Session entry point is available on production.
+- [ ] Proof Session entry point is available on production. **FAIL — not present on live custom domain.**
 - [ ] Phone-width multi-file selection works.
 - [ ] Proof Session build works from explicit local files.
 - [ ] Exact duplicate files collapse as specified.
@@ -162,29 +162,35 @@ Record the exact production candidate commit before testing.
 - [ ] No proof/session operation requires login, account, or server identity.
 - [ ] No proof/session action creates remote telemetry or persistent session state.
 - [ ] Desktop and phone-width required flows complete without horizontal overflow that blocks use.
-- [ ] Required exact-head CI/audit gates are green.
+- [x] Required exact-head CI/audit gates are green for the release-baseline PR: Playwright E2E #382 passed on exact head `0c5b9777a375798482098b2df82e16a5f38da965`.
 
 ## Production acceptance record
 
 Production candidate commit:
 
-`PENDING`
+`65b7ee5760fa76d9f72c8af87e8e05f694d21885`
 
 Deployment checked at:
 
-`PENDING`
+`2026-09-19 — https://r4b1t.badbananaresearch.com/`
 
 Acceptance result:
 
-`PENDING — PASS / FAIL`
+`FAIL — RELEASE BLOCKED`
 
 ### Release-blocking failures
 
-None recorded yet.
+1. **Production deployment does not match the frozen repository build.**
+   - The production page returned HTTP 200, but its rendered interface does not contain the frozen `proof session` entry point.
+   - Production presents a different instrument shell and command dock than repository `main`.
+   - Repository `main` at candidate commit `65b7ee5760fa76d9f72c8af87e8e05f694d21885` contains `proof-session.js`, `proof-session-renderer.js`, `proof-session-import.js`, the `proof session` button, and `#proofSessionOverlay` in `index.html`.
+   - This matches release-blocking criteria 1, 8, 9, and 12: production cannot currently be tied to the accepted candidate asset set and the required Proof Session production flow is unavailable.
+
+The `prove-show-v1.0.0` tag MUST NOT be created until production serves the accepted release candidate and the production acceptance pass is rerun.
 
 ### Non-blocking findings for patch follow-up
 
-None recorded yet.
+None recorded. The current finding is release-blocking, not cosmetic.
 
 ## Release decision
 
