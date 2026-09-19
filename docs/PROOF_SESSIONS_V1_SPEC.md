@@ -630,9 +630,16 @@ Comparison MUST include at least:
 - fixed notice text,
 - projection format version.
 
-Equivalence MUST ignore only fields explicitly defined as runtime-generated non-semantic metadata by their governing frozen specs.
+Equivalence MUST ignore only fields explicitly defined as runtime-generated or non-authoritative diagnostic metadata.
 
-No field may be ignored merely because it is inconvenient to reproduce.
+For v1, ignored equivalence metadata is limited to:
+
+- verifier execution timestamps such as `verified_at`,
+- original duplicate-selection multiplicity `supplied_count`, because the portable file set contains one authoritative exact source file per unique digest and cannot independently reconstruct how many times that byte sequence was selected before export.
+
+Ignoring `supplied_count` does not alter `SOURCES`, pair construction, proof state, canonical trail identity, relationship edges, or any fixed summary count.
+
+No other field may be ignored merely because it is inconvenient to reproduce.
 
 ### 17.7 Portable inspection classifications
 
