@@ -1,6 +1,7 @@
 # r4b1t-trail-comparison/v0.1 — Projection Schema
 
-Status: DRAFT  
+Status: FROZEN — accepted with Trail Comparison / Divergence v1  
+Acceptance baseline: `c8ac1bedabd2b8fa65414ad3360bba9e2394a95c`  
 Governed by: `docs/TRAIL_COMPARISON_V1_SPEC.md`  
 Spec baseline: `32f57b0c3c1683f7a25678079f3b04048ae165a3`  
 Machine schema: `docs/schema/trail-comparison-v0.1.schema.json`
