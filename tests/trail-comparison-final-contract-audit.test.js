@@ -350,6 +350,47 @@ test('local import UX is explicit two-file input with no persistent comparison h
   assert.doesNotMatch(source, /history|recent comparison|recent_compare/i);
 });
 
+
+test('Trail Cards are not accepted as comparison evidence inputs', async () => {
+  const left = await v01(['https://example.org/a'], { seed: 'audit-card-input' });
+  const cardLike = {
+    format: 'r4b1t-trail-card/v0.1',
+    source: {
+      artifact_format: 'r4b1t-trail/v0.1',
+      artifact_digest: 'sha256:' + '1'.repeat(64),
+    },
+  };
+
+  const result = await comparison.compare(bytes(left), bytes(cardLike), {
+    verified_at: '2026-09-20T00:03:00.000Z',
+  });
+
+  assert.equal(result.verification.left.state, 'VERIFIED');
+  assert.equal(result.verification.right.state, 'UNVERIFIED');
+  assert.equal(result.comparison, null);
+  assert.equal(result.diagnostic_notice, 'THIS RESULT DOES NOT ESTABLISH TRAIL COMPARISON FACTS.');
+});
+
+test('renderer consumes validated projection only and performs no verification', () => {
+  const source = read('trail-comparison-renderer.js');
+  for (const forbidden of [
+    /trail\.verify\s*\(/,
+    /blind\.verify\s*\(/,
+    /verifyLineage\s*\(/,
+    /R4b1tTrailComparison\.compare\s*\(/,
+  ]) {
+    assert.doesNotMatch(source, forbidden);
+  }
+});
+
+test('closing local import discards selected files and rendered comparison state', () => {
+  const source = read('trail-comparison-import.js');
+  assert.match(source, /function resetOverlayState\(\)/);
+  assert.match(source, /input\.value = ''/);
+  assert.match(source, /result\.replaceChildren\(\)/);
+  assert.match(source, /resetOverlayState\(\);[\s\S]*overlay\.hidden = true/);
+});
+
 test('final comparison audit leaves Trail Cards and Topology frozen implementation untouched', () => {
   const comparisonSources = [
     'trail-comparison.js',
