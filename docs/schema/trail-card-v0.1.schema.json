@@ -1,0 +1,645 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://r4b1t.badbananaresearch.com/schema/trail-card-v0.1.json",
+  "title": "r4b1t_h0le Trail Card Projection v0.1",
+  "description": "Presentation metadata for a one-way projection of a canonical trail or topology artifact. This projection is not evidence authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "source",
+    "verification",
+    "display",
+    "notice"
+  ],
+  "properties": {
+    "format": {
+      "const": "r4b1t-trail-card/v0.1"
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "verification": {
+      "$ref": "#/$defs/verification"
+    },
+    "display": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/trailDisplay"
+        },
+        {
+          "$ref": "#/$defs/topologyDisplay"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "rendering": {
+      "$ref": "#/$defs/rendering"
+    },
+    "notice": {
+      "const": "Verification applies to the source artifact identified by artifact_digest, not to this card representation. Re-verify the source artifact to confirm current validity."
+    },
+    "diagnostic_notice": {
+      "const": "THIS CARD DOES NOT ESTABLISH TRAIL INTEGRITY."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "verification": {
+            "properties": {
+              "state": {
+                "const": "VERIFIED"
+              }
+            },
+            "required": [
+              "state"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "properties": {
+              "artifact_format": {
+                "enum": [
+                  "r4b1t-topology-export/v0.1",
+                  "r4b1t-trail/v0.1",
+                  "r4b1t-trail/v0.2"
+                ]
+              }
+            }
+          },
+          "display": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/trailDisplay"
+              },
+              {
+                "$ref": "#/$defs/topologyDisplay"
+              }
+            ]
+          }
+        },
+        "not": {
+          "required": [
+            "diagnostic_notice"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "verification": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "REJECTED",
+                  "UNVERIFIED"
+                ]
+              }
+            },
+            "required": [
+              "state"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "diagnostic_notice"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "artifact_format": {
+                "const": "r4b1t-topology-export/v0.1"
+              }
+            },
+            "required": [
+              "artifact_format"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "display": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/topologyDisplay"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "artifact_format": {
+                "enum": [
+                  "r4b1t-trail/v0.1",
+                  "r4b1t-trail/v0.2"
+                ]
+              }
+            },
+            "required": [
+              "artifact_format"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "display": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/trailDisplay"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_format",
+        "artifact_digest"
+      ],
+      "properties": {
+        "artifact_format": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^r4b1t-[a-z0-9-]+/v[0-9]+\\.[0-9]+$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Exact source format identifier when readable. VERIFIED projections are restricted to formats supported by the applicable standalone verifier."
+        },
+        "artifact_digest": {
+          "$ref": "#/$defs/sha256",
+          "description": "SHA-256 of the exact UTF-8 source bytes presented to the render/verification operation."
+        }
+      }
+    },
+    "verification": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/verifiedResult"
+        },
+        {
+          "$ref": "#/$defs/rejectedResult"
+        },
+        {
+          "$ref": "#/$defs/unverifiedResult"
+        }
+      ]
+    },
+    "verifiedResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "verified_digest",
+        "verified_at",
+        "verifier",
+        "reason"
+      ],
+      "properties": {
+        "state": {
+          "const": "VERIFIED"
+        },
+        "verified_digest": {
+          "$ref": "#/$defs/sha256",
+          "description": "Must equal source.artifact_digest. Cross-field equality is enforced by the projection validator."
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "verifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "null"
+        }
+      }
+    },
+    "rejectedResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "verified_digest",
+        "verified_at",
+        "verifier",
+        "reason"
+      ],
+      "properties": {
+        "state": {
+          "const": "REJECTED"
+        },
+        "verified_digest": {
+          "type": "null"
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "verifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "unverifiedResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "verified_digest",
+        "verified_at",
+        "verifier",
+        "reason"
+      ],
+      "properties": {
+        "state": {
+          "const": "UNVERIFIED"
+        },
+        "verified_digest": {
+          "type": "null"
+        },
+        "verified_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "parentRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trail_id",
+        "fork_at"
+      ],
+      "properties": {
+        "trail_id": {
+          "$ref": "#/$defs/sha256"
+        },
+        "fork_at": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "trailStop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "index",
+        "state"
+      ],
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "state": {
+          "enum": [
+            "revealed",
+            "concealed"
+          ]
+        }
+      }
+    },
+    "trailDisplay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "trail_id",
+        "manifest_format",
+        "genesis_id",
+        "stop_count",
+        "concealed_count",
+        "revealed_count",
+        "parent",
+        "stops"
+      ],
+      "properties": {
+        "kind": {
+          "const": "trail"
+        },
+        "trail_id": {
+          "$ref": "#/$defs/sha256"
+        },
+        "manifest_format": {
+          "enum": [
+            "r4b1t-trail/v0.1",
+            "r4b1t-trail/v0.2"
+          ]
+        },
+        "genesis_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stop_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Must equal concealed_count + revealed_count; enforced by the projection validator."
+        },
+        "concealed_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "revealed_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/parentRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stops": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/trailStop"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "manifest_format": {
+                "const": "r4b1t-trail/v0.1"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "genesis_id": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "manifest_format": {
+                "const": "r4b1t-trail/v0.2"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "genesis_id": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "relationshipState": {
+      "enum": [
+        "VERIFIED",
+        "PARENT ABSENT"
+      ]
+    },
+    "topologyNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trail_id",
+        "manifest_format",
+        "relationship_state",
+        "stop_count",
+        "concealed_count",
+        "revealed_count",
+        "parent"
+      ],
+      "properties": {
+        "trail_id": {
+          "$ref": "#/$defs/sha256"
+        },
+        "manifest_format": {
+          "enum": [
+            "r4b1t-trail/v0.1",
+            "r4b1t-trail/v0.2"
+          ]
+        },
+        "relationship_state": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/relationshipState"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stop_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "concealed_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "revealed_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/parentRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "topologyEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to",
+        "fork_at",
+        "relationship_state"
+      ],
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/sha256"
+        },
+        "to": {
+          "$ref": "#/$defs/sha256"
+        },
+        "fork_at": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "relationship_state": {
+          "$ref": "#/$defs/relationshipState"
+        }
+      }
+    },
+    "branchDiagram": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nodes",
+        "edges"
+      ],
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/topologyNode"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/topologyEdge"
+          }
+        }
+      }
+    },
+    "topologyDisplay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "node_count",
+        "edge_count",
+        "stop_count",
+        "concealed_count",
+        "revealed_count",
+        "parent_absent_count",
+        "branch_diagram"
+      ],
+      "properties": {
+        "kind": {
+          "const": "topology"
+        },
+        "node_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edge_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stop_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Must equal concealed_count + revealed_count; enforced by the projection validator."
+        },
+        "concealed_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "revealed_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "parent_absent_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "branch_diagram": {
+          "$ref": "#/$defs/branchDiagram"
+        }
+      }
+    },
+    "rendering": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "theme": {
+          "type": "string",
+          "minLength": 1
+        },
+        "locale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "size_hint": {
+          "enum": [
+            "compact",
+            "standard",
+            "large"
+          ]
+        }
+      },
+      "description": "Advisory, non-authoritative rendering preferences. These fields must not affect verification or derived display semantics."
+    }
+  }
+}
