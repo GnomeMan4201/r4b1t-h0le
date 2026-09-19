@@ -281,13 +281,26 @@
   }
 
   function validateDiagnostic(diagnostic, index) {
-    assertExactKeys(diagnostic, ['proof_state', 'reason', 'trail_id'], 'Topology diagnostic ' + index);
+    if (!diagnostic || Object.getPrototypeOf(diagnostic) !== Object.prototype) {
+      throw new TypeError('Topology diagnostic ' + index + ' must be an object');
+    }
+    var keys = Object.keys(diagnostic);
+    for (var keyIndex = 0; keyIndex < keys.length; keyIndex += 1) {
+      if (['proof_state', 'reason', 'trail_id'].indexOf(keys[keyIndex]) === -1) {
+        throw new TypeError('Topology diagnostic ' + index + ' contains unsupported fields');
+      }
+    }
+    if (!Object.prototype.hasOwnProperty.call(diagnostic, 'proof_state') ||
+        !Object.prototype.hasOwnProperty.call(diagnostic, 'reason')) {
+      throw new TypeError('Topology diagnostic ' + index + ' is missing required fields');
+    }
     if (diagnostic.proof_state !== PROOF_STATES.REJECTED) {
       throw new TypeError('Topology diagnostic state must be REJECTED');
     }
     if (typeof diagnostic.reason !== 'string' || !diagnostic.reason) {
       throw new TypeError('Topology diagnostic reason is invalid');
     }
+    if (typeof diagnostic.trail_id === 'undefined') diagnostic.trail_id = null;
     if (diagnostic.trail_id !== null) assertSha256(diagnostic.trail_id, 'Topology diagnostic trail ID');
   }
 
@@ -325,7 +338,22 @@
       }
       if (!Array.isArray(node.stops)) throw new TypeError('Topology node stops are invalid');
       node.stops.forEach(function (stop, stopIndex) {
-        assertExactKeys(stop, ['index', 'proof_state', 'commitment', 'route_id', 'url'], 'Topology stop ' + stopIndex);
+        if (!stop || Object.getPrototypeOf(stop) !== Object.prototype) {
+          throw new TypeError('Topology stop ' + stopIndex + ' must be an object');
+        }
+        var stopKeys = Object.keys(stop);
+        for (var stopKeyIndex = 0; stopKeyIndex < stopKeys.length; stopKeyIndex += 1) {
+          if (['index', 'proof_state', 'commitment', 'route_id', 'url'].indexOf(stopKeys[stopKeyIndex]) === -1) {
+            throw new TypeError('Topology stop ' + stopIndex + ' contains unsupported fields');
+          }
+        }
+        if (!Object.prototype.hasOwnProperty.call(stop, 'index') ||
+            !Object.prototype.hasOwnProperty.call(stop, 'proof_state') ||
+            !Object.prototype.hasOwnProperty.call(stop, 'commitment')) {
+          throw new TypeError('Topology stop ' + stopIndex + ' is missing required fields');
+        }
+        if (typeof stop.route_id === 'undefined') stop.route_id = null;
+        if (typeof stop.url === 'undefined') stop.url = null;
         if (!Number.isSafeInteger(stop.index) || stop.index < 0) throw new TypeError('Topology stop index is invalid');
         if (stop.proof_state !== PROOF_STATES.CONCEALED && stop.proof_state !== PROOF_STATES.REVEALED) {
           throw new TypeError('Topology stop proof state is invalid');
