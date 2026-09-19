@@ -391,7 +391,12 @@
       return { trail_id: node.trail_id, manifest: clone(node.manifest) };
     });
 
-    var expected = await exportTopology(envelopes, { created_at: value.created_at });
+    var verifiedEnvelopes = [];
+    for (var envelopeIndex = 0; envelopeIndex < envelopes.length; envelopeIndex += 1) {
+      verifiedEnvelopes.push(await verifyAny(envelopes[envelopeIndex]));
+    }
+
+    var expected = await exportTopology(verifiedEnvelopes, { created_at: value.created_at });
     expected.diagnostics = clone(value.diagnostics);
 
     if (trail.canonicalJson(value.nodes) !== trail.canonicalJson(expected.nodes)) {
