@@ -5,6 +5,8 @@ on:
     paths:
       - 'proof-session.js'
       - 'proof-session-renderer.js'
+      - 'proof-session-import.js'
+      - 'proof-session-import.css'
       - 'proof-session.css'
       - 'docs/PROOF_SESSIONS_V1_SPEC.md'
       - 'docs/PROOF_SESSION_V0.1_SCHEMA.md'
@@ -13,6 +15,7 @@ on:
       - 'tests/proof-session-schema.test.js'
       - 'tests/proof-session-core.test.js'
       - 'tests/proof-session-renderer.spec.js'
+      - 'tests/proof-session-import.spec.js'
       - 'package.json'
       - '.github/workflows/proof-sessions-v1-audit.yml'
   push:
@@ -21,6 +24,8 @@ on:
     paths:
       - 'proof-session.js'
       - 'proof-session-renderer.js'
+      - 'proof-session-import.js'
+      - 'proof-session-import.css'
       - 'proof-session.css'
       - 'docs/PROOF_SESSIONS_V1_SPEC.md'
       - 'docs/PROOF_SESSION_V0.1_SCHEMA.md'
@@ -29,6 +34,7 @@ on:
       - 'tests/proof-session-schema.test.js'
       - 'tests/proof-session-core.test.js'
       - 'tests/proof-session-renderer.spec.js'
+      - 'tests/proof-session-import.spec.js'
       - 'package.json'
       - '.github/workflows/proof-sessions-v1-audit.yml'
 
@@ -48,7 +54,7 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
-      - name: Check Proof Sessions renderer syntax
-        run: node --check proof-session-renderer.js
+      - name: Check Proof Sessions browser module syntax
+        run: node --check proof-session-renderer.js && node --check proof-session-import.js
       - name: Run Proof Sessions schema and pure-core tests
         run: node --test tests/proof-session-schema.test.js tests/proof-session-core.test.js
