@@ -195,10 +195,10 @@
     try {
       var display;
       if (format === TOPOLOGY_FORMAT) {
-        if (!root.R4b1tTopology || typeof root.R4b1tTopology.importTopology !== 'function') {
+        if (!root.R4b1tExportVerifier || typeof root.R4b1tExportVerifier.verifyExport !== 'function') {
           throw new Error('Topology verifier is unavailable');
         }
-        await root.R4b1tTopology.importTopology(value);
+        await root.R4b1tExportVerifier.verifyExport(value);
         display = topologyDisplay(value);
       } else if (format === BLIND_FORMAT) {
         if (!root.R4b1tBlind || typeof root.R4b1tBlind.verify !== 'function') {

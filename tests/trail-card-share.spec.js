@@ -44,6 +44,15 @@ async function fixtureBundle(relativePath) {
   });
 }
 
+async function tamperedTopologyBundle() {
+  const file = path.resolve(__dirname, 'fixtures/topology-v2/independent-verifier-valid.json');
+  const value = JSON.parse(fs.readFileSync(file, 'utf8'));
+  value.nodes[0].stops[0].proof_state = 'CONCEALED';
+  return portableBundle.create(JSON.stringify(value), {
+    verified_at: '2026-09-19T18:03:00.000Z',
+  });
+}
+
 async function loadShare(page) {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => window.R4b1tTrailCardShare);
@@ -279,6 +288,19 @@ for (const [format, fixture] of [
     expect(validated.source.artifact_format).toBe(format);
   });
 }
+
+test('standalone topology rejection path remains REJECTED through browser handoff', async ({ page }) => {
+  await loadShare(page);
+  const value = await tamperedTopologyBundle();
+  expect(value.card.verification.state).toBe('REJECTED');
+
+  const validated = await page.evaluate(
+    (input) => window.R4b1tTrailCardShare.validateBundle(input),
+    value,
+  );
+  expect(validated.verification.state).toBe('REJECTED');
+  expect(validated.verification.verifier).toBe('r4b1t-topology-verifier/v0.1');
+});
 
 for (const state of ['REJECTED', 'UNVERIFIED']) {
   test(`${state} cards remain diagnostic through point-to-point sharing`, async ({ page }) => {
