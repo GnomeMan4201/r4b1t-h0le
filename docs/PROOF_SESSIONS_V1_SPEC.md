@@ -1,6 +1,6 @@
 # Proof Sessions v1 — Normative Specification
 
-Status: DRAFT
+Status: FROZEN
 Scope: proof/presentation workspace only
 Contract clauses touched: 3, 4, 5, 6, 7, 9
 Depends on: `CONTRACT.md` v1.0 (frozen), Trail Topology v2 (frozen), Trail Cards v1 (frozen), Trail Comparison / Divergence v1 (frozen)
