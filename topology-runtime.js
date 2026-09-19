@@ -345,7 +345,8 @@
     else if (event.code === 'End') target = items[items.length - 1];
     else if (event.code === 'ArrowRight') target = directChildTreeItem(item);
     else if (event.code === 'ArrowLeft') target = parentTreeItem(item);
-    else if (event.code === 'Enter' || event.code === 'Space') {
+    else if (event.code === 'Enter' || event.key === 'Enter' ||
+             event.code === 'Space' || event.key === ' ' || event.key === 'Spacebar') {
       var snapshot = snapshotForTreeItem(item);
       if (!snapshot) return false;
       event.preventDefault();
