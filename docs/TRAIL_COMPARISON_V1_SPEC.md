@@ -1,6 +1,7 @@
 # Trail Comparison / Divergence v1 — Normative Specification
 
-Status: DRAFT
+Status: FROZEN — Trail Comparison / Divergence v1 accepted after final contract audit
+Acceptance baseline: c8ac1bedabd2b8fa65414ad3360bba9e2394a95c
 Scope: proof/presentation only
 Contract clauses touched: 3, 4, 5, 6, 7, 9
 Depends on: `CONTRACT.md` v1.0 (frozen), Trail Topology v2 (frozen), Trail Cards v1 (frozen)
