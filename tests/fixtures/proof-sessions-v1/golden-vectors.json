@@ -1,0 +1,1436 @@
+{
+  "format": "r4b1t-proof-session-golden-vectors/v0.1",
+  "verification_states": [
+    "VERIFIED",
+    "REJECTED",
+    "UNVERIFIED"
+  ],
+  "summary_labels": [
+    "SOURCES",
+    "VERIFIED",
+    "REJECTED",
+    "UNVERIFIED",
+    "VERIFIED PAIRS",
+    "DIRECT RELATIONSHIPS",
+    "DIVERGENT PAIRS",
+    "IDENTICAL TRAIL PAIRS",
+    "SHARED PREFIX ONLY PAIRS",
+    "NO SHARED PREFIX PAIRS"
+  ],
+  "cases": [
+    {
+      "name": "two-verified-unrelated-v01",
+      "expected_unique_sources": 2,
+      "expected_verified": 2,
+      "expected_rejected": 0,
+      "expected_unverified": 0,
+      "expected_verified_pairs": 1,
+      "expected_direct_relationships": 0,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "canonical_trail_id": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          }
+        ],
+        "pairs": [
+          {
+            "left_slot": "S1",
+            "right_slot": "S2",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "relationships": [],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 2
+          },
+          {
+            "label": "VERIFIED",
+            "count": 2
+          },
+          {
+            "label": "REJECTED",
+            "count": 0
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 0
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 1
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 0
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 1
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 0
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 1
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "verified-direct-parent-child",
+      "expected_unique_sources": 2,
+      "expected_verified": 2,
+      "expected_rejected": 0,
+      "expected_unverified": 0,
+      "expected_verified_pairs": 1,
+      "expected_direct_relationships": 1,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "canonical_trail_id": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          }
+        ],
+        "pairs": [
+          {
+            "left_slot": "S1",
+            "right_slot": "S2",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        ],
+        "relationships": [
+          {
+            "type": "DIRECT_PARENT",
+            "parent_slot": "S1",
+            "child_slot": "S2",
+            "comparison_projection_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        ],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 2
+          },
+          {
+            "label": "VERIFIED",
+            "count": 2
+          },
+          {
+            "label": "REJECTED",
+            "count": 0
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 0
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 1
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 1
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 1
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 0
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 0
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "three-source-direct-chain-no-transitive-edge",
+      "expected_unique_sources": 3,
+      "expected_verified": 3,
+      "expected_rejected": 0,
+      "expected_unverified": 0,
+      "expected_verified_pairs": 3,
+      "expected_direct_relationships": 2,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "canonical_trail_id": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S3",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+            "canonical_trail_id": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          }
+        ],
+        "pairs": [
+          {
+            "left_slot": "S1",
+            "right_slot": "S2",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          {
+            "left_slot": "S1",
+            "right_slot": "S3",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+          },
+          {
+            "left_slot": "S2",
+            "right_slot": "S3",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          }
+        ],
+        "relationships": [
+          {
+            "type": "DIRECT_PARENT",
+            "parent_slot": "S1",
+            "child_slot": "S2",
+            "comparison_projection_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          },
+          {
+            "type": "DIRECT_PARENT",
+            "parent_slot": "S2",
+            "child_slot": "S3",
+            "comparison_projection_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          }
+        ],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 3
+          },
+          {
+            "label": "VERIFIED",
+            "count": 3
+          },
+          {
+            "label": "REJECTED",
+            "count": 0
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 0
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 3
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 2
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 2
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 1
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 0
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "shared-prefix-without-direct-lineage",
+      "expected_unique_sources": 2,
+      "expected_verified": 2,
+      "expected_rejected": 0,
+      "expected_unverified": 0,
+      "expected_verified_pairs": 1,
+      "expected_direct_relationships": 0,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "canonical_trail_id": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          }
+        ],
+        "pairs": [
+          {
+            "left_slot": "S1",
+            "right_slot": "S2",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+          }
+        ],
+        "relationships": [],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 2
+          },
+          {
+            "label": "VERIFIED",
+            "count": 2
+          },
+          {
+            "label": "REJECTED",
+            "count": 0
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 0
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 1
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 0
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 1
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 1
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 0
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "exact-duplicate-source-collapse",
+      "expected_unique_sources": 1,
+      "expected_verified": 1,
+      "expected_rejected": 0,
+      "expected_unverified": 0,
+      "expected_verified_pairs": 0,
+      "expected_direct_relationships": 0,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 2,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          }
+        ],
+        "pairs": [],
+        "relationships": [],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 1
+          },
+          {
+            "label": "VERIFIED",
+            "count": 1
+          },
+          {
+            "label": "REJECTED",
+            "count": 0
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 0
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 0
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 0
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 0
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 0
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 0
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "same-canonical-trail-different-source-bytes",
+      "expected_unique_sources": 2,
+      "expected_verified": 2,
+      "expected_rejected": 0,
+      "expected_unverified": 0,
+      "expected_verified_pairs": 1,
+      "expected_direct_relationships": 0,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          }
+        ],
+        "pairs": [
+          {
+            "left_slot": "S1",
+            "right_slot": "S2",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+          }
+        ],
+        "relationships": [],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 2
+          },
+          {
+            "label": "VERIFIED",
+            "count": 2
+          },
+          {
+            "label": "REJECTED",
+            "count": 0
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 0
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 1
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 0
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 0
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 1
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 0
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 0
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "rejected-source-alongside-verified",
+      "expected_unique_sources": 2,
+      "expected_verified": 1,
+      "expected_rejected": 1,
+      "expected_unverified": 0,
+      "expected_verified_pairs": 0,
+      "expected_direct_relationships": 0,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+            "canonical_trail_id": null,
+            "supplied_count": 1,
+            "verification": {
+              "state": "REJECTED",
+              "verified_digest": null,
+              "verified_at": "2026-09-19T22:01:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": "Canonical verification failed"
+            }
+          }
+        ],
+        "pairs": [],
+        "relationships": [],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 2
+          },
+          {
+            "label": "VERIFIED",
+            "count": 1
+          },
+          {
+            "label": "REJECTED",
+            "count": 1
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 0
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 0
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 0
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 0
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 0
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 0
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "unverified-source-alongside-verified",
+      "expected_unique_sources": 2,
+      "expected_verified": 1,
+      "expected_rejected": 0,
+      "expected_unverified": 1,
+      "expected_verified_pairs": 0,
+      "expected_direct_relationships": 0,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v9.9",
+            "artifact_digest": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+            "canonical_trail_id": null,
+            "supplied_count": 1,
+            "verification": {
+              "state": "UNVERIFIED",
+              "verified_digest": null,
+              "verified_at": null,
+              "verifier": "r4b1t-proof-session-verifier/v0.1",
+              "reason": "Unsupported source artifact format"
+            }
+          }
+        ],
+        "pairs": [],
+        "relationships": [],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 2
+          },
+          {
+            "label": "VERIFIED",
+            "count": 1
+          },
+          {
+            "label": "REJECTED",
+            "count": 0
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 1
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 0
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 0
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 0
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 0
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 0
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "concealed-v02-pair-remains-comparison-referenced",
+      "expected_unique_sources": 2,
+      "expected_verified": 2,
+      "expected_rejected": 0,
+      "expected_unverified": 0,
+      "expected_verified_pairs": 1,
+      "expected_direct_relationships": 0,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.2",
+            "artifact_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+            "canonical_trail_id": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-blind-verifier/v0.2",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v0.2",
+            "artifact_digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+            "canonical_trail_id": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-blind-verifier/v0.2",
+              "reason": null
+            }
+          }
+        ],
+        "pairs": [
+          {
+            "left_slot": "S1",
+            "right_slot": "S2",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+          }
+        ],
+        "relationships": [],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 2
+          },
+          {
+            "label": "VERIFIED",
+            "count": 2
+          },
+          {
+            "label": "REJECTED",
+            "count": 0
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 0
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 1
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 0
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 1
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 0
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 1
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "mixed-revealed-concealed-pair-remains-comparison-referenced",
+      "expected_unique_sources": 2,
+      "expected_verified": 2,
+      "expected_rejected": 0,
+      "expected_unverified": 0,
+      "expected_verified_pairs": 1,
+      "expected_direct_relationships": 0,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v0.2",
+            "artifact_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+            "canonical_trail_id": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-blind-verifier/v0.2",
+              "reason": null
+            }
+          }
+        ],
+        "pairs": [
+          {
+            "left_slot": "S1",
+            "right_slot": "S2",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+          }
+        ],
+        "relationships": [],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 2
+          },
+          {
+            "label": "VERIFIED",
+            "count": 2
+          },
+          {
+            "label": "REJECTED",
+            "count": 0
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 0
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 1
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 0
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 1
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 0
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 1
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "deterministic-summary-counts",
+      "expected_unique_sources": 4,
+      "expected_verified": 3,
+      "expected_rejected": 1,
+      "expected_unverified": 0,
+      "expected_verified_pairs": 3,
+      "expected_direct_relationships": 1,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "canonical_trail_id": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S3",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+            "canonical_trail_id": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S4",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+            "canonical_trail_id": null,
+            "supplied_count": 1,
+            "verification": {
+              "state": "REJECTED",
+              "verified_digest": null,
+              "verified_at": "2026-09-19T22:01:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": "Canonical verification failed"
+            }
+          }
+        ],
+        "pairs": [
+          {
+            "left_slot": "S1",
+            "right_slot": "S2",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+          },
+          {
+            "left_slot": "S1",
+            "right_slot": "S3",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+          },
+          {
+            "left_slot": "S2",
+            "right_slot": "S3",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+          }
+        ],
+        "relationships": [
+          {
+            "type": "DIRECT_PARENT",
+            "parent_slot": "S1",
+            "child_slot": "S2",
+            "comparison_projection_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+          }
+        ],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 4
+          },
+          {
+            "label": "VERIFIED",
+            "count": 3
+          },
+          {
+            "label": "REJECTED",
+            "count": 1
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 0
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 3
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 1
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 2
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 1
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 1
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "deterministic-source-and-pair-ordering",
+      "expected_unique_sources": 3,
+      "expected_verified": 3,
+      "expected_rejected": 0,
+      "expected_unverified": 0,
+      "expected_verified_pairs": 3,
+      "expected_direct_relationships": 0,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "canonical_trail_id": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S3",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+            "canonical_trail_id": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          }
+        ],
+        "pairs": [
+          {
+            "left_slot": "S1",
+            "right_slot": "S2",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777"
+          },
+          {
+            "left_slot": "S1",
+            "right_slot": "S3",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:8888888888888888888888888888888888888888888888888888888888888888"
+          },
+          {
+            "left_slot": "S2",
+            "right_slot": "S3",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+          }
+        ],
+        "relationships": [],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 3
+          },
+          {
+            "label": "VERIFIED",
+            "count": 3
+          },
+          {
+            "label": "REJECTED",
+            "count": 0
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 0
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 3
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 0
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 3
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 0
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 3
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "export-reinspection-projection-shape",
+      "expected_unique_sources": 2,
+      "expected_verified": 2,
+      "expected_rejected": 0,
+      "expected_unverified": 0,
+      "expected_verified_pairs": 1,
+      "expected_direct_relationships": 1,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+            "canonical_trail_id": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          }
+        ],
+        "pairs": [
+          {
+            "left_slot": "S1",
+            "right_slot": "S2",
+            "comparison_format": "r4b1t-trail-comparison/v0.1",
+            "comparison_projection_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+          }
+        ],
+        "relationships": [
+          {
+            "type": "DIRECT_PARENT",
+            "parent_slot": "S1",
+            "child_slot": "S2",
+            "comparison_projection_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+          }
+        ],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 2
+          },
+          {
+            "label": "VERIFIED",
+            "count": 2
+          },
+          {
+            "label": "REJECTED",
+            "count": 0
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 0
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 1
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 1
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 1
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 0
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 0
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    },
+    {
+      "name": "diagnostic-sources-excluded-from-facts",
+      "expected_unique_sources": 3,
+      "expected_verified": 1,
+      "expected_rejected": 1,
+      "expected_unverified": 1,
+      "expected_verified_pairs": 0,
+      "expected_direct_relationships": 0,
+      "projection": {
+        "format": "r4b1t-proof-session/v0.1",
+        "sources": [
+          {
+            "slot_id": "S1",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+            "canonical_trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "supplied_count": 1,
+            "verification": {
+              "state": "VERIFIED",
+              "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+              "verified_at": "2026-09-19T22:00:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": null
+            }
+          },
+          {
+            "slot_id": "S2",
+            "artifact_format": "r4b1t-trail/v0.1",
+            "artifact_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "canonical_trail_id": null,
+            "supplied_count": 1,
+            "verification": {
+              "state": "REJECTED",
+              "verified_digest": null,
+              "verified_at": "2026-09-19T22:01:00.000Z",
+              "verifier": "r4b1t-trail-verifier/v0.1",
+              "reason": "Canonical verification failed"
+            }
+          },
+          {
+            "slot_id": "S3",
+            "artifact_format": "r4b1t-trail/v9.9",
+            "artifact_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "canonical_trail_id": null,
+            "supplied_count": 1,
+            "verification": {
+              "state": "UNVERIFIED",
+              "verified_digest": null,
+              "verified_at": null,
+              "verifier": "r4b1t-proof-session-verifier/v0.1",
+              "reason": "Unsupported source artifact format"
+            }
+          }
+        ],
+        "pairs": [],
+        "relationships": [],
+        "summary": [
+          {
+            "label": "SOURCES",
+            "count": 3
+          },
+          {
+            "label": "VERIFIED",
+            "count": 1
+          },
+          {
+            "label": "REJECTED",
+            "count": 1
+          },
+          {
+            "label": "UNVERIFIED",
+            "count": 1
+          },
+          {
+            "label": "VERIFIED PAIRS",
+            "count": 0
+          },
+          {
+            "label": "DIRECT RELATIONSHIPS",
+            "count": 0
+          },
+          {
+            "label": "DIVERGENT PAIRS",
+            "count": 0
+          },
+          {
+            "label": "IDENTICAL TRAIL PAIRS",
+            "count": 0
+          },
+          {
+            "label": "SHARED PREFIX ONLY PAIRS",
+            "count": 0
+          },
+          {
+            "label": "NO SHARED PREFIX PAIRS",
+            "count": 0
+          }
+        ],
+        "notice": "Proof Session organizes independently verified source artifacts and derived comparison projections. It does not replace any source artifact. Re-verify sources and recompute comparisons to confirm current validity."
+      }
+    }
+  ]
+}
