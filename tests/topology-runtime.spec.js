@@ -1,6 +1,7 @@
 'use strict';
 
 const { test, expect } = require('@playwright/test');
+const fs = require('node:fs/promises');
 
 test('local topology maps verified snapshots and opens revealed stops', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
@@ -239,4 +240,117 @@ test('rejected local artifacts stay out of the graph and surface only as diagnos
   expect(state.rejectedCount).toBe(1);
   expect(state.graphCards).toBe(0);
   expect(state.savedAtlas).toBe(0);
+});
+
+
+test('topology export stays disabled without local atlas evidence and for unsaved sample', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openTrailTopology === 'function');
+
+  await page.evaluate(async () => window.openTrailTopology());
+  let state = await page.locator('.topology-export').evaluate((button) => ({
+    disabled: button.disabled,
+    ariaDisabled: button.getAttribute('aria-disabled'),
+  }));
+  expect(state).toEqual({ disabled: true, ariaDisabled: 'true' });
+
+  await page.evaluate(async () => window.openTrailWearSample());
+  state = await page.locator('.topology-export').evaluate((button) => ({
+    disabled: button.disabled,
+    ariaDisabled: button.getAttribute('aria-disabled'),
+  }));
+  expect(state).toEqual({ disabled: true, ariaDisabled: 'true' });
+});
+
+test('programmatic topology export is deterministic for fixed explicit metadata', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.R4b1tTrail && typeof window.openTrailTopology === 'function');
+
+  const result = await page.evaluate(async () => {
+    const trail = window.R4b1tTrail;
+    const manifest = await trail.createManifest({
+      created_at: '2026-09-19T03:30:00.000Z',
+      corpus_revision: 'sha256:' + 'a'.repeat(64),
+      seed: 'export-ux-determinism',
+      terrain: 'RESEARCH',
+      routes: [{ url: 'https://example.org/export', action: 'ROLL' }],
+      parent: null,
+    });
+    const snapshot = await trail.envelope(manifest);
+    await window.openTrailTopology(snapshot);
+
+    const original = window.URL.createObjectURL;
+    const originalClick = HTMLAnchorElement.prototype.click;
+    window.URL.createObjectURL = () => 'blob:test';
+    HTMLAnchorElement.prototype.click = function () {};
+    try {
+      const first = await window.exportTrailTopology('2026-09-19T03:31:00.000Z');
+      const second = await window.exportTrailTopology('2026-09-19T03:31:00.000Z');
+      return {
+        first: JSON.stringify(first),
+        second: JSON.stringify(second),
+        format: first.format,
+        nodes: first.nodes.length,
+        diagnostics: first.diagnostics.length,
+      };
+    } finally {
+      window.URL.createObjectURL = original;
+      HTMLAnchorElement.prototype.click = originalClick;
+    }
+  });
+
+  expect(result.first).toBe(result.second);
+  expect(result.format).toBe('r4b1t-topology-export/v0.1');
+  expect(result.nodes).toBe(1);
+  expect(result.diagnostics).toBe(0);
+});
+
+test('EXPORT TOPOLOGY downloads canonical JSON and keeps rejected input diagnostics-only', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.R4b1tTrail && typeof window.openTrailTopology === 'function');
+
+  const setup = await page.evaluate(async () => {
+    const trail = window.R4b1tTrail;
+    const manifest = await trail.createManifest({
+      created_at: '2026-09-19T03:40:00.000Z',
+      corpus_revision: 'sha256:' + 'b'.repeat(64),
+      seed: 'export-ux-download',
+      terrain: 'RESEARCH',
+      routes: [{ url: 'https://example.net/export', action: 'ROLL' }],
+      parent: null,
+    });
+    const valid = await trail.envelope(manifest);
+    const rejected = JSON.parse(JSON.stringify(valid));
+    rejected.manifest.routes[0].url = 'https://attacker.invalid/';
+    localStorage.setItem('r4b1t_topology_atlas_v1', JSON.stringify([valid, rejected]));
+    await window.openTrailTopology();
+
+    return {
+      cards: document.querySelectorAll('.topology-card').length,
+      diagnostics: document.querySelectorAll('#trailTopologyDiagnostics [data-proof-state="REJECTED"]').length,
+      savedAtlas: JSON.parse(localStorage.getItem('r4b1t_topology_atlas_v1') || '[]').length,
+      exportDisabled: document.querySelector('.topology-export').disabled,
+    };
+  });
+
+  expect(setup.cards).toBe(1);
+  expect(setup.diagnostics).toBe(1);
+  expect(setup.savedAtlas).toBe(1);
+  expect(setup.exportDisabled).toBe(false);
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.locator('.topology-export').click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toMatch(/^r4b1t-topology-.*\.json$/);
+
+  const downloadPath = await download.path();
+  const artifact = JSON.parse(await fs.readFile(downloadPath, 'utf8'));
+
+  expect(artifact.format).toBe('r4b1t-topology-export/v0.1');
+  expect(artifact.nodes).toHaveLength(1);
+  expect(artifact.nodes[0].proof_state).toBe('VERIFIED');
+  expect(artifact.diagnostics).toHaveLength(1);
+  expect(artifact.diagnostics[0].proof_state).toBe('REJECTED');
+  expect(artifact.diagnostics[0].reason).toContain('Route ID mismatch');
+  expect(JSON.stringify(artifact)).not.toContain('attacker.invalid');
 });

@@ -7,6 +7,7 @@
   if (!api || !wear || !blind) return;
   var STORAGE_KEY = 'r4b1t_topology_atlas_v1';
   var LIMIT = 64;
+  var activeExportInputs = [];
 
   function readAtlas() {
     try {
@@ -34,7 +35,7 @@
       '.topology-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;border-bottom:1px solid #49312c;padding-bottom:16px;position:sticky;top:0;background:#090807fa;z-index:12}' +
       '.topology-kicker{font-size:9px;letter-spacing:.22em;color:#ff3333}.topology-title{font:58px/.9 "Bebas Neue",sans-serif;letter-spacing:.05em;margin:6px 0}' +
       '.topology-note{font-size:9px;line-height:1.6;color:#9a8f7a;max-width:620px}.topology-controls{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}' +
-      '.topology-controls button{border:1px solid #49312c;background:#141210;color:#e8e0d0;padding:12px;font:9px "DM Mono",monospace;letter-spacing:.1em}.topology-controls .topology-sample{border-color:#cc1111;color:#ff3333}' +
+      '.topology-controls button{border:1px solid #49312c;background:#141210;color:#e8e0d0;padding:12px;font:9px "DM Mono",monospace;letter-spacing:.1em}.topology-controls .topology-sample{border-color:#cc1111;color:#ff3333}.topology-controls .topology-export{border-color:#8b7767}.topology-controls button:disabled{opacity:.45;cursor:not-allowed}' +
       '.topology-map{padding:28px 0 70px}.topology-empty{border:1px dashed #49312c;padding:30px;color:#9a8f7a;font-size:10px}' +
       '.topology-forest{display:grid;gap:28px}.topology-branch{position:relative;min-width:0}' +
       '.topology-node-wrap{position:relative;padding-left:28px}.topology-node-wrap:before{content:"";position:absolute;left:8px;top:0;bottom:-16px;width:2px;background:#49312c}.topology-node-wrap:after{content:"";position:absolute;left:8px;top:28px;width:20px;height:2px;background:#49312c}' +
@@ -56,9 +57,12 @@
     overlay.setAttribute('aria-labelledby', 'trailTopologyTitle');
     overlay.setAttribute('aria-hidden', 'true');
     overlay.setAttribute('tabindex', '-1');
-    overlay.innerHTML = '<div class="topology-shell"><header class="topology-head"><div><div class="topology-kicker">LOCAL ATLAS / VERIFIED SNAPSHOTS</div><h2 class="topology-title" id="trailTopologyTitle">TRAIL TOPOLOGY</h2><div class="topology-note">Geometry follows verified parent/fork structure only. Wear remains diagnostic: black-red blocks stay concealed, inherited paper continues to the fork, and divergent paper begins after it.</div></div><div class="topology-controls"><button class="topology-sample" type="button">VIEW SAMPLE</button><button class="topology-close" type="button">CLOSE</button></div></header><aside class="topology-inspector" id="trailTopologyInspector" aria-live="polite" hidden></aside><section class="topology-diagnostics" id="trailTopologyDiagnostics" aria-label="Rejected trail diagnostics" hidden></section><main class="topology-map" id="trailTopologyMap"></main><div class="topology-legend"><span><b>PAPER</b> REVEALED</span><span><b>BLACK-RED</b> CONCEALED</span><span><b>WHITE EDGE</b> INHERITED</span><span><b>RED EDGE</b> DIVERGENT</span></div></div>';
+    overlay.innerHTML = '<div class="topology-shell"><header class="topology-head"><div><div class="topology-kicker">LOCAL ATLAS / VERIFIED SNAPSHOTS</div><h2 class="topology-title" id="trailTopologyTitle">TRAIL TOPOLOGY</h2><div class="topology-note">Geometry follows verified parent/fork structure only. Wear remains diagnostic: black-red blocks stay concealed, inherited paper continues to the fork, and divergent paper begins after it.</div></div><div class="topology-controls"><button class="topology-sample" type="button">VIEW SAMPLE</button><button class="topology-export" type="button">EXPORT TOPOLOGY</button><button class="topology-close" type="button">CLOSE</button></div></header><aside class="topology-inspector" id="trailTopologyInspector" aria-live="polite" hidden></aside><section class="topology-diagnostics" id="trailTopologyDiagnostics" aria-label="Rejected trail diagnostics" hidden></section><main class="topology-map" id="trailTopologyMap"></main><div class="topology-legend"><span><b>PAPER</b> REVEALED</span><span><b>BLACK-RED</b> CONCEALED</span><span><b>WHITE EDGE</b> INHERITED</span><span><b>RED EDGE</b> DIVERGENT</span></div></div>';
     overlay.querySelector('.topology-close').addEventListener('click', close);
     overlay.querySelector('.topology-sample').addEventListener('click', function () { sample().catch(showError); });
+    overlay.querySelector('.topology-export').addEventListener('click', function () {
+      exportCurrentTopology().catch(showError);
+    });
     overlay.addEventListener('click', function (event) { if (event.target === overlay) close(); });
     document.body.appendChild(overlay);
   }
@@ -264,6 +268,39 @@
     return branch;
   }
 
+  function updateExportControl() {
+    var button = document.querySelector('#trailTopologyOverlay .topology-export');
+    if (!button) return;
+    button.disabled = activeExportInputs.length === 0;
+    button.setAttribute('aria-disabled', button.disabled ? 'true' : 'false');
+  }
+
+  async function buildExportArtifact(createdAt) {
+    if (!activeExportInputs.length) throw new Error('No local topology artifacts available for export');
+    return api.exportTopology(activeExportInputs, { created_at: createdAt });
+  }
+
+  function downloadJson(filename, value) {
+    var blob = new Blob([JSON.stringify(value, null, 2) + '\n'], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.style.display = 'none';
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 0);
+  }
+
+  async function exportCurrentTopology(createdAt) {
+    var exportTime = createdAt || new Date().toISOString();
+    var artifact = await buildExportArtifact(exportTime);
+    var stamp = exportTime.replace(/[:.]/g, '-');
+    downloadJson('r4b1t-topology-' + stamp + '.json', artifact);
+    return artifact;
+  }
+
   function render(graph, status) {
     ensureOverlay();
     var map = document.getElementById('trailTopologyMap');
@@ -271,6 +308,7 @@
     var inspector = document.getElementById('trailTopologyInspector');
     if (inspector) { inspector.hidden = true; inspector.innerHTML = ''; }
     renderDiagnostics(graph.diagnostics || []);
+    updateExportControl();
     if (status) {
       var banner = document.createElement('div');
       banner.className = 'topology-parent';
@@ -307,6 +345,7 @@
   async function validLocalGraph(current) {
     if (current) await remember(current);
     var valid = [], diagnostics = [], values = readAtlas();
+    activeExportInputs = values.slice();
     for (var index = 0; index < values.length; index += 1) {
       var classified = await api.classify(values[index]);
       if (classified.proof_state === 'VERIFIED') valid.push(classified.snapshot);
@@ -370,6 +409,8 @@
 
   async function sample() {
     ensureOverlay();
+    activeExportInputs = [];
+    updateExportControl();
     var parentManifest = await blind.create({
       created_at: '2026-09-14T20:00:00.000Z',
       corpus_revision: 'sha256:' + 'a'.repeat(64),
@@ -414,13 +455,14 @@
     topologyFocus = null;
     if (restore && typeof restore.focus === 'function') setTimeout(function () { restore.focus(); }, 0);
   }
-  function clear() { localStorage.removeItem(STORAGE_KEY); return open(); }
+  function clear() { activeExportInputs = []; localStorage.removeItem(STORAGE_KEY); return open(); }
 
   window.openTrailTopology = open;
   window.openTrailWearSample = sample;
   window.closeTrailTopology = close;
   window.rememberTopologySnapshot = remember;
   window.clearTrailTopology = clear;
+  window.exportTrailTopology = exportCurrentTopology;
   document.addEventListener('DOMContentLoaded', ensureOverlay);
   document.addEventListener('keydown', function (event) {
     var overlay = document.getElementById('trailTopologyOverlay');
