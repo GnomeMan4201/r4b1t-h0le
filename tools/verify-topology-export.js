@@ -200,8 +200,14 @@ async function verifyExport(input) {
   };
 }
 
+async function readStdin() {
+  var chunks = [];
+  for await (const chunk of process.stdin) chunks.push(chunk);
+  return Buffer.concat(chunks.map((chunk) => Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk))).toString('utf8');
+}
+
 async function readJson(path) {
-  if (path === '-') return JSON.parse(await fs.readFile(0, 'utf8'));
+  if (path === '-') return JSON.parse(await readStdin());
   return JSON.parse(await fs.readFile(path, 'utf8'));
 }
 
