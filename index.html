@@ -21,7 +21,16 @@
   <link rel="stylesheet" href="trail-wear.css">
   <script src="trail-runtime.js" defer></script>
   <script src="blind-runtime.js" defer></script>
-  <script src="topology-runtime.js" defer></script>\n  <script src="trail-card-renderer.js" defer></script>\n  <script src="trail-card-share.js" defer></script>\n  <script src="trail-comparison-renderer.js" defer></script>\n  <link rel="stylesheet" href="trail-card.css">\n  <link rel="stylesheet" href="trail-card-share.css">\n  <link rel="stylesheet" href="trail-comparison.css">
+  <script src="topology-runtime.js" defer></script>
+  <script src="trail-card-renderer.js" defer></script>
+  <script src="trail-card-share.js" defer></script>
+  <script src="trail-comparison.js" defer></script>
+  <script src="trail-comparison-renderer.js" defer></script>
+  <script src="trail-comparison-import.js" defer></script>
+  <link rel="stylesheet" href="trail-card.css">
+  <link rel="stylesheet" href="trail-card-share.css">
+  <link rel="stylesheet" href="trail-comparison.css">
+  <link rel="stylesheet" href="trail-comparison-import.css">
 </head>
 <body>
 
@@ -102,10 +111,10 @@
 <div class="trail-bar">
   <span class="trail-label" id="trailLabel" style="display:none">trail //</span>
   <div id="trailItems"></div>
-  <button class="btn-share-trail" onclick="submitUrl()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">submit url</button><button class="btn-share-trail" onclick="toggleHistory()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">history</button><button class="btn-share-trail" onclick="shareCard()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">share card</button><button class="btn-share-trail" id="shareTrailBtn" onclick="shareTrail()">copy trail</button><button class="btn-share-trail" onclick="openTrailLedger()">trail file</button>
+  <button class="btn-share-trail" onclick="submitUrl()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">submit url</button><button class="btn-share-trail" onclick="toggleHistory()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">history</button><button class="btn-share-trail" onclick="toggleTrailComparison()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">compare trails</button><button class="btn-share-trail" onclick="shareCard()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">share card</button><button class="btn-share-trail" id="shareTrailBtn" onclick="shareTrail()">copy trail</button><button class="btn-share-trail" onclick="openTrailLedger()">trail file</button>
 </div>
 
-<!-- ── Iframe overlay ───────────────────────────────────────────────────────── -->
+\n<div id="trailComparisonOverlay" role="dialog" aria-modal="true" aria-label="Trail comparison" aria-hidden="true" tabindex="-1" hidden>\n  <div class="trail-comparison-import-shell">\n    <div class="trail-comparison-import-header">\n      <h2 class="trail-comparison-import-title">TRAIL COMPARISON</h2>\n      <button type="button" class="trail-comparison-import-close" onclick="toggleTrailComparison()">close</button>\n    </div>\n    <div id="trailComparisonMount"></div>\n  </div>\n</div>\n\n<!-- ── Iframe overlay ───────────────────────────────────────────────────────── -->
 <div id="historyOverlay" role="dialog" aria-modal="true" aria-labelledby="historyTitle" aria-hidden="true" tabindex="-1" style="display:none;position:fixed;inset:0;background:#000000e0;z-index:10000;align-items:center;justify-content:center">
   <div style="background:#141210;border:1px solid #2a2825;border-top:2px solid #cc1111;padding:24px;width:min(500px,92vw);max-height:80vh;display:flex;flex-direction:column">
     <div id="historyTitle" style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.1em;color:#e8e0d0;margin-bottom:16px">SESSION HISTORY</div>
