@@ -200,6 +200,30 @@ test('REJECTED and UNVERIFIED sources remain diagnostic and contribute no pair o
   assert.equal(summary['DIVERGENT PAIRS'], 0);
 });
 
+test('failed supplied-parent lineage demotes the child and excludes it from every session fact', async () => {
+  const parent = await v01(['https://example.org/a']);
+  const badChild = await v01(
+    ['https://example.org/not-a', 'https://example.org/b'],
+    { seed: 'bad-child', parent: { trail_id: parent.trail_id, fork_at: 1 } },
+  );
+  const other = await v01(['https://example.org/other'], { seed: 'other' });
+
+  const result = await core().build([bytes(parent), bytes(badChild), bytes(other)], {
+    verified_at: '2026-09-19T23:26:30.000Z',
+  });
+  const summary = summaryObject(result);
+
+  assert.deepEqual(result.sources.map((source) => source.verification.state), [
+    'VERIFIED', 'REJECTED', 'VERIFIED'
+  ]);
+  assert.equal(result.sources[1].canonical_trail_id, null);
+  assert.deepEqual(result.pairs.map((pair) => pair.left_slot + ':' + pair.right_slot), ['S1:S3']);
+  assert.equal(result.relationships.length, 0);
+  assert.equal(summary.VERIFIED, 2);
+  assert.equal(summary.REJECTED, 1);
+  assert.equal(summary['VERIFIED PAIRS'], 1);
+});
+
 test('concealed v0.2 sources are summarized only from frozen comparison facts without route leakage', async () => {
   const left = await v02([{ url: 'https://secret.example/a', revealed: false, nonce: NONCE_A }]);
   const right = await v02([{ url: 'https://secret.example/b', revealed: false, nonce: NONCE_A }], {
