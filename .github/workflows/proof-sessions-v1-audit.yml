@@ -1,0 +1,46 @@
+name: Proof Sessions v1 Audit
+
+on:
+  pull_request:
+    paths:
+      - 'proof-session.js'
+      - 'docs/PROOF_SESSIONS_V1_SPEC.md'
+      - 'docs/PROOF_SESSION_V0.1_SCHEMA.md'
+      - 'docs/schema/proof-session-v0.1.schema.json'
+      - 'tests/fixtures/proof-sessions-v1/**'
+      - 'tests/proof-session-schema.test.js'
+      - 'tests/proof-session-core.test.js'
+      - 'package.json'
+      - '.github/workflows/proof-sessions-v1-audit.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'proof-session.js'
+      - 'docs/PROOF_SESSIONS_V1_SPEC.md'
+      - 'docs/PROOF_SESSION_V0.1_SCHEMA.md'
+      - 'docs/schema/proof-session-v0.1.schema.json'
+      - 'tests/fixtures/proof-sessions-v1/**'
+      - 'tests/proof-session-schema.test.js'
+      - 'tests/proof-session-core.test.js'
+      - 'package.json'
+      - '.github/workflows/proof-sessions-v1-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Run Proof Sessions schema and pure-core tests
+        run: node --test tests/proof-session-schema.test.js tests/proof-session-core.test.js
