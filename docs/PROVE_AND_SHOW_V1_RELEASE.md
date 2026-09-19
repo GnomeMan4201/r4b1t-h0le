@@ -131,6 +131,28 @@ If a finding could plausibly affect proof correctness, authority interpretation,
 
 This is the Product Contract clause 6 default applied to release acceptance.
 
+## Production serving-layer gate
+
+Functional acceptance MUST NOT begin until this serving-layer gate passes against the custom domain.
+
+- [ ] HTTPS certificate is valid for `r4b1t.badbananaresearch.com`.
+- [ ] Plain HTTP redirects to HTTPS on the same expected host.
+- [ ] HTTPS root does not redirect to an unexpected host.
+- [ ] GitHub Pages and the custom domain both return successful root responses.
+- [ ] Root HTML on both origins contains the release-critical entry points.
+- [ ] SHA-256 for every curated release-critical executable/proof asset matches repository bytes.
+- [ ] SHA-256 for every curated release-critical asset matches between GitHub Pages and the custom domain.
+- [ ] `cache-control`, `etag`, and `last-modified` observations are recorded for both origins.
+- [ ] A fresh independent parity check after deployment propagation also passes.
+
+The curated parity set is intentionally limited to the application shell, proof runtimes, proof renderers/importers, associated proof-critical styles, service worker, and manifest. Corpus data, fonts, decorative images, and unrelated media are outside this parity gate.
+
+The gate answers one question:
+
+> Can GitHub Pages and the custom domain execute materially different Prove & Show application logic?
+
+Any failed item above is release-blocking. Functional production acceptance results are not valid while this gate is red.
+
 ## Production acceptance checklist
 
 Record the exact production candidate commit before testing.
@@ -196,12 +218,13 @@ None recorded. The current finding is release-blocking, not cosmetic.
 
 The `prove-show-v1.0.0` tag may be created only when:
 
-1. every release-blocking checklist item passes,
-2. the production candidate commit is recorded,
-3. all release-blocking failures are resolved,
-4. any non-blocking findings are explicitly recorded,
-5. the release-baseline PR is merged,
-6. the tag points to that accepted merge commit.
+1. the Production serving-layer gate passes in full,
+2. every release-blocking functional checklist item passes,
+3. the production candidate commit is recorded,
+4. all release-blocking failures are resolved,
+5. any non-blocking findings are explicitly recorded,
+6. the release-baseline PR is merged,
+7. the tag points to that accepted merge commit.
 
 ## Next phase boundary
 
