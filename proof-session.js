@@ -50,9 +50,18 @@
     return 'sha256:' + await trail.sha256Hex(bytes);
   }
 
-  async function digestProjection(value) {
+  function semanticComparisonProjection(value) {
     comparison.validateProjection(value);
-    return digestBytes(new TextEncoder().encode(trail.canonicalJson(value)));
+    var copy = JSON.parse(JSON.stringify(value));
+    if (copy.verification) {
+      if (copy.verification.left) copy.verification.left.verified_at = null;
+      if (copy.verification.right) copy.verification.right.verified_at = null;
+    }
+    return copy;
+  }
+
+  async function digestProjection(value) {
+    return digestBytes(new TextEncoder().encode(trail.canonicalJson(semanticComparisonProjection(value))));
   }
 
   function artifactFormatOf(value) {
@@ -435,6 +444,7 @@
     SUMMARY_LABELS: SUMMARY_LABELS.slice(),
     build: build,
     validateProjection: validateProjection,
-    digestProjection: digestProjection
+    digestProjection: digestProjection,
+    semanticComparisonProjection: semanticComparisonProjection
   };
 });
