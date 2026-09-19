@@ -1,0 +1,204 @@
+{
+  "format": "r4b1t-trail-card-golden-vectors/v0.1",
+  "states": [
+    "VERIFIED",
+    "REJECTED",
+    "UNVERIFIED"
+  ],
+  "relationship_states": [
+    "VERIFIED",
+    "PARENT ABSENT"
+  ],
+  "cases": [
+    {
+      "name": "verified-trail",
+      "expected_state": "VERIFIED",
+      "card": {
+        "format": "r4b1t-trail-card/v0.1",
+        "source": {
+          "artifact_format": "r4b1t-trail/v0.1",
+          "artifact_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "verification": {
+          "state": "VERIFIED",
+          "verified_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "verified_at": "2026-09-19T07:20:00.000Z",
+          "verifier": "r4b1t-trail-verifier/v0.1",
+          "reason": null
+        },
+        "display": {
+          "kind": "trail",
+          "trail_id": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "manifest_format": "r4b1t-trail/v0.1",
+          "genesis_id": null,
+          "stop_count": 2,
+          "concealed_count": 0,
+          "revealed_count": 2,
+          "parent": null,
+          "stops": [
+            {
+              "index": 0,
+              "state": "revealed"
+            },
+            {
+              "index": 1,
+              "state": "revealed"
+            }
+          ]
+        },
+        "notice": "Verification applies to the source artifact identified by artifact_digest, not to this card representation. Re-verify the source artifact to confirm current validity."
+      }
+    },
+    {
+      "name": "rejected-artifact",
+      "expected_state": "REJECTED",
+      "card": {
+        "format": "r4b1t-trail-card/v0.1",
+        "source": {
+          "artifact_format": "r4b1t-topology-export/v0.1",
+          "artifact_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "verification": {
+          "state": "REJECTED",
+          "verified_digest": null,
+          "verified_at": "2026-09-19T07:21:00.000Z",
+          "verifier": "r4b1t-topology-verifier/v0.1",
+          "reason": "Topology node stop derivation mismatch"
+        },
+        "display": null,
+        "notice": "Verification applies to the source artifact identified by artifact_digest, not to this card representation. Re-verify the source artifact to confirm current validity.",
+        "diagnostic_notice": "THIS CARD DOES NOT ESTABLISH TRAIL INTEGRITY."
+      }
+    },
+    {
+      "name": "unverified-unsupported-source",
+      "expected_state": "UNVERIFIED",
+      "card": {
+        "format": "r4b1t-trail-card/v0.1",
+        "source": {
+          "artifact_format": "r4b1t-topology-export/v9.9",
+          "artifact_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+        },
+        "verification": {
+          "state": "UNVERIFIED",
+          "verified_digest": null,
+          "verified_at": null,
+          "verifier": "r4b1t-topology-verifier/v0.1",
+          "reason": "Unsupported topology export format"
+        },
+        "display": null,
+        "notice": "Verification applies to the source artifact identified by artifact_digest, not to this card representation. Re-verify the source artifact to confirm current validity.",
+        "diagnostic_notice": "THIS CARD DOES NOT ESTABLISH TRAIL INTEGRITY."
+      }
+    },
+    {
+      "name": "verified-concealed-source-material",
+      "expected_state": "VERIFIED",
+      "card": {
+        "format": "r4b1t-trail-card/v0.1",
+        "source": {
+          "artifact_format": "r4b1t-trail/v0.2",
+          "artifact_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+        },
+        "verification": {
+          "state": "VERIFIED",
+          "verified_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+          "verified_at": "2026-09-19T07:22:00.000Z",
+          "verifier": "r4b1t-blind-verifier/v0.2",
+          "reason": null
+        },
+        "display": {
+          "kind": "trail",
+          "trail_id": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+          "manifest_format": "r4b1t-trail/v0.2",
+          "genesis_id": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+          "stop_count": 1,
+          "concealed_count": 1,
+          "revealed_count": 0,
+          "parent": null,
+          "stops": [
+            {
+              "index": 0,
+              "state": "concealed"
+            }
+          ]
+        },
+        "notice": "Verification applies to the source artifact identified by artifact_digest, not to this card representation. Re-verify the source artifact to confirm current validity."
+      }
+    },
+    {
+      "name": "verified-parent-absent-topology",
+      "expected_state": "VERIFIED",
+      "expected_relationship_state": "PARENT ABSENT",
+      "card": {
+        "format": "r4b1t-trail-card/v0.1",
+        "source": {
+          "artifact_format": "r4b1t-topology-export/v0.1",
+          "artifact_digest": "sha256:8888888888888888888888888888888888888888888888888888888888888888"
+        },
+        "verification": {
+          "state": "VERIFIED",
+          "verified_digest": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "verified_at": "2026-09-19T07:23:00.000Z",
+          "verifier": "r4b1t-topology-verifier/v0.1",
+          "reason": null
+        },
+        "display": {
+          "kind": "topology",
+          "node_count": 1,
+          "edge_count": 1,
+          "stop_count": 0,
+          "concealed_count": 0,
+          "revealed_count": 0,
+          "parent_absent_count": 1,
+          "branch_diagram": {
+            "nodes": [
+              {
+                "trail_id": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+                "manifest_format": "r4b1t-trail/v0.1",
+                "relationship_state": "PARENT ABSENT",
+                "stop_count": 0,
+                "concealed_count": 0,
+                "revealed_count": 0,
+                "parent": {
+                  "trail_id": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "fork_at": 0
+                }
+              }
+            ],
+            "edges": [
+              {
+                "from": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "to": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+                "fork_at": 0,
+                "relationship_state": "PARENT ABSENT"
+              }
+            ]
+          }
+        },
+        "notice": "Verification applies to the source artifact identified by artifact_digest, not to this card representation. Re-verify the source artifact to confirm current validity."
+      }
+    },
+    {
+      "name": "rejected-tampered-source-artifact",
+      "expected_state": "REJECTED",
+      "card": {
+        "format": "r4b1t-trail-card/v0.1",
+        "source": {
+          "artifact_format": "r4b1t-trail/v0.1",
+          "artifact_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        },
+        "verification": {
+          "state": "REJECTED",
+          "verified_digest": null,
+          "verified_at": "2026-09-19T07:24:00.000Z",
+          "verifier": "r4b1t-trail-verifier/v0.1",
+          "reason": "Route ID mismatch at step 1"
+        },
+        "display": null,
+        "notice": "Verification applies to the source artifact identified by artifact_digest, not to this card representation. Re-verify the source artifact to confirm current validity.",
+        "diagnostic_notice": "THIS CARD DOES NOT ESTABLISH TRAIL INTEGRITY."
+      }
+    }
+  ]
+}
