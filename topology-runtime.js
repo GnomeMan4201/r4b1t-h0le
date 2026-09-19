@@ -184,6 +184,13 @@
     branch.setAttribute('tabindex', '-1');
     branch.setAttribute('aria-selected', 'false');
     branch.setAttribute('aria-label', 'Trail ' + snapshot.short_id + ', proof ' + (snapshot.proof_state || 'VERIFIED') + ', depth ' + String(depth + 1));
+    branch.addEventListener('keyup', function (event) {
+      if (event.code === 'Space' || event.key === 'Space' || event.key === ' ' || event.key === 'Spacebar') {
+        event.preventDefault();
+        event.stopPropagation();
+        activateTreeItem(branch);
+      }
+    });
 
     if (snapshot.parent && snapshot.relationship_state === 'PARENT ABSENT') {
       var stub = document.createElement('div');
@@ -330,6 +337,16 @@
       : null;
   }
 
+  function activateTreeItem(item) {
+    var snapshot = snapshotForTreeItem(item);
+    if (!snapshot) return false;
+    selectTreeItem(item);
+    inspectNode(snapshot);
+    var panel = document.getElementById('trailTopologyInspector');
+    if (panel) panel.focus();
+    return true;
+  }
+
   function handleTreeKey(event) {
     var item = event.target && event.target.getAttribute &&
       event.target.getAttribute('role') === 'treeitem' ? event.target : null;
@@ -345,17 +362,9 @@
     else if (event.code === 'End') target = items[items.length - 1];
     else if (event.code === 'ArrowRight') target = directChildTreeItem(item);
     else if (event.code === 'ArrowLeft') target = parentTreeItem(item);
-    else if (event.code === 'Enter' || event.key === 'Enter' ||
-             event.code === 'Space' || event.key === 'Space' ||
-             event.key === ' ' || event.key === 'Spacebar') {
-      var snapshot = snapshotForTreeItem(item);
-      if (!snapshot) return false;
+    else if (event.code === 'Enter' || event.key === 'Enter') {
       event.preventDefault();
-      selectTreeItem(item);
-      inspectNode(snapshot);
-      var panel = document.getElementById('trailTopologyInspector');
-      if (panel) panel.focus();
-      return true;
+      return activateTreeItem(item);
     } else return false;
 
     event.preventDefault();
