@@ -1,0 +1,361 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://r4b1t.badbananaresearch.com/schema/trail-comparison-v0.1.json",
+  "title": "r4b1t_h0le Trail Comparison Projection v0.1",
+  "description": "Deterministic derived presentation for exactly two independently supplied canonical trail artifacts. This projection is not evidence authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "sources",
+    "verification",
+    "comparison",
+    "notice"
+  ],
+  "properties": {
+    "format": {
+      "const": "r4b1t-trail-comparison/v0.1"
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "left",
+        "right"
+      ],
+      "properties": {
+        "left": {
+          "$ref": "#/$defs/source"
+        },
+        "right": {
+          "$ref": "#/$defs/source"
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "left",
+        "right"
+      ],
+      "properties": {
+        "left": {
+          "$ref": "#/$defs/verificationResult"
+        },
+        "right": {
+          "$ref": "#/$defs/verificationResult"
+        }
+      }
+    },
+    "comparison": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/comparison"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "notice": {
+      "const": "Comparison describes two independently verified source artifacts identified by their digests. It does not replace either source artifact. Re-verify both sources to confirm current validity."
+    },
+    "diagnostic_notice": {
+      "const": "THIS RESULT DOES NOT ESTABLISH TRAIL COMPARISON FACTS."
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_format",
+        "artifact_digest"
+      ],
+      "properties": {
+        "artifact_format": {
+          "anyOf": [
+            {
+              "enum": [
+                "r4b1t-trail/v0.1",
+                "r4b1t-trail/v0.2"
+              ]
+            },
+            {
+              "type": "string",
+              "pattern": "^r4b1t-[a-z0-9-]+/v[0-9]+\\.[0-9]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "artifact_digest": {
+          "$ref": "#/$defs/sha256",
+          "description": "SHA-256 of the exact UTF-8 source bytes supplied for this side."
+        }
+      }
+    },
+    "verificationResult": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/verifiedResult"
+        },
+        {
+          "$ref": "#/$defs/rejectedResult"
+        },
+        {
+          "$ref": "#/$defs/unverifiedResult"
+        }
+      ]
+    },
+    "verifiedResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "verified_digest",
+        "verified_at",
+        "verifier",
+        "reason"
+      ],
+      "properties": {
+        "state": {
+          "const": "VERIFIED"
+        },
+        "verified_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "verifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "null"
+        }
+      }
+    },
+    "rejectedResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "verified_digest",
+        "verified_at",
+        "verifier",
+        "reason"
+      ],
+      "properties": {
+        "state": {
+          "const": "REJECTED"
+        },
+        "verified_digest": {
+          "type": "null"
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "verifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "unverifiedResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "verified_digest",
+        "verified_at",
+        "verifier",
+        "reason"
+      ],
+      "properties": {
+        "state": {
+          "const": "UNVERIFIED"
+        },
+        "verified_digest": {
+          "type": "null"
+        },
+        "verified_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "sideStop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "route_id",
+        "commitment"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "REVEALED",
+            "CONCEALED",
+            "ABSENT"
+          ]
+        },
+        "route_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "commitment": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "position": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "index",
+        "state",
+        "left",
+        "right"
+      ],
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "state": {
+          "enum": [
+            "MATCH_REVEALED",
+            "DIFFER_REVEALED",
+            "LEFT_CONCEALED",
+            "RIGHT_CONCEALED",
+            "BOTH_CONCEALED_SAME_COMMITMENT",
+            "BOTH_CONCEALED_DIFFERENT_COMMITMENT",
+            "LEFT_ONLY",
+            "RIGHT_ONLY"
+          ]
+        },
+        "left": {
+          "$ref": "#/$defs/sideStop"
+        },
+        "right": {
+          "$ref": "#/$defs/sideStop"
+        }
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "left_trail_id",
+        "right_trail_id",
+        "lineage_state",
+        "direct_fork_at",
+        "shared_prefix_length",
+        "first_divergence_index",
+        "left_stop_count",
+        "right_stop_count",
+        "positions"
+      ],
+      "properties": {
+        "left_trail_id": {
+          "$ref": "#/$defs/sha256"
+        },
+        "right_trail_id": {
+          "$ref": "#/$defs/sha256"
+        },
+        "lineage_state": {
+          "enum": [
+            "SAME_TRAIL",
+            "LEFT_PARENT_OF_RIGHT",
+            "RIGHT_PARENT_OF_LEFT",
+            "SHARED_ANCESTRY_NOT_PROVEN",
+            "NO_SHARED_PREFIX"
+          ]
+        },
+        "direct_fork_at": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "shared_prefix_length": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "first_divergence_index": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "left_stop_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "right_stop_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/position"
+          }
+        }
+      }
+    }
+  }
+}
