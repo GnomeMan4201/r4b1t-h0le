@@ -9,6 +9,8 @@
   var ALLOWED_FILES = ['README.txt', 'source.json', 'trail-card.json'];
   var CARD_FORMAT = 'r4b1t-trail-card/v0.1';
   var TRAIL_FORMAT = 'r4b1t-trail/v0.1';
+  var BLIND_FORMAT = 'r4b1t-trail/v0.2';
+  var TOPOLOGY_FORMAT = 'r4b1t-topology-export/v0.1';
   var NOTICE = 'Verification applies to the source artifact identified by artifact_digest, not to this card representation. Re-verify the source artifact to confirm current validity.';
   var DIAGNOSTIC_NOTICE = 'THIS CARD DOES NOT ESTABLISH TRAIL INTEGRITY.';
   var SHA256 = /^sha256:[0-9a-f]{64}$/;
@@ -56,23 +58,84 @@
     return parent ? { trail_id: parent.trail_id, fork_at: parent.fork_at } : null;
   }
 
+  function verifierFor(format) {
+    if (format === TRAIL_FORMAT) return 'r4b1t-trail-verifier/v0.1';
+    if (format === BLIND_FORMAT) return 'r4b1t-blind-verifier/v0.2';
+    if (typeof format === 'string' && format.indexOf('r4b1t-topology-export/') === 0) {
+      return 'r4b1t-topology-verifier/v0.1';
+    }
+    return 'r4b1t-card-verifier/v0.1';
+  }
+
   function trailDisplay(snapshot) {
     var manifest = snapshot.manifest;
-    var stops = manifest.routes.map(function (_, index) { return { index: index, state: 'revealed' }; });
+    if (manifest.format === TRAIL_FORMAT) {
+      var routes = manifest.routes.map(function (_, index) { return { index: index, state: 'revealed' }; });
+      return {
+        kind: 'trail',
+        trail_id: snapshot.trail_id,
+        manifest_format: manifest.format,
+        genesis_id: null,
+        stop_count: routes.length,
+        concealed_count: 0,
+        revealed_count: routes.length,
+        parent: parentRef(manifest.parent),
+        stops: routes
+      };
+    }
+    var stops = manifest.steps.map(function (step, index) { return { index: index, state: step.state }; });
+    var concealed = stops.filter(function (stop) { return stop.state === 'concealed'; }).length;
     return {
       kind: 'trail',
       trail_id: snapshot.trail_id,
       manifest_format: manifest.format,
-      genesis_id: null,
+      genesis_id: manifest.genesis_id,
       stop_count: stops.length,
-      concealed_count: 0,
-      revealed_count: stops.length,
-      parent: parentRef(manifest.parent),
+      concealed_count: concealed,
+      revealed_count: stops.length - concealed,
+      parent: parentRef(manifest.genesis.parent),
       stops: stops
     };
   }
 
-  function diagnostic(source, state, verifiedAt, reason) {
+  function topologyDisplay(value) {
+    var nodes = value.nodes.map(function (node) {
+      var concealed = node.stops.filter(function (stop) { return stop.proof_state === 'CONCEALED'; }).length;
+      return {
+        trail_id: node.trail_id,
+        manifest_format: node.manifest_format,
+        relationship_state: node.relationship_state,
+        stop_count: node.stops.length,
+        concealed_count: concealed,
+        revealed_count: node.stops.length - concealed,
+        parent: parentRef(node.parent)
+      };
+    });
+    var edges = value.edges.map(function (edge) {
+      return {
+        from: edge.from,
+        to: edge.to,
+        fork_at: edge.fork_at,
+        relationship_state: edge.proof_state
+      };
+    });
+    var concealed = nodes.reduce(function (sum, node) { return sum + node.concealed_count; }, 0);
+    var revealed = nodes.reduce(function (sum, node) { return sum + node.revealed_count; }, 0);
+    return {
+      kind: 'topology',
+      node_count: nodes.length,
+      edge_count: edges.length,
+      stop_count: concealed + revealed,
+      concealed_count: concealed,
+      revealed_count: revealed,
+      parent_absent_count: nodes.filter(function (node) {
+        return node.relationship_state === 'PARENT ABSENT';
+      }).length,
+      branch_diagram: { nodes: nodes, edges: edges }
+    };
+  }
+
+  function diagnostic(source, state, verifiedAt, verifier, reason) {
     return {
       format: CARD_FORMAT,
       source: source,
@@ -80,7 +143,7 @@
         state: state,
         verified_digest: null,
         verified_at: verifiedAt,
-        verifier: state === 'UNVERIFIED' ? 'r4b1t-card-verifier/v0.1' : 'r4b1t-trail-verifier/v0.1',
+        verifier: verifier,
         reason: reason
       },
       display: null,
@@ -108,19 +171,46 @@
         { artifact_format: null, artifact_digest: digest },
         'REJECTED',
         verificationTime(options.verified_at),
+        'r4b1t-card-verifier/v0.1',
         error && error.message ? error.message : String(error)
       );
     }
 
     var format = artifactFormat(value);
     var source = { artifact_format: format, artifact_digest: digest };
-    if (format !== TRAIL_FORMAT || !root.R4b1tTrail || typeof root.R4b1tTrail.verify !== 'function') {
-      return diagnostic(source, 'UNVERIFIED', null, 'Unsupported source artifact format');
+    var verifier = verifierFor(format);
+    if (format !== TRAIL_FORMAT && format !== BLIND_FORMAT && format !== TOPOLOGY_FORMAT) {
+      return diagnostic(
+        source,
+        'UNVERIFIED',
+        null,
+        verifier,
+        format && format.indexOf('r4b1t-topology-export/') === 0
+          ? 'Unsupported topology export format'
+          : 'Unsupported source artifact format'
+      );
     }
 
     var verifiedAt = verificationTime(options.verified_at);
     try {
-      var verified = await root.R4b1tTrail.verify(value);
+      var display;
+      if (format === TOPOLOGY_FORMAT) {
+        if (!root.R4b1tTopology || typeof root.R4b1tTopology.importTopology !== 'function') {
+          throw new Error('Topology verifier is unavailable');
+        }
+        await root.R4b1tTopology.importTopology(value);
+        display = topologyDisplay(value);
+      } else if (format === BLIND_FORMAT) {
+        if (!root.R4b1tBlind || typeof root.R4b1tBlind.verify !== 'function') {
+          throw new Error('Blind verifier is unavailable');
+        }
+        display = trailDisplay(await root.R4b1tBlind.verify(value));
+      } else {
+        if (!root.R4b1tTrail || typeof root.R4b1tTrail.verify !== 'function') {
+          throw new Error('Trail verifier is unavailable');
+        }
+        display = trailDisplay(await root.R4b1tTrail.verify(value));
+      }
       return {
         format: CARD_FORMAT,
         source: source,
@@ -128,10 +218,10 @@
           state: 'VERIFIED',
           verified_digest: digest,
           verified_at: verifiedAt,
-          verifier: 'r4b1t-trail-verifier/v0.1',
+          verifier: verifier,
           reason: null
         },
-        display: trailDisplay(verified),
+        display: display,
         notice: NOTICE
       };
     } catch (error) {
@@ -139,6 +229,7 @@
         source,
         'REJECTED',
         verifiedAt,
+        verifier,
         error && error.message ? error.message : String(error)
       );
     }
@@ -217,6 +308,9 @@
     }
     if (storedCard.verification.state === 'VERIFIED' && storedCard.verification.verified_digest !== digest) {
       throw new Error('Trail Card handoff verified digest mismatch');
+    }
+    if (text(bundle.files['README.txt']) !== readmeFor(storedCard)) {
+      throw new Error('Trail Card handoff README authority notice mismatch');
     }
     var fresh = await projectTrail(bundle.files['source.json'], {
       verified_at: storedCard.verification.verified_at

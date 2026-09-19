@@ -1,6 +1,8 @@
 'use strict';
 
 const { createHash } = require('node:crypto');
+const fs = require('node:fs');
+const path = require('node:path');
 const { test, expect } = require('@playwright/test');
 
 const trail = require('../trail-manifest.js');
@@ -32,6 +34,13 @@ async function bundle(state = 'VERIFIED') {
 
   return portableBundle.create(source, {
     verified_at: '2026-09-19T18:01:00.000Z',
+  });
+}
+
+async function fixtureBundle(relativePath) {
+  const source = fs.readFileSync(path.resolve(__dirname, relativePath), 'utf8');
+  return portableBundle.create(source, {
+    verified_at: '2026-09-19T18:02:00.000Z',
   });
 }
 
@@ -237,6 +246,39 @@ test('README is mandatory for download, copy, and share', async ({ page }) => {
 
   for (const error of result) expect(error).toMatch(/missing|required|README/i);
 });
+
+test('README authority notice cannot be changed before handoff', async ({ page }) => {
+  await loadShare(page);
+  const message = await page.evaluate(async (value) => {
+    value.files['README.txt'] = new TextEncoder().encode('The card is authoritative.\n');
+    try {
+      await window.R4b1tTrailCardShare.validateBundle(value);
+      return null;
+    } catch (error) {
+      return error.message;
+    }
+  }, await bundle());
+
+  expect(message).toMatch(/README|authority|bundle/i);
+});
+
+for (const [format, fixture] of [
+  ['r4b1t-trail/v0.2', 'fixtures/blind/concealed.json'],
+  ['r4b1t-topology-export/v0.1', 'fixtures/topology-v2/independent-verifier-valid.json'],
+]) {
+  test(`${format} keeps VERIFIED semantics through browser handoff`, async ({ page }) => {
+    await loadShare(page);
+    const value = await fixtureBundle(fixture);
+    expect(value.card.verification.state).toBe('VERIFIED');
+
+    const validated = await page.evaluate(
+      (input) => window.R4b1tTrailCardShare.validateBundle(input),
+      value,
+    );
+    expect(validated.verification.state).toBe('VERIFIED');
+    expect(validated.source.artifact_format).toBe(format);
+  });
+}
 
 for (const state of ['REJECTED', 'UNVERIFIED']) {
   test(`${state} cards remain diagnostic through point-to-point sharing`, async ({ page }) => {
