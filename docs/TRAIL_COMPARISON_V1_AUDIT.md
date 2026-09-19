@@ -63,3 +63,7 @@ Trail Comparison / Divergence v1 is frozen with these boundaries:
 - Trail Topology v2 and Trail Cards v1 remain independent frozen feature families and are not consumed as comparison evidence
 
 Any future change that weakens or expands these boundaries requires an explicit Trail Comparison specification revision and, where applicable, a Product Contract amendment.
+
+## Freeze merge gate
+
+The freeze PR itself must pass the dedicated Trail Comparison v1 Audit and the full Playwright E2E workflow on its exact head before merge. A cancelled or superseded run is not acceptance evidence.
