@@ -1,0 +1,48 @@
+name: Trail Cards v1 Audit
+
+on:
+  pull_request:
+    paths:
+      - 'trail-card.js'
+      - 'trail-card-renderer.js'
+      - 'trail-card-bundle.js'
+      - 'trail-card-share.js'
+      - 'docs/TRAIL_CARDS_V1_SPEC.md'
+      - 'docs/schema/trail-card-v0.1.schema.json'
+      - 'tests/fixtures/trail-cards-v1/**'
+      - 'tests/trail-cards-final-contract-audit.test.js'
+      - 'package.json'
+      - '.github/workflows/trail-cards-v1-audit.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'trail-card.js'
+      - 'trail-card-renderer.js'
+      - 'trail-card-bundle.js'
+      - 'trail-card-share.js'
+      - 'docs/TRAIL_CARDS_V1_SPEC.md'
+      - 'docs/schema/trail-card-v0.1.schema.json'
+      - 'tests/fixtures/trail-cards-v1/**'
+      - 'tests/trail-cards-final-contract-audit.test.js'
+      - 'package.json'
+      - '.github/workflows/trail-cards-v1-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Run final Trail Cards v1 contract audit
+        run: node --test tests/trail-cards-final-contract-audit.test.js
