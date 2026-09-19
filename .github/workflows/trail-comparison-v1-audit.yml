@@ -6,14 +6,18 @@ on:
       - 'trail-comparison.js'
       - 'trail-comparison-renderer.js'
       - 'trail-comparison-import.js'
+      - 'trail-comparison-bundle.js'
       - 'trail-comparison.css'
       - 'trail-comparison-import.css'
+      - 'tools/create-trail-comparison-bundle.js'
+      - 'tools/inspect-trail-comparison-bundle.js'
       - 'docs/TRAIL_COMPARISON_V1_SPEC.md'
       - 'docs/TRAIL_COMPARISON_V0.1_SCHEMA.md'
       - 'docs/schema/trail-comparison-v0.1.schema.json'
       - 'tests/fixtures/trail-comparison-v1/**'
       - 'tests/trail-comparison-schema.test.js'
       - 'tests/trail-comparison-projection.test.js'
+      - 'tests/trail-comparison-bundle.test.js'
       - 'tests/trail-comparison-renderer.spec.js'
       - 'tests/trail-comparison-import.spec.js'
       - 'package.json'
@@ -25,14 +29,18 @@ on:
       - 'trail-comparison.js'
       - 'trail-comparison-renderer.js'
       - 'trail-comparison-import.js'
+      - 'trail-comparison-bundle.js'
       - 'trail-comparison.css'
       - 'trail-comparison-import.css'
+      - 'tools/create-trail-comparison-bundle.js'
+      - 'tools/inspect-trail-comparison-bundle.js'
       - 'docs/TRAIL_COMPARISON_V1_SPEC.md'
       - 'docs/TRAIL_COMPARISON_V0.1_SCHEMA.md'
       - 'docs/schema/trail-comparison-v0.1.schema.json'
       - 'tests/fixtures/trail-comparison-v1/**'
       - 'tests/trail-comparison-schema.test.js'
       - 'tests/trail-comparison-projection.test.js'
+      - 'tests/trail-comparison-bundle.test.js'
       - 'tests/trail-comparison-renderer.spec.js'
       - 'tests/trail-comparison-import.spec.js'
       - 'package.json'
@@ -54,5 +62,5 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
-      - name: Run Trail Comparison schema and core tests
-        run: node --test tests/trail-comparison-schema.test.js tests/trail-comparison-projection.test.js
+      - name: Run Trail Comparison schema, core, and bundle tests
+        run: node --test tests/trail-comparison-schema.test.js tests/trail-comparison-projection.test.js tests/trail-comparison-bundle.test.js
