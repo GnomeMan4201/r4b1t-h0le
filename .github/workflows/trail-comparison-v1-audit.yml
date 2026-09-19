@@ -5,6 +5,10 @@ on:
     paths:
       - 'trail-comparison.js'
       - 'trail-comparison-renderer.js'
+      - 'trail-comparison-import.js'
+      - 'trail-comparison-import.css'
+      - 'trail-comparison-import.js'
+      - 'trail-comparison-import.css'
       - 'trail-comparison.css'
       - 'docs/TRAIL_COMPARISON_V1_SPEC.md'
       - 'docs/TRAIL_COMPARISON_V0.1_SCHEMA.md'
@@ -13,6 +17,8 @@ on:
       - 'tests/trail-comparison-schema.test.js'
       - 'tests/trail-comparison-projection.test.js'
       - 'tests/trail-comparison-renderer.spec.js'
+      - 'tests/trail-comparison-import.spec.js'
+      - 'tests/trail-comparison-import.spec.js'
       - 'package.json'
       - '.github/workflows/trail-comparison-v1-audit.yml'
   push:
