@@ -28,11 +28,13 @@
   <script src="proof-session.js" defer></script>
   <script src="trail-comparison-renderer.js" defer></script>
   <script src="proof-session-renderer.js" defer></script>
+  <script src="proof-session-import.js" defer></script>
   <script src="trail-comparison-import.js" defer></script>
   <link rel="stylesheet" href="trail-card.css">
   <link rel="stylesheet" href="trail-card-share.css">
   <link rel="stylesheet" href="trail-comparison.css">
   <link rel="stylesheet" href="proof-session.css">
+  <link rel="stylesheet" href="proof-session-import.css">
   <link rel="stylesheet" href="trail-comparison-import.css">
 </head>
 <body>
@@ -114,7 +116,7 @@
 <div class="trail-bar">
   <span class="trail-label" id="trailLabel" style="display:none">trail //</span>
   <div id="trailItems"></div>
-  <button class="btn-share-trail" onclick="submitUrl()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">submit url</button><button class="btn-share-trail" onclick="toggleHistory()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">history</button><button class="btn-share-trail" onclick="toggleTrailComparison()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">compare trails</button><button class="btn-share-trail" onclick="shareCard()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">share card</button><button class="btn-share-trail" id="shareTrailBtn" onclick="shareTrail()">copy trail</button><button class="btn-share-trail" onclick="openTrailLedger()">trail file</button>
+  <button class="btn-share-trail" onclick="submitUrl()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">submit url</button><button class="btn-share-trail" onclick="toggleHistory()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">history</button><button class="btn-share-trail" onclick="toggleProofSession()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">proof session</button><button class="btn-share-trail" onclick="toggleTrailComparison()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">compare trails</button><button class="btn-share-trail" onclick="shareCard()" style="margin-right:4px;color:#9a8f7a;border-color:#4a4238">share card</button><button class="btn-share-trail" id="shareTrailBtn" onclick="shareTrail()">copy trail</button><button class="btn-share-trail" onclick="openTrailLedger()">trail file</button>
 </div>
 
 
@@ -125,6 +127,16 @@
       <button type="button" class="trail-comparison-import-close" onclick="toggleTrailComparison()">close</button>
     </div>
     <div id="trailComparisonMount"></div>
+  </div>
+</div>
+
+<div id="proofSessionOverlay" role="dialog" aria-modal="true" aria-label="Proof Session" aria-hidden="true" tabindex="-1" hidden>
+  <div class="proof-session-import-shell">
+    <div class="proof-session-import-header">
+      <h2 class="proof-session-import-title">PROOF SESSION</h2>
+      <button type="button" class="proof-session-import-close" onclick="toggleProofSession()">close</button>
+    </div>
+    <div id="proofSessionMount"></div>
   </div>
 </div>
 \n<!-- ── Iframe overlay ───────────────────────────────────────────────────────── -->
