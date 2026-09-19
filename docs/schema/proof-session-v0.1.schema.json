@@ -239,7 +239,8 @@
       ],
       "properties": {
         "slot_id": {
-          "$ref": "#/$defs/slotId",
+          "type": "string",
+          "pattern": "^S[1-9][0-9]*$",
           "description": "Session-local address only. It is not evidence identity and is not globally portable identity."
         },
         "artifact_format": {
