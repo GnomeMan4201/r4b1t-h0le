@@ -1,9 +1,17 @@
 #!/usr/bin/env node
+(function (root, factory) {
+  'use strict';
+  var commonJs = typeof module === 'object' && module.exports;
+  var api = factory(
+    commonJs ? require('../trail-manifest.js') : root && root.R4b1tTrail,
+    commonJs ? require('../blind-manifest.js') : root && root.R4b1tBlind
+  );
+  if (commonJs) module.exports = api;
+  if (root) root.R4b1tExportVerifier = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (trail, blind) {
 'use strict';
 
-const fs = require('node:fs/promises');
-const trail = require('../trail-manifest.js');
-const blind = require('../blind-manifest.js');
+if (!trail || !blind) throw new Error('Trail v0.1 and v0.2 verifier APIs are required');
 
 const FORMAT = 'r4b1t-topology-export/v0.1';
 const VERIFIED = 'VERIFIED';
@@ -200,33 +208,37 @@ async function verifyExport(input) {
   };
 }
 
-async function readStdin() {
-  var chunks = [];
-  for await (const chunk of process.stdin) chunks.push(chunk);
-  return Buffer.concat(chunks.map((chunk) => Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk))).toString('utf8');
-}
+return { verifyExport };
+});
 
-async function readJson(path) {
-  if (path === '-') return JSON.parse(await readStdin());
-  return JSON.parse(await fs.readFile(path, 'utf8'));
-}
+if (typeof module === 'object' && module.exports && require.main === module) {
+  const fs = require('node:fs/promises');
+  const verifier = module.exports;
 
-async function main() {
-  const [, , file] = process.argv;
-  if (!file) throw new Error('Usage: npm run topology:verify -- <topology-export.json|->');
-  const result = await verifyExport(await readJson(file));
-  console.log('TOPOLOGY VERIFIED');
-  console.log('format:      ' + result.format);
-  console.log('nodes:       ' + result.nodes);
-  console.log('edges:       ' + result.edges);
-  console.log('diagnostics: ' + result.diagnostics);
-}
+  async function readStdin() {
+    var chunks = [];
+    for await (const chunk of process.stdin) chunks.push(chunk);
+    return Buffer.concat(chunks.map((chunk) => Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk))).toString('utf8');
+  }
 
-if (require.main === module) {
+  async function readJson(path) {
+    if (path === '-') return JSON.parse(await readStdin());
+    return JSON.parse(await fs.readFile(path, 'utf8'));
+  }
+
+  async function main() {
+    const [, , file] = process.argv;
+    if (!file) throw new Error('Usage: npm run topology:verify -- <topology-export.json|->');
+    const result = await verifier.verifyExport(await readJson(file));
+    console.log('TOPOLOGY VERIFIED');
+    console.log('format:      ' + result.format);
+    console.log('nodes:       ' + result.nodes);
+    console.log('edges:       ' + result.edges);
+    console.log('diagnostics: ' + result.diagnostics);
+  }
+
   main().catch((error) => {
     console.error('REJECTED / ' + error.message);
     process.exitCode = 1;
   });
 }
-
-module.exports = { verifyExport };

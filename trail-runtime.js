@@ -207,6 +207,7 @@
         '<button class="btn-share-trail" type="button" data-trail-action="fork">FORK HERE</button>' +
         '<button class="btn-share-trail" type="button" data-trail-action="blind">BLIND DESCENT</button>' +
         '<button class="btn-share-trail" type="button" data-trail-action="topology">MAP TRAILS</button>' +
+        '<button class="btn-share-trail" type="button" data-trail-action="card">TRAIL CARD</button>' +
         '<button class="btn-share-trail" type="button" data-trail-action="reset">NEW TRAIL</button>' +
       '</div>' +
       '<button class="btn-share-trail" type="button" data-trail-action="close">CLOSE [ESC]</button>' +
@@ -224,6 +225,7 @@
       if (action === 'topology') {
         return currentEnvelope().then(function (snapshot) { closePanel(); return window.openTrailTopology(snapshot); }).catch(showError);
       }
+      if (action === 'card') { closePanel(); return openCardPanel().catch(showError); }
       if (action === 'reset') return resetTrail();
     });
     overlay.addEventListener('click', function (event) { if (event.target === overlay) closePanel(); });
@@ -234,6 +236,27 @@
       try { await importTrail(await file.text()); } catch (error) { showError(error); }
       event.target.value = '';
     });
+  }
+
+  function ensureCardPanel() {
+    if (document.getElementById('trailCardHandoffOverlay')) return;
+    var overlay = document.createElement('div');
+    overlay.id = 'trailCardHandoffOverlay';
+    overlay.className = 'trail-card-handoff-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-labelledby', 'trailCardHandoffTitle');
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.setAttribute('tabindex', '-1');
+    overlay.innerHTML = '<div class="trail-card-handoff-dialog">' +
+      '<h2 class="trail-card-handoff-title" id="trailCardHandoffTitle">TRAIL CARD HANDOFF</h2>' +
+      '<div id="trailCardHandoffCard"></div>' +
+      '<div id="trailCardHandoffControls"></div>' +
+      '<button class="btn-share-trail trail-card-handoff-close" type="button">CLOSE [ESC]</button>' +
+    '</div>';
+    overlay.querySelector('.trail-card-handoff-close').addEventListener('click', closeCardPanel);
+    overlay.addEventListener('click', function (event) { if (event.target === overlay) closeCardPanel(); });
+    document.body.appendChild(overlay);
   }
 
   function renderPanel(status) {
@@ -254,6 +277,7 @@
   }
 
   var panelFocus = null;
+  var cardPanelFocus = null;
 
   function panelFocusables(panel) {
     return Array.from(panel.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])'))
@@ -297,6 +321,43 @@
     setTimeout(function () { focusPanel(panel); }, 0);
   }
 
+  async function openCardPanel() {
+    if (!window.R4b1tTrailCardShare || !window.R4b1tTrailCardRenderer) {
+      throw new Error('Trail Card handoff is unavailable');
+    }
+    ensureCardPanel();
+    var snapshot = await currentEnvelope();
+    var source = JSON.stringify(snapshot, null, 2) + '\n';
+    var bundle = await window.R4b1tTrailCardShare.createTrailBundle(source, {
+      verified_at: new Date().toISOString()
+    });
+    var cardHost = document.getElementById('trailCardHandoffCard');
+    var controlsHost = document.getElementById('trailCardHandoffControls');
+    controlsHost.replaceChildren();
+    window.R4b1tTrailCardRenderer.render(cardHost, bundle.card);
+    window.R4b1tTrailCardShare.controls(controlsHost, bundle);
+    var panel = document.getElementById('trailCardHandoffOverlay');
+    cardPanelFocus = document.activeElement;
+    panel.style.display = 'flex';
+    panel.setAttribute('aria-hidden', 'false');
+    setTimeout(function () {
+      var firstAction = panel.querySelector('.trail-card-handoff-button');
+      (firstAction || panel).focus();
+    }, 0);
+    return bundle;
+  }
+
+  function closeCardPanel() {
+    var panel = document.getElementById('trailCardHandoffOverlay');
+    if (panel) {
+      panel.style.display = 'none';
+      panel.setAttribute('aria-hidden', 'true');
+    }
+    var restore = cardPanelFocus;
+    cardPanelFocus = null;
+    if (restore && typeof restore.focus === 'function') setTimeout(function () { restore.focus(); }, 0);
+  }
+
   function closePanel() {
     var panel = document.getElementById('trailLedgerOverlay');
     if (panel) {
@@ -317,9 +378,13 @@
   window.forkTrailManifest = forkTrail;
   window.getTrailManifest = currentEnvelope;
   window.resetReproducibleTrail = resetTrail;
+  window.openTrailCardHandoff = openCardPanel;
+  window.closeTrailCardHandoff = closeCardPanel;
+  window.shareCard = openCardPanel;
 
   document.addEventListener('DOMContentLoaded', function () {
     ensurePanel();
+    ensureCardPanel();
     watchSelections();
     loadCorpusRevision().catch(showError);
     var attempts = 0;
@@ -330,6 +395,19 @@
   });
 
   document.addEventListener('keydown', function (event) {
+    var cardPanel = document.getElementById('trailCardHandoffOverlay');
+    if (cardPanel?.style.display === 'flex') {
+      if (event.code === 'Escape') {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        closeCardPanel();
+        return;
+      }
+      if (trapPanelTab(event, cardPanel)) {
+        event.stopImmediatePropagation();
+        return;
+      }
+    }
     var panel = document.getElementById('trailLedgerOverlay');
     if (panel?.style.display === 'flex') {
       if (event.code === 'Escape') {
