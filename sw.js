@@ -1,4 +1,4 @@
-const CACHE = 'r4b1t-v18-network-first';
+const CACHE = 'r4b1t-v19-replay-inspection';
 const PRECACHE = [
   './',
   './index.html',
@@ -15,6 +15,11 @@ const PRECACHE = [
   './topology-runtime.js',
   './trail-wear.js',
   './trail-wear.css',
+  './replay-inspection.js',
+  './replay-inspection-renderer.js',
+  './replay-inspection-import.js',
+  './replay-inspection-overlay.js',
+  './replay-inspection.css',
   './rabbit-aperture.svg',
   './banana-note.svg',
   './favicon.ico',
