@@ -32,6 +32,7 @@
   <script src="trail-comparison-import.js" defer></script>
   <script src="replay-inspection.js" defer></script>
   <script src="replay-inspection-renderer.js" defer></script>
+  <script src="replay-inspection-delegation.js" defer></script>
   <script src="replay-inspection-import.js" defer></script>
   <script src="replay-inspection-overlay.js" defer></script>
   <link rel="stylesheet" href="trail-card.css">
@@ -154,7 +155,7 @@
       </div>
       <button type="button" class="replay-inspection-overlay-close" onclick="closeReplayInspection()">close</button>
     </div>
-    <p class="replay-inspection-overlay-copy">Load a canonical trail file. Evidence stays concealed until its exact source bytes verify locally.</p>
+    <p class="replay-inspection-overlay-copy">Load one or more canonical trail files. Evidence stays concealed until exact source bytes verify locally.</p>
     <div id="replayInspectionMount"></div>
   </div>
 </div>

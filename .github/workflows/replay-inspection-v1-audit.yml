@@ -23,6 +23,7 @@ on:
       - 'docs/REPLAY_INSPECTION_V1_SPEC.md'
       - 'docs/REPLAY_INSPECTION_V1_AUDIT.md'
       - 'docs/REPLAY_INSPECTION_V1_DELEGATION.md'
+      - 'docs/REPLAY_MULTISOURCE_UI_BOUNDARY.md'
       - 'package.json'
       - '.github/workflows/replay-inspection-v1-audit.yml'
   push:
@@ -49,6 +50,7 @@ on:
       - 'docs/REPLAY_INSPECTION_V1_SPEC.md'
       - 'docs/REPLAY_INSPECTION_V1_AUDIT.md'
       - 'docs/REPLAY_INSPECTION_V1_DELEGATION.md'
+      - 'docs/REPLAY_MULTISOURCE_UI_BOUNDARY.md'
       - 'package.json'
       - '.github/workflows/replay-inspection-v1-audit.yml'
 
