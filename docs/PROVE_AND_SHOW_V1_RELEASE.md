@@ -211,6 +211,29 @@ Acceptance result:
 
 The `prove-show-v1.0.0` tag MUST NOT be created until production serves the accepted release candidate and the production acceptance pass is rerun.
 
+### Current DNS blocker evidence
+
+Production Shadow run #57 on main commit `37d81cecdc362229d6b0d385033fa2468db28a84` resolved:
+
+`r4b1t.badbananaresearch.com CNAME custom-domains.chatgpt.site`
+
+The required release configuration is:
+
+`r4b1t.badbananaresearch.com CNAME gnomeman4201.github.io`
+
+Observed serving-layer consequences on run #57:
+
+- HTTP correctly redirects to HTTPS on the custom hostname.
+- The default GitHub Pages project URL redirects toward the registered custom hostname.
+- The custom-domain root does not expose the frozen Prove & Show entry points.
+- Nearly all curated proof-critical assets return HTTP 404 from the custom domain.
+- The custom-domain service worker bytes differ from repository and published `gh-pages` bytes.
+- The published `gh-pages` branch itself contains the expected release bytes.
+
+Therefore the remaining blocker is external custom-domain/DNS ownership, not the frozen repository implementation or the GitHub Pages publishing branch.
+
+The existing ChatGPT Sites binding must be detached or its DNS record replaced before production acceptance can resume.
+
 ### Required deployment cutover
 
 Repository-side preparation is already present:
