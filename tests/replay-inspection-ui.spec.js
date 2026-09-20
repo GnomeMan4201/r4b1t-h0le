@@ -14,6 +14,7 @@ async function loadReplaySurface(page) {
   await page.evaluate(() => {
     const host = document.createElement('div');
     host.id = 'replayInspectionTestHost';
+    host.style.cssText = 'position:fixed;inset:0;z-index:20000;overflow:auto;padding:20px;background:#0e0d0b';
     document.body.prepend(host);
     window.__replayController = window.R4b1tReplayInspectionImport.mount(host);
   });
