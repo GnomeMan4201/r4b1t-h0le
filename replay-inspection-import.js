@@ -3,14 +3,15 @@
   var api = factory(
     root,
     typeof module === 'object' && module.exports ? require('./replay-inspection.js') : root && root.R4b1tReplayInspection,
-    typeof module === 'object' && module.exports ? require('./replay-inspection-renderer.js') : root && root.R4b1tReplayInspectionRenderer
+    typeof module === 'object' && module.exports ? require('./replay-inspection-renderer.js') : root && root.R4b1tReplayInspectionRenderer,
+    typeof module === 'object' && module.exports ? require('./replay-inspection-delegation.js') : root && root.R4b1tReplayInspectionDelegation
   );
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root) root.R4b1tReplayInspectionImport = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function (root, replayCore, renderer) {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (root, replayCore, renderer, replayDelegation) {
   'use strict';
 
-  if (!replayCore || !renderer) throw new Error('Replay Inspection import requires core and renderer');
+  if (!replayCore || !renderer || !replayDelegation) throw new Error('Replay Inspection import requires core, renderer, and delegation');
 
   function el(doc, tag, className, value) {
     var node = doc.createElement(tag);
@@ -19,23 +20,26 @@
     return node;
   }
 
-  function mount(container) {
+  function mount(container, options) {
     if (!container || !container.ownerDocument) throw new TypeError('Replay Inspection import requires a DOM container');
 
     var doc = container.ownerDocument;
     var machine = replayCore.createMachine();
     var generation = 0;
+    var multiProjection = null;
+    var delegation = options && options.delegation ? options.delegation : replayDelegation;
 
     var shell = el(doc, 'section', 'replay-inspection-import');
     shell.setAttribute('aria-label', 'Replay Inspection local import');
     shell.setAttribute('tabindex', '0');
 
     var controls = el(doc, 'div', 'replay-inspection-import-controls');
-    var label = el(doc, 'label', 'replay-inspection-file-label', 'LOCAL TRAIL JSON');
+    var label = el(doc, 'label', 'replay-inspection-file-label', 'LOCAL TRAIL JSON FILES');
     var input = el(doc, 'input', 'replay-inspection-file-input');
     input.type = 'file';
     input.accept = '.json,application/json';
-    input.setAttribute('aria-label', 'Trail JSON file');
+    input.multiple = true;
+    input.setAttribute('aria-label', 'One or more trail JSON files');
     label.appendChild(input);
 
     var resetButton = el(doc, 'button', 'replay-inspection-reset', 'Reset');
@@ -56,12 +60,14 @@
     function reset() {
       generation += 1;
       machine.reset();
+      multiProjection = null;
       input.value = '';
       render();
       return machine.snapshot();
     }
 
     async function loadBytes(bytes, options) {
+      multiProjection = null;
       var token = ++generation;
       var pending = machine.load(bytes, options || {});
       render();
@@ -99,6 +105,39 @@
       return loadBytes(bytes);
     }
 
+    function renderNeutral(phase) {
+      return renderer.render(result, {
+        format: replayCore.FORMAT,
+        phase: phase,
+        source: null,
+        position: null,
+        total_positions: 0,
+        current_step: null,
+        diagnostic: null
+      });
+    }
+
+    async function loadFiles(files) {
+      var selected = Array.prototype.slice.call(files || []);
+      if (selected.length === 0) return reset();
+      if (selected.length === 1) return loadFile(selected[0]);
+      var token = ++generation;
+      machine.reset();
+      multiProjection = null;
+      renderNeutral('READING_MULTI');
+      var exactInputs = [];
+      for (var index = 0; index < selected.length; index += 1) {
+        exactInputs.push(new Uint8Array(await selected[index].arrayBuffer()));
+        if (token !== generation) return null;
+      }
+      renderNeutral('VERIFYING_MULTI');
+      var inspected = await delegation.inspectSources(exactInputs, { verified_at: new Date().toISOString() });
+      if (token !== generation) return null;
+      multiProjection = inspected.projection;
+      renderer.renderMulti(result, multiProjection);
+      return multiProjection;
+    }
+
     function navigate(action) {
       var snapshot = machine.snapshot();
       if (snapshot.phase !== 'INSPECTING') return snapshot;
@@ -109,12 +148,12 @@
     }
 
     input.addEventListener('change', function () {
-      var file = input.files && input.files[0];
-      if (!file) {
+      var files = input.files;
+      if (!files || files.length === 0) {
         reset();
         return;
       }
-      loadFile(file).catch(function () {
+      loadFiles(files).catch(function () {
         reset();
       });
     });
@@ -155,11 +194,14 @@
 
     return Object.freeze({
       loadBytes: loadBytes,
+      loadFiles: loadFiles,
       reset: reset,
       snapshot: function () { return machine.snapshot(); },
+      multiSnapshot: function () { return multiProjection ? JSON.parse(JSON.stringify(multiProjection)) : null; },
       destroy: function () {
         generation += 1;
         machine.reset();
+        multiProjection = null;
         input.value = '';
         container.replaceChildren();
       }
