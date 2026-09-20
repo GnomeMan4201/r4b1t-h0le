@@ -35,10 +35,14 @@ test('production shadow compares repository, published gh-pages branch, and cust
   assert.match(source, /publishedHash\s*!==\s*siteHash/);
 });
 
-test('default GitHub Pages project URL must redirect to the registered custom domain', () => {
+test('default GitHub Pages project URL must redirect to the registered custom domain and terminate on HTTPS', () => {
   assert.match(source, /verifyPagesRedirect/);
   assert.match(source, /redirect:\s*['"]manual['"]/);
   assert.match(source, /new URL\(SITE\)\.hostname/);
+  assert.match(source, /const finalResponse = await fetchWithTimeout\(APP\)/);
+  assert.match(source, /new URL\(finalResponse\.url\)/);
+  assert.match(source, /finalUrl\.protocol\s*!==\s*['"]https:['"]/);
+  assert.match(source, /finalUrl\.hostname\s*!==\s*expectedHost/);
 });
 
 test('production shadow records serving-layer headers and redirect identity before functional checks', () => {
