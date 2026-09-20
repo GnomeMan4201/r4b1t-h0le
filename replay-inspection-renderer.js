@@ -38,6 +38,8 @@
   }
 
   function neutralLabel(phase) {
+    if (phase === 'READING_MULTI') return 'READING SOURCES';
+    if (phase === 'VERIFYING_MULTI') return 'VERIFYING SOURCES';
     if (phase === 'READING') return 'READING SOURCE';
     if (phase === 'VERIFYING') return 'VERIFYING SOURCE';
     return 'NO SOURCE LOADED';
@@ -138,7 +140,7 @@
     root.setAttribute('tabindex', '0');
     root.setAttribute('aria-label', 'Replay Inspection');
 
-    if (snapshot.phase === 'UNLOADED' || snapshot.phase === 'READING' || snapshot.phase === 'VERIFYING') {
+    if (snapshot.phase === 'UNLOADED' || snapshot.phase === 'READING' || snapshot.phase === 'VERIFYING' || snapshot.phase === 'READING_MULTI' || snapshot.phase === 'VERIFYING_MULTI') {
       renderNeutral(doc, root, snapshot);
     } else if (snapshot.phase === 'REJECTED' || snapshot.phase === 'UNVERIFIED') {
       renderDiagnostic(doc, root, snapshot);
@@ -148,6 +150,56 @@
       throw new Error('Unsupported Replay phase');
     }
 
+    container.replaceChildren(root);
+    return root;
+  }
+
+  function renderMulti(container, projection) {
+    if (!container || !container.ownerDocument) throw new TypeError('Replay renderer requires a DOM container');
+    if (!projection || !Array.isArray(projection.sources)) throw new TypeError('Replay renderer requires a Proof Session projection');
+    var doc = container.ownerDocument;
+    var root = el(doc, 'article', 'replay-inspection replay-inspection-multi');
+    root.setAttribute('tabindex', '0');
+    root.setAttribute('aria-label', 'Replay multi-source inspection');
+    root.setAttribute('data-replay-mode', 'multi-source');
+    var supplied = projection.sources.reduce(function (count, source) { return count + source.supplied_count; }, 0);
+    var header = el(doc, 'header', 'replay-inspection-header');
+    var heading = el(doc, 'div', 'replay-inspection-heading');
+    heading.appendChild(el(doc, 'span', 'replay-inspection-kicker', 'REPLAY / MULTI-SOURCE'));
+    heading.appendChild(el(doc, 'strong', 'replay-inspection-proof-state', projection.sources.length + ' UNIQUE / ' + supplied + ' SUPPLIED'));
+    header.appendChild(heading);
+    root.appendChild(header);
+
+    var sources = el(doc, 'section', 'replay-inspection-multi-sources');
+    sources.setAttribute('aria-label', 'Source slots');
+    projection.sources.forEach(function (source) {
+      var card = el(doc, 'article', 'replay-inspection-source-slot');
+      card.setAttribute('data-proof-state', source.verification.state);
+      card.appendChild(field(doc, 'SLOT', source.slot_id));
+      card.appendChild(field(doc, 'STATE', source.verification.state));
+      card.appendChild(field(doc, 'SOURCE', shortDigest(source.artifact_digest)));
+      card.appendChild(field(doc, 'FORMAT', source.artifact_format || 'UNKNOWN'));
+      card.appendChild(field(doc, 'SUPPLIED', source.supplied_count + '×'));
+      if (source.verification.reason) card.appendChild(field(doc, 'REASON', source.verification.reason));
+      sources.appendChild(card);
+    });
+    root.appendChild(sources);
+
+    var derived = el(doc, 'section', 'replay-inspection-multi-derived');
+    derived.setAttribute('aria-label', 'Delegated comparisons and direct relationships');
+    derived.appendChild(field(doc, 'VERIFIED PAIRS', projection.pairs.length));
+    projection.pairs.forEach(function (pair) {
+      derived.appendChild(field(doc, 'PAIR ' + pair.left_slot + ' ↔ ' + pair.right_slot, shortDigest(pair.comparison_projection_digest)));
+    });
+    projection.relationships.forEach(function (edge) {
+      derived.appendChild(field(doc, 'DIRECT PARENT', edge.parent_slot + ' → ' + edge.child_slot));
+    });
+    root.appendChild(derived);
+
+    var summary = el(doc, 'section', 'replay-inspection-multi-summary');
+    summary.setAttribute('aria-label', 'Proof Session summary');
+    projection.summary.forEach(function (item) { summary.appendChild(field(doc, item.label, item.count)); });
+    root.appendChild(summary);
     container.replaceChildren(root);
     return root;
   }
@@ -163,6 +215,7 @@
 
   return Object.freeze({
     render: render,
+    renderMulti: renderMulti,
     toggleDetails: toggleDetails,
     shortDigest: shortDigest
   });
