@@ -8,6 +8,7 @@ async function loadReplaySurface(page) {
   await page.addStyleTag({ url: './replay-inspection.css' });
   await page.addScriptTag({ url: './replay-inspection.js' });
   await page.addScriptTag({ url: './replay-inspection-renderer.js' });
+  await page.addScriptTag({ url: './replay-inspection-delegation.js' });
   await page.addScriptTag({ url: './replay-inspection-import.js' });
   await page.waitForFunction(() => window.R4b1tReplayInspectionImport);
   await page.evaluate(() => {
@@ -238,9 +239,88 @@ test('phone-width primary view exposes proof state and navigation without horizo
   expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth);
 });
 
+test('multi-file selection delegates exact bytes in order and renders duplicate-aware slots', async ({ page }) => {
+  await loadReplaySurface(page);
+  const a = await makeV01(page, ['https://example.org/a'], 'multi-a');
+  const b = await makeV01(page, ['https://example.org/b'], 'multi-b');
+  const input = page.locator('.replay-inspection-file-input');
+  await expect(input).toHaveAttribute('multiple', '');
+  await input.setInputFiles([
+    { name: 'b.json', mimeType: 'application/json', buffer: Buffer.from(b) },
+    { name: 'a.json', mimeType: 'application/json', buffer: Buffer.from(a) },
+    { name: 'b-copy.json', mimeType: 'application/json', buffer: Buffer.from(b) },
+  ]);
+
+  const root = page.locator('.replay-inspection');
+  await expect(root).toHaveAttribute('data-replay-mode', 'multi-source');
+  await expect(root).toContainText('2 UNIQUE / 3 SUPPLIED');
+  await expect(root).toContainText('S1');
+  await expect(root).toContainText('SUPPLIED 2×');
+  await expect(root).toContainText('S2');
+  await expect(root).not.toContainText('https://example.org/a');
+  await expect(root).not.toContainText('https://example.org/b');
+  const metrics = await page.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+  }));
+  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth);
+});
+
+test('multi-source view keeps rejected diagnostics separate from verified slots', async ({ page }) => {
+  await loadReplaySurface(page);
+  const good = await makeV01(page, ['https://example.org/good'], 'diagnostic-good');
+  const altered = JSON.parse(await makeV01(page, ['https://example.org/original'], 'diagnostic-bad'));
+  altered.manifest.routes[0].url = 'https://attacker.invalid/';
+  await page.locator('.replay-inspection-file-input').setInputFiles([
+    { name: 'good.json', mimeType: 'application/json', buffer: Buffer.from(good) },
+    { name: 'altered.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(altered)) },
+  ]);
+  const slots = page.locator('.replay-inspection-source-slot');
+  await expect(slots).toHaveCount(2);
+  await expect(slots.nth(0)).toContainText('VERIFIED');
+  await expect(slots.nth(1)).toContainText('REJECTED');
+  await expect(page.locator('.replay-inspection')).toContainText('VERIFIED PAIRS0');
+  await expect(page.locator('.replay-inspection')).not.toContainText('https://attacker.invalid/');
+});
+
+test('multi-source verification stays neutral until delegation resolves and reset destroys state', async ({ page }) => {
+  await loadReplaySurface(page);
+  const a = await makeV01(page, ['https://example.org/private-a'], 'neutral-a');
+  const b = await makeV01(page, ['https://example.org/private-b'], 'neutral-b');
+  await page.evaluate(() => {
+    const original = window.R4b1tReplayInspectionDelegation.inspectSources;
+    let release;
+    window.__releaseDelegation = () => release();
+    const host = document.getElementById('replayInspectionTestHost');
+    window.__replayController.destroy();
+    window.__replayController = window.R4b1tReplayInspectionImport.mount(host, {
+      delegation: {
+        inspectSources: async (...args) => {
+          await new Promise((resolve) => { release = resolve; });
+          return original(...args);
+        },
+      },
+    });
+  });
+  await page.locator('.replay-inspection-file-input').setInputFiles([
+    { name: 'a.json', mimeType: 'application/json', buffer: Buffer.from(a) },
+    { name: 'b.json', mimeType: 'application/json', buffer: Buffer.from(b) },
+  ]);
+  const root = page.locator('.replay-inspection');
+  await expect(root).toContainText('VERIFYING SOURCES');
+  await expect(root).not.toContainText('private-a');
+  await expect(root).not.toContainText('private-b');
+  await page.evaluate(() => window.__releaseDelegation());
+  await expect(root).toContainText('2 UNIQUE / 2 SUPPLIED');
+  await page.locator('.replay-inspection-reset').click();
+  await expect(root).toContainText('NO SOURCE LOADED');
+  expect(await page.evaluate(() => window.__replayController.multiSnapshot())).toBeNull();
+});
+
 test('Replay UI shell contains no persistence, remote transfer, telemetry, ranking, sampler, or corpus hooks', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   const sources = await page.evaluate(async () => Promise.all([
+    fetch('./replay-inspection-delegation.js').then((r) => r.text()),
     fetch('./replay-inspection-renderer.js').then((r) => r.text()),
     fetch('./replay-inspection-import.js').then((r) => r.text()),
   ]));
