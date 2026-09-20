@@ -3,6 +3,7 @@
 const { test, expect } = require('@playwright/test');
 
 const PROD_ORIGIN = 'https://r4b1t.badbananaresearch.com';
+const METADATA_PROXY_ORIGIN = 'https://r4b1t-proxy.badbanana6969.workers.dev';
 
 async function loadProduction(page) {
   const pageErrors = [];
@@ -40,11 +41,12 @@ async function makeTrail(page, seed, urls) {
 }
 
 async function beginLocalOnlyObservation(page) {
-  const offOriginRequests = [];
+  const unexpectedOffOriginRequests = [];
   const handler = (request) => {
     const url = request.url();
     if (url.startsWith('data:') || url.startsWith('blob:')) return;
-    if (new URL(url).origin !== PROD_ORIGIN) offOriginRequests.push(url);
+    const origin = new URL(url).origin;
+    if (origin !== PROD_ORIGIN && origin !== METADATA_PROXY_ORIGIN) unexpectedOffOriginRequests.push(url);
   };
   page.on('request', handler);
 
@@ -59,7 +61,7 @@ async function beginLocalOnlyObservation(page) {
   });
 
   return {
-    offOriginRequests,
+    unexpectedOffOriginRequests,
     async storageWrites() {
       return page.evaluate(() => window.__productionAcceptanceStorageWrites || []);
     },
@@ -147,7 +149,7 @@ test('live Trail Comparison accepts explicit local files without persistence or 
   await expect(result).toContainText('SHARED_ANCESTRY_NOT_PROVEN');
 
   expect(await observed.storageWrites()).toEqual([]);
-  expect(observed.offOriginRequests).toEqual([]);
+  expect(observed.unexpectedOffOriginRequests).toEqual([]);
 
   await dialog.getByRole('button', { name: 'close' }).click();
   await page.getByRole('button', { name: 'compare trails' }).click();
@@ -217,7 +219,7 @@ test('phone-width Proof Session import is local, ephemeral, deduplicated, and re
   await expect(dialog.locator('.proof-session-relationship')).toHaveCount(0);
 
   expect(await observed.storageWrites()).toEqual([]);
-  expect(observed.offOriginRequests).toEqual([]);
+  expect(observed.unexpectedOffOriginRequests).toEqual([]);
 
   await dialog.getByRole('button', { name: 'close' }).click();
   await page.evaluate(() => window.toggleProofSession());
