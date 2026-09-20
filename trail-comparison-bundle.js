@@ -1,6 +1,13 @@
+(function (root, factory) {
+  'use strict';
+  const isNode = typeof module === 'object' && module.exports;
+  const api = factory(isNode ? require('./trail-comparison.js') : root && root.R4b1tTrailComparison);
+  if (isNode) module.exports = api;
+  if (root) root.R4b1tTrailComparisonBundle = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (comparison) {
 'use strict';
 
-const comparison = require('./trail-comparison.js');
+if (!comparison) throw new Error('Trail Comparison bundle requires the frozen comparison delegate');
 
 const LEFT_SOURCE_FILE = 'left-source.json';
 const RIGHT_SOURCE_FILE = 'right-source.json';
@@ -116,7 +123,7 @@ function fileNames(bundle) {
   return Object.keys(bundle.files).sort();
 }
 
-module.exports = {
+return Object.freeze({
   LEFT_SOURCE_FILE,
   RIGHT_SOURCE_FILE,
   PROJECTION_FILE,
@@ -124,4 +131,5 @@ module.exports = {
   create,
   inspect,
   fileNames
-};
+});
+});
