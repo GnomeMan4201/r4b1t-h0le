@@ -4,9 +4,12 @@ on:
   pull_request:
     paths:
       - 'replay-inspection.js'
+      - 'replay-inspection-delegation.js'
       - 'tests/replay-inspection-core.test.js'
+      - 'tests/replay-inspection-delegation.test.js'
       - 'docs/REPLAY_INSPECTION_V1_SPEC.md'
       - 'docs/REPLAY_INSPECTION_V1_AUDIT.md'
+      - 'docs/REPLAY_INSPECTION_V1_DELEGATION.md'
       - 'package.json'
       - '.github/workflows/replay-inspection-v1-audit.yml'
   push:
@@ -44,7 +47,9 @@ jobs:
         run: npm audit --audit-level=high
 
       - name: Check Replay core syntax
-        run: node --check replay-inspection.js
+        run: |
+          node --check replay-inspection.js
+          node --check replay-inspection-delegation.js
 
       - name: Run Replay core and canonical-verifier regression tests
-        run: node --test tests/replay-inspection-core.test.js tests/trail-manifest.test.js tests/blind-manifest.test.js
+        run: node --test tests/replay-inspection-core.test.js tests/replay-inspection-delegation.test.js tests/trail-manifest.test.js tests/blind-manifest.test.js tests/trail-comparison-bundle.test.js tests/proof-session-bundle.test.js
