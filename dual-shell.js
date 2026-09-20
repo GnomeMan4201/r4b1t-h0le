@@ -278,13 +278,20 @@
     var duration = timing.duration || style.animationDuration || 'none';
     var transition = style.transitionDuration && style.transitionDuration !== '0s' ? style.transitionDuration : 'none';
     panel.textContent =
-      'MOTION DEBUG\\n' +
-      'LAST TAP: ' + (panel.dataset.lastTap || action) + '\\n' +
-      'MOTION: ' + action + '\\n' +
-      'TARGET: #' + (element.id || element.className || element.tagName).toString().replace(/\\s+/g, '.') + '\\n' +
-      'CLASS: ' + (className || '(none)') + '\\n' +
-      'ANIMATION: ' + animationName + '\\n' +
-      'DURATION: ' + String(duration) + '\\n' +
+      'MOTION DEBUG\
+' +
+      'LAST TAP: ' + (panel.dataset.lastTap || action) + '\
+' +
+      'MOTION: ' + action + '\
+' +
+      'TARGET: #' + (element.id || element.className || element.tagName).toString().replace(/\\s+/g, '.') + '\
+' +
+      'CLASS: ' + (className || '(none)') + '\
+' +
+      'ANIMATION: ' + animationName + '\
+' +
+      'DURATION: ' + String(duration) + '\
+' +
       'TRANSITION: ' + transition;
   }
 
@@ -294,7 +301,9 @@
     var panel = byId('r4mMotionDebug');
     if (panel) {
       panel.dataset.lastTap = action;
-      panel.textContent = 'MOTION DEBUG\\nLAST TAP: ' + action + '\\nMOTION: waiting for target…';
+      panel.textContent = 'MOTION DEBUG\
+LAST TAP: ' + action + '\
+MOTION: waiting for target…';
     }
   }
 
@@ -517,7 +526,9 @@
     }
   }
 
-  window.__r4b1tSyncMobileRoute = syncRoute;\n\n  function renderRouteWear() {
+  window.__r4b1tSyncMobileRoute = syncRoute;
+
+  function renderRouteWear() {
     var host = byId('r4mRouteWear');
     if (!host || !window.R4b1tWear) return;
     var source = byId('trailItems');
