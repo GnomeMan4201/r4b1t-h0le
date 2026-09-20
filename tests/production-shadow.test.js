@@ -50,7 +50,7 @@ test('production shadow records serving-layer headers and redirect identity befo
   assert.match(source, /redirect/i);
 });
 
-test('custom-domain root must contain the same release-critical entry points as Pages', () => {
+test('custom-domain root must expose all release-critical entry points', () => {
   for (const marker of [
     'proof-session-import.js',
     'trail-comparison-import.js',
