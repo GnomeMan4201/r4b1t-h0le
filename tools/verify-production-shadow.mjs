@@ -40,6 +40,7 @@ const CRITICAL_ASSETS = [
   'proof-session-import.css',
   'replay-inspection.js',
   'replay-inspection-renderer.js',
+  'replay-inspection-delegation.js',
   'replay-inspection-import.js',
   'replay-inspection-overlay.js',
   'replay-inspection.css',
