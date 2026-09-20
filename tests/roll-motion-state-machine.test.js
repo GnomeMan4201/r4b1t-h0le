@@ -209,6 +209,46 @@ test('renderer completion carries no LOCKED or reveal authority', () => {
   assert.equal(reveals.length, 0);
 });
 
+test('early renderer completion cannot advance disclosure', () => {
+  const { m, clock, reveals } = machine();
+  toReleased(m, clock);
+  m.commitAck();
+  clock.tick(m.timing.accelerate + m.timing.decelerate);
+  assert.equal(m.snapshot().state, STATES.LOCKED);
+  assert.equal(m.presentationComplete(), false);
+  assert.equal(reveals.length, 0);
+  clock.tick(m.timing.lockHold - 1);
+  assert.equal(reveals.length, 0);
+  clock.tick(1);
+  assert.equal(reveals.length, 1);
+});
+
+test('disclosure fires on machine schedule when renderer never reports completion', () => {
+  const { m, clock, reveals } = machine();
+  toReleased(m, clock);
+  m.commitAck();
+  clock.tick(m.timing.accelerate + m.timing.decelerate + m.timing.lockHold);
+  assert.equal(m.snapshot().state, STATES.CARD_ENTERING);
+  assert.equal(reveals.length, 1);
+});
+
+test('duplicate renderer completion reports cannot double reveal or reschedule disclosure', () => {
+  const { m, clock, reveals } = machine();
+  toReleased(m, clock);
+  m.commitAck();
+  clock.tick(m.timing.accelerate + m.timing.decelerate);
+  assert.equal(m.snapshot().state, STATES.LOCKED);
+  assert.equal(m.presentationComplete(), false);
+  assert.equal(m.presentationComplete(), false);
+  assert.equal(reveals.length, 0);
+  clock.tick(m.timing.lockHold);
+  assert.equal(reveals.length, 1);
+  assert.equal(m.presentationComplete(), false);
+  assert.equal(m.presentationComplete(), false);
+  clock.tick(10_000);
+  assert.equal(reveals.length, 1);
+});
+
 test('REVEAL_BOUNDARY occurs exactly once per completed transaction', () => {
   const { m, clock, reveals } = machine();
   toSettled(m, clock);
