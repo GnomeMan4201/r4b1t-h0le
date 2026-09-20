@@ -255,7 +255,8 @@ test('multi-file selection delegates exact bytes in order and renders duplicate-
   await expect(root).toHaveAttribute('data-replay-mode', 'multi-source');
   await expect(root).toContainText('2 UNIQUE / 3 SUPPLIED');
   await expect(root).toContainText('S1');
-  await expect(root).toContainText('SUPPLIED 2×');
+  await expect(root.locator('.replay-inspection-source-slot').nth(0)).toContainText('SUPPLIED');
+  await expect(root.locator('.replay-inspection-source-slot').nth(0)).toContainText('2×');
   await expect(root).toContainText('S2');
   await expect(root).not.toContainText('https://example.org/a');
   await expect(root).not.toContainText('https://example.org/b');
