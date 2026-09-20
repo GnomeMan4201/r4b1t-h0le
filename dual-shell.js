@@ -101,21 +101,7 @@
             '<button type="button" data-mobile-action="wear-sample"><span>VIEW WEAR SAMPLE</span><b>↗</b></button>',
           '</div>',
         '</section>',
-        '<section class="r4m-route" id="r4mRoute" hidden>',
-          '<div class="r4m-route-top"><span>ROUTE / <b id="r4mRouteNo">001</b></span><strong id="r4mTag">ROUTE</strong></div>',
-          '<small id="r4mProtocol">https://</small>',
-          '<h2 id="r4mDomain">—</h2>',
-          '<p id="r4mDescription">A route selected from the corpus.</p>',
-          '<code id="r4mUrl">—</code>',
-          '<div class="r4m-route-actions">',
-            '<button type="button" data-mobile-action="sprout">SPROUT ×4</button>',
-            '<button type="button" data-mobile-action="share">SHARE</button>',
-            '<button type="button" data-mobile-action="cut">CUT CARD</button>',
-          '</div>',
-          '<div class="r4m-route-wear" id="r4mRouteWear" aria-label="Persistent route wear"></div>',
-          '<button class="r4m-enter" type="button" data-mobile-action="visit">FOLLOW THE RABBIT ↗</button>',
-          '<button class="r4m-next" type="button" data-mobile-action="next">REJECT / NEXT</button>',
-        '</section>',
+        '<div id="r4mRouteMount" aria-live="polite"></div>',
         '<section class="r4m-trail">',
           '<div class="r4m-section-title"><span>TRAIL</span><b id="r4mTrailCount">00</b></div>',
           '<div class="r4m-trail-scroll" id="r4mTrailItems"><span class="r4m-empty">NO ROUTES YET</span></div>',
@@ -339,6 +325,9 @@
   }
 
   function runRollTransition(kind) {
+    if (kind === 'roll' && window.R4B1TRollProduction && typeof window.R4B1TRollProduction.roll === 'function') {
+      return window.R4B1TRollProduction.roll();
+    }
     if (routeTransitionBusy) return;
     reportTap(kind === 'next' ? 'REJECT / NEXT' : 'ROLL');
     var route = byId('r4mRoute');
