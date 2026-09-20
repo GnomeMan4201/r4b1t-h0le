@@ -173,7 +173,13 @@ async function verifyPagesRedirect() {
 }
 
 async function fetchAsset(origin, file, label) {
-  const response = await fetchWithTimeout(new URL(file, origin));
+  const assetUrl = new URL(file, origin);
+  // raw.githubusercontent.com can briefly serve a cached pre-deploy branch object
+  // after gh-pages moves. A per-run query forces parity to inspect current branch bytes.
+  if (origin === PUBLISHED_BRANCH) {
+    assetUrl.searchParams.set('shadow', String(Date.now()));
+  }
+  const response = await fetchWithTimeout(assetUrl);
 
   if (!response.ok) {
     fail(`${file}: ${label} returned HTTP ${response.status}`);
