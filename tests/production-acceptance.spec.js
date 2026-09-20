@@ -186,7 +186,12 @@ test('phone-width Proof Session import is local, ephemeral, deduplicated, and re
   await expect(dialog.locator('.proof-session-import-selected-item')).toHaveCount(3);
   await expect(dialog.locator('.proof-session-source')).toHaveCount(2);
   await expect(dialog.locator('.proof-session-pair')).toHaveCount(1);
-  await expect(dialog.locator('.proof-session-source').filter({ hasText: 'SUPPLIED' })).toContainText('2');
+  const suppliedCounts = await dialog.locator('.proof-session-source').evaluateAll((nodes) => nodes.map((node) => {
+    const field = Array.from(node.querySelectorAll('.proof-session-field'))
+      .find((row) => row.querySelector('.proof-session-field-label')?.textContent === 'SUPPLIED');
+    return Number(field?.querySelector('.proof-session-field-value')?.textContent || 0);
+  }));
+  expect(suppliedCounts.sort((a, b) => a - b)).toEqual([1, 2]);
 
   await dialog.getByRole('button', { name: 'Remove b.json' }).click();
   await expect(dialog.locator('.proof-session-import-selected-item')).toHaveCount(2);
