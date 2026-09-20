@@ -21,6 +21,7 @@
 .replay-inspection-neutral{display:grid;gap:8px;padding:18px}
 .replay-inspection-multi-sources,.replay-inspection-multi-derived,.replay-inspection-multi-summary{display:grid;gap:8px;padding:14px;border-bottom:1px solid var(--border2,#1e1c18)}
 .replay-inspection-source-slot{display:grid;gap:6px;padding:10px;border:1px solid var(--border2,#1e1c18);min-width:0}
+.replay-inspection-portable-diagnostic{display:grid;gap:8px;padding:14px;border-bottom:1px solid var(--border2,#1e1c18)}
 .replay-inspection[data-proof-state="REJECTED"],.replay-inspection[data-proof-state="UNVERIFIED"]{border-top-style:double}
 @media(max-width:700px){
   .replay-inspection-import-controls{align-items:stretch;flex-direction:column}
