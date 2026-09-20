@@ -26,12 +26,19 @@ test('production shadow includes Prove & Show proof-critical assets', () => {
   }
 });
 
-test('production shadow compares GitHub Pages and custom-domain bytes for every critical asset', () => {
-  assert.match(source, /fetchAsset\(APP, file, ['"]pages['"]\)/);
+test('production shadow compares repository, published gh-pages branch, and custom-domain bytes', () => {
+  assert.match(source, /PUBLISHED_BRANCH/);
+  assert.match(source, /fetchAsset\(PUBLISHED_BRANCH, file, ['"]published-branch['"]\)/);
   assert.match(source, /fetchAsset\(SITE, file, ['"]custom-domain['"]\)/);
-  assert.match(source, /pagesHash/);
+  assert.match(source, /publishedHash/);
   assert.match(source, /siteHash/);
-  assert.match(source, /pagesHash\s*!==\s*siteHash/);
+  assert.match(source, /publishedHash\s*!==\s*siteHash/);
+});
+
+test('default GitHub Pages project URL must redirect to the registered custom domain', () => {
+  assert.match(source, /verifyPagesRedirect/);
+  assert.match(source, /redirect:\s*['"]manual['"]/);
+  assert.match(source, /new URL\(SITE\)\.hostname/);
 });
 
 test('production shadow records serving-layer headers and redirect identity before functional checks', () => {
