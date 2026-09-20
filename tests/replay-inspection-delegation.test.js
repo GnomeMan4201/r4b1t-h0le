@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
+const vm = require('node:vm');
 
 const trail = require('../trail-manifest.js');
 const proofBundle = require('../proof-session-bundle.js');
@@ -231,4 +232,36 @@ test('delegation layer contains no second proof algorithm, persistence, network,
   ]) {
     assert.equal(forbidden.test(sourceCode), false, 'forbidden delegation behavior: ' + forbidden);
   }
+});
+
+test('browser build exposes raw-source delegation and fails closed for unavailable portable delegates', async () => {
+  const sourceCode = fs.readFileSync(
+    path.join(__dirname, '..', 'replay-inspection-delegation.js'),
+    'utf8',
+  );
+  const calls = [];
+  const context = {
+    Uint8Array,
+    TextEncoder,
+    R4b1tProofSession: {
+      FORMAT: 'r4b1t-proof-session/v0.1',
+      async build(inputs) {
+        calls.push(inputs.map((input) => Array.from(input)));
+        return { sources: [], pairs: [], relationships: [], summary: [] };
+      },
+    },
+  };
+  context.globalThis = context;
+  vm.runInNewContext(sourceCode, context, { filename: 'replay-inspection-delegation.js' });
+
+  assert.equal(typeof context.R4b1tReplayInspectionDelegation.inspectSources, 'function');
+  await context.R4b1tReplayInspectionDelegation.inspectSources([
+    new Uint8Array([2, 1]),
+    new Uint8Array([3, 4]),
+  ]);
+  assert.deepEqual(calls, [[[2, 1], [3, 4]]]);
+  await assert.rejects(
+    context.R4b1tReplayInspectionDelegation.inspectProofSession({ files: {} }),
+    /portable Proof Session inspection is unavailable/i,
+  );
 });
