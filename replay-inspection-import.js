@@ -28,6 +28,7 @@
 
     var shell = el(doc, 'section', 'replay-inspection-import');
     shell.setAttribute('aria-label', 'Replay Inspection local import');
+    shell.setAttribute('tabindex', '0');
 
     var controls = el(doc, 'div', 'replay-inspection-import-controls');
     var label = el(doc, 'label', 'replay-inspection-file-label', 'LOCAL TRAIL JSON');
