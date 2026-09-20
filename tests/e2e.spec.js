@@ -278,7 +278,7 @@ test('mobile connective motion covers press authority reveal ledger and copy sta
 
   const shareButton = page.locator('.r4m-route-actions [data-mobile-action="share"]');
   await shareButton.click();
-  await expect(shareButton).toHaveClass(/\\bcopied-flash\\b/);
+  await expect(shareButton).toHaveClass(/\bcopied-flash\b/);
 
   await page.locator('.r4m-nav [data-mobile-action="history"]').click();
   await expect(page.locator('#historyOverlay')).toHaveClass(/\bledger-open\b/);
