@@ -1,0 +1,68 @@
+name: Publish Prove & Show v1 Release
+
+on:
+  push:
+    branches:
+      - release/publish-prove-show-v1
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: prove-show-v1.0.0
+      TARGET_SHA: c31df672de0c9f44243529598f985a21c0aebaaa
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          fetch-depth: 0
+
+      - name: Verify accepted tag target
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin --tags
+          resolved="$(git rev-list -n 1 "$RELEASE_TAG")"
+          test "$resolved" = "$TARGET_SHA"
+
+      - name: Publish GitHub Release
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "GitHub Release already exists for $RELEASE_TAG"
+            exit 0
+          fi
+
+          cat > /tmp/release-notes.md <<'EOF'
+          Prove & Show v1 is the production-validated proof layer for r4b1t_h0le.
+
+          This release freezes and publishes the accepted production state for:
+          - Trail Cards v1
+          - Trail Comparison v1
+          - Proof Sessions v1
+          - Trail Topology v2
+          - local-first verification and presentation boundaries
+
+          Production acceptance:
+          - accepted merge: c31df672de0c9f44243529598f985a21c0aebaaa
+          - custom-domain HTTPS and redirect-chain checks passed
+          - curated release-critical assets matched repository, published GitHub Pages, and production bytes
+          - Playwright E2E #403 passed
+          - GitHub Pages deployment #226 passed
+          - Pages build/deployment #389 passed
+          - Production Shadow #61 passed, including a fresh second parity run
+          - live desktop and iPhone production acceptance passed
+          - no release blockers remained
+
+          Production:
+          https://r4b1t.badbananaresearch.com/
+          EOF
+
+          gh release create "$RELEASE_TAG"             --repo "$GITHUB_REPOSITORY"             --verify-tag             --title "Prove & Show v1.0.0 — Production Accepted"             --notes-file /tmp/release-notes.md
