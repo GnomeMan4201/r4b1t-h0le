@@ -210,6 +210,34 @@ Acceptance result:
 
 The `prove-show-v1.0.0` tag MUST NOT be created until production serves the accepted release candidate and the production acceptance pass is rerun.
 
+### Required deployment cutover
+
+Repository-side preparation is already present:
+
+- root `CNAME` contains `r4b1t.badbananaresearch.com`
+- GitHub Pages successfully publishes the accepted repository build
+- the GitHub Pages reference origin is `https://gnomeman4201.github.io/r4b1t-h0le/`
+
+The remaining release-blocking change is external to this repository:
+
+- DNS label: `r4b1t.badbananaresearch.com`
+- required record type: `CNAME`
+- required target: `gnomeman4201.github.io`
+- the target MUST NOT include `/r4b1t-h0le`
+- the existing Sites-project binding for `r4b1t-repo` must no longer own the production hostname
+
+After that external cutover, do not immediately mark production accepted.
+
+Required order:
+
+1. wait until the custom domain resolves to the GitHub Pages deployment,
+2. verify HTTPS certificate validity,
+3. run Production Shadow until full critical-asset parity passes,
+4. perform a second fresh parity check after propagation,
+5. only then rerun the full functional production acceptance checklist,
+6. record PASS on the exact accepted production commit,
+7. create `prove-show-v1.0.0`.
+
 ### Non-blocking findings for patch follow-up
 
 None recorded. The current finding is release-blocking, not cosmetic.
