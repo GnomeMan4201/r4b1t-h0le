@@ -1,0 +1,50 @@
+name: Replay Inspection v1 Core Audit
+
+on:
+  pull_request:
+    paths:
+      - 'replay-inspection.js'
+      - 'tests/replay-inspection-core.test.js'
+      - 'docs/REPLAY_INSPECTION_V1_SPEC.md'
+      - 'docs/REPLAY_INSPECTION_V1_AUDIT.md'
+      - 'package.json'
+      - '.github/workflows/replay-inspection-v1-audit.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'replay-inspection.js'
+      - 'tests/replay-inspection-core.test.js'
+      - 'docs/REPLAY_INSPECTION_V1_SPEC.md'
+      - 'docs/REPLAY_INSPECTION_V1_AUDIT.md'
+      - 'package.json'
+      - '.github/workflows/replay-inspection-v1-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  core-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Reject high-severity dependency findings
+        run: npm audit --audit-level=high
+
+      - name: Check Replay core syntax
+        run: node --check replay-inspection.js
+
+      - name: Run Replay core and canonical-verifier regression tests
+        run: node --test tests/replay-inspection-core.test.js tests/trail-manifest.test.js tests/blind-manifest.test.js
