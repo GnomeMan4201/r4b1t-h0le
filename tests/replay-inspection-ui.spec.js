@@ -53,6 +53,31 @@ async function makeV02(page) {
   });
 }
 
+async function makePortableProofSessionFiles(page) {
+  return page.evaluate(async () => {
+    const make = async (url, seed) => {
+      const manifest = await window.R4b1tTrail.createManifest({
+        created_at: '2026-09-20T12:00:00.000Z',
+        corpus_revision: 'sha256:' + 'c'.repeat(64),
+        seed,
+        terrain: 'RESEARCH',
+        routes: [{ url, action: 'ROLL' }],
+        parent: null,
+      });
+      return new TextEncoder().encode(JSON.stringify(await window.R4b1tTrail.envelope(manifest), null, 2) + '\n');
+    };
+    const bundle = await window.R4b1tProofSessionBundle.create([
+      await make('https://example.org/portable-a', 'portable-a'),
+      await make('https://example.org/portable-b', 'portable-b'),
+    ], { verified_at: '2026-09-20T12:01:00.000Z' });
+    return Object.entries(bundle.files).map(([path, value]) => ({
+      path,
+      name: path.split('/').pop(),
+      bytes: Array.from(value),
+    }));
+  });
+}
+
 test('Replay UI modules do not auto-mount or alter the production shell', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.addScriptTag({ url: './replay-inspection.js' });
@@ -316,6 +341,84 @@ test('multi-source verification stays neutral until delegation resolves and rese
   await page.locator('.replay-inspection-reset').click();
   await expect(root).toContainText('NO SOURCE LOADED');
   expect(await page.evaluate(() => window.__replayController.multiSnapshot())).toBeNull();
+});
+
+test('portable Proof Session selection renders delegated MATCH, MISMATCH, and UNREADABLE outcomes', async ({ page }) => {
+  await loadReplaySurface(page);
+  const files = await makePortableProofSessionFiles(page);
+  const picker = page.locator('.replay-inspection-session-input');
+  await picker.setInputFiles(files.map((file) => ({
+    name: file.name,
+    mimeType: file.name.endsWith('.json') ? 'application/json' : 'text/plain',
+    buffer: Buffer.from(file.bytes),
+  })));
+  const root = page.locator('.replay-inspection-portable');
+  await expect(root).toHaveAttribute('data-portable-classification', 'MATCH');
+  await expect(root).toContainText('MATCH');
+  await expect(root).toContainText('2 UNIQUE / 2 SUPPLIED');
+  const metrics = await page.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+  }));
+  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth);
+
+  const mismatched = files.map((file) => ({ ...file, bytes: [...file.bytes] }));
+  const session = mismatched.find((file) => file.name === 'proof-session.json');
+  const parsed = JSON.parse(Buffer.from(session.bytes).toString('utf8'));
+  parsed.summary[0].count = 999;
+  session.bytes = Array.from(Buffer.from(JSON.stringify(parsed, null, 2) + '\n'));
+  await picker.setInputFiles(mismatched.map((file) => ({
+    name: file.name,
+    mimeType: file.name.endsWith('.json') ? 'application/json' : 'text/plain',
+    buffer: Buffer.from(file.bytes),
+  })));
+  await expect(root).toHaveAttribute('data-portable-classification', 'MISMATCH');
+  await expect(root).toContainText('proof-session.json');
+  await expect(root).not.toContainText('999');
+
+  await picker.setInputFiles(files.filter((file) => !file.name.startsWith('S1--')).map((file) => ({
+    name: file.name,
+    mimeType: file.name.endsWith('.json') ? 'application/json' : 'text/plain',
+    buffer: Buffer.from(file.bytes),
+  })));
+  await expect(root).toHaveAttribute('data-portable-classification', 'UNREADABLE');
+  await expect(root).toContainText('UNREADABLE');
+  await expect(root.locator('.replay-inspection-source-slot')).toHaveCount(0);
+  await page.locator('.replay-inspection-reset').click();
+  await expect(page.locator('.replay-inspection')).toContainText('NO SOURCE LOADED');
+  expect(await page.evaluate(() => window.__replayController.portableSnapshot())).toBeNull();
+});
+
+test('portable Proof Session remains neutral until the frozen inspector resolves', async ({ page }) => {
+  await loadReplaySurface(page);
+  const files = await makePortableProofSessionFiles(page);
+  await page.evaluate(() => {
+    const original = window.R4b1tReplayInspectionDelegation.inspectProofSession;
+    let release;
+    window.__releasePortable = () => release();
+    const host = document.getElementById('replayInspectionTestHost');
+    window.__replayController.destroy();
+    window.__replayController = window.R4b1tReplayInspectionImport.mount(host, {
+      delegation: {
+        inspectSources: window.R4b1tReplayInspectionDelegation.inspectSources,
+        inspectProofSession: async (...args) => {
+          await new Promise((resolve) => { release = resolve; });
+          return original(...args);
+        },
+      },
+    });
+  });
+  await page.locator('.replay-inspection-session-input').setInputFiles(files.map((file) => ({
+    name: file.name,
+    mimeType: file.name.endsWith('.json') ? 'application/json' : 'text/plain',
+    buffer: Buffer.from(file.bytes),
+  })));
+  const neutral = page.locator('.replay-inspection');
+  await expect(neutral).toContainText('VERIFYING PROOF SESSION');
+  await expect(neutral).not.toContainText('portable-a');
+  await expect(neutral).not.toContainText('proof-session.json');
+  await page.evaluate(() => window.__releasePortable());
+  await expect(page.locator('.replay-inspection-portable')).toHaveAttribute('data-portable-classification', 'MATCH');
 });
 
 test('Replay UI shell contains no persistence, remote transfer, telemetry, ranking, sampler, or corpus hooks', async ({ page }) => {

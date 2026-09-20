@@ -3,7 +3,7 @@
   var isNode = typeof module === 'object' && module.exports;
   var api = factory(
     isNode ? require('./proof-session.js') : root && root.R4b1tProofSession,
-    isNode ? require('./proof-session-bundle.js') : null,
+    isNode ? require('./proof-session-bundle.js') : root && root.R4b1tProofSessionBundle,
     isNode ? require('./trail-comparison-bundle.js') : null
   );
   if (isNode) module.exports = api;

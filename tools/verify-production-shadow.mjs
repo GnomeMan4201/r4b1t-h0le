@@ -34,6 +34,7 @@ const CRITICAL_ASSETS = [
   'trail-comparison.css',
   'trail-comparison-import.css',
   'proof-session.js',
+  'proof-session-bundle.js',
   'proof-session-renderer.js',
   'proof-session-import.js',
   'proof-session.css',

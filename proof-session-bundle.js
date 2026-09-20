@@ -1,8 +1,17 @@
+(function (root, factory) {
+  'use strict';
+  const isNode = typeof module === 'object' && module.exports;
+  const api = factory(
+    isNode ? require('./trail-manifest.js') : root && root.R4b1tTrail,
+    isNode ? require('./trail-comparison.js') : root && root.R4b1tTrailComparison,
+    isNode ? require('./proof-session.js') : root && root.R4b1tProofSession
+  );
+  if (isNode) module.exports = api;
+  if (root) root.R4b1tProofSessionBundle = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (trail, comparison, session) {
 'use strict';
 
-const trail = require('./trail-manifest.js');
-const comparison = require('./trail-comparison.js');
-const session = require('./proof-session.js');
+if (!trail || !comparison || !session) throw new Error('Proof Session bundle requires frozen proof delegates');
 
 const SESSION_FILE = 'proof-session.json';
 const README_FILE = 'README.txt';
@@ -300,7 +309,7 @@ async function inspect(bundle, options) {
   };
 }
 
-module.exports = {
+return Object.freeze({
   SESSION_FILE,
   README_FILE,
   SOURCE_PREFIX,
@@ -312,4 +321,5 @@ module.exports = {
   sourceFileName,
   comparisonFileName,
   semanticSessionProjection
-};
+});
+});

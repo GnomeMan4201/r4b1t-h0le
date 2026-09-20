@@ -1,4 +1,4 @@
-const CACHE = 'r4b1t-v20-replay-multisource';
+const CACHE = 'r4b1t-v21-replay-portable-session';
 const PRECACHE = [
   './',
   './index.html',
@@ -15,6 +15,7 @@ const PRECACHE = [
   './topology-runtime.js',
   './trail-wear.js',
   './trail-wear.css',
+  './proof-session-bundle.js',
   './replay-inspection.js',
   './replay-inspection-renderer.js',
   './replay-inspection-delegation.js',

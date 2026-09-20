@@ -27,6 +27,7 @@
     var machine = replayCore.createMachine();
     var generation = 0;
     var multiProjection = null;
+    var portableResult = null;
     var delegation = options && options.delegation ? options.delegation : replayDelegation;
 
     var shell = el(doc, 'section', 'replay-inspection-import');
@@ -42,10 +43,19 @@
     input.setAttribute('aria-label', 'One or more trail JSON files');
     label.appendChild(input);
 
+    var sessionLabel = el(doc, 'label', 'replay-inspection-file-label', 'PORTABLE PROOF SESSION FILES');
+    var sessionInput = el(doc, 'input', 'replay-inspection-session-input');
+    sessionInput.type = 'file';
+    sessionInput.accept = '.json,.txt,application/json,text/plain';
+    sessionInput.multiple = true;
+    sessionInput.setAttribute('aria-label', 'Portable Proof Session file set');
+    sessionLabel.appendChild(sessionInput);
+
     var resetButton = el(doc, 'button', 'replay-inspection-reset', 'Reset');
     resetButton.type = 'button';
 
     controls.appendChild(label);
+    controls.appendChild(sessionLabel);
     controls.appendChild(resetButton);
 
     var result = el(doc, 'div', 'replay-inspection-result');
@@ -61,13 +71,16 @@
       generation += 1;
       machine.reset();
       multiProjection = null;
+      portableResult = null;
       input.value = '';
+      sessionInput.value = '';
       render();
       return machine.snapshot();
     }
 
     async function loadBytes(bytes, options) {
       multiProjection = null;
+      portableResult = null;
       var token = ++generation;
       var pending = machine.load(bytes, options || {});
       render();
@@ -138,6 +151,38 @@
       return multiProjection;
     }
 
+    function portableAddress(file) {
+      var value = String(file.webkitRelativePath || file.name || '').replace(/\\/g, '/');
+      var nested = /(?:^|\/)(proof-session\.json|README\.txt|sources\/S[1-9][0-9]*--sha256-[0-9a-f]{64}\.json|comparisons\/S[1-9][0-9]*--S[1-9][0-9]*--sha256-[0-9a-f]{64}\.json)$/.exec(value);
+      if (nested) return nested[1];
+      if (/^S[1-9][0-9]*--sha256-[0-9a-f]{64}\.json$/.test(value)) return 'sources/' + value;
+      if (/^S[1-9][0-9]*--S[1-9][0-9]*--sha256-[0-9a-f]{64}\.json$/.test(value)) return 'comparisons/' + value;
+      throw new Error('Unrecognized portable Proof Session file address');
+    }
+
+    async function loadPortableFiles(files) {
+      var selected = Array.prototype.slice.call(files || []);
+      if (!selected.length) return reset();
+      var token = ++generation;
+      machine.reset();
+      multiProjection = null;
+      portableResult = null;
+      renderNeutral('READING_PORTABLE');
+      var bundle = { files: {} };
+      for (var index = 0; index < selected.length; index += 1) {
+        var address = portableAddress(selected[index]);
+        if (bundle.files[address]) throw new Error('Duplicate portable Proof Session file address');
+        bundle.files[address] = new Uint8Array(await selected[index].arrayBuffer());
+        if (token !== generation) return null;
+      }
+      renderNeutral('VERIFYING_PORTABLE');
+      var inspected = await delegation.inspectProofSession(bundle, { verified_at: new Date().toISOString() });
+      if (token !== generation) return null;
+      portableResult = inspected;
+      renderer.renderPortableSession(result, portableResult);
+      return JSON.parse(JSON.stringify(portableResult));
+    }
+
     function navigate(action) {
       var snapshot = machine.snapshot();
       if (snapshot.phase !== 'INSPECTING') return snapshot;
@@ -153,9 +198,20 @@
         reset();
         return;
       }
+      sessionInput.value = '';
       loadFiles(files).catch(function () {
         reset();
       });
+    });
+
+    sessionInput.addEventListener('change', function () {
+      var files = sessionInput.files;
+      if (!files || files.length === 0) {
+        reset();
+        return;
+      }
+      input.value = '';
+      loadPortableFiles(files).catch(function () { reset(); });
     });
 
     resetButton.addEventListener('click', function () {
@@ -195,14 +251,18 @@
     return Object.freeze({
       loadBytes: loadBytes,
       loadFiles: loadFiles,
+      loadPortableFiles: loadPortableFiles,
       reset: reset,
       snapshot: function () { return machine.snapshot(); },
       multiSnapshot: function () { return multiProjection ? JSON.parse(JSON.stringify(multiProjection)) : null; },
+      portableSnapshot: function () { return portableResult ? JSON.parse(JSON.stringify(portableResult)) : null; },
       destroy: function () {
         generation += 1;
         machine.reset();
         multiProjection = null;
+        portableResult = null;
         input.value = '';
+        sessionInput.value = '';
         container.replaceChildren();
       }
     });
