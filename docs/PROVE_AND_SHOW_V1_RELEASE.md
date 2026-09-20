@@ -135,6 +135,7 @@ This is the Product Contract clause 6 default applied to release acceptance.
 
 Functional acceptance MUST NOT begin until this serving-layer gate passes against the custom domain.
 
+- [ ] DNS CNAME for `r4b1t.badbananaresearch.com` resolves exactly to `gnomeman4201.github.io`.
 - [ ] HTTPS certificate is valid for `r4b1t.badbananaresearch.com`.
 - [ ] Plain HTTP redirects to HTTPS on the same expected host.
 - [ ] HTTPS root does not redirect to an unexpected host.
