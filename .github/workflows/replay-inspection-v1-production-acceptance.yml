@@ -1,0 +1,81 @@
+name: Replay Inspection v1 Production Acceptance
+
+on:
+  push:
+    branches:
+      - release/replay-inspection-v1-production-acceptance
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: replay-inspection-v1-production-acceptance
+  cancel-in-progress: true
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      BASE_URL: https://r4b1t.badbananaresearch.com/
+      PRODUCTION_CANDIDATE_SHA: e7bb3184a9506b6566ff819f971acf5e65499bd5
+    steps:
+      - name: Check out acceptance harness
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          fetch-depth: 0
+
+      - name: Prove harness did not change Replay production bytes
+        shell: bash
+        run: |
+          git diff --exit-code "$PRODUCTION_CANDIDATE_SHA" -- \
+            index.html r4b1t.html dual-shell.js dual-shell.css \
+            trail-runtime.js trail-manifest.js blind-runtime.js blind-manifest.js \
+            topology-runtime.js trail-topology.js \
+            trail-card.js trail-card-renderer.js trail-card-share.js trail-card.css trail-card-share.css \
+            trail-comparison.js trail-comparison-renderer.js trail-comparison-import.js \
+            trail-comparison.css trail-comparison-import.css \
+            proof-session.js proof-session-renderer.js proof-session-import.js \
+            proof-session.css proof-session-import.css \
+            replay-inspection.js replay-inspection-renderer.js replay-inspection-import.js \
+            replay-inspection-overlay.js replay-inspection.css \
+            trail-wear.js trail-wear.css sw.js manifest.json
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Reject high-severity dependency findings
+        run: npm audit --audit-level=high
+
+      - name: Run Product Contract and frozen proof unit gates
+        run: npm run test:unit
+
+      - name: Re-run Replay core and delegation gates
+        run: node --test tests/replay-inspection-core.test.js tests/replay-inspection-delegation.test.js
+
+      - name: Reverify live serving-layer parity
+        run: node tools/verify-production-shadow.mjs
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run live Replay desktop and iPhone acceptance
+        run: npx playwright test --config=playwright.replay-production.config.js
+
+      - name: Upload Replay production acceptance report on failure
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: replay-inspection-v1-production-acceptance
+          path: |
+            playwright-replay-production-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
