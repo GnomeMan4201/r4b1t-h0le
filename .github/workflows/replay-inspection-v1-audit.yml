@@ -3,7 +3,12 @@ name: Replay Inspection v1 Audit
 on:
   pull_request:
     paths:
-      - 'replay-inspection-renderer.js'\n      - 'replay-inspection-import.js'\n      - 'replay-inspection.css'\n      - 'tests/replay-inspection-ui.spec.js'\n      - 'playwright.replay.config.js'\n      - 'replay-inspection.js'
+      - 'replay-inspection-renderer.js'
+      - 'replay-inspection-import.js'
+      - 'replay-inspection.css'
+      - 'tests/replay-inspection-ui.spec.js'
+      - 'playwright.replay.config.js'
+      - 'replay-inspection.js'
       - 'replay-inspection-delegation.js'
       - 'tests/replay-inspection-core.test.js'
       - 'tests/replay-inspection-delegation.test.js'
@@ -16,7 +21,12 @@ on:
     branches:
       - main
     paths:
-      - 'replay-inspection-renderer.js'\n      - 'replay-inspection-import.js'\n      - 'replay-inspection.css'\n      - 'tests/replay-inspection-ui.spec.js'\n      - 'playwright.replay.config.js'\n      - 'replay-inspection.js'
+      - 'replay-inspection-renderer.js'
+      - 'replay-inspection-import.js'
+      - 'replay-inspection.css'
+      - 'tests/replay-inspection-ui.spec.js'
+      - 'playwright.replay.config.js'
+      - 'replay-inspection.js'
       - 'replay-inspection-delegation.js'
       - 'tests/replay-inspection-core.test.js'
       - 'tests/replay-inspection-delegation.test.js'
