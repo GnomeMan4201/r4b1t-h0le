@@ -6,6 +6,7 @@ import crypto from 'node:crypto';
 
 const ROOT = path.resolve('.');
 const APP = 'https://gnomeman4201.github.io/r4b1t-h0le/';
+const PUBLISHED_BRANCH = 'https://raw.githubusercontent.com/GnomeMan4201/r4b1t-h0le/gh-pages/';
 const SITE = 'https://r4b1t.badbananaresearch.com/';
 const WORKER = 'https://r4b1t-proxy.badbanana6969.workers.dev';
 
@@ -105,6 +106,31 @@ async function verifyHttpRedirect() {
   }
 }
 
+async function verifyPagesRedirect() {
+  const response = await fetchWithTimeout(APP, { redirect: 'manual' });
+  const location = response.headers.get('location');
+
+  if (![301, 302, 307, 308].includes(response.status)) {
+    fail(`pages redirect: expected redirect from ${APP}, got HTTP ${response.status}`);
+    return;
+  }
+
+  if (!location) {
+    fail('pages redirect: missing Location header');
+    return;
+  }
+
+  const resolved = new URL(location, APP);
+  if (resolved.protocol !== 'https:') {
+    fail(`pages redirect: expected HTTPS target, got ${resolved.href}`);
+  }
+  if (resolved.hostname !== new URL(SITE).hostname) {
+    fail(`pages redirect: expected custom-domain host, got ${resolved.hostname}`);
+  } else {
+    console.log(`PAGES REDIRECT ${APP} -> ${resolved.href}`);
+  }
+}
+
 async function fetchAsset(origin, file, label) {
   const response = await fetchWithTimeout(new URL(file, origin));
 
@@ -130,63 +156,55 @@ async function fetchAsset(origin, file, label) {
 async function verifyAssetParity() {
   for (const file of CRITICAL_ASSETS) {
     const local = fs.readFileSync(path.join(ROOT, file));
-    const [pages, site] = await Promise.all([
-      fetchAsset(APP, file, 'pages'),
+    const [published, site] = await Promise.all([
+      fetchAsset(PUBLISHED_BRANCH, file, 'published-branch'),
       fetchAsset(SITE, file, 'custom-domain'),
     ]);
 
-    if (!pages || !site) continue;
+    if (!published || !site) continue;
 
     const localHash = sha256(local);
-    const pagesHash = sha256(pages);
+    const publishedHash = sha256(published);
     const siteHash = sha256(site);
 
-    if (localHash !== pagesHash) {
-      fail(`${file}: pages hash ${pagesHash} != repository hash ${localHash}`);
+    if (localHash !== publishedHash) {
+      fail(`${file}: published-branch hash ${publishedHash} != repository hash ${localHash}`);
     }
     if (localHash !== siteHash) {
       fail(`${file}: custom-domain hash ${siteHash} != repository hash ${localHash}`);
     }
-    if (pagesHash !== siteHash) {
-      fail(`${file}: pages hash ${pagesHash} != custom-domain hash ${siteHash}`);
+    if (publishedHash !== siteHash) {
+      fail(`${file}: published-branch hash ${publishedHash} != custom-domain hash ${siteHash}`);
     }
 
-    if (localHash === pagesHash && pagesHash === siteHash) {
+    if (localHash === publishedHash && publishedHash === siteHash) {
       console.log(`PARITY ${file} ${siteHash}`);
     }
   }
 }
 
-async function verifyFrontDoors() {
-  const [pagesResponse, siteResponse] = await Promise.all([
-    fetchWithTimeout(APP),
-    fetchWithTimeout(SITE),
-  ]);
+async function verifyFrontDoor() {
+  const response = await fetchWithTimeout(SITE);
 
-  for (const [label, response, origin] of [
-    ['pages', pagesResponse, APP],
-    ['custom-domain', siteResponse, SITE],
-  ]) {
-    if (!response.ok) {
-      fail(`${label} root: expected 2xx, got HTTP ${response.status}`);
-      continue;
-    }
+  if (!response.ok) {
+    fail(`custom-domain root: expected 2xx, got HTTP ${response.status}`);
+    return;
+  }
 
-    if (!response.url.startsWith('https://')) {
-      fail(`${label} root: HTTPS termination failed at ${response.url}`);
-    }
+  if (!response.url.startsWith('https://')) {
+    fail(`custom-domain root: HTTPS termination failed at ${response.url}`);
+  }
 
-    if (new URL(response.url).hostname !== new URL(origin).hostname) {
-      fail(`${label} root: unexpected redirect to ${response.url}`);
-    }
+  if (new URL(response.url).hostname !== new URL(SITE).hostname) {
+    fail(`custom-domain root: unexpected redirect to ${response.url}`);
+  }
 
-    logServingHeaders(`${label}:root`, response);
+  logServingHeaders('custom-domain:root', response);
 
-    const html = await response.text();
-    for (const marker of ROOT_MARKERS) {
-      if (!html.includes(marker)) {
-        fail(`${label} root: release-critical entry point missing: ${marker}`);
-      }
+  const html = await response.text();
+  for (const marker of ROOT_MARKERS) {
+    if (!html.includes(marker)) {
+      fail(`custom-domain root: release-critical entry point missing: ${marker}`);
     }
   }
 }
@@ -215,7 +233,8 @@ async function verifyWorkerHeaders() {
 
 try {
   await verifyHttpRedirect();
-  await verifyFrontDoors();
+  await verifyPagesRedirect();
+  await verifyFrontDoor();
   await verifyAssetParity();
   await verifyWorkerHeaders();
 } catch (error) {
