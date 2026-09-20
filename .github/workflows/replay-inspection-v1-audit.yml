@@ -3,6 +3,12 @@ name: Replay Inspection v1 Audit
 on:
   pull_request:
     paths:
+      - 'replay-inspection-overlay.js'
+      - 'tests/replay-inspection-entry.spec.js'
+      - 'index.html'
+      - 'dual-shell.js'
+      - 'sw.js'
+      - 'tools/verify-production-shadow.mjs'
       - 'replay-inspection-renderer.js'
       - 'replay-inspection-import.js'
       - 'replay-inspection.css'
@@ -21,6 +27,12 @@ on:
     branches:
       - main
     paths:
+      - 'replay-inspection-overlay.js'
+      - 'tests/replay-inspection-entry.spec.js'
+      - 'index.html'
+      - 'dual-shell.js'
+      - 'sw.js'
+      - 'tools/verify-production-shadow.mjs'
       - 'replay-inspection-renderer.js'
       - 'replay-inspection-import.js'
       - 'replay-inspection.css'
@@ -65,6 +77,7 @@ jobs:
           node --check replay-inspection-delegation.js
           node --check replay-inspection-renderer.js
           node --check replay-inspection-import.js
+          node --check replay-inspection-overlay.js
 
       - name: Run Replay and frozen-delegate regression tests
         run: node --test tests/replay-inspection-core.test.js tests/replay-inspection-delegation.test.js tests/trail-manifest.test.js tests/blind-manifest.test.js tests/trail-comparison-bundle.test.js tests/proof-session-bundle.test.js
