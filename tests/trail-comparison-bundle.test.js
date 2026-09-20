@@ -1,7 +1,10 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 const test = require('node:test');
+const vm = require('node:vm');
 
 const trail = require('../trail-manifest.js');
 const comparison = require('../trail-comparison.js');
@@ -164,4 +167,13 @@ test('comparison bundle has no network, account, storage, social, ranking, or se
   ]) {
     assert.equal(source.includes(forbidden), false, forbidden);
   }
+});
+
+test('frozen Trail Comparison bundle inspector is available in a browser without CommonJS', () => {
+  const sourceCode = fs.readFileSync(path.resolve(__dirname, '..', 'trail-comparison-bundle.js'), 'utf8');
+  const context = { R4b1tTrailComparison: {}, TextEncoder, TextDecoder, Uint8Array };
+  context.globalThis = context;
+  vm.runInNewContext(sourceCode, context, { filename: 'trail-comparison-bundle.js' });
+  assert.equal(typeof context.R4b1tTrailComparisonBundle.create, 'function');
+  assert.equal(typeof context.R4b1tTrailComparisonBundle.inspect, 'function');
 });
