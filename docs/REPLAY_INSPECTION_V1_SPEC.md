@@ -1,6 +1,6 @@
 # Replay / Inspection v1 — Normative Specification
 
-Status: PROPOSED FOR FREEZE  
+Status: FROZEN  
 Scope: local proof/presentation replay and inspection only  
 Contract clauses touched: 2, 3, 4, 5, 6, 7, 9  
 Depends on: `CONTRACT.md` v1.0 (frozen), canonical Trail v0.1/v0.2 verification, Trail Comparison v1 (frozen), Proof Sessions v1 (frozen), Trail Topology v2 (frozen), Prove & Show v1 production baseline `prove-show-v1.0.0`
@@ -257,12 +257,22 @@ Stored derived output is presentation, not authority.
 
 Whenever supplied stored derived output exists, Replay MUST independently recompute the applicable derived result from freshly VERIFIED canonical source bytes before evaluating the stored copy.
 
-The derived-output classification is exactly one of:
+For Replay-native derived material that is not already governed by a frozen portable-inspection vocabulary, the derived-output classification is exactly one of:
 
 - `MATCH`
 - `MISMATCH`
 - `UNREADABLE`
 - `UNVERIFIED`
+
+When Replay delegates inspection of a frozen portable format, Replay MUST preserve that format's frozen classification vocabulary and MUST NOT widen, rename, or reinterpret it.
+
+In particular, Proof Sessions v1 portable-file-set inspection remains exactly:
+
+- `MATCH`
+- `MISMATCH`
+- `UNREADABLE`
+
+A source-level `UNVERIFIED` state inside a Proof Session remains a source proof state. It MUST NOT be promoted into a fourth Proof Sessions portable-file-set classification.
 
 ### 8.1 MATCH
 
@@ -293,9 +303,11 @@ When source material required to establish a derived fact is UNREADABLE, Replay 
 
 ### 8.4 UNVERIFIED
 
-`UNVERIFIED` means the material required for a derived check uses an unsupported format/version or otherwise lacks a supported verification path.
+For Replay-native derived material, `UNVERIFIED` means the material required for that derived check uses an unsupported format/version or otherwise lacks a supported verification path.
 
 Replay MUST NOT treat unsupported stored derived output as factual merely because its source file is present.
+
+This Replay-native classification MUST NOT override a delegated frozen inspector's result vocabulary. When inspecting a Proof Sessions v1 portable file set, Replay preserves the frozen portable classification and separately exposes any source-level `UNVERIFIED` states.
 
 ### 8.5 No freshness by timestamp alone
 
@@ -360,6 +372,8 @@ However, the earlier historical position MUST still be rendered according to its
 - "this route was revealed at this historical position."
 
 The UI MUST NOT rewrite history by showing a later reveal as if it had already been revealed earlier.
+
+When Replay is positioned on a historically concealed step, that step's primary DOM and accessibility representation MUST remain concealed even if a later verified reveal exists in the same source. A later-known route identity MAY appear only in an explicitly separate post-reveal inspector after reveal authorization; it MUST NOT be embedded into the concealed step's hidden DOM, attributes, accessible name, or off-screen presentation.
 
 ### 10.3 Session close/reset
 
@@ -494,8 +508,9 @@ When Replay inspects a portable Proof Session file set:
 3. fresh pairwise comparisons are recomputed,
 4. the fresh Proof Session projection is recomputed,
 5. stored derived files are compared against the fresh result,
-6. classification is assigned,
-7. only then may the accepted inspection view render.
+6. the frozen Proof Sessions portable-file-set classification (`MATCH`, `MISMATCH`, or `UNREADABLE`) is preserved,
+7. source-level `VERIFIED`, `REJECTED`, and `UNVERIFIED` states remain separately visible,
+8. only then may the accepted inspection view render.
 
 Exact source files remain the evidence authority.
 
@@ -653,7 +668,9 @@ Replay / Inspection v1 MUST have explicit tests for at least the following befor
 24. desktop and mobile produce identical proof classifications from identical bytes,
 25. keyboard/focus operations cannot trigger reveal,
 26. diagnostic stored output never becomes evidence input,
-27. repeated inspection of identical bytes is deterministic apart from explicitly non-normative runtime metadata.
+27. repeated inspection of identical bytes is deterministic apart from explicitly non-normative runtime metadata,
+28. Proof Sessions portable-file-set classification remains exactly `MATCH` / `MISMATCH` / `UNREADABLE` even when a contained source has source-level `UNVERIFIED` state,
+29. backward navigation after a later valid reveal does not place the route identity into the historically concealed step's DOM or accessibility representation.
 
 ## 23. Implementation gate
 
