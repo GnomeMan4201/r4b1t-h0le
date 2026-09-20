@@ -78,6 +78,32 @@ async function makePortableProofSessionFiles(page) {
   });
 }
 
+async function makePortableComparisonFiles(page) {
+  return page.evaluate(async () => {
+    const make = async (url, seed) => {
+      const manifest = await window.R4b1tTrail.createManifest({
+        created_at: '2026-09-20T13:00:00.000Z',
+        corpus_revision: 'sha256:' + 'c'.repeat(64),
+        seed,
+        terrain: 'RESEARCH',
+        routes: [{ url, action: 'ROLL' }],
+        parent: null,
+      });
+      return new TextEncoder().encode(JSON.stringify(await window.R4b1tTrail.envelope(manifest), null, 2) + '\n');
+    };
+    const bundle = await window.R4b1tTrailComparisonBundle.create(
+      await make('https://example.org/left', 'portable-left'),
+      await make('https://example.org/right', 'portable-right'),
+      { verified_at: '2026-09-20T13:01:00.000Z' }
+    );
+    return {
+      leftDigest: bundle.projection.sources.left.artifact_digest,
+      rightDigest: bundle.projection.sources.right.artifact_digest,
+      files: Object.entries(bundle.files).map(([name, value]) => ({ name, bytes: Array.from(value) })),
+    };
+  });
+}
+
 test('Replay UI modules do not auto-mount or alter the production shell', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.addScriptTag({ url: './replay-inspection.js' });
@@ -419,6 +445,84 @@ test('portable Proof Session remains neutral until the frozen inspector resolves
   await expect(neutral).not.toContainText('proof-session.json');
   await page.evaluate(() => window.__releasePortable());
   await expect(page.locator('.replay-inspection-portable')).toHaveAttribute('data-portable-classification', 'MATCH');
+});
+
+test('portable Trail Comparison preserves sides and renders only the fresh projection', async ({ page }) => {
+  await loadReplaySurface(page);
+  const portable = await makePortableComparisonFiles(page);
+  const picker = page.locator('.replay-inspection-comparison-input');
+  const selected = portable.files.map((file) => ({
+    name: file.name,
+    mimeType: file.name.endsWith('.json') ? 'application/json' : 'text/plain',
+    buffer: Buffer.from(file.bytes),
+  }));
+  await picker.setInputFiles(selected);
+  const root = page.locator('.replay-inspection-portable-comparison');
+  await expect(root).toHaveAttribute('data-portable-comparison-status', 'FRESHLY_VERIFIED');
+  await expect(root).toContainText('FRESHLY VERIFIED');
+  await expect(root.locator('[data-source-side="left"]')).toContainText(portable.leftDigest.slice(7, 19));
+  await expect(root.locator('[data-source-side="right"]')).toContainText(portable.rightDigest.slice(7, 19));
+  await expect(root).toContainText('NO_SHARED_PREFIX');
+
+  const altered = portable.files.map((file) => ({ ...file, bytes: [...file.bytes] }));
+  const stored = altered.find((file) => file.name === 'trail-comparison.json');
+  const parsed = JSON.parse(Buffer.from(stored.bytes).toString('utf8'));
+  parsed.comparison.lineage_state = 'SAME_TRAIL';
+  stored.bytes = Array.from(Buffer.from(JSON.stringify(parsed, null, 2) + '\n'));
+  await picker.setInputFiles(altered.map((file) => ({
+    name: file.name,
+    mimeType: file.name.endsWith('.json') ? 'application/json' : 'text/plain',
+    buffer: Buffer.from(file.bytes),
+  })));
+  await expect(root).toContainText('NO_SHARED_PREFIX');
+  await expect(root).not.toContainText('SAME_TRAIL');
+
+  const tampered = portable.files.map((file) => ({ ...file, bytes: [...file.bytes] }));
+  const left = tampered.find((file) => file.name === 'left-source.json');
+  left.bytes.push(10);
+  await picker.setInputFiles(tampered.map((file) => ({
+    name: file.name,
+    mimeType: file.name.endsWith('.json') ? 'application/json' : 'text/plain',
+    buffer: Buffer.from(file.bytes),
+  })));
+  await expect(root).toHaveAttribute('data-portable-comparison-status', 'ERROR');
+  await expect(root).toContainText('left source digest mismatch');
+  await expect(root.locator('.trail-comparison')).toHaveCount(0);
+  await page.locator('.replay-inspection-reset').click();
+  expect(await page.evaluate(() => window.__replayController.comparisonSnapshot())).toBeNull();
+});
+
+test('portable Trail Comparison stays neutral until delegated inspection resolves', async ({ page }) => {
+  await loadReplaySurface(page);
+  const portable = await makePortableComparisonFiles(page);
+  await page.evaluate(() => {
+    const original = window.R4b1tReplayInspectionDelegation.inspectTrailComparison;
+    let release;
+    window.__releaseComparison = () => release();
+    const host = document.getElementById('replayInspectionTestHost');
+    window.__replayController.destroy();
+    window.__replayController = window.R4b1tReplayInspectionImport.mount(host, {
+      delegation: {
+        inspectTrailComparison: async (...args) => {
+          await new Promise((resolve) => { release = resolve; });
+          return original(...args);
+        },
+      },
+    });
+  });
+  await page.locator('.replay-inspection-comparison-input').setInputFiles(portable.files.map((file) => ({
+    name: file.name,
+    mimeType: file.name.endsWith('.json') ? 'application/json' : 'text/plain',
+    buffer: Buffer.from(file.bytes),
+  })));
+  const neutral = page.locator('.replay-inspection');
+  await expect(neutral).toContainText('VERIFYING TRAIL COMPARISON');
+  await expect(neutral).not.toContainText('NO_SHARED_PREFIX');
+  await expect(neutral).not.toContainText('trail-comparison.json');
+  await page.evaluate(() => window.__releaseComparison());
+  await expect(page.locator('.replay-inspection-portable-comparison')).toHaveAttribute('data-portable-comparison-status', 'FRESHLY_VERIFIED');
+  const metrics = await page.evaluate(() => ({ scrollWidth: document.documentElement.scrollWidth, clientWidth: document.documentElement.clientWidth }));
+  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth);
 });
 
 test('Replay UI shell contains no persistence, remote transfer, telemetry, ranking, sampler, or corpus hooks', async ({ page }) => {
