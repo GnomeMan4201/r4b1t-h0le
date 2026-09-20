@@ -139,7 +139,7 @@ Functional acceptance MUST NOT begin until this serving-layer gate passes agains
 - [ ] HTTPS certificate is valid for `r4b1t.badbananaresearch.com`.
 - [ ] Plain HTTP redirects to HTTPS on the same expected host.
 - [ ] HTTPS root does not redirect to an unexpected host.
-- [ ] Default GitHub Pages project URL redirects to the registered custom domain.
+- [ ] Default GitHub Pages project URL redirects to the registered custom-domain host, and the full redirect chain terminates on that host over HTTPS.
 - [ ] Custom-domain root returns a successful HTTPS response and contains the release-critical entry points.
 - [ ] SHA-256 for every curated release-critical executable/proof asset matches repository bytes and the published `gh-pages` branch.
 - [ ] SHA-256 for every curated release-critical asset matches between the published `gh-pages` branch and the custom domain.
