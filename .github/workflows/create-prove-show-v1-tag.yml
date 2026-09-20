@@ -1,0 +1,36 @@
+name: Create Prove & Show v1 Tag
+
+on:
+  push:
+    branches:
+      - release/create-prove-show-v1-tag
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      TAG_NAME: prove-show-v1.0.0
+      TARGET_SHA: c31df672de0c9f44243529598f985a21c0aebaaa
+    steps:
+      - name: Check out repository history
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          fetch-depth: 0
+
+      - name: Create immutable release tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          git cat-file -e "$TARGET_SHA^{commit}"
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
+            echo "Tag $TAG_NAME already exists"
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG_NAME" "$TARGET_SHA" -m "Prove & Show v1.0.0"
+          git push origin "refs/tags/$TAG_NAME"
