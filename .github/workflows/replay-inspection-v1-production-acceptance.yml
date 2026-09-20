@@ -40,8 +40,7 @@ jobs:
             proof-session.css proof-session-import.css \
             replay-inspection.js replay-inspection-renderer.js replay-inspection-import.js \
             replay-inspection-overlay.js replay-inspection.css \
-            trail-wear.js trail-wear.css sw.js manifest.json \
-            tools/verify-production-shadow.mjs
+            trail-wear.js trail-wear.css sw.js manifest.json
 
       - name: Set up Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
