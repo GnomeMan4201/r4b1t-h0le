@@ -138,10 +138,10 @@ Functional acceptance MUST NOT begin until this serving-layer gate passes agains
 - [ ] HTTPS certificate is valid for `r4b1t.badbananaresearch.com`.
 - [ ] Plain HTTP redirects to HTTPS on the same expected host.
 - [ ] HTTPS root does not redirect to an unexpected host.
-- [ ] GitHub Pages and the custom domain both return successful root responses.
-- [ ] Root HTML on both origins contains the release-critical entry points.
-- [ ] SHA-256 for every curated release-critical executable/proof asset matches repository bytes.
-- [ ] SHA-256 for every curated release-critical asset matches between GitHub Pages and the custom domain.
+- [ ] Default GitHub Pages project URL redirects to the registered custom domain.
+- [ ] Custom-domain root returns a successful HTTPS response and contains the release-critical entry points.
+- [ ] SHA-256 for every curated release-critical executable/proof asset matches repository bytes and the published `gh-pages` branch.
+- [ ] SHA-256 for every curated release-critical asset matches between the published `gh-pages` branch and the custom domain.
 - [ ] `cache-control`, `etag`, and `last-modified` observations are recorded for both origins.
 - [ ] A fresh independent parity check after deployment propagation also passes.
 
@@ -149,7 +149,7 @@ The curated parity set is intentionally limited to the application shell, proof 
 
 The gate answers one question:
 
-> Can GitHub Pages and the custom domain execute materially different Prove & Show application logic?
+> Can the published `gh-pages` release bytes and the custom domain execute materially different Prove & Show application logic?
 
 Any failed item above is release-blocking. Functional production acceptance results are not valid while this gate is red.
 
