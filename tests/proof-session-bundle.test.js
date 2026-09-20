@@ -1,7 +1,10 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 const test = require('node:test');
+const vm = require('node:vm');
 
 const trail = require('../trail-manifest.js');
 const comparison = require('../trail-comparison.js');
@@ -181,4 +184,21 @@ test('portable bundle is a file set without evidence-manifest authority or netwo
   ]) {
     assert.equal(sourceCode.includes(forbidden), false, forbidden);
   }
+});
+
+test('frozen Proof Session bundle inspector is available in a browser without CommonJS', () => {
+  const sourceCode = fs.readFileSync(path.resolve(__dirname, '..', 'proof-session-bundle.js'), 'utf8');
+  const context = {
+    R4b1tTrail: {},
+    R4b1tTrailComparison: {},
+    R4b1tProofSession: {},
+    TextEncoder,
+    TextDecoder,
+    Uint8Array,
+    Map,
+  };
+  context.globalThis = context;
+  vm.runInNewContext(sourceCode, context, { filename: 'proof-session-bundle.js' });
+  assert.equal(typeof context.R4b1tProofSessionBundle.create, 'function');
+  assert.equal(typeof context.R4b1tProofSessionBundle.inspect, 'function');
 });
