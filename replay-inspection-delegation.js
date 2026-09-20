@@ -4,7 +4,7 @@
   var api = factory(
     isNode ? require('./proof-session.js') : root && root.R4b1tProofSession,
     isNode ? require('./proof-session-bundle.js') : root && root.R4b1tProofSessionBundle,
-    isNode ? require('./trail-comparison-bundle.js') : null
+    isNode ? require('./trail-comparison-bundle.js') : root && root.R4b1tTrailComparisonBundle
   );
   if (isNode) module.exports = api;
   if (root) root.R4b1tReplayInspectionDelegation = api;

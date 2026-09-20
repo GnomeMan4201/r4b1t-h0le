@@ -1,9 +1,11 @@
 (function (root, factory) {
   'use strict';
-  var api = factory();
+  var api = factory(
+    typeof module === 'object' && module.exports ? require('./trail-comparison-renderer.js') : root && root.R4b1tTrailComparisonRenderer
+  );
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root) root.R4b1tReplayInspectionRenderer = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (comparisonRenderer) {
   'use strict';
 
   function text(value) {
@@ -38,6 +40,8 @@
   }
 
   function neutralLabel(phase) {
+    if (phase === 'READING_COMPARISON') return 'READING TRAIL COMPARISON';
+    if (phase === 'VERIFYING_COMPARISON') return 'VERIFYING TRAIL COMPARISON';
     if (phase === 'READING_PORTABLE') return 'READING PROOF SESSION';
     if (phase === 'VERIFYING_PORTABLE') return 'VERIFYING PROOF SESSION';
     if (phase === 'READING_MULTI') return 'READING SOURCES';
@@ -142,7 +146,7 @@
     root.setAttribute('tabindex', '0');
     root.setAttribute('aria-label', 'Replay Inspection');
 
-    if (snapshot.phase === 'UNLOADED' || snapshot.phase === 'READING' || snapshot.phase === 'VERIFYING' || snapshot.phase === 'READING_MULTI' || snapshot.phase === 'VERIFYING_MULTI' || snapshot.phase === 'READING_PORTABLE' || snapshot.phase === 'VERIFYING_PORTABLE') {
+    if (snapshot.phase === 'UNLOADED' || snapshot.phase === 'READING' || snapshot.phase === 'VERIFYING' || snapshot.phase === 'READING_MULTI' || snapshot.phase === 'VERIFYING_MULTI' || snapshot.phase === 'READING_PORTABLE' || snapshot.phase === 'VERIFYING_PORTABLE' || snapshot.phase === 'READING_COMPARISON' || snapshot.phase === 'VERIFYING_COMPARISON') {
       renderNeutral(doc, root, snapshot);
     } else if (snapshot.phase === 'REJECTED' || snapshot.phase === 'UNVERIFIED') {
       renderDiagnostic(doc, root, snapshot);
@@ -236,6 +240,49 @@
     return root;
   }
 
+  function renderPortableComparison(container, delegated) {
+    if (!container || !container.ownerDocument) throw new TypeError('Replay renderer requires a DOM container');
+    if (!delegated || !delegated.result || !delegated.result.fresh_projection) throw new TypeError('Replay renderer requires a fresh delegated comparison');
+    if (!comparisonRenderer || typeof comparisonRenderer.render !== 'function') throw new Error('Trail Comparison renderer is unavailable');
+    var result = delegated.result;
+    var doc = container.ownerDocument;
+    var root = el(doc, 'article', 'replay-inspection replay-inspection-portable-comparison');
+    root.setAttribute('data-replay-mode', 'portable-trail-comparison');
+    root.setAttribute('data-portable-comparison-status', 'FRESHLY_VERIFIED');
+    root.setAttribute('aria-label', 'Portable Trail Comparison inspection');
+    var header = el(doc, 'header', 'replay-inspection-header');
+    var heading = el(doc, 'div', 'replay-inspection-heading');
+    heading.appendChild(el(doc, 'span', 'replay-inspection-kicker', 'REPLAY / PORTABLE TRAIL COMPARISON'));
+    heading.appendChild(el(doc, 'strong', 'replay-inspection-proof-state', 'FRESHLY VERIFIED'));
+    header.appendChild(heading);
+    root.appendChild(header);
+    var bindings = el(doc, 'section', 'replay-inspection-portable-diagnostic');
+    bindings.appendChild(field(doc, 'LEFT SOURCE', shortDigest(result.left_source_digest)));
+    bindings.appendChild(field(doc, 'LEFT BOUND', result.left_source_matches));
+    bindings.appendChild(field(doc, 'RIGHT SOURCE', shortDigest(result.right_source_digest)));
+    bindings.appendChild(field(doc, 'RIGHT BOUND', result.right_source_matches));
+    root.appendChild(bindings);
+    var fresh = el(doc, 'div', 'replay-inspection-portable-fresh');
+    root.appendChild(fresh);
+    comparisonRenderer.render(fresh, result.fresh_projection);
+    container.replaceChildren(root);
+    return root;
+  }
+
+  function renderPortableComparisonError(container, error) {
+    var doc = container.ownerDocument;
+    var root = el(doc, 'article', 'replay-inspection replay-inspection-portable-comparison');
+    root.setAttribute('data-replay-mode', 'portable-trail-comparison');
+    root.setAttribute('data-portable-comparison-status', 'ERROR');
+    root.setAttribute('aria-label', 'Portable Trail Comparison diagnostic');
+    var body = el(doc, 'section', 'replay-inspection-portable-diagnostic');
+    body.appendChild(el(doc, 'strong', 'replay-inspection-proof-state', 'FAIL CLOSED'));
+    body.appendChild(field(doc, 'REASON', error && error.message ? error.message : String(error)));
+    root.appendChild(body);
+    container.replaceChildren(root);
+    return root;
+  }
+
   function toggleDetails(container) {
     var details = container && container.querySelector('[data-replay-details]');
     var trigger = container && container.querySelector('[data-replay-action="details"]');
@@ -249,6 +296,8 @@
     render: render,
     renderMulti: renderMulti,
     renderPortableSession: renderPortableSession,
+    renderPortableComparison: renderPortableComparison,
+    renderPortableComparisonError: renderPortableComparisonError,
     toggleDetails: toggleDetails,
     shortDigest: shortDigest
   });

@@ -28,6 +28,7 @@
     var generation = 0;
     var multiProjection = null;
     var portableResult = null;
+    var comparisonResult = null;
     var delegation = options && options.delegation ? options.delegation : replayDelegation;
 
     var shell = el(doc, 'section', 'replay-inspection-import');
@@ -51,11 +52,20 @@
     sessionInput.setAttribute('aria-label', 'Portable Proof Session file set');
     sessionLabel.appendChild(sessionInput);
 
+    var comparisonLabel = el(doc, 'label', 'replay-inspection-file-label', 'PORTABLE TRAIL COMPARISON FILES');
+    var comparisonInput = el(doc, 'input', 'replay-inspection-comparison-input');
+    comparisonInput.type = 'file';
+    comparisonInput.accept = '.json,.txt,application/json,text/plain';
+    comparisonInput.multiple = true;
+    comparisonInput.setAttribute('aria-label', 'Portable Trail Comparison file set');
+    comparisonLabel.appendChild(comparisonInput);
+
     var resetButton = el(doc, 'button', 'replay-inspection-reset', 'Reset');
     resetButton.type = 'button';
 
     controls.appendChild(label);
     controls.appendChild(sessionLabel);
+    controls.appendChild(comparisonLabel);
     controls.appendChild(resetButton);
 
     var result = el(doc, 'div', 'replay-inspection-result');
@@ -72,8 +82,10 @@
       machine.reset();
       multiProjection = null;
       portableResult = null;
+      comparisonResult = null;
       input.value = '';
       sessionInput.value = '';
+      comparisonInput.value = '';
       render();
       return machine.snapshot();
     }
@@ -81,6 +93,7 @@
     async function loadBytes(bytes, options) {
       multiProjection = null;
       portableResult = null;
+      comparisonResult = null;
       var token = ++generation;
       var pending = machine.load(bytes, options || {});
       render();
@@ -137,6 +150,8 @@
       var token = ++generation;
       machine.reset();
       multiProjection = null;
+      portableResult = null;
+      comparisonResult = null;
       renderNeutral('READING_MULTI');
       var exactInputs = [];
       for (var index = 0; index < selected.length; index += 1) {
@@ -167,6 +182,7 @@
       machine.reset();
       multiProjection = null;
       portableResult = null;
+      comparisonResult = null;
       renderNeutral('READING_PORTABLE');
       var bundle = { files: {} };
       for (var index = 0; index < selected.length; index += 1) {
@@ -181,6 +197,42 @@
       portableResult = inspected;
       renderer.renderPortableSession(result, portableResult);
       return JSON.parse(JSON.stringify(portableResult));
+    }
+
+    function comparisonAddress(file) {
+      var value = String(file.webkitRelativePath || file.name || '').replace(/\\/g, '/');
+      var match = /(?:^|\/)(left-source\.json|right-source\.json|trail-comparison\.json|README\.txt)$/.exec(value);
+      if (!match) throw new Error('Unrecognized portable Trail Comparison file address');
+      return match[1];
+    }
+
+    async function loadComparisonFiles(files) {
+      var selected = Array.prototype.slice.call(files || []);
+      if (!selected.length) return reset();
+      var token = ++generation;
+      machine.reset();
+      multiProjection = null;
+      portableResult = null;
+      comparisonResult = null;
+      renderNeutral('READING_COMPARISON');
+      try {
+        var bundle = { files: {} };
+        for (var index = 0; index < selected.length; index += 1) {
+          var address = comparisonAddress(selected[index]);
+          if (bundle.files[address]) throw new Error('Duplicate portable Trail Comparison file address');
+          bundle.files[address] = new Uint8Array(await selected[index].arrayBuffer());
+          if (token !== generation) return null;
+        }
+        renderNeutral('VERIFYING_COMPARISON');
+        comparisonResult = await delegation.inspectTrailComparison(bundle, { verified_at: new Date().toISOString() });
+        if (token !== generation) return null;
+        renderer.renderPortableComparison(result, comparisonResult);
+        return JSON.parse(JSON.stringify(comparisonResult));
+      } catch (error) {
+        if (token !== generation) return null;
+        renderer.renderPortableComparisonError(result, error);
+        return null;
+      }
     }
 
     function navigate(action) {
@@ -199,6 +251,7 @@
         return;
       }
       sessionInput.value = '';
+      comparisonInput.value = '';
       loadFiles(files).catch(function () {
         reset();
       });
@@ -211,7 +264,16 @@
         return;
       }
       input.value = '';
+      comparisonInput.value = '';
       loadPortableFiles(files).catch(function () { reset(); });
+    });
+
+    comparisonInput.addEventListener('change', function () {
+      var files = comparisonInput.files;
+      if (!files || files.length === 0) return reset();
+      input.value = '';
+      sessionInput.value = '';
+      loadComparisonFiles(files);
     });
 
     resetButton.addEventListener('click', function () {
@@ -252,17 +314,21 @@
       loadBytes: loadBytes,
       loadFiles: loadFiles,
       loadPortableFiles: loadPortableFiles,
+      loadComparisonFiles: loadComparisonFiles,
       reset: reset,
       snapshot: function () { return machine.snapshot(); },
       multiSnapshot: function () { return multiProjection ? JSON.parse(JSON.stringify(multiProjection)) : null; },
       portableSnapshot: function () { return portableResult ? JSON.parse(JSON.stringify(portableResult)) : null; },
+      comparisonSnapshot: function () { return comparisonResult ? JSON.parse(JSON.stringify(comparisonResult)) : null; },
       destroy: function () {
         generation += 1;
         machine.reset();
         multiProjection = null;
         portableResult = null;
+        comparisonResult = null;
         input.value = '';
         sessionInput.value = '';
+        comparisonInput.value = '';
         container.replaceChildren();
       }
     });

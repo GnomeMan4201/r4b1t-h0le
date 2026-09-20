@@ -29,6 +29,7 @@ const CRITICAL_ASSETS = [
   'trail-card.css',
   'trail-card-share.css',
   'trail-comparison.js',
+  'trail-comparison-bundle.js',
   'trail-comparison-renderer.js',
   'trail-comparison-import.js',
   'trail-comparison.css',

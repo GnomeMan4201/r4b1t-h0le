@@ -19,6 +19,7 @@ on:
       - 'replay-inspection.js'
       - 'replay-inspection-delegation.js'
       - 'proof-session-bundle.js'
+      - 'trail-comparison-bundle.js'
       - 'tests/replay-inspection-core.test.js'
       - 'tests/replay-inspection-delegation.test.js'
       - 'docs/REPLAY_INSPECTION_V1_SPEC.md'
@@ -26,6 +27,7 @@ on:
       - 'docs/REPLAY_INSPECTION_V1_DELEGATION.md'
       - 'docs/REPLAY_MULTISOURCE_UI_BOUNDARY.md'
       - 'docs/REPLAY_PROOF_SESSION_BUNDLE_UI_BOUNDARY.md'
+      - 'docs/REPLAY_TRAIL_COMPARISON_BUNDLE_UI_BOUNDARY.md'
       - 'package.json'
       - '.github/workflows/replay-inspection-v1-audit.yml'
   push:
@@ -48,6 +50,7 @@ on:
       - 'replay-inspection.js'
       - 'replay-inspection-delegation.js'
       - 'proof-session-bundle.js'
+      - 'trail-comparison-bundle.js'
       - 'tests/replay-inspection-core.test.js'
       - 'tests/replay-inspection-delegation.test.js'
       - 'docs/REPLAY_INSPECTION_V1_SPEC.md'
@@ -55,6 +58,7 @@ on:
       - 'docs/REPLAY_INSPECTION_V1_DELEGATION.md'
       - 'docs/REPLAY_MULTISOURCE_UI_BOUNDARY.md'
       - 'docs/REPLAY_PROOF_SESSION_BUNDLE_UI_BOUNDARY.md'
+      - 'docs/REPLAY_TRAIL_COMPARISON_BUNDLE_UI_BOUNDARY.md'
       - 'package.json'
       - '.github/workflows/replay-inspection-v1-audit.yml'
 
