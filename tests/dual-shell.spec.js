@@ -117,3 +117,41 @@ test('changing viewport width switches shells without reloading', async ({ page 
   await page.setViewportSize({ width: 1280, height: 800 });
   await expect(page.locator('html')).toHaveAttribute('data-r4b1t-interface', 'desktop');
 });
+
+
+test('mobile ROLL keeps route-specific result DOM absent until reveal boundary', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await expect(page.locator('#r4mRoute')).toHaveCount(0);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toHaveCount(0);
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expect(page.locator('#r4mUrl')).toHaveText(/^https?:\/\//);
+});
+
+test('mobile repeated ROLL activation cannot create a second active transaction', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await page.locator('#r4mRoll').click({ force: true });
+  const snapshot = await page.evaluate(() => window.R4B1TRollProduction && window.R4B1TRollProduction.snapshot());
+  expect(snapshot).toBeTruthy();
+  expect(snapshot.transactionId).toBe(1);
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+});
+
+test('mobile reduced motion preserves deferred disclosure without strip travel', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toHaveCount(0);
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expect(page.locator('#r4mRoll .r4m-roll-strip')).toBeAttached();
+});
