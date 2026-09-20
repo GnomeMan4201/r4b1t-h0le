@@ -1,4 +1,4 @@
-const CACHE = 'r4b1t-v19-replay-inspection';
+const CACHE = 'r4b1t-v20-replay-multisource';
 const PRECACHE = [
   './',
   './index.html',
@@ -17,6 +17,7 @@ const PRECACHE = [
   './trail-wear.css',
   './replay-inspection.js',
   './replay-inspection-renderer.js',
+  './replay-inspection-delegation.js',
   './replay-inspection-import.js',
   './replay-inspection-overlay.js',
   './replay-inspection.css',
