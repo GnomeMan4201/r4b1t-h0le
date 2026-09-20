@@ -4,7 +4,6 @@
   var machine = null;
   var renderer = null;
   var disclosure = null;
-  var releaseTimer = null;
 
   function byId(id) { return document.getElementById(id); }
 
@@ -62,6 +61,9 @@
     });
 
     machine = motionApi.createRollMotionMachine({
+      onTransition: function (entry) {
+        if (renderer) renderer.renderState(entry.to);
+      },
       onRevealBoundary: function (event) {
         disclosure.reveal(event);
       }
@@ -70,7 +72,8 @@
     renderer = rendererApi.createRollRenderer({
       button: button,
       strip: strip,
-      routeHost: mount
+      routeHost: mount,
+      timing: machine.timing
     });
     return true;
   }
@@ -88,8 +91,6 @@
 
     clearVisibleResult();
     if (!machine.pointerDown()) return false;
-    renderer.press();
-
     window.setTimeout(function () {
       if (!machine.pointerUp()) {
         renderer.cancel();
@@ -111,25 +112,16 @@
         return;
       }
 
-      renderer.release();
-      var releaseMs = renderer.profile().timing.release;
-      releaseTimer = window.setTimeout(function () {
-        releaseTimer = null;
-        if (!machine.commitAck(capability)) {
-          disclosure.cancel(transactionId);
-          renderer.cancel();
-        }
-      }, releaseMs);
+      if (!machine.commitAck(capability)) {
+        disclosure.cancel(transactionId);
+        renderer.cancel();
+      }
     }, 0);
     return true;
   }
 
   function cancel(reason) {
     if (!machine) return false;
-    if (releaseTimer !== null) {
-      window.clearTimeout(releaseTimer);
-      releaseTimer = null;
-    }
     var snap = machine.snapshot();
     if (snap.transactionId != null && disclosure) disclosure.cancel(snap.transactionId);
     machine.cancel(reason || 'navigation/reset');
