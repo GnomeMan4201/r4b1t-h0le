@@ -3,7 +3,7 @@ name: Replay Inspection v1 Audit
 on:
   pull_request:
     paths:
-      - 'replay-inspection.js'
+      - 'replay-inspection-renderer.js'\n      - 'replay-inspection-import.js'\n      - 'replay-inspection.css'\n      - 'tests/replay-inspection-ui.spec.js'\n      - 'playwright.replay.config.js'\n      - 'replay-inspection.js'
       - 'replay-inspection-delegation.js'
       - 'tests/replay-inspection-core.test.js'
       - 'tests/replay-inspection-delegation.test.js'
@@ -16,7 +16,7 @@ on:
     branches:
       - main
     paths:
-      - 'replay-inspection.js'
+      - 'replay-inspection-renderer.js'\n      - 'replay-inspection-import.js'\n      - 'replay-inspection.css'\n      - 'tests/replay-inspection-ui.spec.js'\n      - 'playwright.replay.config.js'\n      - 'replay-inspection.js'
       - 'replay-inspection-delegation.js'
       - 'tests/replay-inspection-core.test.js'
       - 'tests/replay-inspection-delegation.test.js'
@@ -53,6 +53,14 @@ jobs:
         run: |
           node --check replay-inspection.js
           node --check replay-inspection-delegation.js
+          node --check replay-inspection-renderer.js
+          node --check replay-inspection-import.js
 
       - name: Run Replay and frozen-delegate regression tests
         run: node --test tests/replay-inspection-core.test.js tests/replay-inspection-delegation.test.js tests/trail-manifest.test.js tests/blind-manifest.test.js tests/trail-comparison-bundle.test.js tests/proof-session-bundle.test.js
+
+      - name: Install Chromium for Replay browser audit
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Replay desktop and phone-width browser audit
+        run: npm run test:replay-ui
