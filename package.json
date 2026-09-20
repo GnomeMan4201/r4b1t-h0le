@@ -21,7 +21,8 @@
     "comparison:bundle": "node tools/create-trail-comparison-bundle.js",
     "comparison:inspect": "node tools/inspect-trail-comparison-bundle.js",
     "session:bundle": "node tools/create-proof-session-bundle.js",
-    "session:inspect": "node tools/inspect-proof-session-bundle.js"
+    "session:inspect": "node tools/inspect-proof-session-bundle.js",
+    "test:replay-ui": "playwright test --config=playwright.replay.config.js"
   },
   "devDependencies": {
     "@playwright/test": "1.62.0"
