@@ -125,3 +125,15 @@ test('Trail Ledger traps focus, closes with Escape, and restores opener', async 
   await expect(overlay).toHaveAttribute('aria-hidden', 'true');
   await expect(page.locator('#trailFocusOpener')).toBeFocused();
 });
+
+test('Trail Ledger explains unavailable actions and exposes copy controls for identifiers', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openTrailLedger === 'function');
+  await page.evaluate(() => window.openTrailLedger());
+
+  const overlay = page.locator('#trailLedgerOverlay');
+  await expect(overlay.locator('[data-trail-action="replay"]')).toBeDisabled();
+  await expect(overlay.locator('[data-trail-action="fork"]')).toBeDisabled();
+  await expect(overlay.locator('#trailLedgerHint')).toContainText('Import or export a trail to enable replay and fork.');
+  await expect(overlay.locator('[data-copy-field="seed"]')).toHaveAccessibleName('Copy seed');
+});

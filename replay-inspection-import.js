@@ -20,6 +20,23 @@
     return node;
   }
 
+  function filePicker(doc, config) {
+    var label = el(doc, 'label', 'replay-inspection-file-label');
+    var title = el(doc, 'span', 'replay-inspection-file-title', config.title);
+    var control = el(doc, 'span', 'replay-inspection-file-control', config.control);
+    var status = el(doc, 'span', 'replay-inspection-file-status', 'NO FILES SELECTED');
+    var input = el(doc, 'input', config.className);
+    input.type = 'file';
+    input.accept = config.accept;
+    input.multiple = true;
+    input.setAttribute('aria-label', config.ariaLabel);
+    label.appendChild(title);
+    label.appendChild(control);
+    label.appendChild(status);
+    label.appendChild(input);
+    return { label: label, input: input, status: status };
+  }
+
   function mount(container, options) {
     if (!container || !container.ownerDocument) throw new TypeError('Replay Inspection import requires a DOM container');
 
@@ -36,29 +53,33 @@
     shell.setAttribute('tabindex', '0');
 
     var controls = el(doc, 'div', 'replay-inspection-import-controls');
-    var label = el(doc, 'label', 'replay-inspection-file-label', 'LOCAL TRAIL JSON FILES');
-    var input = el(doc, 'input', 'replay-inspection-file-input');
-    input.type = 'file';
-    input.accept = '.json,application/json';
-    input.multiple = true;
-    input.setAttribute('aria-label', 'One or more trail JSON files');
-    label.appendChild(input);
-
-    var sessionLabel = el(doc, 'label', 'replay-inspection-file-label', 'PORTABLE PROOF SESSION FILES');
-    var sessionInput = el(doc, 'input', 'replay-inspection-session-input');
-    sessionInput.type = 'file';
-    sessionInput.accept = '.json,.txt,application/json,text/plain';
-    sessionInput.multiple = true;
-    sessionInput.setAttribute('aria-label', 'Portable Proof Session file set');
-    sessionLabel.appendChild(sessionInput);
-
-    var comparisonLabel = el(doc, 'label', 'replay-inspection-file-label', 'PORTABLE TRAIL COMPARISON FILES');
-    var comparisonInput = el(doc, 'input', 'replay-inspection-comparison-input');
-    comparisonInput.type = 'file';
-    comparisonInput.accept = '.json,.txt,application/json,text/plain';
-    comparisonInput.multiple = true;
-    comparisonInput.setAttribute('aria-label', 'Portable Trail Comparison file set');
-    comparisonLabel.appendChild(comparisonInput);
+    var trailPicker = filePicker(doc, {
+      title: 'LOCAL TRAIL JSON FILES',
+      control: 'CHOOSE TRAIL FILES',
+      className: 'replay-inspection-file-input',
+      accept: '.json,application/json',
+      ariaLabel: 'One or more trail JSON files'
+    });
+    var sessionPicker = filePicker(doc, {
+      title: 'PORTABLE PROOF SESSION FILES',
+      control: 'CHOOSE PROOF SESSION FILES',
+      className: 'replay-inspection-session-input',
+      accept: '.json,.txt,application/json,text/plain',
+      ariaLabel: 'Portable Proof Session file set'
+    });
+    var comparisonPicker = filePicker(doc, {
+      title: 'PORTABLE TRAIL COMPARISON FILES',
+      control: 'CHOOSE COMPARISON FILES',
+      className: 'replay-inspection-comparison-input',
+      accept: '.json,.txt,application/json,text/plain',
+      ariaLabel: 'Portable Trail Comparison file set'
+    });
+    var label = trailPicker.label;
+    var input = trailPicker.input;
+    var sessionLabel = sessionPicker.label;
+    var sessionInput = sessionPicker.input;
+    var comparisonLabel = comparisonPicker.label;
+    var comparisonInput = comparisonPicker.input;
 
     var resetButton = el(doc, 'button', 'replay-inspection-reset', 'Reset');
     resetButton.type = 'button';
@@ -77,15 +98,27 @@
       return renderer.render(result, machine.snapshot());
     }
 
+    function setPickerStatus(picker, files) {
+      var count = files ? files.length : 0;
+      picker.status.textContent = count === 0
+        ? 'NO FILES SELECTED'
+        : String(count) + (count === 1 ? ' FILE SELECTED' : ' FILES SELECTED');
+    }
+
+    function clearPicker(picker) {
+      picker.input.value = '';
+      setPickerStatus(picker, null);
+    }
+
     function reset() {
       generation += 1;
       machine.reset();
       multiProjection = null;
       portableResult = null;
       comparisonResult = null;
-      input.value = '';
-      sessionInput.value = '';
-      comparisonInput.value = '';
+      clearPicker(trailPicker);
+      clearPicker(sessionPicker);
+      clearPicker(comparisonPicker);
       render();
       return machine.snapshot();
     }
@@ -246,12 +279,13 @@
 
     input.addEventListener('change', function () {
       var files = input.files;
+      setPickerStatus(trailPicker, files);
       if (!files || files.length === 0) {
         reset();
         return;
       }
-      sessionInput.value = '';
-      comparisonInput.value = '';
+      clearPicker(sessionPicker);
+      clearPicker(comparisonPicker);
       loadFiles(files).catch(function () {
         reset();
       });
@@ -259,20 +293,22 @@
 
     sessionInput.addEventListener('change', function () {
       var files = sessionInput.files;
+      setPickerStatus(sessionPicker, files);
       if (!files || files.length === 0) {
         reset();
         return;
       }
-      input.value = '';
-      comparisonInput.value = '';
+      clearPicker(trailPicker);
+      clearPicker(comparisonPicker);
       loadPortableFiles(files).catch(function () { reset(); });
     });
 
     comparisonInput.addEventListener('change', function () {
       var files = comparisonInput.files;
+      setPickerStatus(comparisonPicker, files);
       if (!files || files.length === 0) return reset();
-      input.value = '';
-      sessionInput.value = '';
+      clearPicker(trailPicker);
+      clearPicker(sessionPicker);
       loadComparisonFiles(files);
     });
 
@@ -326,9 +362,9 @@
         multiProjection = null;
         portableResult = null;
         comparisonResult = null;
-        input.value = '';
-        sessionInput.value = '';
-        comparisonInput.value = '';
+        clearPicker(trailPicker);
+        clearPicker(sessionPicker);
+        clearPicker(comparisonPicker);
         container.replaceChildren();
       }
     });
