@@ -35,7 +35,7 @@ test('production shell exposes Replay explicitly on desktop and phone width', as
 
   if (testInfo.project.name === 'mobile-chromium') {
     await page.waitForFunction(() => document.documentElement.dataset.r4b1tInterface === 'mobile');
-    const entry = page.getByRole('button', { name: 'REPLAY', exact: true });
+    const entry = page.locator('.r4m-nav [data-mobile-action="replay-inspection"]');
     await expect(entry).toBeVisible();
     await entry.click();
   } else {
