@@ -5,6 +5,7 @@ on:
     paths:
       - 'replay-inspection-overlay.js'
       - 'tests/replay-inspection-entry.spec.js'
+      - 'tests/path-consistency.test.js'
       - 'index.html'
       - 'dual-shell.js'
       - 'sw.js'
@@ -29,6 +30,7 @@ on:
     paths:
       - 'replay-inspection-overlay.js'
       - 'tests/replay-inspection-entry.spec.js'
+      - 'tests/path-consistency.test.js'
       - 'index.html'
       - 'dual-shell.js'
       - 'sw.js'
