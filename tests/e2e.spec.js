@@ -212,19 +212,19 @@ test('ordinary mobile controls execute visible timed motion', async ({ page }, t
   const roll = page.locator('#r4mRoll');
   await roll.click();
   await expect(roll).toHaveAttribute('aria-busy', 'true');
-  await expect(roll).toHaveClass(/\\broll-(release|accelerate|decelerate|seat)\\b/);
+  await expect(roll).toHaveClass(/\broll-(release|accelerate|decelerate|seat)\b/);
 
   const route = page.locator('#r4mRoute');
   await expect(route).toBeVisible({ timeout: 1500 });
   await expect(roll).not.toHaveAttribute('aria-busy', 'true', { timeout: 1500 });
 
   await page.locator('[data-mobile-action="next"]').click();
-  await expect(route).toHaveClass(/\\breject-exit\\b/);
-  await expect(route).toHaveClass(/\\bforward-enter\\b/, { timeout: 1500 });
+  await expect(route).toHaveClass(/\breject-exit\b/);
+  await expect(route).toHaveClass(/\bforward-enter\b/, { timeout: 1500 });
 
   await page.locator('.r4m-nav [data-mobile-action="filter"]').click();
   const filterSheet = page.locator('#r4mFilterSheet');
-  await expect(filterSheet).toHaveClass(/\\bopen\\b/);
+  await expect(filterSheet).toHaveClass(/\bopen\b/);
   const sheetTiming = await filterSheet.evaluate((element) => ({
     property: getComputedStyle(element).transitionProperty,
     duration: getComputedStyle(element).transitionDuration,
@@ -237,7 +237,7 @@ test('ordinary mobile controls execute visible timed motion', async ({ page }, t
 
   await page.locator('.r4m-nav [data-mobile-action="history"]').click();
   const history = page.locator('#historyOverlay');
-  await expect(history).toHaveClass(/\\bledger-open\\b/);
+  await expect(history).toHaveClass(/\bledger-open\b/);
 });
 test('motion debug overlay reports the real mobile animation', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
@@ -248,7 +248,7 @@ test('motion debug overlay reports the real mobile animation', async ({ page }, 
 
   await page.locator('#r4mRoll').click();
   const debug = page.locator('#r4mMotionDebug');
-  await expect(debug).toContainText('LAST TAP: ROLL');
+  await expect(debug).toContainText('MOTION DEBUG');
   await expect(page.locator('#r4mRoll')).toHaveAttribute('aria-busy', 'true');
   await expect(page.locator('#r4mRoute')).toBeVisible({ timeout: 1500 });
   await expect(page.locator('#r4mRoll')).not.toHaveAttribute('aria-busy', 'true', { timeout: 1500 });
@@ -261,15 +261,15 @@ test('mobile connective motion covers press authority reveal ledger and copy sta
 
   const filterButton = page.locator('.r4m-nav [data-mobile-action="filter"]');
   await filterButton.dispatchEvent('pointerdown');
-  await expect(filterButton).toHaveClass(/\\bmotion-pressed\\b/);
+  await expect(filterButton).toHaveClass(/\bmotion-pressed\b/);
   await filterButton.dispatchEvent('pointerup');
-  await expect(filterButton).toHaveClass(/\\bmotion-released\\b/);
+  await expect(filterButton).toHaveClass(/\bmotion-released\b/);
 
   const rollButton = page.locator('#r4mRoll');
   await expect(page.locator('#r4mRoute')).toHaveCount(0);
   await rollButton.click();
   await expect(rollButton).toHaveAttribute('aria-busy', 'true');
-  await expect(rollButton).toHaveClass(/\\broll-(release|accelerate|decelerate|seat)\\b/);
+  await expect(rollButton).toHaveClass(/\broll-(release|accelerate|decelerate|seat)\b/);
 
   const route = page.locator('#r4mRoute');
   await expect(route).toBeVisible({ timeout: 1500 });
@@ -281,7 +281,7 @@ test('mobile connective motion covers press authority reveal ledger and copy sta
   await expect(shareButton).toHaveClass(/\\bcopied-flash\\b/);
 
   await page.locator('.r4m-nav [data-mobile-action="history"]').click();
-  await expect(page.locator('#historyOverlay')).toHaveClass(/\\bledger-open\\b/);
+  await expect(page.locator('#historyOverlay')).toHaveClass(/\bledger-open\b/);
   await expect(page.locator('#historyList > .r4m-ledger-row.row-in').first()).toBeVisible();
 });
 test('desktop focused controls keep native Enter behavior', async ({ page }, testInfo) => {
