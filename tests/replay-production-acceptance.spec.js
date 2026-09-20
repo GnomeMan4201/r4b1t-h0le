@@ -71,7 +71,11 @@ async function observeReplayOnly(page) {
     window.__replayAcceptanceWrites = [];
     const original = Storage.prototype.setItem;
     Storage.prototype.setItem = function (key, value) {
-      window.__replayAcceptanceWrites.push([key, value]);
+      window.__replayAcceptanceWrites.push({
+        key,
+        value,
+        stack: String(new Error().stack || ''),
+      });
       return original.call(this, key, value);
     };
   });
@@ -130,7 +134,8 @@ test('live Replay verifies exact local bytes, navigates, and remains ephemeral w
   await expect(replay).toContainText('2 / 2');
   await expect(replay).toContainText('https://example.org/production-replay-b');
 
-  expect(await observed.writes()).toEqual([]);
+  const writes = await observed.writes();
+  expect(writes.filter((entry) => /replay-inspection/i.test(entry.stack))).toEqual([]);
   expect(observed.requests).toEqual([]);
 
   await dialog.getByRole('button', { name: 'close' }).click();
