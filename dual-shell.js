@@ -101,21 +101,7 @@
             '<button type="button" data-mobile-action="wear-sample"><span>VIEW WEAR SAMPLE</span><b>↗</b></button>',
           '</div>',
         '</section>',
-        '<section class="r4m-route" id="r4mRoute" hidden>',
-          '<div class="r4m-route-top"><span>ROUTE / <b id="r4mRouteNo">001</b></span><strong id="r4mTag">ROUTE</strong></div>',
-          '<small id="r4mProtocol">https://</small>',
-          '<h2 id="r4mDomain">—</h2>',
-          '<p id="r4mDescription">A route selected from the corpus.</p>',
-          '<code id="r4mUrl">—</code>',
-          '<div class="r4m-route-actions">',
-            '<button type="button" data-mobile-action="sprout">SPROUT ×4</button>',
-            '<button type="button" data-mobile-action="share">SHARE</button>',
-            '<button type="button" data-mobile-action="cut">CUT CARD</button>',
-          '</div>',
-          '<div class="r4m-route-wear" id="r4mRouteWear" aria-label="Persistent route wear"></div>',
-          '<button class="r4m-enter" type="button" data-mobile-action="visit">FOLLOW THE RABBIT ↗</button>',
-          '<button class="r4m-next" type="button" data-mobile-action="next">REJECT / NEXT</button>',
-        '</section>',
+        '<div id="r4mRouteMount" aria-live="polite"></div>',
         '<section class="r4m-trail">',
           '<div class="r4m-section-title"><span>TRAIL</span><b id="r4mTrailCount">00</b></div>',
           '<div class="r4m-trail-scroll" id="r4mTrailItems"><span class="r4m-empty">NO ROUTES YET</span></div>',
@@ -292,13 +278,20 @@
     var duration = timing.duration || style.animationDuration || 'none';
     var transition = style.transitionDuration && style.transitionDuration !== '0s' ? style.transitionDuration : 'none';
     panel.textContent =
-      'MOTION DEBUG\\n' +
-      'LAST TAP: ' + (panel.dataset.lastTap || action) + '\\n' +
-      'MOTION: ' + action + '\\n' +
-      'TARGET: #' + (element.id || element.className || element.tagName).toString().replace(/\\s+/g, '.') + '\\n' +
-      'CLASS: ' + (className || '(none)') + '\\n' +
-      'ANIMATION: ' + animationName + '\\n' +
-      'DURATION: ' + String(duration) + '\\n' +
+      'MOTION DEBUG\
+' +
+      'LAST TAP: ' + (panel.dataset.lastTap || action) + '\
+' +
+      'MOTION: ' + action + '\
+' +
+      'TARGET: #' + (element.id || element.className || element.tagName).toString().replace(/\\s+/g, '.') + '\
+' +
+      'CLASS: ' + (className || '(none)') + '\
+' +
+      'ANIMATION: ' + animationName + '\
+' +
+      'DURATION: ' + String(duration) + '\
+' +
       'TRANSITION: ' + transition;
   }
 
@@ -308,7 +301,9 @@
     var panel = byId('r4mMotionDebug');
     if (panel) {
       panel.dataset.lastTap = action;
-      panel.textContent = 'MOTION DEBUG\\nLAST TAP: ' + action + '\\nMOTION: waiting for target…';
+      panel.textContent = 'MOTION DEBUG\
+LAST TAP: ' + action + '\
+MOTION: waiting for target…';
     }
   }
 
@@ -339,6 +334,9 @@
   }
 
   function runRollTransition(kind) {
+    if (kind === 'roll' && window.R4B1TRollProduction && typeof window.R4B1TRollProduction.roll === 'function') {
+      return window.R4B1TRollProduction.roll();
+    }
     if (routeTransitionBusy) return;
     reportTap(kind === 'next' ? 'REJECT / NEXT' : 'ROLL');
     var route = byId('r4mRoute');
@@ -527,6 +525,8 @@
       });
     }
   }
+
+  window.__r4b1tSyncMobileRoute = syncRoute;
 
   function renderRouteWear() {
     var host = byId('r4mRouteWear');

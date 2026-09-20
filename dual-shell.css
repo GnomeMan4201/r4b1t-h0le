@@ -225,3 +225,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   @keyframes r4mRollReduced{0%{transform:translateY(0)}100%{transform:translateY(2px)}}
   @keyframes r4mRollCardReduced{0%{opacity:.72}100%{opacity:1}}
 }
+
+.r4m-roll-route-host{}
+#r4mRouteMount.roll-card-enter .r4m-route{animation:r4mRollCardEnter 110ms cubic-bezier(.16,1,.3,1) both}
+#r4mRouteMount.roll-card-reduced .r4m-route{animation:r4mRollCardReduced 90ms linear both}

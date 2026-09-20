@@ -1,10 +1,14 @@
-const CACHE = 'r4b1t-v22-replay-portable-comparison';
+const CACHE = 'r4b1t-v23-roll-motion-integration';
 const PRECACHE = [
   './',
   './index.html',
   './anime.min.js',
   './anime-core.min.js',
   './motion-tokens.js',
+  './roll-motion-machine.js',
+  './roll-disclosure-boundary.js',
+  './roll-renderer.js',
+  './roll-production-integration.js',
   './dual-shell.js',
   './dual-shell.css',
   './trail-manifest.js',
