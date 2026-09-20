@@ -38,6 +38,8 @@
   }
 
   function neutralLabel(phase) {
+    if (phase === 'READING_PORTABLE') return 'READING PROOF SESSION';
+    if (phase === 'VERIFYING_PORTABLE') return 'VERIFYING PROOF SESSION';
     if (phase === 'READING_MULTI') return 'READING SOURCES';
     if (phase === 'VERIFYING_MULTI') return 'VERIFYING SOURCES';
     if (phase === 'READING') return 'READING SOURCE';
@@ -140,7 +142,7 @@
     root.setAttribute('tabindex', '0');
     root.setAttribute('aria-label', 'Replay Inspection');
 
-    if (snapshot.phase === 'UNLOADED' || snapshot.phase === 'READING' || snapshot.phase === 'VERIFYING' || snapshot.phase === 'READING_MULTI' || snapshot.phase === 'VERIFYING_MULTI') {
+    if (snapshot.phase === 'UNLOADED' || snapshot.phase === 'READING' || snapshot.phase === 'VERIFYING' || snapshot.phase === 'READING_MULTI' || snapshot.phase === 'VERIFYING_MULTI' || snapshot.phase === 'READING_PORTABLE' || snapshot.phase === 'VERIFYING_PORTABLE') {
       renderNeutral(doc, root, snapshot);
     } else if (snapshot.phase === 'REJECTED' || snapshot.phase === 'UNVERIFIED') {
       renderDiagnostic(doc, root, snapshot);
@@ -204,6 +206,36 @@
     return root;
   }
 
+  function renderPortableSession(container, delegated) {
+    if (!container || !container.ownerDocument) throw new TypeError('Replay renderer requires a DOM container');
+    if (!delegated || !delegated.result) throw new TypeError('Replay renderer requires a delegated portable result');
+    var result = delegated.result;
+    var classification = delegated.portable_classification;
+    var doc = container.ownerDocument;
+    var root = el(doc, 'article', 'replay-inspection replay-inspection-portable');
+    root.setAttribute('data-replay-mode', 'portable-proof-session');
+    root.setAttribute('data-portable-classification', classification);
+    root.setAttribute('aria-label', 'Portable Proof Session inspection');
+    var header = el(doc, 'header', 'replay-inspection-header');
+    var heading = el(doc, 'div', 'replay-inspection-heading');
+    heading.appendChild(el(doc, 'span', 'replay-inspection-kicker', 'REPLAY / PORTABLE PROOF SESSION'));
+    heading.appendChild(el(doc, 'strong', 'replay-inspection-proof-state', classification));
+    header.appendChild(heading);
+    root.appendChild(header);
+    var diagnostic = el(doc, 'section', 'replay-inspection-portable-diagnostic');
+    if (result.reason) diagnostic.appendChild(field(doc, 'REASON', result.reason));
+    (result.mismatches || []).forEach(function (name) { diagnostic.appendChild(field(doc, 'MISMATCH', name)); });
+    (result.warnings || []).forEach(function (warning) { diagnostic.appendChild(field(doc, 'WARNING', warning)); });
+    if (diagnostic.childNodes.length) root.appendChild(diagnostic);
+    if (result.fresh_projection) {
+      var fresh = el(doc, 'div', 'replay-inspection-portable-fresh');
+      root.appendChild(fresh);
+      renderMulti(fresh, result.fresh_projection);
+    }
+    container.replaceChildren(root);
+    return root;
+  }
+
   function toggleDetails(container) {
     var details = container && container.querySelector('[data-replay-details]');
     var trigger = container && container.querySelector('[data-replay-action="details"]');
@@ -216,6 +248,7 @@
   return Object.freeze({
     render: render,
     renderMulti: renderMulti,
+    renderPortableSession: renderPortableSession,
     toggleDetails: toggleDetails,
     shortDigest: shortDigest
   });
