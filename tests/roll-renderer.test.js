@@ -67,3 +67,35 @@ test('reduced mode preserves causal states without strip travel',()=>{
   assert.equal(h.button.classList.contains('roll-reduced'),true);
   assert.equal(h.strip.classList.contains('roll-strip-accelerate'),false);
 });
+
+test('strip presentation is deterministic and route-blind for identical machine states',()=>{
+  function trace(){
+    const h=make();
+    const states=['PRESSED','COMPRESSING','RELEASED','STRIP_ACCELERATING','STRIP_DECELERATING','LOCKED','CARD_ENTERING','SETTLED'];
+    return states.map(state=>{
+      h.renderer.renderState(state);
+      return {
+        state,
+        button:[...h.button._classes].sort(),
+        strip:[...h.strip._classes].sort(),
+        routeHost:[...h.routeHost._classes].sort()
+      };
+    });
+  }
+  assert.deepEqual(trace(),trace());
+  const h=make();
+  assert.equal('route' in h.renderer,false);
+  assert.equal('result' in h.renderer,false);
+  assert.equal('random' in h.renderer,false);
+});
+
+test('reduced motion suppresses strip travel and deformation classes through all travel phases',()=>{
+  const h=make(true);
+  for(const state of ['PRESSED','COMPRESSING','RELEASED','STRIP_ACCELERATING','STRIP_DECELERATING','LOCKED']){
+    h.renderer.renderState(state);
+    assert.equal(h.strip.classList.contains('roll-strip-accelerate'),false);
+    assert.equal(h.strip.classList.contains('roll-strip-decelerate'),false);
+    assert.equal(h.strip.classList.contains('roll-strip-seat'),false);
+  }
+  assert.equal(h.strip.classList.contains('roll-strip-reduced'),true);
+});
