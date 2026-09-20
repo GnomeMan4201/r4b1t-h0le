@@ -46,6 +46,7 @@
     let transactionId = 0;
     let committedTransactionId = null;
     let revealFired = false;
+    let activeCommitCapability = null;
     let timer = null;
     const log = [];
 
@@ -96,6 +97,7 @@
       transactionId += 1;
       committedTransactionId = null;
       revealFired = false;
+      activeCommitCapability = Object.freeze({ transactionId });
       transition(STATES.PRESSED, 'pointerdown');
       schedule(timing.pressToCompress, () => {
         if (state === STATES.PRESSED) transition(STATES.COMPRESSING, 'internal:compress');
@@ -109,8 +111,9 @@
       return true;
     }
 
-    function commitAck() {
+    function commitAck(capability = activeCommitCapability) {
       if (state !== STATES.RELEASED || committedTransactionId !== null) return false;
+      if (capability !== activeCommitCapability) return false;
       committedTransactionId = transactionId;
       transition(STATES.STRIP_ACCELERATING, 'commit:ack');
       schedule(timing.accelerate, () => {
@@ -139,6 +142,7 @@
       schedule(timing.cardEnter, () => {
         if (state !== STATES.CARD_ENTERING) return;
         transition(STATES.SETTLED, 'internal:card-settled');
+        activeCommitCapability = null;
         active = false;
       });
       return true;
@@ -148,6 +152,7 @@
       if (state !== STATES.PRESSED && state !== STATES.COMPRESSING) return false;
       clearScheduled();
       transition(STATES.IDLE, 'pointercancel');
+      activeCommitCapability = null;
       active = false;
       return true;
     }
@@ -166,6 +171,7 @@
       schedule(timing.cancelSettle, () => {
         if (state !== STATES.CANCELLED) return;
         transition(STATES.IDLE, 'internal:cancel-settled');
+        activeCommitCapability = null;
         active = false;
       });
       return true;
@@ -188,9 +194,23 @@
       commitAck,
       commitFailed,
       cancel,
-      presentationComplete
+      presentationComplete,
+      activeCommitCapability: () => activeCommitCapability
     });
   }
 
-  return Object.freeze({ STATES, DEFAULT_TIMING, createRollMotionMachine });
+  function createRendererFacade(machine) {
+    if (!machine || typeof machine.snapshot !== 'function' ||
+        typeof machine.transitionLog !== 'function' ||
+        typeof machine.presentationComplete !== 'function') {
+      throw new TypeError('createRendererFacade requires a ROLL motion machine');
+    }
+    return Object.freeze({
+      snapshot: machine.snapshot,
+      transitionLog: machine.transitionLog,
+      presentationComplete: machine.presentationComplete
+    });
+  }
+
+  return Object.freeze({ STATES, DEFAULT_TIMING, createRollMotionMachine, createRendererFacade });
 });
