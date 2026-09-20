@@ -72,3 +72,10 @@ test('production shadow does not expand parity to corpus or decorative media', (
     assert.equal(source.includes(forbidden), false, forbidden);
   }
 });
+
+test('production shadow requires the custom-domain CNAME to target GitHub Pages', () => {
+  assert.match(source, /node:dns\/promises/);
+  assert.match(source, /resolveCname/);
+  assert.match(source, /EXPECTED_CNAME\s*=\s*['"]gnomeman4201\.github\.io['"]/);
+  assert.match(source, /verifyCustomDomainDns/);
+});
