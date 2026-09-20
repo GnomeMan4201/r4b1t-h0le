@@ -1,4 +1,4 @@
-const CACHE = 'r4b1t-v21-replay-portable-session';
+const CACHE = 'r4b1t-v22-replay-portable-comparison';
 const PRECACHE = [
   './',
   './index.html',
@@ -16,6 +16,7 @@ const PRECACHE = [
   './trail-wear.js',
   './trail-wear.css',
   './proof-session-bundle.js',
+  './trail-comparison-bundle.js',
   './replay-inspection.js',
   './replay-inspection-renderer.js',
   './replay-inspection-delegation.js',
