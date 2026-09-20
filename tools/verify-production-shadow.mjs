@@ -3,12 +3,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { resolveCname } from 'node:dns/promises';
 
 const ROOT = path.resolve('.');
 const APP = 'https://gnomeman4201.github.io/r4b1t-h0le/';
 const PUBLISHED_BRANCH = 'https://raw.githubusercontent.com/GnomeMan4201/r4b1t-h0le/gh-pages/';
 const SITE = 'https://r4b1t.badbananaresearch.com/';
 const WORKER = 'https://r4b1t-proxy.badbanana6969.workers.dev';
+const EXPECTED_CNAME = 'gnomeman4201.github.io';
 
 const CRITICAL_ASSETS = [
   'index.html',
@@ -78,6 +80,25 @@ function logServingHeaders(label, response) {
   console.log(
     `SERVING ${label} url=${response.url} cache-control="${headers['cache-control']}" etag="${headers.etag}" last-modified="${headers['last-modified']}"`,
   );
+}
+
+async function verifyCustomDomainDns() {
+  const hostname = new URL(SITE).hostname;
+  let records;
+
+  try {
+    records = await resolveCname(hostname);
+  } catch (error) {
+    fail(`custom-domain DNS: CNAME lookup failed for ${hostname}: ${error?.code || error?.message || error}`);
+    return;
+  }
+
+  const normalized = records.map((record) => record.toLowerCase().replace(/\.$/, ''));
+  console.log(`DNS CNAME ${hostname} -> ${normalized.join(', ') || 'none'}`);
+
+  if (normalized.length !== 1 || normalized[0] !== EXPECTED_CNAME) {
+    fail(`custom-domain DNS: expected CNAME ${EXPECTED_CNAME}, got ${normalized.join(', ') || 'none'}`);
+  }
 }
 
 async function verifyHttpRedirect() {
@@ -232,6 +253,7 @@ async function verifyWorkerHeaders() {
 }
 
 try {
+  await verifyCustomDomainDns();
   await verifyHttpRedirect();
   await verifyPagesRedirect();
   await verifyFrontDoor();
