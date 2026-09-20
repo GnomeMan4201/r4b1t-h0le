@@ -47,7 +47,7 @@ test('PWA paths are deployment-relative instead of tied to the old repository sl
 
   const sw = read('sw.js');
   assert.ok(!sw.includes("'/r4b1t/"));
-  assert.match(sw, /const CACHE = 'r4b1t-v21-replay-portable-session'/);
+  assert.match(sw, /const CACHE = 'r4b1t-v22-replay-portable-comparison'/);
 });
 
 
