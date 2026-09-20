@@ -5,50 +5,47 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const FULL = Object.freeze({
-    press: 88,
-    release: 122,
-    accelerate: 150,
-    decelerate: 260,
-    seat: 40,
-    card: 110
-  });
-  const REDUCED = Object.freeze({
-    press: 70,
-    release: 80,
-    accelerate: 0,
-    decelerate: 0,
-    seat: 45,
-    card: 90
-  });
-
-  function profile(reduced) {
-    const t = reduced ? REDUCED : FULL;
-    return Object.freeze({
-      reduced: !!reduced,
-      timing: t,
-      totalAfterRelease: t.release + t.accelerate + t.decelerate + t.seat + t.card
-    });
-  }
+  // Press/release are local visual gestures. Lifecycle phase durations come
+  // exclusively from the motion machine and are projected to CSS once at init.
+  const GESTURE = Object.freeze({ press: 88, release: 122 });
+  const REDUCED = Object.freeze({ press: 70, release: 80 });
 
   function createRollRenderer(options = {}) {
     const button = options.button;
     const strip = options.strip;
     const routeHost = options.routeHost;
+    const timing = options.timing;
     const matchMedia = options.matchMedia || (typeof window !== 'undefined' ? window.matchMedia.bind(window) : null);
     if (!button || !button.classList) throw new TypeError('ROLL renderer requires button');
     if (!strip || !strip.classList) throw new TypeError('ROLL renderer requires strip');
     if (!routeHost || !routeHost.classList) throw new TypeError('ROLL renderer requires routeHost');
+    if (!timing || !Number.isFinite(timing.accelerate) || !Number.isFinite(timing.decelerate) ||
+        !Number.isFinite(timing.lockHold) || !Number.isFinite(timing.cardEnter)) {
+      throw new TypeError('ROLL renderer requires authoritative machine timing');
+    }
+
+    const authoritativeTiming = Object.freeze({
+      accelerate: timing.accelerate,
+      decelerate: timing.decelerate,
+      lockHold: timing.lockHold,
+      cardEnter: timing.cardEnter
+    });
+    const reduce = () => !!(matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    // Init-only projection. CSS consumes these values; neither CSS nor the
+    // renderer rewrites them during a transaction.
+    const timingProps = Object.freeze({
+      '--roll-accelerate-ms': authoritativeTiming.accelerate + 'ms',
+      '--roll-decelerate-ms': authoritativeTiming.decelerate + 'ms',
+      '--roll-lock-hold-ms': authoritativeTiming.lockHold + 'ms',
+      '--roll-card-enter-ms': authoritativeTiming.cardEnter + 'ms'
+    });
+    [button, strip, routeHost].forEach(element => {
+      if (!element.style || typeof element.style.setProperty !== 'function') return;
+      Object.entries(timingProps).forEach(([name, value]) => element.style.setProperty(name, value));
+    });
 
     let active = false;
-    let timers = [];
-    const reduce = () => !!(matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-    const later = (fn, ms) => {
-      const id = setTimeout(fn, ms);
-      timers.push(id);
-      return id;
-    };
-    const clearTimers = () => { timers.forEach(clearTimeout); timers = []; };
     const clearClasses = () => {
       ['roll-press','roll-release','roll-accelerate','roll-decelerate','roll-seat','roll-reduced'].forEach(c=>button.classList.remove(c));
       ['roll-strip-accelerate','roll-strip-decelerate','roll-strip-seat','roll-strip-reduced'].forEach(c=>strip.classList.remove(c));
@@ -56,46 +53,70 @@
       button.removeAttribute('aria-busy');
     };
 
-    function press() {
-      if (active) return false;
-      active = true;
-      const p = profile(reduce());
-      button.classList.add(p.reduced ? 'roll-reduced' : 'roll-press');
-      button.setAttribute('aria-busy','true');
-      return true;
-    }
-
-    function release() {
-      if (!active) return false;
-      const p = profile(reduce());
-      button.classList.remove('roll-press');
-      button.classList.add(p.reduced ? 'roll-reduced' : 'roll-release');
-      if (p.reduced) {
-        strip.classList.add('roll-strip-reduced');
-        later(()=>routeHost.classList.add('roll-card-reduced'), p.timing.seat);
-        later(settle, p.timing.seat + p.timing.card);
-        return true;
+    function renderState(state) {
+      const reduced = reduce();
+      switch (state) {
+        case 'PRESSED':
+        case 'COMPRESSING':
+          if (!active) {
+            active = true;
+            button.setAttribute('aria-busy','true');
+          }
+          button.classList.add(reduced ? 'roll-reduced' : 'roll-press');
+          return true;
+        case 'RELEASED':
+          button.classList.remove('roll-press');
+          button.classList.add(reduced ? 'roll-reduced' : 'roll-release');
+          if (reduced) strip.classList.add('roll-strip-reduced');
+          return true;
+        case 'STRIP_ACCELERATING':
+          if (!reduced) {
+            button.classList.add('roll-accelerate');
+            strip.classList.add('roll-strip-accelerate');
+          }
+          return true;
+        case 'STRIP_DECELERATING':
+          button.classList.remove('roll-accelerate');
+          strip.classList.remove('roll-strip-accelerate');
+          if (!reduced) {
+            button.classList.add('roll-decelerate');
+            strip.classList.add('roll-strip-decelerate');
+          }
+          return true;
+        case 'LOCKED':
+          button.classList.remove('roll-decelerate');
+          strip.classList.remove('roll-strip-decelerate');
+          if (!reduced) {
+            button.classList.add('roll-seat');
+            strip.classList.add('roll-strip-seat');
+          }
+          return true;
+        case 'CARD_ENTERING':
+          routeHost.classList.add(reduced ? 'roll-card-reduced' : 'roll-card-enter');
+          return true;
+        case 'SETTLED':
+        case 'CANCELLED':
+        case 'IDLE':
+          clearClasses();
+          active = false;
+          return true;
+        default:
+          return false;
       }
-      let at = p.timing.release;
-      later(()=>{ button.classList.add('roll-accelerate'); strip.classList.add('roll-strip-accelerate'); }, at);
-      at += p.timing.accelerate;
-      later(()=>{ button.classList.remove('roll-accelerate'); button.classList.add('roll-decelerate'); strip.classList.remove('roll-strip-accelerate'); strip.classList.add('roll-strip-decelerate'); }, at);
-      at += p.timing.decelerate;
-      later(()=>{ button.classList.remove('roll-decelerate'); button.classList.add('roll-seat'); strip.classList.remove('roll-strip-decelerate'); strip.classList.add('roll-strip-seat'); }, at);
-      at += p.timing.seat;
-      later(()=>routeHost.classList.add('roll-card-enter'), at);
-      later(settle, at + p.timing.card);
-      return true;
     }
 
-    function cancel() {
-      clearTimers(); clearClasses(); active = false; return true;
-    }
-    function settle() {
-      clearTimers(); clearClasses(); active = false; return true;
-    }
-    return Object.freeze({ press, release, cancel, settle, isActive:()=>active, profile:()=>profile(reduce()) });
+    function cancel() { clearClasses(); active = false; return true; }
+    function settle() { clearClasses(); active = false; return true; }
+
+    return Object.freeze({
+      renderState,
+      cancel,
+      settle,
+      isActive:()=>active,
+      timing:()=>authoritativeTiming,
+      timingProps:()=>timingProps
+    });
   }
 
-  return Object.freeze({ FULL, REDUCED, profile, createRollRenderer });
+  return Object.freeze({ GESTURE, REDUCED, createRollRenderer });
 });
