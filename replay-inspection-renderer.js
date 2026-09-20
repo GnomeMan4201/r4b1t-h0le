@@ -1,0 +1,169 @@
+(function (root, factory) {
+  'use strict';
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  if (root) root.R4b1tReplayInspectionRenderer = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  function text(value) {
+    return value === null || typeof value === 'undefined' ? '' : String(value);
+  }
+
+  function shortDigest(value) {
+    var raw = text(value).replace(/^sha256:/, '');
+    return raw ? 'sha256:' + raw.slice(0, 12) + '…' + raw.slice(-8) : '—';
+  }
+
+  function el(doc, tag, className, value) {
+    var node = doc.createElement(tag);
+    if (className) node.className = className;
+    if (typeof value !== 'undefined') node.textContent = text(value);
+    return node;
+  }
+
+  function button(doc, label, action, disabled) {
+    var node = el(doc, 'button', 'replay-inspection-button', label);
+    node.type = 'button';
+    node.setAttribute('data-replay-action', action);
+    node.disabled = Boolean(disabled);
+    return node;
+  }
+
+  function field(doc, label, value) {
+    var row = el(doc, 'div', 'replay-inspection-field');
+    row.appendChild(el(doc, 'span', 'replay-inspection-field-label', label));
+    row.appendChild(el(doc, 'span', 'replay-inspection-field-value', value));
+    return row;
+  }
+
+  function neutralLabel(phase) {
+    if (phase === 'READING') return 'READING SOURCE';
+    if (phase === 'VERIFYING') return 'VERIFYING SOURCE';
+    return 'NO SOURCE LOADED';
+  }
+
+  function renderNeutral(doc, root, snapshot) {
+    root.setAttribute('data-replay-phase', snapshot.phase);
+    var neutral = el(doc, 'div', 'replay-inspection-neutral');
+    neutral.setAttribute('role', 'status');
+    neutral.setAttribute('aria-live', 'polite');
+    neutral.appendChild(el(doc, 'strong', 'replay-inspection-neutral-state', neutralLabel(snapshot.phase)));
+    neutral.appendChild(el(doc, 'p', 'replay-inspection-neutral-copy', 'No evidentiary content is presented before verification completes.'));
+    root.appendChild(neutral);
+  }
+
+  function renderDiagnostic(doc, root, snapshot) {
+    var source = snapshot.source;
+    var diagnostic = snapshot.diagnostic;
+    root.setAttribute('data-replay-phase', snapshot.phase);
+    root.setAttribute('data-proof-state', diagnostic.state);
+
+    var header = el(doc, 'header', 'replay-inspection-header');
+    header.appendChild(el(doc, 'span', 'replay-inspection-kicker', 'REPLAY / INSPECTION'));
+    header.appendChild(el(doc, 'strong', 'replay-inspection-proof-state', diagnostic.state));
+    root.appendChild(header);
+
+    var body = el(doc, 'section', 'replay-inspection-diagnostic');
+    body.setAttribute('aria-label', 'Verification diagnostic');
+    body.appendChild(field(doc, 'SOURCE', shortDigest(source.artifact_digest)));
+    body.appendChild(field(doc, 'FORMAT', source.artifact_format || 'UNKNOWN'));
+    body.appendChild(field(doc, 'REASON', diagnostic.reason));
+    root.appendChild(body);
+  }
+
+  function renderVerified(doc, root, snapshot) {
+    var source = snapshot.source;
+    var step = snapshot.current_step;
+    root.setAttribute('data-replay-phase', snapshot.phase);
+    root.setAttribute('data-proof-state', source.verification.state);
+
+    var header = el(doc, 'header', 'replay-inspection-header');
+    var heading = el(doc, 'div', 'replay-inspection-heading');
+    heading.appendChild(el(doc, 'span', 'replay-inspection-kicker', 'REPLAY / INSPECTION'));
+    heading.appendChild(el(doc, 'strong', 'replay-inspection-proof-state', source.verification.state));
+    header.appendChild(heading);
+    header.appendChild(button(doc, 'Verification details', 'details', false));
+    root.appendChild(header);
+
+    var primary = el(doc, 'section', 'replay-inspection-primary');
+    primary.setAttribute('aria-label', 'Verified replay state');
+
+    var position = snapshot.position === null ? 0 : snapshot.position + 1;
+    primary.appendChild(field(doc, 'POSITION', position + ' / ' + snapshot.total_positions));
+    primary.appendChild(field(doc, 'SOURCE', shortDigest(source.artifact_digest)));
+
+    if (step) {
+      primary.appendChild(field(doc, 'STATE', step.state));
+      var evidence = el(doc, 'div', 'replay-inspection-step');
+      evidence.setAttribute('data-step-state', step.state);
+      if (step.state === 'CONCEALED') {
+        evidence.appendChild(el(doc, 'strong', 'replay-inspection-step-title', 'CONCEALED'));
+        evidence.appendChild(el(doc, 'p', 'replay-inspection-step-copy', 'Route identity is not disclosed at this historical position.'));
+        evidence.appendChild(field(doc, 'COMMITMENT', shortDigest(step.commitment)));
+      } else {
+        evidence.appendChild(el(doc, 'strong', 'replay-inspection-step-title', 'REVEALED'));
+        evidence.appendChild(field(doc, 'ROUTE', step.url));
+        evidence.appendChild(field(doc, 'ROUTE ID', shortDigest(step.route_id)));
+        if (step.action) evidence.appendChild(field(doc, 'ACTION', step.action));
+      }
+      primary.appendChild(evidence);
+    }
+    root.appendChild(primary);
+
+    var nav = el(doc, 'nav', 'replay-inspection-nav');
+    nav.setAttribute('aria-label', 'Replay navigation');
+    nav.appendChild(button(doc, 'Previous', 'previous', snapshot.position === null || snapshot.position <= 0));
+    nav.appendChild(button(doc, 'Next', 'next', snapshot.position === null || snapshot.position >= snapshot.total_positions - 1));
+    root.appendChild(nav);
+
+    var details = el(doc, 'section', 'replay-inspection-details');
+    details.hidden = true;
+    details.setAttribute('data-replay-details', '');
+    details.setAttribute('aria-label', 'Verification details');
+    details.appendChild(field(doc, 'FULL DIGEST', source.artifact_digest));
+    details.appendChild(field(doc, 'CANONICAL ID', source.canonical_trail_id));
+    details.appendChild(field(doc, 'FORMAT', source.artifact_format));
+    details.appendChild(field(doc, 'VERIFIER', source.verification.verifier));
+    details.appendChild(field(doc, 'VERIFIED AT', source.verification.verified_at || 'NOT RECORDED'));
+    root.appendChild(details);
+  }
+
+  function render(container, snapshot) {
+    if (!container || !container.ownerDocument) throw new TypeError('Replay renderer requires a DOM container');
+    if (!snapshot || typeof snapshot.phase !== 'string') throw new TypeError('Replay renderer requires a machine snapshot');
+
+    var doc = container.ownerDocument;
+    var root = el(doc, 'article', 'replay-inspection');
+    root.setAttribute('tabindex', '0');
+    root.setAttribute('aria-label', 'Replay Inspection');
+
+    if (snapshot.phase === 'UNLOADED' || snapshot.phase === 'READING' || snapshot.phase === 'VERIFYING') {
+      renderNeutral(doc, root, snapshot);
+    } else if (snapshot.phase === 'REJECTED' || snapshot.phase === 'UNVERIFIED') {
+      renderDiagnostic(doc, root, snapshot);
+    } else if (snapshot.phase === 'VERIFIED' || snapshot.phase === 'INSPECTING') {
+      renderVerified(doc, root, snapshot);
+    } else {
+      throw new Error('Unsupported Replay phase');
+    }
+
+    container.replaceChildren(root);
+    return root;
+  }
+
+  function toggleDetails(container) {
+    var details = container && container.querySelector('[data-replay-details]');
+    var trigger = container && container.querySelector('[data-replay-action="details"]');
+    if (!details || !trigger) return false;
+    details.hidden = !details.hidden;
+    trigger.setAttribute('aria-expanded', details.hidden ? 'false' : 'true');
+    return !details.hidden;
+  }
+
+  return Object.freeze({
+    render: render,
+    toggleDetails: toggleDetails,
+    shortDigest: shortDigest
+  });
+});
