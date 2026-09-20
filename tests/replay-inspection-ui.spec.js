@@ -115,6 +115,17 @@ test('Replay UI modules do not auto-mount or alter the production shell', async 
   expect(await page.evaluate(() => typeof window.R4b1tReplayInspectionImport.mount)).toBe('function');
 });
 
+test('local import uses branded accessible file selectors with explicit empty status', async ({ page }) => {
+  await loadReplaySurface(page);
+  const controls = page.locator('.replay-inspection-file-control');
+  await expect(controls).toHaveCount(3);
+  await expect(controls.nth(0)).toHaveText('CHOOSE TRAIL FILES');
+  await expect(controls.nth(1)).toHaveText('CHOOSE PROOF SESSION FILES');
+  await expect(controls.nth(2)).toHaveText('CHOOSE COMPARISON FILES');
+  await expect(page.locator('.replay-inspection-file-status')).toHaveCount(3);
+  await expect(page.locator('.replay-inspection-file-status').first()).toHaveText('NO FILES SELECTED');
+});
+
 test('pre-verification rendering is neutral and contains no evidentiary source content', async ({ page }) => {
   await loadReplaySurface(page);
   const source = await makeV01(page, ['https://example.org/private-before-verify']);

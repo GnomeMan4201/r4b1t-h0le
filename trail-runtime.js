@@ -187,6 +187,23 @@
 
   function ensurePanel() {
     if (document.getElementById('trailLedgerOverlay')) return;
+    if (!document.getElementById('trailLedgerStyles')) {
+      var style = document.createElement('style');
+      style.id = 'trailLedgerStyles';
+      style.textContent =
+        '#trailLedgerOverlay .trail-ledger-panel{background:#141210;border:1px solid #2a2825;border-top:2px solid #cc1111;padding:24px;width:min(560px,96vw);max-height:86vh;display:flex;flex-direction:column;gap:14px;overflow:auto}' +
+        '#trailLedgerOverlay .trail-ledger-meta{margin:0;font-size:.52rem;line-height:1.9;color:#9a8f7a;overflow-wrap:anywhere}' +
+        '#trailLedgerOverlay .trail-ledger-value{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;color:#e8e0d0;margin:0 0 6px}' +
+        '#trailLedgerOverlay .trail-ledger-value>span{min-width:0;overflow-wrap:anywhere}' +
+        '#trailLedgerOverlay .trail-ledger-copy{flex:0 0 auto;border:1px solid #5a332e;background:transparent;color:#c8bba6;padding:5px 7px;font:500 .43rem "DM Mono",monospace;letter-spacing:.1em;cursor:pointer}' +
+        '#trailLedgerOverlay .trail-ledger-hint{margin:0;color:#9a8f7a;font:400 .5rem/1.55 "DM Mono",monospace;letter-spacing:.04em}' +
+        '#trailLedgerOverlay .trail-ledger-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}' +
+        '#trailLedgerOverlay .btn-share-trail{min-height:44px;border:1px solid #5a463d;background:#17130f;color:#d8cdb9;font:500 .48rem "DM Mono",monospace;letter-spacing:.1em;cursor:pointer}' +
+        '#trailLedgerOverlay .btn-share-trail:disabled{border-color:#302922;background:#100e0c;color:#706658;cursor:not-allowed}' +
+        '#trailLedgerOverlay .btn-share-trail:focus-visible,#trailLedgerOverlay .trail-ledger-copy:focus-visible{outline:2px solid #cc1111;outline-offset:2px}' +
+        '@media(max-width:600px){#trailLedgerOverlay{align-items:flex-start!important;padding:12px!important}#trailLedgerOverlay .trail-ledger-panel{width:100%;max-height:calc(100dvh - 24px);padding:20px 16px}}';
+      document.head.appendChild(style);
+    }
     var overlay = document.createElement('div');
     overlay.id = 'trailLedgerOverlay';
     overlay.setAttribute('role', 'dialog');
@@ -195,12 +212,13 @@
     overlay.setAttribute('aria-hidden', 'true');
     overlay.setAttribute('tabindex', '-1');
     overlay.style.cssText = 'display:none;position:fixed;inset:0;background:#000000e8;z-index:10020;align-items:center;justify-content:center;padding:18px';
-    overlay.innerHTML = '<div style="background:#141210;border:1px solid #2a2825;border-top:2px solid #cc1111;padding:24px;width:min(560px,96vw);max-height:86vh;display:flex;flex-direction:column;gap:14px">' +
+    overlay.innerHTML = '<div class="trail-ledger-panel">' +
       '<div id="trailLedgerTitle" style="font-family:Bebas Neue,sans-serif;font-size:1.35rem;letter-spacing:.12em">REPRODUCIBLE RABBIT TRAIL</div>' +
       '<div id="trailLedgerStatus" role="status" style="font-size:.48rem;letter-spacing:.12em;color:#cc1111">LOCAL / UNSIGNED</div>' +
-      '<dl id="trailLedgerMeta" style="font-size:.52rem;line-height:1.9;color:#9a8f7a;overflow-wrap:anywhere"></dl>' +
+      '<dl id="trailLedgerMeta" class="trail-ledger-meta"></dl>' +
       '<input id="trailLedgerFile" type="file" accept="application/json,.json" hidden>' +
-      '<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">' +
+      '<p id="trailLedgerHint" class="trail-ledger-hint" role="status">Import or export a trail to enable replay and fork.</p>' +
+      '<div class="trail-ledger-actions">' +
         '<button class="btn-share-trail" type="button" data-trail-action="export">EXPORT JSON</button>' +
         '<button class="btn-share-trail" type="button" data-trail-action="import">IMPORT JSON</button>' +
         '<button class="btn-share-trail" type="button" data-trail-action="replay">REPLAY NEXT</button>' +
@@ -212,6 +230,8 @@
       '<button class="btn-share-trail" type="button" data-trail-action="close">CLOSE [ESC]</button>' +
     '</div>';
     overlay.addEventListener('click', function (event) {
+      var copyButton = event.target.closest('[data-copy-value]');
+      if (copyButton) return copyLedgerValue(copyButton);
       var button = event.target.closest('[data-trail-action]');
       if (!button) return;
       var action = button.dataset.trailAction;
@@ -240,13 +260,70 @@
     var meta = document.getElementById('trailLedgerMeta');
     if (!meta) return;
     var trailId = state.imported ? state.imported.trail_id : 'GENERATED ON EXPORT';
-    meta.innerHTML = '<dt>TRAIL ID</dt><dd style="color:#e8e0d0;margin:0 0 6px">' + trailId + '</dd>' +
-      '<dt>CORPUS REVISION</dt><dd style="color:#e8e0d0;margin:0 0 6px">' + (state.corpusRevision || 'CALCULATING') + '</dd>' +
-      '<dt>SEED</dt><dd style="color:#e8e0d0;margin:0 0 6px">' + state.seed + '</dd>' +
-      '<dt>RECORDED ROUTES</dt><dd style="color:#e8e0d0;margin:0 0 6px">' + state.routes.length + '</dd>' +
-      '<dt>PARENT / FORK</dt><dd style="color:#e8e0d0;margin:0">' +
-        (state.parent ? state.parent.trail_id + ' / ' + String(state.parent.fork_at).padStart(3, '0') : 'ORIGIN') + '</dd>';
+    meta.replaceChildren();
+    appendLedgerField(meta, 'TRAIL ID', trailId, state.imported ? 'trail ID' : null);
+    appendLedgerField(meta, 'CORPUS REVISION', state.corpusRevision || 'CALCULATING', state.corpusRevision ? 'corpus revision' : null);
+    appendLedgerField(meta, 'SEED', state.seed, 'seed');
+    appendLedgerField(meta, 'RECORDED ROUTES', state.routes.length);
+    appendLedgerField(meta, 'PARENT / FORK', state.parent ? state.parent.trail_id + ' / ' + String(state.parent.fork_at).padStart(3, '0') : 'ORIGIN', state.parent ? 'parent trail' : null);
+    var available = Boolean(state.imported);
+    var replay = document.querySelector('[data-trail-action="replay"]');
+    var fork = document.querySelector('[data-trail-action="fork"]');
+    if (replay) replay.disabled = !available;
+    if (fork) fork.disabled = !available;
+    var hint = document.getElementById('trailLedgerHint');
+    if (hint) hint.textContent = available
+      ? 'Verified trail loaded. Replay and fork are available.'
+      : 'Import or export a trail to enable replay and fork.';
     if (status) document.getElementById('trailLedgerStatus').textContent = status;
+  }
+
+  function appendLedgerField(meta, label, value, copyField) {
+    var term = document.createElement('dt');
+    term.textContent = label;
+    var detail = document.createElement('dd');
+    detail.className = 'trail-ledger-value';
+    var text = document.createElement('span');
+    text.textContent = String(value);
+    detail.appendChild(text);
+    if (copyField) {
+      var copy = document.createElement('button');
+      copy.type = 'button';
+      copy.className = 'trail-ledger-copy';
+      copy.textContent = 'COPY';
+      copy.dataset.copyField = copyField;
+      copy.dataset.copyValue = String(value);
+      copy.setAttribute('aria-label', 'Copy ' + copyField);
+      detail.appendChild(copy);
+    }
+    meta.appendChild(term);
+    meta.appendChild(detail);
+  }
+
+  function copyLedgerValue(button) {
+    var value = button.dataset.copyValue || '';
+    var field = button.dataset.copyField || 'value';
+    var write = navigator.clipboard && navigator.clipboard.writeText
+      ? navigator.clipboard.writeText(value)
+      : new Promise(function (resolve, reject) {
+          var area = document.createElement('textarea');
+          area.value = value;
+          area.setAttribute('readonly', '');
+          area.style.position = 'fixed';
+          area.style.opacity = '0';
+          document.body.appendChild(area);
+          area.select();
+          try { document.execCommand('copy') ? resolve() : reject(new Error('Copy unavailable')); }
+          catch (error) { reject(error); }
+          area.remove();
+        });
+    return Promise.resolve(write).then(function () {
+      var original = button.textContent;
+      button.textContent = 'COPIED';
+      var hint = document.getElementById('trailLedgerHint');
+      if (hint) hint.textContent = field.toUpperCase() + ' COPIED.';
+      setTimeout(function () { button.textContent = original; renderPanel(); }, 1200);
+    }).catch(showError);
   }
 
   function showError(error) {

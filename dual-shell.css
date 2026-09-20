@@ -68,6 +68,10 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-filter-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:14px 0}.r4m-filter-proxy{min-height:46px;background:#17130f;border:1px solid #322b24;color:#b0a491;font:500 .48rem var(--font-mono,"DM Mono",monospace);letter-spacing:.08em;text-transform:uppercase;padding:8px}.r4m-filter-proxy.active{border-color:#762126;color:#e55a5f;background:#1d1110}
   .r4m-branch-options{padding:10px 0;display:flex;flex-direction:column}.r4m-branch-proxy{display:grid;grid-template-columns:42px 1fr;gap:8px;align-items:start;background:transparent;border:0;border-bottom:1px solid #29231e;color:#e3d9c5;padding:14px 3px;text-align:left;font-family:var(--font-mono,"DM Mono",monospace)}.r4m-branch-proxy>span{color:var(--r4m-red-hi);font-size:.5rem}.r4m-branch-proxy p{font-size:.55rem;line-height:1.6;color:#b3a793}
   .r4m-sheet-note{padding:22px 3px;color:#796f61;font-size:.5rem;line-height:1.7;letter-spacing:.07em}
+  .r4m-branch-empty{display:grid;gap:11px;min-height:210px;align-content:center;padding:28px 4px;border-bottom:1px solid #29231e;color:#efe5d2}
+  .r4m-branch-empty strong{font-family:var(--font-head,"Bebas Neue",sans-serif);font-size:1.8rem;letter-spacing:.08em;font-weight:500}
+  .r4m-branch-empty p{max-width:31em;margin:0;color:#b3a793;font-size:.56rem;line-height:1.65;letter-spacing:.04em}
+  .r4m-branch-empty button{justify-self:start;min-height:46px;margin-top:5px;padding:0 15px;border:1px solid var(--r4m-red-hi);background:#17110f;color:#efe5d2;font:600 .5rem var(--font-mono,"DM Mono",monospace);letter-spacing:.12em}
   .r4m-inspect-body{padding:10px 0}.r4m-inspect-body>div{border-bottom:1px solid #29231e;padding:14px 3px}.r4m-inspect-body small{display:block;color:#6e6457;font-size:.43rem;letter-spacing:.16em;margin-bottom:6px}.r4m-inspect-body strong,.r4m-inspect-body code,.r4m-inspect-body p{font:400 .58rem/1.65 var(--font-mono,"DM Mono",monospace);color:#ded3bf;word-break:break-word;white-space:normal}
 
   #historyOverlay,#iframeOverlay,.tor-modal-overlay,.help-overlay{z-index:10000!important}

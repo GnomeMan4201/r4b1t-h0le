@@ -194,7 +194,8 @@
       '.blind-link.revealed{background:#cc1111}.blind-link.concealed{background:#24100e}' +
       '.blind-actions{display:grid;grid-template-columns:2fr 2fr 1fr;gap:8px}' +
       '.blind-actions button{font:500 11px "DM Mono",monospace;letter-spacing:.14em;padding:15px 10px;border:1px solid #60342e;background:#120d0d;color:#e8e0d0;cursor:pointer}' +
-      '.blind-actions button:first-child{background:#ff3333;color:#080808;border-color:#ff3333}' +
+      '.blind-actions button[data-blind-action="descend"],.blind-actions button[data-blind-action="reveal"]{background:#15100e;color:#e8e0d0;border-color:#ff3333}' +
+      '.blind-actions button[data-blind-action="return"]{background:transparent;color:#9a8f7a;border-color:#49312c}' +
       '.blind-subactions{display:flex;justify-content:space-between;gap:8px;margin-top:8px}' +
       '.blind-subactions button{font:9px "DM Mono",monospace;letter-spacing:.14em;padding:9px;background:none;color:#9a8f7a;border:1px solid #49312c}' +
       '@media(max-width:600px){.blind-grid{padding:18px 14px}.blind-card{min-height:360px;padding:24px 20px}.blind-actions{grid-template-columns:1fr 1fr}.blind-actions button:last-child{grid-column:1/-1}}';

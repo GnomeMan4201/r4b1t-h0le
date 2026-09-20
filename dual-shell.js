@@ -390,6 +390,15 @@
     if (action === 'filter') return openSheet('r4mFilterSheet');
     if (action === 'close-sheets') return closeSheets();
     if (action === 'next') return runRollTransition('next');
+    if (action === 'branch-roll') {
+      closeSheets();
+      return runRollTransition('roll');
+    }
+    if (action === 'branch-generate') {
+      call('sprout');
+      window.setTimeout(syncBranch, 180);
+      return;
+    }
     if (action === 'visit') return call('visit');
     if (action === 'sprout') {
       if (branchModeActive()) call('sprout');
@@ -602,11 +611,19 @@
     dest.innerHTML = '';
 
     if (!currentUrl()) {
-      dest.innerHTML = '<p class="r4m-sheet-note">ROLL A ROUTE FIRST. BRANCH NEEDS A CURRENT URL.</p>';
+      dest.innerHTML = '<div class="r4m-branch-empty" role="status">' +
+        '<strong>NO CURRENT ROUTE</strong>' +
+        '<p>Roll a route before generating directions.</p>' +
+        '<button type="button" data-mobile-action="branch-roll">ROLL A ROUTE</button>' +
+      '</div>';
       return;
     }
     if (!items.length) {
-      dest.innerHTML = '<p class="r4m-sheet-note">NO DIRECTIONS YET. TAP SPROUT ×4 ON THE ROUTE CARD.</p>';
+      dest.innerHTML = '<div class="r4m-branch-empty" role="status">' +
+        '<strong>NO DIRECTIONS YET</strong>' +
+        '<p>Generate four directions from the current route.</p>' +
+        '<button type="button" data-mobile-action="branch-generate">GENERATE DIRECTIONS</button>' +
+      '</div>';
       return;
     }
 

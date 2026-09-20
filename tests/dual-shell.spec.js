@@ -87,6 +87,26 @@ test('mobile navigation opens filter and inspect sheets without horizontal overf
   expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport + 1);
 });
 
+test('mobile branch sheet explains the empty state and offers a recovery action', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.evaluate(() => {
+    document.getElementById('previewUrl').textContent = '—';
+    document.getElementById('branchGrid').replaceChildren();
+    document.getElementById('btnModeBranch').classList.add('active');
+  });
+
+  await page.locator('[data-mobile-action="branch"]').click();
+  const empty = page.locator('#r4mBranchOptions .r4m-branch-empty');
+  await expect(empty).toBeVisible();
+  await expect(empty).toHaveAttribute('role', 'status');
+  await expect(empty.locator('strong')).toHaveText('NO CURRENT ROUTE');
+  await expect(empty).toContainText('Roll a route before generating directions.');
+  await expect(empty.getByRole('button', { name: 'ROLL A ROUTE' })).toBeVisible();
+});
+
 test('changing viewport width switches shells without reloading', async ({ page }, testInfo) => {
   if (testInfo.project.name === 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });

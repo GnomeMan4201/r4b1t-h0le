@@ -82,6 +82,23 @@ test('blind interface remains within the mobile viewport', async ({ page }, test
   expect(overflow).toBe(false);
 });
 
+test('descend and reveal have equal visual weight while return remains secondary', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openBlindDescent === 'function');
+  await page.evaluate(() => window.openBlindDescent());
+
+  const styles = await page.evaluate(() => {
+    const read = (action) => {
+      const style = getComputedStyle(document.querySelector(`[data-blind-action="${action}"]`));
+      return { background: style.backgroundColor, color: style.color, border: style.borderColor };
+    };
+    return { descend: read('descend'), reveal: read('reveal'), back: read('return') };
+  });
+
+  expect(styles.descend).toEqual(styles.reveal);
+  expect(styles.back).not.toEqual(styles.descend);
+});
+
 test('wear is persistent and descend, return, and reveal remain visually distinct', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => typeof window.blindDescend === 'function' && typeof window.R4b1tWear === 'object');
