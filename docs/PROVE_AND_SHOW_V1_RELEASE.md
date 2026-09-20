@@ -1,6 +1,6 @@
 # Prove & Show v1 — Release Baseline
 
-Status: RELEASE BLOCKED — PRODUCTION DEPLOYMENT MISMATCH  
+Status: RELEASE ACCEPTED — PRODUCTION VALIDATED  
 Product Contract: `CONTRACT.md` v1.0  
 Release tag target: `prove-show-v1.0.0`
 
@@ -135,16 +135,16 @@ This is the Product Contract clause 6 default applied to release acceptance.
 
 Functional acceptance MUST NOT begin until this serving-layer gate passes against the custom domain.
 
-- [ ] DNS CNAME for `r4b1t.badbananaresearch.com` resolves exactly to `gnomeman4201.github.io`.
-- [ ] HTTPS certificate is valid for `r4b1t.badbananaresearch.com`.
-- [ ] Plain HTTP redirects to HTTPS on the same expected host.
-- [ ] HTTPS root does not redirect to an unexpected host.
-- [ ] Default GitHub Pages project URL redirects to the registered custom-domain host, and the full redirect chain terminates on that host over HTTPS.
-- [ ] Custom-domain root returns a successful HTTPS response and contains the release-critical entry points.
-- [ ] SHA-256 for every curated release-critical executable/proof asset matches repository bytes and the published `gh-pages` branch.
-- [ ] SHA-256 for every curated release-critical asset matches between the published `gh-pages` branch and the custom domain.
-- [ ] `cache-control`, `etag`, and `last-modified` observations are recorded for both origins.
-- [ ] A fresh independent parity check after deployment propagation also passes.
+- [x] DNS CNAME for `r4b1t.badbananaresearch.com` resolves exactly to `gnomeman4201.github.io`.
+- [x] HTTPS certificate is valid for `r4b1t.badbananaresearch.com`.
+- [x] Plain HTTP redirects to HTTPS on the same expected host.
+- [x] HTTPS root does not redirect to an unexpected host.
+- [x] Default GitHub Pages project URL redirects to the registered custom-domain host, and the full redirect chain terminates on that host over HTTPS.
+- [x] Custom-domain root returns a successful HTTPS response and contains the release-critical entry points.
+- [x] SHA-256 for every curated release-critical executable/proof asset matches repository bytes and the published `gh-pages` branch.
+- [x] SHA-256 for every curated release-critical asset matches between the published `gh-pages` branch and the custom domain.
+- [x] `cache-control`, `etag`, and `last-modified` observations are recorded for both origins.
+- [x] A fresh independent parity check after deployment propagation also passes.
 
 The curated parity set is intentionally limited to the application shell, proof runtimes, proof renderers/importers, associated proof-critical styles, service worker, and manifest. Corpus data, fonts, decorative images, and unrelated media are outside this parity gate.
 
@@ -159,112 +159,93 @@ Any failed item above is release-blocking. Functional production acceptance resu
 Record the exact production candidate commit before testing.
 
 - [x] Production candidate commit recorded below.
-- [ ] Public deployment resolves to the intended candidate asset set. **FAIL — live UI differs from candidate.**
-- [ ] Existing exploration flow still selects without history-dependent steering.
-- [ ] Existing exploration route behavior is unchanged by proof features.
-- [ ] Trail Topology v2 renders canonical lineage correctly.
-- [ ] Trail Card creation produces expected VERIFIED / REJECTED / UNVERIFIED treatment.
-- [ ] Trail Comparison accepts two explicit local files and produces frozen semantics.
-- [ ] Concealed Comparison positions do not reveal route identity.
-- [ ] Proof Session entry point is available on production. **FAIL — not present on live custom domain.**
-- [ ] Phone-width multi-file selection works.
-- [ ] Proof Session build works from explicit local files.
-- [ ] Exact duplicate files collapse as specified.
-- [ ] Removing a selected source recomputes from remaining exact bytes.
-- [ ] Removing the final source clears the rendered session.
-- [ ] Closing Proof Session clears in-memory selected files and rendered state.
-- [ ] Reload does not restore a prior Proof Session.
-- [ ] Diagnostic sources remain visible but contribute zero pair/relationship facts.
-- [ ] Direct graph edges do not manufacture transitive relationships.
-- [ ] Portable Proof Session export preserves exact source files.
-- [ ] Offline inspection freshly recomputes before derived facts are accepted.
-- [ ] Unmodified portable file set classifies MATCH.
-- [ ] Modified stored derived presentation classifies MISMATCH.
-- [ ] Missing required portable source material classifies UNREADABLE.
-- [ ] README modification does not alter proof conclusions.
-- [ ] No proof/session operation requires login, account, or server identity.
-- [ ] No proof/session action creates remote telemetry or persistent session state.
-- [ ] Desktop and phone-width required flows complete without horizontal overflow that blocks use.
+- [x] Public deployment resolves to the intended candidate asset set.
+- [x] Existing exploration flow still selects without history-dependent steering.
+- [x] Existing exploration route behavior is unchanged by proof features.
+- [x] Trail Topology v2 renders canonical lineage correctly.
+- [x] Trail Card creation produces expected VERIFIED / REJECTED / UNVERIFIED treatment.
+- [x] Trail Comparison accepts two explicit local files and produces frozen semantics.
+- [x] Concealed Comparison positions do not reveal route identity.
+- [x] Proof Session entry point is available on production.
+- [x] Phone-width multi-file selection works.
+- [x] Proof Session build works from explicit local files.
+- [x] Exact duplicate files collapse as specified.
+- [x] Removing a selected source recomputes from remaining exact bytes.
+- [x] Removing the final source clears the rendered session.
+- [x] Closing Proof Session clears in-memory selected files and rendered state.
+- [x] Reload does not restore a prior Proof Session.
+- [x] Diagnostic sources remain visible but contribute zero pair/relationship facts.
+- [x] Direct graph edges do not manufacture transitive relationships.
+- [x] Portable Proof Session export preserves exact source files.
+- [x] Offline inspection freshly recomputes before derived facts are accepted.
+- [x] Unmodified portable file set classifies MATCH.
+- [x] Modified stored derived presentation classifies MISMATCH.
+- [x] Missing required portable source material classifies UNREADABLE.
+- [x] README modification does not alter proof conclusions.
+- [x] No proof/session operation requires login, account, or server identity.
+- [x] No proof/session action creates remote telemetry or persistent session state.
+- [x] Desktop and phone-width required flows complete without horizontal overflow that blocks use.
 - [x] Required exact-head CI/audit gates are green for the release-baseline PR: Playwright E2E #382 passed on exact head `0c5b9777a375798482098b2df82e16a5f38da965`.
 
 ## Production acceptance record
 
 Production candidate commit:
 
-`65b7ee5760fa76d9f72c8af87e8e05f694d21885`
+`e8fb9012006a08b1cf808847803038db14eabf90`
 
 Deployment checked at:
 
-`2026-09-19 — https://r4b1t.badbananaresearch.com/`
+`2026-09-20 — https://r4b1t.badbananaresearch.com/`
 
 Acceptance result:
 
-`FAIL — RELEASE BLOCKED`
+`PASS — RELEASE ACCEPTED`
 
 ### Release-blocking failures
 
-1. **Production deployment does not match the frozen repository build.**
-   - The production page returned HTTP 200, but its rendered interface does not contain the frozen `proof session` entry point.
-   - Production presents a different instrument shell and command dock than repository `main`.
-   - Repository `main` at candidate commit `65b7ee5760fa76d9f72c8af87e8e05f694d21885` contains `proof-session.js`, `proof-session-renderer.js`, `proof-session-import.js`, the `proof session` button, and `#proofSessionOverlay` in `index.html`.
-   - This matches release-blocking criteria 1, 8, 9, and 12: production cannot currently be tied to the accepted candidate asset set and the required Proof Session production flow is unavailable.
+None.
 
-The `prove-show-v1.0.0` tag MUST NOT be created until production serves the accepted release candidate and the production acceptance pass is rerun.
+### Production acceptance evidence
 
-### Current DNS blocker evidence
+Production application candidate:
 
-Production Shadow run #57 on main commit `37d81cecdc362229d6b0d385033fa2468db28a84` resolved:
+`e8fb9012006a08b1cf808847803038db14eabf90`
 
-`r4b1t.badbananaresearch.com CNAME custom-domains.chatgpt.site`
+Acceptance harness head:
 
-The required release configuration is:
+`e4db77efe89d685cb69b44bad08277037dd0a309`
 
-`r4b1t.badbananaresearch.com CNAME gnomeman4201.github.io`
+Acceptance workflow:
 
-Observed serving-layer consequences on run #57:
+- **Prove & Show v1 Production Acceptance #2** — run `35499367867` — **PASS**
+- acceptance harness changed no release-critical application bytes relative to the production candidate
+- locked dependency install and high-severity dependency audit passed
+- full frozen proof/Product Contract unit gate passed
+- live Production Shadow serving-layer parity re-verification passed
+- live desktop production front door, exploration, topology, and proof entry-point flow passed
+- live Trail Comparison accepted two explicit local files, produced VERIFIED frozen semantics, and produced no storage writes or off-origin requests
+- live iPhone 13-width production flow passed without blocking horizontal overflow
+- live phone-width Proof Session accepted multiple local files, collapsed exact duplicate bytes, recomputed after removals, cleared the final source, preserved diagnostic-only inputs, discarded state on close, and remained empty after reload
+- live proof/session acceptance produced no observed remote transfer or persistence writes
+- Playwright production acceptance result: **4 passed, 2 expected project-scope skips, 0 failed**
 
-- HTTP correctly redirects to HTTPS on the custom hostname.
-- The default GitHub Pages project URL redirects toward the registered custom hostname.
-- The custom-domain root does not expose the frozen Prove & Show entry points.
-- Nearly all curated proof-critical assets return HTTP 404 from the custom domain.
-- The custom-domain service worker bytes differ from repository and published `gh-pages` bytes.
-- The published `gh-pages` branch itself contains the expected release bytes.
+Serving-layer acceptance:
 
-Therefore the remaining blocker is external custom-domain/DNS ownership, not the frozen repository implementation or the GitHub Pages publishing branch.
+- DNS CNAME resolves to `gnomeman4201.github.io`
+- custom-domain HTTP redirects to HTTPS
+- GitHub Pages project URL reaches the registered custom domain and terminates on HTTPS
+- all curated release-critical asset hashes match repository bytes, published `gh-pages` bytes, and custom-domain bytes
+- Production Shadow #60 passed twice on merge `e8fb9012006a08b1cf808847803038db14eabf90`, including a fresh rerun after Pages deployment completed
 
-The existing ChatGPT Sites binding must be detached or its DNS record replaced before production acceptance can resume.
+Portable Proof Session export/inspection, concealment, direct-only lineage, Trail Card proof-state handling, sampler isolation, and non-authority rules were re-exercised by the frozen exact-source Product Contract/unit suite in the same acceptance workflow.
 
-### Required deployment cutover
+### Resolved pre-acceptance blocker
 
-Repository-side preparation is already present:
-
-- root `CNAME` contains `r4b1t.badbananaresearch.com`
-- GitHub Pages successfully publishes the accepted repository build
-- the GitHub Pages reference origin is `https://gnomeman4201.github.io/r4b1t-h0le/`
-
-The remaining release-blocking change is external to this repository:
-
-- DNS label: `r4b1t.badbananaresearch.com`
-- required record type: `CNAME`
-- required target: `gnomeman4201.github.io`
-- the target MUST NOT include `/r4b1t-h0le`
-- the existing Sites-project binding for `r4b1t-repo` must no longer own the production hostname
-
-After that external cutover, do not immediately mark production accepted.
-
-Required order:
-
-1. wait until the custom domain resolves to the GitHub Pages deployment,
-2. verify HTTPS certificate validity,
-3. run Production Shadow until full critical-asset parity passes,
-4. perform a second fresh parity check after propagation,
-5. only then rerun the full functional production acceptance checklist,
-6. record PASS on the exact accepted production commit,
-7. create `prove-show-v1.0.0`.
+The earlier custom-domain deployment mismatch is resolved. The production hostname now serves the GitHub Pages deployment, HTTPS enforcement is active, and the previously missing Prove & Show entry points and proof-critical assets are present with byte-for-byte parity.
 
 ### Non-blocking findings for patch follow-up
 
-None recorded. The current finding is release-blocking, not cosmetic.
+None recorded.
 
 ## Release decision
 
@@ -277,6 +258,9 @@ The `prove-show-v1.0.0` tag may be created only when:
 5. any non-blocking findings are explicitly recorded,
 6. the release-baseline PR is merged,
 7. the tag points to that accepted merge commit.
+
+
+All pre-tag release conditions are satisfied by the accepted production application bytes. After this acceptance-record PR merges, the merge commit must pass post-merge Playwright, Pages deployment, and two Production Shadow parity checks before `prove-show-v1.0.0` is created on that merge commit.
 
 ## Next phase boundary
 

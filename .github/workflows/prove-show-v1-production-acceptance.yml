@@ -1,0 +1,76 @@
+name: Prove & Show v1 Production Acceptance
+
+on:
+  push:
+    branches:
+      - release/prove-show-v1-production-acceptance
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prove-show-v1-production-acceptance
+  cancel-in-progress: true
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      BASE_URL: https://r4b1t.badbananaresearch.com/
+      PRODUCTION_CANDIDATE_SHA: e8fb9012006a08b1cf808847803038db14eabf90
+    steps:
+      - name: Check out acceptance harness
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          fetch-depth: 0
+
+      - name: Prove harness did not change release-critical application bytes
+        shell: bash
+        run: |
+          git diff --exit-code "$PRODUCTION_CANDIDATE_SHA" -- \
+            index.html r4b1t.html dual-shell.js dual-shell.css \
+            trail-runtime.js trail-manifest.js blind-runtime.js blind-manifest.js \
+            topology-runtime.js trail-topology.js \
+            trail-card.js trail-card-renderer.js trail-card-share.js trail-card.css trail-card-share.css \
+            trail-comparison.js trail-comparison-renderer.js trail-comparison-import.js \
+            trail-comparison.css trail-comparison-import.css \
+            proof-session.js proof-session-renderer.js proof-session-import.js \
+            proof-session.css proof-session-import.css \
+            trail-wear.js trail-wear.css sw.js manifest.json
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Reject high-severity dependency findings
+        run: npm audit --audit-level=high
+
+      - name: Run frozen proof and Product Contract unit gates
+        run: npm run test:unit
+
+      - name: Reverify live serving-layer parity
+        run: node tools/verify-production-shadow.mjs
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run live desktop and iPhone production acceptance
+        run: npx playwright test tests/production-acceptance.spec.js --config=playwright.production.config.js
+
+      - name: Upload production acceptance report on failure
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: prove-show-v1-production-acceptance
+          path: |
+            playwright-production-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
