@@ -130,6 +130,7 @@ async function verifyHttpRedirect() {
 async function verifyPagesRedirect() {
   const response = await fetchWithTimeout(APP, { redirect: 'manual' });
   const location = response.headers.get('location');
+  const expectedHost = new URL(SITE).hostname;
 
   if (![301, 302, 307, 308].includes(response.status)) {
     fail(`pages redirect: expected redirect from ${APP}, got HTTP ${response.status}`);
@@ -142,13 +143,26 @@ async function verifyPagesRedirect() {
   }
 
   const resolved = new URL(location, APP);
-  if (resolved.protocol !== 'https:') {
-    fail(`pages redirect: expected HTTPS target, got ${resolved.href}`);
-  }
-  if (resolved.hostname !== new URL(SITE).hostname) {
+  if (resolved.hostname !== expectedHost) {
     fail(`pages redirect: expected custom-domain host, got ${resolved.hostname}`);
-  } else {
-    console.log(`PAGES REDIRECT ${APP} -> ${resolved.href}`);
+    return;
+  }
+
+  console.log(`PAGES REDIRECT ${APP} -> ${resolved.href}`);
+
+  const finalResponse = await fetchWithTimeout(APP);
+  const finalUrl = new URL(finalResponse.url);
+
+  if (!finalResponse.ok) {
+    fail(`pages redirect: final custom-domain response returned HTTP ${finalResponse.status}`);
+  }
+  if (finalUrl.protocol !== 'https:') {
+    fail(`pages redirect: redirect chain did not terminate on HTTPS (${finalUrl.href})`);
+  }
+  if (finalUrl.hostname !== expectedHost) {
+    fail(`pages redirect: redirect chain terminated on unexpected host ${finalUrl.hostname}`);
+  } else if (finalUrl.protocol === 'https:') {
+    console.log(`PAGES FINAL ${APP} -> ${finalUrl.href}`);
   }
 }
 
