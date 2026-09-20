@@ -517,7 +517,7 @@
     }
   }
 
-  function renderRouteWear() {
+  window.__r4b1tSyncMobileRoute = syncRoute;\n\n  function renderRouteWear() {
     var host = byId('r4mRouteWear');
     if (!host || !window.R4b1tWear) return;
     var source = byId('trailItems');
