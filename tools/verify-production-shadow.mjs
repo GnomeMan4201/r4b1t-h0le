@@ -38,6 +38,11 @@ const CRITICAL_ASSETS = [
   'proof-session-import.js',
   'proof-session.css',
   'proof-session-import.css',
+  'replay-inspection.js',
+  'replay-inspection-renderer.js',
+  'replay-inspection-import.js',
+  'replay-inspection-overlay.js',
+  'replay-inspection.css',
   'trail-wear.js',
   'trail-wear.css',
   'sw.js',
@@ -49,6 +54,7 @@ const ROOT_MARKERS = [
   'trail-comparison-import.js',
   'trail-card-share.js',
   'trail-topology.js',
+  'replay-inspection-overlay.js',
 ];
 
 const failures = [];
