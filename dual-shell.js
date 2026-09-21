@@ -126,7 +126,7 @@
         '<div id="r4mFilterOptions" class="r4m-filter-options"></div>',
       '</aside>',
       '<aside class="r4m-sheet" id="r4mBranchSheet" aria-hidden="true">',
-        '<div class="r4m-sheet-head"><strong>BRANCH / DIRECTIONS</strong><button type="button" data-mobile-action="close-sheets">CLOSE</button></div>',
+        '<div class="r4m-sheet-head"><strong>BRANCH / DIRECTIONS</strong><button type="button" data-mobile-action="random-mode">RANDOM MODE</button><button type="button" data-mobile-action="close-sheets">CLOSE</button></div>',
         '<div id="r4mBranchOptions" class="r4m-branch-options"></div>',
       '</aside>',
       '<aside class="r4m-sheet" id="r4mInspectSheet" aria-hidden="true">',
@@ -390,6 +390,11 @@ MOTION: waiting for target…';
     if (action === 'filter') return openSheet('r4mFilterSheet');
     if (action === 'close-sheets') return closeSheets();
     if (action === 'next') return runRollTransition('next');
+    if (action === 'random-mode') {
+      call('setMode', 'random');
+      closeSheets();
+      return;
+    }
     if (action === 'branch-roll') {
       closeSheets();
       return runRollTransition('roll');
