@@ -155,3 +155,54 @@ test('mobile reduced motion preserves deferred disclosure without strip travel',
   await expect(page.locator('#r4mRoute')).toBeVisible();
   await expect(page.locator('#r4mRoll .r4m-roll-strip')).toBeAttached();
 });
+
+
+test('mobile persisted pageshow resumes settled route without route-entry presentation', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  const before = await page.evaluate(() => {
+    const snapshot = window.R4B1TRollProduction && window.R4B1TRollProduction.snapshot();
+    const route = document.getElementById('r4mUrl').textContent.trim();
+    const trail = Array.from(document.querySelectorAll('#trailItems .trail-item')).map((item) => item.textContent.trim());
+    const target = document.getElementById('r4mRoute');
+    if (target) target.removeAttribute('data-motion');
+    window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
+    return { snapshot, route, trail };
+  });
+
+  await page.waitForTimeout(50);
+
+  const after = await page.evaluate(() => ({
+    snapshot: window.R4B1TRollProduction && window.R4B1TRollProduction.snapshot(),
+    route: document.getElementById('r4mUrl').textContent.trim(),
+    trail: Array.from(document.querySelectorAll('#trailItems .trail-item')).map((item) => item.textContent.trim()),
+    routeMotion: document.getElementById('r4mRoute').getAttribute('data-motion'),
+  }));
+
+  expect(after.route).toBe(before.route);
+  expect(after.trail).toEqual(before.trail);
+  expect(after.snapshot.transactionId).toBe(before.snapshot.transactionId);
+  expect(after.snapshot.state).toBe(before.snapshot.state);
+  expect(after.routeMotion).toBeNull();
+});
+
+test('mobile non-persisted pageshow keeps ordinary full synchronization', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.evaluate(() => {
+    document.getElementById('previewDomain').textContent = 'example.test';
+    document.getElementById('previewUrl').textContent = 'https://example.test/resume-check';
+    window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: false }));
+  });
+
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expect(page.locator('#r4mUrl')).toHaveText('https://example.test/resume-check');
+  await expect(page.locator('#r4mDomain')).toHaveText('EXAMPLE.TEST');
+});
