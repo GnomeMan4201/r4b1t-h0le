@@ -79,6 +79,10 @@ test('live front door, exploration, topology, and proof entry points remain usab
 
   if (testInfo.project.name === 'iphone13-production') {
     await expect(page.locator('html')).toHaveAttribute('data-r4b1t-interface', 'mobile');
+    await expect(page.locator('.r4m-shell [data-mobile-action="comparison"]')).toBeVisible();
+    await page.locator('.r4m-shell [data-mobile-action="comparison"]').click();
+    await expect(page.getByRole('dialog', { name: 'Trail comparison' })).toBeVisible();
+    await page.keyboard.press('Escape');
     await expect(page.locator('#r4mRoll')).toBeVisible();
     await page.locator('#r4mRoll').click();
     await expect(page.locator('#r4mUrl')).toHaveText(/^https?:\/\//);
