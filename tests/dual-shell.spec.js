@@ -203,7 +203,7 @@ test('mobile persisted pageshow resumes without rebuilding settled presentation'
   const result = await page.evaluate(() => {
     const before = {
       filterOptions: document.getElementById('r4mFilterOptions'),
-      trail: document.getElementById('r4mTrail'),
+      trail: document.getElementById('r4mTrailItems'),
       route: document.getElementById('r4mRoute'),
     };
     const filterChildren = Array.from(before.filterOptions.children);
@@ -216,7 +216,7 @@ test('mobile persisted pageshow resumes without rebuilding settled presentation'
       filterChildrenSame:
         filterChildren.length === before.filterOptions.children.length &&
         filterChildren.every((node, index) => node === before.filterOptions.children[index]),
-      trailHostSame: document.getElementById('r4mTrail') === before.trail,
+      trailHostSame: document.getElementById('r4mTrailItems') === before.trail,
       trailChildrenSame:
         trailChildren.length === before.trail.children.length &&
         trailChildren.every((node, index) => node === before.trail.children[index]),
