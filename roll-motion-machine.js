@@ -20,8 +20,8 @@
 
   const DEFAULT_TIMING = Object.freeze({
     pressToCompress: 0,
-    accelerate: 150,
-    decelerate: 260,
+    accelerate: 260,
+    decelerate: 360,
     lockHold: 40,
     cardEnter: 110,
     cancelSettle: 0
