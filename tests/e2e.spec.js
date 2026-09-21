@@ -126,6 +126,69 @@ test('mobile viewport exposes one-thumb controls', async ({ page }, testInfo) =>
 });
 
 
+test('desktop Blind Descent navigation opens without committing', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'desktop-chromium') test.skip();
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitForApplicationReady(page);
+  await page.waitForFunction(() => typeof window.getBlindManifest === 'function');
+
+  const before = await page.evaluate(() => window.getBlindManifest());
+
+  await page.getByRole('button', { name: 'trail file', exact: true }).click();
+  await expect(page.locator('#trailLedgerOverlay')).toBeVisible();
+  await expect(page.locator('#trailLedgerOverlay')).toHaveAttribute('aria-hidden', 'false');
+  await page.locator('[data-trail-action="blind"]').click();
+
+  await expect(page.locator('#blindDescentOverlay')).toHaveClass(/\bopen\b/);
+  await expect(page.locator('#blindStatus')).toContainText('READY');
+
+  const after = await page.evaluate(() => window.getBlindManifest());
+  expect(after.trail_id).toBe(before.trail_id);
+  expect(after.manifest.steps).toEqual(before.manifest.steps);
+});
+
+test('mobile DESCEND BLIND commits once and an internal descent commits once more', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitForApplicationReady(page);
+  await page.waitForFunction(() => typeof window.getBlindManifest === 'function');
+
+  const before = await page.evaluate(() => window.getBlindManifest());
+  const entry = page.locator('[data-mobile-action="blind-descent"]');
+  await expect(entry).toBeVisible();
+  await entry.click();
+
+  await expect(page.locator('#blindDescentOverlay')).toHaveClass(/\bopen\b/);
+  await expect(page.locator('#blindStatus')).toContainText('CONCEALED');
+  await expect(page.locator('#blindCard')).toHaveClass(/\bmotion-descend-card\b/);
+  await expect(page.locator('#blindWear .wear-step.concealed').last()).toBeVisible();
+
+  const afterMobileAction = await page.evaluate(() => window.getBlindManifest());
+  expect(afterMobileAction.manifest.steps).toHaveLength(before.manifest.steps.length + 1);
+
+  const firstNewStep = afterMobileAction.manifest.steps.at(-1);
+  expect(firstNewStep.state).toBe('concealed');
+  expect(Object.keys(firstNewStep).sort()).toEqual(['commitment', 'index', 'state']);
+  expect(firstNewStep.commitment).toMatch(/^sha256:[0-9a-f]{64}$/);
+  expect(JSON.stringify(firstNewStep)).not.toMatch(/route|url|nonce|seed|sampler/i);
+
+  await page.locator('[data-blind-action="descend"]').click();
+  await expect(page.locator('#blindStatus')).toContainText('CONCEALED');
+
+  const afterInternalAction = await page.evaluate(() => window.getBlindManifest());
+  expect(afterInternalAction.manifest.steps).toHaveLength(afterMobileAction.manifest.steps.length + 1);
+
+  const secondNewStep = afterInternalAction.manifest.steps.at(-1);
+  expect(secondNewStep.index).toBe(firstNewStep.index + 1);
+  expect(secondNewStep.state).toBe('concealed');
+  expect(Object.keys(secondNewStep).sort()).toEqual(['commitment', 'index', 'state']);
+  expect(secondNewStep.commitment).toMatch(/^sha256:[0-9a-f]{64}$/);
+  expect(JSON.stringify(secondNewStep)).not.toMatch(/route|url|nonce|seed|sampler/i);
+});
+
+
 test('mobile blind descent uses real and distinct timed transitions', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
 
