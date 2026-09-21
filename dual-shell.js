@@ -729,7 +729,16 @@ MOTION: waiting for target…';
     if (rollButton) rollButton.addEventListener('click', function () {
       runRollTransition('roll');
     });
-    window.addEventListener('pageshow', syncEverything);
+    window.addEventListener('pageshow', function (event) {
+      // A bfcache restore resumes an already-settled instrument. Rebuilding the
+      // shell here can replace presentation DOM and make Back feel like a new
+      // route transition even though selection/reveal state has not changed.
+      if (event && event.persisted) {
+        renderRouteWear();
+        return;
+      }
+      syncEverything();
+    });
     document.addEventListener('r4b1t:reset', function () { window.setTimeout(syncEverything, 20); });
   }
 

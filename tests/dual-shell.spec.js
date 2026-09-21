@@ -155,3 +155,111 @@ test('mobile reduced motion preserves deferred disclosure without strip travel',
   await expect(page.locator('#r4mRoute')).toBeVisible();
   await expect(page.locator('#r4mRoll .r4m-roll-strip')).toBeAttached();
 });
+
+
+test('mobile persisted pageshow preserves an already revealed settled route', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  const before = await page.evaluate(() => ({
+    snapshot: window.R4B1TRollProduction && window.R4B1TRollProduction.snapshot(),
+    route: document.getElementById('r4mUrl').textContent.trim(),
+    trail: Array.from(document.querySelectorAll('#trailItems .trail-item')).map((item) => item.textContent.trim()),
+  }));
+
+  await page.evaluate(() => {
+    const route = document.getElementById('r4mRoute');
+    if (route) route.removeAttribute('data-motion');
+    window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
+  });
+  await page.waitForTimeout(50);
+
+  const after = await page.evaluate(() => ({
+    snapshot: window.R4B1TRollProduction && window.R4B1TRollProduction.snapshot(),
+    route: document.getElementById('r4mUrl').textContent.trim(),
+    trail: Array.from(document.querySelectorAll('#trailItems .trail-item')).map((item) => item.textContent.trim()),
+    routeMotion: document.getElementById('r4mRoute').getAttribute('data-motion'),
+  }));
+
+  expect(after.route).toBe(before.route);
+  expect(after.trail).toEqual(before.trail);
+  expect(after.snapshot.transactionId).toBe(before.snapshot.transactionId);
+  expect(after.snapshot.state).toBe(before.snapshot.state);
+  expect(after.routeMotion).toBeNull();
+});
+
+test('mobile persisted pageshow resumes without rebuilding settled presentation', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  const result = await page.evaluate(() => {
+    const before = {
+      filterOptions: document.getElementById('r4mFilterOptions'),
+      trail: document.getElementById('r4mTrailItems'),
+      route: document.getElementById('r4mRoute'),
+    };
+    const filterChildren = Array.from(before.filterOptions.children);
+    const trailChildren = Array.from(before.trail.children);
+
+    window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
+
+    return {
+      filterHostSame: document.getElementById('r4mFilterOptions') === before.filterOptions,
+      filterChildrenSame:
+        filterChildren.length === before.filterOptions.children.length &&
+        filterChildren.every((node, index) => node === before.filterOptions.children[index]),
+      trailHostSame: document.getElementById('r4mTrailItems') === before.trail,
+      trailChildrenSame:
+        trailChildren.length === before.trail.children.length &&
+        trailChildren.every((node, index) => node === before.trail.children[index]),
+      routeSame: document.getElementById('r4mRoute') === before.route,
+    };
+  });
+
+  expect(result.routeSame).toBe(true);
+  expect(result.filterHostSame).toBe(true);
+  expect(result.filterChildrenSame).toBe(true);
+  expect(result.trailHostSame).toBe(true);
+  expect(result.trailChildrenSame).toBe(true);
+});
+
+test('mobile non-persisted pageshow keeps ordinary synchronization for an already revealed route', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  const before = await page.evaluate(() => ({
+    snapshot: window.R4B1TRollProduction && window.R4B1TRollProduction.snapshot(),
+    route: document.getElementById('r4mUrl').textContent.trim(),
+    domain: document.getElementById('r4mDomain').textContent.trim(),
+    trail: Array.from(document.querySelectorAll('#trailItems .trail-item')).map((item) => item.textContent.trim()),
+  }));
+
+  await page.evaluate(() => {
+    document.getElementById('r4mUrl').textContent = 'STALE';
+    document.getElementById('r4mDomain').textContent = 'STALE';
+    window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: false }));
+  });
+
+  await expect(page.locator('#r4mUrl')).toHaveText(before.route);
+  await expect(page.locator('#r4mDomain')).toHaveText(before.domain);
+
+  const after = await page.evaluate(() => ({
+    snapshot: window.R4B1TRollProduction && window.R4B1TRollProduction.snapshot(),
+    trail: Array.from(document.querySelectorAll('#trailItems .trail-item')).map((item) => item.textContent.trim()),
+  }));
+  expect(after.trail).toEqual(before.trail);
+  expect(after.snapshot.transactionId).toBe(before.snapshot.transactionId);
+  expect(after.snapshot.state).toBe(before.snapshot.state);
+});
