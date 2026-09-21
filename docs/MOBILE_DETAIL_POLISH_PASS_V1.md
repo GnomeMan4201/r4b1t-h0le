@@ -124,3 +124,19 @@ The recording was reviewed as an observation pass only. No production changes we
 **Pass 1B result:** one concrete landscape issue is established: the ROLL surface remains functionally correct but uses a portrait-derived narrow composition that leaves much of the landscape viewport unused. This is recorded as a **Friction** finding requiring a short design decision, not an implementation change during the audit. No evidence in this pass reopens Motion Pass 3, authority, or PR #146 return continuity.
 
 **ROLL audit status:** portrait and landscape observation passes complete. Proceed next to **Trail**, beginning with iPhone portrait.
+
+
+### Pass 2A — Trail / iPhone portrait
+
+**Evidence:** iPhone Safari device recording `AD8CAE90-5347-4B52-86B4-47FDA471E155.mp4` (78.6 s, 30 fps, 512×1108).
+
+Observation only; no production changes.
+
+| Surface | Viewport / orientation | Reproduction | Observed behavior | Expected behavior | Category | Severity | Shared/local ownership | Evidence | Disposition |
+|---|---|---|---|---|---|---|---|---|---|
+| Trail | iPhone / portrait | Build several routes, open trail/topology presentation, inspect accumulated entries | Trail state remains available and the presentation stays inside the phone viewport; no reproducible body-level horizontal overflow is visible | Trail presentation remains contained at phone width | Layout | — | Shared mobile shell / Trail | 78.6 s recording | No finding |
+| Trail | iPhone / portrait | Inspect dense trail/topology metadata and controls | Secondary metadata and compact controls are visibly very small relative to the primary ROLL/result typography, increasing reading and targeting effort at phone size | Trail metadata and actionable controls should remain comfortably readable/targetable without changing semantics | Typography / touch target | Friction | Trail/topology presentation | 78.6 s recording | Needs design decision |
+| Trail | iPhone / portrait | Move between accumulated route presentation and Trail Topology | Dense evidence/topology presentation preserves content but compresses substantial information into a small phone-width region | Mobile Trail should preserve capability while presenting dense evidence at a usable inspection scale | Parity / layout | Friction | Trail/topology presentation | 78.6 s recording | Needs design decision |
+| Trail | iPhone / portrait | Scroll and navigate through the recorded accumulated trail | No obvious sustained scroll stall or frame-drop is visible in the recording | Trail interaction remains responsive as entries accumulate | Performance | — | Observation only | 78.6 s recording | No finding |
+
+**Pass 2A result:** Trail portrait is functionally contained, but the recording establishes a **density/readability friction** finding: secondary trail/topology metadata and controls are compressed to a scale that increases reading and touch effort on phone. This is a presentation/design issue only; no authority or evidence semantics are implicated. Landscape Trail remains unaudited.
