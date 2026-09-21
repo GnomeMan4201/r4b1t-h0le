@@ -116,17 +116,17 @@ test('mobile can explicitly return from Branch to Random mode without rolling', 
   const routeBefore = await page.locator('#previewUrl').textContent();
 
   await page.locator('[data-mobile-action="branch"]').click();
-  await expect(page.locator('#r4mBranchSheet')).toHaveClass(/\\bopen\\b/);
-  await expect(page.locator('#btnModeBranch')).toHaveClass(/\\bactive\\b/);
-  await expect(page.locator('#btnModeRandom')).not.toHaveClass(/\\bactive\\b/);
+  await expect(page.locator('#r4mBranchSheet')).toHaveClass(/\bopen\b/);
+  await expect(page.locator('#btnModeBranch')).toHaveClass(/\bactive\b/);
+  await expect(page.locator('#btnModeRandom')).not.toHaveClass(/\bactive\b/);
   await expect(page.locator('#r4mModeLabel')).toHaveText('BRANCH');
 
   const randomMode = page.locator('#r4mBranchSheet [data-mobile-action="random-mode"]');
   await expect(randomMode).toBeVisible();
   await randomMode.click();
 
-  await expect(page.locator('#btnModeRandom')).toHaveClass(/\\bactive\\b/);
-  await expect(page.locator('#btnModeBranch')).not.toHaveClass(/\\bactive\\b/);
+  await expect(page.locator('#btnModeRandom')).toHaveClass(/\bactive\b/);
+  await expect(page.locator('#btnModeBranch')).not.toHaveClass(/\bactive\b/);
   await expect(page.locator('#r4mModeLabel')).toHaveText('UNBOUNDED');
   await expect(page.locator('#r4mBranchSheet')).toHaveAttribute('aria-hidden', 'true');
   await expect(page.locator('#previewUrl')).toHaveText(routeBefore);
