@@ -118,7 +118,7 @@ test('capability is cleared after cancellation settles', () => {
 
 test('capability is cleared after successful transaction settles', () => {
   const {clock,machine}=released(); machine.commitAck(machine.activeCommitCapability());
-  clock.tick(150+260+40+110);
+  clock.tick(machine.timing.accelerate + machine.timing.decelerate + machine.timing.lockHold + machine.timing.cardEnter);
   assert.equal(machine.snapshot().state,STATES.SETTLED);
   assert.equal(machine.activeCommitCapability(),null);
 });
