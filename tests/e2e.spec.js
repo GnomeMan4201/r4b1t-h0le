@@ -136,10 +136,11 @@ test('desktop Blind Descent navigation opens without committing', async ({ page 
   const before = await page.evaluate(() => window.getBlindManifest());
 
   await page.getByRole('button', { name: 'trail file', exact: true }).click();
-  await expect(page.locator('#trailLedgerOverlay')).toHaveClass(/\\bopen\\b/);
+  await expect(page.locator('#trailLedgerOverlay')).toBeVisible();
+  await expect(page.locator('#trailLedgerOverlay')).toHaveAttribute('aria-hidden', 'false');
   await page.locator('[data-trail-action="blind"]').click();
 
-  await expect(page.locator('#blindDescentOverlay')).toHaveClass(/\\bopen\\b/);
+  await expect(page.locator('#blindDescentOverlay')).toHaveClass(/\bopen\b/);
   await expect(page.locator('#blindStatus')).toContainText('READY');
 
   const after = await page.evaluate(() => window.getBlindManifest());
@@ -159,9 +160,9 @@ test('mobile DESCEND BLIND commits once and an internal descent commits once mor
   await expect(entry).toBeVisible();
   await entry.click();
 
-  await expect(page.locator('#blindDescentOverlay')).toHaveClass(/\\bopen\\b/);
+  await expect(page.locator('#blindDescentOverlay')).toHaveClass(/\bopen\b/);
   await expect(page.locator('#blindStatus')).toContainText('CONCEALED');
-  await expect(page.locator('#blindCard')).toHaveClass(/\\bmotion-descend-card\\b/);
+  await expect(page.locator('#blindCard')).toHaveClass(/\bmotion-descend-card\b/);
   await expect(page.locator('#blindWear .wear-step.concealed').last()).toBeVisible();
 
   const afterMobileAction = await page.evaluate(() => window.getBlindManifest());
