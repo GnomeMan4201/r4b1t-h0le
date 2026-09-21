@@ -157,7 +157,7 @@ test('mobile reduced motion preserves deferred disclosure without strip travel',
 });
 
 
-test('mobile persisted pageshow resumes settled route without route-entry presentation', async ({ page }, testInfo) => {
+test('mobile persisted pageshow preserves an already revealed settled route', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
@@ -165,16 +165,17 @@ test('mobile persisted pageshow resumes settled route without route-entry presen
   await page.locator('#r4mRoll').click();
   await expect(page.locator('#r4mRoute')).toBeVisible();
 
-  const before = await page.evaluate(() => {
-    const snapshot = window.R4B1TRollProduction && window.R4B1TRollProduction.snapshot();
-    const route = document.getElementById('r4mUrl').textContent.trim();
-    const trail = Array.from(document.querySelectorAll('#trailItems .trail-item')).map((item) => item.textContent.trim());
-    const target = document.getElementById('r4mRoute');
-    if (target) target.removeAttribute('data-motion');
-    window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
-    return { snapshot, route, trail };
-  });
+  const before = await page.evaluate(() => ({
+    snapshot: window.R4B1TRollProduction && window.R4B1TRollProduction.snapshot(),
+    route: document.getElementById('r4mUrl').textContent.trim(),
+    trail: Array.from(document.querySelectorAll('#trailItems .trail-item')).map((item) => item.textContent.trim()),
+  }));
 
+  await page.evaluate(() => {
+    const route = document.getElementById('r4mRoute');
+    if (route) route.removeAttribute('data-motion');
+    window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
+  });
   await page.waitForTimeout(50);
 
   const after = await page.evaluate(() => ({
@@ -191,18 +192,35 @@ test('mobile persisted pageshow resumes settled route without route-entry presen
   expect(after.routeMotion).toBeNull();
 });
 
-test('mobile non-persisted pageshow keeps ordinary full synchronization', async ({ page }, testInfo) => {
+test('mobile non-persisted pageshow keeps ordinary synchronization for an already revealed route', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  const before = await page.evaluate(() => ({
+    snapshot: window.R4B1TRollProduction && window.R4B1TRollProduction.snapshot(),
+    route: document.getElementById('r4mUrl').textContent.trim(),
+    domain: document.getElementById('r4mDomain').textContent.trim(),
+    trail: Array.from(document.querySelectorAll('#trailItems .trail-item')).map((item) => item.textContent.trim()),
+  }));
+
   await page.evaluate(() => {
-    document.getElementById('previewDomain').textContent = 'example.test';
-    document.getElementById('previewUrl').textContent = 'https://example.test/resume-check';
+    document.getElementById('r4mUrl').textContent = 'STALE';
+    document.getElementById('r4mDomain').textContent = 'STALE';
     window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: false }));
   });
 
-  await expect(page.locator('#r4mRoute')).toBeVisible();
-  await expect(page.locator('#r4mUrl')).toHaveText('https://example.test/resume-check');
-  await expect(page.locator('#r4mDomain')).toHaveText('EXAMPLE.TEST');
+  await expect(page.locator('#r4mUrl')).toHaveText(before.route);
+  await expect(page.locator('#r4mDomain')).toHaveText(before.domain);
+
+  const after = await page.evaluate(() => ({
+    snapshot: window.R4B1TRollProduction && window.R4B1TRollProduction.snapshot(),
+    trail: Array.from(document.querySelectorAll('#trailItems .trail-item')).map((item) => item.textContent.trim()),
+  }));
+  expect(after.trail).toEqual(before.trail);
+  expect(after.snapshot.transactionId).toBe(before.snapshot.transactionId);
+  expect(after.snapshot.state).toBe(before.snapshot.state);
 });
