@@ -68,3 +68,73 @@ async function configurePage(page) {
     contentType: 'text/plain; charset=utf-8',
     body: CORPUS.join('\n') + '\n',
   }));
+  await page.route('https://r4b1t-proxy.badbanana6969.workers.dev/**', route => route.abort('blockedbyclient'));
+}
+
+async function readDownload(download) {
+  const stream = await download.createReadStream();
+  const chunks = [];
+  for await (const chunk of stream) chunks.push(chunk);
+  return JSON.parse(Buffer.concat(chunks).toString('utf8'));
+}
+
+async function selectTerrain(page, surface, terrain) {
+  if (surface === 'mobile') {
+    await page.locator('[data-mobile-action="filter"]').first().click();
+    await page.locator('#r4mFilterOptions .r4m-filter-proxy', { hasText: terrain }).click();
+    await expect(page.locator('#r4mFilterLabel')).toHaveText(terrain);
+    return;
+  }
+  await page.locator('#catFilter button', { hasText: terrain }).click();
+}
+
+async function openTrailFile(page, surface) {
+  if (surface === 'mobile') {
+    await page.locator('[data-mobile-action="trail-file"]').click();
+  } else {
+    await page.getByRole('button', { name: 'trail file' }).click();
+  }
+  await expect(page.locator('#trailLedgerOverlay')).toHaveCSS('display', 'flex');
+}
+
+async function exportThroughRenderedLedger(page, surface) {
+  await openTrailFile(page, surface);
+  const downloadEvent = page.waitForEvent('download');
+  await page.locator('#trailLedgerOverlay [data-trail-action="export"]').click();
+  const artifact = await readDownload(await downloadEvent);
+  await page.locator('#trailLedgerOverlay [data-trail-action="close"]').click();
+  return artifact;
+}
+
+async function exerciseProductionRoll(page, surface) {
+  await configurePage(page);
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() =>
+    typeof window.getTrailManifest === 'function' &&
+    typeof window.resetReproducibleTrail === 'function' &&
+    document.getElementById('r4mShellHost'));
+
+  const initialUrl = (await page.locator('#previewUrl').textContent()).trim();
+  await page.evaluate(() => window.resetReproducibleTrail());
+  await selectTerrain(page, surface, 'CODE');
+
+  const seed = await page.evaluate(() => {
+    const saved = JSON.parse(localStorage.getItem('r4b1t_trail_draft_v1'));
+    return saved.seed;
+  });
+  const independentCodeSelection = independentlySelect(CODE_POOL, seed, initialUrl);
+
+  // Force ambient Math.random to a different eligible CODE route. Desktop's
+  // production wrapper should ignore this and consume its declared sampler;
+  // mobile's production integration is under test for whether it does so.
+  const forcedIndex = CODE_POOL.findIndex(url =>
+    url !== initialUrl && url !== independentCodeSelection.selected);
+  const forcedUrl = CODE_POOL[forcedIndex];
+  await page.evaluate(value => { Math.random = () => value; }, (forcedIndex + 0.1) / CODE_POOL.length);
+
+  if (surface === 'mobile') {
+    await page.locator('#r4mRoll').click();
+    await expect(page.locator('#r4mUrl')).toHaveText(forcedUrl, { timeout: 5_000 });
+  } else {
+    await page.locator('#btnGo').click();
+    await expect(page.locator('#previewUrl')).toHaveText(independentCodeSelection.selected);
