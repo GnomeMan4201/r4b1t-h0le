@@ -192,6 +192,45 @@ test('mobile persisted pageshow preserves an already revealed settled route', as
   expect(after.routeMotion).toBeNull();
 });
 
+test('mobile persisted pageshow resumes without rebuilding settled presentation', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  const result = await page.evaluate(() => {
+    const before = {
+      filterOptions: document.getElementById('r4mFilterOptions'),
+      trail: document.getElementById('r4mTrail'),
+      route: document.getElementById('r4mRoute'),
+    };
+    const filterChildren = Array.from(before.filterOptions.children);
+    const trailChildren = Array.from(before.trail.children);
+
+    window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
+
+    return {
+      filterHostSame: document.getElementById('r4mFilterOptions') === before.filterOptions,
+      filterChildrenSame:
+        filterChildren.length === before.filterOptions.children.length &&
+        filterChildren.every((node, index) => node === before.filterOptions.children[index]),
+      trailHostSame: document.getElementById('r4mTrail') === before.trail,
+      trailChildrenSame:
+        trailChildren.length === before.trail.children.length &&
+        trailChildren.every((node, index) => node === before.trail.children[index]),
+      routeSame: document.getElementById('r4mRoute') === before.route,
+    };
+  });
+
+  expect(result.routeSame).toBe(true);
+  expect(result.filterHostSame).toBe(true);
+  expect(result.filterChildrenSame).toBe(true);
+  expect(result.trailHostSame).toBe(true);
+  expect(result.trailChildrenSame).toBe(true);
+});
+
 test('mobile non-persisted pageshow keeps ordinary synchronization for an already revealed route', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
