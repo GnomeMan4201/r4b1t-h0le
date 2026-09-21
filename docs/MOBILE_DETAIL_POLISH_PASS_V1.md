@@ -86,3 +86,21 @@ Every finding recorded in the audit gets one row with these columns:
 - Document every finding using the §6 matrix — only what can be proven/reproduced, not suspected issues.
 - Motion Pass 3 and the PR #146 return-continuity fix remain closed baselines throughout; the audit observes around them, it does not re-open them.
 - Once ROLL is fully audited, proceed to Trail, then continue down the §3 sequence.
+
+
+## 8. Audit log
+
+### Pass 1A — ROLL / iPhone portrait
+
+**Evidence:** iPhone Safari device recording `77A7AC48-D4B9-4A67-8984-7B62F9A29076.mp4` (50 s).
+
+The recording was reviewed as an observation pass only. No production changes were made.
+
+| Surface | Viewport / orientation | Reproduction | Observed behavior | Expected behavior | Category | Severity | Shared/local ownership | Evidence | Disposition |
+|---|---|---|---|---|---|---|---|---|---|
+| ROLL | iPhone / portrait | Load instrument; perform repeated ROLL interactions; allow each result to settle | Primary ROLL control remains fully contained and visually dominant; no body-level horizontal overflow observed during settled instrument states | ROLL remains contained, reachable, and dominant without page-width leakage | Layout | — | Shared mobile shell | 50 s device recording | No finding |
+| ROLL | iPhone / portrait | Perform repeated ROLL interactions and observe press through settled result | No reproducible accidental activation or scroll/gesture conflict observed around the primary control | ROLL activation remains deliberate and scrolling remains independent | Touch target | — | ROLL local presentation | 50 s device recording | No finding |
+| ROLL | iPhone / portrait | Observe headline, ROLL label, BLIND DESCENT controls, and settled route cards | Core labels remain readable at recorded phone width; no proven clipping or wrapping defect on the ROLL surface | Core instrument labels remain legible without semantic loss | Typography | — | Shared mobile shell / ROLL | 50 s device recording | No finding |
+| ROLL | iPhone / portrait | Repeat ROLL and observe transition/settling | No obvious frame-drop or stalled interaction is visible in the recording; Motion Pass 3 behavior is treated as frozen and was not retuned | Interaction remains responsive without reopening frozen motion constants | Performance | — | Observation only | 50 s device recording | No finding |
+
+**Pass 1A result:** no reproducible ROLL/portrait polish defect is established by this recording. External destination rendering visible after VISIT is not attributed to the ROLL surface. Landscape ROLL remains unaudited until evidence captures the instrument itself in landscape.
