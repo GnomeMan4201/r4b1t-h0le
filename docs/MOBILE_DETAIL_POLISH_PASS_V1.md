@@ -247,3 +247,29 @@ Current production acceptance explicitly checks the mobile shell, ROLL, and Repl
 ### Audit interpretation
 
 The strongest newly confirmed defects remain **Comparison** and **Proof Session** because they are substantive inspection/proof capabilities with working production runtimes but no ordinary mobile entry. Help, theme, submit, copy-trail, and explicit random-mode switching are recorded separately because their intended shell parity is not yet frozen. No production fixes belong in this audit PR.
+
+
+## Mobile action integrity / semantic inspection
+
+Static tracing of the dedicated mobile shell's visible controls, delegated click dispatcher, generated proxy controls, and legacy-overlay handoffs found no evidence that the currently rendered top-level mobile actions are wired to unknown dispatcher cases. The larger problem is omission/parity, not a broad field of dead buttons.
+
+### Confirmed observations
+
+- **ROLL is separately bound, not dead.** `#r4mRoll` does not use `data-mobile-action`; the production ROLL integration owns it. Its absence from the delegated action list is therefore intentional and must not be “fixed” by adding a second click path.
+- **Filter proxies preserve source behavior.** The mobile filter sheet is generated from desktop/source filter buttons rather than maintaining a second filtering algorithm. This is a sound delegation boundary.
+- **Branch is asymmetric.** Mobile `BRANCH` can force `setMode('branch')`, but the shell exposes no explicit inverse action for `setMode('random')`. This confirms the earlier state-control finding rather than a dead tap.
+- **History deliberately patches an empty-state dead-tap risk.** Mobile forces the ledger overlay visible when the legacy history function returns early on an empty trail. This is an intentional mobile adaptation, not a defect.
+- **Blind Descent mobile label performs two operations.** `DESCEND BLIND` calls `openBlindDescent()` and immediately chains `blindDescend()`. The desktop Trail File `blind` action only opens the Blind Descent surface. This is a **semantic asymmetry**: mobile's entry label acts as an immediate descent command, not merely an entry into the same surface. Severity: **Friction**, pending contract/UX intent review. Do not change Blind Descent state-machine semantics during polish.
+- **Wear Sample is a sample/demo path.** The prominent mobile `VIEW WEAR SAMPLE` calls `openTrailWearSample()`; it is not equivalent to opening the current trail's topology. The current-trail topology remains available through Trail File → MAP TRAILS. Label is technically accurate, but the prominence can make sample data easier to reach than actual topology. Severity: **Friction / information architecture**.
+- **Inspect is route inspection, not proof inspection.** Mobile nav label `INSPECT` opens `r4mInspectSheet` containing domain, URL, and metadata. Replay/proof inspection is a separate `REPLAY` action. No functional defect established, but the generic label creates possible discoverability ambiguity. Severity: **Friction / labeling**.
+- **Replay has duplicate mobile entry points.** Bottom-nav `REPLAY` and `VERIFY + REPLAY TRAIL` both call `openReplayInspection()`. This is functional duplication rather than a semantic mismatch. Severity: **Cosmetic/Friction**, depending on later information-architecture decision.
+- **History also has duplicate entry points.** Bottom-nav `HISTORY` and `OPEN FULL LEDGER` both route through the same mobile history wrapper. This is intentional redundancy unless device evidence shows confusion.
+- **.ZIP bypasses the mobile dispatcher.** It is a direct anchor to the repository archive and therefore should not be classified as an unhandled mobile action.
+
+### Strongest semantic finding from this pass
+
+The Blind Descent entry deserves explicit post-audit review: desktop's Trail File action opens the Blind Descent interface, while the dedicated mobile `DESCEND BLIND` action opens it and immediately commits/descends. The audit does **not** conclude that either behavior is wrong; it records that the two shells expose materially different interaction semantics for the same named capability.
+
+### No-fix conclusion
+
+No production changes are justified inside PR #147. The action-integrity pass narrows the implementation phase: first restore missing proof-capability reachability (Comparison / Proof Session), then resolve documented semantic/IA differences one at a time with tests. Avoid a wholesale mobile rewrite.
