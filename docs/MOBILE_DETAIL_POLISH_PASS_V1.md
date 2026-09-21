@@ -19,9 +19,9 @@ Following the close of the return-continuity bug (PR #146) and the freeze of Mot
 
 ## 3. Audit sequence
 
-**ROLL → Trail → Topology → Trail Card → Comparison → Proof Session**
+**ROLL → Trail → Topology → Comparison → Proof Session**
 
-**Sequence correction:** `Dossier` was removed as a standalone audit surface after repository verification showed it remains a contract-level/display concept but is not independently exposed in the current production UI. Dossier-like metadata is audited within the concrete surface that renders it.
+**Sequence corrections:** `Dossier` was removed as a standalone audit surface after repository verification showed it remains a contract-level/display concept but is not independently exposed in the current production UI. `Trail Card` was likewise removed after repository verification showed the renderer/handoff implementation is shipped as supporting capability but is not mounted as an independently reachable production surface. Dossier-like metadata and Trail Card-related presentation are audited only where a concrete production surface actually renders them.
 
 This is an audit *sequence*, not a priority ranking. It follows the actual experience outward from the primary interaction, so a viewport or touch problem discovered early (e.g. on ROLL) can be recognized as a shared-shell issue instead of being independently rediscovered and "fixed" several times on later surfaces. Comparison and Proof Sessions still get full coverage — they simply come after the foundational, higher-traffic surfaces.
 
@@ -69,7 +69,7 @@ Every finding recorded in the audit gets one row with these columns:
 
 | Column | Meaning |
 |---|---|
-| Surface | ROLL / Trail / Topology / Trail Card / Comparison / Proof Session |
+| Surface | ROLL / Trail / Topology / Comparison / Proof Session |
 | Viewport / orientation | Exact device + portrait or landscape |
 | Reproduction | Minimal steps to reproduce |
 | Observed behavior | What actually happens |
@@ -196,4 +196,4 @@ Observation only; no production changes.
 
 **Pass 3B result:** landscape confirms the Topology portrait density issue and the broader landscape width-utilization pattern already observed on ROLL and Trail. The graph remains usable and contained, but the wider viewport is not used to materially improve inspection scale. This is a presentation-only **Friction** finding and should be considered with the shared-shell landscape design decision rather than independently normalized during the audit.
 
-**Topology audit status:** portrait and landscape observation passes complete. Proceed next to **Trail Card**, beginning with iPhone portrait.
+**Topology audit status:** portrait and landscape observation passes complete. Repository verification found no independently reachable production Trail Card surface, so no synthetic Trail Card device pass will be created. Proceed next to **Comparison**, beginning with iPhone portrait.
