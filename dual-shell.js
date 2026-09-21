@@ -98,7 +98,7 @@
           '<div><small>TRAIL / COMMITTED</small><strong>BLIND DESCENT</strong><p>Lock a route before seeing it. Wear records every step.</p></div>',
           '<div class="r4m-descent-actions">',
             '<button type="button" data-mobile-action="blind-descent"><span>DESCEND BLIND</span><b>↓</b></button>',
-            '<button type="button" data-mobile-action="wear-sample"><span>VIEW WEAR SAMPLE</span><b>↗</b></button>',
+            '<button type="button" data-mobile-action="topology"><span>MAP TRAILS</span><b>↗</b></button>',
           '</div>',
         '</section>',
         '<div id="r4mRouteMount" aria-live="polite"></div>',
@@ -435,7 +435,13 @@ MOTION: waiting for target…';
         .catch(function (error) { console.error('Blind descent failed', error); });
       return;
     }
-    if (action === 'wear-sample') return call('openTrailWearSample');
+    if (action === 'topology') {
+      if (typeof window.getTrailManifest !== 'function' || typeof window.openTrailTopology !== 'function') return;
+      Promise.resolve(window.getTrailManifest())
+        .then(function (snapshot) { return window.openTrailTopology(snapshot); })
+        .catch(function (error) { console.error('Trail topology failed', error); });
+      return;
+    }
     if (action === 'inspect') {
       syncInspect();
       return openSheet('r4mInspectSheet');
