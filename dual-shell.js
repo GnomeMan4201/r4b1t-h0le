@@ -107,6 +107,7 @@
           '<div class="r4m-trail-scroll" id="r4mTrailItems"><span class="r4m-empty">NO ROUTES YET</span></div>',
           '<button type="button" class="r4m-ledger" data-mobile-action="history">OPEN FULL LEDGER ↗</button>',
           '<button type="button" class="r4m-ledger" data-mobile-action="trail-file">TRAIL FILE / REPLAY ↗</button>',
+          '<button type="button" class="r4m-ledger" data-mobile-action="comparison">COMPARE TRAILS ↗</button>',
           '<button type="button" class="r4m-ledger" data-mobile-action="replay-inspection">VERIFY + REPLAY TRAIL ↗</button>',
           '<img class="r4m-banana" src="banana-note.svg" alt="badBANANA note">',
         '</section>',
@@ -418,6 +419,7 @@ MOTION: waiting for target…';
     }
     if (action === 'history') return toggleHistoryWithMotion();
     if (action === 'trail-file') return call('openTrailLedger');
+    if (action === 'comparison') return call('toggleTrailComparison');
     if (action === 'replay-inspection') return call('openReplayInspection');
     if (action === 'blind-descent') {
       if (typeof window.openBlindDescent !== 'function' || typeof window.blindDescend !== 'function') return;
