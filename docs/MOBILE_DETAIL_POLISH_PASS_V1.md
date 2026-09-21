@@ -197,3 +197,25 @@ Observation only; no production changes.
 **Pass 3B result:** landscape confirms the Topology portrait density issue and the broader landscape width-utilization pattern already observed on ROLL and Trail. The graph remains usable and contained, but the wider viewport is not used to materially improve inspection scale. This is a presentation-only **Friction** finding and should be considered with the shared-shell landscape design decision rather than independently normalized during the audit.
 
 **Topology audit status:** portrait and landscape observation passes complete. Repository verification found no independently reachable production Trail Card surface, so no synthetic Trail Card device pass will be created. Proceed next to **Comparison**, beginning with iPhone portrait.
+
+
+## Cross-shell capability inventory — mobile reachability
+
+Repository inspection compared the desktop production trail-bar entry points with the dedicated mobile shell in `dual-shell.js`. This is a static reachability audit only; no production behavior was changed.
+
+| Capability | Desktop production entry | Mobile production entry | Classification | Severity | Disposition |
+| --- | --- | --- | --- | --- | --- |
+| Trail Comparison | `compare trails` → `toggleTrailComparison()` | **No mobile action/entry found** | Genuine capability-access loss | **Impaired** | Record for post-audit mobile parity fix. Do not alter frozen comparison semantics. |
+| Proof Session | `proof session` → `toggleProofSession()` | **No mobile action/entry found** | Genuine capability-access loss | **Impaired** | Record for post-audit mobile parity fix. Do not alter frozen Proof Sessions semantics. |
+| Submit URL | `submit url` → `submitUrl()` | **No mobile action/entry found** | Capability-access difference; product intent must be confirmed before calling it a parity defect | **Friction** | Preserve as audit finding; determine whether omission is intentional shell adaptation. |
+| Copy Trail | `copy trail` → `shareTrail()` | No direct mobile copy-trail entry found; mobile exposes route/card share instead | Capability-access difference | **Friction** | Verify intended mobile affordance before implementation. |
+| Trail Card sharing | `share card` → `shareCard()` | `SHARE` / `CUT CARD` → `shareCard()` | Intentional shell adaptation | — | Present; no missing-capability finding. |
+| History | `history` | `HISTORY` / `OPEN FULL LEDGER` | Intentional shell adaptation | — | Present. |
+| Trail file / import-export | `trail file` → `openTrailLedger()` | `TRAIL FILE / REPLAY` → `openTrailLedger()` | Intentional shell adaptation | — | Present. |
+| Replay / Inspection | `replay` | `REPLAY` / `VERIFY + REPLAY TRAIL` | Intentional shell adaptation | — | Present. |
+| Blind Descent | production capability | `DESCEND BLIND` | Mobile capability present | — | Present. |
+| Trail Wear | production capability | `VIEW WEAR SAMPLE` plus route wear rendering | Mobile capability present | — | Present. |
+
+### Audit consequence
+
+Comparison and Proof Session cannot receive ordinary mobile portrait/landscape interaction passes from the production shell because their entry points are absent there. That absence is itself the primary mobile finding. Do not manufacture device evidence by invoking globals from developer tools or synthetic test hooks; doing so would hide the actual reachability defect.
