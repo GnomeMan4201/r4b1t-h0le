@@ -3,7 +3,7 @@ const test=require('node:test');
 const assert=require('node:assert/strict');
 const {createRollRenderer}=require('../roll-renderer.js');
 
-const TIMING=Object.freeze({accelerate:150,decelerate:260,lockHold:40,cardEnter:110});
+const TIMING=Object.freeze({accelerate:260,decelerate:360,lockHold:40,cardEnter:110});
 function el(){
   const set=new Set(),attrs={},props={};
   return {
@@ -21,8 +21,8 @@ function make(reduced=false){
 test('machine timing is projected once as CSS custom properties',()=>{
   const h=make();
   assert.deepEqual(h.renderer.timing(),TIMING);
-  assert.equal(h.strip._props['--roll-accelerate-ms'],'150ms');
-  assert.equal(h.strip._props['--roll-decelerate-ms'],'260ms');
+  assert.equal(h.strip._props['--roll-accelerate-ms'],'260ms');
+  assert.equal(h.strip._props['--roll-decelerate-ms'],'360ms');
   assert.equal(h.button._props['--roll-lock-hold-ms'],'40ms');
   assert.equal(h.routeHost._props['--roll-card-enter-ms'],'110ms');
 });
