@@ -5,6 +5,35 @@ const { test, expect } = require('@playwright/test');
 const PROD_ORIGIN = 'https://r4b1t.badbananaresearch.com';
 const METADATA_PROXY_ORIGIN = 'https://r4b1t-proxy.badbanana6969.workers.dev';
 
+const REQUIRED_CROSS_SHELL_CAPABILITIES = Object.freeze([
+  {
+    name: 'Trail Comparison',
+    desktop: { role: 'button', name: 'compare trails' },
+    mobileAction: 'comparison',
+  },
+  {
+    name: 'Proof Session',
+    desktop: { role: 'button', name: 'proof session' },
+    mobileAction: 'proof-session',
+  },
+]);
+
+async function assertRequiredCapabilityReachability(page, interfaceName) {
+  for (const capability of REQUIRED_CROSS_SHELL_CAPABILITIES) {
+    if (interfaceName === 'mobile') {
+      await expect(
+        page.locator('.r4m-shell [data-mobile-action="' + capability.mobileAction + '"]'),
+        capability.name + ' must be reachable from the rendered mobile shell',
+      ).toBeVisible();
+    } else {
+      await expect(
+        page.getByRole(capability.desktop.role, { name: capability.desktop.name }),
+        capability.name + ' must be reachable from the rendered desktop shell',
+      ).toBeVisible();
+    }
+  }
+}
+
 async function loadProduction(page) {
   const pageErrors = [];
   page.on('pageerror', (error) => pageErrors.push(error.message));
@@ -79,6 +108,7 @@ test('live front door, exploration, topology, and proof entry points remain usab
 
   if (testInfo.project.name === 'iphone13-production') {
     await expect(page.locator('html')).toHaveAttribute('data-r4b1t-interface', 'mobile');
+    await assertRequiredCapabilityReachability(page, 'mobile');
     await expect(page.locator('.r4m-shell [data-mobile-action="proof-session"]')).toBeVisible();
     await page.locator('.r4m-shell [data-mobile-action="proof-session"]').click();
     await expect(page.getByRole('dialog', { name: 'Proof Session' })).toBeVisible();
@@ -92,6 +122,7 @@ test('live front door, exploration, topology, and proof entry points remain usab
     await expect(page.locator('#r4mUrl')).toHaveText(/^https?:\/\//);
   } else {
     await expect(page.locator('html')).toHaveAttribute('data-r4b1t-interface', 'desktop');
+    await assertRequiredCapabilityReachability(page, 'desktop');
     await expect(page.getByRole('button', { name: 'proof session' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'compare trails' })).toBeVisible();
     await page.locator('#btnGo').click();
