@@ -179,3 +179,21 @@ Observation only; no production changes.
 **Pass 3A result:** Topology portrait confirms that the density/readability concern seen during the Trail pass is a concrete issue on Topology's own inspection surface. Capability and evidence remain present, but route diagrams, metadata, identifiers, and controls are compressed enough to increase inspection effort. This remains a presentation-only **Friction** finding; no topology semantics, evidence authority, selection behavior, or frozen ROLL motion are implicated.
 
 **Topology audit status:** portrait complete; landscape remains to be observed.
+
+
+### Pass 3B — Topology / iPhone landscape
+
+**Evidence:** iPhone Safari device recording `ScreenRecording_09-21-2026 12-28-42_1.mp4` (71.3 s, 30 fps; recording canvas 512×1108 with the rendered instrument visibly rotated to landscape).
+
+Observation only; no production changes.
+
+| Surface | Viewport / orientation | Reproduction | Observed behavior | Expected behavior | Category | Severity | Shared/local ownership | Evidence | Disposition |
+|---|---|---|---|---|---|---|---|---|---|
+| Topology | iPhone / landscape | Keep Trail Topology visible, rotate to landscape, and inspect the graph and surrounding evidence UI | Topology remains functional and contained, but the graph/evidence composition continues to occupy a comparatively narrow region while substantial landscape width remains unused | Landscape should use available width to improve inspection scale without altering topology semantics | Layout | Friction | Shared mobile shell / Topology presentation | 71.3 s recording | Needs design decision |
+| Topology | iPhone / landscape | Inspect node labels, route metadata, header, and compact controls | Additional landscape width does not materially increase the scale of small labels/metadata; inspection still requires effort | Landscape should improve legibility where width permits while preserving categorical/evidence meaning | Typography | Friction | Topology presentation | 71.3 s recording | Track with landscape layout/density decision |
+| Topology | iPhone / landscape | Observe graph and controls during the landscape session | No reproducible body-level horizontal overflow is visible; topology remains inside the presentation | Wide topology content remains contained by its owned surface | Layout | — | Shared mobile shell / Topology | 71.3 s recording | No finding |
+| Topology | iPhone / landscape | Continue inspecting topology after rotation | No authoritative event is visibly caused by orientation and no obvious sustained interaction stall is visible | Orientation changes presentation only and inspection remains responsive | Parity / performance | — | Shared mobile shell / observation only | 71.3 s recording | No finding |
+
+**Pass 3B result:** landscape confirms the Topology portrait density issue and the broader landscape width-utilization pattern already observed on ROLL and Trail. The graph remains usable and contained, but the wider viewport is not used to materially improve inspection scale. This is a presentation-only **Friction** finding and should be considered with the shared-shell landscape design decision rather than independently normalized during the audit.
+
+**Topology audit status:** portrait and landscape observation passes complete. Proceed next to **Trail Card**, beginning with iPhone portrait.
