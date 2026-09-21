@@ -275,6 +275,43 @@ The Blind Descent entry deserves explicit post-audit review: desktop's Trail Fil
 No production changes are justified inside PR #147. The action-integrity pass narrows the implementation phase: first restore missing proof-capability reachability (Comparison / Proof Session), then resolve documented semantic/IA differences one at a time with tests. Avoid a wholesale mobile rewrite.
 
 
+## P1-1 disposition — Blind Descent entry semantics
+
+**Status:** RESOLVED — intentional shell adaptation.
+
+### Normative rule
+
+> Activating an affordance labeled DESCEND BLIND constitutes one descent action. A navigation affordance labeled Blind Descent may open the Blind Descent instrument without committing. Opening the instrument alone never commits; each explicit descent activation creates exactly one concealed commitment.
+
+### Repository evidence
+
+PR #22, **Expose Blind Descent and trail wear on mobile**, deliberately introduced the dedicated mobile action. Its change description states that **DESCEND BLIND** opens the visual layer and commits a concealed step in the same tap. Its browser acceptance path requires that the rendered mobile action open Blind Descent, commit a concealed step, render wear, and apply the descent presentation class.
+
+The desktop Trail File control has a different role: **BLIND DESCENT** is a navigation affordance that closes Trail File and opens the Blind Descent instrument. Once inside the instrument, its internal **DESCEND BLIND** control performs the authoritative descent action.
+
+| Affordance | Semantic role | Commitment effect |
+| --- | --- | --- |
+| Desktop Trail File → **BLIND DESCENT** | Navigate to the Blind Descent instrument | Zero new commitments |
+| Mobile shell → **DESCEND BLIND** | Perform one descent and open its instrument | Exactly one concealed commitment |
+| Blind Descent instrument → **DESCEND BLIND** | Perform one subsequent descent | Exactly one additional concealed commitment |
+
+This is semantic parity by explicit action meaning, not identical tap counts. The shells may adapt information architecture and entry depth while preserving the distinction between navigation and an authoritative descent activation.
+
+### Governing invariants
+
+ADR 0003 remains authoritative:
+
+- selection uses the unbiased local CSPRNG sampler;
+- selection is committed before route identity is rendered;
+- each commitment binds the genesis, previous commitment, monotonically increasing step index, route ID, and nonce;
+- a public concealed step contains only `index`, `state`, and `commitment`;
+- route identity, URL, nonce, sampler material, and other reveal material remain absent until reveal;
+- reveal must reproduce the existing commitment and cannot reroll, replace, filter, or reject it;
+- wear begins at commitment but never participates in selection or verification.
+
+This disposition changes no production JavaScript, state-machine, proof, selection, commit/reveal, service-worker, or motion behavior.
+
+
 ## Audit freeze — implementation queue
 
 **Status:** MOBILE DETAIL & POLISH AUDIT v1 — FINDINGS FROZEN
@@ -286,7 +323,7 @@ The observation/repository-inspection phase is complete enough to begin implemen
 | P0-1 | Restore **Trail Comparison mobile reachability** | Working proof capability exists but ordinary mobile users cannot enter it. Add a mobile entry only; reuse `toggleTrailComparison()`; do not create a second comparison algorithm. Acceptance: reachable at phone width, same canonical-file verification path, no desktop regression. |
 | P0-2 | Restore **Proof Session mobile reachability** | Same class of genuine capability-access loss. Add a mobile entry only; reuse `toggleProofSession()`; preserve ephemeral/no-transitive-inference contract. Acceptance: reachable at phone width and same underlying Proof Session runtime. |
 | P0-3 | Add **cross-shell capability-reachability tests** | Prevent recurrence. Encode required semantic capabilities for desktop/mobile rather than testing only isolated controls. Acceptance: CI fails when a required capability disappears from either shell. |
-| P1-1 | Resolve **Blind Descent shell semantics** | Mobile currently opens + immediately descends; desktop Trail File opens the interface. First freeze intended UX, then test it. No state-machine rewrite. |
+| P1-1 | **RESOLVED — Blind Descent shell semantics** | Intentional shell adaptation. Navigation-only **BLIND DESCENT** opens without committing; explicit **DESCEND BLIND** activation commits exactly one concealed step. Frozen above and protected by rendered-affordance regression coverage. |
 | P1-2 | Resolve **Random ↔ Branch mobile control asymmetry** | Mobile has an explicit path into Branch but no explicit inverse `setMode('random')` control. Decide intended return path before changing UI. |
 | P1-3 | Improve **actual Topology vs Wear Sample discoverability** | Current-trail MAP TRAILS is nested in Trail File while sample wear is prominent. Rebalance navigation without changing topology evidence semantics. |
 | P1-4 | Clarify **INSPECT vs REPLAY/PROOF** labeling | Reduce ambiguity between route metadata inspection and evidence inspection. Presentation/navigation only. |
