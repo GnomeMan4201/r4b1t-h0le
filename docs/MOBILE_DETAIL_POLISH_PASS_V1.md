@@ -344,6 +344,41 @@ Regression coverage proves the rendered mobile path:
 This resolution changes no selection algorithm, corpus, commit/reveal boundary, trail authority, proof semantics, or motion contract.
 
 
+
+## P1-3 disposition — Topology vs Wear Sample discoverability
+
+**Status:** RESOLVED — presentation/information-architecture defect.
+
+### Classification
+
+The dedicated mobile shell previously gave the demonstration-only **VIEW WEAR SAMPLE** action equal top-level prominence beside Blind Descent, while the user's actual verified topology was reachable only through **Trail File → MAP TRAILS**. The capability was not missing, but the hierarchy favored sample data over the user's own trail evidence.
+
+### Repository evidence
+
+The sample path is explicitly non-authoritative demonstration material: openTrailWearSample() constructs in-memory sample parent/child artifacts and renders them as **SAMPLE / VALID ARTIFACTS / NOT SAVED TO LOCAL ATLAS**. The Topology overlay itself retains **VIEW SAMPLE** as an explanatory control.
+
+The production **MAP TRAILS** path instead obtains the current canonical trail snapshot through getTrailManifest() and passes it to openTrailTopology(snapshot), which verifies and incorporates the snapshot into the local topology atlas before rendering.
+
+PR #22 intentionally promoted the wear sample to expose the visual work introduced around PRs #20/#21. That placement was useful when the visualization was new, but it now over-prioritizes demonstration data relative to the user's current topology.
+
+### Resolution boundary
+
+The mobile Blind Descent entry now exposes **MAP TRAILS** in place of the former top-level **VIEW WEAR SAMPLE** action. The control delegates to the existing canonical path:
+
+**getTrailManifest() → openTrailTopology(snapshot)**
+
+The Topology overlay keeps its internal **VIEW SAMPLE** control, so the demonstration remains available in context without receiving primary mobile prominence.
+
+Regression coverage proves that the rendered mobile control:
+
+- is labeled **MAP TRAILS**;
+- passes the current canonical trail snapshot to the existing Topology runtime;
+- does not call the sample runtime;
+- leaves **VIEW SAMPLE** available inside the Topology instrument.
+
+This resolution changes no Topology algorithm, wear computation, atlas verification, proof semantics, trail authority, selection behavior, ROLL motion, CSS, or service-worker behavior.
+
+
 ## Audit freeze — implementation queue
 
 **Status:** MOBILE DETAIL & POLISH AUDIT v1 — FINDINGS FROZEN
@@ -357,7 +392,7 @@ The observation/repository-inspection phase is complete enough to begin implemen
 | P0-3 | Add **cross-shell capability-reachability tests** | Prevent recurrence. Encode required semantic capabilities for desktop/mobile rather than testing only isolated controls. Acceptance: CI fails when a required capability disappears from either shell. |
 | P1-1 | **RESOLVED — Blind Descent shell semantics** | Intentional shell adaptation. Navigation-only **BLIND DESCENT** opens without committing; explicit **DESCEND BLIND** activation commits exactly one concealed step. Frozen above and protected by rendered-affordance regression coverage. |
 | P1-2 | **RESOLVED — Random ↔ Branch mobile control asymmetry** | Genuine capability loss. Mobile now exposes an explicit **RANDOM MODE** return path through the shared `setMode('random')` engine; ROLL does not implicitly change modes. |
-| P1-3 | Improve **actual Topology vs Wear Sample discoverability** | Current-trail MAP TRAILS is nested in Trail File while sample wear is prominent. Rebalance navigation without changing topology evidence semantics. |
+| P1-3 | **RESOLVED — actual Topology vs Wear Sample discoverability** | Presentation/IA defect. Mobile now promotes **MAP TRAILS** through the existing canonical snapshot → Topology path, while **VIEW SAMPLE** remains inside Topology. No topology/wear/proof semantics changed. |
 | P1-4 | Clarify **INSPECT vs REPLAY/PROOF** labeling | Reduce ambiguity between route metadata inspection and evidence inspection. Presentation/navigation only. |
 | P2-1 | Decide parity for **Submit URL** | Confirm whether desktop-only omission is intentional. Implement only if product contract says mobile should expose it. |
 | P2-2 | Decide parity for **Copy Trail** | Establish whether card/route share is an intentional replacement for `shareTrail()`; avoid duplicate export semantics. |
