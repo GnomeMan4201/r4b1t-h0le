@@ -140,3 +140,22 @@ Observation only; no production changes.
 | Trail | iPhone / portrait | Scroll and navigate through the recorded accumulated trail | No obvious sustained scroll stall or frame-drop is visible in the recording | Trail interaction remains responsive as entries accumulate | Performance | — | Observation only | 78.6 s recording | No finding |
 
 **Pass 2A result:** Trail portrait is functionally contained, but the recording establishes a **density/readability friction** finding: secondary trail/topology metadata and controls are compressed to a scale that increases reading and touch effort on phone. This is a presentation/design issue only; no authority or evidence semantics are implicated. Landscape Trail remains unaudited.
+
+
+### Pass 2B — Trail / iPhone landscape
+
+**Evidence:** iPhone Safari device recording `ScreenRecording_09-21-2026 12-17-12_1.mp4` (45.2 s, 30 fps, 1108×512).
+
+Observation only; no production changes.
+
+| Surface | Viewport / orientation | Reproduction | Observed behavior | Expected behavior | Category | Severity | Shared/local ownership | Evidence | Disposition |
+|---|---|---|---|---|---|---|---|---|---|
+| Trail | iPhone / landscape | Keep r4b1t visible in landscape and inspect accumulated route/trail presentation | r4b1t remains functional and contained, but the active route/trail content uses only a narrow portion of the available landscape width, leaving large unused regions | Landscape should preserve hierarchy while making intentional use of available width | Layout | Friction | Shared mobile shell / Trail presentation | 45.2 s recording | Needs design decision |
+| Trail | iPhone / landscape | Inspect compact route/trail metadata and controls | Extra viewport width does not materially resolve the portrait density/readability problem; metadata and compact controls remain visually small | Landscape should improve inspection scale where width permits without altering evidence semantics | Typography / touch target | Friction | Trail presentation | 45.2 s recording | Track with landscape layout/density decision |
+| Trail | iPhone / landscape | Observe page containment while navigating accumulated results | No reproducible body-level horizontal overflow is visible | Page body remains horizontally contained | Layout | — | Shared mobile shell | 45.2 s recording | No finding |
+| Trail | iPhone / landscape | Observe continued interaction and later orientation change | Instrument state remains present through the recorded landscape session; no authoritative event is visibly caused by orientation itself | Orientation changes presentation only | Parity / layout | — | Shared mobile shell | 45.2 s recording | No finding |
+| Trail | iPhone / landscape | Observe interaction responsiveness | No obvious sustained frame-drop or stalled interaction is visible | Trail remains responsive without changing frozen motion behavior | Performance | — | Observation only | 45.2 s recording | No finding |
+
+**Pass 2B result:** landscape does not solve the Trail portrait density issue. It establishes a related **landscape width-utilization friction** finding: substantial width is available but dense route/trail information remains constrained to a comparatively narrow presentation. This should be considered together with the ROLL landscape finding as a likely shared-shell design decision, not fixed during the audit.
+
+**Trail audit status:** portrait and landscape observation passes complete. Proceed next to **Dossier**, beginning with iPhone portrait.
