@@ -207,16 +207,16 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
 .r4m-roll.roll-seat{animation:r4mRollSeat var(--roll-lock-hold-ms,40ms) cubic-bezier(.4,0,.2,1) both}
 .r4m-roll.roll-press>b{transform:translateY(1px)}
 .r4m-roll-strip{display:block;position:absolute;left:0;bottom:0;width:220%;height:8px;pointer-events:none;will-change:transform;background:repeating-linear-gradient(90deg,rgba(9,8,6,.92) 0 10px,rgba(237,51,57,.18) 10px 12px,rgba(9,8,6,.92) 12px 20px,rgba(230,220,200,.5) 20px 22px);border-top:1px solid rgba(9,8,6,.78);box-shadow:0 -1px 0 rgba(237,51,57,.18);transform-origin:left center}
-.r4m-roll-strip.roll-strip-accelerate{animation:r4mStripAccelerate var(--roll-accelerate-ms,150ms) cubic-bezier(.55,.06,.68,.19) both}
-.r4m-roll-strip.roll-strip-decelerate{animation:r4mStripDecelerate var(--roll-decelerate-ms,260ms) cubic-bezier(.16,1,.3,1) both}
+.r4m-roll-strip.roll-strip-accelerate{animation:r4mStripAccelerate var(--roll-accelerate-ms,260ms) cubic-bezier(.62,.02,.84,.34) both}
+.r4m-roll-strip.roll-strip-decelerate{animation:r4mStripDecelerate var(--roll-decelerate-ms,360ms) linear both}
 .r4m-roll-strip.roll-strip-seat{animation:r4mStripSeat var(--roll-lock-hold-ms,40ms) cubic-bezier(.4,0,.2,1) both}
 .r4m-route.roll-card-enter{animation:r4mRollCardEnter var(--roll-card-enter-ms,110ms) cubic-bezier(.16,1,.3,1) both}
 @keyframes r4mRollPress{0%{transform:translateY(0) scaleY(1);box-shadow:inset 0 -1px 0 rgba(0,0,0,.45),0 2px 0 rgba(237,51,57,.16)}58%{transform:translateY(2px) scaleY(.986);box-shadow:inset 0 -4px 0 rgba(0,0,0,.5),0 1px 0 rgba(237,51,57,.1)}100%{transform:translateY(3px) scaleY(.974);box-shadow:inset 0 -7px 0 rgba(0,0,0,.56),0 0 0 rgba(237,51,57,0)}}
 @keyframes r4mRollRelease{0%{transform:translateY(3px) scaleY(.974);box-shadow:inset 0 -7px 0 rgba(0,0,0,.56)}46%{transform:translateY(-1px) scaleY(1.008);box-shadow:inset 0 -2px 0 rgba(0,0,0,.44)}72%{transform:translateY(.5px) scaleY(.997)}100%{transform:translateY(0) scaleY(1);box-shadow:inset 0 -1px 0 rgba(0,0,0,.45)}}
 @keyframes r4mRollSeat{0%{transform:translateY(-2px)}55%{transform:translateY(2px)}100%{transform:translateY(0)}}
-@keyframes r4mStripAccelerate{0%{transform:translateX(0) scaleX(1)}100%{transform:translateX(-42%) scaleX(.994)}}
-@keyframes r4mStripDecelerate{0%{transform:translateX(-42%) scaleX(.994)}78%{transform:translateX(-104%) scaleX(1.003)}100%{transform:translateX(-100%) scaleX(1)}}
-@keyframes r4mStripSeat{0%{transform:translateX(-100%)}50%{transform:translateX(-98.5%)}100%{transform:translateX(-100%)}}
+@keyframes r4mStripAccelerate{0%{transform:translateX(0) scaleX(1)}100%{transform:translateX(-48%) scaleX(.994)}}
+@keyframes r4mStripDecelerate{0%{transform:translateX(-48%) scaleX(.994);animation-timing-function:cubic-bezier(.12,.62,.24,1)}42%{transform:translateX(-88%) scaleX(.998);animation-timing-function:cubic-bezier(.18,.72,.3,1)}64%{transform:translateX(calc(-100% - 16px)) scaleX(1.002);animation-timing-function:cubic-bezier(.28,.02,.38,1)}100%{transform:translateX(-100%) scaleX(1)}}
+@keyframes r4mStripSeat{0%,100%{transform:translateX(-100%)}}
 @keyframes r4mRollCardEnter{0%{transform:translateY(-7px);opacity:.55}100%{transform:translateY(0);opacity:1}}
 @media (prefers-reduced-motion:reduce){
   .r4m-roll.roll-reduced{animation:r4mRollReduced 70ms ease-out both}
