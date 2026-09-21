@@ -273,3 +273,41 @@ The Blind Descent entry deserves explicit post-audit review: desktop's Trail Fil
 ### No-fix conclusion
 
 No production changes are justified inside PR #147. The action-integrity pass narrows the implementation phase: first restore missing proof-capability reachability (Comparison / Proof Session), then resolve documented semantic/IA differences one at a time with tests. Avoid a wholesale mobile rewrite.
+
+
+## Audit freeze — implementation queue
+
+**Status:** MOBILE DETAIL & POLISH AUDIT v1 — FINDINGS FROZEN
+
+The observation/repository-inspection phase is complete enough to begin implementation. New findings require new evidence; implementation work must not silently expand this baseline. Each implementation item branches independently from current `main`, carries focused tests, and must preserve selection/authority, ROLL Motion Contract v1, Motion Pass 3, PR #146 return continuity, Trail Comparison semantics, and Proof Sessions semantics.
+
+| Order | Implementation slice | Why first / acceptance boundary |
+| --- | --- | --- |
+| P0-1 | Restore **Trail Comparison mobile reachability** | Working proof capability exists but ordinary mobile users cannot enter it. Add a mobile entry only; reuse `toggleTrailComparison()`; do not create a second comparison algorithm. Acceptance: reachable at phone width, same canonical-file verification path, no desktop regression. |
+| P0-2 | Restore **Proof Session mobile reachability** | Same class of genuine capability-access loss. Add a mobile entry only; reuse `toggleProofSession()`; preserve ephemeral/no-transitive-inference contract. Acceptance: reachable at phone width and same underlying Proof Session runtime. |
+| P0-3 | Add **cross-shell capability-reachability tests** | Prevent recurrence. Encode required semantic capabilities for desktop/mobile rather than testing only isolated controls. Acceptance: CI fails when a required capability disappears from either shell. |
+| P1-1 | Resolve **Blind Descent shell semantics** | Mobile currently opens + immediately descends; desktop Trail File opens the interface. First freeze intended UX, then test it. No state-machine rewrite. |
+| P1-2 | Resolve **Random ↔ Branch mobile control asymmetry** | Mobile has an explicit path into Branch but no explicit inverse `setMode('random')` control. Decide intended return path before changing UI. |
+| P1-3 | Improve **actual Topology vs Wear Sample discoverability** | Current-trail MAP TRAILS is nested in Trail File while sample wear is prominent. Rebalance navigation without changing topology evidence semantics. |
+| P1-4 | Clarify **INSPECT vs REPLAY/PROOF** labeling | Reduce ambiguity between route metadata inspection and evidence inspection. Presentation/navigation only. |
+| P2-1 | Decide parity for **Submit URL** | Confirm whether desktop-only omission is intentional. Implement only if product contract says mobile should expose it. |
+| P2-2 | Decide parity for **Copy Trail** | Establish whether card/route share is an intentional replacement for `shareTrail()`; avoid duplicate export semantics. |
+| P2-3 | Mobile **Help** adaptation | Do not copy keyboard-centric desktop help literally; expose mobile-relevant interaction guidance if retained. |
+| P2-4 | Mobile **theme control** | Restore only if cross-shell presentation parity is desired. |
+| P2-5 | Remove/justify **duplicate History and Replay entries** | Information-architecture cleanup after higher-value reachability work. |
+| P3-1 | **Landscape width-utilization** pass | Shared ROLL/Trail/Topology finding. Use available width without changing authoritative timing or event boundaries. |
+| P3-2 | **Trail/Topology density and typography** pass | Improve phone-width readability/touch effort while preserving evidence content and proof-state meaning. |
+
+### Implementation rules
+
+1. **Capability before cosmetics.** P0 closes genuine mobile access losses before typography, spacing, or landscape tuning.
+2. **Reuse frozen engines.** Mobile controls delegate into existing Comparison/Proof/Replay/Topology machinery; no mobile-specific proof logic.
+3. **One semantic change per branch.** Reachability, Blind Descent semantics, mode controls, IA, and visual polish must not be bundled.
+4. **TDD for parity.** Add a failing reachability assertion before each missing-capability fix, then prove both shells remain green.
+5. **Device acceptance after CI.** iPhone portrait first; landscape only where the surface/layout materially changes.
+6. **No reopening frozen motion.** Mobile ROLL weight/seat/reveal timing stays frozen unless a separate evidence-backed motion initiative is explicitly opened.
+7. **No synthetic success.** A capability counts as mobile-reachable only when an ordinary user can enter it from rendered production UI.
+
+### Exit criteria for Mobile Detail & Polish Pass v1
+
+The pass can close when P0 items are implemented and verified, every P1 item has either landed or received an explicit frozen disposition, and the shared P3 presentation findings have device evidence showing acceptable portrait/landscape behavior. P2 items may close as intentional shell differences if product intent is documented.
