@@ -107,6 +107,31 @@ test('mobile branch sheet explains the empty state and offers a recovery action'
   await expect(empty.getByRole('button', { name: 'ROLL A ROUTE' })).toBeVisible();
 });
 
+
+test('mobile can explicitly return from Branch to Random mode without rolling', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const routeBefore = await page.locator('#previewUrl').textContent();
+
+  await page.locator('[data-mobile-action="branch"]').click();
+  await expect(page.locator('#r4mBranchSheet')).toHaveClass(/\bopen\b/);
+  await expect(page.locator('#btnModeBranch')).toHaveClass(/\bactive\b/);
+  await expect(page.locator('#btnModeRandom')).not.toHaveClass(/\bactive\b/);
+  await expect(page.locator('#r4mModeLabel')).toHaveText('BRANCH');
+
+  const randomMode = page.locator('#r4mBranchSheet [data-mobile-action="random-mode"]');
+  await expect(randomMode).toBeVisible();
+  await randomMode.click();
+
+  await expect(page.locator('#btnModeRandom')).toHaveClass(/\bactive\b/);
+  await expect(page.locator('#btnModeBranch')).not.toHaveClass(/\bactive\b/);
+  await expect(page.locator('#r4mModeLabel')).toHaveText('UNBOUNDED');
+  await expect(page.locator('#r4mBranchSheet')).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('#previewUrl')).toHaveText(routeBefore);
+});
+
 test('changing viewport width switches shells without reloading', async ({ page }, testInfo) => {
   if (testInfo.project.name === 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });

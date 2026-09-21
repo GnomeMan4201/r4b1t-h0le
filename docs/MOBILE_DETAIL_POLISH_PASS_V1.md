@@ -312,6 +312,38 @@ ADR 0003 remains authoritative:
 This disposition changes no production JavaScript, state-machine, proof, selection, commit/reveal, service-worker, or motion behavior.
 
 
+## P1-2 disposition — Random ↔ Branch mobile mode control
+
+**Status:** RESOLVED — genuine capability loss.
+
+### Normative rule
+
+Random and Branch are persistent exploration modes. Entering Branch mode does not make the next ROLL implicitly return to Random. Each shell must expose an explicit, user-controlled path back to Random mode, and changing modes alone must not roll, reveal, visit, or mutate the trail.
+
+### Repository evidence
+
+The authoritative desktop interface exposes symmetric **RANDOM** and **BRANCH** controls backed by the shared `setMode(mode)` engine. The engine retains `branch` until an explicit `setMode('random')` call; ordinary ROLL selection reads the active mode but does not change it.
+
+PR #9 introduced the mobile shell as a presentation-layer delegate over the same authoritative state and added a one-way mobile **BRANCH** action. PR #10 reinforced that shared-state design by making mobile branch entry conditional on the authoritative desktop Branch control's active state. Neither PR established an intentional reason to omit the inverse Random action.
+
+The prior mobile surface could therefore enter persistent Branch mode but could not leave it through rendered mobile controls. Its ROLL control continued to say `R / RANDOM` even while the mirrored mode readout reported `BRANCH`. This is a genuine state-control capability loss, not an intentional shell adaptation.
+
+### Resolution boundary
+
+The Branch sheet exposes an explicit **RANDOM MODE** action. It delegates to the existing `setMode('random')` engine and closes the sheet. It does not add a second mode implementation and does not make ROLL reset mode implicitly.
+
+Regression coverage proves the rendered mobile path:
+
+- enters Branch through the existing **BRANCH** control;
+- exposes **RANDOM MODE** while Branch is active;
+- returns the authoritative shared state to Random;
+- updates the mirrored mobile mode readout from `BRANCH` to `UNBOUNDED`;
+- closes the Branch sheet;
+- preserves the current route without causing a ROLL.
+
+This resolution changes no selection algorithm, corpus, commit/reveal boundary, trail authority, proof semantics, or motion contract.
+
+
 ## Audit freeze — implementation queue
 
 **Status:** MOBILE DETAIL & POLISH AUDIT v1 — FINDINGS FROZEN
@@ -324,7 +356,7 @@ The observation/repository-inspection phase is complete enough to begin implemen
 | P0-2 | Restore **Proof Session mobile reachability** | Same class of genuine capability-access loss. Add a mobile entry only; reuse `toggleProofSession()`; preserve ephemeral/no-transitive-inference contract. Acceptance: reachable at phone width and same underlying Proof Session runtime. |
 | P0-3 | Add **cross-shell capability-reachability tests** | Prevent recurrence. Encode required semantic capabilities for desktop/mobile rather than testing only isolated controls. Acceptance: CI fails when a required capability disappears from either shell. |
 | P1-1 | **RESOLVED — Blind Descent shell semantics** | Intentional shell adaptation. Navigation-only **BLIND DESCENT** opens without committing; explicit **DESCEND BLIND** activation commits exactly one concealed step. Frozen above and protected by rendered-affordance regression coverage. |
-| P1-2 | Resolve **Random ↔ Branch mobile control asymmetry** | Mobile has an explicit path into Branch but no explicit inverse `setMode('random')` control. Decide intended return path before changing UI. |
+| P1-2 | **RESOLVED — Random ↔ Branch mobile control asymmetry** | Genuine capability loss. Mobile now exposes an explicit **RANDOM MODE** return path through the shared `setMode('random')` engine; ROLL does not implicitly change modes. |
 | P1-3 | Improve **actual Topology vs Wear Sample discoverability** | Current-trail MAP TRAILS is nested in Trail File while sample wear is prominent. Rebalance navigation without changing topology evidence semantics. |
 | P1-4 | Clarify **INSPECT vs REPLAY/PROOF** labeling | Reduce ambiguity between route metadata inspection and evidence inspection. Presentation/navigation only. |
 | P2-1 | Decide parity for **Submit URL** | Confirm whether desktop-only omission is intentional. Implement only if product contract says mobile should expose it. |
