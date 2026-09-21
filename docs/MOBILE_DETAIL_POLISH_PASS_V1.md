@@ -219,3 +219,31 @@ Repository inspection compared the desktop production trail-bar entry points wit
 ### Audit consequence
 
 Comparison and Proof Session cannot receive ordinary mobile portrait/landscape interaction passes from the production shell because their entry points are absent there. That absence is itself the primary mobile finding. Do not manufacture device evidence by invoking globals from developer tools or synthetic test hooks; doing so would hide the actual reachability defect.
+
+
+## Full mobile-shell reachability inspection
+
+A second static pass traced production controls and runtime globals beyond the trail bar, including the mobile action dispatcher and controls nested inside the Trail File overlay. Findings below distinguish truly unreachable capabilities from capabilities reachable indirectly through a mobile-accessible overlay.
+
+| Capability / control | Mobile reachability | Classification | Severity | Notes |
+| --- | --- | --- | --- | --- |
+| Trail Comparison | **Unreachable from ordinary mobile UI** | Genuine capability-access loss | **Impaired** | Runtime exists; no mobile action reaches `toggleTrailComparison()`. |
+| Proof Session | **Unreachable from ordinary mobile UI** | Genuine capability-access loss | **Impaired** | Runtime exists; no mobile action reaches `toggleProofSession()`. |
+| Help / shortcuts | **No mobile entry found** | Missing informational affordance | **Friction** | Desktop `?` opens `toggleHelp()`; mobile shell exposes no equivalent. Desktop help is keyboard-oriented, so mobile content may need adaptation rather than a literal duplicate. |
+| Theme toggle | **No mobile entry found** | Presentation capability difference | **Friction** | Desktop exposes LIGHT/DARK; mobile shell does not expose the toggle even though stored theme state still affects the document. |
+| Submit URL | **No mobile entry found** | Product capability difference | **Friction** | Requires intent decision before parity fix. |
+| Copy Trail | **No direct mobile entry found** | Export/share affordance difference | **Friction** | Do not treat route/card share as proven semantic replacement for `shareTrail()`. |
+| Random-mode explicit switch | **No explicit mobile RANDOM control** | State-control asymmetry | **Friction** | Mobile BRANCH calls `setMode('branch')`; no mobile action calls `setMode('random')`. Determine whether ROLL is intended to restore random mode before changing behavior. |
+| New Trail / reset | Reachable indirectly through mobile-accessible Trail File overlay | Present | — | Not a shell-level button, but not missing. |
+| Topology / Map Trails | Reachable indirectly through mobile-accessible Trail File overlay | Present | — | Explains why Topology was reachable in device recordings despite no top-level mobile action. |
+| Blind Descent | Direct mobile entry and Trail File path | Present | — | No reachability gap. |
+| Trail import/export/replay/fork | Reachable through Trail File overlay | Present | — | No reachability gap established by static inspection. |
+| Replay Inspection | Direct mobile entry | Present | — | Explicitly covered by mobile production acceptance. |
+
+### Test-coverage gap
+
+Current production acceptance explicitly checks the mobile shell, ROLL, and Replay entry, while desktop acceptance checks visible `proof session` and `compare trails` controls. The asymmetric assertions allow desktop-only capability entries to remain green without a mobile parity failure. A later implementation slice should add a declarative mobile capability-reachability contract/test so future production features cannot silently disappear from one shell.
+
+### Audit interpretation
+
+The strongest newly confirmed defects remain **Comparison** and **Proof Session** because they are substantive inspection/proof capabilities with working production runtimes but no ordinary mobile entry. Help, theme, submit, copy-trail, and explicit random-mode switching are recorded separately because their intended shell parity is not yet frozen. No production fixes belong in this audit PR.
