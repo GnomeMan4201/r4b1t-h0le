@@ -104,3 +104,23 @@ The recording was reviewed as an observation pass only. No production changes we
 | ROLL | iPhone / portrait | Repeat ROLL and observe transition/settling | No obvious frame-drop or stalled interaction is visible in the recording; Motion Pass 3 behavior is treated as frozen and was not retuned | Interaction remains responsive without reopening frozen motion constants | Performance | — | Observation only | 50 s device recording | No finding |
 
 **Pass 1A result:** no reproducible ROLL/portrait polish defect is established by this recording. External destination rendering visible after VISIT is not attributed to the ROLL surface. Landscape ROLL remains unaudited until evidence captures the instrument itself in landscape.
+
+
+### Pass 1B — ROLL / iPhone landscape
+
+**Evidence:** iPhone Safari device recording `5E667C1C-288D-48B1-9A4E-DFFF2F7F6C79.mp4` (41.7 s, 30 fps).
+
+The recording was reviewed as an observation pass only. No production changes were made.
+
+| Surface | Viewport / orientation | Reproduction | Observed behavior | Expected behavior | Category | Severity | Shared/local ownership | Evidence | Disposition |
+|---|---|---|---|---|---|---|---|---|---|
+| ROLL | iPhone / landscape | Rotate from portrait to landscape with instrument visible and inspect the ROLL surface | Instrument reflows into landscape and remains operable, but the composition is strongly portrait-derived: the primary content occupies a relatively narrow central column while substantial horizontal viewport area remains unused | Landscape should preserve the instrument hierarchy while making intentional use of the wider viewport without changing ROLL authority or motion | Layout | Friction | Shared mobile shell / ROLL presentation | 41.7 s device recording | Needs design decision |
+| ROLL | iPhone / landscape | Perform ROLL and let the result settle | ROLL and result content remain contained; no reproducible body-level horizontal scroll leak is visible | Page body remains horizontally contained; wide content scrolls only in owned containers | Layout | — | Shared mobile shell | 41.7 s device recording | No finding |
+| ROLL | iPhone / landscape | Rotate portrait ↔ landscape during the recorded session | Orientation changes preserve the instrument and settled route state; no new ROLL/reveal is visibly initiated by rotation | Orientation change reflows presentation without creating an authoritative event | Parity / layout | — | Shared mobile shell | 41.7 s device recording | No finding |
+| ROLL | iPhone / landscape | Observe labels, route metadata, and controls after rotation and ROLL | Text remains present and readable, though the narrow portrait-derived content column limits the readability benefit normally available from landscape width | Landscape typography should remain legible and use available width where doing so does not alter semantics | Typography | Friction | Shared mobile shell / ROLL presentation | 41.7 s device recording | Track with landscape layout decision |
+| ROLL | iPhone / landscape | Interact with ROLL and scroll through settled content | No reproducible accidental activation or scroll-vs-ROLL gesture conflict observed | ROLL activation remains deliberate and independent of scrolling | Touch target | — | ROLL local presentation | 41.7 s device recording | No finding |
+| ROLL | iPhone / landscape | Observe ROLL transition and orientation reflow | No obvious sustained frame-drop or stalled interaction is visible; frozen Motion Pass 3 constants were not evaluated for retuning | Presentation remains responsive without reopening frozen motion | Performance | — | Observation only | 41.7 s device recording | No finding |
+
+**Pass 1B result:** one concrete landscape issue is established: the ROLL surface remains functionally correct but uses a portrait-derived narrow composition that leaves much of the landscape viewport unused. This is recorded as a **Friction** finding requiring a short design decision, not an implementation change during the audit. No evidence in this pass reopens Motion Pass 3, authority, or PR #146 return continuity.
+
+**ROLL audit status:** portrait and landscape observation passes complete. Proceed next to **Trail**, beginning with iPhone portrait.
