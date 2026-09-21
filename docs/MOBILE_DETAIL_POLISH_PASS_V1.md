@@ -19,7 +19,9 @@ Following the close of the return-continuity bug (PR #146) and the freeze of Mot
 
 ## 3. Audit sequence
 
-**ROLL → Trail → Dossier → Topology → Trail Card → Comparison → Proof Session**
+**ROLL → Trail → Topology → Trail Card → Comparison → Proof Session**
+
+**Sequence correction:** `Dossier` was removed as a standalone audit surface after repository verification showed it remains a contract-level/display concept but is not independently exposed in the current production UI. Dossier-like metadata is audited within the concrete surface that renders it.
 
 This is an audit *sequence*, not a priority ranking. It follows the actual experience outward from the primary interaction, so a viewport or touch problem discovered early (e.g. on ROLL) can be recognized as a shared-shell issue instead of being independently rediscovered and "fixed" several times on later surfaces. Comparison and Proof Sessions still get full coverage — they simply come after the foundational, higher-traffic surfaces.
 
@@ -27,8 +29,8 @@ This is an audit *sequence*, not a priority ranking. It follows the actual exper
 
 ### 4.1 Layout & viewport
 - Safe-area insets on notch / home-indicator devices (top and bottom)
-- Orientation change behavior (portrait ↔ landscape) across shells (roll view, dossiers, topology, cards, comparison, proof sessions)
-- Horizontal scroll leaks on wide content (dossiers, topology graphs, comparison views) — content should scroll in its own container, never the page body
+- Orientation change behavior (portrait ↔ landscape) across shells (roll view, trail, topology, cards, comparison, proof sessions)
+- Horizontal scroll leaks on wide content (trail metadata, topology graphs, comparison views) — content should scroll in its own container, never the page body
 
 ### 4.2 Touch targets & gestures
 - Hit-area sizing on dense UI (trail cards, comparison view, proof session artifact list)
@@ -36,7 +38,7 @@ This is an audit *sequence*, not a priority ranking. It follows the actual exper
 - Scroll-vs-gesture conflicts on any draggable/interactive elements
 
 ### 4.3 Typography & readability
-- Small-viewport font scaling across terminal-style captions, dossier text, diagnostic labels
+- Small-viewport font scaling across terminal-style captions, trail/topology text, diagnostic labels
 - Line-length and wrapping on narrow widths, especially for hashes/digests/IDs shown in cards and diagnostics
 - Contrast/legibility of categorical state labels (VERIFIED / REJECTED / UNVERIFIED / CONCEALED / REVEALED) at phone size
 
@@ -67,7 +69,7 @@ Every finding recorded in the audit gets one row with these columns:
 
 | Column | Meaning |
 |---|---|
-| Surface | ROLL / Trail / Dossier / Topology / Trail Card / Comparison / Proof Session |
+| Surface | ROLL / Trail / Topology / Trail Card / Comparison / Proof Session |
 | Viewport / orientation | Exact device + portrait or landscape |
 | Reproduction | Minimal steps to reproduce |
 | Observed behavior | What actually happens |
@@ -158,4 +160,22 @@ Observation only; no production changes.
 
 **Pass 2B result:** landscape does not solve the Trail portrait density issue. It establishes a related **landscape width-utilization friction** finding: substantial width is available but dense route/trail information remains constrained to a comparatively narrow presentation. This should be considered together with the ROLL landscape finding as a likely shared-shell design decision, not fixed during the audit.
 
-**Trail audit status:** portrait and landscape observation passes complete. Proceed next to **Dossier**, beginning with iPhone portrait.
+**Trail audit status:** portrait and landscape observation passes complete. Proceed next to **Topology**, beginning with iPhone portrait.
+
+
+### Pass 3A — Topology / iPhone portrait
+
+**Evidence:** iPhone Safari device recording `A4CD96B9-3D2A-45AE-A644-C850530984B3.mp4` (63.6 s, 30 fps, 512×1108).
+
+Observation only; no production changes.
+
+| Surface | Viewport / orientation | Reproduction | Observed behavior | Expected behavior | Category | Severity | Shared/local ownership | Evidence | Disposition |
+|---|---|---|---|---|---|---|---|---|---|
+| Topology | iPhone / portrait | Open Trail Topology after accumulating multiple routes and inspect the topology entries | Topology remains contained within the phone viewport, but route cards, evidence diagrams, labels, and controls are densely compressed at portrait width | Topology should preserve evidence detail while remaining comfortably inspectable on a phone | Layout / typography | Friction | Topology presentation | 63.6 s recording | Needs design decision |
+| Topology | iPhone / portrait | Inspect multiple trail topology entries and the Proof Inspector presentation | Long identifiers and evidence metadata remain present, but their small scale materially increases inspection effort | Evidence identifiers and categorical/diagnostic text should remain legible without semantic loss | Typography | Friction | Topology presentation | 63.6 s recording | Needs design decision |
+| Topology | iPhone / portrait | Scroll through the accumulated topology entries | No reproducible body-level horizontal overflow is visible; the page remains horizontally contained | Wide topology content must remain owned by its presentation rather than leaking page-body width | Layout | — | Shared mobile shell / Topology | 63.6 s recording | No finding |
+| Topology | iPhone / portrait | Navigate through the topology/proof presentation and return to the primary instrument | No obvious sustained scroll stall or interaction freeze is visible | Topology inspection remains responsive as trail entries accumulate | Performance | — | Observation only | 63.6 s recording | No finding |
+
+**Pass 3A result:** Topology portrait confirms that the density/readability concern seen during the Trail pass is a concrete issue on Topology's own inspection surface. Capability and evidence remain present, but route diagrams, metadata, identifiers, and controls are compressed enough to increase inspection effort. This remains a presentation-only **Friction** finding; no topology semantics, evidence authority, selection behavior, or frozen ROLL motion are implicated.
+
+**Topology audit status:** portrait complete; landscape remains to be observed.
