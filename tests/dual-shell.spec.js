@@ -132,6 +132,36 @@ test('mobile can explicitly return from Branch to Random mode without rolling', 
   await expect(page.locator('#previewUrl')).toHaveText(routeBefore);
 });
 
+test('mobile promotes current trail topology instead of the wear sample', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.evaluate(() => {
+    const snapshot = { trail_id: 'current-trail-probe', marker: 'current-canonical-snapshot' };
+    window.__mobileTopologyProbe = { snapshot, opened: null, sampleCalls: 0 };
+    window.getTrailManifest = () => Promise.resolve(snapshot);
+    window.openTrailTopology = (value) => { window.__mobileTopologyProbe.opened = value; };
+    window.openTrailWearSample = () => { window.__mobileTopologyProbe.sampleCalls += 1; };
+  });
+
+  const mapTrails = page.locator('.r4m-descent-actions [data-mobile-action="topology"]');
+  await expect(mapTrails).toBeVisible();
+  await expect(mapTrails).toContainText('MAP TRAILS');
+  await expect(page.locator('.r4m-descent-actions [data-mobile-action="wear-sample"]')).toHaveCount(0);
+  await expect(page.locator('#trailTopologyOverlay .topology-sample')).toHaveText('VIEW SAMPLE');
+
+  await mapTrails.click();
+  await page.waitForFunction(() => window.__mobileTopologyProbe && window.__mobileTopologyProbe.opened);
+
+  const probe = await page.evaluate(() => ({
+    openedMarker: window.__mobileTopologyProbe.opened && window.__mobileTopologyProbe.opened.marker,
+    sampleCalls: window.__mobileTopologyProbe.sampleCalls,
+  }));
+  expect(probe.openedMarker).toBe('current-canonical-snapshot');
+  expect(probe.sampleCalls).toBe(0);
+});
+
 test('changing viewport width switches shells without reloading', async ({ page }, testInfo) => {
   if (testInfo.project.name === 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
