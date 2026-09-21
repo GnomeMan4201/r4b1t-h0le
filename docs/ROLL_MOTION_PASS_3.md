@@ -1,6 +1,6 @@
 # ROLL — Motion Pass 3: Energy Transfer (Descent → Reveal)
 
-**Status:** DRAFT
+**Status:** LOCKED
 **Scope:** Post-release presentation only (STRIP_ACCELERATING → STRIP_DECELERATING → LOCKED → CARD_ENTERING → SETTLED)
 **Relationship to prior work:** Builds on PR #143 (press/release weight, now provisionally locked). Does not modify, extend, or reinterpret `docs/ROLL_MOTION_CONTRACT_V1.md` or its erratum. Pass 3 tunes presentation constants within the boundaries that contract already established.
 
@@ -23,14 +23,14 @@ These are binding for this pass and for any future retuning of the same constant
 
 ## 3. Prototype Tuning Constants (non-normative)
 
-The following are current best-guess values, expected to move after the next on-device iPhone recording. They express intent (the ~40/60 acceleration-to-braking split, defined per the invariants above) and are not contract requirements:
+The following values were the prototype tuning targets and were accepted unchanged after on-device verification. They express intent (the ~40/60 acceleration-to-braking split, defined per the invariants above) and are not contract requirements:
 
 - Acceleration phase: **~260ms**
 - Braking/overshoot/seat phase: **~360ms**
 - Final reverse correction: consumes roughly the **last 120–140ms** of the braking phase and may use its own fixed easing curve
 - Total travel duration: held near the existing ~600–700ms envelope (not lengthened)
 
-Changing any of these values (e.g. 260ms → 240ms) after further device testing is a routine tuning update, not a spec violation, provided the invariants in §2 still hold.
+These accepted values define the ROLL v1 presentation baseline. Any future retuning remains a presentation-layer change, provided the invariants in §2 still hold, but should be proposed and verified as a separate motion pass.
 
 ## 4. Rationale
 
@@ -58,7 +58,17 @@ The following are known issues, logged separately, and are explicitly not addres
 - External-page/return flow visual jarring
 - Stray `\n` rendered at the upper-left of the Rabbit Hole page after returning
 
-## 7. Implementation Order
+## 7. Verification and Lock
+
+Motion Pass 3 was merged in PR #144 at merge commit `2ed08d6773312a3d2e55ed085592cd5f67b3e7f1`.
+
+Post-merge automated verification completed successfully, including Replay Inspection v1 Audit, GitHub Pages deployment, and Production Shadow after the custom-domain cache window elapsed. The initial Production Shadow attempt observed a stale custom-domain copy of `dual-shell.css`; its failed job was rerun after cache propagation and passed without a code change.
+
+An on-device iPhone recording was then reviewed at normal interaction speed across repeated ROLL cycles. The accepted baseline preserves the #143 press/release character and establishes coherent post-release energy transfer through acceleration, braking, a 16px directional overshoot, exactly one reverse correction, and final seating. No additional constants pass is required for ROLL v1.
+
+**Lock decision:** Motion Pass 3 is accepted as the ROLL v1 motion baseline. Further motion tuning requires a separately scoped pass; the two known return-path defects remain independent work.
+
+## 8. Implementation Order
 
 1. Commit this document.
 2. Add a focused motion test encoding the §2 invariants (directional overshoot magnitude, single correction, peak-velocity-before-midpoint, deterministic fixed constants) — written to fail against current implementation.
