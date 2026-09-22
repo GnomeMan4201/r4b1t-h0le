@@ -77,8 +77,13 @@ test('mobile navigation opens filter and inspect sheets without horizontal overf
   await expect(page.locator('#r4mFilterSheet')).toHaveClass(/\bopen\b/);
   await page.locator('[data-mobile-action="close-sheets"]').first().click();
 
-  await page.locator('[data-mobile-action="inspect"]').click();
+  const routeInfo = page.locator('.r4m-nav [data-mobile-action="inspect"]');
+  await expect(routeInfo).toContainText('ROUTE INFO');
+  await expect(page.locator('.r4m-nav [data-mobile-action="replay-inspection"]')).toContainText('REPLAY');
+  await routeInfo.click();
   await expect(page.locator('#r4mInspectSheet')).toHaveClass(/\bopen\b/);
+  await expect(page.locator('#r4mInspectSheet .r4m-sheet-head strong')).toHaveText('INSPECT ROUTE');
+  await expect(page.locator('#replayInspectionOverlay')).toBeHidden();
 
   const dimensions = await page.evaluate(() => ({
     viewport: window.innerWidth,
