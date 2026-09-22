@@ -85,9 +85,12 @@ async function selectTerrain(page, surface, terrain) {
     await expect(page.locator('#r4mFilterLabel')).toHaveText(terrain);
     return;
   }
-  await page.getByRole('button', { name: 'FILTER', exact: true }).click();
-  await expect(page.locator('#catFilter')).toBeVisible();
-  await page.locator('#catFilter button', { hasText: terrain }).click();
+  const desktopFilter = page.locator('#catFilter');
+  if (!(await desktopFilter.isVisible())) {
+    await page.getByRole('button', { name: 'FILTER', exact: true }).click();
+  }
+  await expect(desktopFilter).toBeVisible();
+  await desktopFilter.locator('button', { hasText: terrain }).click();
 }
 
 async function openTrailFile(page, surface) {
