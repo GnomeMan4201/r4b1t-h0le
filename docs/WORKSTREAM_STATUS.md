@@ -1,0 +1,90 @@
+# Workstream Status
+
+This file is the coordination handoff for parallel ChatGPT/Codex workstreams.
+
+## Ownership model
+
+- **Account 1 — Product / UX lab:** mobile/desktop behavior, information architecture, accessibility, labels, presentation, rendered-affordance tests. It may prepare patches, but does not own publication or merge.
+- **Account 2 — Integrity / red-team lab:** provenance, proof/replay boundaries, async races, offline behavior, reset semantics, adversarial reproductions. It normally stops before remediation.
+- **Integrator / release lane:** owns GitHub publication, PR creation, CI triage, merge, deployment verification, and cross-workstream conflict resolution.
+
+Workers should begin by reading current `main` and this file. Repository state remains authoritative over stale handoff text.
+
+## Current main
+
+`d45bfc2b11621572eda3d6d7431b49a583818fbf`
+
+## Product / UX lane
+
+### Completed
+
+- P0-1 Trail Comparison mobile reachability.
+- P0-2 Proof Session mobile reachability.
+- P0-3 cross-shell capability reachability contract.
+- P1-1 Blind Descent entry semantics — intentional shell adaptation.
+- P1-2 explicit mobile Random-mode reachability.
+- P1-3 Topology vs Wear Sample discoverability — presentation/IA defect.
+  - PR #153 merged.
+  - Mobile now promotes **MAP TRAILS** through the existing canonical snapshot → Topology path.
+  - **VIEW SAMPLE** remains inside Topology.
+  - No Topology/wear/proof/selection/motion semantics changed.
+
+### Next
+
+P1-4 — investigate **INSPECT vs REPLAY / PROOF** labeling.
+
+Investigation first. Determine whether generic mobile **INSPECT** is an intentional shell adaptation or a labeling/IA defect. Prefer terminology clarification over capability changes. Do not change proof semantics.
+
+## Integrity / red-team lane
+
+### CF-1 — CONFIRMED
+
+Executable production-path reproduction confirms that the mobile v0.1 ROLL export can carry inaccurate provenance while remaining internally verifiable:
+
+- mobile ROLL exported action **SELECT** instead of **ROLL**;
+- declared sampler/seed did not independently reproduce the selected mobile route;
+- changing terrain after selection rewrote exported terrain provenance;
+- that metadata mutation changed `trail_id`;
+- `route_id` remained stable;
+- existing v0.1 verification still accepted the artifact;
+- desktop production ROLL did not show the action-provenance mismatch.
+
+No claim has been established against Blind Descent / v0.2.
+
+### Next
+
+Prepare **remediation design only** for CF-1. No production fix yet.
+
+Target invariant:
+
+> One authoritative immutable selection transaction binds semantic action, selection-time terrain/constraint, sampler/PRNG/seed state, and selected route at selection/commit time. Trail recording/export consumes that transaction rather than reconstructing provenance from later DOM/UI state.
+
+Stop before changing the authority boundary.
+
+## Publication rules
+
+Parallel worker sessions do **not** own publication.
+
+For each task, return a handoff packet with:
+
+- workstream;
+- classification;
+- base main SHA;
+- finding/goal;
+- repository evidence;
+- exact files to change;
+- whether production behavior changes;
+- prepared commit/patch and changed-file stats;
+- tests and results;
+- frozen boundaries untouched;
+- next safe action;
+- explicit stop condition.
+
+The integrator recreates/publishes the branch, opens the PR, inspects CI, and merges only when required gates are green.
+
+## Conflict rules
+
+- Do not let Account 1 and Account 2 modify the same authority boundary concurrently.
+- Product/UX work may continue in parallel with integrity investigation only when file/semantic scope is independent.
+- CF-1 remediation outranks cosmetic polish once its repair design is approved.
+- Never bundle unrelated audit findings into one PR.
