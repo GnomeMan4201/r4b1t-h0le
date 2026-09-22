@@ -29,7 +29,21 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
+      - name: Stage site under /r4b1t-h0le/ path
+        run: |
+          mkdir -p test-site/r4b1t-h0le
+          rsync -a \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='test-site' \
+            --exclude='playwright-report' \
+            --exclude='test-results' \
+            ./ test-site/r4b1t-h0le/
+
       - name: Execute CF-1 production-path reproduction
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'true'
         run: npx playwright test tests/cf1-mobile-roll-provenance.spec.js --project=mobile-chromium
 
       - name: Upload CF-1 evidence
