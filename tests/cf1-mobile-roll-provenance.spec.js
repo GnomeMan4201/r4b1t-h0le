@@ -208,3 +208,25 @@ test('CF-1: rendered mobile and desktop ROLL exports truthful equivalent provena
         'window.__r4b1tCommitRoll()',
         'ROLL disclosure boundary',
         'window.__r4b1tRevealRoll()',
+        'previewUrl mutation',
+        'trail-runtime.js watchSelections() -> record()',
+        'rendered Trail Ledger EXPORT JSON',
+      ],
+      desktop: [
+        'rendered #btnGo click',
+        'wrapped window.roll()',
+        'bundled production commit/reveal',
+        'previewUrl mutation',
+        'trail-runtime.js watchSelections() -> record()',
+        'rendered Trail Ledger EXPORT JSON',
+      ],
+    },
+    mobile,
+    desktop,
+  };
+
+  await testInfo.attach('cf1-provenance-evidence.json', {
+    body: Buffer.from(JSON.stringify(evidence, null, 2) + '\n'),
+    contentType: 'application/json',
+  });
+
