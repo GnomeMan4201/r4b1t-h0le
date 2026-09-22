@@ -230,3 +230,14 @@ test('CF-1: rendered mobile and desktop ROLL exports truthful equivalent provena
     contentType: 'application/json',
   });
 
+  expect.soft(mobile.beforeTerrainChange.action, 'mobile production ROLL must export action ROLL').toBe('ROLL');
+  expect.soft(mobile.beforeTerrainChange.claimedTerrain, 'mobile artifact must claim the selection-time terrain').toBe(mobile.selectionTerrain);
+  expect.soft(
+    mobile.beforeTerrainChange.independentlyReproducedUrl,
+    'mobile declared sampler/seed must reproduce the selected route from the declared CODE pool',
+  ).toBe(mobile.selectedUrl);
+  expect.soft(mobile.afterTerrainChange.claimedTerrain, 'later filter changes must not rewrite prior route provenance').toBe(mobile.selectionTerrain);
+  expect.soft(mobile.afterTerrainChange.trailId, 'unchanged recorded routes must retain the same artifact identity after presentation-only filter changes').toBe(mobile.beforeTerrainChange.trailId);
+  expect.soft(mobile.afterTerrainChange.routeId, 'changing terrain must not change URL/hash integrity').toBe(mobile.beforeTerrainChange.routeId);
+  expect.soft(mobile.verification.accepted, 'existing v0.1 verification still accepts the exported artifact').toBe(true);
+
