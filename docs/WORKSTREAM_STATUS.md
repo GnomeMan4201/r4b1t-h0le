@@ -12,7 +12,7 @@ Workers should begin by reading current `main` and this file. Repository state r
 
 ## Current main
 
-`d45bfc2b11621572eda3d6d7431b49a583818fbf`
+`7c962a17b6867d185ac36fa8abb12ebc341adfff`
 
 ## Product / UX lane
 
@@ -28,12 +28,26 @@ Workers should begin by reading current `main` and this file. Repository state r
   - Mobile now promotes **MAP TRAILS** through the existing canonical snapshot → Topology path.
   - **VIEW SAMPLE** remains inside Topology.
   - No Topology/wear/proof/selection/motion semantics changed.
+- P1-4 Route Info vs Replay / Proof labeling — labeling/IA defect.
+  - PR #155 merged.
+  - Mobile fixed navigation now says **ROUTE INFO** while the sheet remains **INSPECT ROUTE** and evidence inspection remains **REPLAY / INSPECTION**.
+  - Presentation text only; no proof/replay or route behavior changed.
 
-### Next
+### Queued
 
-P1-4 — investigate **INSPECT vs REPLAY / PROOF** labeling.
+P2-1 — **Submit URL mobile parity** is classified as a genuine capability loss with misleading desktop terminology.
 
-Investigation first. Determine whether generic mobile **INSPECT** is an intentional shell adaptation or a labeling/IA defect. Prefer terminology clarification over capability changes. Do not change proof semantics.
+Frozen product meaning:
+
+> Suggesting a URL opens a pre-filled public GitHub issue for human review. It does not add the URL to the corpus, session, trail, or evidence state and does not guarantee inclusion.
+
+Approved direction after the CF-1 authority repair lands:
+- desktop label **submit url** → **suggest url**;
+- mobile **ROUTE INFO** gains **SUGGEST THIS URL ↗**;
+- mobile delegates to the existing `submitUrl()` function;
+- no in-app free-text submission form, corpus write, trail/evidence mutation, or duplicated issue construction.
+
+Implementation is intentionally queued because it touches `index.html`, which is also expected to participate in the active CF-1 authority repair. Do not create concurrent production edits in that file.
 
 ## Integrity / red-team lane
 
@@ -51,15 +65,20 @@ Executable production-path reproduction confirms that the mobile v0.1 ROLL expor
 
 No claim has been established against Blind Descent / v0.2.
 
-### Next
+### Contract
 
-Prepare **remediation design only** for CF-1. No production fix yet.
+ADR 0004 is merged and freezes the immutable selection transaction authority. New truthful transaction-provenance ROLL trails use `r4b1t-trail/v0.3`; legacy v0.1 remains byte/ID-stable and integrity-valid; Blind Descent v0.2 is untouched.
 
-Target invariant:
+### Active
 
-> One authoritative immutable selection transaction binds semantic action, selection-time terrain/constraint, sampler/PRNG/seed state, and selected route at selection/commit time. Trail recording/export consumes that transaction rather than reconstructing provenance from later DOM/UI state.
+CF-1 shared selection authority implementation is authorized on Account 2.
 
-Stop before changing the authority boundary.
+Required sequence:
+- commit production-path RED tests first;
+- implement the smallest GREEN shared authority repair;
+- remove pending-action inference, DOM mutation observation, export-time terrain lookup, and temporary global `Math.random` replacement as provenance authority;
+- preserve ROLL Motion Contract v1, Motion Pass 3, and machine-owned REVEAL_BOUNDARY;
+- stop before the separate provenance-verifier/migration slice.
 
 ## Publication rules
 
