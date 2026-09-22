@@ -85,6 +85,8 @@ async function selectTerrain(page, surface, terrain) {
     await expect(page.locator('#r4mFilterLabel')).toHaveText(terrain);
     return;
   }
+  await page.getByRole('button', { name: 'FILTER', exact: true }).click();
+  await expect(page.locator('#catFilter')).toBeVisible();
   await page.locator('#catFilter button', { hasText: terrain }).click();
 }
 
