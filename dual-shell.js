@@ -116,7 +116,7 @@
           '<button type="button" data-mobile-action="filter"><span>▽</span>FILTER</button>',
           '<button type="button" data-mobile-action="branch"><span>⑂</span>BRANCH</button>',
           '<button type="button" data-mobile-action="history"><span>◷</span>HISTORY</button>',
-          '<button type="button" data-mobile-action="inspect"><span>◉</span>INSPECT</button>',
+          '<button type="button" data-mobile-action="inspect"><span>◉</span>ROUTE INFO</button>',
           '<button type="button" data-mobile-action="replay-inspection"><span>↻</span>REPLAY</button>',
         '</nav>',
       '</main>',
