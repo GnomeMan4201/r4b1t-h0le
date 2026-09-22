@@ -138,3 +138,73 @@ async function exerciseProductionRoll(page, surface) {
   } else {
     await page.locator('#btnGo').click();
     await expect(page.locator('#previewUrl')).toHaveText(independentCodeSelection.selected);
+  }
+
+  const selectedUrl = (await page.locator('#previewUrl').textContent()).trim();
+  const beforeTerrainChange = await exportThroughRenderedLedger(page, surface);
+
+  await selectTerrain(page, surface, 'BLOG');
+  const afterTerrainChange = await exportThroughRenderedLedger(page, surface);
+
+  const beforeRoute = beforeTerrainChange.manifest.routes[0];
+  const afterRoute = afterTerrainChange.manifest.routes[0];
+  const independentDeclaredCode = independentlySelect(CODE_POOL, beforeTerrainChange.manifest.sampler.seed, initialUrl);
+  const independentClaimedBlog = independentlySelect(BLOG_POOL, afterTerrainChange.manifest.sampler.seed, initialUrl);
+  const verification = await page.evaluate(async artifact => {
+    try {
+      const verified = await window.R4b1tTrail.verify(artifact);
+      return { accepted: true, trailId: verified.trail_id };
+    } catch (error) {
+      return { accepted: false, error: String(error && error.message || error) };
+    }
+  }, afterTerrainChange);
+
+  return {
+    surface,
+    productionEntry: surface === 'mobile' ? '#r4mRoll' : '#btnGo',
+    initialUrl,
+    selectionTerrain: 'CODE',
+    selectedUrl,
+    forcedAmbientUrl: forcedUrl,
+    beforeTerrainChange: {
+      action: beforeRoute.action,
+      claimedTerrain: beforeTerrainChange.manifest.terrain,
+      declaredSampler: beforeTerrainChange.manifest.sampler,
+      independentlyReproducedUrl: independentDeclaredCode.selected,
+      independentAttempts: independentDeclaredCode.attempts,
+      trailId: beforeTerrainChange.trail_id,
+      routeId: beforeRoute.route_id,
+    },
+    afterTerrainChange: {
+      action: afterRoute.action,
+      claimedTerrain: afterTerrainChange.manifest.terrain,
+      declaredSampler: afterTerrainChange.manifest.sampler,
+      independentlyReproducedUrlFromClaimedTerrain: independentClaimedBlog.selected,
+      trailId: afterTerrainChange.trail_id,
+      routeId: afterRoute.route_id,
+    },
+    verification,
+  };
+}
+
+test('CF-1: rendered mobile and desktop ROLL exports truthful equivalent provenance', async ({ browser }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+
+  const mobileContext = await browser.newContext({ viewport: { width: 412, height: 915 } });
+  const desktopContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const mobilePage = await mobileContext.newPage();
+  const desktopPage = await desktopContext.newPage();
+
+  const mobile = await exerciseProductionRoll(mobilePage, 'mobile');
+  const desktop = await exerciseProductionRoll(desktopPage, 'desktop');
+  const evidence = {
+    auditedCommit: '188277993ff3e723ef65e8bd1030ed1df458d408',
+    fixtureCorpus: CORPUS,
+    callTrace: {
+      mobile: [
+        'rendered #r4mRoll click',
+        'dual-shell.js runRollTransition("roll")',
+        'R4B1TRollProduction.roll()',
+        'window.__r4b1tCommitRoll()',
+        'ROLL disclosure boundary',
+        'window.__r4b1tRevealRoll()',
