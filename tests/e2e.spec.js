@@ -257,9 +257,10 @@ test('mobile wear sample exposes revealed concealed and forked states', async ({
 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitForApplicationReady(page);
-  await page.locator('[data-mobile-action="wear-sample"]').click();
-
+  await page.locator('[data-mobile-action="topology"]').click();
   await expect(page.locator('#trailTopologyOverlay')).toHaveClass(/\bopen\b/);
+  await page.locator('#trailTopologyOverlay .topology-sample').click();
+
   await expect(page.locator('#trailTopologyMap .wear-step.revealed').first()).toBeVisible();
   await expect(page.locator('#trailTopologyMap .wear-step.concealed').first()).toBeVisible();
   await expect(page.locator('#trailTopologyMap .wear-fork-mark').first()).toBeVisible();
