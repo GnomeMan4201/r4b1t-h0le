@@ -379,6 +379,36 @@ Regression coverage proves that the rendered mobile control:
 This resolution changes no Topology algorithm, wear computation, atlas verification, proof semantics, trail authority, selection behavior, ROLL motion, CSS, or service-worker behavior.
 
 
+
+## P1-4 disposition — Route Info vs Replay / Proof labeling
+
+**Status:** RESOLVED — labeling/information-architecture defect.
+
+### Classification
+
+The fixed mobile navigation previously labeled the route-metadata sheet **INSPECT** while the product's evidence surface is formally named **REPLAY / INSPECTION**. Because **INSPECT** and **REPLAY** sit beside one another in the same fixed navigation, the generic term created a terminology collision even though no capability was missing.
+
+### Repository evidence
+
+The mobile `inspect` action opens `#r4mInspectSheet`, whose heading is **INSPECT ROUTE** and whose content is limited to the current route's domain, URL, and descriptive metadata mirrored from already-rendered route state. It performs no verification, proof derivation, trail loading, replay navigation, or authoritative state transition.
+
+The mobile **REPLAY** and **VERIFY + REPLAY TRAIL** entries delegate to `openReplayInspection()`. That separate surface is titled **REPLAY / INSPECTION**, accepts canonical evidence artifacts, performs local verification, and presents replay/proof state. Specialized proof inspection also remains available through Proof Session, Trail Comparison, and Topology's proof inspector.
+
+Historically, mobile **INSPECT** predates Replay / Inspection. PR #9 introduced it as part of the presentation-layer mobile shell. PR #128 later introduced the explicit evidence-oriented Replay / Inspection surface, creating the accidental naming collision.
+
+### Resolution boundary
+
+Only the fixed mobile navigation label changes:
+
+**INSPECT → ROUTE INFO**
+
+The `data-mobile-action="inspect"` handler, **INSPECT ROUTE** sheet title, sheet contents, **REPLAY** label, Replay runtime, proof semantics, route state, and navigation behavior remain unchanged.
+
+Rendered-affordance regression coverage protects the terminology boundary by asserting that mobile exposes **ROUTE INFO** and **REPLAY** as distinct controls, that **ROUTE INFO** opens the existing route-information sheet, and that Replay Inspection remains closed during that action.
+
+This resolution changes presentation text only. It changes no proof/replay semantics, route state, selection, trail authority, commit/reveal behavior, motion, CSS, service worker, Topology, or wear behavior.
+
+
 ## Audit freeze — implementation queue
 
 **Status:** MOBILE DETAIL & POLISH AUDIT v1 — FINDINGS FROZEN
@@ -393,7 +423,7 @@ The observation/repository-inspection phase is complete enough to begin implemen
 | P1-1 | **RESOLVED — Blind Descent shell semantics** | Intentional shell adaptation. Navigation-only **BLIND DESCENT** opens without committing; explicit **DESCEND BLIND** activation commits exactly one concealed step. Frozen above and protected by rendered-affordance regression coverage. |
 | P1-2 | **RESOLVED — Random ↔ Branch mobile control asymmetry** | Genuine capability loss. Mobile now exposes an explicit **RANDOM MODE** return path through the shared `setMode('random')` engine; ROLL does not implicitly change modes. |
 | P1-3 | **RESOLVED — actual Topology vs Wear Sample discoverability** | Presentation/IA defect. Mobile now promotes **MAP TRAILS** through the existing canonical snapshot → Topology path, while **VIEW SAMPLE** remains inside Topology. No topology/wear/proof semantics changed. |
-| P1-4 | Clarify **INSPECT vs REPLAY/PROOF** labeling | Reduce ambiguity between route metadata inspection and evidence inspection. Presentation/navigation only. |
+| P1-4 | **RESOLVED — ROUTE INFO vs REPLAY/PROOF labeling** | Labeling/IA defect. The mobile route-metadata control is now **ROUTE INFO** while the evidence surface remains **REPLAY / INSPECTION**. No capability or proof/replay behavior changed. |
 | P2-1 | Decide parity for **Submit URL** | Confirm whether desktop-only omission is intentional. Implement only if product contract says mobile should expose it. |
 | P2-2 | Decide parity for **Copy Trail** | Establish whether card/route share is an intentional replacement for `shareTrail()`; avoid duplicate export semantics. |
 | P2-3 | Mobile **Help** adaptation | Do not copy keyboard-centric desktop help literally; expose mobile-relevant interaction guidance if retained. |
