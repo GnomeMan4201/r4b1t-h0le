@@ -241,3 +241,14 @@ test('CF-1: rendered mobile and desktop ROLL exports truthful equivalent provena
   expect.soft(mobile.afterTerrainChange.routeId, 'changing terrain must not change URL/hash integrity').toBe(mobile.beforeTerrainChange.routeId);
   expect.soft(mobile.verification.accepted, 'existing v0.1 verification still accepts the exported artifact').toBe(true);
 
+  expect.soft(desktop.beforeTerrainChange.action, 'desktop production ROLL must export action ROLL').toBe('ROLL');
+  expect.soft(
+    desktop.beforeTerrainChange.independentlyReproducedUrl,
+    'desktop declared sampler/seed must reproduce the selected route from the declared CODE pool',
+  ).toBe(desktop.selectedUrl);
+  expect.soft(mobile.beforeTerrainChange.action, 'mobile and desktop production ROLL must have equivalent action provenance').toBe(desktop.beforeTerrainChange.action);
+  expect.soft(mobile.beforeTerrainChange.declaredSampler, 'mobile and desktop must declare equivalent sampler semantics').toEqual(desktop.beforeTerrainChange.declaredSampler);
+
+  await mobileContext.close();
+  await desktopContext.close();
+});
