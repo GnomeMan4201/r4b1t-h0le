@@ -229,3 +229,17 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
 .r4m-roll-route-host{}
 #r4mRouteMount.roll-card-enter .r4m-route{animation:r4mRollCardEnter var(--roll-card-enter-ms,110ms) cubic-bezier(.16,1,.3,1) both}
 #r4mRouteMount.roll-card-reduced .r4m-route{animation:r4mRollCardReduced 90ms linear both}
+
+
+/* P3-1: use the available phone canvas in landscape without changing interaction semantics. */
+@media (max-width:900px) and (orientation:landscape) and (max-height:560px){
+  .r4m-shell{width:100%;max-width:none;padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+  .r4m-hero{height:clamp(230px,72vh,330px);min-height:230px}
+  .r4m-roll{min-height:92px;padding:12px 24px}
+  .r4m-roll strong{font-size:clamp(3.8rem,10vw,5.3rem)}
+  .r4m-route{padding-left:24px;padding-right:24px}
+  .r4m-route h2{font-size:clamp(3rem,9vw,5rem)}
+  .r4m-route>p{max-width:72ch}
+  .r4m-trail-scroll{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(180px,1fr);grid-template-rows:repeat(2,51px);overflow-x:auto;align-content:start}
+  .r4m-trail-chip{width:100%;max-width:none;min-width:0}
+}
