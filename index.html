@@ -16,6 +16,8 @@
   <script src="motion-tokens.js"></script>
   <script src="trail-manifest.js"></script>
   <script src="selection-authority.js"></script>
+  <script src="selection-transaction-recorder.js"></script>
+  <script src="roll-authority-handoff.js"></script>
   <script src="blind-manifest.js"></script>
   <script src="trail-topology.js"></script>
   <script src="trail-wear.js"></script>
@@ -24,7 +26,7 @@
   <script src="roll-renderer.js"></script>
   <script src="roll-production-integration.js"></script>
   <link rel="stylesheet" href="trail-wear.css">
-  <script src="trail-runtime.js" defer></script>
+  <script src="trail-runtime.js"></script>
   <script src="blind-runtime.js" defer></script>
   <script src="topology-runtime.js" defer></script>
   <script src="trail-card-renderer.js" defer></script>
@@ -353,19 +355,21 @@ function _commitRollSelection(){
   var constraint=_captureRollConstraint();
   var pool=_poolForRollConstraint(constraint);
   var corpusRevision=window.__r4b1tCorpusRevision||Ie;
-  if(!authority||!pool.length||!/^sha256:[0-9a-f]{64}$/.test(String(corpusRevision||"")))return null;
-  var transaction=authority.selectRoll({
+  var handoff=window.R4B1TRollAuthorityHandoff;
+  var recorder=window.__r4b1tRecordSelectionTransaction;
+  if(!authority||!pool.length||!handoff||typeof handoff.commit!=="function"||typeof recorder!=="function"||!/^sha256:[0-9a-f]{64}$/.test(String(corpusRevision||"")))return null;
+  var transaction=handoff.commit(authority,recorder,{
     pool:pool,
     prior_url:s.last,
     constraint:constraint,
     corpus_revision:corpusRevision
   });
+  if(!transaction)return null;
   var selected=transaction.route.url;
   te(selected);
   s.activeNodeId=null;
   s.mode!=="branch"&&(h.reset(),document.getElementById("mmViewport").style.display="none",document.getElementById("edgesGroup").innerHTML="",document.getElementById("nodesGroup").innerHTML="");
   s.mode==="branch"&&(document.getElementById("branchGrid").innerHTML="");
-  document.dispatchEvent(new CustomEvent("r4b1t:selection-committed",{detail:transaction}));
   return transaction;
 }
 function _revealRollSelection(transaction){

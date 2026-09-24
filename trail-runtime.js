@@ -2,7 +2,8 @@
   'use strict';
 
   var api = window.R4b1tTrail;
-  if (!api) return;
+  var transactionRecorderApi = window.R4B1TSelectionTransactionRecorder;
+  if (!api || !transactionRecorderApi) return;
 
   var STORAGE_KEY = 'r4b1t_trail_draft_v1';
   var state = {
@@ -15,7 +16,8 @@
     imported: null,
     replayIndex: 0,
     suppressRecord: false,
-    selectionTransactions: []
+    selectionTransactions: [],
+    pendingRollPresentationUrl: null
   };
 
   function randomSeed() {
@@ -78,23 +80,36 @@
     renderPanel();
   }
 
-  function recordSelectionTransaction(event) {
-    var transaction = event && event.detail;
-    if (!transaction ||
-        transaction.transaction_version !== 'r4b1t-selection-transaction/v1' ||
-        transaction.action !== 'ROLL' ||
-        !transaction.route ||
-        typeof transaction.route.url !== 'string') return;
-    if (state.selectionTransactions.indexOf(transaction) !== -1) return;
+  function projectCommittedRoll(transaction) {
     state.selectionTransactions.push(transaction);
-    record(transaction.route.url, transaction.action);
+    state.pendingRollPresentationUrl = transaction.route.url;
+    var previous = state.routes[state.routes.length - 1];
+    if (!(previous && previous.url === transaction.route.url)) {
+      state.routes.push({ url: transaction.route.url, action: transaction.action });
+    }
+    state.imported = null;
+    persist();
+    renderPanel();
+  }
+
+  var selectionTransactionRecorder = transactionRecorderApi.createRecorder({
+    onRecord: projectCommittedRoll
+  });
+
+  function recordSelectionTransaction(transaction) {
+    return selectionTransactionRecorder.record(transaction);
   }
 
   function watchSelections() {
     var target = document.getElementById('previewUrl');
     if (!target) return;
     var capture = function () {
-      record(target.textContent.trim(), 'SELECT');
+      var url = target.textContent.trim();
+      if (state.pendingRollPresentationUrl && url === state.pendingRollPresentationUrl) {
+        state.pendingRollPresentationUrl = null;
+        return;
+      }
+      record(url, 'SELECT');
     };
     new MutationObserver(capture).observe(target, { childList: true, subtree: true, characterData: true });
     capture();
@@ -163,6 +178,9 @@
     state.seed = randomSeed();
     state.createdAt = new Date().toISOString();
     state.sampler = api.createSampler(state.seed);
+    window.__r4b1tTrailSeed = state.seed;
+    state.selectionTransactions = [];
+    state.pendingRollPresentationUrl = null;
     state.routes = parent.manifest.routes.slice(0, forkAt).map(function (route) {
       return { url: route.url, action: route.action };
     });
@@ -183,6 +201,7 @@
     window.__r4b1tTrailSeed = state.seed;
     state.routes = [];
     state.selectionTransactions = [];
+    state.pendingRollPresentationUrl = null;
     state.parent = null;
     state.imported = null;
     state.replayIndex = 0;
@@ -391,7 +410,7 @@
   }
 
   restore();
-  document.addEventListener('r4b1t:selection-committed', recordSelectionTransaction);
+  window.__r4b1tRecordSelectionTransaction = recordSelectionTransaction;
   window.openTrailLedger = openPanel;
   window.closeTrailLedger = closePanel;
   window.exportTrailManifest = exportTrail;
