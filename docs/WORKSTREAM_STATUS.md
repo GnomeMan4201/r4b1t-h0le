@@ -8,77 +8,77 @@ This file is the coordination handoff for parallel ChatGPT/Codex workstreams.
 - **Account 2 — Integrity / red-team lab:** provenance, proof/replay boundaries, async races, offline behavior, reset semantics, adversarial reproductions. It normally stops before remediation.
 - **Integrator / release lane:** owns GitHub publication, PR creation, CI triage, merge, deployment verification, and cross-workstream conflict resolution.
 
-Workers should begin by reading current `main` and this file. Repository state remains authoritative over stale handoff text.
+Workers should begin by reading current `main`, `CONTRACT.md`, and this file. Repository state remains authoritative over stale handoff text.
 
-## Current main
+## Verified release baseline
 
-`7c962a17b6867d185ac36fa8abb12ebc341adfff`
+Current audited `main`:
+
+`ec614b672aa36596f1195802451afaf2f523e4d6`
+
+Post-merge release verification on this commit:
+
+- GitHub Pages — PASS.
+- Playwright E2E — PASS.
+- Replay Inspection v1 Audit — PASS.
+- Production Shadow — PASS on rerun after the custom-domain cache window cleared.
+
+This commit closes the frozen P0–P3 mobile audit/polish queue. New work should not reopen that queue without fresh evidence from the current integrated product.
 
 ## Product / UX lane
 
-### Completed
+### Closed mobile audit / polish baseline
 
-- P0-1 Trail Comparison mobile reachability.
-- P0-2 Proof Session mobile reachability.
-- P0-3 cross-shell capability reachability contract.
-- P1-1 Blind Descent entry semantics — intentional shell adaptation.
-- P1-2 explicit mobile Random-mode reachability.
-- P1-3 Topology vs Wear Sample discoverability — presentation/IA defect.
-  - PR #153 merged.
-  - Mobile now promotes **MAP TRAILS** through the existing canonical snapshot → Topology path.
-  - **VIEW SAMPLE** remains inside Topology.
-  - No Topology/wear/proof/selection/motion semantics changed.
-- P1-4 Route Info vs Replay / Proof labeling — labeling/IA defect.
-  - PR #155 merged.
-  - Mobile fixed navigation now says **ROUTE INFO** while the sheet remains **INSPECT ROUTE** and evidence inspection remains **REPLAY / INSPECTION**.
-  - Presentation text only; no proof/replay or route behavior changed.
+- P0-1 — Trail Comparison mobile reachability: complete.
+- P0-2 — Proof Session mobile reachability: complete.
+- P0-3 — cross-shell capability-reachability contract: complete.
+- P1-1 — Blind Descent shell semantics: frozen as intentional shell adaptation.
+- P1-2 — Random ↔ Branch mobile capability parity: complete.
+- P1-3 — Topology vs Wear Sample discoverability: complete.
+- P1-4 — Route Info vs Replay / Proof labeling: complete.
+- P2-1 — URL suggestion mobile parity: complete. Mobile delegates to the existing `submitUrl()`; suggestion opens a pre-filled public GitHub issue and does not mutate corpus, session, trail, or evidence state.
+- P2-2 — Copy Trail mobile parity: complete. Mobile delegates to the existing `shareTrail()`.
+- P2-3 — mobile Help adaptation: complete.
+- P2-4 — mobile theme control: complete using the existing `html.light` / `r4b1t_theme` system.
+- P2-5 — duplicate History / Replay mobile IA cleanup: complete. History and Replay have one persistent bottom-navigation entry each.
+- P3-1 — mobile landscape width utilization: complete.
+- P3-2 — Trail / topology density and typography: complete.
 
-### Queued
-
-P2-1 — **Submit URL mobile parity** is classified as a genuine capability loss with misleading desktop terminology.
-
-Frozen product meaning:
-
-> Suggesting a URL opens a pre-filled public GitHub issue for human review. It does not add the URL to the corpus, session, trail, or evidence state and does not guarantee inclusion.
-
-Approved direction after the CF-1 authority repair lands:
-- desktop label **submit url** → **suggest url**;
-- mobile **ROUTE INFO** gains **SUGGEST THIS URL ↗**;
-- mobile delegates to the existing `submitUrl()` function;
-- no in-app free-text submission form, corpus write, trail/evidence mutation, or duplicated issue construction.
-
-Implementation is intentionally queued because it touches `index.html`, which is also expected to participate in the active CF-1 authority repair. Do not create concurrent production edits in that file.
+The mobile workstream is closed at the verified release baseline above.
 
 ## Integrity / red-team lane
 
-### CF-1 — CONFIRMED
+### CF-1 — repaired and merged
 
-Executable production-path reproduction confirms that the mobile v0.1 ROLL export can carry inaccurate provenance while remaining internally verifiable:
+The prior CF-1 reproduction established that the old mobile ROLL path could export inaccurate selection provenance while remaining internally verifiable.
 
-- mobile ROLL exported action **SELECT** instead of **ROLL**;
-- declared sampler/seed did not independently reproduce the selected mobile route;
-- changing terrain after selection rewrote exported terrain provenance;
-- that metadata mutation changed `trail_id`;
-- `route_id` remained stable;
-- existing v0.1 verification still accepted the artifact;
-- desktop production ROLL did not show the action-provenance mismatch.
+The shared selection-authority repair is now landed. Current production:
 
-No claim has been established against Blind Descent / v0.2.
+- commits selection through the shared immutable ROLL authority;
+- records selection-time terrain and sampler state;
+- no longer uses pending-action inference, DOM mutation observation, export-time terrain lookup, or temporary global `Math.random` replacement as provenance authority;
+- preserves the frozen ROLL Motion Contract and machine-owned reveal boundary.
 
-### Contract
+Do not treat the historical CF-1 finding as an active remediation item on current `main`.
 
-ADR 0004 is merged and freezes the immutable selection transaction authority. New truthful transaction-provenance ROLL trails use `r4b1t-trail/v0.3`; legacy v0.1 remains byte/ID-stable and integrity-valid; Blind Descent v0.2 is untouched.
+ADR 0004 remains the architectural authority for truthful transaction provenance. Legacy format compatibility and Blind Descent boundaries remain governed by their existing specifications and tests.
 
-### Active
+## Active release-audit lane
 
-CF-1 shared selection authority implementation is authorized on Account 2.
+The P0–P3 mobile queue is complete. The active lane is now a fresh whole-product release audit against current `main`.
 
-Required sequence:
-- commit production-path RED tests first;
-- implement the smallest GREEN shared authority repair;
-- remove pending-action inference, DOM mutation observation, export-time terrain lookup, and temporary global `Math.random` replacement as provenance authority;
-- preserve ROLL Motion Contract v1, Motion Pass 3, and machine-owned REVEAL_BOUNDARY;
-- stop before the separate provenance-verifier/migration slice.
+Audit the integrated product rather than assuming the previous checklist is exhaustive. Priorities:
+
+- Product Contract clauses and selection/proof authority boundaries.
+- Desktop/mobile capability reachability and semantic parity.
+- Proof, Replay, Trail Comparison, Trail Cards, Topology, and Proof Session delegation boundaries.
+- Privacy and controlled network boundary.
+- Accessibility, focus, keyboard/touch reachability, and orientation behavior.
+- Motion authority and reveal-boundary preservation.
+- PWA/offline behavior and repository/deployment path consistency.
+- Repository `main`, GitHub Pages, and custom-domain byte parity.
+
+Each finding should be classified from current evidence before remediation. Do not create a new polish queue merely because the previous one closed.
 
 ## Publication rules
 
@@ -103,7 +103,8 @@ The integrator recreates/publishes the branch, opens the PR, inspects CI, and me
 
 ## Conflict rules
 
-- Do not let Account 1 and Account 2 modify the same authority boundary concurrently.
-- Product/UX work may continue in parallel with integrity investigation only when file/semantic scope is independent.
-- CF-1 remediation outranks cosmetic polish once its repair design is approved.
+- Do not let Product / UX and Integrity / red-team work modify the same authority boundary concurrently.
+- Product/UX work may continue in parallel with integrity investigation only when file and semantic scope are independent.
+- Integrity defects outrank cosmetic polish once remediation is authorized.
 - Never bundle unrelated audit findings into one PR.
+- Do not reopen completed P0–P3 work without current-main evidence.
