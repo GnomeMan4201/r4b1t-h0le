@@ -13,12 +13,12 @@
     section.id = 'r4mRoute';
     section.innerHTML =
       '<div class="r4m-route-kicker">DESCENT COMPLETE</div>' +
-      '<div class="r4m-route-top"><span>ROUTE / <b id="r4mRouteNo">001</b></span><strong id="r4mTag">ROUTE</strong></div>' +
+      '<div class="r4m-route-top"><span>ROUTE / <b id="r4mRouteNo">001</b></span><strong id="r4mTag" hidden></strong></div>' +
       '<div class="r4m-route-label">A NEW PLACE</div>' +
-      '<small id="r4mProtocol">https://</small>' +
-      '<h2 id="r4mDomain">—</h2>' +
-      '<p id="r4mDescription">A route selected from the corpus.</p>' +
-      '<code id="r4mUrl">—</code>' +
+      '<small id="r4mProtocol" hidden></small>' +
+      '<h2 id="r4mDomain"></h2>' +
+      '<p id="r4mDescription" hidden></p>' +
+      '<code id="r4mUrl"></code>' +
       '<div class="r4m-route-actions">' +
         '<button type="button" data-mobile-action="sprout">SPROUT ×4</button>' +
         '<button type="button" data-mobile-action="share">SHARE</button>' +
