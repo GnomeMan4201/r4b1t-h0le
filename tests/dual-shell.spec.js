@@ -398,7 +398,9 @@ test('mobile redesign keeps contract language and existing capability actions re
 
   await expect(page.locator('#r4mHero')).toContainText('A DOOR.');
   await expect(page.locator('#r4mHero')).toContainText('NOT A FEED.');
-  await expect(page.locator('#r4mHero')).toContainText('NO PROFILE. NO TRACKING. NO RANKING.');
+  await expect(page.locator('#r4mHero h1')).toContainText('NO PROFILE.');
+  await expect(page.locator('#r4mHero h1')).toContainText('NO TRACKING.');
+  await expect(page.locator('#r4mHero h1')).toContainText('NO RANKING.');
   await expect(page.locator('#r4mRoll')).toContainText('COMMIT → REVEAL → EXPLORE');
 
   for (const action of ['filter', 'branch', 'history', 'inspect', 'replay-inspection']) {
