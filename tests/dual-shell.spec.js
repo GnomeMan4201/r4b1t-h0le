@@ -636,3 +636,38 @@ test('P3-1 mobile landscape uses the available viewport without horizontal overf
   expect(metrics.trailDisplay).toBe('grid');
   expect(metrics.trailRows.split(' ').length).toBe(2);
 });
+
+
+test('P3-2 mobile Trail and observation topology remain readable and touchable', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible({ timeout: 2000 });
+
+  const metrics = await page.evaluate(() => {
+    const trail = document.querySelector('.r4m-trail-chip');
+    const ledger = document.querySelector('.r4m-ledger');
+    const wear = document.querySelector('.r4m-route-wear .wear-step');
+    const readout = document.querySelector('.r4m-route-wear .wear-readout');
+    const rect = (el) => el ? el.getBoundingClientRect() : null;
+    return {
+      trail: rect(trail),
+      trailFont: trail ? parseFloat(getComputedStyle(trail).fontSize) : 0,
+      ledger: rect(ledger),
+      wear: rect(wear),
+      readoutFont: readout ? parseFloat(getComputedStyle(readout).fontSize) : 0,
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
+    };
+  });
+
+  expect(metrics.overflow).toBeLessThanOrEqual(1);
+  if (metrics.trail) {
+    expect(metrics.trail.height).toBeGreaterThanOrEqual(48);
+    expect(metrics.trailFont).toBeGreaterThanOrEqual(8);
+  }
+  expect(metrics.ledger?.height || 0).toBeGreaterThanOrEqual(48);
+  if (metrics.wear) expect(metrics.wear.height).toBeGreaterThanOrEqual(60);
+  if (metrics.readoutFont) expect(metrics.readoutFont).toBeGreaterThanOrEqual(8);
+});
