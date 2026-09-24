@@ -391,6 +391,30 @@ test('mobile reference shell fits supported phone widths without clipping fixed 
   }
 });
 
+test('mobile redesign survives portrait-landscape-portrait without overflow or lost navigation', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 844, height: 390 },
+    { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+    const mobile = viewport.width <= 900;
+    await expect(page.locator('html')).toHaveAttribute('data-r4b1t-interface', mobile ? 'mobile' : 'desktop');
+    const geometry = await page.evaluate(() => ({
+      innerWidth: window.innerWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }));
+    expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.innerWidth + 1);
+  }
+
+  await expect(page.locator('#r4mRoll')).toBeVisible();
+  await expect(page.locator('.r4m-nav')).toBeVisible();
+});
+
 test('mobile redesign keeps contract language and existing capability actions reachable', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
