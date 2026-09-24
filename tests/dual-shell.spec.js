@@ -437,6 +437,12 @@ test('mobile reveal does not synthesize route metadata when source metadata is a
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
+  await page.locator('#r4mRoll').click();
+  const route = page.locator('#r4mRoute');
+  await expect(route).toBeVisible({ timeout: 2000 });
+
+  // Construct the missing-metadata condition after selection has populated the
+  // canonical desktop presentation, then invoke the normal mobile projection.
   await page.evaluate(() => {
     const title = document.getElementById('ogTitle');
     const desc = document.getElementById('ogDesc');
@@ -447,11 +453,9 @@ test('mobile reveal does not synthesize route metadata when source metadata is a
       tag.textContent = '';
       tag.style.display = 'none';
     }
+    window.__r4b1tSyncMobileRoute();
   });
 
-  await page.locator('#r4mRoll').click();
-  const route = page.locator('#r4mRoute');
-  await expect(route).toBeVisible({ timeout: 2000 });
   await expect(route.locator('#r4mDescription')).toBeHidden();
   await expect(route.locator('#r4mTag')).toBeHidden();
   await expect(route).not.toContainText('A route selected from the corpus.');
