@@ -139,7 +139,7 @@ async function exerciseProductionRoll(page, surface) {
 
   if (surface === 'mobile') {
     await page.locator('#r4mRoll').click();
-    await expect(page.locator('#r4mUrl')).toHaveText(forcedUrl, { timeout: 5_000 });
+    await expect(page.locator('#r4mUrl')).toHaveText(independentCodeSelection.selected, { timeout: 5_000 });
   } else {
     await page.locator('#btnGo').click();
     await expect(page.locator('#previewUrl')).toHaveText(independentCodeSelection.selected);
