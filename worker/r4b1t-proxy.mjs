@@ -436,14 +436,15 @@ export function parseOpenGraph(html, baseUrl) {
 
 async function proxyRoute(target, deps) {
   const { response, signal, release } = await safeFetch(target, deps);
-  if (!response.ok) throw new BoundaryError('upstream request failed', 502);
-  const type = mediaType(response);
-  if (!isJsonType(type) && !isImageType(type)) {
-    throw new BoundaryError('upstream content type is not permitted', 415);
-  }
-  const limit = isImageType(type) ? MAX_IMAGE_BYTES : MAX_JSON_BYTES;
   let body;
+  let type;
   try {
+    if (!response.ok) throw new BoundaryError('upstream request failed', 502);
+    type = mediaType(response);
+    if (!isJsonType(type) && !isImageType(type)) {
+      throw new BoundaryError('upstream content type is not permitted', 415);
+    }
+    const limit = isImageType(type) ? MAX_IMAGE_BYTES : MAX_JSON_BYTES;
     body = await readLimited(response, limit, signal);
   } finally {
     release();
@@ -459,13 +460,13 @@ async function ogRoute(target, deps) {
     ...deps,
     accept: 'text/html,application/xhtml+xml;q=0.9',
   });
-  if (!response.ok) throw new BoundaryError('upstream request failed', 502);
-  const type = mediaType(response);
-  if (type !== 'text/html' && type !== 'application/xhtml+xml') {
-    throw new BoundaryError('upstream content is not HTML', 415);
-  }
   let body;
   try {
+    if (!response.ok) throw new BoundaryError('upstream request failed', 502);
+    const type = mediaType(response);
+    if (type !== 'text/html' && type !== 'application/xhtml+xml') {
+      throw new BoundaryError('upstream content is not HTML', 415);
+    }
     body = await readLimited(response, MAX_HTML_BYTES, signal);
   } finally {
     release();
