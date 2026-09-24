@@ -153,11 +153,10 @@ async function exerciseProductionRoll(page, surface) {
 
   const beforeRoute = beforeTerrainChange.manifest.routes[0];
   const afterRoute = afterTerrainChange.manifest.routes[0];
-  const independentDeclaredCode = independentlySelect(CODE_POOL, beforeTerrainChange.manifest.sampler.seed, initialUrl);
-  const independentClaimedBlog = independentlySelect(BLOG_POOL, afterTerrainChange.manifest.sampler.seed, initialUrl);
+  const independentDeclaredCode = independentlySelect(CODE_POOL, beforeRoute.transaction.sampler.seed, initialUrl);
   const verification = await page.evaluate(async artifact => {
     try {
-      const verified = await window.R4b1tTrail.verify(artifact);
+      const verified = await window.R4b1tTrailV03.verifyIntegrity(artifact);
       return { accepted: true, trailId: verified.trail_id };
     } catch (error) {
       return { accepted: false, error: String(error && error.message || error) };
@@ -173,8 +172,10 @@ async function exerciseProductionRoll(page, surface) {
     forcedAmbientUrl: forcedUrl,
     beforeTerrainChange: {
       action: beforeRoute.action,
-      claimedTerrain: beforeTerrainChange.manifest.terrain,
-      declaredSampler: beforeTerrainChange.manifest.sampler,
+      format: beforeTerrainChange.manifest.format,
+      claimedTerrain: beforeRoute.transaction.constraint.terrain,
+      declaredSampler: beforeRoute.transaction.sampler,
+      transaction: beforeRoute.transaction,
       independentlyReproducedUrl: independentDeclaredCode.selected,
       independentAttempts: independentDeclaredCode.attempts,
       trailId: beforeTerrainChange.trail_id,
@@ -182,9 +183,10 @@ async function exerciseProductionRoll(page, surface) {
     },
     afterTerrainChange: {
       action: afterRoute.action,
-      claimedTerrain: afterTerrainChange.manifest.terrain,
-      declaredSampler: afterTerrainChange.manifest.sampler,
-      independentlyReproducedUrlFromClaimedTerrain: independentClaimedBlog.selected,
+      format: afterTerrainChange.manifest.format,
+      claimedTerrain: afterRoute.transaction.constraint.terrain,
+      declaredSampler: afterRoute.transaction.sampler,
+      transaction: afterRoute.transaction,
       trailId: afterTerrainChange.trail_id,
       routeId: afterRoute.route_id,
     },
@@ -211,18 +213,18 @@ test('CF-1: rendered mobile and desktop ROLL exports truthful equivalent provena
         'dual-shell.js runRollTransition("roll")',
         'R4B1TRollProduction.roll()',
         'window.__r4b1tCommitRoll()',
+        'trail-runtime.js direct committed transaction recorder',
         'ROLL disclosure boundary',
         'window.__r4b1tRevealRoll()',
-        'previewUrl mutation',
-        'trail-runtime.js watchSelections() -> record()',
+        'previewUrl presentation mutation (non-authoritative)',
         'rendered Trail Ledger EXPORT JSON',
       ],
       desktop: [
         'rendered #btnGo click',
-        'wrapped window.roll()',
-        'bundled production commit/reveal',
-        'previewUrl mutation',
-        'trail-runtime.js watchSelections() -> record()',
+        'window.roll()',
+        'shared window.__r4b1tCommitRoll()',
+        'trail-runtime.js direct committed transaction recorder',
+        'previewUrl presentation mutation (non-authoritative)',
         'rendered Trail Ledger EXPORT JSON',
       ],
     },
@@ -235,6 +237,7 @@ test('CF-1: rendered mobile and desktop ROLL exports truthful equivalent provena
     contentType: 'application/json',
   });
 
+  expect.soft(mobile.beforeTerrainChange.format, 'mobile production ROLL must export v0.3').toBe('r4b1t-trail/v0.3');
   expect.soft(mobile.beforeTerrainChange.action, 'mobile production ROLL must export action ROLL').toBe('ROLL');
   expect.soft(mobile.beforeTerrainChange.claimedTerrain, 'mobile artifact must claim the selection-time terrain').toBe(mobile.selectionTerrain);
   expect.soft(
@@ -244,8 +247,9 @@ test('CF-1: rendered mobile and desktop ROLL exports truthful equivalent provena
   expect.soft(mobile.afterTerrainChange.claimedTerrain, 'later filter changes must not rewrite prior route provenance').toBe(mobile.selectionTerrain);
   expect.soft(mobile.afterTerrainChange.trailId, 'unchanged recorded routes must retain the same artifact identity after presentation-only filter changes').toBe(mobile.beforeTerrainChange.trailId);
   expect.soft(mobile.afterTerrainChange.routeId, 'changing terrain must not change URL/hash integrity').toBe(mobile.beforeTerrainChange.routeId);
-  expect.soft(mobile.verification.accepted, 'existing v0.1 verification still accepts the exported artifact').toBe(true);
+  expect.soft(mobile.verification.accepted, 'v0.3 base integrity verification accepts the exported artifact').toBe(true);
 
+  expect.soft(desktop.beforeTerrainChange.format, 'desktop production ROLL must export v0.3').toBe('r4b1t-trail/v0.3');
   expect.soft(desktop.beforeTerrainChange.action, 'desktop production ROLL must export action ROLL').toBe('ROLL');
   expect.soft(
     desktop.beforeTerrainChange.independentlyReproducedUrl,

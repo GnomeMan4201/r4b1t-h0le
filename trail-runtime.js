@@ -2,8 +2,10 @@
   'use strict';
 
   var api = window.R4b1tTrail;
+  var v03Api = window.R4b1tTrailV03;
+  var exportBoundaryApi = window.R4B1TTrailExportBoundary;
   var transactionRecorderApi = window.R4B1TSelectionTransactionRecorder;
-  if (!api || !transactionRecorderApi) return;
+  if (!api || !v03Api || !exportBoundaryApi || !transactionRecorderApi) return;
 
   var STORAGE_KEY = 'r4b1t_trail_draft_v1';
   var state = {
@@ -17,7 +19,8 @@
     replayIndex: 0,
     suppressRecord: false,
     selectionTransactions: [],
-    pendingRollPresentationUrl: null
+    pendingRollPresentationUrl: null,
+    legacyBoundary: false
   };
 
   function randomSeed() {
@@ -36,6 +39,7 @@
           try { return Boolean(new URL(route.url)); } catch (_) { return false; }
         });
         state.parent = saved.parent || null;
+        if (state.routes.length) state.legacyBoundary = true;
       }
     } catch (_) {}
     if ((!saved || typeof saved.seed !== 'string') &&
@@ -74,6 +78,7 @@
     if (state.suppressRecord || !/^https?:\/\//i.test(url || '')) return;
     var previous = state.routes[state.routes.length - 1];
     if (previous && previous.url === url) return;
+    state.legacyBoundary = true;
     state.routes.push({ url: url, action: action || 'SELECT' });
     state.imported = null;
     persist();
@@ -128,14 +133,36 @@
     return api.envelope(manifest);
   }
 
+  async function exportEnvelope() {
+    var decision = exportBoundaryApi.choose({
+      routes: state.routes,
+      transactions: state.selectionTransactions,
+      parent: state.parent,
+      legacy_boundary: state.legacyBoundary
+    });
+    if (decision.format === v03Api.FORMAT) {
+      var manifest = await v03Api.createManifest({
+        created_at: state.createdAt,
+        transactions: state.selectionTransactions,
+        parent: null
+      });
+      return v03Api.envelope(manifest);
+    }
+    return currentEnvelope();
+  }
+
   async function exportTrail() {
-    var result = await currentEnvelope();
+    var result = await exportEnvelope();
     var blob = new Blob([JSON.stringify(result, null, 2) + '\n'], { type: 'application/json' });
     var link = document.createElement('a');
     link.download = 'r4b1t-trail-' + result.trail_id.slice(7, 19) + '.json';
     link.href = URL.createObjectURL(blob);
     link.click();
     setTimeout(function () { URL.revokeObjectURL(link.href); }, 0);
+    if (result.manifest.format === v03Api.FORMAT) {
+      renderPanel('EXPORTED V0.3 / INTEGRITY ONLY');
+      return result;
+    }
     state.imported = result;
     if (window.rememberTopologySnapshot) await window.rememberTopologySnapshot(result);
     renderPanel();
@@ -181,6 +208,7 @@
     window.__r4b1tTrailSeed = state.seed;
     state.selectionTransactions = [];
     state.pendingRollPresentationUrl = null;
+    state.legacyBoundary = true;
     state.routes = parent.manifest.routes.slice(0, forkAt).map(function (route) {
       return { url: route.url, action: route.action };
     });
@@ -202,6 +230,7 @@
     state.routes = [];
     state.selectionTransactions = [];
     state.pendingRollPresentationUrl = null;
+    state.legacyBoundary = false;
     state.parent = null;
     state.imported = null;
     state.replayIndex = 0;
