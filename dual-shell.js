@@ -109,7 +109,6 @@
           '<button type="button" class="r4m-ledger" data-mobile-action="copy-trail">COPY TRAIL</button>',
           '<button type="button" class="r4m-ledger" data-mobile-action="comparison">COMPARE TRAILS ↗</button>',
           '<button type="button" class="r4m-ledger" data-mobile-action="proof-session">PROOF SESSION ↗</button>',
-          '<button type="button" class="r4m-ledger" data-mobile-action="replay-inspection">REPLAY INSPECTION ↗</button>',
           '<img class="r4m-banana" src="banana-note.svg" alt="badBANANA note">',
         '</section>',
         '<nav class="r4m-nav" aria-label="Mobile controls">',
