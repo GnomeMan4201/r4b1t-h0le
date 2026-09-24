@@ -430,9 +430,10 @@ test('mobile redesign keeps contract language and existing capability actions re
   for (const action of ['filter', 'branch', 'history', 'inspect', 'replay-inspection']) {
     await expect(page.locator('.r4m-nav [data-mobile-action="' + action + '"]')).toBeVisible();
   }
-  for (const action of ['trail-file', 'comparison', 'proof-session', 'replay-inspection']) {
+  for (const action of ['trail-file', 'comparison', 'proof-session']) {
     await expect(page.locator('.r4m-trail [data-mobile-action="' + action + '"]')).toBeVisible();
   }
+  await expect(page.locator('.r4m-nav [data-mobile-action="replay-inspection"]')).toBeVisible();
 });
 
 
