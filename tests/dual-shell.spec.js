@@ -355,3 +355,56 @@ test('P2-1 desktop describes the existing issue handoff as suggestion, not submi
   const suggest = page.locator('.trail-bar button[onclick="submitUrl()"]');
   await expect(suggest).toHaveText('suggest url');
 });
+
+
+test('mobile reference shell fits supported phone widths without clipping fixed navigation', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  for (const width of [375, 390, 393, 430]) {
+    await page.setViewportSize({ width, height: 844 });
+    await expect(page.locator('html')).toHaveAttribute('data-r4b1t-interface', 'mobile');
+    await expect(page.locator('#r4mRoll')).toBeVisible();
+    await expect(page.locator('.r4m-nav')).toBeVisible();
+
+    const geometry = await page.evaluate(() => {
+      const roll = document.getElementById('r4mRoll').getBoundingClientRect();
+      const nav = document.querySelector('.r4m-nav').getBoundingClientRect();
+      return {
+        innerWidth: window.innerWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+        rollLeft: roll.left,
+        rollRight: roll.right,
+        rollHeight: roll.height,
+        navLeft: nav.left,
+        navRight: nav.right,
+      };
+    });
+
+    expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.innerWidth + 1);
+    expect(geometry.rollLeft).toBeGreaterThanOrEqual(0);
+    expect(geometry.rollRight).toBeLessThanOrEqual(geometry.innerWidth + 1);
+    expect(geometry.rollHeight).toBeGreaterThanOrEqual(44);
+    expect(geometry.navLeft).toBeGreaterThanOrEqual(0);
+    expect(geometry.navRight).toBeLessThanOrEqual(geometry.innerWidth + 1);
+  }
+});
+
+test('mobile redesign keeps contract language and existing capability actions reachable', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await expect(page.locator('#r4mHero')).toContainText('A DOOR.');
+  await expect(page.locator('#r4mHero')).toContainText('NOT A FEED.');
+  await expect(page.locator('#r4mHero')).toContainText('NO PROFILE. NO TRACKING. NO RANKING.');
+  await expect(page.locator('#r4mRoll')).toContainText('COMMIT → REVEAL → EXPLORE');
+
+  for (const action of ['filter', 'branch', 'history', 'inspect', 'replay-inspection']) {
+    await expect(page.locator('.r4m-nav [data-mobile-action="' + action + '"]')).toBeVisible();
+  }
+  for (const action of ['trail-file', 'comparison', 'proof-session', 'replay-inspection']) {
+    await expect(page.locator('.r4m-trail [data-mobile-action="' + action + '"]')).toBeVisible();
+  }
+});
