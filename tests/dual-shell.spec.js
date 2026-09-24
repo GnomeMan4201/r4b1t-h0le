@@ -432,6 +432,23 @@ test('revealed mobile route uses descent framing without changing canonical rout
 });
 
 
+
+test('mobile route observation does not claim Trail Card authority', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.locator('#r4mRoll').click();
+
+  const route = page.locator('#r4mRoute');
+  await expect(route).toBeVisible({ timeout: 2000 });
+  const label = await route.locator('.r4m-route-wear').evaluate((node) =>
+    getComputedStyle(node, '::before').content
+  );
+  expect(label).toContain('TRAIL / OBSERVATION');
+  expect(label).not.toContain('TRAIL CARD');
+  await expect(route).not.toContainText(/VERIFIED|REJECTED|UNVERIFIED/);
+});
+
 test('mobile reveal does not synthesize route metadata when source metadata is absent', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
