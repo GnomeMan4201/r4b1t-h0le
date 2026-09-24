@@ -77,7 +77,7 @@
       '<main class="r4m-shell" aria-label="r4b1t mobile interface">',
         '<header class="r4m-header">',
           '<div class="r4m-wordmark"><span>R4B1T_</span>H0L3</div>',
-          '<div class="r4m-header-actions"><button type="button" data-mobile-action="help" aria-label="Open touch guide">?</button><a class="r4m-zip" href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a></div>',
+          '<div class="r4m-header-actions"><button type="button" data-mobile-action="theme" id="r4mTheme" aria-label="Toggle light or dark theme">◑ LIGHT</button><button type="button" data-mobile-action="help" aria-label="Open touch guide">?</button><a class="r4m-zip" href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a></div>',
         '</header>',
         '<section class="r4m-filter-strip" aria-label="Terrain filter">',
           '<div><small>TERRAIN FILTER</small><strong id="r4mFilterLabel">ALL SIGNALS</strong></div>',
@@ -173,6 +173,8 @@
     if (backdrop) backdrop.addEventListener('click', closeSheets);
     bindPressLifecycle(host);
     runInitialStagger();
+    var mobileTheme = byId('r4mTheme');
+    if (mobileTheme) mobileTheme.textContent = document.documentElement.classList.contains('light') ? '◑ DARK' : '◑ LIGHT';
     syncEverything();
     observeSource();
   }
@@ -400,6 +402,16 @@ MOTION: waiting for target…';
   }
 
   function handleAction(action, sourceElement) {
+    if (action === 'theme') {
+      document.documentElement.classList.toggle('light');
+      var light = document.documentElement.classList.contains('light');
+      localStorage.setItem('r4b1t_theme', light ? 'light' : 'dark');
+      var mobileTheme = byId('r4mTheme');
+      var desktopTheme = byId('themeBtn');
+      if (mobileTheme) mobileTheme.textContent = light ? '◑ DARK' : '◑ LIGHT';
+      if (desktopTheme) desktopTheme.textContent = light ? '◑ DARK' : '◑ LIGHT';
+      return;
+    }
     if (action === 'filter') return openSheet('r4mFilterSheet');
     if (action === 'help') return openSheet('r4mHelpSheet');
     if (action === 'close-sheets') return closeSheets();
