@@ -336,14 +336,21 @@ async function readLimited(response, limit, signal) {
   const abort = () => reader.cancel().catch(() => {});
   if (signal) {
     if (signal.aborted) {
-      await reader.cancel();
+      reader.cancel().catch(() => {});
       throw new BoundaryError('upstream request timed out', 504);
     }
     signal.addEventListener('abort', abort, { once: true });
   }
   try {
     while (true) {
-      const { done, value } = await reader.read();
+      let result;
+      try {
+        result = await reader.read();
+      } catch (error) {
+        if (signal?.aborted) throw new BoundaryError('upstream request timed out', 504);
+        throw error;
+      }
+      const { done, value } = result;
       if (signal?.aborted) throw new BoundaryError('upstream request timed out', 504);
       if (done) break;
     total += value.byteLength;
