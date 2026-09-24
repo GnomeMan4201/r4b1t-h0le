@@ -458,3 +458,33 @@ test('P2-5 mobile exposes History and Replay once while retaining trail tools', 
   await expect(page.locator('[data-mobile-action="comparison"]')).toBeVisible();
   await expect(page.locator('[data-mobile-action="proof-session"]')).toBeVisible();
 });
+
+
+test('P3-1 mobile landscape uses the available viewport without horizontal overflow', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({ width: 844, height: 390 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const metrics = await page.evaluate(() => {
+    const shell = document.querySelector('.r4m-shell');
+    const roll = document.querySelector('.r4m-roll');
+    const trail = document.querySelector('.r4m-trail-scroll');
+    const shellRect = shell.getBoundingClientRect();
+    const rollRect = roll.getBoundingClientRect();
+    return {
+      viewport: document.documentElement.clientWidth,
+      documentWidth: document.documentElement.scrollWidth,
+      shellWidth: shellRect.width,
+      rollWidth: rollRect.width,
+      trailDisplay: getComputedStyle(trail).display,
+      trailRows: getComputedStyle(trail).gridTemplateRows
+    };
+  });
+
+  expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewport);
+  expect(metrics.shellWidth).toBeGreaterThan(metrics.viewport * 0.9);
+  expect(metrics.rollWidth).toBeGreaterThan(metrics.viewport * 0.85);
+  expect(metrics.trailDisplay).toBe('grid');
+  expect(metrics.trailRows.split(' ').length).toBe(2);
+});
