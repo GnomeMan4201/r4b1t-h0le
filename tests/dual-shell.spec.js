@@ -645,6 +645,7 @@ test('P3-2 mobile Trail and observation topology remain readable and touchable',
 
   await page.locator('#r4mRoll').click();
   await expect(page.locator('#r4mRoute')).toBeVisible({ timeout: 2000 });
+  await expect(page.locator('.r4m-trail-chip').first()).toBeVisible({ timeout: 2000 });
 
   const metrics = await page.evaluate(() => {
     const trail = document.querySelector('.r4m-trail-chip');
