@@ -430,3 +430,30 @@ test('revealed mobile route uses descent framing without changing canonical rout
   await expect(route.locator('[data-mobile-action="visit"]')).toHaveText('FOLLOW THE RABBIT ↗');
   await expect(route.locator('[data-mobile-action="next"]')).toHaveText('REJECT / NEXT');
 });
+
+
+test('mobile reveal does not synthesize route metadata when source metadata is absent', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.evaluate(() => {
+    const title = document.getElementById('ogTitle');
+    const desc = document.getElementById('ogDesc');
+    const tag = document.getElementById('tagBadge');
+    if (title) title.textContent = '';
+    if (desc) desc.textContent = '';
+    if (tag) {
+      tag.textContent = '';
+      tag.style.display = 'none';
+    }
+  });
+
+  await page.locator('#r4mRoll').click();
+  const route = page.locator('#r4mRoute');
+  await expect(route).toBeVisible({ timeout: 2000 });
+  await expect(route.locator('#r4mDescription')).toBeHidden();
+  await expect(route.locator('#r4mTag')).toBeHidden();
+  await expect(route).not.toContainText('A route selected from the corpus.');
+  await expect(route).not.toContainText('TOR');
+});
