@@ -416,3 +416,28 @@ test('P2-3 desktop keyboard shortcut help remains unchanged', async ({ page }, t
   await expect(help).toHaveClass(/\bopen\b/);
   await expect(help).toContainText('KEYBOARD SHORTCUTS');
 });
+
+
+test('P2-4 mobile theme control reuses the persisted cross-shell preference', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const theme = page.locator('#r4mTheme');
+  await expect(theme).toBeVisible();
+  const startedLight = await page.locator('html').evaluate((el) => el.classList.contains('light'));
+  await theme.click();
+  await expect.poll(() => page.locator('html').evaluate((el) => el.classList.contains('light'))).toBe(!startedLight);
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('r4b1t_theme'))).toBe(startedLight ? 'dark' : 'light');
+
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await expect.poll(() => page.locator('html').evaluate((el) => el.classList.contains('light'))).toBe(!startedLight);
+});
+
+test('P2-4 desktop theme control remains available', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await expect(page.locator('#themeBtn')).toBeVisible();
+});
