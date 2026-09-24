@@ -90,7 +90,10 @@
     if (typeof window.__r4b1tCommitRoll !== 'function' || window.__r4b1tCommitRoll.__r4b1tAuthority) return false;
     var originalCommit = window.__r4b1tCommitRoll;
     var wrappedCommit = function () {
-      var selectionTerrain = terrain();
+      var selectionConstraint = typeof window.__r4b1tCaptureSelectionConstraint === 'function'
+        ? window.__r4b1tCaptureSelectionConstraint()
+        : deepFreeze({ terrain: terrain(), protocolPolicy: { version: 1, excludeOnion: false } });
+      var selectionTerrain = selectionConstraint.terrain;
       var drawStart = state.samplerCursor;
       var drawCount = 0;
       var nextFloat = function () {
@@ -98,14 +101,14 @@
         state.samplerCursor += 1;
         return state.sampler();
       };
-      var result = originalCommit(nextFloat);
+      var result = originalCommit(nextFloat, selectionConstraint);
       if (!result || !result.url) return result;
 
       var transaction = deepFreeze({
         transaction_version: 'r4b1t-selection-transaction/v1',
         sequence: ++state.transactionSequence,
         action: 'ROLL',
-        constraint: { terrain: selectionTerrain },
+        constraint: selectionConstraint,
         corpus_revision: state.corpusRevision,
         sampler: {
           algorithm: 'uniform-with-repeat-guard-v1',
