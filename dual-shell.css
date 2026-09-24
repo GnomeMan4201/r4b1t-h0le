@@ -338,3 +338,35 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     .r4m-enter,.r4m-next{width:100%;margin-left:0}
   }
 }
+
+
+/* Revealed-route + trail presentation pass. Semantics and action delegation unchanged. */
+@media (max-width:900px){
+  .r4m-route-kicker{margin:0 0 8px;color:var(--r4m-red-hi);font:700 .45rem var(--font-mono,"DM Mono",monospace);letter-spacing:.22em}
+  .r4m-route-label{margin:0 0 7px;color:#706d67;font:600 .43rem var(--font-mono,"DM Mono",monospace);letter-spacing:.18em}
+  .r4m-route-top{margin-bottom:22px;padding-bottom:13px;border-bottom:1px solid var(--r4m-line)}
+  .r4m-route h2{overflow-wrap:anywhere}
+  .r4m-route>code{display:block;max-width:100%;padding:10px 0 13px;border-top:1px solid var(--r4m-line);border-bottom:1px solid var(--r4m-line);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .r4m-route-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:0}
+  .r4m-route-actions button{padding:0 6px;font-size:.43rem;letter-spacing:.08em}
+  .r4m-route-actions button+button{border-left:1px solid var(--r4m-line)}
+  .r4m-route-wear{margin:18px 0 17px;padding-top:13px}
+  .r4m-route-wear:before{content:"TRAIL CARD / OBSERVATION";display:block;margin-bottom:9px;color:#6f6c67;font:600 .4rem var(--font-mono,"DM Mono",monospace);letter-spacing:.16em}
+  .r4m-route-wear .wear-paper{background:#0d0d0d!important;border-color:var(--r4m-line)!important;box-shadow:none!important}
+  .r4m-route-wear .wear-step{border-color:var(--r4m-line)!important}
+  .r4m-route-wear .wear-readout{color:#77736d!important}
+  .r4m-enter{min-height:56px;font-size:.58rem;letter-spacing:.13em}
+  .r4m-next{min-height:48px;font-size:.52rem;letter-spacing:.12em}
+
+  .r4m-trail{margin-top:10px;padding-top:26px;border-top:2px solid var(--r4m-red-hi)}
+  .r4m-section-title{align-items:flex-end;margin-bottom:5px}
+  .r4m-section-title strong{font-size:1.5rem;letter-spacing:.04em}
+  .r4m-section-title span{color:var(--r4m-red-hi);font-size:.52rem}
+  .r4m-trail-items{gap:0;border-top:1px solid var(--r4m-line)}
+  .r4m-trail-chip{height:62px;border:0;border-bottom:1px solid var(--r4m-line);background:transparent;text-align:left}
+  .r4m-trail-chip b{color:var(--r4m-red-hi);font-size:.44rem}
+  .r4m-trail-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#b8b4ac}
+  .r4m-ledger{height:48px;margin-top:8px;background:#0b0b0b}
+  .r4m-ledger[data-mobile-action="proof-session"]{border-color:var(--r4m-red-hi);color:var(--r4m-red-hi)}
+  .r4m-ledger[data-mobile-action="replay-inspection"]{border-color:#464646;color:#c5c1b9}
+}
