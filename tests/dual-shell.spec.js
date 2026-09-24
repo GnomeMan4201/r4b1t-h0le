@@ -411,8 +411,8 @@ test('P2-3 desktop keyboard shortcut help remains unchanged', async ({ page }, t
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  await page.locator('.mode-btn[onclick="toggleHelp()"]').click();
+  await page.locator('#btnHelp').click();
   const help = page.locator('#helpOverlay');
-  await expect(help).toHaveAttribute('aria-hidden', 'false');
+  await expect(help).toHaveClass(/\bopen\b/);
   await expect(help).toContainText('KEYBOARD SHORTCUTS');
 });
