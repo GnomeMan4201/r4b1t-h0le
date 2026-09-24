@@ -383,3 +383,36 @@ test('desktop COPY TRAIL remains wired to shareTrail', async ({ page }, testInfo
   await expect(copyTrail).toHaveText('copy trail');
   await expect(copyTrail).toHaveAttribute('onclick', 'shareTrail()');
 });
+
+
+test('P2-3 mobile help is a touch guide, not desktop keyboard shortcuts', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const help = page.locator('[data-mobile-action="help"]');
+  await expect(help).toBeVisible();
+  await help.click();
+
+  const guide = page.locator('#r4mHelpSheet');
+  await expect(guide).toHaveAttribute('aria-hidden', 'false');
+  await expect(guide).toContainText('TOUCH GUIDE');
+  await expect(guide).toContainText('ROLL');
+  await expect(guide).toContainText('FILTER');
+  await expect(guide).toContainText('BRANCH');
+  await expect(guide).toContainText('ROUTE INFO');
+  await expect(guide).toContainText('TRAIL');
+  await expect(guide).toContainText('BLIND DESCENT / MAP TRAILS');
+  await expect(guide).not.toContainText('KEYBOARD SHORTCUTS');
+});
+
+test('P2-3 desktop keyboard shortcut help remains unchanged', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('.mode-btn[onclick="toggleHelp()"]').click();
+  const help = page.locator('#helpOverlay');
+  await expect(help).toHaveAttribute('aria-hidden', 'false');
+  await expect(help).toContainText('KEYBOARD SHORTCUTS');
+});
