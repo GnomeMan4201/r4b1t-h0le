@@ -410,3 +410,23 @@ test('mobile redesign keeps contract language and existing capability actions re
     await expect(page.locator('.r4m-trail [data-mobile-action="' + action + '"]')).toBeVisible();
   }
 });
+
+
+test('revealed mobile route uses descent framing without changing canonical route actions', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await expect(page.locator('#r4mRoute')).toHaveCount(0);
+  await page.locator('#r4mRoll').click();
+
+  const route = page.locator('#r4mRoute');
+  await expect(route).toBeVisible({ timeout: 2000 });
+  await expect(route.locator('.r4m-route-kicker')).toHaveText('DESCENT COMPLETE');
+  await expect(route.locator('.r4m-route-label')).toHaveText('A NEW PLACE');
+  await expect(route.locator('[data-mobile-action="sprout"]')).toHaveText('SPROUT ×4');
+  await expect(route.locator('[data-mobile-action="share"]')).toHaveText('SHARE');
+  await expect(route.locator('[data-mobile-action="cut"]')).toHaveText('CUT CARD');
+  await expect(route.locator('[data-mobile-action="visit"]')).toHaveText('FOLLOW THE RABBIT ↗');
+  await expect(route.locator('[data-mobile-action="next"]')).toHaveText('REJECT / NEXT');
+});
