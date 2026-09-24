@@ -512,13 +512,19 @@ MOTION: waiting for target…';
     if (!active) return;
 
     var displayDomain = hostnameFor(url, domain);
-    var proto = /^https:/i.test(url) ? 'https://' : (/^http:/i.test(url) ? 'http://' : 'route://');
-    var desc = (sourceDesc && sourceDesc.textContent.trim()) || (sourceTitle && sourceTitle.textContent.trim()) || '';
+    var schemeMatch = String(url).match(/^([a-z][a-z0-9+.-]*:)(?:\/\/)?/i);
+    var proto = schemeMatch ? schemeMatch[0] : '';
+    var title = sourceTitle ? sourceTitle.textContent.trim() : '';
+    var desc = sourceDesc ? sourceDesc.textContent.trim() : '';
     var tag = tagBadge && tagBadge.style.display !== 'none' ? tagBadge.textContent.trim() : '';
+    var protoNode = byId('r4mProtocol');
     var descNode = byId('r4mDescription');
     var tagNode = byId('r4mTag');
 
-    byId('r4mProtocol').textContent = proto;
+    if (protoNode) {
+      protoNode.textContent = proto;
+      protoNode.hidden = !proto;
+    }
     byId('r4mDomain').textContent = displayDomain.toUpperCase();
     byId('r4mUrl').textContent = url;
     if (descNode) {
@@ -531,7 +537,7 @@ MOTION: waiting for target…';
     }
     byId('r4mInspectDomain').textContent = displayDomain;
     byId('r4mInspectUrl').textContent = url;
-    byId('r4mInspectDesc').textContent = desc || 'NO SOURCE METADATA';
+    byId('r4mInspectDesc').textContent = [title, desc].filter(Boolean).join(' — ') || 'NO SOURCE METADATA';
     var routeIndex = 0;
     if (counter) {
       var m = counter.textContent.match(/\d+/);
