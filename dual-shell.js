@@ -87,12 +87,12 @@
         '<section class="r4m-hero" id="r4mHero">',
           '<img src="rabbit-aperture.svg" alt="" aria-hidden="true">',
           '<small id="r4mApertureState">APERTURE EMPTY / READY</small>',
-          '<h1>NOT SEARCH.<br>NOT A FEED.<br><span>DOWN THE<br>RABBIT HOLE.</span></h1>',
-          '<p>Curated routes. No profile. No tracking.</p>',
+          '<h1>NO PROFILE.<br>NO TRACKING.<br><span>NO RANKING.</span></h1>',
+          '<p>A DOOR. NOT A FEED.<br>Selection is committed before the destination is exposed.</p>',
           '<em>R4B1T / APERTURE</em>',
         '</section>',
         '<button class="r4m-roll" id="r4mRoll" type="button">',
-          '<span><small>R / RANDOM</small><strong>ROLL</strong><em id="r4mRollScope">FULL CORPUS</em></span><b>↓</b>',
+          '<span><small>COMMIT → REVEAL → EXPLORE</small><strong>ROLL</strong><em id="r4mRollScope">FULL CORPUS</em></span><b>↓</b>',
         '</button>',
         '<section class="r4m-descent-entry" aria-label="Blind descent and trail wear">',
           '<div><small>TRAIL / COMMITTED</small><strong>BLIND DESCENT</strong><p>Lock a route before seeing it. Wear records every step.</p></div>',
@@ -534,19 +534,32 @@ MOTION: waiting for target…';
     if (!active) return;
 
     var displayDomain = hostnameFor(url, domain);
-    var proto = /^https:/i.test(url) ? 'https://' : (/^http:/i.test(url) ? 'http://' : 'route://');
-    var desc = (sourceDesc && sourceDesc.textContent.trim()) || (sourceTitle && sourceTitle.textContent.trim()) || 'A route selected from the corpus.';
-    var tagVisible = tagBadge && tagBadge.style.display !== 'none' && tagBadge.textContent.trim();
-    var tag = tagVisible || (/\.onion(?:\/|$)/i.test(url) ? 'TOR' : 'ROUTE');
+    var schemeMatch = String(url).match(/^([a-z][a-z0-9+.-]*:)(?:\/\/)?/i);
+    var proto = schemeMatch ? schemeMatch[0] : '';
+    var title = sourceTitle ? sourceTitle.textContent.trim() : '';
+    var desc = sourceDesc ? sourceDesc.textContent.trim() : '';
+    var tag = tagBadge && tagBadge.style.display !== 'none' ? tagBadge.textContent.trim() : '';
+    var protoNode = byId('r4mProtocol');
+    var descNode = byId('r4mDescription');
+    var tagNode = byId('r4mTag');
 
-    byId('r4mProtocol').textContent = proto;
+    if (protoNode) {
+      protoNode.textContent = proto;
+      protoNode.hidden = !proto;
+    }
     byId('r4mDomain').textContent = displayDomain.toUpperCase();
     byId('r4mUrl').textContent = url;
-    byId('r4mDescription').textContent = desc;
-    byId('r4mTag').textContent = tag;
+    if (descNode) {
+      descNode.textContent = desc;
+      descNode.hidden = !desc;
+    }
+    if (tagNode) {
+      tagNode.textContent = tag;
+      tagNode.hidden = !tag;
+    }
     byId('r4mInspectDomain').textContent = displayDomain;
     byId('r4mInspectUrl').textContent = url;
-    byId('r4mInspectDesc').textContent = desc;
+    byId('r4mInspectDesc').textContent = [title, desc].filter(Boolean).join(' — ') || 'NO SOURCE METADATA';
     var routeIndex = 0;
     if (counter) {
       var m = counter.textContent.match(/\d+/);

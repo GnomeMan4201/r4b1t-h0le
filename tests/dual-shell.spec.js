@@ -357,6 +357,153 @@ test('P2-1 desktop describes the existing issue handoff as suggestion, not submi
 });
 
 
+test('mobile reference shell fits supported phone widths without clipping fixed navigation', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  for (const width of [375, 390, 393, 430]) {
+    await page.setViewportSize({ width, height: 844 });
+    await expect(page.locator('html')).toHaveAttribute('data-r4b1t-interface', 'mobile');
+    await expect(page.locator('#r4mRoll')).toBeVisible();
+    await expect(page.locator('.r4m-nav')).toBeVisible();
+
+    const geometry = await page.evaluate(() => {
+      const roll = document.getElementById('r4mRoll').getBoundingClientRect();
+      const nav = document.querySelector('.r4m-nav').getBoundingClientRect();
+      return {
+        innerWidth: window.innerWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+        rollLeft: roll.left,
+        rollRight: roll.right,
+        rollHeight: roll.height,
+        navLeft: nav.left,
+        navRight: nav.right,
+      };
+    });
+
+    expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.innerWidth + 1);
+    expect(geometry.rollLeft).toBeGreaterThanOrEqual(0);
+    expect(geometry.rollRight).toBeLessThanOrEqual(geometry.innerWidth + 1);
+    expect(geometry.rollHeight).toBeGreaterThanOrEqual(44);
+    expect(geometry.navLeft).toBeGreaterThanOrEqual(0);
+    expect(geometry.navRight).toBeLessThanOrEqual(geometry.innerWidth + 1);
+  }
+});
+
+test('mobile redesign survives portrait-landscape-portrait without overflow or lost navigation', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 844, height: 390 },
+    { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+    const mobile = viewport.width <= 900;
+    await expect(page.locator('html')).toHaveAttribute('data-r4b1t-interface', mobile ? 'mobile' : 'desktop');
+    const geometry = await page.evaluate(() => ({
+      innerWidth: window.innerWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }));
+    expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.innerWidth + 1);
+  }
+
+  await expect(page.locator('#r4mRoll')).toBeVisible();
+  await expect(page.locator('.r4m-nav')).toBeVisible();
+});
+
+test('mobile redesign keeps contract language and existing capability actions reachable', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await expect(page.locator('#r4mHero')).toContainText('A DOOR.');
+  await expect(page.locator('#r4mHero')).toContainText('NOT A FEED.');
+  await expect(page.locator('#r4mHero h1')).toContainText('NO PROFILE.');
+  await expect(page.locator('#r4mHero h1')).toContainText('NO TRACKING.');
+  await expect(page.locator('#r4mHero h1')).toContainText('NO RANKING.');
+  await expect(page.locator('#r4mRoll')).toContainText('COMMIT → REVEAL → EXPLORE');
+
+  for (const action of ['filter', 'branch', 'history', 'inspect', 'replay-inspection']) {
+    await expect(page.locator('.r4m-nav [data-mobile-action="' + action + '"]')).toBeVisible();
+  }
+  for (const action of ['trail-file', 'comparison', 'proof-session', 'replay-inspection']) {
+    await expect(page.locator('.r4m-trail [data-mobile-action="' + action + '"]')).toBeVisible();
+  }
+});
+
+
+test('revealed mobile route uses descent framing without changing canonical route actions', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await expect(page.locator('#r4mRoute')).toHaveCount(0);
+  await page.locator('#r4mRoll').click();
+
+  const route = page.locator('#r4mRoute');
+  await expect(route).toBeVisible({ timeout: 2000 });
+  await expect(route.locator('.r4m-route-kicker')).toHaveText('DESCENT COMPLETE');
+  await expect(route.locator('.r4m-route-label')).toHaveText('A NEW PLACE');
+  await expect(route.locator('[data-mobile-action="sprout"]')).toHaveText('SPROUT ×4');
+  await expect(route.locator('[data-mobile-action="share"]')).toHaveText('SHARE');
+  await expect(route.locator('[data-mobile-action="cut"]')).toHaveText('CUT CARD');
+  await expect(route.locator('[data-mobile-action="visit"]')).toHaveText('FOLLOW THE RABBIT ↗');
+  await expect(route.locator('[data-mobile-action="next"]')).toHaveText('REJECT / NEXT');
+});
+
+
+
+test('mobile route observation does not claim Trail Card authority', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.locator('#r4mRoll').click();
+
+  const route = page.locator('#r4mRoute');
+  await expect(route).toBeVisible({ timeout: 2000 });
+  const label = await route.locator('.r4m-route-wear').evaluate((node) =>
+    getComputedStyle(node, '::before').content
+  );
+  expect(label).toContain('TRAIL / OBSERVATION');
+  expect(label).not.toContain('TRAIL CARD');
+  await expect(route).not.toContainText(/VERIFIED|REJECTED|UNVERIFIED/);
+});
+
+test('mobile reveal does not synthesize route metadata when source metadata is absent', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  const route = page.locator('#r4mRoute');
+  await expect(route).toBeVisible({ timeout: 2000 });
+
+  // Construct the missing-metadata condition after selection has populated the
+  // canonical desktop presentation, then invoke the normal mobile projection.
+  await page.evaluate(() => {
+    const title = document.getElementById('ogTitle');
+    const desc = document.getElementById('ogDesc');
+    const tag = document.getElementById('tagBadge');
+    if (title) title.textContent = '';
+    if (desc) desc.textContent = '';
+    if (tag) {
+      tag.textContent = '';
+      tag.style.display = 'none';
+    }
+    window.__r4b1tSyncMobileRoute();
+  });
+
+  await expect(route.locator('#r4mDescription')).toBeHidden();
+  await expect(route.locator('#r4mTag')).toBeHidden();
+  await expect(route).not.toContainText('A route selected from the corpus.');
+  await expect(route).not.toContainText('TOR');
+});
+
+
 test('mobile exposes COPY TRAIL through the existing desktop shareTrail engine', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
