@@ -105,6 +105,60 @@ async function makePortableComparisonFiles(page) {
   });
 }
 
+async function makeRejectedPortableComparisonFiles(page) {
+  return page.evaluate(async () => {
+    const make = async (url, seed) => {
+      const manifest = await window.R4b1tTrail.createManifest({
+        created_at: '2026-09-20T13:10:00.000Z',
+        corpus_revision: 'sha256:' + 'c'.repeat(64),
+        seed,
+        terrain: 'RESEARCH',
+        routes: [{ url, action: 'ROLL' }],
+        parent: null,
+      });
+      return window.R4b1tTrail.envelope(manifest);
+    };
+    const left = await make('https://example.org/left-diagnostic', 'portable-left-diagnostic');
+    const right = await make('https://example.org/right-diagnostic', 'portable-right-diagnostic');
+    right.manifest.routes[0].url = 'https://attacker.invalid/';
+    const bundle = await window.R4b1tTrailComparisonBundle.create(
+      new TextEncoder().encode(JSON.stringify(left) + '\n'),
+      new TextEncoder().encode(JSON.stringify(right) + '\n'),
+      { verified_at: '2026-09-20T13:11:00.000Z' }
+    );
+    return Object.entries(bundle.files).map(([name, value]) => ({ name, bytes: Array.from(value) }));
+  });
+}
+
+test('portable comparison diagnostic source cannot render as freshly verified', async ({ page }) => {
+  await loadReplaySurface(page);
+  const files = await makeRejectedPortableComparisonFiles(page);
+
+  const result = await page.evaluate(async (entries) => {
+    const bundle = {
+      files: Object.fromEntries(entries.map(({ name, bytes }) => [name, new Uint8Array(bytes)])),
+    };
+    const delegated = await window.R4b1tReplayInspectionDelegation.inspectTrailComparison(bundle, {
+      verified_at: '2026-09-20T13:12:00.000Z',
+    });
+    const host = document.getElementById('replayInspectionTestHost');
+    window.R4b1tReplayInspectionRenderer.renderPortableComparison(host, delegated);
+    const root = host.querySelector('.replay-inspection-portable-comparison');
+    return {
+      rightState: delegated.result.fresh_projection.verification.right.state,
+      comparison: delegated.result.fresh_projection.comparison,
+      status: root.getAttribute('data-portable-comparison-status'),
+      text: root.textContent,
+    };
+  }, files);
+
+  expect(result.rightState).toBe('REJECTED');
+  expect(result.comparison).toBeNull();
+  expect(result.status).toBe('REJECTED');
+  expect(result.text).toContain('REJECTED');
+  expect(result.text).not.toContain('FRESHLY VERIFIED');
+});
+
 test('Replay UI modules do not auto-mount or alter the production shell', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.addScriptTag({ url: './replay-inspection.js' });
