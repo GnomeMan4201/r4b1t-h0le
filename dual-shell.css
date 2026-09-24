@@ -351,7 +351,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-route-actions button{padding:0 6px;font-size:.43rem;letter-spacing:.08em}
   .r4m-route-actions button+button{border-left:1px solid var(--r4m-line)}
   .r4m-route-wear{margin:18px 0 17px;padding-top:13px}
-  .r4m-route-wear:before{content:"TRAIL CARD / OBSERVATION";display:block;margin-bottom:9px;color:#6f6c67;font:600 .4rem var(--font-mono,"DM Mono",monospace);letter-spacing:.16em}
+  .r4m-route-wear:before{content:"TRAIL / OBSERVATION";display:block;margin-bottom:9px;color:#6f6c67;font:600 .4rem var(--font-mono,"DM Mono",monospace);letter-spacing:.16em}
   .r4m-route-wear .wear-paper{background:#0d0d0d!important;border-color:var(--r4m-line)!important;box-shadow:none!important}
   .r4m-route-wear .wear-step{border-color:var(--r4m-line)!important}
   .r4m-route-wear .wear-readout{color:#77736d!important}
