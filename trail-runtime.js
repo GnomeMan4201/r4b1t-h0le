@@ -15,7 +15,9 @@
     imported: null,
     replayIndex: 0,
     suppressRecord: false,
-    pendingAction: 'SELECT'
+    samplerCursor: 0,
+    transactionSequence: 0,
+    selectionTerrain: null
   };
 
   function randomSeed() {
@@ -37,6 +39,7 @@
       }
     } catch (_) {}
     state.sampler = api.createSampler(state.seed);
+    state.samplerCursor = 0;
   }
 
   function persist() {
@@ -61,39 +64,65 @@
     return active ? active.textContent.trim().toUpperCase() : 'ALL';
   }
 
-  function record(url, action) {
+  function record(url, action, transaction) {
     if (state.suppressRecord || !/^https?:\/\//i.test(url || '')) return;
     var previous = state.routes[state.routes.length - 1];
     if (previous && previous.url === url) return;
-    state.routes.push({ url: url, action: action || 'SELECT' });
+    var route = { url: url, action: action || 'SELECT' };
+    if (transaction) route.selection_transaction = transaction;
+    state.routes.push(route);
     state.imported = null;
     persist();
     renderPanel();
   }
 
-  function watchSelections() {
-    var target = document.getElementById('previewUrl');
-    if (!target) return;
-    var capture = function () {
-      record(target.textContent.trim(), state.pendingAction);
-      state.pendingAction = 'SELECT';
-    };
-    new MutationObserver(capture).observe(target, { childList: true, subtree: true, characterData: true });
-    capture();
+  // DOM mutation is presentation only. Authoritative ROLL provenance is
+  // recorded synchronously from the immutable selection transaction below.
+  function watchSelections() {}
+
+  function deepFreeze(value) {
+    if (!value || typeof value !== 'object' || Object.isFrozen(value)) return value;
+    Object.keys(value).forEach(function (key) { deepFreeze(value[key]); });
+    return Object.freeze(value);
   }
 
   function wrapRoll() {
-    if (typeof window.roll !== 'function' || window.roll.__r4b1tSeeded) return false;
-    var original = window.roll;
-    var wrapped = function () {
-      var nativeRandom = Math.random;
-      state.pendingAction = 'ROLL';
-      Math.random = state.sampler;
-      try { return original.apply(this, arguments); }
-      finally { Math.random = nativeRandom; }
+    if (typeof window.__r4b1tCommitRoll !== 'function' || window.__r4b1tCommitRoll.__r4b1tAuthority) return false;
+    var originalCommit = window.__r4b1tCommitRoll;
+    var wrappedCommit = function () {
+      var selectionTerrain = terrain();
+      var drawStart = state.samplerCursor;
+      var drawCount = 0;
+      var nextFloat = function () {
+        drawCount += 1;
+        state.samplerCursor += 1;
+        return state.sampler();
+      };
+      var result = originalCommit(nextFloat);
+      if (!result || !result.url) return result;
+
+      var transaction = deepFreeze({
+        transaction_version: 'r4b1t-selection-transaction/v1',
+        sequence: ++state.transactionSequence,
+        action: 'ROLL',
+        constraint: { terrain: selectionTerrain },
+        corpus_revision: state.corpusRevision,
+        sampler: {
+          algorithm: 'uniform-with-repeat-guard-v1',
+          prng: 'mulberry32-v1',
+          seed: state.seed,
+          draw_start: drawStart,
+          draw_count: drawCount
+        },
+        route: { url: result.url }
+      });
+
+      state.selectionTerrain = selectionTerrain;
+      record(result.url, 'ROLL', transaction);
+      return Object.freeze({ url: result.url, transaction: transaction });
     };
-    wrapped.__r4b1tSeeded = true;
-    window.roll = wrapped;
+    wrappedCommit.__r4b1tAuthority = true;
+    window.__r4b1tCommitRoll = wrappedCommit;
     return true;
   }
 
@@ -103,7 +132,7 @@
       created_at: state.createdAt,
       corpus_revision: state.corpusRevision,
       seed: state.seed,
-      terrain: terrain(),
+      terrain: state.selectionTerrain || terrain(),
       routes: state.routes,
       parent: state.parent
     });
@@ -177,6 +206,9 @@
     state.seed = randomSeed();
     state.createdAt = new Date().toISOString();
     state.sampler = api.createSampler(state.seed);
+    state.samplerCursor = 0;
+    state.transactionSequence = 0;
+    state.selectionTerrain = null;
     state.routes = [];
     state.parent = null;
     state.imported = null;
