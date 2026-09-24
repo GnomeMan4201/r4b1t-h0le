@@ -135,6 +135,7 @@
           '<div><small>DOMAIN</small><strong id="r4mInspectDomain">NO ROUTE</strong></div>',
           '<div><small>URL</small><code id="r4mInspectUrl">—</code></div>',
           '<div><small>METADATA</small><p id="r4mInspectDesc">Roll a route to inspect it.</p></div>',
+          '<button type="button" class="r4m-inspect-suggest" data-mobile-action="suggest-url">SUGGEST THIS URL ↗</button>',
         '</div>',
       '</aside>'
     ].join('');
@@ -428,6 +429,7 @@ MOTION: waiting for target…';
     if (action === 'comparison') return call('toggleTrailComparison');
     if (action === 'proof-session') return call('toggleProofSession');
     if (action === 'replay-inspection') return call('openReplayInspection');
+    if (action === 'suggest-url') return call('submitUrl');
     if (action === 'blind-descent') {
       if (typeof window.openBlindDescent !== 'function' || typeof window.blindDescend !== 'function') return;
       Promise.resolve(window.openBlindDescent())
