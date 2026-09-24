@@ -323,3 +323,35 @@ test('mobile non-persisted pageshow keeps ordinary synchronization for an alread
   expect(after.snapshot.transactionId).toBe(before.snapshot.transactionId);
   expect(after.snapshot.state).toBe(before.snapshot.state);
 });
+
+
+test('P2-1 mobile Route Info delegates URL suggestion to the existing desktop engine', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  await page.evaluate(() => {
+    window.__p21SubmitCalls = 0;
+    window.submitUrl = function () { window.__p21SubmitCalls += 1; };
+  });
+
+  await page.locator('[data-mobile-action="inspect"]').click();
+  const suggest = page.locator('[data-mobile-action="suggest-url"]');
+  await expect(suggest).toBeVisible();
+  await expect(suggest).toHaveText('SUGGEST THIS URL ↗');
+  await suggest.click();
+
+  await expect.poll(() => page.evaluate(() => window.__p21SubmitCalls)).toBe(1);
+});
+
+test('P2-1 desktop describes the existing issue handoff as suggestion, not submission', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const suggest = page.locator('.trail-bar button[onclick="submitUrl()"]');
+  await expect(suggest).toHaveText('suggest url');
+});
