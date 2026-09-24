@@ -380,3 +380,28 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-trail-scroll{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(180px,1fr);grid-template-rows:repeat(2,51px);overflow-x:auto;align-content:start}
   .r4m-trail-chip{width:100%;max-width:none;min-width:0}
 }
+
+
+/* P3-2: Trail / topology reading density. Presentation only; evidence semantics unchanged. */
+@media (max-width:900px){
+  .r4m-trail{padding-top:22px}
+  .r4m-section-title{min-height:34px;margin-bottom:8px}
+  .r4m-section-title span{font-size:.58rem;letter-spacing:.18em}
+  .r4m-section-title b,.r4m-section-title strong{font-variant-numeric:tabular-nums}
+  .r4m-trail-scroll{gap:0;padding-left:0;padding-right:0}
+  .r4m-trail-chip{min-width:172px;height:58px;padding:0 12px;gap:11px;font-size:.54rem;line-height:1.35}
+  .r4m-trail-chip b{min-width:2.4ch;font-size:.49rem;letter-spacing:.08em}
+  .r4m-trail-chip span{color:#cbc7bf}
+  .r4m-ledger{min-height:50px;font-size:.5rem;letter-spacing:.1em}
+
+  .r4m-route-wear{margin-top:16px;padding-top:12px}
+  .r4m-route-wear:before{font-size:.44rem;letter-spacing:.18em}
+  .r4m-route-wear .wear-readout{font-size:8px;line-height:1.45}
+  .r4m-route-wear .wear-paper{min-height:70px}
+  .r4m-route-wear .wear-step{min-width:82px;flex-basis:82px;min-height:68px;padding:9px 10px}
+}
+@media (max-width:390px){
+  .r4m-trail-chip{min-width:158px;font-size:.52rem}
+  .r4m-ledger{min-height:48px}
+  .r4m-route-wear .wear-step{min-width:78px;flex-basis:78px}
+}
