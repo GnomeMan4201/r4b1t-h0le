@@ -15,7 +15,7 @@
     imported: null,
     replayIndex: 0,
     suppressRecord: false,
-    pendingAction: 'SELECT'
+    selectionTransactions: []
   };
 
   function randomSeed() {
@@ -36,7 +36,13 @@
         state.parent = saved.parent || null;
       }
     } catch (_) {}
+    if ((!saved || typeof saved.seed !== 'string') &&
+        typeof window.__r4b1tTrailSeed === 'string' &&
+        window.__r4b1tTrailSeed) {
+      state.seed = window.__r4b1tTrailSeed;
+    }
     state.sampler = api.createSampler(state.seed);
+    window.__r4b1tTrailSeed = state.seed;
   }
 
   function persist() {
@@ -53,6 +59,7 @@
     if (!response.ok) throw new Error('Corpus revision unavailable');
     var bytes = new Uint8Array(await response.arrayBuffer());
     state.corpusRevision = 'sha256:' + await api.sha256Hex(bytes);
+    window.__r4b1tCorpusRevision = state.corpusRevision;
     renderPanel();
   }
 
@@ -71,30 +78,26 @@
     renderPanel();
   }
 
+  function recordSelectionTransaction(event) {
+    var transaction = event && event.detail;
+    if (!transaction ||
+        transaction.transaction_version !== 'r4b1t-selection-transaction/v1' ||
+        transaction.action !== 'ROLL' ||
+        !transaction.route ||
+        typeof transaction.route.url !== 'string') return;
+    if (state.selectionTransactions.indexOf(transaction) !== -1) return;
+    state.selectionTransactions.push(transaction);
+    record(transaction.route.url, transaction.action);
+  }
+
   function watchSelections() {
     var target = document.getElementById('previewUrl');
     if (!target) return;
     var capture = function () {
-      record(target.textContent.trim(), state.pendingAction);
-      state.pendingAction = 'SELECT';
+      record(target.textContent.trim(), 'SELECT');
     };
     new MutationObserver(capture).observe(target, { childList: true, subtree: true, characterData: true });
     capture();
-  }
-
-  function wrapRoll() {
-    if (typeof window.roll !== 'function' || window.roll.__r4b1tSeeded) return false;
-    var original = window.roll;
-    var wrapped = function () {
-      var nativeRandom = Math.random;
-      state.pendingAction = 'ROLL';
-      Math.random = state.sampler;
-      try { return original.apply(this, arguments); }
-      finally { Math.random = nativeRandom; }
-    };
-    wrapped.__r4b1tSeeded = true;
-    window.roll = wrapped;
-    return true;
   }
 
   async function currentEnvelope() {
@@ -177,7 +180,9 @@
     state.seed = randomSeed();
     state.createdAt = new Date().toISOString();
     state.sampler = api.createSampler(state.seed);
+    window.__r4b1tTrailSeed = state.seed;
     state.routes = [];
+    state.selectionTransactions = [];
     state.parent = null;
     state.imported = null;
     state.replayIndex = 0;
@@ -386,6 +391,7 @@
   }
 
   restore();
+  document.addEventListener('r4b1t:selection-committed', recordSelectionTransaction);
   window.openTrailLedger = openPanel;
   window.closeTrailLedger = closePanel;
   window.exportTrailManifest = exportTrail;
@@ -399,11 +405,6 @@
     ensurePanel();
     watchSelections();
     loadCorpusRevision().catch(showError);
-    var attempts = 0;
-    var timer = setInterval(function () {
-      attempts += 1;
-      if (wrapRoll() || attempts > 100) clearInterval(timer);
-    }, 25);
   });
 
   document.addEventListener('keydown', function (event) {
