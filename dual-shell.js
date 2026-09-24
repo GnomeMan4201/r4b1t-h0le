@@ -511,18 +511,25 @@ MOTION: waiting for target…';
 
     var displayDomain = hostnameFor(url, domain);
     var proto = /^https:/i.test(url) ? 'https://' : (/^http:/i.test(url) ? 'http://' : 'route://');
-    var desc = (sourceDesc && sourceDesc.textContent.trim()) || (sourceTitle && sourceTitle.textContent.trim()) || 'A route selected from the corpus.';
-    var tagVisible = tagBadge && tagBadge.style.display !== 'none' && tagBadge.textContent.trim();
-    var tag = tagVisible || (/\.onion(?:\/|$)/i.test(url) ? 'TOR' : 'ROUTE');
+    var desc = (sourceDesc && sourceDesc.textContent.trim()) || (sourceTitle && sourceTitle.textContent.trim()) || '';
+    var tag = tagBadge && tagBadge.style.display !== 'none' ? tagBadge.textContent.trim() : '';
+    var descNode = byId('r4mDescription');
+    var tagNode = byId('r4mTag');
 
     byId('r4mProtocol').textContent = proto;
     byId('r4mDomain').textContent = displayDomain.toUpperCase();
     byId('r4mUrl').textContent = url;
-    byId('r4mDescription').textContent = desc;
-    byId('r4mTag').textContent = tag;
+    if (descNode) {
+      descNode.textContent = desc;
+      descNode.hidden = !desc;
+    }
+    if (tagNode) {
+      tagNode.textContent = tag;
+      tagNode.hidden = !tag;
+    }
     byId('r4mInspectDomain').textContent = displayDomain;
     byId('r4mInspectUrl').textContent = url;
-    byId('r4mInspectDesc').textContent = desc;
+    byId('r4mInspectDesc').textContent = desc || 'NO SOURCE METADATA';
     var routeIndex = 0;
     if (counter) {
       var m = counter.textContent.match(/\d+/);
