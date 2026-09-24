@@ -441,3 +441,20 @@ test('P2-4 desktop theme control remains available', async ({ page }, testInfo) 
   await waitReady(page);
   await expect(page.locator('#themeBtn')).toBeVisible();
 });
+
+
+test('P2-5 mobile exposes History and Replay once while retaining trail tools', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await expect(page.locator('[data-mobile-action="history"]')).toHaveCount(1);
+  await expect(page.locator('[data-mobile-action="replay-inspection"]')).toHaveCount(1);
+  await expect(page.locator('.r4m-nav [data-mobile-action="history"]')).toBeVisible();
+  await expect(page.locator('.r4m-nav [data-mobile-action="replay-inspection"]')).toBeVisible();
+
+  await expect(page.locator('[data-mobile-action="trail-file"]')).toBeVisible();
+  await expect(page.locator('[data-mobile-action="copy-trail"]')).toBeVisible();
+  await expect(page.locator('[data-mobile-action="comparison"]')).toBeVisible();
+  await expect(page.locator('[data-mobile-action="proof-session"]')).toBeVisible();
+});
