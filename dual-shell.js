@@ -106,7 +106,8 @@
           '<div class="r4m-section-title"><span>TRAIL</span><b id="r4mTrailCount">00</b></div>',
           '<div class="r4m-trail-scroll" id="r4mTrailItems"><span class="r4m-empty">NO ROUTES YET</span></div>',
           '<button type="button" class="r4m-ledger" data-mobile-action="history">OPEN FULL LEDGER ↗</button>',
-          '<button type="button" class="r4m-ledger" data-mobile-action="trail-file">TRAIL FILE / REPLAY ↗</button>',
+          '<button type="button" class="r4m-ledger" data-mobile-action="trail-file">TRAIL FILE / REPLAY ↗</button>
+          <button type="button" class="r4m-ledger" data-mobile-action="copy-trail">COPY TRAIL</button>',
           '<button type="button" class="r4m-ledger" data-mobile-action="comparison">COMPARE TRAILS ↗</button>',
           '<button type="button" class="r4m-ledger" data-mobile-action="proof-session">PROOF SESSION ↗</button>',
           '<button type="button" class="r4m-ledger" data-mobile-action="replay-inspection">VERIFY + REPLAY TRAIL ↗</button>',
@@ -426,6 +427,7 @@ MOTION: waiting for target…';
     }
     if (action === 'history') return toggleHistoryWithMotion();
     if (action === 'trail-file') return call('openTrailLedger');
+    if (action === 'copy-trail') return call('shareTrail');
     if (action === 'comparison') return call('toggleTrailComparison');
     if (action === 'proof-session') return call('toggleProofSession');
     if (action === 'replay-inspection') return call('openReplayInspection');
