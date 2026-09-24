@@ -14,7 +14,7 @@ Workers should begin by reading current `main`, `CONTRACT.md`, and this file. Re
 
 Current audited `main`:
 
-`ec614b672aa36596f1195802451afaf2f523e4d6`
+`185aa8895d651e308f3f75dbe5d5fca7209c4c65`
 
 Post-merge release verification on this commit:
 
@@ -79,6 +79,20 @@ Audit the integrated product rather than assuming the previous checklist is exha
 - Repository `main`, GitHub Pages, and custom-domain byte parity.
 
 Each finding should be classified from current evidence before remediation. Do not create a new polish queue merely because the previous one closed.
+
+## RA-2 — selection-authority audit closed
+
+Audited against current main `185aa8895d651e308f3f75dbe5d5fca7209c4c65`.
+
+- Canonical desktop/mobile ROLL share the immutable selection authority.
+- Explicit terrain is a permitted user-declared constraint.
+- Protocol/Tor policy is captured in the immutable selection constraint and the same captured snapshot drives eligibility and transaction provenance (RA-2A).
+- Accumulated session-domain history no longer conditions canonical ROLL. `domainCount` remains diagnostic bookkeeping only (RA-2C).
+- Immediate-repeat suppression via `s.last` remains the documented mechanical repeat guard permitted by ADR 0001; its consumed sampler interval remains provenance-relevant under ADR 0004.
+- Branch/Directions is explicit derived navigation from the current route, not canonical ROLL authority. History and Replay expose already-known routes rather than sampling a next route.
+- Blind Descent independently samples the declared corpus with unbiased CSPRNG rejection sampling, commits before exposure, and does not read wear, reveal state, topology, popularity, route metadata, or ordinary ROLL history as selection inputs. Reveal verifies and discloses the prior commitment without rerolling.
+
+RA-2 found and repaired two production authority defects: omitted protocol-policy provenance and session-domain-history steering. No additional Blind Descent repair is warranted from this audit. The separate v0.3 provenance-verifier/migration work described by ADR 0004 remains future scope; do not change the frozen v0.1 or Blind Descent v0.2 artifact semantics as part of RA-2.
 
 ## Publication rules
 
