@@ -457,3 +457,31 @@ test('mobile reveal does not synthesize route metadata when source metadata is a
   await expect(route).not.toContainText('A route selected from the corpus.');
   await expect(route).not.toContainText('TOR');
 });
+
+
+test('mobile exposes COPY TRAIL through the existing desktop shareTrail engine', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.evaluate(() => {
+    window.__p22ShareTrailCalls = 0;
+    window.shareTrail = () => { window.__p22ShareTrailCalls += 1; };
+  });
+
+  const copyTrail = page.locator('[data-mobile-action="copy-trail"]');
+  await expect(copyTrail).toBeVisible();
+  await expect(copyTrail).toHaveText('COPY TRAIL');
+  await copyTrail.click();
+  await expect.poll(() => page.evaluate(() => window.__p22ShareTrailCalls)).toBe(1);
+});
+
+test('desktop COPY TRAIL remains wired to shareTrail', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const copyTrail = page.locator('#shareTrailBtn');
+  await expect(copyTrail).toHaveText('copy trail');
+  await expect(copyTrail).toHaveAttribute('onclick', 'shareTrail()');
+});
