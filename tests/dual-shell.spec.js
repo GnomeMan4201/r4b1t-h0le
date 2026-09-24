@@ -355,3 +355,31 @@ test('P2-1 desktop describes the existing issue handoff as suggestion, not submi
   const suggest = page.locator('.trail-bar button[onclick="submitUrl()"]');
   await expect(suggest).toHaveText('suggest url');
 });
+
+
+test('mobile exposes COPY TRAIL through the existing desktop shareTrail engine', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.evaluate(() => {
+    window.__p22ShareTrailCalls = 0;
+    window.shareTrail = () => { window.__p22ShareTrailCalls += 1; };
+  });
+
+  const copyTrail = page.locator('[data-mobile-action="copy-trail"]');
+  await expect(copyTrail).toBeVisible();
+  await expect(copyTrail).toHaveText('COPY TRAIL');
+  await copyTrail.click();
+  await expect.poll(() => page.evaluate(() => window.__p22ShareTrailCalls)).toBe(1);
+});
+
+test('desktop COPY TRAIL remains wired to shareTrail', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const copyTrail = page.locator('#shareTrailBtn');
+  await expect(copyTrail).toHaveText('copy trail');
+  await expect(copyTrail).toHaveAttribute('onclick', 'shareTrail()');
+});
