@@ -77,7 +77,7 @@
       '<main class="r4m-shell" aria-label="r4b1t mobile interface">',
         '<header class="r4m-header">',
           '<div class="r4m-wordmark"><span>R4B1T_</span>H0L3</div>',
-          '<a class="r4m-zip" href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a>',
+          '<div class="r4m-header-actions"><button type="button" data-mobile-action="help" aria-label="Open touch guide">?</button><a class="r4m-zip" href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a></div>',
         '</header>',
         '<section class="r4m-filter-strip" aria-label="Terrain filter">',
           '<div><small>TERRAIN FILTER</small><strong id="r4mFilterLabel">ALL SIGNALS</strong></div>',
@@ -129,6 +129,17 @@
       '<aside class="r4m-sheet" id="r4mBranchSheet" aria-hidden="true">',
         '<div class="r4m-sheet-head"><strong>BRANCH / DIRECTIONS</strong><button type="button" data-mobile-action="random-mode">RANDOM MODE</button><button type="button" data-mobile-action="close-sheets">CLOSE</button></div>',
         '<div id="r4mBranchOptions" class="r4m-branch-options"></div>',
+      '</aside>',
+      '<aside class="r4m-sheet" id="r4mHelpSheet" aria-hidden="true">',
+        '<div class="r4m-sheet-head"><strong>TOUCH GUIDE</strong><button type="button" data-mobile-action="close-sheets">CLOSE</button></div>',
+        '<div class="r4m-inspect-body r4m-help-body">',
+          '<div><small>ROLL</small><p>Draw a random route from the active terrain.</p></div>',
+          '<div><small>FILTER</small><p>Limit the terrain before a roll.</p></div>',
+          '<div><small>BRANCH</small><p>Explore directions from the current route. RANDOM MODE returns to unbounded rolls.</p></div>',
+          '<div><small>ROUTE INFO</small><p>Inspect the current domain, URL, metadata, and URL suggestion handoff.</p></div>',
+          '<div><small>TRAIL</small><p>Open history, copy the readable trail, or use Trail File / Replay, Compare Trails, Proof Session, and Verify + Replay.</p></div>',
+          '<div><small>BLIND DESCENT / MAP TRAILS</small><p>Commit before reveal, or inspect the recorded trail topology and wear.</p></div>',
+        '</div>',
       '</aside>',
       '<aside class="r4m-sheet" id="r4mInspectSheet" aria-hidden="true">',
         '<div class="r4m-sheet-head"><strong>INSPECT ROUTE</strong><button type="button" data-mobile-action="close-sheets">CLOSE</button></div>',
@@ -390,6 +401,7 @@ MOTION: waiting for target…';
 
   function handleAction(action, sourceElement) {
     if (action === 'filter') return openSheet('r4mFilterSheet');
+    if (action === 'help') return openSheet('r4mHelpSheet');
     if (action === 'close-sheets') return closeSheets();
     if (action === 'next') return runRollTransition('next');
     if (action === 'random-mode') {
@@ -454,7 +466,7 @@ MOTION: waiting for target…';
 
   function openSheet(id) {
     window.clearTimeout(sheetCloseTimer);
-    ['r4mFilterSheet', 'r4mBranchSheet', 'r4mInspectSheet'].forEach(function (sheetId) {
+    ['r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet'].forEach(function (sheetId) {
       var candidate = byId(sheetId);
       if (candidate && sheetId !== id) {
         candidate.classList.remove('open', 'sheet-open');
@@ -478,7 +490,7 @@ MOTION: waiting for target…';
   }
 
   function closeSheets() {
-    ['r4mFilterSheet', 'r4mBranchSheet', 'r4mInspectSheet'].forEach(function (id) {
+    ['r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet'].forEach(function (id) {
       var sheet = byId(id);
       if (!sheet) return;
       sheet.classList.remove('open', 'sheet-open');
