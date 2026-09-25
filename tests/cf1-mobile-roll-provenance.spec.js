@@ -95,7 +95,8 @@ async function selectTerrain(page, surface, terrain) {
 
 async function openTrailFile(page, surface) {
   if (surface === 'mobile') {
-    await page.locator('[data-mobile-action="trail-file"]').click();
+    await page.locator('#r4mNavMenu').click();
+    await page.locator('#r4mMenuSheet [data-mobile-action="trail-file"]').click();
   } else {
     await page.getByRole('button', { name: 'trail file' }).click();
   }
