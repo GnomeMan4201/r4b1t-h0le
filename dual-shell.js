@@ -13,6 +13,8 @@
   var routeTransitionBusy = false;
   var pendingRouteMotion = null;
   var rollPendingTimer = null;
+  var revealScrollObserver = null;
+  var lastAutoScrolledRoute = null;
   var ledgerRowObserver = null;
   var motionDebugEnabled = /[?&]debug-motion=1(?:&|$)/.test(window.location.search);
 
@@ -735,6 +737,32 @@ MOTION: waiting for target…';
     if (target) target.textContent = mode;
   }
 
+  function scrollRevealedRouteIntoView() {
+    if (!mq.matches) return;
+    var mount = byId('r4mRouteMount');
+    var route = byId('r4mRoute');
+    if (!mount || !route || route.hidden || !mount.classList.contains('roll-disclosed')) return;
+    if (route === lastAutoScrolledRoute) return;
+    lastAutoScrolledRoute = route;
+
+    window.requestAnimationFrame(function () {
+      var headroom = Math.max(72, Math.min(128, Math.round(window.innerHeight * 0.12)));
+      var top = Math.max(0, window.scrollY + mount.getBoundingClientRect().top - headroom);
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: top, behavior: reduced ? 'auto' : 'smooth' });
+    });
+  }
+
+  function observeRevealForScroll() {
+    if (revealScrollObserver) return;
+    var mount = byId('r4mRouteMount');
+    if (!mount) return;
+    revealScrollObserver = new MutationObserver(function () {
+      scrollRevealedRouteIntoView();
+    });
+    revealScrollObserver.observe(mount, { childList: true, attributes: true, attributeFilter: ['class'] });
+  }
+
   function syncEverything() {
     syncRoute();
     renderRouteWear();
@@ -777,6 +805,7 @@ MOTION: waiting for target…';
 
   function init() {
     buildShell();
+    observeRevealForScroll();
     applyViewportMode();
     var listener = function () {
       clearTimeout(resizeTimer);
