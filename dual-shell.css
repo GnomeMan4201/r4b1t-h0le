@@ -732,3 +732,93 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-hero img{width:28px;height:28px}
   .r4m-roll{--r4m-roll-size:min(62vw,232px);min-height:292px}
 }
+
+
+/* Frontend Interaction Language v1 — centralized mobile presentation tokens.
+   These variables describe material, hierarchy and motion only. They do not
+   participate in route selection, proof state or reveal authority. */
+@media (max-width:900px){
+  :root{
+    --r4m-surface-0:#060605;
+    --r4m-surface-1:#080706;
+    --r4m-surface-2:#100c0a;
+    --r4m-ink-primary:#eee3d2;
+    --r4m-ink-secondary:#a99c89;
+    --r4m-ink-ambient:#62594d;
+    --r4m-rule:#28221d;
+    --r4m-rule-hot:#542025;
+    --r4m-action:#df2028;
+    --r4m-action-dim:#8f1d22;
+
+    --r4m-space-1:4px;
+    --r4m-space-2:8px;
+    --r4m-space-3:12px;
+    --r4m-space-4:16px;
+    --r4m-space-5:24px;
+
+    --r4m-contact-travel:2px;
+    --r4m-compress-face-travel:7px;
+    --r4m-compress-chassis-travel:4px;
+
+    --r4m-time-contact:55ms;
+    --r4m-time-compress:105ms;
+    --r4m-time-release:170ms;
+    --r4m-time-disclose:280ms;
+
+    --r4m-ease-contact:cubic-bezier(.2,.8,.2,1);
+    --r4m-ease-mass:cubic-bezier(.18,.72,.22,1);
+    --r4m-ease-seat:cubic-bezier(.16,.78,.18,1);
+  }
+
+  .r4m-shell{
+    --r4m-current-surface:var(--r4m-surface-0);
+    background:var(--r4m-current-surface);
+  }
+
+  /* Explicit presentation-state surface. JavaScript owns only the state label;
+     authoritative roll/reveal machinery remains untouched. */
+  .r4m-roll[data-presentation-state="idle"] .r4m-roll-face{
+    transform:translateY(0);
+  }
+  .r4m-roll[data-presentation-state="contact"] .r4m-roll-face{
+    transform:translateY(var(--r4m-contact-travel));
+    transition:transform var(--r4m-time-contact) var(--r4m-ease-contact),box-shadow var(--r4m-time-contact) linear;
+  }
+  .r4m-roll[data-presentation-state="compression"] .r4m-roll-chassis{
+    transform:translateY(var(--r4m-compress-chassis-travel)) scale(.988);
+    transition:transform var(--r4m-time-compress) var(--r4m-ease-mass);
+  }
+  .r4m-roll[data-presentation-state="compression"] .r4m-roll-face{
+    transform:translateY(var(--r4m-compress-face-travel));
+    transition:transform var(--r4m-time-compress) var(--r4m-ease-mass),box-shadow var(--r4m-time-compress) linear;
+  }
+  .r4m-roll[data-presentation-state="committed"] .r4m-roll-chassis,
+  .r4m-roll[data-presentation-state="travel"] .r4m-roll-chassis{
+    transform:translateY(5px) scale(.984);
+  }
+  .r4m-roll[data-presentation-state="committed"] .r4m-roll-face,
+  .r4m-roll[data-presentation-state="travel"] .r4m-roll-face{
+    transform:translateY(7px);
+  }
+
+  html[data-r4m-presentation="travel"] .r4m-header,
+  html[data-r4m-presentation="travel"] .r4m-filter-strip,
+  html[data-r4m-presentation="travel"] .r4m-status,
+  html[data-r4m-presentation="travel"] .r4m-hero,
+  html[data-r4m-presentation="travel"] .r4m-mode-switch{
+    opacity:.48;
+    transition:opacity var(--r4m-time-release) linear;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) and (max-width:900px){
+  :root{
+    --r4m-contact-travel:0px;
+    --r4m-compress-face-travel:0px;
+    --r4m-compress-chassis-travel:0px;
+    --r4m-time-contact:0ms;
+    --r4m-time-compress:0ms;
+    --r4m-time-release:0ms;
+    --r4m-time-disclose:0ms;
+  }
+}
