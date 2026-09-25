@@ -335,6 +335,8 @@ test('mobile connective motion covers press authority reveal ledger and copy sta
 
   const rollButton = page.locator('#r4mRoll');
   await expect(page.locator('#r4mRoute')).toHaveCount(0);
+  await page.locator('#r4mNavRoll').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'true');
   await rollButton.click();
   await expect(rollButton).toHaveAttribute('aria-busy', 'true');
   await expect(rollButton).toHaveClass(/\broll-(release|accelerate|decelerate|seat)\b/);
@@ -348,7 +350,8 @@ test('mobile connective motion covers press authority reveal ledger and copy sta
   await shareButton.click();
   await expect(shareButton).toHaveClass(/\bcopied-flash\b/);
 
-  await page.locator('.r4m-nav [data-mobile-action="history"]').click();
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
   await expect(page.locator('#historyOverlay')).toHaveClass(/\bledger-open\b/);
   await expect(page.locator('#historyList > .r4m-ledger-row.row-in').first()).toBeVisible();
 });
