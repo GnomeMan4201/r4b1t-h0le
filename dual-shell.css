@@ -580,3 +580,29 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   #r4mProtocol{margin:0 6px 9px 0;border-color:#332d27;background:#090807;color:#9b8f7d}
   .r4m-route-wear .wear-readout:before{content:"WEAR / ";color:#d32a31;font-weight:800}
 }
+
+
+/* Mobile primary-stage IA: one exploration instrument or one disclosed result at a time. */
+@media (max-width:900px){
+  .r4m-mode-switch{display:grid;grid-template-columns:1fr 1fr;margin:8px 0 10px;border:1px solid #302820;background:#080807}
+  .r4m-mode-switch button{min-height:38px;border:0;border-right:1px solid #302820;background:transparent;color:#756b5d;font:600 .47rem var(--font-mono,"DM Mono",monospace);letter-spacing:.14em}
+  .r4m-mode-switch button:last-child{border-right:0}
+  .r4m-mode-switch button.active{background:#17100e;color:#e7ddca;box-shadow:inset 0 -2px 0 var(--r4m-red-hi)}
+  .r4m-primary-stage{min-height:0}
+  .r4m-roll-again{width:100%;min-height:50px;border:1px solid #5d2424;background:#17100e;color:#eee4d2;font:700 .54rem var(--font-mono,"DM Mono",monospace);letter-spacing:.16em;margin:0 0 14px}
+
+  html.r4m-stage-result .r4m-hero,
+  html.r4m-stage-result .r4m-roll,
+  html.r4m-stage-result .r4m-descent-entry{display:none!important}
+  html.r4m-stage-result #r4mRouteMount{display:block}
+  html.r4m-stage-result .r4m-roll-again{display:block!important}
+
+  html.r4m-stage-blind .r4m-hero,
+  html.r4m-stage-blind .r4m-roll,
+  html.r4m-stage-blind #r4mRouteMount,
+  html.r4m-stage-blind .r4m-roll-again{display:none!important}
+  html.r4m-stage-blind .r4m-descent-entry{display:block!important;margin-top:4px}
+
+  /* Secondary instruments remain authoritative but leave the landing surface. */
+  .r4m-trail{display:none}
+}
