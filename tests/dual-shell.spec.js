@@ -691,7 +691,12 @@ test('mobile reveal carries the viewport to each newly disclosed route', async (
 
   await page.locator('#r4mRoll').click();
   await expect(page.locator('#r4mRoute')).toBeVisible();
-  await page.waitForFunction(() => window.scrollY > 0);
+  await page.waitForFunction(() => {
+    const mount = document.getElementById('r4mRouteMount');
+    if (!mount || window.scrollY <= 0) return false;
+    const top = mount.getBoundingClientRect().top;
+    return top >= 60 && top <= 150;
+  });
 
   const first = await page.evaluate(() => ({
     scrollY: window.scrollY,
@@ -703,6 +708,11 @@ test('mobile reveal carries the viewport to each newly disclosed route', async (
 
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'auto' }));
   await page.locator('#r4mRoll').click();
-  await page.waitForFunction(() => window.scrollY > 0);
+  await page.waitForFunction(() => {
+    const mount = document.getElementById('r4mRouteMount');
+    if (!mount || window.scrollY <= 0) return false;
+    const top = mount.getBoundingClientRect().top;
+    return top >= 60 && top <= 150;
+  });
   await expect(page.locator('#r4mRoute')).toBeVisible();
 });
