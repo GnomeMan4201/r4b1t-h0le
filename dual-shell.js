@@ -94,7 +94,7 @@
             '<span class="r4m-roll-ring r4m-roll-ring-outer"></span>',
             '<span class="r4m-roll-ring r4m-roll-ring-inner"></span>',
             '<span class="r4m-roll-face">',
-              '<span class="r4m-roll-rabbit">R4B1T</span>',
+              '<span class="r4m-roll-rabbit" aria-hidden="true"></span>',
               '<strong>ROLL</strong>',
             '</span>',
           '</span>',
