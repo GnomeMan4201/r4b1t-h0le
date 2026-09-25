@@ -73,13 +73,15 @@ test('mobile navigation opens filter and inspect sheets without horizontal overf
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  await page.locator('[data-mobile-action="filter"]').first().click();
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
   await expect(page.locator('#r4mFilterSheet')).toHaveClass(/\bopen\b/);
-  await page.locator('[data-mobile-action="close-sheets"]').first().click();
+  await page.locator('#r4mFilterSheet [data-mobile-action="close-sheets"]').click();
 
-  const routeInfo = page.locator('.r4m-nav [data-mobile-action="inspect"]');
+  await page.locator('#r4mNavMenu').click();
+  const routeInfo = page.locator('#r4mMenuSheet [data-mobile-action="inspect"]');
   await expect(routeInfo).toContainText('ROUTE INFO');
-  await expect(page.locator('.r4m-nav [data-mobile-action="replay-inspection"]')).toContainText('REPLAY');
+  await expect(page.locator('#r4mMenuSheet [data-mobile-action="replay-inspection"]')).toContainText('REPLAY');
   await routeInfo.click();
   await expect(page.locator('#r4mInspectSheet')).toHaveClass(/\bopen\b/);
   await expect(page.locator('#r4mInspectSheet .r4m-sheet-head strong')).toHaveText('INSPECT ROUTE');
@@ -103,7 +105,8 @@ test('mobile branch sheet explains the empty state and offers a recovery action'
     document.getElementById('btnModeBranch').classList.add('active');
   });
 
-  await page.locator('[data-mobile-action="branch"]').click();
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="branch"]').click();
   const empty = page.locator('#r4mBranchOptions .r4m-branch-empty');
   await expect(empty).toBeVisible();
   await expect(empty).toHaveAttribute('role', 'status');
@@ -120,7 +123,8 @@ test('mobile can explicitly return from Branch to Random mode without rolling', 
 
   const routeBefore = await page.locator('#previewUrl').textContent();
 
-  await page.locator('[data-mobile-action="branch"]').click();
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="branch"]').click();
   await expect(page.locator('#r4mBranchSheet')).toHaveClass(/\bopen\b/);
   await expect(page.locator('#btnModeBranch')).toHaveClass(/\bactive\b/);
   await expect(page.locator('#btnModeRandom')).not.toHaveClass(/\bactive\b/);
@@ -338,8 +342,9 @@ test('P2-1 mobile Route Info delegates URL suggestion to the existing desktop en
     window.submitUrl = function () { window.__p21SubmitCalls += 1; };
   });
 
-  await page.locator('[data-mobile-action="inspect"]').click();
-  const suggest = page.locator('[data-mobile-action="suggest-url"]');
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="inspect"]').click();
+  const suggest = page.locator('#r4mInspectSheet [data-mobile-action="suggest-url"]');
   await expect(suggest).toBeVisible();
   await expect(suggest).toHaveText('SUGGEST THIS URL ↗');
   await suggest.click();
