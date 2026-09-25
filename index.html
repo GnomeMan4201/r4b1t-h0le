@@ -165,7 +165,7 @@
     <div id="replayInspectionMount"></div>
   </div>
 </div>
-\n<!-- ── Iframe overlay ───────────────────────────────────────────────────────── -->
+<!-- ── Iframe overlay ───────────────────────────────────────────────────────── -->
 <div id="historyOverlay" role="dialog" aria-modal="true" aria-labelledby="historyTitle" aria-hidden="true" tabindex="-1" style="display:none;position:fixed;inset:0;background:#000000e0;z-index:10000;align-items:center;justify-content:center">
   <div style="background:#141210;border:1px solid #2a2825;border-top:2px solid #cc1111;padding:24px;width:min(500px,92vw);max-height:80vh;display:flex;flex-direction:column">
     <div id="historyTitle" style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.1em;color:#e8e0d0;margin-bottom:16px">SESSION HISTORY</div>
@@ -180,9 +180,9 @@
     <button class="iframe-btn" onclick="closeIframe();roll();">skip →</button>
     <button class="iframe-btn danger" onclick="closeIframe()">← back</button>
   </div>
-  <div id="screenshotLoading" style="flex:1;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.5rem;letter-spacing:.15em;color:#3a342a;text-transform:uppercase">generating preview…</div>
+  <div id="screenshotLoading" style="flex:1;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.5rem;letter-spacing:.15em;color:#3a342a;text-transform:uppercase">requesting preview image…</div>
   <img id="screenshotEl" style="display:none;width:100%;height:100%;flex:1;object-fit:cover;object-position:top;background:#0e0d0b" alt="site preview image">
-  <div id="iframeFallback" style="display:none;position:absolute;bottom:50px;left:50%;transform:translateX(-50%);background:#141210;border:1px solid #2a2825;padding:10px 20px;font-family:var(--font-mono);font-size:.5rem;letter-spacing:.1em;color:#6a5f52;text-align:center;white-space:nowrap">preview image unavailable — use OPEN TAB ↗</div>
+  <div id="iframeFallback" style="display:none;position:absolute;bottom:50px;left:50%;transform:translateX(-50%);background:#141210;border:1px solid #2a2825;padding:10px 20px;font-family:var(--font-mono);font-size:.5rem;letter-spacing:.1em;color:#6a5f52;text-align:center;white-space:nowrap">no preview image returned — use OPEN TAB ↗</div>
 </div>
 
 <!-- ── Tor modal ────────────────────────────────────────────────────────────── -->
