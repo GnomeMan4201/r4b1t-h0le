@@ -682,3 +682,27 @@ test('document body has no rendered literal escaped-newline text node', async ({
   );
   expect(escapedNewlineNodes).toEqual([]);
 });
+
+
+test('mobile reveal carries the viewport to each newly disclosed route', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  await page.waitForFunction(() => window.scrollY > 0);
+
+  const first = await page.evaluate(() => ({
+    scrollY: window.scrollY,
+    routeTop: document.getElementById('r4mRouteMount').getBoundingClientRect().top,
+  }));
+  expect(first.scrollY).toBeGreaterThan(0);
+  expect(first.routeTop).toBeGreaterThanOrEqual(60);
+  expect(first.routeTop).toBeLessThanOrEqual(150);
+
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'auto' }));
+  await page.locator('#r4mRoll').click();
+  await page.waitForFunction(() => window.scrollY > 0);
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+});
