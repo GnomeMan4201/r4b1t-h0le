@@ -13,8 +13,6 @@
   var routeTransitionBusy = false;
   var pendingRouteMotion = null;
   var rollPendingTimer = null;
-  var revealScrollObserver = null;
-  var lastAutoScrolledRoute = null;
   var ledgerRowObserver = null;
   var motionDebugEnabled = /[?&]debug-motion=1(?:&|$)/.test(window.location.search);
 
@@ -86,6 +84,8 @@
           '<button type="button" data-mobile-action="filter">SET ↗</button>',
         '</section>',
         '<div class="r4m-status"><span>APERTURE / RANDOM</span><b id="r4mModeLabel">UNBOUNDED</b></div>',
+        '<div class="r4m-mode-switch" role="group" aria-label="Primary exploration mode"><button type="button" class="active" data-mobile-action="stage-roll" id="r4mModeRoll" aria-pressed="true">ROLL</button><button type="button" data-mobile-action="stage-blind" id="r4mModeBlind" aria-pressed="false">BLIND DESCENT</button></div>',
+        '<div class="r4m-primary-stage" id="r4mPrimaryStage">',
         '<section class="r4m-hero" id="r4mHero">',
           '<img src="rabbit-aperture.svg" alt="" aria-hidden="true">',
           '<div class="r4m-hero-copy"><small id="r4mApertureState">APERTURE EMPTY / READY</small><h1>NO PROFILE. NO TRACKING. NO RANKING.</h1></div>',
@@ -102,7 +102,7 @@
           '</span>',
           '<span class="r4m-roll-meta"><small>COMMIT → REVEAL → EXPLORE</small><em id="r4mRollScope">FULL CORPUS</em></span>',
         '</button>',
-        '<section class="r4m-descent-entry" aria-label="Blind descent and trail wear">',
+        '<section class="r4m-descent-entry" id="r4mDescentEntry" aria-label="Blind descent and trail wear" hidden>',
           '<div><small>TRAIL / COMMITTED</small><strong>BLIND DESCENT</strong><p>Lock a route before seeing it. Wear records every step.</p></div>',
           '<div class="r4m-descent-actions">',
             '<button type="button" data-mobile-action="blind-descent"><span>DESCEND BLIND</span><b>↓</b></button>',
@@ -110,6 +110,8 @@
           '</div>',
         '</section>',
         '<div id="r4mRouteMount" aria-live="polite"></div>',
+        '<button type="button" class="r4m-roll-again" data-mobile-action="roll-again" id="r4mRollAgain" hidden>ROLL AGAIN</button>',
+        '</div>',
         '<section class="r4m-trail">',
           '<div class="r4m-section-title"><span>TRAIL</span><b id="r4mTrailCount">00</b></div>',
           '<div class="r4m-trail-scroll" id="r4mTrailItems"><span class="r4m-empty">NO ROUTES YET</span></div>',
@@ -418,6 +420,12 @@ MOTION: waiting for target…';
       if (desktopTheme) desktopTheme.textContent = light ? '◑ DARK' : '◑ LIGHT';
       return;
     }
+    if (action === 'stage-roll') return resetRollStage();
+    if (action === 'stage-blind') return setPrimaryMode('blind');
+    if (action === 'roll-again') {
+      resetRollStage();
+      return runRollTransition('roll');
+    }
     if (action === 'filter') return openSheet('r4mFilterSheet');
     if (action === 'help') return openSheet('r4mHelpSheet');
     if (action === 'close-sheets') return closeSheets();
@@ -537,6 +545,7 @@ MOTION: waiting for target…';
     var active = Boolean(domain && url);
     route.hidden = !active;
     document.documentElement.classList.toggle('r4m-has-route', active);
+    if (active && !document.documentElement.classList.contains('r4m-stage-blind')) document.documentElement.classList.add('r4m-stage-result');
     var apertureState = byId('r4mApertureState');
     if (apertureState) apertureState.textContent = active ? 'APERTURE OPEN / ROUTE READY' : 'APERTURE EMPTY / READY';
     if (!active) return;
@@ -737,30 +746,26 @@ MOTION: waiting for target…';
     if (target) target.textContent = mode;
   }
 
-  function scrollRevealedRouteIntoView() {
-    if (!mq.matches) return;
-    var mount = byId('r4mRouteMount');
-    var route = byId('r4mRoute');
-    if (!mount || !route || route.hidden || !mount.classList.contains('roll-disclosed')) return;
-    if (route === lastAutoScrolledRoute) return;
-    lastAutoScrolledRoute = route;
-
-    window.requestAnimationFrame(function () {
-      var headroom = Math.max(72, Math.min(128, Math.round(window.innerHeight * 0.12)));
-      var top = Math.max(0, window.scrollY + mount.getBoundingClientRect().top - headroom);
-      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      window.scrollTo({ top: top, behavior: reduced ? 'auto' : 'smooth' });
-    });
+  function setPrimaryMode(mode) {
+    var blind = mode === 'blind';
+    document.documentElement.dataset.r4mPrimaryMode = blind ? 'blind' : 'roll';
+    var rollMode = byId('r4mModeRoll');
+    var blindMode = byId('r4mModeBlind');
+    var descent = byId('r4mDescentEntry');
+    var route = byId('r4mRouteMount');
+    if (rollMode) { rollMode.classList.toggle('active', !blind); rollMode.setAttribute('aria-pressed', String(!blind)); }
+    if (blindMode) { blindMode.classList.toggle('active', blind); blindMode.setAttribute('aria-pressed', String(blind)); }
+    if (descent) descent.hidden = !blind;
+    if (route) route.hidden = blind;
+    document.documentElement.classList.toggle('r4m-stage-blind', blind);
+    document.documentElement.classList.toggle('r4m-stage-result', !blind && Boolean(route && route.classList.contains('roll-disclosed')));
   }
 
-  function observeRevealForScroll() {
-    if (revealScrollObserver) return;
+  function resetRollStage() {
+    document.documentElement.classList.remove('r4m-stage-result');
     var mount = byId('r4mRouteMount');
-    if (!mount) return;
-    revealScrollObserver = new MutationObserver(function () {
-      scrollRevealedRouteIntoView();
-    });
-    revealScrollObserver.observe(mount, { childList: true, attributes: true, attributeFilter: ['class'] });
+    if (mount) mount.hidden = false;
+    setPrimaryMode('roll');
   }
 
   function syncEverything() {
@@ -805,8 +810,8 @@ MOTION: waiting for target…';
 
   function init() {
     buildShell();
-    observeRevealForScroll();
     applyViewportMode();
+    setPrimaryMode('roll');
     var listener = function () {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(applyViewportMode, 20);
