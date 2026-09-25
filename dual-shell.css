@@ -342,7 +342,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-filter-proxy.active{border-color:var(--r4m-red-hi);color:var(--r4m-red-hi);background:#10090a}
   .r4m-branch-proxy,.r4m-inspect-body>div{border-color:var(--r4m-line)}
   .r4m-inspect-body strong,.r4m-inspect-body code,.r4m-inspect-body p{color:#d8d4cc}
-  .r4m-inspect-suggest{width:100%;min-height:48px;margin-top:16px;border:1px solid var(--r4m-red-hi);background:transparent;color:var(--r4m-red-hi);font:600 .48rem var(--font-mono,"DM Mono",monospace);letter-spacing:.12em}
+  .r4m-inspect-suggest{width:100%;min-height:48px;margin-top:16px;margin-bottom:calc(64px + env(safe-area-inset-bottom));border:1px solid var(--r4m-red-hi);background:transparent;color:var(--r4m-red-hi);font:600 .48rem var(--font-mono,"DM Mono",monospace);letter-spacing:.12em}
 
   @media (max-width:390px){
     .r4m-shell{padding-left:15px;padding-right:15px}
