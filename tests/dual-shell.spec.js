@@ -427,13 +427,10 @@ test('mobile redesign keeps contract language and existing capability actions re
   await expect(page.locator('#r4mHero h1')).toContainText('NO RANKING.');
   await expect(page.locator('#r4mRoll')).toContainText('COMMIT → REVEAL → EXPLORE');
 
-  for (const action of ['filter', 'branch', 'history', 'inspect', 'replay-inspection']) {
-    await expect(page.locator('.r4m-nav [data-mobile-action="' + action + '"]')).toBeVisible();
+  await page.locator('#r4mNavMenu').click();
+  for (const action of ['filter', 'branch', 'history', 'inspect', 'replay-inspection', 'trail-file', 'comparison', 'proof-session']) {
+    await expect(page.locator('#r4mMenuSheet [data-mobile-action="' + action + '"]')).toBeVisible();
   }
-  for (const action of ['trail-file', 'comparison', 'proof-session']) {
-    await expect(page.locator('.r4m-trail [data-mobile-action="' + action + '"]')).toBeVisible();
-  }
-  await expect(page.locator('.r4m-nav [data-mobile-action="replay-inspection"]')).toBeVisible();
 });
 
 
@@ -515,7 +512,8 @@ test('mobile exposes COPY TRAIL through the existing desktop shareTrail engine',
     window.shareTrail = () => { window.__p22ShareTrailCalls += 1; };
   });
 
-  const copyTrail = page.locator('[data-mobile-action="copy-trail"]');
+  await page.locator('#r4mNavMenu').click();
+  const copyTrail = page.locator('#r4mMenuSheet [data-mobile-action="copy-trail"]');
   await expect(copyTrail).toBeVisible();
   await expect(copyTrail).toHaveText('COPY TRAIL');
   await copyTrail.click();
@@ -538,7 +536,8 @@ test('P2-3 mobile help is a touch guide, not desktop keyboard shortcuts', async 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  const help = page.locator('[data-mobile-action="help"]');
+  await page.locator('#r4mNavMenu').click();
+  const help = page.locator('#r4mMenuSheet [data-mobile-action="help"]');
   await expect(help).toBeVisible();
   await help.click();
 
@@ -596,15 +595,10 @@ test('P2-5 mobile exposes History and Replay once while retaining trail tools', 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  await expect(page.locator('[data-mobile-action="history"]')).toHaveCount(1);
-  await expect(page.locator('[data-mobile-action="replay-inspection"]')).toHaveCount(1);
-  await expect(page.locator('.r4m-nav [data-mobile-action="history"]')).toBeVisible();
-  await expect(page.locator('.r4m-nav [data-mobile-action="replay-inspection"]')).toBeVisible();
-
-  await expect(page.locator('[data-mobile-action="trail-file"]')).toBeVisible();
-  await expect(page.locator('[data-mobile-action="copy-trail"]')).toBeVisible();
-  await expect(page.locator('[data-mobile-action="comparison"]')).toBeVisible();
-  await expect(page.locator('[data-mobile-action="proof-session"]')).toBeVisible();
+  await page.locator('#r4mNavMenu').click();
+  for (const action of ['history', 'replay-inspection', 'trail-file', 'copy-trail', 'comparison', 'proof-session']) {
+    await expect(page.locator('#r4mMenuSheet [data-mobile-action="' + action + '"]')).toBeVisible();
+  }
 });
 
 
