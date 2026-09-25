@@ -603,6 +603,8 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   html.r4m-stage-blind .r4m-roll-again{display:none!important}
   html.r4m-stage-blind .r4m-descent-entry{display:block!important;margin-top:4px}
 
-  /* Secondary instruments remain authoritative but leave the landing surface. */
-  .r4m-trail{display:none}
+  /* Intermediate compatibility checkpoint: established capability surfaces
+     stay visible until Part 2 migrates them into the instrument menu. */
+  .r4m-trail{display:block}
+  .r4m-descent-entry[hidden]{display:block!important}
 }
