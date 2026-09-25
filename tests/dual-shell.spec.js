@@ -703,7 +703,7 @@ test('mobile primary stage swaps ROLL for the disclosed result without auto-scro
   await expect(page.locator('html')).toHaveClass(/r4m-stage-result/);
 });
 
-test('mobile primary mode switch keeps ROLL and Blind Descent mutually exclusive', async ({ page }, testInfo) => {
+test('mobile primary mode switch changes the primary instrument while legacy Blind Descent remains reachable', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
@@ -715,6 +715,13 @@ test('mobile primary mode switch keeps ROLL and Blind Descent mutually exclusive
 
   await page.locator('#r4mModeRoll').click();
   await expect(page.locator('html')).not.toHaveClass(/r4m-stage-blind/);
+  await expect(page.locator('#r4mModeRoll')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#r4mModeBlind')).toHaveAttribute('aria-pressed', 'false');
   await expect(page.locator('#r4mRoll')).toBeVisible();
-  await expect(page.locator('#r4mDescentEntry')).toBeHidden();
+
+  // Compatibility checkpoint: the established Blind Descent entry remains
+  // visibly reachable until Part 2 deliberately migrates it into MENU.
+  const legacyBlindEntry = page.locator('#r4mDescentEntry');
+  await expect(legacyBlindEntry).toBeVisible();
+  await expect(legacyBlindEntry.locator('[data-mobile-action="blind-descent"]')).toBeEnabled();
 });
