@@ -552,3 +552,21 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-header-actions .r4m-zip{display:none}
   .r4m-wordmark:after{font-size:.31rem;margin-left:8px;padding-left:8px}
 }
+
+
+/* Reference hierarchy pass: fewer boxes, harder type contrast, one clear CTA. */
+@media (max-width:900px){
+  #r4mRouteMount:not(:empty){border:0;border-top:1px solid #3a3029;border-bottom:1px solid #2b2420;box-shadow:inset 3px 0 0 #c51c23;padding:17px 15px 16px}
+  #r4mRouteMount:not(:empty):before{font-size:.43rem;letter-spacing:.19em;margin-bottom:7px}
+  #r4mRouteMount h1,#r4mRouteMount h2,#r4mRouteMount h3{font-size:clamp(2rem,11vw,3.25rem)!important;line-height:.82!important;letter-spacing:-.055em!important;margin:3px 0 12px!important}
+  #r4mRouteMount p{font-size:.78rem;line-height:1.42}
+  #r4mRouteMount button{min-height:46px}
+  #r4mRouteMount button:first-of-type{background:#e31d27!important;border-color:#e31d27!important;color:#090706!important;font-weight:900!important;letter-spacing:.09em;box-shadow:0 0 18px rgba(227,29,39,.14)}
+  .r4m-descent-entry{border:0;border-top:1px solid #342d27;border-bottom:1px solid #342d27;box-shadow:inset 3px 0 0 #b51920;border-radius:0}
+  .r4m-trail{border:0;border-top:1px solid #302923}
+  .r4m-ledger{margin:0;border:0;border-top:1px solid #2d2722;background:#080706;min-height:43px;text-align:left;padding-left:13px}
+  .r4m-ledger:last-of-type{border-bottom:1px solid #2d2722}
+  .r4m-ledger:after{content:"›";float:right;color:#8e8373;font-size:1rem}
+  .r4m-section-title{margin-bottom:5px}
+  .r4m-trail-scroll{border-top:1px solid #241f1b;border-bottom:1px solid #241f1b}
+}
