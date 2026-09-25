@@ -517,3 +517,38 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-descent-entry p{color:#968a78}
   .r4m-nav{background:linear-gradient(180deg,rgba(8,7,6,.97),#050505);border-top:1px solid #332b25}
 }
+
+
+/* Batch presentation pass: bring the shell and revealed-route state up to
+   the frozen ROLL's Core / Industrial fidelity. Presentation only. */
+@media (max-width:900px){
+  .r4m-header{height:64px;padding:0 15px}
+  .r4m-wordmark{font-size:1.42rem;line-height:1;letter-spacing:.035em}
+  .r4m-wordmark:after{content:"EXPLORE DIFFERENT\A BUILD BETTER";white-space:pre;display:inline-block;margin-left:12px;padding-left:11px;border-left:1px solid #542025;color:#897c6b;font-size:.35rem;font-weight:700;line-height:1.45;letter-spacing:.13em;vertical-align:middle}
+  .r4m-header-actions{gap:5px}.r4m-header-actions button,.r4m-header-actions a{font-size:.48rem;letter-spacing:.08em}
+  .r4m-filter-strip{min-height:44px;padding:6px 15px}
+  .r4m-filter-strip small,.r4m-status{font-size:.43rem;letter-spacing:.13em}
+  .r4m-filter-strip strong{font-size:.58rem;letter-spacing:.12em}
+  .r4m-status{min-height:27px;padding:5px 15px;color:#7f7464}
+  .r4m-status b{color:#d72a31}
+  #r4mRouteMount{margin:0 12px 14px}
+  #r4mRouteMount:not(:empty){position:relative;border:1px solid #342d27;background:
+    linear-gradient(90deg,rgba(208,28,36,.05),transparent 36%),
+    linear-gradient(180deg,#0b0a09,#060606);
+    box-shadow:inset 3px 0 0 #c51c23,0 8px 24px rgba(0,0,0,.25);padding:15px 14px 14px}
+  #r4mRouteMount:not(:empty):before{content:"DESCENT COMPLETE";display:block;margin:0 0 9px;color:#d52a31;font-size:.5rem;font-weight:900;letter-spacing:.16em}
+  #r4mRouteMount h1,#r4mRouteMount h2,#r4mRouteMount h3{max-width:100%;margin:0 0 8px;color:#eee3d2;font-size:clamp(1.35rem,7.2vw,2rem)!important;line-height:.92!important;letter-spacing:-.025em;text-transform:uppercase;text-wrap:balance}
+  #r4mRouteMount a{overflow-wrap:anywhere}
+  #r4mRouteMount p{max-width:100%;color:#b6aa98;line-height:1.38}
+  #r4mRouteMount button{border-color:#39312b}
+  .r4m-trail{border-top:1px solid #302923;background:linear-gradient(180deg,#090807,#060606)}
+  .r4m-section-title{border-left:3px solid #c51c23;padding-left:9px}
+  .r4m-ledger{background:#090807;border-color:#302923}
+  .r4m-nav button{position:relative;color:#8e8373}
+  .r4m-nav button:focus-visible,.r4m-nav button:active{color:#e1272f}
+  .r4m-nav button:active:after{content:"";position:absolute;left:28%;right:28%;bottom:1px;height:2px;background:#d51f27}
+}
+@media (max-width:430px){
+  .r4m-header-actions .r4m-zip{display:none}
+  .r4m-wordmark:after{font-size:.31rem;margin-left:8px;padding-left:8px}
+}
