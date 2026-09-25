@@ -684,35 +684,37 @@ test('document body has no rendered literal escaped-newline text node', async ({
 });
 
 
-test('mobile reveal carries the viewport to each newly disclosed route', async ({ page }, testInfo) => {
+
+test('mobile primary stage swaps ROLL for the disclosed result without auto-scroll', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
+  const before = await page.evaluate(() => window.scrollY);
   await page.locator('#r4mRoll').click();
   await expect(page.locator('#r4mRoute')).toBeVisible();
-  await page.waitForFunction(() => {
-    const mount = document.getElementById('r4mRouteMount');
-    if (!mount || window.scrollY <= 0) return false;
-    const top = mount.getBoundingClientRect().top;
-    return top >= 60 && top <= 150;
-  });
+  await expect(page.locator('html')).toHaveClass(/r4m-stage-result/);
+  await expect(page.locator('#r4mRoll')).toBeHidden();
+  await expect(page.locator('#r4mRollAgain')).toBeVisible();
+  expect(await page.evaluate(() => window.scrollY)).toBe(before);
 
-  const first = await page.evaluate(() => ({
-    scrollY: window.scrollY,
-    routeTop: document.getElementById('r4mRouteMount').getBoundingClientRect().top,
-  }));
-  expect(first.scrollY).toBeGreaterThan(0);
-  expect(first.routeTop).toBeGreaterThanOrEqual(60);
-  expect(first.routeTop).toBeLessThanOrEqual(150);
-
-  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'auto' }));
-  await page.locator('#r4mRoll').click();
-  await page.waitForFunction(() => {
-    const mount = document.getElementById('r4mRouteMount');
-    if (!mount || window.scrollY <= 0) return false;
-    const top = mount.getBoundingClientRect().top;
-    return top >= 60 && top <= 150;
-  });
+  await page.locator('#r4mRollAgain').click();
   await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expect(page.locator('html')).toHaveClass(/r4m-stage-result/);
+});
+
+test('mobile primary mode switch keeps ROLL and Blind Descent mutually exclusive', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mModeBlind').click();
+  await expect(page.locator('html')).toHaveClass(/r4m-stage-blind/);
+  await expect(page.locator('#r4mDescentEntry')).toBeVisible();
+  await expect(page.locator('#r4mRoll')).toBeHidden();
+
+  await page.locator('#r4mModeRoll').click();
+  await expect(page.locator('html')).not.toHaveClass(/r4m-stage-blind/);
+  await expect(page.locator('#r4mRoll')).toBeVisible();
+  await expect(page.locator('#r4mDescentEntry')).toBeHidden();
 });
