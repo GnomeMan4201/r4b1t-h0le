@@ -822,3 +822,106 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     --r4m-time-disclose:0ms;
   }
 }
+
+
+/* Authoritative ROLL choreography — presentation follows machine state.
+   LOCKED is the final concealed seat. Disclosure styling begins only at
+   CARD_ENTERING -> data-r4m-presentation="reveal". */
+@media (max-width:900px){
+  .r4m-roll .r4m-roll-chassis,
+  .r4m-roll .r4m-roll-face,
+  .r4m-roll .r4m-roll-ring{
+    will-change:transform;
+  }
+
+  .r4m-roll[data-presentation-state="committed"] .r4m-roll-face{
+    transform:translateY(6px) scale(.992);
+    transition:transform 70ms var(--r4m-ease-mass);
+  }
+  .r4m-roll[data-presentation-state="committed"] .r4m-roll-chassis{
+    transform:translateY(4px) scale(.988);
+    transition:transform 90ms var(--r4m-ease-mass);
+  }
+
+  .r4m-roll[data-presentation-state="travel"] .r4m-roll-ring-outer{
+    transform:rotate(22deg);
+    transition:transform 260ms cubic-bezier(.22,.64,.28,1);
+  }
+  .r4m-roll[data-presentation-state="travel"] .r4m-roll-ring-inner{
+    transform:rotate(-34deg);
+    transition:transform 260ms cubic-bezier(.22,.64,.28,1);
+  }
+
+  .r4m-roll[data-presentation-state="brake"] .r4m-roll-chassis{
+    transform:translateY(3px) scale(.991);
+    transition:transform 360ms cubic-bezier(.08,.72,.12,1);
+  }
+  .r4m-roll[data-presentation-state="brake"] .r4m-roll-face{
+    transform:translateY(5px) scale(.996);
+    transition:transform 360ms cubic-bezier(.08,.72,.12,1);
+  }
+  .r4m-roll[data-presentation-state="brake"] .r4m-roll-ring-outer{
+    transform:rotate(31deg);
+    transition:transform 360ms cubic-bezier(.06,.74,.12,1);
+  }
+  .r4m-roll[data-presentation-state="brake"] .r4m-roll-ring-inner{
+    transform:rotate(-47deg);
+    transition:transform 360ms cubic-bezier(.06,.74,.12,1);
+  }
+
+  .r4m-roll[data-presentation-state="seat"] .r4m-roll-chassis,
+  .r4m-roll[data-presentation-state="seat"] .r4m-roll-face{
+    transform:translateY(1px) scale(1);
+    transition:transform 40ms var(--r4m-ease-seat);
+  }
+  html[data-r4m-presentation="seat"] .r4m-header,
+  html[data-r4m-presentation="seat"] .r4m-filter-strip,
+  html[data-r4m-presentation="seat"] .r4m-status,
+  html[data-r4m-presentation="seat"] .r4m-hero,
+  html[data-r4m-presentation="seat"] .r4m-mode-switch{
+    opacity:.34;
+  }
+
+  html[data-r4m-presentation="reveal"] .r4m-roll{
+    opacity:0;
+    transform:scale(.985);
+    pointer-events:none;
+    transition:opacity 110ms linear,transform 110ms var(--r4m-ease-seat);
+  }
+  html[data-r4m-presentation="reveal"] #r4mRouteMount{
+    opacity:1;
+    transform:translateY(0);
+  }
+  html[data-r4m-presentation="revealed"] #r4mRouteMount h1,
+  html[data-r4m-presentation="revealed"] #r4mRouteMount h2,
+  html[data-r4m-presentation="revealed"] #r4mRouteMount h3{
+    animation:r4m-domain-seat var(--r4m-time-disclose) var(--r4m-ease-seat) both;
+  }
+  html[data-r4m-presentation="revealed"] #r4mRouteMount .r4m-route-actions,
+  html[data-r4m-presentation="revealed"] #r4mRouteMount .r4m-enter,
+  html[data-r4m-presentation="revealed"] #r4mRouteMount .r4m-next{
+    animation:r4m-actions-arrive 180ms linear 90ms both;
+  }
+
+  @keyframes r4m-domain-seat{
+    from{opacity:.01;transform:translateY(8px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  @keyframes r4m-actions-arrive{
+    from{opacity:0}
+    to{opacity:1}
+  }
+}
+
+@media (prefers-reduced-motion:reduce) and (max-width:900px){
+  .r4m-roll .r4m-roll-chassis,
+  .r4m-roll .r4m-roll-face,
+  .r4m-roll .r4m-roll-ring,
+  html[data-r4m-presentation] .r4m-roll,
+  html[data-r4m-presentation] #r4mRouteMount,
+  html[data-r4m-presentation] #r4mRouteMount *{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+  }
+}
