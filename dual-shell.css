@@ -673,3 +673,62 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     padding:0 0 16px;
   }
 }
+
+
+/* Front Surface / Layer 1 — static composition.
+   Presentation only: establish primary / secondary / ambient hierarchy
+   without changing ROLL authority, event timing, or selection semantics. */
+@media (max-width:900px){
+  .r4m-header{height:56px;min-height:56px;padding:0 14px;background:#070706;border-bottom-color:#211b17}
+  .r4m-wordmark{font-size:1.3rem}
+  .r4m-wordmark:after{color:#62594d;border-left-color:#34241f}
+  .r4m-header-actions button,.r4m-header-actions a{color:#766b5d;border-color:#29231e}
+  .r4m-filter-strip{min-height:38px;padding:5px 14px;background:#070706;border-bottom-color:#211c18}
+  .r4m-filter-strip small{color:#5f574c}
+  .r4m-filter-strip strong{color:#a99c89}
+  .r4m-status{min-height:24px;height:24px;padding:3px 14px;color:#5f574c;background:#060605;border-bottom-color:#1d1916}
+  .r4m-status b{color:#a82a2f}
+
+  .r4m-hero{min-height:64px;margin:6px 0 2px;padding:10px 8px 7px;background:transparent;border-bottom:0;grid-template-columns:30px minmax(0,1fr) minmax(92px,.85fr)}
+  .r4m-hero:before{left:8px;right:8px;border-top-color:#27211d}
+  .r4m-hero img{width:30px;height:30px;opacity:.62}
+  .r4m-hero small{color:#786e60;font-size:.35rem}
+  .r4m-hero h1{color:#b8ab97;font-size:.42rem;font-weight:500}
+  .r4m-hero p{color:#6f6659;font-size:.39rem;line-height:1.4}
+
+  .r4m-roll{--r4m-roll-size:min(66vw,252px);min-height:320px;margin:0 0 14px;padding:10px 12px 15px;
+    background:
+      linear-gradient(90deg,rgba(255,255,255,.009) 1px,transparent 1px) 0 0/16px 16px,
+      linear-gradient(rgba(255,255,255,.007) 1px,transparent 1px) 0 0/16px 16px,
+      radial-gradient(circle at 50% 43%,#171411 0,#0a0908 49%,#060605 76%);
+    border-color:#26211d;
+    box-shadow:inset 0 1px 0 #312b25,inset 0 -18px 32px rgba(0,0,0,.58),0 8px 20px rgba(0,0,0,.26)}
+  .r4m-roll:before{inset:9px;border-color:#181512;box-shadow:none}
+  .r4m-roll:after{color:#4f4940;font-size:.36rem;letter-spacing:.2em}
+  .r4m-roll-chassis{border-color:#302c27}
+  .r4m-roll-ring-outer{border-color:#12110f;box-shadow:inset 0 0 0 1px #2c2924}
+  .r4m-roll-ring-inner{box-shadow:inset 0 0 0 1px #2b2622,inset 0 0 0 7px #080706,0 0 0 1px #050505}
+  .r4m-roll-meta{margin-top:4px;padding-top:6px;border-top-color:#28221e;color:#766c5e}
+  .r4m-roll-meta small{color:#b72a30}
+  .r4m-roll-meta em{color:#8e8373}
+
+  .r4m-mode-switch{margin:6px 0 9px;border-color:#28221d;background:#070706}
+  .r4m-mode-switch button{min-height:34px;color:#62594e;border-right-color:#28221d;font-size:.43rem}
+  .r4m-mode-switch button.active{background:#100c0a;color:#b8ad9b;box-shadow:inset 0 -1px 0 #8f1d22}
+
+  .r4m-descent-entry{margin-top:4px!important;padding-left:14px!important;border-top-color:#29231e;border-bottom-color:#29231e;box-shadow:inset 2px 0 0 #7e171c;background:#070706}
+  .r4m-descent-entry strong{color:#c9beac}
+  .r4m-descent-entry p{color:#6f6659}
+
+  .r4m-nav{border-top-color:#28221e;background:#060605}
+  .r4m-nav-minimal button{min-height:54px;color:#746a5d}
+  .r4m-nav-minimal button span{color:#9a8e7c}
+}
+@media (max-width:430px) and (orientation:portrait){
+  .r4m-roll{--r4m-roll-size:min(64vw,244px);min-height:304px}
+}
+@media (max-width:390px) and (orientation:portrait){
+  .r4m-hero{grid-template-columns:28px minmax(0,1fr) minmax(82px,.8fr);gap:7px}
+  .r4m-hero img{width:28px;height:28px}
+  .r4m-roll{--r4m-roll-size:min(62vw,232px);min-height:292px}
+}
