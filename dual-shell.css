@@ -570,3 +570,13 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-section-title{margin-bottom:5px}
   .r4m-trail-scroll{border-top:1px solid #241f1b;border-bottom:1px solid #241f1b}
 }
+
+
+/* Evidence-backed route attributes: existing protocol + corpus classification only. */
+@media (max-width:900px){
+  .r4m-route-top{align-items:center}
+  #r4mTag,#r4mProtocol{display:inline-flex!important;width:max-content;max-width:100%;align-items:center;border:1px solid #49312c;background:#120a09;padding:4px 7px;color:#d82a31;font-size:.43rem;font-weight:800;line-height:1;letter-spacing:.13em;text-transform:uppercase}
+  #r4mTag[hidden],#r4mProtocol[hidden]{display:none!important}
+  #r4mProtocol{margin:0 6px 9px 0;border-color:#332d27;background:#090807;color:#9b8f7d}
+  .r4m-route-wear .wear-readout:before{content:"WEAR / ";color:#d32a31;font-weight:800}
+}
