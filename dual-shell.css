@@ -485,3 +485,35 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
 @media (max-width:390px) and (orientation:portrait){
   .r4m-roll{--r4m-roll-size:min(63vw,238px);min-height:298px}
 }
+
+
+/* Reference-fidelity pass: preserve the proven shell, increase industrial
+   hierarchy and mechanical detail without changing ROLL authority/motion. */
+@media (max-width:900px){
+  .r4m-header{min-height:58px;border-bottom:1px solid #2a0809;background:linear-gradient(180deg,#090807,#050505)}
+  .r4m-wordmark{font-size:1.22rem;font-weight:900;letter-spacing:.055em;color:#eee3d2;text-shadow:0 1px 0 #000}
+  .r4m-wordmark span{color:#eee3d2}.r4m-wordmark{color:#df2028}
+  .r4m-filter-strip{background:#090807;border-bottom-color:#2a0809}
+  .r4m-status{border-bottom:1px solid #231e19;background:#070706}
+  .r4m-hero{background:linear-gradient(90deg,#080706 0,#0d0b09 48%,#080706 100%);border-bottom:1px solid #241f1a}
+  .r4m-roll{background:
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px) 0 0/13px 13px,
+    linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px) 0 0/13px 13px,
+    radial-gradient(circle at 50% 42%,#211d19 0,#0c0b0a 47%,#050505 76%);
+    border-top:1px solid #312a24;border-bottom:1px solid #1c1815}
+  .r4m-roll-chassis:before,.r4m-roll-chassis:after{content:"";position:absolute;z-index:5;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 38% 34%,#a79b89 0,#514b42 26%,#181613 61%,#050505 100%);box-shadow:0 1px 2px #000,inset 0 1px 1px rgba(255,255,255,.25)}
+  .r4m-roll-chassis:before{left:13%;top:18%}.r4m-roll-chassis:after{right:13%;top:18%}
+  .r4m-roll-ring-outer:before,.r4m-roll-ring-outer:after{content:"";position:absolute;z-index:5;width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 38% 34%,#8f8577 0,#403b34 31%,#0b0a09 70%);box-shadow:0 1px 2px #000}
+  .r4m-roll-ring-outer:before{left:7%;bottom:23%}.r4m-roll-ring-outer:after{right:7%;bottom:23%}
+  .r4m-roll-ring-inner{box-shadow:inset 0 0 0 2px #332b26,inset 0 0 0 7px #080706,0 0 0 1px #050505}
+  .r4m-roll-face:before{opacity:.24;background-image:repeating-linear-gradient(25deg,rgba(255,255,255,.055) 0 1px,transparent 1px 4px)}
+  .r4m-roll-face:after{content:"";position:absolute;inset:8%;border-radius:50%;border:1px solid rgba(255,84,88,.34);box-shadow:inset 0 0 18px rgba(255,20,30,.18),0 0 13px rgba(220,20,30,.3);pointer-events:none}
+  .r4m-roll-rabbit{width:64px;height:64px;background:#080707;filter:drop-shadow(0 2px 0 rgba(255,255,255,.05)) drop-shadow(0 0 8px rgba(0,0,0,.65))}
+  .r4m-roll-face strong{font-size:1.18rem;letter-spacing:.2em;text-shadow:0 1px 0 rgba(255,255,255,.09)}
+  .r4m-roll-meta{margin-top:7px;border-top:1px solid #332b25;padding-top:7px}
+  .r4m-roll-meta small{color:#d52a31;font-weight:800;letter-spacing:.12em}
+  .r4m-descent-entry{border:1px solid #342d27;background:linear-gradient(180deg,#0b0a09,#070706);box-shadow:inset 3px 0 0 #b51920}
+  .r4m-descent-entry strong{font-size:1rem;letter-spacing:.09em;color:#eee3d2}
+  .r4m-descent-entry p{color:#968a78}
+  .r4m-nav{background:linear-gradient(180deg,rgba(8,7,6,.97),#050505);border-top:1px solid #332b25}
+}
