@@ -218,6 +218,27 @@
     reportMotion('PRESENTATION-' + next.toUpperCase(), roll, next);
   }
 
+  function projectAuthoritativeRollPresentation(machineState) {
+    var projection = {
+      'PRESSED': 'contact',
+      'COMPRESSING': 'compression',
+      'RELEASED': 'committed',
+      'STRIP_ACCELERATING': 'travel',
+      'STRIP_DECELERATING': 'brake',
+      'LOCKED': 'seat',
+      'CARD_ENTERING': 'reveal',
+      'SETTLED': 'revealed',
+      'CANCELLED': 'idle',
+      'IDLE': 'idle'
+    };
+    var next = projection[machineState];
+    if (!next) return false;
+    setRollPresentationState(next);
+    return true;
+  }
+
+  window.__r4b1tProjectRollPresentation = projectAuthoritativeRollPresentation;
+
   function bindPressLifecycle(host) {
     function buttonFrom(event) {
       var target = event.target && event.target.closest ? event.target.closest('button') : null;
