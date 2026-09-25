@@ -112,24 +112,35 @@
         '<div id="r4mRouteMount" aria-live="polite"></div>',
         '<button type="button" class="r4m-roll-again" data-mobile-action="roll-again" id="r4mRollAgain" hidden>ROLL AGAIN</button>',
         '</div>',
-        '<section class="r4m-trail">',
-          '<div class="r4m-section-title"><span>TRAIL</span><b id="r4mTrailCount">00</b></div>',
-          '<div class="r4m-trail-scroll" id="r4mTrailItems"><span class="r4m-empty">NO ROUTES YET</span></div>',
-          '<button type="button" class="r4m-ledger" data-mobile-action="trail-file">TRAIL FILE / REPLAY ↗</button>',
-          '<button type="button" class="r4m-ledger" data-mobile-action="copy-trail">COPY TRAIL</button>',
-          '<button type="button" class="r4m-ledger" data-mobile-action="comparison">COMPARE TRAILS ↗</button>',
-          '<button type="button" class="r4m-ledger" data-mobile-action="proof-session">PROOF SESSION ↗</button>',
-          '<img class="r4m-banana" src="banana-note.svg" alt="badBANANA note">',
-        '</section>',
-        '<nav class="r4m-nav" aria-label="Mobile controls">',
-          '<button type="button" data-mobile-action="filter"><span>▽</span>FILTER</button>',
-          '<button type="button" data-mobile-action="branch"><span>⑂</span>BRANCH</button>',
-          '<button type="button" data-mobile-action="history"><span>◷</span>HISTORY</button>',
-          '<button type="button" data-mobile-action="inspect"><span>◉</span>ROUTE INFO</button>',
-          '<button type="button" data-mobile-action="replay-inspection"><span>↻</span>REPLAY</button>',
+        '<nav class="r4m-nav r4m-nav-minimal" aria-label="Mobile controls">',
+          '<button type="button" data-mobile-action="nav-roll" id="r4mNavRoll"><span>●</span>ROLL</button>',
+          '<button type="button" data-mobile-action="menu" id="r4mNavMenu" aria-expanded="false" aria-controls="r4mMenuSheet"><span>≡</span>MENU</button>',
         '</nav>',
       '</main>',
       '<div class="r4m-sheet-backdrop" id="r4mBackdrop" hidden></div>',
+      '<aside class="r4m-sheet r4m-menu-sheet" id="r4mMenuSheet" aria-hidden="true">',
+        '<div class="r4m-sheet-head"><strong>INSTRUMENTS</strong><button type="button" data-mobile-action="close-sheets">CLOSE</button></div>',
+        '<div class="r4m-menu-body">',
+          '<section class="r4m-trail">',
+            '<div class="r4m-section-title"><span>TRAIL</span><b id="r4mTrailCount">00</b></div>',
+            '<div class="r4m-trail-scroll" id="r4mTrailItems"><span class="r4m-empty">NO ROUTES YET</span></div>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="history">HISTORY</button>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="trail-file">TRAIL FILE / REPLAY ↗</button>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="copy-trail">COPY TRAIL</button>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="comparison">COMPARE TRAILS ↗</button>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="proof-session">PROOF SESSION ↗</button>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="replay-inspection">VERIFY + REPLAY ↗</button>',
+          '</section>',
+          '<section class="r4m-menu-tools" aria-label="Route and exploration tools">',
+            '<button type="button" data-mobile-action="filter">TERRAIN FILTER ↗</button>',
+            '<button type="button" data-mobile-action="branch">BRANCH ↗</button>',
+            '<button type="button" data-mobile-action="inspect">ROUTE INFO ↗</button>',
+            '<button type="button" data-mobile-action="topology">MAP TRAILS ↗</button>',
+            '<button type="button" data-mobile-action="help">TOUCH GUIDE ↗</button>',
+          '</section>',
+          '<div class="r4m-menu-utilities"><button type="button" data-mobile-action="theme" aria-label="Toggle light or dark theme">THEME</button><a href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a></div>',
+        '</div>',
+      '</aside>',
       '<aside class="r4m-sheet" id="r4mFilterSheet" aria-hidden="true">',
         '<div class="r4m-sheet-head"><strong>TERRAIN FILTER</strong><button type="button" data-mobile-action="close-sheets">CLOSE</button></div>',
         '<div id="r4mFilterOptions" class="r4m-filter-options"></div>',
@@ -421,6 +432,11 @@ MOTION: waiting for target…';
       return;
     }
     if (action === 'stage-roll') return resetRollStage();
+    if (action === 'nav-roll') {
+      closeSheets();
+      return resetRollStage();
+    }
+    if (action === 'menu') return openSheet('r4mMenuSheet');
     if (action === 'stage-blind') return setPrimaryMode('blind');
     if (action === 'roll-again') {
       resetRollStage();
@@ -492,7 +508,7 @@ MOTION: waiting for target…';
 
   function openSheet(id) {
     window.clearTimeout(sheetCloseTimer);
-    ['r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet'].forEach(function (sheetId) {
+    ['r4mMenuSheet', 'r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet'].forEach(function (sheetId) {
       var candidate = byId(sheetId);
       if (candidate && sheetId !== id) {
         candidate.classList.remove('open', 'sheet-open');
@@ -513,10 +529,12 @@ MOTION: waiting for target…';
       reportMotion(id.replace('r4m', '').replace('Sheet', '').toUpperCase(), sheet, 'open');
     });
     document.documentElement.classList.add('r4m-sheet-open');
+    var menuButton = byId('r4mNavMenu');
+    if (menuButton) menuButton.setAttribute('aria-expanded', String(id === 'r4mMenuSheet'));
   }
 
   function closeSheets() {
-    ['r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet'].forEach(function (id) {
+    ['r4mMenuSheet', 'r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet'].forEach(function (id) {
       var sheet = byId(id);
       if (!sheet) return;
       sheet.classList.remove('open', 'sheet-open');
@@ -530,6 +548,8 @@ MOTION: waiting for target…';
       sheetCloseTimer = window.setTimeout(function () { backdrop.hidden = true; }, 330);
     }
     document.documentElement.classList.remove('r4m-sheet-open');
+    var menuButton = byId('r4mNavMenu');
+    if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
   }
 
   function syncRoute() {
