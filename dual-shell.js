@@ -76,7 +76,7 @@
     return [
       '<main class="r4m-shell" aria-label="r4b1t mobile interface">',
         '<header class="r4m-header">',
-          '<div class="r4m-wordmark"><span>R4B1T_</span>H0L3</div>',
+          '<div class="r4m-wordmark"><span>R4B1T</span> H0L3</div>',
           '<div class="r4m-header-actions"><button type="button" data-mobile-action="theme" id="r4mTheme" aria-label="Toggle light or dark theme">◑ LIGHT</button><button type="button" data-mobile-action="help" aria-label="Open touch guide">?</button><a class="r4m-zip" href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a></div>',
         '</header>',
         '<section class="r4m-filter-strip" aria-label="Terrain filter">',
