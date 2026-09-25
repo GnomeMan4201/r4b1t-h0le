@@ -671,3 +671,14 @@ test('P3-2 mobile Trail and observation topology remain readable and touchable',
   if (metrics.wear) expect(metrics.wear.height).toBeGreaterThanOrEqual(60);
   if (metrics.readoutFont) expect(metrics.readoutFont).toBeGreaterThanOrEqual(8);
 });
+
+
+test('document body has no rendered literal escaped-newline text node', async ({ page }) => {
+  await page.goto('./index.html');
+  const escapedNewlineNodes = await page.evaluate(() =>
+    Array.from(document.body.childNodes)
+      .filter((node) => node.nodeType === Node.TEXT_NODE && node.textContent.includes('\\n'))
+      .map((node) => node.textContent)
+  );
+  expect(escapedNewlineNodes).toEqual([]);
+});
