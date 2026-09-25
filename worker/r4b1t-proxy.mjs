@@ -283,11 +283,31 @@ export async function safeFetch(rawUrl, {
   maxRedirects = MAX_REDIRECTS,
   timeoutMs = OUTBOUND_TIMEOUT_MS,
 } = {}) {
-  let current = await validateTarget(rawUrl, { resolver });
+  const deadlineAt = Date.now() + timeoutMs;
+  const remainingMs = () => Math.max(0, deadlineAt - Date.now());
+  const validateWithinDeadline = async (target) => {
+    const remaining = remainingMs();
+    if (remaining <= 0) throw new BoundaryError('upstream request timed out', 504);
+    let timer;
+    try {
+      return await Promise.race([
+        validateTarget(target, { resolver }),
+        new Promise((_, reject) => {
+          timer = setTimeout(() => reject(new BoundaryError('upstream request timed out', 504)), remaining);
+        }),
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+
+  let current = await validateWithinDeadline(rawUrl);
 
   for (let redirects = 0; redirects <= maxRedirects; redirects += 1) {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    const remaining = remainingMs();
+    if (remaining <= 0) throw new BoundaryError('upstream request timed out', 504);
+    const timer = setTimeout(() => controller.abort(), remaining);
     let response;
     try {
       response = await fetchImpl(current.toString(), {
@@ -318,7 +338,7 @@ export async function safeFetch(rawUrl, {
     }
     const location = response.headers.get('Location');
     if (!location) throw new BoundaryError('redirect missing location', 502);
-    current = await validateTarget(new URL(location, current).toString(), { resolver });
+    current = await validateWithinDeadline(new URL(location, current).toString());
   }
   throw new BoundaryError('redirect limit reached', 502);
 }
