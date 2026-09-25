@@ -91,7 +91,7 @@
           '<div class="r4m-hero-copy"><small id="r4mApertureState">APERTURE EMPTY / READY</small><h1>NO PROFILE. NO TRACKING. NO RANKING.</h1></div>',
           '<p>A DOOR. NOT A FEED. SELECTION IS COMMITTED BEFORE THE DESTINATION IS EXPOSED.</p>',
         '</section>',
-        '<button class="r4m-roll" id="r4mRoll" type="button" aria-label="ROLL — commit a route before reveal">',
+        '<button class="r4m-roll" id="r4mRoll" type="button" data-presentation-state="idle" aria-label="ROLL — commit a route before reveal">',
           '<span class="r4m-roll-chassis" aria-hidden="true">',
             '<span class="r4m-roll-ring r4m-roll-ring-outer"></span>',
             '<span class="r4m-roll-ring r4m-roll-ring-inner"></span>',
@@ -209,6 +209,15 @@
     });
   }
 
+  function setRollPresentationState(state) {
+    var roll = byId('r4mRoll');
+    if (!roll) return;
+    var next = state || 'idle';
+    roll.setAttribute('data-presentation-state', next);
+    document.documentElement.setAttribute('data-r4m-presentation', next);
+    reportMotion('PRESENTATION-' + next.toUpperCase(), roll, next);
+  }
+
   function bindPressLifecycle(host) {
     function buttonFrom(event) {
       var target = event.target && event.target.closest ? event.target.closest('button') : null;
@@ -219,12 +228,21 @@
       if (!button || button.disabled) return;
       button.classList.remove('motion-released');
       button.classList.add('motion-pressed');
+      if (button.id === 'r4mRoll') {
+        setRollPresentationState('contact');
+        window.requestAnimationFrame(function () {
+          if (button.classList.contains('motion-pressed')) setRollPresentationState('compression');
+        });
+      }
       reportMotion('PRESS', button, 'motion-pressed');
     });
     function release(event) {
       var button = buttonFrom(event);
       if (!button || !button.classList.contains('motion-pressed')) return;
       button.classList.remove('motion-pressed', 'motion-released');
+      if (button.id === 'r4mRoll' && button.getAttribute('data-presentation-state') !== 'travel') {
+        setRollPresentationState('idle');
+      }
       void button.offsetWidth;
       button.classList.add('motion-released');
       reportMotion('RELEASE', button, 'motion-released');
@@ -240,6 +258,7 @@
     window.clearTimeout(rollPendingTimer);
     button.classList.add('roll-pending');
     button.setAttribute('aria-busy', 'true');
+    if (button.id === 'r4mRoll') setRollPresentationState('travel');
     reportMotion('ROLL-PENDING', button, 'roll-pending');
   }
 
@@ -247,6 +266,7 @@
     if (!button) return;
     button.classList.remove('roll-pending');
     button.removeAttribute('aria-busy');
+    if (button.id === 'r4mRoll') setRollPresentationState('idle');
   }
 
   function animateRouteCounter(value) {
