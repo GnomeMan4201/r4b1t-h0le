@@ -257,7 +257,8 @@ test('mobile wear sample exposes revealed concealed and forked states', async ({
 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitForApplicationReady(page);
-  await page.locator('[data-mobile-action="topology"]').click();
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="topology"]').click();
   await expect(page.locator('#trailTopologyOverlay')).toHaveClass(/\bopen\b/);
   await page.locator('#trailTopologyOverlay .topology-sample').click();
 
@@ -286,7 +287,8 @@ test('ordinary mobile controls execute visible timed motion', async ({ page }, t
   await expect(route).toHaveClass(/\breject-exit\b/);
   await expect(route).toHaveClass(/\bforward-enter\b/, { timeout: 1500 });
 
-  await page.locator('.r4m-nav [data-mobile-action="filter"]').click();
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
   const filterSheet = page.locator('#r4mFilterSheet');
   await expect(filterSheet).toHaveClass(/\bopen\b/);
   const sheetTiming = await filterSheet.evaluate((element) => ({
@@ -299,7 +301,8 @@ test('ordinary mobile controls execute visible timed motion', async ({ page }, t
   await filterSheet.locator('[data-mobile-action="close-sheets"]').click();
   await expect(page.locator('#r4mBackdrop')).toBeHidden({ timeout: 1000 });
 
-  await page.locator('.r4m-nav [data-mobile-action="history"]').click();
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
   const history = page.locator('#historyOverlay');
   await expect(history).toHaveClass(/\bledger-open\b/);
 });
@@ -323,7 +326,8 @@ test('mobile connective motion covers press authority reveal ledger and copy sta
   await page.goto('./?debug-motion=1', { waitUntil: 'domcontentloaded' });
   await waitForApplicationReady(page);
 
-  const filterButton = page.locator('.r4m-nav [data-mobile-action="filter"]');
+  await page.locator('#r4mNavMenu').click();
+  const filterButton = page.locator('#r4mMenuSheet [data-mobile-action="filter"]');
   await filterButton.dispatchEvent('pointerdown');
   await expect(filterButton).toHaveClass(/\bmotion-pressed\b/);
   await filterButton.dispatchEvent('pointerup');
