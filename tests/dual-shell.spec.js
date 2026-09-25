@@ -685,6 +685,31 @@ test('document body has no rendered literal escaped-newline text node', async ({
 
 
 
+test('Part 2 mobile IA exposes secondary instruments through MENU and keeps ROLL as home', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const nav = page.locator('.r4m-nav');
+  await expect(nav.locator('button')).toHaveCount(2);
+  await expect(page.locator('#r4mNavRoll')).toBeVisible();
+  await expect(page.locator('#r4mNavMenu')).toBeVisible();
+
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'false');
+  await expect(page.locator('#r4mNavMenu')).toHaveAttribute('aria-expanded', 'true');
+
+  for (const action of ['history', 'trail-file', 'copy-trail', 'comparison', 'proof-session', 'replay-inspection', 'filter', 'branch', 'inspect', 'topology', 'help']) {
+    await expect(page.locator('#r4mMenuSheet [data-mobile-action="' + action + '"]')).toBeVisible();
+  }
+
+  await page.locator('#r4mNavRoll').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('#r4mNavMenu')).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('#r4mRoll')).toBeVisible();
+  await expect(page.locator('#r4mModeRoll')).toHaveAttribute('aria-pressed', 'true');
+});
+
 test('mobile primary stage swaps ROLL for the disclosed result without auto-scroll', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
