@@ -608,3 +608,68 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-trail{display:block}
   .r4m-descent-entry[hidden]{display:block!important}
 }
+
+
+/* Part 2 mobile IA: primary exploration stays on stage; secondary instruments live in MENU. */
+@media (max-width:900px){
+  .r4m-nav-minimal{
+    grid-template-columns:1fr 1fr!important;
+    gap:1px;
+  }
+  .r4m-nav-minimal button{
+    min-height:58px;
+    font-size:11px;
+    letter-spacing:.14em;
+  }
+  .r4m-nav-minimal button span{
+    display:block;
+    font-size:17px;
+    line-height:1;
+    margin-bottom:4px;
+  }
+  .r4m-menu-sheet{
+    height:min(82dvh,720px);
+    max-height:calc(100dvh - 72px);
+    overflow:hidden;
+  }
+  .r4m-menu-body{
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    padding:0 14px calc(92px + env(safe-area-inset-bottom));
+    height:calc(100% - 54px);
+  }
+  .r4m-menu-sheet .r4m-trail{
+    display:block!important;
+    padding:12px 0 16px;
+    margin:0;
+  }
+  .r4m-menu-tools{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    padding:14px 0;
+    border-top:1px solid rgba(255,255,255,.12);
+  }
+  .r4m-menu-tools button,
+  .r4m-menu-utilities button,
+  .r4m-menu-utilities a{
+    min-height:48px;
+    border:1px solid rgba(255,255,255,.16);
+    background:#111;
+    color:inherit;
+    font:inherit;
+    font-size:10px;
+    letter-spacing:.08em;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:10px;
+  }
+  .r4m-menu-utilities{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    padding:0 0 16px;
+  }
+}
