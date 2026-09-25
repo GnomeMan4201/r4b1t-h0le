@@ -473,3 +473,15 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
 @media (prefers-reduced-motion:reduce) and (max-width:900px){
   .r4m-roll-chassis,.r4m-roll-face,.r4m-roll-rabbit{transition:none}
 }
+
+
+/* Final iPhone viewport fit pass. Keep the control face dominant while
+   clearing its metadata above the fixed bottom navigation. */
+@media (max-width:430px) and (orientation:portrait){
+  .r4m-roll{--r4m-roll-size:min(64vw,246px);min-height:306px;margin-bottom:14px;padding-top:11px;padding-bottom:14px}
+  .r4m-roll-meta{min-height:23px}
+  .r4m-roll:after{bottom:6px}
+}
+@media (max-width:390px) and (orientation:portrait){
+  .r4m-roll{--r4m-roll-size:min(63vw,238px);min-height:298px}
+}
