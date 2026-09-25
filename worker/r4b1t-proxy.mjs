@@ -299,11 +299,20 @@ export async function safeFetch(rawUrl, {
         redirect: 'manual',
         signal: controller.signal,
       });
-    } finally {
+    } catch (error) {
       clearTimeout(timer);
+      throw error;
     }
 
-    if (!isRedirect(response.status)) return { response, finalUrl: current };
+    if (!isRedirect(response.status)) {
+      return {
+        response,
+        finalUrl: current,
+        signal: controller.signal,
+        release: () => clearTimeout(timer),
+      };
+    }
+    clearTimeout(timer);
     if (redirects === maxRedirects) {
       throw new BoundaryError('too many redirects', 502);
     }
@@ -314,7 +323,7 @@ export async function safeFetch(rawUrl, {
   throw new BoundaryError('redirect limit reached', 502);
 }
 
-async function readLimited(response, limit) {
+async function readLimited(response, limit, signal) {
   const length = Number(response.headers.get('Content-Length'));
   if (Number.isFinite(length) && length > limit) {
     throw new BoundaryError('upstream response is too large', 413);
@@ -324,15 +333,35 @@ async function readLimited(response, limit) {
   const reader = response.body.getReader();
   const chunks = [];
   let total = 0;
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
+  const abort = () => reader.cancel().catch(() => {});
+  if (signal) {
+    if (signal.aborted) {
+      reader.cancel().catch(() => {});
+      throw new BoundaryError('upstream request timed out', 504);
+    }
+    signal.addEventListener('abort', abort, { once: true });
+  }
+  try {
+    while (true) {
+      let result;
+      try {
+        result = await reader.read();
+      } catch (error) {
+        if (signal?.aborted) throw new BoundaryError('upstream request timed out', 504);
+        throw error;
+      }
+      const { done, value } = result;
+      if (signal?.aborted) throw new BoundaryError('upstream request timed out', 504);
+      if (done) break;
     total += value.byteLength;
     if (total > limit) {
       await reader.cancel();
       throw new BoundaryError('upstream response is too large', 413);
     }
-    chunks.push(value);
+      chunks.push(value);
+    }
+  } finally {
+    signal?.removeEventListener('abort', abort);
   }
 
   const out = new Uint8Array(total);
@@ -413,14 +442,20 @@ export function parseOpenGraph(html, baseUrl) {
 }
 
 async function proxyRoute(target, deps) {
-  const { response } = await safeFetch(target, deps);
-  if (!response.ok) throw new BoundaryError('upstream request failed', 502);
-  const type = mediaType(response);
-  if (!isJsonType(type) && !isImageType(type)) {
-    throw new BoundaryError('upstream content type is not permitted', 415);
+  const { response, signal, release } = await safeFetch(target, deps);
+  let body;
+  let type;
+  try {
+    if (!response.ok) throw new BoundaryError('upstream request failed', 502);
+    type = mediaType(response);
+    if (!isJsonType(type) && !isImageType(type)) {
+      throw new BoundaryError('upstream content type is not permitted', 415);
+    }
+    const limit = isImageType(type) ? MAX_IMAGE_BYTES : MAX_JSON_BYTES;
+    body = await readLimited(response, limit, signal);
+  } finally {
+    release();
   }
-  const limit = isImageType(type) ? MAX_IMAGE_BYTES : MAX_JSON_BYTES;
-  const body = await readLimited(response, limit);
   return new Response(body, {
     status: 200,
     headers: securityHeaders({ 'Content-Type': type || 'application/octet-stream' }),
@@ -428,16 +463,21 @@ async function proxyRoute(target, deps) {
 }
 
 async function ogRoute(target, deps) {
-  const { response, finalUrl } = await safeFetch(target, {
+  const { response, finalUrl, signal, release } = await safeFetch(target, {
     ...deps,
     accept: 'text/html,application/xhtml+xml;q=0.9',
   });
-  if (!response.ok) throw new BoundaryError('upstream request failed', 502);
-  const type = mediaType(response);
-  if (type !== 'text/html' && type !== 'application/xhtml+xml') {
-    throw new BoundaryError('upstream content is not HTML', 415);
+  let body;
+  try {
+    if (!response.ok) throw new BoundaryError('upstream request failed', 502);
+    const type = mediaType(response);
+    if (type !== 'text/html' && type !== 'application/xhtml+xml') {
+      throw new BoundaryError('upstream content is not HTML', 415);
+    }
+    body = await readLimited(response, MAX_HTML_BYTES, signal);
+  } finally {
+    release();
   }
-  const body = await readLimited(response, MAX_HTML_BYTES);
   return jsonResponse(parseOpenGraph(decodeHtml(body), finalUrl));
 }
 

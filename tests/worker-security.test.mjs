@@ -145,6 +145,47 @@ test('redirect destinations are revalidated before a second fetch', async () => 
   assert.equal(calls, 1);
 });
 
+test('Worker deadline remains active while an upstream body is stalled', async () => {
+  const resolver = async () => ['93.184.216.34'];
+  let close;
+  const fetchImpl = async (_url, options) => {
+    const body = new ReadableStream({
+      start(controller) {
+        close = () => controller.close();
+        options.signal.addEventListener('abort', () => controller.error(new DOMException('Aborted', 'AbortError')), { once: true });
+      },
+    });
+    return new Response(body, {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  };
+
+  const pending = handleRequest(
+    req('/proxy?url=' + encodeURIComponent('https://example.com/stalled.json'), {
+      Origin: allowedOrigin,
+      'CF-Connecting-IP': '203.0.113.10',
+    }),
+    { R4B1T_RATE_LIMITER: { limit: async () => ({ success: true }) } },
+    {},
+    { fetchImpl, resolver, timeoutMs: 15 },
+  );
+  let watchdog;
+  const outcome = await Promise.race([
+    pending.then((response) => ({ response })),
+    new Promise((resolve) => { watchdog = setTimeout(() => resolve({ timedOut: true }), 120); }),
+  ]);
+  clearTimeout(watchdog);
+
+  if (outcome.timedOut) {
+    // Release a pre-fix body so the RED test fails without hanging the runner.
+    close?.();
+    await pending;
+  }
+  assert.equal(outcome.timedOut, undefined, 'stalled body exceeded the bounded Worker deadline');
+  assert.equal(outcome.response.status, 504);
+});
+
 test('proxy route permits JSON but rejects HTML', async () => {
   const resolver = async () => ['93.184.216.34'];
   const goodFetch = async () => new Response('{"ok":true}', {
