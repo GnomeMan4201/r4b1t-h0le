@@ -670,9 +670,8 @@ test('P3-1 mobile landscape uses the available viewport without horizontal overf
   // exercise two rolls rather than assuming the current reveal is already history.
   await page.locator('#r4mRoll').click();
   await expect(page.locator('#r4mRoute')).toBeVisible({ timeout: 2000 });
-  await page.locator('#r4mNavRoll').click();
-  await expect(page.locator('#r4mRoll')).toBeVisible();
-  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRollAgain')).toBeVisible();
+  await page.locator('#r4mRollAgain').click();
   const liveTrail = page.locator('.r4m-trail-scroll');
   await expect(liveTrail).toBeVisible();
   await expect(liveTrail.locator('.r4m-trail-chip').first()).toBeVisible();
