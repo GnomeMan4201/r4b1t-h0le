@@ -23,6 +23,8 @@
     "session:bundle": "node tools/create-proof-session-bundle.js",
     "session:inspect": "node tools/inspect-proof-session-bundle.js",
     "test:replay-ui": "playwright test --config=playwright.replay.config.js",
+    "test:comparison-ui": "playwright test --config=playwright.trail-comparison.config.js",
+    "test:proof-session-ui": "playwright test --config=playwright.proof-session.config.js",
     "test:roll-motion": "node --test tests/roll-motion-state-machine.test.js tests/roll-motion-authority.test.js tests/roll-motion-disclosure.test.js tests/roll-renderer.test.js"
   },
   "devDependencies": {
