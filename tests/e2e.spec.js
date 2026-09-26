@@ -443,3 +443,44 @@ test('desktop Session History opens empty, traps focus, and restores opener', as
   await expect(history).toHaveAttribute('aria-hidden', 'true');
   await expect(historyButton).toBeFocused();
 });
+
+test('desktop Tor modal traps focus and restores the visit control', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitForApplicationReady(page);
+  await page.waitForFunction(() => typeof window.selectUrl === 'function' && typeof window.visit === 'function');
+
+  await page.evaluate(() => window.selectUrl('http://ra4-focus-probe.onion/'));
+
+  const visit = page.locator('#btnVisitMain');
+  await expect(visit).toBeVisible();
+  await visit.focus();
+  await expect(visit).toBeFocused();
+
+  await visit.press('Enter');
+
+  const tor = page.locator('#torModal');
+  await expect(tor).toHaveClass(/\bopen\b/);
+  await expect(tor).toHaveAttribute('role', 'dialog');
+  await expect(tor).toHaveAttribute('aria-modal', 'true');
+  await expect(tor).toHaveAttribute('aria-hidden', 'false');
+  await expectFocusInside(page, '#torModal');
+
+  const last = tor.locator('button:visible').last();
+  await last.focus();
+  await page.keyboard.press('Tab');
+  const wrapped = await page.evaluate(() => {
+    const overlay = document.querySelector('#torModal');
+    const focusables = Array.from(overlay.querySelectorAll('button,a[href],input,textarea,select,[tabindex]:not([tabindex="-1"])'))
+      .filter((el) => !el.disabled && el.getAttribute('aria-hidden') !== 'true' && el.offsetParent !== null);
+    return document.activeElement === focusables[0];
+  });
+  expect(wrapped).toBe(true);
+
+  await page.keyboard.press('Escape');
+  await expect(tor).not.toHaveClass(/\bopen\b/);
+  await expect(tor).toHaveAttribute('aria-hidden', 'true');
+  await expect(visit).toBeFocused();
+});
+
