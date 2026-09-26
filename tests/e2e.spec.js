@@ -1,6 +1,7 @@
 'use strict';
 
 const { test, expect } = require('@playwright/test');
+const { expectFocusInside } = require('./focus-assertions');
 
 async function blockExternalNetwork(page) {
   await page.route('**/*', async (route) => {
@@ -387,8 +388,7 @@ test('desktop Help dialog traps focus, closes with Escape, and restores opener f
   await expect(help).toHaveAttribute('aria-modal', 'true');
   await expect(help).toHaveAttribute('aria-hidden', 'false');
 
-  const focusInside = await page.evaluate(() => document.querySelector('#helpOverlay').contains(document.activeElement));
-  expect(focusInside).toBe(true);
+  await expectFocusInside(page, '#helpOverlay');
 
   const close = page.locator('#helpOverlay .help-close');
   await close.focus();
@@ -425,8 +425,7 @@ test('desktop Session History opens empty, traps focus, and restores opener', as
   await expect(history).toHaveAttribute('aria-hidden', 'false');
   await expect(page.locator('#historyList')).toContainText('no history yet');
 
-  const focusInside = await page.evaluate(() => document.querySelector('#historyOverlay').contains(document.activeElement));
-  expect(focusInside).toBe(true);
+  await expectFocusInside(page, '#historyOverlay');
 
   const close = page.locator('#historyOverlay button').last();
   await close.focus();
