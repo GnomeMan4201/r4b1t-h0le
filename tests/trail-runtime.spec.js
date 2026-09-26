@@ -1,6 +1,7 @@
 'use strict';
 
 const { test, expect } = require('@playwright/test');
+const { expectFocusInside } = require('./focus-assertions');
 
 async function blockExternalNetwork(page) {
   await page.route('**/*', async (route) => {
@@ -105,8 +106,7 @@ test('Trail Ledger traps focus, closes with Escape, and restores opener', async 
   await expect(overlay).toHaveCSS('display', 'flex');
   await expect(overlay).toHaveAttribute('aria-hidden', 'false');
 
-  const focusInside = await page.evaluate(() => document.querySelector('#trailLedgerOverlay').contains(document.activeElement));
-  expect(focusInside).toBe(true);
+  await expectFocusInside(page, '#trailLedgerOverlay');
 
   const buttons = overlay.locator('button:visible');
   const last = buttons.last();
