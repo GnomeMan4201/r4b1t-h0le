@@ -59,12 +59,12 @@ test('RA-3 diagnostic: Help focus timing across repeated desktop opens', async (
   const samples = [];
   for (let i = 0; i < 20; i += 1) {
     await page.goto('./', { waitUntil: 'domcontentloaded' });
-    const theme = page.locator('#themeBtn');
-    await expect(theme).toBeVisible();
-    await theme.focus();
-    await expect(theme).toBeFocused();
+    const helpButton = page.locator('#btnHelp');
+    await expect(helpButton).toBeVisible();
+    await helpButton.focus();
+    await expect(helpButton).toBeFocused();
 
-    await page.evaluate(() => window.toggleHelp());
+    await helpButton.press('Enter');
 
     const snapshot = async (phase) => page.evaluate((label) => {
       const overlay = document.querySelector('#helpOverlay');
