@@ -163,6 +163,36 @@ test('comparison modal supports keyboard close and restores focus', async ({ pag
   await expect(button).toBeFocused();
 });
 
+test('comparison modal focuses the left picker and wraps Tab at its actual boundaries', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.R4b1tTrailComparisonImport);
+
+  const opener = page.getByRole('button', { name: 'compare trails' });
+  await opener.focus();
+  await expect(opener).toBeFocused();
+  await opener.press('Enter');
+
+  const dialog = page.getByRole('dialog', { name: 'Trail comparison' });
+  const leftPicker = dialog.getByLabel('Left trail JSON');
+  const close = dialog.getByRole('button', { name: 'close' });
+  const clear = dialog.getByRole('button', { name: 'Clear' });
+
+  await expect(dialog).toBeVisible();
+  await expect(leftPicker).toBeFocused();
+
+  await clear.focus();
+  await expect(clear).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(close).toBeFocused();
+
+  await page.keyboard.press('Shift+Tab');
+  await expect(clear).toBeFocused();
+
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+});
+
 test('local import implementation has no upload, persistence, telemetry, ranking, or selection hooks', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   const source = await page.evaluate(async () => (await fetch('./trail-comparison-import.js')).text());
