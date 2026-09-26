@@ -157,6 +157,12 @@ test('session history is a keyboard-accessible dialog with reachable empty state
   assert.ok(index.includes('_trapDialogKey(t,a,toggleHistory)'));
 });
 
+test('browser Trail Card handoff delegates SHA-256 formatting to the shared trail primitive', () => {
+  const share = read('trail-card-share.js');
+  assert.ok(share.includes('trail.sha256Hex('));
+  assert.ok(!share.includes("crypto.subtle.digest('SHA-256'"));
+});
+
 test('generated runtime dialogs expose full focus lifecycle semantics', () => {
   const trail = read('trail-runtime.js');
   const blind = read('blind-runtime.js');
