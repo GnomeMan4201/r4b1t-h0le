@@ -22,6 +22,8 @@ on:
       - 'docs/PROOF_SESSIONS_V1_AUDIT.md'
       - 'tests/proof-session-renderer.spec.js'
       - 'tests/proof-session-import.spec.js'
+      - 'playwright.proof-session.config.js'
+      - 'playwright.proof-session.config.js'
       - 'package.json'
       - '.github/workflows/proof-sessions-v1-audit.yml'
   push:
@@ -70,3 +72,7 @@ jobs:
         run: node --check proof-session-renderer.js && node --check proof-session-import.js && node --check proof-session-bundle.js && node --check tools/create-proof-session-bundle.js && node --check tools/inspect-proof-session-bundle.js
       - name: Run Proof Sessions final contract audit suite
         run: node --test tests/proof-session-schema.test.js tests/proof-session-core.test.js tests/proof-session-bundle.test.js tests/proof-sessions-final-contract-audit.test.js
+      - name: Install Chromium for Proof Sessions browser audit
+        run: npx playwright install --with-deps chromium
+      - name: Run Proof Sessions browser audit
+        run: npm run test:proof-session-ui
