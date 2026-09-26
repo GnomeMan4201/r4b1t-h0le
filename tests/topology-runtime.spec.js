@@ -1,6 +1,7 @@
 'use strict';
 
 const { test, expect } = require('@playwright/test');
+const { expectFocusInside } = require('./focus-assertions');
 const fs = require('node:fs/promises');
 
 test('local topology maps verified snapshots and opens revealed stops', async ({ page }) => {
@@ -75,8 +76,7 @@ test('Trail Topology traps focus, closes with Escape, and restores opener', asyn
   await expect(overlay).toHaveClass(/open/);
   await expect(overlay).toHaveAttribute('aria-hidden', 'false');
 
-  const focusInside = await page.evaluate(() => document.querySelector('#trailTopologyOverlay').contains(document.activeElement));
-  expect(focusInside).toBe(true);
+  await expectFocusInside(page, '#trailTopologyOverlay');
 
   const last = overlay.locator('button:visible').last();
   await last.focus();

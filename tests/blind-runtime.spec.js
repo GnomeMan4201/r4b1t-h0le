@@ -1,6 +1,7 @@
 'use strict';
 
 const { test, expect } = require('@playwright/test');
+const { expectFocusInside } = require('./focus-assertions');
 
 async function blockExternalNetwork(page) {
   await page.route('**/*', async (route) => {
@@ -154,8 +155,7 @@ test('Blind Descent traps focus, restores opener, and keeps focused buttons nati
   await expect(overlay).toHaveClass(/open/);
   await expect(overlay).toHaveAttribute('aria-hidden', 'false');
 
-  const focusInside = await page.evaluate(() => document.querySelector('#blindDescentOverlay').contains(document.activeElement));
-  expect(focusInside).toBe(true);
+  await expectFocusInside(page, '#blindDescentOverlay');
 
   const descend = overlay.locator('[data-blind-action="descend"]');
   await descend.focus();
