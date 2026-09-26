@@ -215,6 +215,36 @@ test('Proof Session modal supports Escape close and restores focus', async ({ pa
   await expect(button).toBeFocused();
 });
 
+test('Proof Session modal focuses its picker and wraps Tab at its actual boundaries', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => window.R4b1tProofSessionImport);
+
+  const opener = page.getByRole('button', { name: 'proof session' });
+  await opener.focus();
+  await expect(opener).toBeFocused();
+  await opener.press('Enter');
+
+  const dialog = page.getByRole('dialog', { name: 'Proof Session' });
+  const picker = dialog.getByLabel('Trail JSON files');
+  const close = dialog.getByRole('button', { name: 'close' });
+  const clear = dialog.getByRole('button', { name: 'Clear' });
+
+  await expect(dialog).toBeVisible();
+  await expect(picker).toBeFocused();
+
+  await clear.focus();
+  await expect(clear).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(close).toBeFocused();
+
+  await page.keyboard.press('Shift+Tab');
+  await expect(clear).toBeFocused();
+
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+});
+
 test('Proof Session import implementation contains no persistence, remote transfer, telemetry, ranking, or selection hooks', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   const source = await page.evaluate(async () => (await fetch('./proof-session-import.js')).text());
