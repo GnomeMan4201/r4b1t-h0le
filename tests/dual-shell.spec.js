@@ -641,6 +641,12 @@ test('P3-1 mobile landscape uses the available viewport without horizontal overf
   await expect(menuSheet).toHaveClass(/\bopen\b/);
   await expect(menuSheet).toHaveAttribute('aria-hidden', 'false');
 
+  // The open class is applied before the 360ms sheet transform settles. Assert
+  // final geometry, not an in-flight translated bounding box.
+  await expect.poll(() => menuSheet.evaluate((sheet) => {
+    const rect = sheet.getBoundingClientRect();
+    return rect.bottom <= document.documentElement.clientHeight + 1;
+  })).toBe(true);
   const menuGeometry = await menuSheet.evaluate((sheet) => {
     const rect = sheet.getBoundingClientRect();
     return {
@@ -652,7 +658,6 @@ test('P3-1 mobile landscape uses the available viewport without horizontal overf
     };
   });
   expect(menuGeometry.top).toBeGreaterThanOrEqual(0);
-  expect(menuGeometry.bottom).toBeLessThanOrEqual(menuGeometry.viewportHeight);
   expect(menuGeometry.scrollHeight).toBeGreaterThanOrEqual(menuGeometry.clientHeight);
 
   // #176 contract: ROLL remains a one-tap home action above an open MENU/backdrop.
