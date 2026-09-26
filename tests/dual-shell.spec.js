@@ -666,8 +666,11 @@ test('P3-1 mobile landscape uses the available viewport without horizontal overf
   await expect(menuSheet).not.toHaveClass(/\bopen\b/);
 
   // Landscape trail rules must still target the live trail DOM after the IA migration.
+  // A revealed route is recorded into Trail on the next committed selection, so
+  // exercise two rolls rather than assuming the current reveal is already history.
   await page.locator('#r4mRoll').click();
   await expect(page.locator('#r4mRoute')).toBeVisible({ timeout: 2000 });
+  await page.locator('#r4mRoll').click();
   const liveTrail = page.locator('.r4m-trail-scroll');
   await expect(liveTrail).toBeVisible();
   await expect(liveTrail.locator('.r4m-trail-chip').first()).toBeVisible();
