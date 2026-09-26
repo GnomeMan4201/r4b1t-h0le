@@ -65,6 +65,9 @@
     machine = motionApi.createRollMotionMachine({
       onTransition: function (entry) {
         if (renderer) renderer.renderState(entry.to);
+        if (typeof root.__r4b1tProjectRollPresentation === 'function') {
+          root.__r4b1tProjectRollPresentation(entry.to);
+        }
       },
       onRevealBoundary: function (event) {
         disclosure.reveal(event);

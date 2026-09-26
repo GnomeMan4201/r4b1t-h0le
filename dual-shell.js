@@ -76,7 +76,7 @@
     return [
       '<main class="r4m-shell" aria-label="r4b1t mobile interface">',
         '<header class="r4m-header">',
-          '<div class="r4m-wordmark"><span>R4B1T_</span>H0L3</div>',
+          '<div class="r4m-wordmark"><span>R4B1T</span> H0L3</div>',
           '<div class="r4m-header-actions"><button type="button" data-mobile-action="theme" id="r4mTheme" aria-label="Toggle light or dark theme">◑ LIGHT</button><button type="button" data-mobile-action="help" aria-label="Open touch guide">?</button><a class="r4m-zip" href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a></div>',
         '</header>',
         '<section class="r4m-filter-strip" aria-label="Terrain filter">',
@@ -84,17 +84,25 @@
           '<button type="button" data-mobile-action="filter">SET ↗</button>',
         '</section>',
         '<div class="r4m-status"><span>APERTURE / RANDOM</span><b id="r4mModeLabel">UNBOUNDED</b></div>',
+        '<div class="r4m-mode-switch" role="group" aria-label="Primary exploration mode"><button type="button" class="active" data-mobile-action="stage-roll" id="r4mModeRoll" aria-pressed="true">ROLL</button><button type="button" data-mobile-action="stage-blind" id="r4mModeBlind" aria-pressed="false">BLIND DESCENT</button></div>',
+        '<div class="r4m-primary-stage" id="r4mPrimaryStage">',
         '<section class="r4m-hero" id="r4mHero">',
           '<img src="rabbit-aperture.svg" alt="" aria-hidden="true">',
-          '<small id="r4mApertureState">APERTURE EMPTY / READY</small>',
-          '<h1>NO PROFILE.<br>NO TRACKING.<br><span>NO RANKING.</span></h1>',
-          '<p>A DOOR. NOT A FEED.<br>Selection is committed before the destination is exposed.</p>',
-          '<em>R4B1T / APERTURE</em>',
+          '<div class="r4m-hero-copy"><small id="r4mApertureState">APERTURE EMPTY / READY</small><h1>NO PROFILE. NO TRACKING. NO RANKING.</h1></div>',
+          '<p>A DOOR. NOT A FEED. SELECTION IS COMMITTED BEFORE THE DESTINATION IS EXPOSED.</p>',
         '</section>',
-        '<button class="r4m-roll" id="r4mRoll" type="button">',
-          '<span><small>COMMIT → REVEAL → EXPLORE</small><strong>ROLL</strong><em id="r4mRollScope">FULL CORPUS</em></span><b>↓</b>',
+        '<button class="r4m-roll" id="r4mRoll" type="button" data-presentation-state="idle" aria-label="ROLL — commit a route before reveal">',
+          '<span class="r4m-roll-chassis" aria-hidden="true">',
+            '<span class="r4m-roll-ring r4m-roll-ring-outer"></span>',
+            '<span class="r4m-roll-ring r4m-roll-ring-inner"></span>',
+            '<span class="r4m-roll-face">',
+              '<span class="r4m-roll-rabbit" aria-hidden="true"></span>',
+              '<strong>ROLL</strong>',
+            '</span>',
+          '</span>',
+          '<span class="r4m-roll-meta"><small>COMMIT → REVEAL → EXPLORE</small><em id="r4mRollScope">FULL CORPUS</em></span>',
         '</button>',
-        '<section class="r4m-descent-entry" aria-label="Blind descent and trail wear">',
+        '<section class="r4m-descent-entry" id="r4mDescentEntry" aria-label="Blind descent and trail wear" hidden>',
           '<div><small>TRAIL / COMMITTED</small><strong>BLIND DESCENT</strong><p>Lock a route before seeing it. Wear records every step.</p></div>',
           '<div class="r4m-descent-actions">',
             '<button type="button" data-mobile-action="blind-descent"><span>DESCEND BLIND</span><b>↓</b></button>',
@@ -102,24 +110,37 @@
           '</div>',
         '</section>',
         '<div id="r4mRouteMount" aria-live="polite"></div>',
-        '<section class="r4m-trail">',
-          '<div class="r4m-section-title"><span>TRAIL</span><b id="r4mTrailCount">00</b></div>',
-          '<div class="r4m-trail-scroll" id="r4mTrailItems"><span class="r4m-empty">NO ROUTES YET</span></div>',
-          '<button type="button" class="r4m-ledger" data-mobile-action="trail-file">TRAIL FILE / REPLAY ↗</button>',
-          '<button type="button" class="r4m-ledger" data-mobile-action="copy-trail">COPY TRAIL</button>',
-          '<button type="button" class="r4m-ledger" data-mobile-action="comparison">COMPARE TRAILS ↗</button>',
-          '<button type="button" class="r4m-ledger" data-mobile-action="proof-session">PROOF SESSION ↗</button>',
-          '<img class="r4m-banana" src="banana-note.svg" alt="badBANANA note">',
-        '</section>',
-        '<nav class="r4m-nav" aria-label="Mobile controls">',
-          '<button type="button" data-mobile-action="filter"><span>▽</span>FILTER</button>',
-          '<button type="button" data-mobile-action="branch"><span>⑂</span>BRANCH</button>',
-          '<button type="button" data-mobile-action="history"><span>◷</span>HISTORY</button>',
-          '<button type="button" data-mobile-action="inspect"><span>◉</span>ROUTE INFO</button>',
-          '<button type="button" data-mobile-action="replay-inspection"><span>↻</span>REPLAY</button>',
+        '<button type="button" class="r4m-roll-again" data-mobile-action="roll-again" id="r4mRollAgain" hidden>ROLL AGAIN</button>',
+        '</div>',
+        '<nav class="r4m-nav r4m-nav-minimal" aria-label="Mobile controls">',
+          '<button type="button" data-mobile-action="nav-roll" id="r4mNavRoll"><span>●</span>ROLL</button>',
+          '<button type="button" data-mobile-action="menu" id="r4mNavMenu" aria-expanded="false" aria-controls="r4mMenuSheet"><span>≡</span>MENU</button>',
         '</nav>',
       '</main>',
       '<div class="r4m-sheet-backdrop" id="r4mBackdrop" hidden></div>',
+      '<aside class="r4m-sheet r4m-menu-sheet" id="r4mMenuSheet" aria-hidden="true">',
+        '<div class="r4m-sheet-head"><strong>INSTRUMENTS</strong><button type="button" data-mobile-action="close-sheets">CLOSE</button></div>',
+        '<div class="r4m-menu-body">',
+          '<section class="r4m-trail">',
+            '<div class="r4m-section-title"><span>TRAIL</span><b id="r4mTrailCount">00</b></div>',
+            '<div class="r4m-trail-scroll" id="r4mTrailItems"><span class="r4m-empty">NO ROUTES YET</span></div>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="history">HISTORY</button>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="trail-file">TRAIL FILE / REPLAY ↗</button>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="copy-trail">COPY TRAIL</button>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="comparison">COMPARE TRAILS ↗</button>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="proof-session">PROOF SESSION ↗</button>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="replay-inspection">VERIFY + REPLAY ↗</button>',
+          '</section>',
+          '<section class="r4m-menu-tools" aria-label="Route and exploration tools">',
+            '<button type="button" data-mobile-action="filter">TERRAIN FILTER ↗</button>',
+            '<button type="button" data-mobile-action="branch">BRANCH ↗</button>',
+            '<button type="button" data-mobile-action="inspect">ROUTE INFO ↗</button>',
+            '<button type="button" data-mobile-action="topology">MAP TRAILS ↗</button>',
+            '<button type="button" data-mobile-action="help">TOUCH GUIDE ↗</button>',
+          '</section>',
+          '<div class="r4m-menu-utilities"><button type="button" data-mobile-action="theme" aria-label="Toggle light or dark theme">THEME</button><a href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a></div>',
+        '</div>',
+      '</aside>',
       '<aside class="r4m-sheet" id="r4mFilterSheet" aria-hidden="true">',
         '<div class="r4m-sheet-head"><strong>TERRAIN FILTER</strong><button type="button" data-mobile-action="close-sheets">CLOSE</button></div>',
         '<div id="r4mFilterOptions" class="r4m-filter-options"></div>',
@@ -188,6 +209,36 @@
     });
   }
 
+  function setRollPresentationState(state) {
+    var roll = byId('r4mRoll');
+    if (!roll) return;
+    var next = state || 'idle';
+    roll.setAttribute('data-presentation-state', next);
+    document.documentElement.setAttribute('data-r4m-presentation', next);
+    reportMotion('PRESENTATION-' + next.toUpperCase(), roll, next);
+  }
+
+  function projectAuthoritativeRollPresentation(machineState) {
+    var projection = {
+      'PRESSED': 'contact',
+      'COMPRESSING': 'compression',
+      'RELEASED': 'committed',
+      'STRIP_ACCELERATING': 'travel',
+      'STRIP_DECELERATING': 'brake',
+      'LOCKED': 'seat',
+      'CARD_ENTERING': 'reveal',
+      'SETTLED': 'revealed',
+      'CANCELLED': 'idle',
+      'IDLE': 'idle'
+    };
+    var next = projection[machineState];
+    if (!next) return false;
+    setRollPresentationState(next);
+    return true;
+  }
+
+  window.__r4b1tProjectRollPresentation = projectAuthoritativeRollPresentation;
+
   function bindPressLifecycle(host) {
     function buttonFrom(event) {
       var target = event.target && event.target.closest ? event.target.closest('button') : null;
@@ -198,12 +249,21 @@
       if (!button || button.disabled) return;
       button.classList.remove('motion-released');
       button.classList.add('motion-pressed');
+      if (button.id === 'r4mRoll') {
+        setRollPresentationState('contact');
+        window.requestAnimationFrame(function () {
+          if (button.classList.contains('motion-pressed')) setRollPresentationState('compression');
+        });
+      }
       reportMotion('PRESS', button, 'motion-pressed');
     });
     function release(event) {
       var button = buttonFrom(event);
       if (!button || !button.classList.contains('motion-pressed')) return;
       button.classList.remove('motion-pressed', 'motion-released');
+      if (button.id === 'r4mRoll' && button.getAttribute('data-presentation-state') !== 'travel') {
+        setRollPresentationState('idle');
+      }
       void button.offsetWidth;
       button.classList.add('motion-released');
       reportMotion('RELEASE', button, 'motion-released');
@@ -219,6 +279,7 @@
     window.clearTimeout(rollPendingTimer);
     button.classList.add('roll-pending');
     button.setAttribute('aria-busy', 'true');
+    if (button.id === 'r4mRoll') setRollPresentationState('travel');
     reportMotion('ROLL-PENDING', button, 'roll-pending');
   }
 
@@ -226,6 +287,7 @@
     if (!button) return;
     button.classList.remove('roll-pending');
     button.removeAttribute('aria-busy');
+    if (button.id === 'r4mRoll') setRollPresentationState('idle');
   }
 
   function animateRouteCounter(value) {
@@ -410,6 +472,17 @@ MOTION: waiting for target…';
       if (desktopTheme) desktopTheme.textContent = light ? '◑ DARK' : '◑ LIGHT';
       return;
     }
+    if (action === 'stage-roll') return resetRollStage();
+    if (action === 'nav-roll') {
+      closeSheets();
+      return resetRollStage();
+    }
+    if (action === 'menu') return openSheet('r4mMenuSheet');
+    if (action === 'stage-blind') return setPrimaryMode('blind');
+    if (action === 'roll-again') {
+      resetRollStage();
+      return runRollTransition('roll');
+    }
     if (action === 'filter') return openSheet('r4mFilterSheet');
     if (action === 'help') return openSheet('r4mHelpSheet');
     if (action === 'close-sheets') return closeSheets();
@@ -476,7 +549,7 @@ MOTION: waiting for target…';
 
   function openSheet(id) {
     window.clearTimeout(sheetCloseTimer);
-    ['r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet'].forEach(function (sheetId) {
+    ['r4mMenuSheet', 'r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet'].forEach(function (sheetId) {
       var candidate = byId(sheetId);
       if (candidate && sheetId !== id) {
         candidate.classList.remove('open', 'sheet-open');
@@ -497,10 +570,12 @@ MOTION: waiting for target…';
       reportMotion(id.replace('r4m', '').replace('Sheet', '').toUpperCase(), sheet, 'open');
     });
     document.documentElement.classList.add('r4m-sheet-open');
+    var menuButton = byId('r4mNavMenu');
+    if (menuButton) menuButton.setAttribute('aria-expanded', String(id === 'r4mMenuSheet'));
   }
 
   function closeSheets() {
-    ['r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet'].forEach(function (id) {
+    ['r4mMenuSheet', 'r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet'].forEach(function (id) {
       var sheet = byId(id);
       if (!sheet) return;
       sheet.classList.remove('open', 'sheet-open');
@@ -514,6 +589,8 @@ MOTION: waiting for target…';
       sheetCloseTimer = window.setTimeout(function () { backdrop.hidden = true; }, 330);
     }
     document.documentElement.classList.remove('r4m-sheet-open');
+    var menuButton = byId('r4mNavMenu');
+    if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
   }
 
   function syncRoute() {
@@ -529,6 +606,7 @@ MOTION: waiting for target…';
     var active = Boolean(domain && url);
     route.hidden = !active;
     document.documentElement.classList.toggle('r4m-has-route', active);
+    if (active && !document.documentElement.classList.contains('r4m-stage-blind')) document.documentElement.classList.add('r4m-stage-result');
     var apertureState = byId('r4mApertureState');
     if (apertureState) apertureState.textContent = active ? 'APERTURE OPEN / ROUTE READY' : 'APERTURE EMPTY / READY';
     if (!active) return;
@@ -729,6 +807,28 @@ MOTION: waiting for target…';
     if (target) target.textContent = mode;
   }
 
+  function setPrimaryMode(mode) {
+    var blind = mode === 'blind';
+    document.documentElement.dataset.r4mPrimaryMode = blind ? 'blind' : 'roll';
+    var rollMode = byId('r4mModeRoll');
+    var blindMode = byId('r4mModeBlind');
+    var descent = byId('r4mDescentEntry');
+    var route = byId('r4mRouteMount');
+    if (rollMode) { rollMode.classList.toggle('active', !blind); rollMode.setAttribute('aria-pressed', String(!blind)); }
+    if (blindMode) { blindMode.classList.toggle('active', blind); blindMode.setAttribute('aria-pressed', String(blind)); }
+    if (descent) descent.hidden = !blind;
+    if (route) route.hidden = blind;
+    document.documentElement.classList.toggle('r4m-stage-blind', blind);
+    document.documentElement.classList.toggle('r4m-stage-result', !blind && Boolean(route && route.classList.contains('roll-disclosed')));
+  }
+
+  function resetRollStage() {
+    document.documentElement.classList.remove('r4m-stage-result');
+    var mount = byId('r4mRouteMount');
+    if (mount) mount.hidden = false;
+    setPrimaryMode('roll');
+  }
+
   function syncEverything() {
     syncRoute();
     renderRouteWear();
@@ -772,6 +872,7 @@ MOTION: waiting for target…';
   function init() {
     buildShell();
     applyViewportMode();
+    setPrimaryMode('roll');
     var listener = function () {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(applyViewportMode, 20);

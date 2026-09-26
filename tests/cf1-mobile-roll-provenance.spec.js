@@ -80,7 +80,8 @@ async function readDownload(download) {
 
 async function selectTerrain(page, surface, terrain) {
   if (surface === 'mobile') {
-    await page.locator('[data-mobile-action="filter"]').first().click();
+    await page.locator('#r4mNavMenu').click();
+    await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
     await page.locator('#r4mFilterOptions .r4m-filter-proxy', { hasText: terrain }).click();
     await expect(page.locator('#r4mFilterLabel')).toHaveText(terrain);
     return;
@@ -95,7 +96,8 @@ async function selectTerrain(page, surface, terrain) {
 
 async function openTrailFile(page, surface) {
   if (surface === 'mobile') {
-    await page.locator('[data-mobile-action="trail-file"]').click();
+    await page.locator('#r4mNavMenu').click();
+    await page.locator('#r4mMenuSheet [data-mobile-action="trail-file"]').click();
   } else {
     await page.getByRole('button', { name: 'trail file' }).click();
   }

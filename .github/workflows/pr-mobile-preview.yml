@@ -1,0 +1,45 @@
+name: PR Mobile Preview Artifact
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'dual-shell.js'
+      - 'dual-shell.css'
+      - '.github/workflows/pr-mobile-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.number == 176
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out preview source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Build static preview artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p preview
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='preview' \
+            --exclude='test-results' \
+            --exclude='playwright-report' \
+            ./ preview/
+          printf '%s\n' "PR #176 preview — commit $GITHUB_SHA" > preview/PREVIEW_BUILD.txt
+
+      - name: Upload preview artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: r4b1t-pr176-mobile-preview
+          path: preview/
+          retention-days: 3
+          if-no-files-found: error

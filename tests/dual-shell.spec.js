@@ -73,13 +73,15 @@ test('mobile navigation opens filter and inspect sheets without horizontal overf
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  await page.locator('[data-mobile-action="filter"]').first().click();
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
   await expect(page.locator('#r4mFilterSheet')).toHaveClass(/\bopen\b/);
-  await page.locator('[data-mobile-action="close-sheets"]').first().click();
+  await page.locator('#r4mFilterSheet [data-mobile-action="close-sheets"]').click();
 
-  const routeInfo = page.locator('.r4m-nav [data-mobile-action="inspect"]');
+  await page.locator('#r4mNavMenu').click();
+  const routeInfo = page.locator('#r4mMenuSheet [data-mobile-action="inspect"]');
   await expect(routeInfo).toContainText('ROUTE INFO');
-  await expect(page.locator('.r4m-nav [data-mobile-action="replay-inspection"]')).toContainText('REPLAY');
+  await expect(page.locator('#r4mMenuSheet [data-mobile-action="replay-inspection"]')).toContainText('REPLAY');
   await routeInfo.click();
   await expect(page.locator('#r4mInspectSheet')).toHaveClass(/\bopen\b/);
   await expect(page.locator('#r4mInspectSheet .r4m-sheet-head strong')).toHaveText('INSPECT ROUTE');
@@ -103,7 +105,8 @@ test('mobile branch sheet explains the empty state and offers a recovery action'
     document.getElementById('btnModeBranch').classList.add('active');
   });
 
-  await page.locator('[data-mobile-action="branch"]').click();
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="branch"]').click();
   const empty = page.locator('#r4mBranchOptions .r4m-branch-empty');
   await expect(empty).toBeVisible();
   await expect(empty).toHaveAttribute('role', 'status');
@@ -120,7 +123,8 @@ test('mobile can explicitly return from Branch to Random mode without rolling', 
 
   const routeBefore = await page.locator('#previewUrl').textContent();
 
-  await page.locator('[data-mobile-action="branch"]').click();
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="branch"]').click();
   await expect(page.locator('#r4mBranchSheet')).toHaveClass(/\bopen\b/);
   await expect(page.locator('#btnModeBranch')).toHaveClass(/\bactive\b/);
   await expect(page.locator('#btnModeRandom')).not.toHaveClass(/\bactive\b/);
@@ -338,8 +342,9 @@ test('P2-1 mobile Route Info delegates URL suggestion to the existing desktop en
     window.submitUrl = function () { window.__p21SubmitCalls += 1; };
   });
 
-  await page.locator('[data-mobile-action="inspect"]').click();
-  const suggest = page.locator('[data-mobile-action="suggest-url"]');
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="inspect"]').click();
+  const suggest = page.locator('#r4mInspectSheet [data-mobile-action="suggest-url"]');
   await expect(suggest).toBeVisible();
   await expect(suggest).toHaveText('SUGGEST THIS URL ↗');
   await suggest.click();
@@ -427,13 +432,10 @@ test('mobile redesign keeps contract language and existing capability actions re
   await expect(page.locator('#r4mHero h1')).toContainText('NO RANKING.');
   await expect(page.locator('#r4mRoll')).toContainText('COMMIT → REVEAL → EXPLORE');
 
-  for (const action of ['filter', 'branch', 'history', 'inspect', 'replay-inspection']) {
-    await expect(page.locator('.r4m-nav [data-mobile-action="' + action + '"]')).toBeVisible();
+  await page.locator('#r4mNavMenu').click();
+  for (const action of ['filter', 'branch', 'history', 'inspect', 'replay-inspection', 'trail-file', 'comparison', 'proof-session']) {
+    await expect(page.locator('#r4mMenuSheet [data-mobile-action="' + action + '"]')).toBeVisible();
   }
-  for (const action of ['trail-file', 'comparison', 'proof-session']) {
-    await expect(page.locator('.r4m-trail [data-mobile-action="' + action + '"]')).toBeVisible();
-  }
-  await expect(page.locator('.r4m-nav [data-mobile-action="replay-inspection"]')).toBeVisible();
 });
 
 
@@ -515,7 +517,8 @@ test('mobile exposes COPY TRAIL through the existing desktop shareTrail engine',
     window.shareTrail = () => { window.__p22ShareTrailCalls += 1; };
   });
 
-  const copyTrail = page.locator('[data-mobile-action="copy-trail"]');
+  await page.locator('#r4mNavMenu').click();
+  const copyTrail = page.locator('#r4mMenuSheet [data-mobile-action="copy-trail"]');
   await expect(copyTrail).toBeVisible();
   await expect(copyTrail).toHaveText('COPY TRAIL');
   await copyTrail.click();
@@ -538,7 +541,8 @@ test('P2-3 mobile help is a touch guide, not desktop keyboard shortcuts', async 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  const help = page.locator('[data-mobile-action="help"]');
+  await page.locator('#r4mNavMenu').click();
+  const help = page.locator('#r4mMenuSheet [data-mobile-action="help"]');
   await expect(help).toBeVisible();
   await help.click();
 
@@ -596,15 +600,10 @@ test('P2-5 mobile exposes History and Replay once while retaining trail tools', 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  await expect(page.locator('[data-mobile-action="history"]')).toHaveCount(1);
-  await expect(page.locator('[data-mobile-action="replay-inspection"]')).toHaveCount(1);
-  await expect(page.locator('.r4m-nav [data-mobile-action="history"]')).toBeVisible();
-  await expect(page.locator('.r4m-nav [data-mobile-action="replay-inspection"]')).toBeVisible();
-
-  await expect(page.locator('[data-mobile-action="trail-file"]')).toBeVisible();
-  await expect(page.locator('[data-mobile-action="copy-trail"]')).toBeVisible();
-  await expect(page.locator('[data-mobile-action="comparison"]')).toBeVisible();
-  await expect(page.locator('[data-mobile-action="proof-session"]')).toBeVisible();
+  await page.locator('#r4mNavMenu').click();
+  for (const action of ['history', 'replay-inspection', 'trail-file', 'copy-trail', 'comparison', 'proof-session']) {
+    await expect(page.locator('#r4mMenuSheet [data-mobile-action="' + action + '"]')).toBeVisible();
+  }
 });
 
 
@@ -670,4 +669,83 @@ test('P3-2 mobile Trail and observation topology remain readable and touchable',
   expect(metrics.ledger?.height || 0).toBeGreaterThanOrEqual(48);
   if (metrics.wear) expect(metrics.wear.height).toBeGreaterThanOrEqual(60);
   if (metrics.readoutFont) expect(metrics.readoutFont).toBeGreaterThanOrEqual(8);
+});
+
+
+test('document body has no rendered literal escaped-newline text node', async ({ page }) => {
+  await page.goto('./index.html');
+  const escapedNewlineNodes = await page.evaluate(() =>
+    Array.from(document.body.childNodes)
+      .filter((node) => node.nodeType === Node.TEXT_NODE && node.textContent.includes('\\n'))
+      .map((node) => node.textContent)
+  );
+  expect(escapedNewlineNodes).toEqual([]);
+});
+
+
+
+test('Part 2 mobile IA exposes secondary instruments through MENU and keeps ROLL as home', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const nav = page.locator('.r4m-nav');
+  await expect(nav.locator('button')).toHaveCount(2);
+  await expect(page.locator('#r4mNavRoll')).toBeVisible();
+  await expect(page.locator('#r4mNavMenu')).toBeVisible();
+
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'false');
+  await expect(page.locator('#r4mNavMenu')).toHaveAttribute('aria-expanded', 'true');
+
+  for (const action of ['history', 'trail-file', 'copy-trail', 'comparison', 'proof-session', 'replay-inspection', 'filter', 'branch', 'inspect', 'topology', 'help']) {
+    await expect(page.locator('#r4mMenuSheet [data-mobile-action="' + action + '"]')).toBeVisible();
+  }
+
+  await page.locator('#r4mNavRoll').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('#r4mNavMenu')).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('#r4mRoll')).toBeVisible();
+  await expect(page.locator('#r4mModeRoll')).toHaveAttribute('aria-pressed', 'true');
+});
+
+test('mobile primary stage swaps ROLL for the disclosed result without auto-scroll', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const before = await page.evaluate(() => window.scrollY);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expect(page.locator('html')).toHaveClass(/r4m-stage-result/);
+  await expect(page.locator('#r4mRoll')).toBeHidden();
+  await expect(page.locator('#r4mRollAgain')).toBeVisible();
+  expect(await page.evaluate(() => window.scrollY)).toBe(before);
+
+  await page.locator('#r4mRollAgain').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expect(page.locator('html')).toHaveClass(/r4m-stage-result/);
+});
+
+test('mobile primary mode switch changes the primary instrument while legacy Blind Descent remains reachable', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mModeBlind').click();
+  await expect(page.locator('html')).toHaveClass(/r4m-stage-blind/);
+  await expect(page.locator('#r4mDescentEntry')).toBeVisible();
+  await expect(page.locator('#r4mRoll')).toBeHidden();
+
+  await page.locator('#r4mModeRoll').click();
+  await expect(page.locator('html')).not.toHaveClass(/r4m-stage-blind/);
+  await expect(page.locator('#r4mModeRoll')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#r4mModeBlind')).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.locator('#r4mRoll')).toBeVisible();
+
+  // Compatibility checkpoint: the established Blind Descent entry remains
+  // visibly reachable until Part 2 deliberately migrates it into MENU.
+  const legacyBlindEntry = page.locator('#r4mDescentEntry');
+  await expect(legacyBlindEntry).toBeVisible();
+  await expect(legacyBlindEntry.locator('[data-mobile-action="blind-descent"]')).toBeEnabled();
 });
