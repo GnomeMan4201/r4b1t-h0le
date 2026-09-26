@@ -394,6 +394,8 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
 /* P3-1: use the available phone canvas in landscape without changing interaction semantics. */
 @media (max-width:900px) and (orientation:landscape) and (max-height:560px){
   .r4m-shell{width:100%;max-width:none;padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+  .r4m-menu-sheet{height:auto;max-height:calc(100dvh - 72px);overflow:hidden}
+  .r4m-menu-body{min-height:0;overflow-y:auto}
   .r4m-roll{min-height:92px}
   .r4m-route>p{max-width:72ch}
   .r4m-trail-scroll{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(180px,1fr);grid-template-rows:repeat(2,51px);overflow-x:auto;align-content:start}
