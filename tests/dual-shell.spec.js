@@ -634,6 +634,39 @@ test('P3-1 mobile landscape uses the available viewport without horizontal overf
   expect(metrics.rollWidth).toBeGreaterThan(metrics.viewport * 0.85);
   expect(metrics.trailDisplay).toBe('grid');
   expect(metrics.trailRows.split(' ').length).toBe(2);
+
+  // Current IA must remain usable in the constrained landscape height.
+  await page.locator('#r4mNavMenu').click();
+  const menuSheet = page.locator('#r4mMenuSheet');
+  await expect(menuSheet).toHaveClass(/\bopen\b/);
+  await expect(menuSheet).toHaveAttribute('aria-hidden', 'false');
+
+  const menuGeometry = await menuSheet.evaluate((sheet) => {
+    const rect = sheet.getBoundingClientRect();
+    return {
+      top: rect.top,
+      bottom: rect.bottom,
+      viewportHeight: document.documentElement.clientHeight,
+      scrollHeight: sheet.scrollHeight,
+      clientHeight: sheet.clientHeight
+    };
+  });
+  expect(menuGeometry.top).toBeGreaterThanOrEqual(0);
+  expect(menuGeometry.bottom).toBeLessThanOrEqual(menuGeometry.viewportHeight);
+  expect(menuGeometry.scrollHeight).toBeGreaterThanOrEqual(menuGeometry.clientHeight);
+
+  // #176 contract: ROLL remains a one-tap home action above an open MENU/backdrop.
+  await page.locator('#r4mNavRoll').click();
+  await expect(menuSheet).toHaveAttribute('aria-hidden', 'true');
+  await expect(menuSheet).not.toHaveClass(/\bopen\b/);
+
+  // Landscape trail rules must still target the live trail DOM after the IA migration.
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible({ timeout: 2000 });
+  const liveTrail = page.locator('.r4m-trail-scroll');
+  await expect(liveTrail).toBeVisible();
+  await expect(liveTrail.locator('.r4m-trail-chip').first()).toBeVisible();
+  await expect(liveTrail).toHaveCSS('display', 'grid');
 });
 
 
