@@ -23,19 +23,10 @@
 
   async function loadCorpus() {
     if (state.corpus) return state.corpus;
-    var response = await fetch('urls.txt?v=blind-v02', { cache: 'no-store' });
-    if (!response.ok) throw new Error('Corpus unavailable');
-    var bytes = new Uint8Array(await response.arrayBuffer());
-    state.corpusRevision = 'sha256:' + await trail.sha256Hex(bytes);
-    var text = new TextDecoder().decode(bytes);
-    state.corpus = text.split(/\r?\n/).map(function (url) { return url.trim(); }).filter(function (url) {
-      try {
-        var parsed = new URL(url);
-        return (parsed.protocol === 'http:' || parsed.protocol === 'https:') && !parsed.username && !parsed.password;
-      } catch (_) {
-        return false;
-      }
-    });
+    if (!window.R4b1tCorpusSource) throw new Error('Corpus source unavailable');
+    var authority = await window.R4b1tCorpusSource.loadAuthority();
+    state.corpusRevision = authority.revision;
+    state.corpus = authority.urls.slice();
     if (!state.corpus.length) throw new Error('Corpus contains no usable routes');
     return state.corpus;
   }

@@ -1,8 +1,9 @@
-const CACHE = 'r4b1t-v23-roll-motion-integration';
+const CACHE = 'r4b1t-v24-shared-corpus-source';
 const PRECACHE = [
   './',
   './index.html',
   './anime.min.js',
+  './corpus-source.js',
   './anime-core.min.js',
   './motion-tokens.js',
   './roll-motion-machine.js',
@@ -55,6 +56,7 @@ self.addEventListener('fetch', e => {
   if (
     url.origin !== self.location.origin ||
     url.pathname.endsWith('/urls.txt') ||
+    url.pathname.includes('/corpus/releases/') ||
     url.hostname.endsWith('workers.dev')
   ) {
     return;
