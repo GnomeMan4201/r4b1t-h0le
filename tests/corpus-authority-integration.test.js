@@ -22,26 +22,24 @@ test('corpus authority loads before every production corpus consumer', () => {
   assert.ok(authority < primaryLoader);
 });
 
-test('ROLL, Blind Descent, and Trail resolve the same active authority seam', () => {
-  assert.match(
-    INDEX,
-    /window\.R4b1tCorpusAuthority/,
-  );
-  assert.match(
-    INDEX,
-    /\.activeFetchUrl\(["']roll-v1["']\)/,
-  );
+test('ROLL, Blind Descent, and Trail consume one shared verified active load', () => {
+  assert.match(INDEX, /window\.R4b1tCorpusAuthority/);
+  assert.match(INDEX, /\.loadActive\(\)/);
   assert.match(BLIND, /window\.R4b1tCorpusAuthority/);
-  assert.match(BLIND, /\.activeFetchUrl\(["']blind-v02["']\)/);
+  assert.match(BLIND, /\.loadActive\(\)/);
   assert.match(TRAIL, /window\.R4b1tCorpusAuthority/);
-  assert.match(TRAIL, /\.activeFetchUrl\(["']trail-v1["']\)/);
+  assert.match(TRAIL, /\.loadActive\(\)/);
 });
 
-test('production consumers do not keep independent hardcoded corpus fetches', () => {
+test('production consumers do not perform their own active corpus fetch', () => {
+  assert.doesNotMatch(INDEX, /activeFetchUrl\(/);
+  assert.doesNotMatch(BLIND, /activeFetchUrl\(/);
+  assert.doesNotMatch(TRAIL, /activeFetchUrl\(/);
   assert.doesNotMatch(INDEX, /fetch\(["']urls\.txt\?v=/);
   assert.doesNotMatch(BLIND, /fetch\(["']urls\.txt\?v=/);
   assert.doesNotMatch(TRAIL, /fetch\(["']urls\.txt\?v=/);
 });
+
 
 test('typed candidate path is defined only by the authority registry', () => {
   const candidatePath = 'corpus/releases/typed-candidate-v0.1/urls.txt';
