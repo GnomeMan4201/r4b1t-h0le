@@ -125,6 +125,38 @@ class ProvenanceAggregationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "conflicting source"):
             aggregate_provenance([left, right])
 
+    def test_agreeing_source_assertion_type_claims_merge_type_evidence(self) -> None:
+        left = self.document(
+            "catalog-1",
+            url="https://security.example/tool",
+            resource_type="security_tool",
+            basis={
+                "kind": "source_assertion",
+                "source_id": "catalog-1",
+            },
+        )
+        right = self.document(
+            "catalog-2",
+            url="https://security.example/tool",
+            resource_type="security_tool",
+            basis={
+                "kind": "source_assertion",
+                "source_id": "catalog-2",
+            },
+        )
+        aggregate = aggregate_provenance([left, right])
+        record = aggregate["provenance"]["records"][0]
+
+        self.assertEqual(record["resource_type"]["value"], "security_tool")
+        self.assertEqual(
+            record["resource_type"]["basis"],
+            {
+                "kind": "source_assertions",
+                "source_ids": ["catalog-1", "catalog-2"],
+            },
+        )
+        self.assertEqual(len(aggregate["eligibilityInput"]["records"]), 1)
+
     def test_conflicting_resource_type_claim_fails_closed(self) -> None:
         left = self.document("catalog-1")
         right = self.document(
