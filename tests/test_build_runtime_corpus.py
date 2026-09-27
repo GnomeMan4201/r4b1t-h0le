@@ -101,7 +101,7 @@ class RuntimeCorpusShadowTests(unittest.TestCase):
 
         self.assertEqual(runtime["document"]["count"], 2)
         self.assertEqual(
-            [record["url"] for record in runtime["records"]],
+            [record["url"] for record in runtime["document"]["records"]],
             [
                 "https://github.com/projectdiscovery/nuclei",
                 "https://security.example/tool",
