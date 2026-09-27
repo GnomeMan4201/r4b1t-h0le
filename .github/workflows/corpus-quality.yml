@@ -73,7 +73,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: corpus-quality-${{ github.ref }}
@@ -154,6 +154,27 @@ jobs:
             --eligible typed-corpus-build/eligibility/eligible.json \
             --eligibility-manifest typed-corpus-build/eligibility/manifest.json \
             --out-dir runtime-corpus-build
+
+      - name: Pin RD-5A runtime shadow snapshot
+        if: github.event_name == 'pull_request' && github.head_ref == 'rd5a/runtime-corpus-shadow'
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          cp runtime-corpus-build/typed-urls-v1.txt /tmp/typed-urls-v1.txt
+          cp runtime-corpus-build/typed-runtime-v1.json /tmp/typed-runtime-v1.json
+          git fetch origin "$HEAD_REF"
+          git checkout -B "$HEAD_REF" FETCH_HEAD
+          mkdir -p corpus/runtime
+          cp /tmp/typed-urls-v1.txt corpus/runtime/typed-urls-v1.txt
+          cp /tmp/typed-runtime-v1.json corpus/runtime/typed-runtime-v1.json
+          if [[ -z "$(git status --porcelain -- corpus/runtime)" ]]; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add corpus/runtime/typed-urls-v1.txt corpus/runtime/typed-runtime-v1.json
+          git commit -m 'data: pin runtime corpus shadow snapshot'
+          git push origin "HEAD:$HEAD_REF"
 
       - name: Generate and enforce deterministic corpus evidence
         run: |
