@@ -10,23 +10,28 @@ on:
       - 'tools/corpus_provenance.py'
       - 'tools/source_catalog.py'
       - 'tools/aggregate_provenance.py'
+      - 'tools/build_runtime_corpus.py'
       - 'tests/test_corpus_health.py'
       - 'tests/test_compile_eligibility.py'
       - 'tests/test_profile_eligibility.py'
       - 'tests/test_corpus_provenance.py'
       - 'tests/test_source_catalog.py'
       - 'tests/test_aggregate_provenance.py'
+      - 'tests/test_build_runtime_corpus.py'
       - 'schemas/eligibility-input-v1.schema.json'
       - 'schemas/eligibility-output-v1.schema.json'
       - 'schemas/corpus-provenance-v1.schema.json'
       - 'schemas/source-catalog-v1.schema.json'
+      - 'schemas/runtime-corpus-shadow-v1.schema.json'
       - 'ELIGIBILITY_CONTRACT.md'
       - 'CORPUS_PROVENANCE_CONTRACT.md'
       - 'SOURCE_CATALOG_CONTRACT.md'
       - 'PROVENANCE_AGGREGATION_CONTRACT.md'
+      - 'RUNTIME_CORPUS_SHADOW_CONTRACT.md'
       - 'docs/CORPUS_GOVERNANCE.md'
       - 'corpus/sources/**'
       - 'corpus/catalogs/**'
+      - 'corpus/runtime/**'
       - '.github/corpus-policy.json'
       - '.github/corpus-policy.example.json'
       - '.github/workflows/corpus-quality.yml'
@@ -40,23 +45,28 @@ on:
       - 'tools/corpus_provenance.py'
       - 'tools/source_catalog.py'
       - 'tools/aggregate_provenance.py'
+      - 'tools/build_runtime_corpus.py'
       - 'tests/test_corpus_health.py'
       - 'tests/test_compile_eligibility.py'
       - 'tests/test_profile_eligibility.py'
       - 'tests/test_corpus_provenance.py'
       - 'tests/test_source_catalog.py'
       - 'tests/test_aggregate_provenance.py'
+      - 'tests/test_build_runtime_corpus.py'
       - 'schemas/eligibility-input-v1.schema.json'
       - 'schemas/eligibility-output-v1.schema.json'
       - 'schemas/corpus-provenance-v1.schema.json'
       - 'schemas/source-catalog-v1.schema.json'
+      - 'schemas/runtime-corpus-shadow-v1.schema.json'
       - 'ELIGIBILITY_CONTRACT.md'
       - 'CORPUS_PROVENANCE_CONTRACT.md'
       - 'SOURCE_CATALOG_CONTRACT.md'
       - 'PROVENANCE_AGGREGATION_CONTRACT.md'
+      - 'RUNTIME_CORPUS_SHADOW_CONTRACT.md'
       - 'docs/CORPUS_GOVERNANCE.md'
       - 'corpus/sources/**'
       - 'corpus/catalogs/**'
+      - 'corpus/runtime/**'
       - '.github/corpus-policy.json'
       - '.github/corpus-policy.example.json'
       - '.github/workflows/corpus-quality.yml'
@@ -92,12 +102,14 @@ jobs:
           tools/corpus_provenance.py
           tools/source_catalog.py
           tools/aggregate_provenance.py
+          tools/build_runtime_corpus.py
           tests/test_corpus_health.py
           tests/test_compile_eligibility.py
           tests/test_profile_eligibility.py
           tests/test_corpus_provenance.py
           tests/test_source_catalog.py
           tests/test_aggregate_provenance.py
+          tests/test_build_runtime_corpus.py
 
       - name: Unit tests
         run: |
@@ -107,6 +119,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_corpus_provenance.py' -v
           python -m unittest discover -s tests -p 'test_source_catalog.py' -v
           python -m unittest discover -s tests -p 'test_aggregate_provenance.py' -v
+          python -m unittest discover -s tests -p 'test_build_runtime_corpus.py' -v
 
       - name: Compile pinned source catalogs
         run: |
@@ -133,6 +146,14 @@ jobs:
           python tools/compile_eligibility.py \
             --input typed-corpus-build/eligibility-input.json \
             --out-dir typed-corpus-build/eligibility
+
+      - name: Build runtime corpus shadow
+        run: |
+          python tools/build_runtime_corpus.py \
+            --compiled typed-corpus-build/compiled.json \
+            --eligible typed-corpus-build/eligibility/eligible.json \
+            --eligibility-manifest typed-corpus-build/eligibility/manifest.json \
+            --out-dir runtime-corpus-build
 
       - name: Generate and enforce deterministic corpus evidence
         run: |
@@ -167,6 +188,8 @@ jobs:
             test -s typed-corpus-build/eligibility/eligible.json
             test -s typed-corpus-build/eligibility/excluded.json
             test -s typed-corpus-build/eligibility/manifest.json
+            test -s runtime-corpus-build/typed-urls-v1.txt
+            test -s runtime-corpus-build/typed-runtime-v1.json
           fi
 
       - name: Publish job summary
@@ -192,5 +215,6 @@ jobs:
             eligibility-profile.md
             catalog-build/
             typed-corpus-build/
+            runtime-corpus-build/
           if-no-files-found: warn
           retention-days: 30
