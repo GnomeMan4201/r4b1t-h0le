@@ -99,6 +99,19 @@ class SourceCatalogTests(unittest.TestCase):
         compiled = compile_catalog(self.manifest(), self.snapshot())
         provenance = compiled["provenance"]
         verified = compile_provenance(provenance)
+        self.assertEqual(
+            provenance["sources"],
+            [
+                {
+                    "id": "awesome-security-test",
+                    "url": "https://github.com/example/awesome-security",
+                    "kind": "curated_catalog",
+                    "revision": "0123456789abcdef",
+                    "path": "README.md",
+                    "sha256": self.manifest()["source"]["sha256"],
+                }
+            ],
+        )
 
         by_url = {
             record["url"]: record
