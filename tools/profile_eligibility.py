@@ -15,11 +15,18 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
-from tools.compile_eligibility import (
-    INPUT_SCHEMA,
-    RULESET,
-    compile_document,
-)
+try:
+    from tools.compile_eligibility import (
+        INPUT_SCHEMA,
+        RULESET,
+        compile_document,
+    )
+except ModuleNotFoundError:
+    from compile_eligibility import (
+        INPUT_SCHEMA,
+        RULESET,
+        compile_document,
+    )
 
 PROFILE_SCHEMA = "r4b1t-eligibility-profile-v1"
 
