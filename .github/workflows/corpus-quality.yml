@@ -155,21 +155,6 @@ jobs:
             --release-id typed-candidate-v0.1 \
             --out-dir typed-corpus-build/release
 
-      - name: Emit candidate release transport
-        run: |
-          echo 'R4B1T_RELEASE_URLS_BEGIN'
-          base64 typed-corpus-build/release/urls.txt
-          echo
-          echo 'R4B1T_RELEASE_URLS_END'
-          echo 'R4B1T_RELEASE_RESOURCES_BEGIN'
-          base64 typed-corpus-build/release/resources.json
-          echo
-          echo 'R4B1T_RELEASE_RESOURCES_END'
-          echo 'R4B1T_RELEASE_MANIFEST_BEGIN'
-          base64 typed-corpus-build/release/manifest.json
-          echo
-          echo 'R4B1T_RELEASE_MANIFEST_END'
-
       - name: Verify checked-in typed candidate release
         run: |
           if [[ -d corpus/releases/typed-candidate-v0.1 ]]; then
