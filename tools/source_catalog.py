@@ -16,10 +16,10 @@ from typing import Any
 from urllib.parse import urlsplit
 
 try:
-    from tools.compile_eligibility import sha256_identifier
+    from tools.compile_eligibility import RESOURCE_TYPES, sha256_identifier
     from tools.corpus_provenance import PROVENANCE_SCHEMA, compile_provenance
 except ModuleNotFoundError:
-    from compile_eligibility import sha256_identifier
+    from compile_eligibility import RESOURCE_TYPES, sha256_identifier
     from corpus_provenance import PROVENANCE_SCHEMA, compile_provenance
 
 MANIFEST_SCHEMA = "r4b1t-source-catalog-v1"
@@ -100,6 +100,7 @@ def _normalize_manifest(manifest: Any) -> dict[str, Any]:
             "snapshot_path",
             "scope",
             "extractor",
+            "type_assertions",
         },
         "catalog manifest",
     )
@@ -132,6 +133,42 @@ def _normalize_manifest(manifest: Any) -> dict[str, Any]:
     if not re.fullmatch(r"sha256:[0-9a-f]{64}", expected_digest):
         raise ValueError("source SHA-256 must be a sha256 identifier")
 
+    raw_assertions = manifest.get("type_assertions", [])
+    if not isinstance(raw_assertions, list):
+        raise ValueError("catalog type_assertions must be an array")
+
+    assertions_by_heading: dict[str, str] = {}
+    for index, assertion in enumerate(raw_assertions):
+        if not isinstance(assertion, dict):
+            raise ValueError(f"type assertion {index} must be an object")
+        _exact_keys(
+            assertion,
+            {"heading", "resource_type"},
+            f"type assertion {index}",
+        )
+        heading = _clean_heading(
+            _nonempty(assertion.get("heading"), f"type assertion {index} heading")
+        )
+        resource_type = assertion.get("resource_type")
+        if resource_type not in RESOURCE_TYPES:
+            raise ValueError(
+                f"type assertion {index} resource_type is unsupported"
+            )
+        existing = assertions_by_heading.get(heading)
+        if existing is not None and existing != resource_type:
+            raise ValueError(
+                f"conflicting heading type assertion for: {heading}"
+            )
+        assertions_by_heading[heading] = resource_type
+
+    normalized_assertions = [
+        {
+            "heading": heading,
+            "resource_type": assertions_by_heading[heading],
+        }
+        for heading in sorted(assertions_by_heading)
+    ]
+
     return {
         "schema": MANIFEST_SCHEMA,
         "catalog_id": catalog_id,
@@ -145,6 +182,7 @@ def _normalize_manifest(manifest: Any) -> dict[str, Any]:
         "snapshot_path": snapshot_path,
         "scope": "cybersecurity",
         "extractor": EXTRACTOR,
+        "type_assertions": normalized_assertions,
     }
 
 
@@ -258,38 +296,68 @@ def compile_catalog(
 
     candidates = _extract_candidates(_snapshot_text(snapshot))
     catalog_id = normalized_manifest["catalog_id"]
+    type_by_heading = {
+        assertion["heading"]: assertion["resource_type"]
+        for assertion in normalized_manifest["type_assertions"]
+    }
 
     provenance_records: list[dict[str, Any]] = []
     untyped: list[dict[str, Any]] = []
+    typed_structural = 0
+    typed_source_assertion = 0
     for candidate in candidates:
         structural = _structural_type(candidate["url"])
-        if structural is None:
-            untyped.append(
+        if structural is not None:
+            resource_type, rule_id = structural
+            provenance_records.append(
                 {
-                    **candidate,
-                    "reason": "RESOURCE_TYPE_UNRESOLVED",
-                    "source_id": catalog_id,
+                    "url": candidate["url"],
+                    "resource_type": {
+                        "value": resource_type,
+                        "basis": {
+                            "kind": "structural_rule",
+                            "rule_id": rule_id,
+                        },
+                    },
+                    "scope_assertions": [
+                        {
+                            "scope": "cybersecurity",
+                            "source_id": catalog_id,
+                        }
+                    ],
                 }
             )
+            typed_structural += 1
             continue
 
-        resource_type, rule_id = structural
-        provenance_records.append(
-            {
-                "url": candidate["url"],
-                "resource_type": {
-                    "value": resource_type,
-                    "basis": {
-                        "kind": "structural_rule",
-                        "rule_id": rule_id,
+        asserted_type = type_by_heading.get(candidate["heading"])
+        if asserted_type is not None:
+            provenance_records.append(
+                {
+                    "url": candidate["url"],
+                    "resource_type": {
+                        "value": asserted_type,
+                        "basis": {
+                            "kind": "source_assertion",
+                            "source_id": catalog_id,
+                        },
                     },
-                },
-                "scope_assertions": [
-                    {
-                        "scope": "cybersecurity",
-                        "source_id": catalog_id,
-                    }
-                ],
+                    "scope_assertions": [
+                        {
+                            "scope": "cybersecurity",
+                            "source_id": catalog_id,
+                        }
+                    ],
+                }
+            )
+            typed_source_assertion += 1
+            continue
+
+        untyped.append(
+            {
+                **candidate,
+                "reason": "RESOURCE_TYPE_UNRESOLVED",
+                "source_id": catalog_id,
             }
         )
 
@@ -324,6 +392,8 @@ def compile_catalog(
         "counts": {
             "candidates": len(candidates),
             "typed": len(provenance_records),
+            "typedStructural": typed_structural,
+            "typedSourceAssertion": typed_source_assertion,
             "untyped": len(untyped),
         },
     }
