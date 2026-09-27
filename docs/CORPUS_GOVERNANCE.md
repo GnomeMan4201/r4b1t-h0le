@@ -17,10 +17,11 @@ A candidate URL must satisfy all applicable criteria:
 1. Uses `http` or `https` and contains a valid hostname.
 2. Does not embed credentials, access tokens, session identifiers, or other secrets.
 3. Is not an exact or trivially canonicalized duplicate.
-4. Has a clear relevance rationale for at least one supported discovery category.
-5. Does not depend on deceptive labeling or an unsupported claim of safety.
-6. Is reviewed for obvious malware-delivery, credential-harvesting, unlawful-content, and privacy risks before inclusion.
-7. Records provenance sufficient to explain where the candidate came from when provenance is available.
+4. Has explicit, inspectable provenance establishing its supported discovery scope; for the cybersecurity corpus, this means at least one versioned source assertion of `cybersecurity` scope.
+5. Has a concrete resource type established by an explicit source assertion or a deterministic, versioned structural rule.
+6. Does not depend on deceptive labeling or an unsupported claim of safety.
+7. Is reviewed for obvious malware-delivery, credential-harvesting, unlawful-content, and privacy risks before inclusion.
+8. Preserves source provenance sufficient to explain both what the resource is and why it belongs in the corpus.
 
 A successful HTTP response is not evidence that a URL is relevant, safe, or trustworthy.
 
@@ -77,6 +78,16 @@ The structural analyzer records at minimum:
 - line-addressable findings.
 
 Network liveness, semantic relevance, category balance, and SPROUT suggestion quality are separate measurements and must not be inferred from structural metrics.
+
+## Provenance authority
+
+For newly promoted cybersecurity corpus records, `CORPUS_PROVENANCE_CONTRACT.md` defines the authoritative provenance shape. Resource type and cybersecurity scope are separate claims. Deterministic URL structure may establish resource type, but it must never establish cybersecurity relevance by itself.
+
+Heuristic taggers, NLP classifiers, confidence scores, popularity signals, stars, clicks, and user behavior may nominate records for review. They are not authoritative admission evidence and must not become selection weights.
+
+Multiple provenance assertions for one logical resource improve auditability only; they do not create duplicate selectable records or increase selection probability.
+
+The legacy flat `urls.txt` corpus remains governed as historical raw material until records are explicitly promoted through the typed provenance and eligibility pipeline.
 
 ## Corrections and removals
 
