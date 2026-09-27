@@ -137,6 +137,10 @@ resource type uses a `source_assertion` basis pointing to that catalog.
 Duplicate mappings for one heading are permitted only when they assert the same
 resource type. Conflicting mappings fail closed.
 
+Every reviewed heading mapping MUST match at least one extracted candidate in
+the pinned snapshot. A stale, misspelled, or wrong-case heading fails closed
+instead of being silently ignored.
+
 A non-GitHub resource under an unmapped heading remains in the untyped review
 queue.
 

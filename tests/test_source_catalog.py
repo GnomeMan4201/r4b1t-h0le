@@ -184,14 +184,13 @@ class SourceCatalogTests(unittest.TestCase):
         vendor = by_url["https://security.example/tool"]
         self.assertEqual(vendor["resource_type"]["value"], "reference")
 
-    def test_heading_assertions_require_exact_reviewed_heading_match(self) -> None:
+    def test_unknown_reviewed_heading_fails_closed(self) -> None:
         manifest = self.manifest()
         manifest["type_assertions"] = [
             {"heading": "tools", "resource_type": "security_tool"},
         ]
-        compiled = compile_catalog(manifest, self.snapshot())
-        untyped = {record["url"] for record in compiled["untyped"]}
-        self.assertIn("https://security.example/tool", untyped)
+        with self.assertRaisesRegex(ValueError, "heading not found"):
+            compile_catalog(manifest, self.snapshot())
 
     def test_conflicting_heading_type_assertions_fail_closed(self) -> None:
         manifest = self.manifest()
