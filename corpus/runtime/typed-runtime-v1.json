@@ -1,0 +1,19 @@
+{
+  "corpus": "r4b1t-cybersecurity-v1",
+  "count": 841,
+  "eligibilityInputDigest": "sha256:1014c81d6b37d7035b48dfa12bc08a211bb05720f3b114367368ce4ec432b73a",
+  "eligibilityOutputDigest": "sha256:be4d27ca71e0bc76da135df6878c0846cfee3640e2db5c08695dad06fab2a7ef",
+  "provenanceArtifactDigest": "sha256:00cdec6a7020178cedb16d508aa86e7f51c3f24fefde78529080b5f6c229395b",
+  "resourceTypeCounts": {
+    "dataset": 22,
+    "documentation": 1,
+    "lab": 10,
+    "reference": 123,
+    "repository": 470,
+    "security_tool": 203,
+    "training_resource": 12
+  },
+  "ruleset": "eligibility-v1",
+  "schema": "r4b1t-runtime-corpus-shadow-v1",
+  "urlPoolDigest": "sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1"
+}
