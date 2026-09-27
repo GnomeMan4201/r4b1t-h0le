@@ -10,23 +10,28 @@ on:
       - 'tools/corpus_provenance.py'
       - 'tools/source_catalog.py'
       - 'tools/aggregate_provenance.py'
+      - 'tools/build_corpus_release.py'
       - 'tests/test_corpus_health.py'
       - 'tests/test_compile_eligibility.py'
       - 'tests/test_profile_eligibility.py'
       - 'tests/test_corpus_provenance.py'
       - 'tests/test_source_catalog.py'
       - 'tests/test_aggregate_provenance.py'
+      - 'tests/test_build_corpus_release.py'
       - 'schemas/eligibility-input-v1.schema.json'
       - 'schemas/eligibility-output-v1.schema.json'
       - 'schemas/corpus-provenance-v1.schema.json'
       - 'schemas/source-catalog-v1.schema.json'
+      - 'schemas/corpus-release-v1.schema.json'
       - 'ELIGIBILITY_CONTRACT.md'
       - 'CORPUS_PROVENANCE_CONTRACT.md'
       - 'SOURCE_CATALOG_CONTRACT.md'
       - 'PROVENANCE_AGGREGATION_CONTRACT.md'
+      - 'CORPUS_RELEASE_CONTRACT.md'
       - 'docs/CORPUS_GOVERNANCE.md'
       - 'corpus/sources/**'
       - 'corpus/catalogs/**'
+      - 'corpus/releases/**'
       - '.github/corpus-policy.json'
       - '.github/corpus-policy.example.json'
       - '.github/workflows/corpus-quality.yml'
@@ -40,23 +45,28 @@ on:
       - 'tools/corpus_provenance.py'
       - 'tools/source_catalog.py'
       - 'tools/aggregate_provenance.py'
+      - 'tools/build_corpus_release.py'
       - 'tests/test_corpus_health.py'
       - 'tests/test_compile_eligibility.py'
       - 'tests/test_profile_eligibility.py'
       - 'tests/test_corpus_provenance.py'
       - 'tests/test_source_catalog.py'
       - 'tests/test_aggregate_provenance.py'
+      - 'tests/test_build_corpus_release.py'
       - 'schemas/eligibility-input-v1.schema.json'
       - 'schemas/eligibility-output-v1.schema.json'
       - 'schemas/corpus-provenance-v1.schema.json'
       - 'schemas/source-catalog-v1.schema.json'
+      - 'schemas/corpus-release-v1.schema.json'
       - 'ELIGIBILITY_CONTRACT.md'
       - 'CORPUS_PROVENANCE_CONTRACT.md'
       - 'SOURCE_CATALOG_CONTRACT.md'
       - 'PROVENANCE_AGGREGATION_CONTRACT.md'
+      - 'CORPUS_RELEASE_CONTRACT.md'
       - 'docs/CORPUS_GOVERNANCE.md'
       - 'corpus/sources/**'
       - 'corpus/catalogs/**'
+      - 'corpus/releases/**'
       - '.github/corpus-policy.json'
       - '.github/corpus-policy.example.json'
       - '.github/workflows/corpus-quality.yml'
@@ -92,12 +102,14 @@ jobs:
           tools/corpus_provenance.py
           tools/source_catalog.py
           tools/aggregate_provenance.py
+          tools/build_corpus_release.py
           tests/test_corpus_health.py
           tests/test_compile_eligibility.py
           tests/test_profile_eligibility.py
           tests/test_corpus_provenance.py
           tests/test_source_catalog.py
           tests/test_aggregate_provenance.py
+          tests/test_build_corpus_release.py
 
       - name: Unit tests
         run: |
@@ -107,6 +119,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_corpus_provenance.py' -v
           python -m unittest discover -s tests -p 'test_source_catalog.py' -v
           python -m unittest discover -s tests -p 'test_aggregate_provenance.py' -v
+          python -m unittest discover -s tests -p 'test_build_corpus_release.py' -v
 
       - name: Compile pinned source catalogs
         run: |
@@ -133,6 +146,20 @@ jobs:
           python tools/compile_eligibility.py \
             --input typed-corpus-build/eligibility-input.json \
             --out-dir typed-corpus-build/eligibility
+
+      - name: Build typed candidate release
+        run: |
+          python tools/build_corpus_release.py \
+            --aggregate-dir typed-corpus-build \
+            --eligibility-dir typed-corpus-build/eligibility \
+            --release-id typed-candidate-v0.1 \
+            --out-dir typed-corpus-build/release
+
+      - name: Verify checked-in typed candidate release
+        run: |
+          if [[ -d corpus/releases/typed-candidate-v0.1 ]]; then
+            diff -ru corpus/releases/typed-candidate-v0.1 typed-corpus-build/release
+          fi
 
       - name: Generate and enforce deterministic corpus evidence
         run: |
@@ -167,6 +194,9 @@ jobs:
             test -s typed-corpus-build/eligibility/eligible.json
             test -s typed-corpus-build/eligibility/excluded.json
             test -s typed-corpus-build/eligibility/manifest.json
+            test -s typed-corpus-build/release/urls.txt
+            test -s typed-corpus-build/release/resources.json
+            test -s typed-corpus-build/release/manifest.json
           fi
 
       - name: Publish job summary
