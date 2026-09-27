@@ -165,6 +165,39 @@ class SourceCatalogTests(unittest.TestCase):
         self.assertEqual(compiled["counts"]["typedStructural"], 2)
         self.assertEqual(compiled["counts"]["untyped"], 0)
 
+    def test_heading_assertions_do_not_type_unresolved_github_routes(self) -> None:
+        snapshot = """# Awesome Security
+
+## Tools
+
+- [Vendor tool](https://security.example/tool)
+- [GitHub profile](https://github.com/niftylettuce)
+- [GitHub topic](https://github.com/topics/security)
+- [GitHub README](https://github.com/owner/repo/blob/main/README.md)
+"""
+        manifest = self.manifest(snapshot)
+        manifest["type_assertions"] = [
+            {"heading": "Tools", "resource_type": "security_tool"},
+        ]
+        compiled = compile_catalog(manifest, snapshot)
+
+        typed_urls = {
+            record["url"]
+            for record in compiled["provenance"]["records"]
+        }
+        untyped_urls = {
+            record["url"]
+            for record in compiled["untyped"]
+        }
+
+        self.assertIn("https://security.example/tool", typed_urls)
+        self.assertIn("https://github.com/niftylettuce", untyped_urls)
+        self.assertIn("https://github.com/topics/security", untyped_urls)
+        self.assertIn(
+            "https://github.com/owner/repo/blob/main/README.md",
+            untyped_urls,
+        )
+
     def test_heading_assertions_never_override_structural_type(self) -> None:
         manifest = self.manifest()
         manifest["type_assertions"] = [
