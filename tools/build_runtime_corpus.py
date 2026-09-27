@@ -142,6 +142,10 @@ def build_runtime_corpus(
     )
     url_text = "".join(record["url"] + "\n" for record in runtime_records)
     url_pool_digest = _sha256_bytes_identifier(url_text.encode("utf-8"))
+    resource_type_counts: dict[str, int] = {}
+    for record in runtime_records:
+        resource_type = record["resource_type"]
+        resource_type_counts[resource_type] = resource_type_counts.get(resource_type, 0) + 1
 
     document = {
         "schema": RUNTIME_SCHEMA,
@@ -161,7 +165,10 @@ def build_runtime_corpus(
         ),
         "urlPoolDigest": url_pool_digest,
         "count": len(runtime_records),
-        "records": runtime_records,
+        "resourceTypeCounts": {
+            resource_type: resource_type_counts[resource_type]
+            for resource_type in sorted(resource_type_counts)
+        },
     }
 
     return {
