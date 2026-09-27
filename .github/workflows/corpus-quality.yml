@@ -158,15 +158,15 @@ jobs:
       - name: Emit candidate release transport
         run: |
           echo 'R4B1T_RELEASE_URLS_BEGIN'
-          base64 -w0 typed-corpus-build/release/urls.txt
+          base64 typed-corpus-build/release/urls.txt
           echo
           echo 'R4B1T_RELEASE_URLS_END'
           echo 'R4B1T_RELEASE_RESOURCES_BEGIN'
-          base64 -w0 typed-corpus-build/release/resources.json
+          base64 typed-corpus-build/release/resources.json
           echo
           echo 'R4B1T_RELEASE_RESOURCES_END'
           echo 'R4B1T_RELEASE_MANIFEST_BEGIN'
-          base64 -w0 typed-corpus-build/release/manifest.json
+          base64 typed-corpus-build/release/manifest.json
           echo
           echo 'R4B1T_RELEASE_MANIFEST_END'
 
