@@ -3,7 +3,9 @@
 
   var api = window.R4b1tBlind;
   var trail = window.R4b1tTrail;
+  var corpusAuthority = window.R4b1tCorpusAuthority;
   if (!api || !trail) return;
+  if (!corpusAuthority) throw new Error('Corpus authority unavailable');
 
   var PUBLIC_KEY = 'r4b1t_blind_public_v02';
   var PRIVATE_KEY = 'r4b1t_blind_private_v02';
@@ -23,7 +25,7 @@
 
   async function loadCorpus() {
     if (state.corpus) return state.corpus;
-    var response = await fetch('urls.txt?v=blind-v02', { cache: 'no-store' });
+    var response = await fetch(corpusAuthority.activeFetchUrl('blind-v02'), { cache: 'no-store' });
     if (!response.ok) throw new Error('Corpus unavailable');
     var bytes = new Uint8Array(await response.arrayBuffer());
     state.corpusRevision = 'sha256:' + await trail.sha256Hex(bytes);
