@@ -353,6 +353,16 @@ def write_compiled(compiled: dict[str, Any], out_dir: Path) -> None:
         _pretty_json(compiled["untyped"]),
         encoding="utf-8",
     )
+    (out_dir / "summary.json").write_text(
+        _pretty_json(
+            {
+                "schema": COMPILED_SCHEMA,
+                "snapshotDigest": compiled["snapshotDigest"],
+                "counts": compiled["counts"],
+            }
+        ),
+        encoding="utf-8",
+    )
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
