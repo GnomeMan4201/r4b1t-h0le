@@ -179,3 +179,76 @@ test('Blind Descent traps focus, restores opener, and keeps focused buttons nati
   await expect(overlay).toHaveAttribute('aria-hidden', 'true');
   await expect(page.locator('#blindFocusOpener')).toBeFocused();
 });
+
+
+test('Blind Descent discards saved state from a different corpus revision', async ({ page }) => {
+  const foreignRevision = 'sha256:' + '0'.repeat(64);
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => Boolean(window.R4b1tBlind));
+
+  await page.evaluate(async revision => {
+    const manifest = await window.R4b1tBlind.create({
+      corpus_revision: revision,
+      terrain: 'ALL SIGNALS',
+      parent: null,
+    });
+    localStorage.setItem('r4b1t_blind_public_v02', JSON.stringify({
+      manifest,
+      currentDepth: 0,
+    }));
+    localStorage.setItem('r4b1t_blind_private_v02', '{}');
+  }, foreignRevision);
+
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openBlindDescent === 'function');
+
+  const result = await page.evaluate(async () => {
+    await window.openBlindDescent();
+    const loaded = await window.R4b1tCorpusAuthority.loadActive();
+    const snapshot = await window.getBlindManifest();
+    return {
+      activeRevision: loaded.revision,
+      manifestRevision: snapshot.manifest.corpus_revision,
+      steps: snapshot.manifest.steps.length,
+      depth: document.getElementById('blindDepth').textContent,
+    };
+  });
+
+  expect(result.manifestRevision).toBe(result.activeRevision);
+  expect(result.manifestRevision).not.toBe(foreignRevision);
+  expect(result.steps).toBe(0);
+  expect(result.depth).toContain('000');
+});
+
+test('Blind Descent preserves saved state when corpus revision still matches', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => Boolean(window.R4b1tBlind));
+
+  const originalTrailId = await page.evaluate(async () => {
+    const loaded = await window.R4b1tCorpusAuthority.loadActive();
+    const manifest = await window.R4b1tBlind.create({
+      corpus_revision: loaded.revision,
+      terrain: 'ALL SIGNALS',
+      parent: null,
+    });
+    const envelope = await window.R4b1tBlind.envelope(manifest);
+    localStorage.setItem('r4b1t_blind_public_v02', JSON.stringify({
+      manifest,
+      currentDepth: 0,
+    }));
+    localStorage.setItem('r4b1t_blind_private_v02', '{}');
+    return envelope.trail_id;
+  });
+
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openBlindDescent === 'function');
+
+  const restoredTrailId = await page.evaluate(async () => {
+    await window.openBlindDescent();
+    const snapshot = await window.getBlindManifest();
+    return snapshot.trail_id;
+  });
+
+  expect(restoredTrailId).toBe(originalTrailId);
+});
