@@ -1,0 +1,14 @@
+{
+  "schema": "r4b1t-source-catalog-v1",
+  "catalog_id": "awesome-security-sbilly-v1",
+  "corpus": "r4b1t-cybersecurity-v1",
+  "source": {
+    "url": "https://github.com/sbilly/awesome-security",
+    "revision": "51b613c02b8801d23c0d2b8d9dc7b40d15c1b16e",
+    "path": "README.md",
+    "sha256": "sha256:d6f74b76cb8066559f2fc1a18b37cbf86c1b120acdb2d0a74fe3d35e5742050f"
+  },
+  "snapshot_path": "corpus/sources/awesome-security-sbilly-51b613c.md",
+  "scope": "cybersecurity",
+  "extractor": "markdown-links-v1"
+}
