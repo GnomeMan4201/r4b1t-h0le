@@ -5,7 +5,12 @@ on:
     paths:
       - 'urls.txt'
       - 'tools/corpus_health.py'
+      - 'tools/compile_eligibility.py'
       - 'tests/test_corpus_health.py'
+      - 'tests/test_compile_eligibility.py'
+      - 'schemas/eligibility-input-v1.schema.json'
+      - 'schemas/eligibility-output-v1.schema.json'
+      - 'ELIGIBILITY_CONTRACT.md'
       - '.github/corpus-policy.json'
       - '.github/corpus-policy.example.json'
       - '.github/workflows/corpus-quality.yml'
@@ -14,7 +19,12 @@ on:
     paths:
       - 'urls.txt'
       - 'tools/corpus_health.py'
+      - 'tools/compile_eligibility.py'
       - 'tests/test_corpus_health.py'
+      - 'tests/test_compile_eligibility.py'
+      - 'schemas/eligibility-input-v1.schema.json'
+      - 'schemas/eligibility-output-v1.schema.json'
+      - 'ELIGIBILITY_CONTRACT.md'
       - '.github/corpus-policy.json'
       - '.github/corpus-policy.example.json'
       - '.github/workflows/corpus-quality.yml'
@@ -42,10 +52,17 @@ jobs:
           python-version: '3.11'
 
       - name: Syntax check
-        run: python -m compileall -q tools/corpus_health.py tests/test_corpus_health.py
+        run: >-
+          python -m compileall -q
+          tools/corpus_health.py
+          tools/compile_eligibility.py
+          tests/test_corpus_health.py
+          tests/test_compile_eligibility.py
 
       - name: Unit tests
-        run: python -m unittest discover -s tests -p 'test_corpus_health.py' -v
+        run: |
+          python -m unittest discover -s tests -p 'test_corpus_health.py' -v
+          python -m unittest discover -s tests -p 'test_compile_eligibility.py' -v
 
       - name: Generate and enforce deterministic corpus evidence
         run: |

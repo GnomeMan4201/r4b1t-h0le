@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "r4b1t-eligibility-output-v1.schema.json",
+  "title": "R4B1T Eligibility Compiler Output v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "manifest", "eligible", "excluded"],
+  "properties": {
+    "schema": {"const": "r4b1t-eligibility-output-v1"},
+    "manifest": {"$ref": "#/$defs/manifest"},
+    "eligible": {"type": "array", "items": {"$ref": "#/$defs/decision"}},
+    "excluded": {"type": "array", "items": {"$ref": "#/$defs/decision"}}
+  },
+  "$defs": {
+    "sha256Identifier": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "resourceType": {
+      "type": ["string", "null"],
+      "enum": [null,"repository","source_file","security_tool","documentation","article","writeup","research","paper","advisory","vulnerability_record","software_release","dataset","threat_feed","rule_collection","corpus","lab","challenge","training_resource","reference","other_explicit"]
+    },
+    "reason": {
+      "enum": ["INVALID_URL","UNSUPPORTED_PROTOCOL","PROTOCOL_POLICY_ONION_EXCLUDED","EMBEDDED_CREDENTIALS","GENERIC_HOST_ROOT","GENERIC_DIRECTORY","GENERIC_DISCOVERY_SURFACE","SEARCH_SURFACE","TAG_INDEX","CATEGORY_INDEX","AUTH_SURFACE","UNRESOLVED_REDIRECTOR","CANONICAL_DUPLICATE","CONFLICTING_RESOURCE_METADATA","ISSUE_RESOURCE_UNQUALIFIED","PULL_REQUEST_UNQUALIFIED","REPOSITORY_ADMIN_ARTIFACT","RESOURCE_TYPE_UNQUALIFIED","MISSING_REQUIRED_PROVENANCE","RULESET_UNSUPPORTED","CONCRETE_REPOSITORY","STANDALONE_TECHNICAL_ARTIFACT","SUBSTANTIVE_ISSUE_RESOURCE","CONCRETE_TECHNICAL_DOCUMENT","CONCRETE_SOFTWARE_RELEASE","CONCRETE_RESEARCH_RESOURCE","CONCRETE_SECURITY_TOOL","CONCRETE_DATA_RESOURCE","CONCRETE_LEARNING_RESOURCE","EXPLICIT_RESOURCE_CLASSIFICATION"]
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ruleset","inputUrl","canonicalUrl","resourceType","decision","reason","source"],
+      "properties": {
+        "ruleset": {"const": "eligibility-v1"},
+        "inputUrl": {"type": "string", "minLength": 1},
+        "canonicalUrl": {"type": ["string", "null"]},
+        "resourceType": {"$ref": "#/$defs/resourceType"},
+        "decision": {"enum": ["ELIGIBLE", "EXCLUDED"]},
+        "reason": {"$ref": "#/$defs/reason"},
+        "source": {"type": "string", "minLength": 1}
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema","ruleset","protocolPolicy","inputDigest","outputDigest","counts"],
+      "properties": {
+        "schema": {"const": "r4b1t-eligibility-manifest-v1"},
+        "ruleset": {"const": "eligibility-v1"},
+        "protocolPolicy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["version","excludeOnion"],
+          "properties": {"version": {"const": "1"}, "excludeOnion": {"const": true}}
+        },
+        "inputDigest": {"$ref": "#/$defs/sha256Identifier"},
+        "outputDigest": {"$ref": "#/$defs/sha256Identifier"},
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["raw","eligible","excluded","duplicates"],
+          "properties": {
+            "raw": {"type": "integer", "minimum": 0},
+            "eligible": {"type": "integer", "minimum": 0},
+            "excluded": {"type": "integer", "minimum": 0},
+            "duplicates": {"type": "integer", "minimum": 0}
+          }
+        }
+      }
+    }
+  }
+}
