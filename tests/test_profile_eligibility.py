@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -88,6 +90,38 @@ class EligibilityProfileTests(unittest.TestCase):
                 sorted(path.name for path in root.iterdir()),
                 ["eligibility-profile.json", "eligibility-profile.md"],
             )
+
+
+    def test_cli_runs_from_repository_root_like_corpus_quality_ci(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory() as directory:
+            work = Path(directory)
+            corpus = work / "urls.txt"
+            output_json = work / "profile.json"
+            output_markdown = work / "profile.md"
+            corpus.write_text(
+                "https://github.com/projectdiscovery/nuclei\nhttps://github.com/\n",
+                encoding="utf-8",
+            )
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    str(root / "tools" / "profile_eligibility.py"),
+                    "--input",
+                    str(corpus),
+                    "--json",
+                    str(output_json),
+                    "--markdown",
+                    str(output_markdown),
+                ],
+                cwd=root,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr + completed.stdout)
+            self.assertTrue(output_json.is_file())
+            self.assertTrue(output_markdown.is_file())
 
 
 if __name__ == "__main__":
