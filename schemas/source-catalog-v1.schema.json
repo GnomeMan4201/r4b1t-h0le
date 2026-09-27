@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "r4b1t-source-catalog-v1.schema.json",
+  "title": "R4B1T Source Catalog v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "catalog_id",
+    "corpus",
+    "source",
+    "snapshot_path",
+    "scope",
+    "extractor"
+  ],
+  "properties": {
+    "schema": {"const": "r4b1t-source-catalog-v1"},
+    "catalog_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"
+    },
+    "corpus": {"type": "string", "minLength": 1},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "revision", "path", "sha256"],
+      "properties": {
+        "url": {"type": "string", "minLength": 1},
+        "revision": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "snapshot_path": {"type": "string", "minLength": 1},
+    "scope": {"const": "cybersecurity"},
+    "extractor": {"const": "markdown-links-v1"}
+  }
+}

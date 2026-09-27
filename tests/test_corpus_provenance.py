@@ -59,6 +59,27 @@ class CorpusProvenanceTests(unittest.TestCase):
         )
         self.assertEqual(schema["properties"]["schema"]["const"], PROVENANCE_SCHEMA)
 
+    def test_source_evidence_metadata_is_preserved_and_bound(self) -> None:
+        document = self.document()
+        document["sources"][0].update(
+            {
+                "revision": "deadbeef",
+                "path": "README.md",
+                "sha256": "sha256:" + "a" * 64,
+            }
+        )
+        compiled = compile_provenance(document)
+        self.assertEqual(compiled["sources"][0]["revision"], "deadbeef")
+        self.assertEqual(compiled["sources"][0]["path"], "README.md")
+        self.assertEqual(compiled["sources"][0]["sha256"], "sha256:" + "a" * 64)
+
+        changed = copy.deepcopy(document)
+        changed["sources"][0]["revision"] = "feedface"
+        self.assertNotEqual(
+            compile_provenance(document)["artifactDigest"],
+            compile_provenance(changed)["artifactDigest"],
+        )
+
     def test_source_assertions_project_to_one_typed_eligibility_record(self) -> None:
         compiled = compile_provenance(self.document())
         self.assertTrue(compiled["artifactDigest"].startswith("sha256:"))
@@ -125,6 +146,33 @@ class CorpusProvenanceTests(unittest.TestCase):
                 ],
             }
         ]
+        with self.assertRaisesRegex(ValueError, "structural rule"):
+            compile_provenance(document)
+
+    def test_repository_structural_rule_rejects_reserved_github_surfaces(self) -> None:
+        document = {
+            "schema": PROVENANCE_SCHEMA,
+            "corpus": "r4b1t-cybersecurity-v1",
+            "sources": [self.source()],
+            "records": [
+                {
+                    "url": "https://github.com/topics/security",
+                    "resource_type": {
+                        "value": "repository",
+                        "basis": {
+                            "kind": "structural_rule",
+                            "rule_id": "github-repository-v1",
+                        },
+                    },
+                    "scope_assertions": [
+                        {
+                            "scope": "cybersecurity",
+                            "source_id": "catalog-pentest-v1",
+                        }
+                    ],
+                }
+            ],
+        }
         with self.assertRaisesRegex(ValueError, "structural rule"):
             compile_provenance(document)
 

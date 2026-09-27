@@ -4,24 +4,42 @@
   "title": "R4B1T Corpus Provenance v1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "corpus", "sources", "records"],
+  "required": [
+    "schema",
+    "corpus",
+    "sources",
+    "records"
+  ],
   "properties": {
-    "schema": {"const": "r4b1t-corpus-provenance-v1"},
-    "corpus": {"type": "string", "minLength": 1},
+    "schema": {
+      "const": "r4b1t-corpus-provenance-v1"
+    },
+    "corpus": {
+      "type": "string",
+      "minLength": 1
+    },
     "sources": {
       "type": "array",
-      "items": {"$ref": "#/$defs/source"}
+      "items": {
+        "$ref": "#/$defs/source"
+      }
     },
     "records": {
       "type": "array",
-      "items": {"$ref": "#/$defs/record"}
+      "items": {
+        "$ref": "#/$defs/record"
+      }
     }
   },
   "$defs": {
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "url", "kind"],
+      "required": [
+        "id",
+        "url",
+        "kind"
+      ],
       "properties": {
         "id": {
           "type": "string",
@@ -32,7 +50,23 @@
           "minLength": 1
         },
         "kind": {
-          "enum": ["curated_catalog", "manual_review", "publisher_assertion"]
+          "enum": [
+            "curated_catalog",
+            "manual_review",
+            "publisher_assertion"
+          ]
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
         }
       }
     },
@@ -63,18 +97,31 @@
     "sourceBasis": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind", "source_id"],
+      "required": [
+        "kind",
+        "source_id"
+      ],
       "properties": {
-        "kind": {"const": "source_assertion"},
-        "source_id": {"type": "string", "minLength": 1}
+        "kind": {
+          "const": "source_assertion"
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "structuralBasis": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind", "rule_id"],
+      "required": [
+        "kind",
+        "rule_id"
+      ],
       "properties": {
-        "kind": {"const": "structural_rule"},
+        "kind": {
+          "const": "structural_rule"
+        },
         "rule_id": {
           "enum": [
             "github-repository-v1",
@@ -87,13 +134,22 @@
     "resourceTypeClaim": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["value", "basis"],
+      "required": [
+        "value",
+        "basis"
+      ],
       "properties": {
-        "value": {"$ref": "#/$defs/resourceType"},
+        "value": {
+          "$ref": "#/$defs/resourceType"
+        },
         "basis": {
           "oneOf": [
-            {"$ref": "#/$defs/sourceBasis"},
-            {"$ref": "#/$defs/structuralBasis"}
+            {
+              "$ref": "#/$defs/sourceBasis"
+            },
+            {
+              "$ref": "#/$defs/structuralBasis"
+            }
           ]
         }
       }
@@ -101,23 +157,42 @@
     "scopeAssertion": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["scope", "source_id"],
+      "required": [
+        "scope",
+        "source_id"
+      ],
       "properties": {
-        "scope": {"const": "cybersecurity"},
-        "source_id": {"type": "string", "minLength": 1}
+        "scope": {
+          "const": "cybersecurity"
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "record": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["url", "resource_type", "scope_assertions"],
+      "required": [
+        "url",
+        "resource_type",
+        "scope_assertions"
+      ],
       "properties": {
-        "url": {"type": "string", "minLength": 1},
-        "resource_type": {"$ref": "#/$defs/resourceTypeClaim"},
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resource_type": {
+          "$ref": "#/$defs/resourceTypeClaim"
+        },
         "scope_assertions": {
           "type": "array",
           "minItems": 1,
-          "items": {"$ref": "#/$defs/scopeAssertion"}
+          "items": {
+            "$ref": "#/$defs/scopeAssertion"
+          }
         }
       }
     }
