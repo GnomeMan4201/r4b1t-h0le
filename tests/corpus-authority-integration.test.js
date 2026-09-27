@@ -25,7 +25,11 @@ test('corpus authority loads before every production corpus consumer', () => {
 test('ROLL, Blind Descent, and Trail resolve the same active authority seam', () => {
   assert.match(
     INDEX,
-    /R4b1tCorpusAuthority\.activeFetchUrl\(["']roll-v1["']\)/,
+    /window\.R4b1tCorpusAuthority/,
+  );
+  assert.match(
+    INDEX,
+    /\.activeFetchUrl\(["']roll-v1["']\)/,
   );
   assert.match(
     BLIND,
