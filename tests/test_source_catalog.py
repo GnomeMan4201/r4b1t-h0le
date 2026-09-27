@@ -137,6 +137,71 @@ class SourceCatalogTests(unittest.TestCase):
         )
         self.assertEqual(len(verified["eligibilityInput"]["records"]), len(provenance["records"]))
 
+    def test_reviewed_heading_type_assertions_promote_non_structural_resources(self) -> None:
+        manifest = self.manifest()
+        manifest["type_assertions"] = [
+            {"heading": "Tools", "resource_type": "security_tool"},
+            {"heading": "Research", "resource_type": "research"},
+        ]
+        compiled = compile_catalog(manifest, self.snapshot())
+        by_url = {
+            record["url"]: record
+            for record in compiled["provenance"]["records"]
+        }
+
+        vendor = by_url["https://security.example/tool"]
+        self.assertEqual(vendor["resource_type"]["value"], "security_tool")
+        self.assertEqual(
+            vendor["resource_type"]["basis"],
+            {
+                "kind": "source_assertion",
+                "source_id": "awesome-security-test",
+            },
+        )
+
+        writeup = by_url["https://research.example/kernel"]
+        self.assertEqual(writeup["resource_type"]["value"], "research")
+        self.assertEqual(compiled["counts"]["typedSourceAssertion"], 2)
+        self.assertEqual(compiled["counts"]["typedStructural"], 2)
+        self.assertEqual(compiled["counts"]["untyped"], 0)
+
+    def test_heading_assertions_never_override_structural_type(self) -> None:
+        manifest = self.manifest()
+        manifest["type_assertions"] = [
+            {"heading": "Tools", "resource_type": "reference"},
+        ]
+        compiled = compile_catalog(manifest, self.snapshot())
+        by_url = {
+            record["url"]: record
+            for record in compiled["provenance"]["records"]
+        }
+        nuclei = by_url["https://github.com/projectdiscovery/nuclei"]
+        self.assertEqual(nuclei["resource_type"]["value"], "repository")
+        self.assertEqual(
+            nuclei["resource_type"]["basis"]["kind"],
+            "structural_rule",
+        )
+        vendor = by_url["https://security.example/tool"]
+        self.assertEqual(vendor["resource_type"]["value"], "reference")
+
+    def test_heading_assertions_require_exact_reviewed_heading_match(self) -> None:
+        manifest = self.manifest()
+        manifest["type_assertions"] = [
+            {"heading": "tools", "resource_type": "security_tool"},
+        ]
+        compiled = compile_catalog(manifest, self.snapshot())
+        untyped = {record["url"] for record in compiled["untyped"]}
+        self.assertIn("https://security.example/tool", untyped)
+
+    def test_conflicting_heading_type_assertions_fail_closed(self) -> None:
+        manifest = self.manifest()
+        manifest["type_assertions"] = [
+            {"heading": "Tools", "resource_type": "security_tool"},
+            {"heading": "Tools", "resource_type": "reference"},
+        ]
+        with self.assertRaisesRegex(ValueError, "conflicting heading"):
+            compile_catalog(manifest, self.snapshot())
+
     def test_untyped_web_resources_remain_review_candidates(self) -> None:
         compiled = compile_catalog(self.manifest(), self.snapshot())
         untyped = {record["url"] for record in compiled["untyped"]}

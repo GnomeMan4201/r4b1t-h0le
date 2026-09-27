@@ -17,8 +17,8 @@ A catalog import has two independent questions:
 
 The first question is answered by a reviewed, pinned catalog manifest.
 
-The second is answered only by a deterministic structural rule or later
-explicit review.
+The second is answered by either a deterministic structural rule or an
+explicit, reviewed source assertion recorded in the pinned catalog manifest.
 
 ## Pinned source
 
@@ -87,8 +87,13 @@ multiple occurrences, but duplicates do not create selection weight.
 
 Catalog membership establishes cybersecurity scope only.
 
-Automatic promotion to typed provenance is allowed only when a versioned
-structural rule can establish resource type.
+Automatic promotion to typed provenance follows two authorities in order:
+
+1. a versioned structural rule, when URL shape proves the resource type;
+2. an exact, human-reviewed catalog-heading assertion when no structural rule
+   applies.
+
+Structural rules have priority and cannot be overridden by catalog headings.
 
 Initial structural rules are those already admitted by
 `CORPUS_PROVENANCE_CONTRACT.md`:
@@ -106,10 +111,34 @@ https://github.com/projectdiscovery/nuclei
   -> cybersecurity scope basis: pinned curated catalog
 ```
 
-A non-GitHub article or tool homepage may be a valid cybersecurity resource,
-but RD-4C does not guess its type.
+A catalog manifest MAY include reviewed heading assertions:
 
-It is emitted into the untyped review queue.
+```json
+"type_assertions": [
+  {
+    "heading": "Web Vulnerability Scanners",
+    "resource_type": "security_tool"
+  },
+  {
+    "heading": "Books",
+    "resource_type": "reference"
+  }
+]
+```
+
+A heading assertion is an explicit human review decision about that pinned
+catalog. Matching is against the extracted, whitespace-normalized heading
+string exactly; the compiler does not infer synonyms, lowercase matches,
+keywords, or semantic similarity.
+
+When a structurally untyped destination appears under a mapped heading, its
+resource type uses a `source_assertion` basis pointing to that catalog.
+
+Duplicate mappings for one heading are permitted only when they assert the same
+resource type. Conflicting mappings fail closed.
+
+A non-GitHub resource under an unmapped heading remains in the untyped review
+queue.
 
 ## Output
 
@@ -118,8 +147,9 @@ A compiled source catalog emits:
 - source identity and snapshot digest;
 - deterministic extracted candidates;
 - deterministic typed provenance for structurally provable resources;
+- deterministic typed provenance for explicitly mapped catalog headings;
 - deterministic untyped review candidates;
-- counts.
+- counts separating structural and source-asserted typing.
 
 The promoted provenance document MUST conform to
 `r4b1t-corpus-provenance-v1`.
