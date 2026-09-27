@@ -35,7 +35,7 @@ test('typed candidate manifest binds the exact shadow bytes', () => {
   expect(CANDIDATE_URLS.length).toBe(841);
 });
 
-test('production ROLL, Trail, and Blind accept the exact typed candidate bytes', async ({ page }) => {
+test('digest-bound authority rejects typed candidate bytes impersonating the legacy source', async ({ page }) => {
   let corpusRequests = 0;
 
   await page.route('**/urls.txt?*', route => {
@@ -48,34 +48,27 @@ test('production ROLL, Trail, and Blind accept the exact typed candidate bytes',
   });
 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
-  await page.waitForFunction(() => (
-    window.R4b1tCorpusAuthority &&
-    typeof window.roll === 'function' &&
-    typeof window.getTrailManifest === 'function' &&
-    typeof window.getBlindManifest === 'function'
-  ));
-
-  await expect.poll(() => corpusRequests).toBeGreaterThan(0);
+  await page.waitForFunction(() => Boolean(window.R4b1tCorpusAuthority));
 
   const result = await page.evaluate(async () => {
-    window.roll();
-    const selected = document.getElementById('previewUrl').textContent.trim();
-    const trail = await window.getTrailManifest();
-    const blind = await window.getBlindManifest();
-    return {
-      authority: window.R4b1tCorpusAuthority.active(),
-      candidate: window.R4b1tCorpusAuthority.candidate(),
-      selected,
-      trailRevision: trail.manifest.corpus_revision,
-      blindRevision: blind.manifest.corpus_revision,
-    };
+    try {
+      await window.R4b1tCorpusAuthority.loadActive();
+      return { accepted: true };
+    } catch (error) {
+      return {
+        accepted: false,
+        message: String(error && error.message || error),
+        active: window.R4b1tCorpusAuthority.active(),
+        candidate: window.R4b1tCorpusAuthority.candidate(),
+      };
+    }
   });
 
-  expect(result.authority.id).toBe('legacy-urls-v1');
+  expect(result.accepted).toBe(false);
+  expect(result.message).toMatch(/digest mismatch/i);
+  expect(result.active.id).toBe('legacy-urls-v1');
+  expect(result.active.expectedDigest).not.toBe(CANDIDATE_REVISION);
+  expect(result.candidate.expectedDigest).toBe(CANDIDATE_REVISION);
   expect(result.candidate.selectionAuthority).toBe(false);
-  expect(CANDIDATE_SET.has(result.selected)).toBe(true);
-  expect(result.trailRevision).toBe(CANDIDATE_REVISION);
-  expect(result.blindRevision).toBe(CANDIDATE_REVISION);
-  expect(result.trailRevision).toBe(result.blindRevision);
-  expect(corpusRequests).toBeGreaterThanOrEqual(3);
+  expect(corpusRequests).toBeGreaterThan(0);
 });

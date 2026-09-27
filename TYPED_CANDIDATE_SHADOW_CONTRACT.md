@@ -67,3 +67,21 @@ RD-4I does not:
 
 > Candidate bytes must survive the real production runtime before candidate
 > authority can be considered for promotion.
+
+
+## RD-4J digest-bound authority update
+
+The original RD-4I rehearsal intentionally fulfilled the active legacy request
+with candidate bytes to prove runtime compatibility before promotion.
+
+RD-4J supersedes that interception technique. Once the active source carries an
+expected digest, candidate bytes MUST NOT be accepted while the legacy source
+remains active. The continuing regression now proves the inverse boundary:
+
+- the candidate manifest still binds its exact 841-resource bytes;
+- candidate bytes presented as the active legacy source are rejected on digest
+  mismatch;
+- the candidate remains non-authoritative.
+
+Future compatibility proof after RD-4J must occur through an explicit authority
+promotion, never by making one source impersonate another.
