@@ -42,6 +42,18 @@ STRUCTURAL_RULES = {
     "github-release-v1",
 }
 
+_GITHUB_RESERVED_FIRST = {
+    "collections",
+    "explore",
+    "features",
+    "login",
+    "marketplace",
+    "search",
+    "settings",
+    "signup",
+    "topics",
+}
+
 _SOURCE_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._:-]{0,127}$")
 
 
@@ -121,6 +133,12 @@ def _github_segments(url: str) -> list[str] | None:
 
 def _validate_structural_rule(url: str, resource_type: str, rule_id: str) -> None:
     segments = _github_segments(url)
+    if (
+        segments is not None
+        and segments
+        and segments[0].lower() in _GITHUB_RESERVED_FIRST
+    ):
+        segments = None
     valid = False
     if rule_id == "github-repository-v1":
         valid = resource_type == "repository" and segments is not None and len(segments) == 2
