@@ -10,5 +10,115 @@
   },
   "snapshot_path": "corpus/sources/awesome-security-sbilly-51b613c.md",
   "scope": "cybersecurity",
-  "extractor": "markdown-links-v1"
+  "extractor": "markdown-links-v1",
+  "type_assertions": [
+    {
+      "heading": "Anti-Spam",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Anti-Virus / Anti-Malware",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Authentication",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Configuration Management",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Datastores",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "DevOps",
+      "resource_type": "reference"
+    },
+    {
+      "heading": "Development",
+      "resource_type": "reference"
+    },
+    {
+      "heading": "EBooks",
+      "resource_type": "reference"
+    },
+    {
+      "heading": "Fast Packet Processing",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Firewall",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Forensics",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Full Packet Capture / Forensic",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Honey Pot / Honey Net",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "IDS / IPS / Host IDS / Host IPS",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Monitoring / Logging",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Online resources",
+      "resource_type": "reference"
+    },
+    {
+      "heading": "Organization",
+      "resource_type": "reference"
+    },
+    {
+      "heading": "Privacy & Security",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Runtime Application Self-Protection",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Scanning / Pentesting",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Security Information & Event Management",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Sniffer",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Social Engineering",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Threat Intelligence",
+      "resource_type": "reference"
+    },
+    {
+      "heading": "Usability",
+      "resource_type": "training_resource"
+    },
+    {
+      "heading": "VPN",
+      "resource_type": "security_tool"
+    },
+    {
+      "heading": "Web Application Firewall",
+      "resource_type": "security_tool"
+    }
+  ]
 }
