@@ -1,5 +1,8 @@
 'use strict';
 
+const crypto = require('node:crypto');
+const fs = require('node:fs');
+const path = require('node:path');
 const { test, expect } = require('@playwright/test');
 
 const CORPUS = [
@@ -14,6 +17,21 @@ const CORPUS = [
 
 const CODE_POOL = CORPUS.slice(0, 5);
 const BLOG_POOL = CORPUS.slice(5);
+const FIXTURE_BYTES = Buffer.from(CORPUS.join('\n') + '\n', 'utf8');
+const FIXTURE_DIGEST = (
+  'sha256:' + crypto.createHash('sha256').update(FIXTURE_BYTES).digest('hex')
+);
+const AUTHORITY_PATH = path.resolve(__dirname, '..', 'corpus-authority.js');
+const AUTHORITY_SOURCE = fs.readFileSync(AUTHORITY_PATH, 'utf8');
+const LEGACY_DIGEST = 'sha256:5d7339b8cbfe7bd35bb8502ca753e5b4663bc2fc4ba3721b23b791dbace01c41';
+const FIXTURE_AUTHORITY_SOURCE = AUTHORITY_SOURCE.replace(
+  LEGACY_DIGEST,
+  FIXTURE_DIGEST,
+);
+
+if (FIXTURE_AUTHORITY_SOURCE === AUTHORITY_SOURCE) {
+  throw new Error('CF-1 fixture could not bind corpus-authority.js to fixture digest');
+}
 
 function independentSampler(seed) {
   const bytes = new TextEncoder().encode(String(seed));
@@ -63,10 +81,15 @@ async function configurePage(page) {
     Math.random = () => 0.999999;
   });
 
+  await page.route('**/corpus-authority.js', route => route.fulfill({
+    status: 200,
+    contentType: 'application/javascript; charset=utf-8',
+    body: FIXTURE_AUTHORITY_SOURCE,
+  }));
   await page.route('**/urls.txt?*', route => route.fulfill({
     status: 200,
     contentType: 'text/plain; charset=utf-8',
-    body: CORPUS.join('\n') + '\n',
+    body: FIXTURE_BYTES,
   }));
   await page.route('https://r4b1t-proxy.badbanana6969.workers.dev/**', route => route.abort('blockedbyclient'));
 }
@@ -207,6 +230,7 @@ test('CF-1: rendered mobile and desktop ROLL exports truthful equivalent provena
   const evidence = {
     auditedCommit: '188277993ff3e723ef65e8bd1030ed1df458d408',
     fixtureCorpus: CORPUS,
+    fixtureCorpusDigest: FIXTURE_DIGEST,
     callTrace: {
       mobile: [
         'rendered #r4mRoll click',

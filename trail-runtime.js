@@ -54,10 +54,8 @@
   }
 
   async function loadCorpusRevision() {
-    var response = await fetch(corpusAuthority.activeFetchUrl('trail-v1'), { cache: 'no-store' });
-    if (!response.ok) throw new Error('Corpus revision unavailable');
-    var bytes = new Uint8Array(await response.arrayBuffer());
-    state.corpusRevision = 'sha256:' + await api.sha256Hex(bytes);
+    var loaded = await corpusAuthority.loadActive();
+    state.corpusRevision = loaded.revision;
     renderPanel();
   }
 

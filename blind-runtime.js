@@ -25,20 +25,9 @@
 
   async function loadCorpus() {
     if (state.corpus) return state.corpus;
-    var response = await fetch(corpusAuthority.activeFetchUrl('blind-v02'), { cache: 'no-store' });
-    if (!response.ok) throw new Error('Corpus unavailable');
-    var bytes = new Uint8Array(await response.arrayBuffer());
-    state.corpusRevision = 'sha256:' + await trail.sha256Hex(bytes);
-    var text = new TextDecoder().decode(bytes);
-    state.corpus = text.split(/\r?\n/).map(function (url) { return url.trim(); }).filter(function (url) {
-      try {
-        var parsed = new URL(url);
-        return (parsed.protocol === 'http:' || parsed.protocol === 'https:') && !parsed.username && !parsed.password;
-      } catch (_) {
-        return false;
-      }
-    });
-    if (!state.corpus.length) throw new Error('Corpus contains no usable routes');
+    var loaded = await corpusAuthority.loadActive();
+    state.corpusRevision = loaded.revision;
+    state.corpus = loaded.urls.slice();
     return state.corpus;
   }
 
