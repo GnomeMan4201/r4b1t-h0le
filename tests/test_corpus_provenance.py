@@ -128,6 +128,33 @@ class CorpusProvenanceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "structural rule"):
             compile_provenance(document)
 
+    def test_repository_structural_rule_rejects_reserved_github_surfaces(self) -> None:
+        document = {
+            "schema": PROVENANCE_SCHEMA,
+            "corpus": "r4b1t-cybersecurity-v1",
+            "sources": [self.source()],
+            "records": [
+                {
+                    "url": "https://github.com/topics/security",
+                    "resource_type": {
+                        "value": "repository",
+                        "basis": {
+                            "kind": "structural_rule",
+                            "rule_id": "github-repository-v1",
+                        },
+                    },
+                    "scope_assertions": [
+                        {
+                            "scope": "cybersecurity",
+                            "source_id": "catalog-pentest-v1",
+                        }
+                    ],
+                }
+            ],
+        }
+        with self.assertRaisesRegex(ValueError, "structural rule"):
+            compile_provenance(document)
+
     def test_unknown_source_reference_fails_closed(self) -> None:
         document = self.document()
         document["records"][0]["scope_assertions"][0]["source_id"] = "missing-source"
