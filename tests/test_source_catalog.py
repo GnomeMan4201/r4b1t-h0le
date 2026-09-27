@@ -189,6 +189,7 @@ class SourceCatalogTests(unittest.TestCase):
                     "candidates.json",
                     "catalog.json",
                     "provenance.json",
+                    "summary.json",
                     "untyped.json",
                 ],
             )
@@ -196,6 +197,12 @@ class SourceCatalogTests(unittest.TestCase):
                 json.loads((root / "catalog.json").read_text(encoding="utf-8")),
                 compiled["manifest"],
             )
+            summary = json.loads(
+                (root / "summary.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(summary["schema"], COMPILED_SCHEMA)
+            self.assertEqual(summary["snapshotDigest"], compiled["snapshotDigest"])
+            self.assertEqual(summary["counts"], compiled["counts"])
 
 
 if __name__ == "__main__":
