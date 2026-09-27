@@ -92,6 +92,37 @@ class CorpusProvenanceTests(unittest.TestCase):
         self.assertTrue(projected["source"].startswith("provenance:sha256:"))
         self.assertEqual(verify_compiled(compiled), compiled)
 
+    def test_multiple_source_type_assertions_are_normalized_deterministically(self) -> None:
+        document = self.document()
+        document["sources"].append(
+            {
+                "id": "manual-review-1",
+                "url": "https://example.org/review",
+                "kind": "manual_review",
+            }
+        )
+        document["records"][0]["resource_type"]["basis"] = {
+            "kind": "source_assertions",
+            "source_ids": ["manual-review-1", "catalog-pentest-v1", "manual-review-1"],
+        }
+        compiled = compile_provenance(document)
+        self.assertEqual(
+            compiled["records"][0]["resource_type"]["basis"],
+            {
+                "kind": "source_assertions",
+                "source_ids": ["catalog-pentest-v1", "manual-review-1"],
+            },
+        )
+
+    def test_multiple_source_type_assertions_reject_unknown_sources(self) -> None:
+        document = self.document()
+        document["records"][0]["resource_type"]["basis"] = {
+            "kind": "source_assertions",
+            "source_ids": ["catalog-pentest-v1", "missing-source"],
+        }
+        with self.assertRaisesRegex(ValueError, "unknown source"):
+            compile_provenance(document)
+
     def test_structural_type_rule_does_not_replace_cybersecurity_scope_assertion(self) -> None:
         document = {
             "schema": PROVENANCE_SCHEMA,

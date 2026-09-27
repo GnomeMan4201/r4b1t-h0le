@@ -224,6 +224,35 @@ def _normalize_type_claim(
         if source_id not in source_ids:
             raise ValueError(f"record {record_index} references unknown source: {source_id}")
         normalized_basis = {"kind": "source_assertion", "source_id": source_id}
+    elif kind == "source_assertions":
+        _exact_keys(basis, {"kind", "source_ids"}, f"record {record_index} type basis")
+        raw_source_ids = basis.get("source_ids")
+        if not isinstance(raw_source_ids, list) or not raw_source_ids:
+            raise ValueError(
+                f"record {record_index} type source_ids must be a non-empty array"
+            )
+        normalized_source_ids: set[str] = set()
+        for source_position, raw_source_id in enumerate(raw_source_ids):
+            source_id = _nonempty_string(
+                raw_source_id,
+                f"record {record_index} type source id {source_position}",
+            )
+            if source_id not in source_ids:
+                raise ValueError(
+                    f"record {record_index} references unknown source: {source_id}"
+                )
+            normalized_source_ids.add(source_id)
+        ordered_source_ids = sorted(normalized_source_ids)
+        if len(ordered_source_ids) == 1:
+            normalized_basis = {
+                "kind": "source_assertion",
+                "source_id": ordered_source_ids[0],
+            }
+        else:
+            normalized_basis = {
+                "kind": "source_assertions",
+                "source_ids": ordered_source_ids,
+            }
     elif kind == "structural_rule":
         _exact_keys(basis, {"kind", "rule_id"}, f"record {record_index} type basis")
         rule_id = _nonempty_string(

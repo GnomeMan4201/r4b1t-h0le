@@ -14,28 +14,103 @@
     "extractor"
   ],
   "properties": {
-    "schema": {"const": "r4b1t-source-catalog-v1"},
+    "schema": {
+      "const": "r4b1t-source-catalog-v1"
+    },
     "catalog_id": {
       "type": "string",
       "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"
     },
-    "corpus": {"type": "string", "minLength": 1},
+    "corpus": {
+      "type": "string",
+      "minLength": 1
+    },
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["url", "revision", "path", "sha256"],
+      "required": [
+        "url",
+        "revision",
+        "path",
+        "sha256"
+      ],
       "properties": {
-        "url": {"type": "string", "minLength": 1},
-        "revision": {"type": "string", "minLength": 1},
-        "path": {"type": "string", "minLength": 1},
+        "url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
         "sha256": {
           "type": "string",
           "pattern": "^sha256:[0-9a-f]{64}$"
         }
       }
     },
-    "snapshot_path": {"type": "string", "minLength": 1},
-    "scope": {"const": "cybersecurity"},
-    "extractor": {"const": "markdown-links-v1"}
+    "snapshot_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "const": "cybersecurity"
+    },
+    "extractor": {
+      "const": "markdown-links-v1"
+    },
+    "type_assertions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/typeAssertion"
+      }
+    }
+  },
+  "$defs": {
+    "resourceType": {
+      "enum": [
+        "repository",
+        "source_file",
+        "security_tool",
+        "documentation",
+        "article",
+        "writeup",
+        "research",
+        "paper",
+        "advisory",
+        "vulnerability_record",
+        "software_release",
+        "dataset",
+        "threat_feed",
+        "rule_collection",
+        "corpus",
+        "lab",
+        "challenge",
+        "training_resource",
+        "reference",
+        "other_explicit"
+      ]
+    },
+    "typeAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "heading",
+        "resource_type"
+      ],
+      "properties": {
+        "heading": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resource_type": {
+          "$ref": "#/$defs/resourceType"
+        }
+      }
+    }
   }
 }
