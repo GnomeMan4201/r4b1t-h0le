@@ -250,6 +250,20 @@ def _extract_candidates(snapshot_text: str) -> list[dict[str, Any]]:
     return [by_url[url] for url in sorted(by_url)]
 
 
+def _is_github_url(url: str) -> bool:
+    try:
+        parts = urlsplit(url)
+        _ = parts.port
+    except ValueError:
+        return False
+    return (
+        parts.scheme.lower() in {"http", "https"}
+        and (parts.hostname or "").rstrip(".").lower() == "github.com"
+        and parts.username is None
+        and parts.password is None
+    )
+
+
 def _structural_type(url: str) -> tuple[str, str] | None:
     try:
         parts = urlsplit(url)
@@ -335,6 +349,16 @@ def compile_catalog(
                 }
             )
             typed_structural += 1
+            continue
+
+        if _is_github_url(candidate["url"]):
+            untyped.append(
+                {
+                    **candidate,
+                    "reason": "GITHUB_ROUTE_UNRESOLVED",
+                    "source_id": catalog_id,
+                }
+            )
             continue
 
         asserted_type = type_by_heading.get(candidate["heading"])

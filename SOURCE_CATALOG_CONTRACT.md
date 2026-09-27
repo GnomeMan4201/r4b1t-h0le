@@ -131,8 +131,14 @@ catalog. Matching is against the extracted, whitespace-normalized heading
 string exactly; the compiler does not infer synonyms, lowercase matches,
 keywords, or semantic similarity.
 
-When a structurally untyped destination appears under a mapped heading, its
-resource type uses a `source_assertion` basis pointing to that catalog.
+When a structurally untyped **non-GitHub** destination appears under a mapped
+heading, its resource type uses a `source_assertion` basis pointing to that
+catalog.
+
+GitHub URLs are special in v1 because route shape carries resource semantics.
+If a GitHub URL is not recognized by an approved structural rule, broad
+catalog-heading typing MUST NOT override that ambiguity. It remains in the
+review queue as `GITHUB_ROUTE_UNRESOLVED`.
 
 Duplicate mappings for one heading are permitted only when they assert the same
 resource type. Conflicting mappings fail closed.
