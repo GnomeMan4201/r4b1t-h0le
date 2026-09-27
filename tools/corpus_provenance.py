@@ -92,7 +92,7 @@ def _normalize_sources(sources: Any) -> tuple[list[dict[str, str]], set[str]]:
     for index, source in enumerate(sources):
         if not isinstance(source, dict):
             raise ValueError(f"source {index} must be an object")
-        _exact_keys(source, {"id", "url", "kind"}, f"source {index}")
+        _exact_keys(source, {"id", "url", "kind", "revision", "path", "sha256"}, f"source {index}")
         source_id = _nonempty_string(source.get("id"), f"source {index} id")
         if not _SOURCE_ID_RE.fullmatch(source_id):
             raise ValueError(f"source {index} id is invalid")
@@ -104,13 +104,42 @@ def _normalize_sources(sources: Any) -> tuple[list[dict[str, str]], set[str]]:
         if kind not in SOURCE_KINDS:
             raise ValueError(f"source {index} kind is unsupported")
 
-        normalized.append(
-            {
-                "id": source_id,
-                "url": _validate_source_url(source.get("url")),
-                "kind": kind,
-            }
-        )
+        normalized_source = {
+            "id": source_id,
+            "url": _validate_source_url(source.get("url")),
+            "kind": kind,
+        }
+
+        evidence_keys = {"revision", "path", "sha256"}
+        present_evidence = evidence_keys.intersection(source)
+        if present_evidence and present_evidence != evidence_keys:
+            raise ValueError(
+                f"source {index} pinned evidence must include revision, path, and sha256 together"
+            )
+        if present_evidence:
+            revision = _nonempty_string(
+                source.get("revision"),
+                f"source {index} revision",
+            )
+            source_path = _nonempty_string(
+                source.get("path"),
+                f"source {index} path",
+            )
+            source_sha256 = _nonempty_string(
+                source.get("sha256"),
+                f"source {index} sha256",
+            )
+            if not re.fullmatch(r"sha256:[0-9a-f]{64}", source_sha256):
+                raise ValueError(f"source {index} sha256 must be a sha256 identifier")
+            normalized_source.update(
+                {
+                    "revision": revision,
+                    "path": source_path,
+                    "sha256": source_sha256,
+                }
+            )
+
+        normalized.append(normalized_source)
 
     normalized.sort(key=lambda source: source["id"])
     return normalized, source_ids

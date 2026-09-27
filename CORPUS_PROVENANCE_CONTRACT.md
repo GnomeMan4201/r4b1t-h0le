@@ -44,7 +44,10 @@ Every external assertion source is declared once:
 {
   "id": "catalog-pentest-v1",
   "url": "https://example.org/catalog",
-  "kind": "curated_catalog"
+  "kind": "curated_catalog",
+  "revision": "pinned-revision",
+  "path": "README.md",
+  "sha256": "sha256:..."
 }
 ```
 
@@ -57,6 +60,8 @@ Allowed v1 source kinds:
 Source IDs are stable identifiers within one provenance document.
 
 Duplicate source IDs are invalid.
+
+A source MAY carry pinned evidence fields `revision`, `path`, and `sha256`. When any one is present, all three MUST be present. These fields bind a source assertion to exact reviewable source bytes; source-catalog imports MUST include them.
 
 ## Resource records
 

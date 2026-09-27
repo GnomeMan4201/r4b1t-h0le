@@ -304,6 +304,9 @@ def compile_catalog(
                 "id": catalog_id,
                 "url": normalized_manifest["source"]["url"],
                 "kind": "curated_catalog",
+                "revision": normalized_manifest["source"]["revision"],
+                "path": normalized_manifest["source"]["path"],
+                "sha256": normalized_manifest["source"]["sha256"],
             }
         ],
         "records": provenance_records,
