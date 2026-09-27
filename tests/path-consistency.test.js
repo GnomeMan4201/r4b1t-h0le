@@ -58,6 +58,10 @@ test('PWA shell prefers current network bytes and uses cache only as offline fal
   assert.ok(sw.includes('const cached = await caches.match(e.request);'));
   assert.ok(!sw.includes('cached || fetch(e.request)'));
   assert.ok(sw.includes("url.pathname.endsWith('/urls.txt')"));
+  assert.ok(sw.includes("'./corpus-authority.js'"));
+  assert.ok(sw.includes("url.pathname.includes('/corpus/releases/')"));
+  assert.ok(sw.includes("url.pathname.endsWith('/resources.json')"));
+  assert.ok(sw.includes("url.pathname.endsWith('/manifest.json')"));
 });
 
 test('CI stages the site at the current GitHub Pages repository path', () => {
