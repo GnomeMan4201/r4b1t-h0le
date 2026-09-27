@@ -56,12 +56,11 @@ A deterministic metadata artifact containing:
 - eligibility output digest;
 - SHA-256 of the exact `typed-urls-v1.txt` bytes;
 - record count;
-- records containing only:
-  - canonical URL;
-  - resource type;
-  - provenance source identifier.
+- aggregate resource-type counts.
 
-Records use the same deterministic ordering as the text pool.
+Per-resource provenance is deliberately not duplicated into the runtime
+manifest. The authoritative provenance/eligibility artifacts remain upstream,
+while `typed-urls-v1.txt` is the only deployable per-resource runtime payload.
 
 ## Digest binding
 

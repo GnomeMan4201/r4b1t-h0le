@@ -100,12 +100,13 @@ class RuntimeCorpusShadowTests(unittest.TestCase):
         runtime = build_runtime_corpus(compiled, eligible, manifest)
 
         self.assertEqual(runtime["document"]["count"], 2)
+        self.assertNotIn("records", runtime["document"])
         self.assertEqual(
-            [record["url"] for record in runtime["document"]["records"]],
-            [
-                "https://github.com/projectdiscovery/nuclei",
-                "https://security.example/tool",
-            ],
+            runtime["document"]["resourceTypeCounts"],
+            {
+                "repository": 1,
+                "security_tool": 1,
+            },
         )
         self.assertNotIn(".onion", runtime["urlText"])
         self.assertEqual(

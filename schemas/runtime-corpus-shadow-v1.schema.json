@@ -13,12 +13,19 @@
     "eligibilityOutputDigest",
     "urlPoolDigest",
     "count",
-    "records"
+    "resourceTypeCounts"
   ],
   "properties": {
-    "schema": {"const": "r4b1t-runtime-corpus-shadow-v1"},
-    "corpus": {"type": "string", "minLength": 1},
-    "ruleset": {"const": "eligibility-v1"},
+    "schema": {
+      "const": "r4b1t-runtime-corpus-shadow-v1"
+    },
+    "corpus": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ruleset": {
+      "const": "eligibility-v1"
+    },
     "provenanceArtifactDigest": {
       "type": "string",
       "pattern": "^sha256:[0-9a-f]{64}$"
@@ -35,21 +42,15 @@
       "type": "string",
       "pattern": "^sha256:[0-9a-f]{64}$"
     },
-    "count": {"type": "integer", "minimum": 0},
-    "records": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["url", "resource_type", "source"],
-        "properties": {
-          "url": {"type": "string", "minLength": 1},
-          "resource_type": {"type": "string", "minLength": 1},
-          "source": {
-            "type": "string",
-            "pattern": "^provenance:sha256:[0-9a-f]{64}$"
-          }
-        }
+    "count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "resourceTypeCounts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1
       }
     }
   }
