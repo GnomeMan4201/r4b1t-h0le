@@ -4,6 +4,7 @@ const PRECACHE = [
   './index.html',
   './anime.min.js',
   './anime-core.min.js',
+  './corpus-authority.js',
   './motion-tokens.js',
   './roll-motion-machine.js',
   './roll-disclosure-boundary.js',
@@ -51,10 +52,20 @@ self.addEventListener('fetch', e => {
 
   const url = new URL(e.request.url);
 
-  // Corpus reads and Worker traffic must always use their explicit network policy.
+  // Corpus reads, corpus release evidence, and Worker traffic must always use
+  // their explicit network policy rather than application-shell caching.
+  const isCorpusReleaseEvidence =
+    url.pathname.includes('/corpus/releases/') &&
+    (
+      url.pathname.endsWith('/urls.txt') ||
+      url.pathname.endsWith('/resources.json') ||
+      url.pathname.endsWith('/manifest.json')
+    );
+
   if (
     url.origin !== self.location.origin ||
     url.pathname.endsWith('/urls.txt') ||
+    isCorpusReleaseEvidence ||
     url.hostname.endsWith('workers.dev')
   ) {
     return;
