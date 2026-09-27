@@ -73,7 +73,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: corpus-quality-${{ github.ref }}
@@ -155,26 +155,10 @@ jobs:
             --eligibility-manifest typed-corpus-build/eligibility/manifest.json \
             --out-dir runtime-corpus-build
 
-      - name: Pin RD-5A runtime shadow snapshot
-        if: github.event_name == 'pull_request' && github.head_ref == 'rd5a/runtime-corpus-shadow'
-        env:
-          HEAD_REF: ${{ github.head_ref }}
+      - name: Verify checked-in runtime shadow bytes
         run: |
-          cp runtime-corpus-build/typed-urls-v1.txt /tmp/typed-urls-v1.txt
-          cp runtime-corpus-build/typed-runtime-v1.json /tmp/typed-runtime-v1.json
-          git fetch origin "$HEAD_REF"
-          git checkout -B "$HEAD_REF" FETCH_HEAD
-          mkdir -p corpus/runtime
-          cp /tmp/typed-urls-v1.txt corpus/runtime/typed-urls-v1.txt
-          cp /tmp/typed-runtime-v1.json corpus/runtime/typed-runtime-v1.json
-          if [[ -z "$(git status --porcelain -- corpus/runtime)" ]]; then
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add corpus/runtime/typed-urls-v1.txt corpus/runtime/typed-runtime-v1.json
-          git commit -m 'data: pin runtime corpus shadow snapshot'
-          git push origin "HEAD:$HEAD_REF"
+          cmp runtime-corpus-build/typed-urls-v1.txt corpus/runtime/typed-urls-v1.txt
+          cmp runtime-corpus-build/typed-runtime-v1.json corpus/runtime/typed-runtime-v1.json
 
       - name: Generate and enforce deterministic corpus evidence
         run: |
@@ -211,6 +195,8 @@ jobs:
             test -s typed-corpus-build/eligibility/manifest.json
             test -s runtime-corpus-build/typed-urls-v1.txt
             test -s runtime-corpus-build/typed-runtime-v1.json
+            test -s corpus/runtime/typed-urls-v1.txt
+            test -s corpus/runtime/typed-runtime-v1.json
           fi
 
       - name: Publish job summary
