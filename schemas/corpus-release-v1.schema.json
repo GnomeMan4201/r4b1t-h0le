@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "r4b1t-corpus-release-v1.schema.json",
+  "title": "R4B1T Corpus Release v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "release_id",
+    "status",
+    "selection_authority",
+    "aggregate_artifact_digest",
+    "eligibility_output_digest",
+    "eligibility_ruleset",
+    "protocol_policy",
+    "urls_digest",
+    "resources_digest",
+    "counts"
+  ],
+  "properties": {
+    "schema": {"const": "r4b1t-corpus-release-v1"},
+    "release_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"
+    },
+    "status": {"const": "candidate"},
+    "selection_authority": {"const": false},
+    "aggregate_artifact_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "eligibility_output_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "eligibility_ruleset": {"const": "eligibility-v1"},
+    "protocol_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "excludeOnion"],
+      "properties": {
+        "version": {"const": "1"},
+        "excludeOnion": {"const": true}
+      }
+    },
+    "urls_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "resources_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resources", "unique_hosts", "resource_types"],
+      "properties": {
+        "resources": {"type": "integer", "minimum": 0},
+        "unique_hosts": {"type": "integer", "minimum": 0},
+        "resource_types": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    }
+  }
+}
