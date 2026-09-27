@@ -6,8 +6,10 @@ on:
       - 'urls.txt'
       - 'tools/corpus_health.py'
       - 'tools/compile_eligibility.py'
+      - 'tools/profile_eligibility.py'
       - 'tests/test_corpus_health.py'
       - 'tests/test_compile_eligibility.py'
+      - 'tests/test_profile_eligibility.py'
       - 'schemas/eligibility-input-v1.schema.json'
       - 'schemas/eligibility-output-v1.schema.json'
       - 'ELIGIBILITY_CONTRACT.md'
@@ -20,8 +22,10 @@ on:
       - 'urls.txt'
       - 'tools/corpus_health.py'
       - 'tools/compile_eligibility.py'
+      - 'tools/profile_eligibility.py'
       - 'tests/test_corpus_health.py'
       - 'tests/test_compile_eligibility.py'
+      - 'tests/test_profile_eligibility.py'
       - 'schemas/eligibility-input-v1.schema.json'
       - 'schemas/eligibility-output-v1.schema.json'
       - 'ELIGIBILITY_CONTRACT.md'
@@ -56,13 +60,16 @@ jobs:
           python -m compileall -q
           tools/corpus_health.py
           tools/compile_eligibility.py
+          tools/profile_eligibility.py
           tests/test_corpus_health.py
           tests/test_compile_eligibility.py
+          tests/test_profile_eligibility.py
 
       - name: Unit tests
         run: |
           python -m unittest discover -s tests -p 'test_corpus_health.py' -v
           python -m unittest discover -s tests -p 'test_compile_eligibility.py' -v
+          python -m unittest discover -s tests -p 'test_profile_eligibility.py' -v
 
       - name: Generate and enforce deterministic corpus evidence
         run: |
@@ -73,8 +80,20 @@ jobs:
             --policy .github/corpus-policy.json \
             --enforce
 
+      - name: Generate eligibility-v1 corpus audit
+        run: |
+          python tools/profile_eligibility.py \
+            --input urls.txt \
+            --json eligibility-profile.json \
+            --markdown eligibility-profile.md \
+            --sample-limit 8
+
       - name: Verify evidence outputs
-        run: test -s corpus-health.json && test -s corpus-health.md
+        run: |
+          test -s corpus-health.json
+          test -s corpus-health.md
+          test -s eligibility-profile.json
+          test -s eligibility-profile.md
 
       - name: Publish job summary
         if: always()
@@ -82,14 +101,20 @@ jobs:
           if [[ -f corpus-health.md ]]; then
             cat corpus-health.md >> "$GITHUB_STEP_SUMMARY"
           fi
+          if [[ -f eligibility-profile.md ]]; then
+            printf '\n---\n\n' >> "$GITHUB_STEP_SUMMARY"
+            cat eligibility-profile.md >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Upload corpus evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: corpus-health-${{ github.sha }}
+          name: corpus-evidence-${{ github.sha }}
           path: |
             corpus-health.json
             corpus-health.md
+            eligibility-profile.json
+            eligibility-profile.md
           if-no-files-found: warn
           retention-days: 30
