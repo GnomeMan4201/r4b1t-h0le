@@ -31,14 +31,10 @@ test('ROLL, Blind Descent, and Trail resolve the same active authority seam', ()
     INDEX,
     /\.activeFetchUrl\(["']roll-v1["']\)/,
   );
-  assert.match(
-    BLIND,
-    /R4b1tCorpusAuthority\.activeFetchUrl\(["']blind-v02["']\)/,
-  );
-  assert.match(
-    TRAIL,
-    /R4b1tCorpusAuthority\.activeFetchUrl\(["']trail-v1["']\)/,
-  );
+  assert.match(BLIND, /window\.R4b1tCorpusAuthority/);
+  assert.match(BLIND, /\.activeFetchUrl\(["']blind-v02["']\)/);
+  assert.match(TRAIL, /window\.R4b1tCorpusAuthority/);
+  assert.match(TRAIL, /\.activeFetchUrl\(["']trail-v1["']\)/);
 });
 
 test('production consumers do not keep independent hardcoded corpus fetches', () => {
