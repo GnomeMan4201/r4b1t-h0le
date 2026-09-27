@@ -300,6 +300,13 @@ def compile_catalog(
         assertion["heading"]: assertion["resource_type"]
         for assertion in normalized_manifest["type_assertions"]
     }
+    candidate_headings = {candidate["heading"] for candidate in candidates}
+    missing_headings = sorted(set(type_by_heading) - candidate_headings)
+    if missing_headings:
+        raise ValueError(
+            "reviewed heading not found in pinned snapshot: "
+            + ", ".join(missing_headings)
+        )
 
     provenance_records: list[dict[str, Any]] = []
     untyped: list[dict[str, Any]] = []
