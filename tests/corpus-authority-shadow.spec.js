@@ -1,6 +1,8 @@
+'use strict';
+
 const { test, expect } = require('@playwright/test');
 
-test('typed candidate shadow loads without influencing production ROLL authority', async ({ page }) => {
+test('candidate shadow loads while production ROLL remains on active legacy bytes', async ({ page }) => {
   const legacy = [
     'https://legacy.example/a',
     'https://legacy.example/b',
@@ -10,9 +12,7 @@ test('typed candidate shadow loads without influencing production ROLL authority
     'https://candidate.example/research',
   ];
 
-  await page.addInitScript(() => {
-    localStorage.clear();
-  });
+  await page.addInitScript(() => localStorage.clear());
 
   await page.route('**/urls.txt?*', route => route.fulfill({
     status: 200,
@@ -30,47 +30,45 @@ test('typed candidate shadow loads without influencing production ROLL authority
 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() =>
-    window.R4b1tCorpusSource &&
-    typeof window.R4b1tCorpusSource.loadAuthority === 'function' &&
+    window.R4b1tCorpusAuthority &&
+    typeof window.R4b1tCorpusAuthority.loadActive === 'function' &&
     typeof window.__r4b1tCommitRoll === 'function'
   );
 
   const evidence = await page.evaluate(async () => {
-    const authorityBefore = await window.R4b1tCorpusSource.loadAuthority();
-    const shadow = await window.R4b1tCorpusSource.loadShadow();
-    const authorityAfter = await window.R4b1tCorpusSource.loadAuthority();
+    const activeBefore = await window.R4b1tCorpusAuthority.loadActive();
+    const shadow = await window.R4b1tCorpusAuthority.loadCandidateShadow();
+    const activeAfter = await window.R4b1tCorpusAuthority.loadActive();
     const committed = window.__r4b1tCommitRoll(() => 0);
 
     return {
-      policyAuthority: window.R4b1tCorpusSource.policy.selectionAuthority,
-      shadowSelectionAuthority:
-        window.R4b1tCorpusSource.policy.shadow.selectionAuthority,
-      authorityBefore: {
-        source: authorityBefore.source.id,
-        revision: authorityBefore.revision,
-        urls: authorityBefore.urls.slice(),
+      activeBefore: {
+        source: activeBefore.source.id,
+        revision: activeBefore.revision,
+        urls: activeBefore.urls.slice(),
       },
-      authorityAfter: {
-        source: authorityAfter.source.id,
-        revision: authorityAfter.revision,
-        urls: authorityAfter.urls.slice(),
+      activeAfter: {
+        source: activeAfter.source.id,
+        revision: activeAfter.revision,
+        urls: activeAfter.urls.slice(),
       },
       shadow: {
         source: shadow.source.id,
         revision: shadow.revision,
         urls: shadow.urls.slice(),
       },
+      candidateAuthority:
+        window.R4b1tCorpusAuthority.candidate().selectionAuthority,
       committedUrl: committed && committed.url,
     };
   });
 
-  expect(evidence.policyAuthority).toBe('legacy-urls-v1');
-  expect(evidence.shadowSelectionAuthority).toBe(false);
-  expect(evidence.authorityBefore).toEqual(evidence.authorityAfter);
-  expect(evidence.authorityBefore.source).toBe('legacy-urls-v1');
-  expect(evidence.authorityBefore.urls).toEqual(legacy);
+  expect(evidence.activeBefore).toEqual(evidence.activeAfter);
+  expect(evidence.activeBefore.source).toBe('legacy-urls-v1');
+  expect(evidence.activeBefore.urls).toEqual(legacy);
   expect(evidence.shadow.source).toBe('typed-candidate-v0.1');
   expect(evidence.shadow.urls).toEqual(candidate);
+  expect(evidence.candidateAuthority).toBe(false);
   expect(legacy).toContain(evidence.committedUrl);
   expect(candidate).not.toContain(evidence.committedUrl);
 });

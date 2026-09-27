@@ -2,7 +2,9 @@
   'use strict';
 
   var api = window.R4b1tTrail;
+  var corpusAuthority = window.R4b1tCorpusAuthority;
   if (!api) return;
+  if (!corpusAuthority) throw new Error('Corpus authority unavailable');
 
   var STORAGE_KEY = 'r4b1t_trail_draft_v1';
   var state = {
@@ -52,9 +54,10 @@
   }
 
   async function loadCorpusRevision() {
-    if (!window.R4b1tCorpusSource) throw new Error('Corpus source unavailable');
-    var authority = await window.R4b1tCorpusSource.loadAuthority();
-    state.corpusRevision = authority.revision;
+    var response = await fetch(corpusAuthority.activeFetchUrl('trail-v1'), { cache: 'no-store' });
+    if (!response.ok) throw new Error('Corpus revision unavailable');
+    var bytes = new Uint8Array(await response.arrayBuffer());
+    state.corpusRevision = 'sha256:' + await api.sha256Hex(bytes);
     renderPanel();
   }
 
