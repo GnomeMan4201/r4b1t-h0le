@@ -118,6 +118,22 @@ A type basis is one of:
 
 The referenced source explicitly supplied or reviewed the type.
 
+When multiple independent sources explicitly assert the same resource type,
+aggregation may normalize them into a multi-source basis:
+
+```json
+{
+  "kind": "source_assertions",
+  "source_ids": [
+    "catalog-pentest-v1",
+    "catalog-security-v1"
+  ]
+}
+```
+
+The source IDs are unique and deterministically sorted. This is corroborating
+evidence only; the number of sources never changes selection probability.
+
 ### Structural rule
 
 ```json
@@ -224,6 +240,7 @@ Compilation fails when:
 - a record lacks cybersecurity scope;
 - a resource type is unsupported;
 - a type basis is unsupported;
+- a source-backed type basis references an unknown source;
 - a structural rule ID is unknown;
 - a structural rule is used as cybersecurity-scope evidence;
 - unsupported fields appear in an authoritative object.

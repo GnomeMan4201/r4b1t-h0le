@@ -42,9 +42,12 @@ Exact resource URLs are the v1 aggregation key.
 
 When the same exact URL appears in multiple inputs:
 
-1. its complete resource-type claim MUST be identical;
-2. cybersecurity scope assertions are unioned by source ID;
-3. the result contains one provenance record.
+1. its resource-type **value** MUST agree;
+2. identical structural bases remain unchanged;
+3. agreeing source-backed type assertions are unioned into a deterministic
+   `source_assertions` basis;
+4. cybersecurity scope assertions are unioned by source ID;
+5. the result contains one provenance record.
 
 Additional matching sources increase audit evidence only.
 
@@ -53,17 +56,16 @@ probability.
 
 ## Type conflicts
 
-If one exact URL carries different resource-type claims, aggregation fails.
+If one exact URL carries different resource-type values, aggregation fails.
 
-This includes:
+If two bases are both source-backed and the type value agrees, their source IDs
+are merged as corroborating evidence.
 
-- different resource type values;
-- different type-basis kinds;
-- different type-basis source IDs;
-- different structural rule IDs.
+Structural-rule bases remain strict: differing structural rules, or a
+structural/source-backed basis disagreement, fail closed rather than selecting
+a preferred authority.
 
-v1 does not choose a preferred source, majority vote, confidence winner, or
-first-seen record.
+v1 does not choose a majority vote, confidence winner, or first-seen record.
 
 The conflict must be corrected or explicitly reviewed upstream.
 

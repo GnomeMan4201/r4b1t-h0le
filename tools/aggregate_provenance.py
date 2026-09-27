@@ -43,6 +43,41 @@ def _semantic_record(compiled_record: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _source_backed_type_ids(basis: dict[str, Any]) -> list[str] | None:
+    kind = basis.get("kind")
+    if kind == "source_assertion":
+        return [basis["source_id"]]
+    if kind == "source_assertions":
+        return list(basis["source_ids"])
+    return None
+
+
+def _merge_type_claims(
+    left: dict[str, Any],
+    right: dict[str, Any],
+    *,
+    url: str,
+) -> dict[str, Any]:
+    if left["value"] != right["value"]:
+        raise ValueError(f"conflicting resource type claim for URL: {url}")
+
+    if canonical_json(left["basis"]) == canonical_json(right["basis"]):
+        return copy.deepcopy(left)
+
+    left_sources = _source_backed_type_ids(left["basis"])
+    right_sources = _source_backed_type_ids(right["basis"])
+    if left_sources is not None and right_sources is not None:
+        source_ids = sorted(set(left_sources) | set(right_sources))
+        basis: dict[str, Any]
+        if len(source_ids) == 1:
+            basis = {"kind": "source_assertion", "source_id": source_ids[0]}
+        else:
+            basis = {"kind": "source_assertions", "source_ids": source_ids}
+        return {"value": left["value"], "basis": basis}
+
+    raise ValueError(f"conflicting resource type claim for URL: {url}")
+
+
 def _merge_scope_assertions(
     left: list[dict[str, str]],
     right: list[dict[str, str]],
@@ -103,12 +138,11 @@ def aggregate_provenance(
                 records_by_url[url] = record
                 continue
 
-            if canonical_json(existing_record["resource_type"]) != canonical_json(
-                record["resource_type"]
-            ):
-                raise ValueError(
-                    f"conflicting resource type claim for URL: {url}"
-                )
+            existing_record["resource_type"] = _merge_type_claims(
+                existing_record["resource_type"],
+                record["resource_type"],
+                url=url,
+            )
 
             existing_record["scope_assertions"] = _merge_scope_assertions(
                 existing_record["scope_assertions"],
