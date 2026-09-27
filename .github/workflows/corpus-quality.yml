@@ -9,11 +9,13 @@ on:
       - 'tools/profile_eligibility.py'
       - 'tools/corpus_provenance.py'
       - 'tools/source_catalog.py'
+      - 'tools/aggregate_provenance.py'
       - 'tests/test_corpus_health.py'
       - 'tests/test_compile_eligibility.py'
       - 'tests/test_profile_eligibility.py'
       - 'tests/test_corpus_provenance.py'
       - 'tests/test_source_catalog.py'
+      - 'tests/test_aggregate_provenance.py'
       - 'schemas/eligibility-input-v1.schema.json'
       - 'schemas/eligibility-output-v1.schema.json'
       - 'schemas/corpus-provenance-v1.schema.json'
@@ -21,6 +23,7 @@ on:
       - 'ELIGIBILITY_CONTRACT.md'
       - 'CORPUS_PROVENANCE_CONTRACT.md'
       - 'SOURCE_CATALOG_CONTRACT.md'
+      - 'PROVENANCE_AGGREGATION_CONTRACT.md'
       - 'docs/CORPUS_GOVERNANCE.md'
       - 'corpus/sources/**'
       - 'corpus/catalogs/**'
@@ -36,11 +39,13 @@ on:
       - 'tools/profile_eligibility.py'
       - 'tools/corpus_provenance.py'
       - 'tools/source_catalog.py'
+      - 'tools/aggregate_provenance.py'
       - 'tests/test_corpus_health.py'
       - 'tests/test_compile_eligibility.py'
       - 'tests/test_profile_eligibility.py'
       - 'tests/test_corpus_provenance.py'
       - 'tests/test_source_catalog.py'
+      - 'tests/test_aggregate_provenance.py'
       - 'schemas/eligibility-input-v1.schema.json'
       - 'schemas/eligibility-output-v1.schema.json'
       - 'schemas/corpus-provenance-v1.schema.json'
@@ -48,6 +53,7 @@ on:
       - 'ELIGIBILITY_CONTRACT.md'
       - 'CORPUS_PROVENANCE_CONTRACT.md'
       - 'SOURCE_CATALOG_CONTRACT.md'
+      - 'PROVENANCE_AGGREGATION_CONTRACT.md'
       - 'docs/CORPUS_GOVERNANCE.md'
       - 'corpus/sources/**'
       - 'corpus/catalogs/**'
@@ -85,11 +91,13 @@ jobs:
           tools/profile_eligibility.py
           tools/corpus_provenance.py
           tools/source_catalog.py
+          tools/aggregate_provenance.py
           tests/test_corpus_health.py
           tests/test_compile_eligibility.py
           tests/test_profile_eligibility.py
           tests/test_corpus_provenance.py
           tests/test_source_catalog.py
+          tests/test_aggregate_provenance.py
 
       - name: Unit tests
         run: |
@@ -98,6 +106,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_profile_eligibility.py' -v
           python -m unittest discover -s tests -p 'test_corpus_provenance.py' -v
           python -m unittest discover -s tests -p 'test_source_catalog.py' -v
+          python -m unittest discover -s tests -p 'test_aggregate_provenance.py' -v
 
       - name: Compile pinned source catalogs
         run: |
@@ -112,6 +121,18 @@ jobs:
               --root . \
               --out-dir "catalog-build/$name"
           done
+
+      - name: Aggregate typed catalog provenance
+        run: |
+          python tools/aggregate_provenance.py \
+            --input catalog-build/*/provenance.json \
+            --out-dir typed-corpus-build
+
+      - name: Compile typed eligibility pool
+        run: |
+          python tools/compile_eligibility.py \
+            --input typed-corpus-build/eligibility-input.json \
+            --out-dir typed-corpus-build/eligibility
 
       - name: Generate and enforce deterministic corpus evidence
         run: |
@@ -139,6 +160,13 @@ jobs:
           if compgen -G 'corpus/catalogs/*.json' > /dev/null; then
             test -n "$(find catalog-build -name provenance.json -print -quit)"
             test -n "$(find catalog-build -name untyped.json -print -quit)"
+            test -s typed-corpus-build/provenance.json
+            test -s typed-corpus-build/compiled.json
+            test -s typed-corpus-build/eligibility-input.json
+            test -s typed-corpus-build/summary.json
+            test -s typed-corpus-build/eligibility/eligible.json
+            test -s typed-corpus-build/eligibility/excluded.json
+            test -s typed-corpus-build/eligibility/manifest.json
           fi
 
       - name: Publish job summary
@@ -163,5 +191,6 @@ jobs:
             eligibility-profile.json
             eligibility-profile.md
             catalog-build/
+            typed-corpus-build/
           if-no-files-found: warn
           retention-days: 30
