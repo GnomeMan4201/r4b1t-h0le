@@ -99,7 +99,7 @@ class RuntimeCorpusShadowTests(unittest.TestCase):
         compiled, eligible, manifest = self.compiled_inputs()
         runtime = build_runtime_corpus(compiled, eligible, manifest)
 
-        self.assertEqual(runtime["count"], 2)
+        self.assertEqual(runtime["document"]["count"], 2)
         self.assertEqual(
             [record["url"] for record in runtime["records"]],
             [
