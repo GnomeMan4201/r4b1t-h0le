@@ -1,6 +1,6 @@
 # R4B1T H0L3 Typed Candidate Production Shadow Contract v1
 
-Status: DRAFT FOR IMPLEMENTATION  
+Status: HISTORICAL ACCEPTED REHEARSAL  
 Candidate: `typed-candidate-v0.1`
 
 ## Purpose
@@ -85,3 +85,23 @@ remains active. The continuing regression now proves the inverse boundary:
 
 Future compatibility proof after RD-4J must occur through an explicit authority
 promotion, never by making one source impersonate another.
+
+
+## RD-4L promotion status
+
+RD-4I and RD-4J are historical pre-promotion evidence.
+
+RD-4L explicitly promoted the exact checked-in `typed-candidate-v0.1` URL
+bytes to runtime authority through `corpus/runtime/active-v1.json`.
+
+The old statements in this document that legacy remains production authority
+describe the RD-4I/RD-4J rehearsal state, not current production authority.
+
+Current authority is defined by:
+
+- `RUNTIME_CORPUS_PROMOTION_CONTRACT.md`;
+- `RUNTIME_CORPUS_AUTHORITY_CONTRACT.md`;
+- `corpus/runtime/active-v1.json`.
+
+The release manifest itself remains unchanged as historical candidate evidence;
+runtime authority is the separate promotion decision.
