@@ -439,7 +439,7 @@ test('mobile redesign keeps contract language and existing capability actions re
 });
 
 
-test('revealed mobile route uses descent framing without changing canonical route actions', async ({ page }, testInfo) => {
+test('revealed mobile route prioritizes open keep inspect and roll again', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
@@ -449,18 +449,22 @@ test('revealed mobile route uses descent framing without changing canonical rout
 
   const route = page.locator('#r4mRoute');
   await expect(route).toBeVisible({ timeout: 2000 });
-  await expect(route.locator('.r4m-route-kicker')).toHaveText('DESCENT COMPLETE');
-  await expect(route.locator('.r4m-route-label')).toHaveText('A NEW PLACE');
-  await expect(route.locator('[data-mobile-action="sprout"]')).toHaveText('SPROUT ×4');
-  await expect(route.locator('[data-mobile-action="share"]')).toHaveText('SHARE');
-  await expect(route.locator('[data-mobile-action="cut"]')).toHaveText('CUT CARD');
-  await expect(route.locator('[data-mobile-action="visit"]')).toHaveText('FOLLOW THE RABBIT ↗');
-  await expect(route.locator('[data-mobile-action="next"]')).toHaveText('REJECT / NEXT');
+  await expect(route.locator('.r4m-route-kicker')).toHaveText('SELECTED / COMMITTED');
+  await expect(route.locator('.r4m-route-label')).toHaveText('RANDOM CYBERSECURITY RESOURCE');
+  await expect(route.locator('[data-mobile-action="visit"]')).toHaveText('OPEN DESTINATION ↗');
+  await expect(route.locator('[data-mobile-action="keep"]')).toHaveText('KEEP CARD');
+  await expect(route.locator('[data-mobile-action="inspect"]')).toHaveText('INSPECT');
+  await expect(route.locator('[data-mobile-action="next"]')).toHaveText('ROLL AGAIN');
+
+  await expect(route.locator('[data-mobile-action="sprout"]')).toHaveCount(0);
+  await expect(route.locator('[data-mobile-action="share"]')).toHaveCount(0);
+  await expect(route.locator('[data-mobile-action="cut"]')).toHaveCount(0);
+  await expect(route.locator('.r4m-route-wear')).toHaveCount(0);
 });
 
 
 
-test('mobile route observation does not claim Trail Card authority', async ({ page }, testInfo) => {
+test('mobile result stays a discovery surface rather than a proof surface', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
@@ -468,12 +472,9 @@ test('mobile route observation does not claim Trail Card authority', async ({ pa
 
   const route = page.locator('#r4mRoute');
   await expect(route).toBeVisible({ timeout: 2000 });
-  const label = await route.locator('.r4m-route-wear').evaluate((node) =>
-    getComputedStyle(node, '::before').content
-  );
-  expect(label).toContain('TRAIL / OBSERVATION');
-  expect(label).not.toContain('TRAIL CARD');
-  await expect(route).not.toContainText(/VERIFIED|REJECTED|UNVERIFIED/);
+  await expect(route).not.toContainText(/VERIFIED|REJECTED|UNVERIFIED|PROVENANCE|ELIGIBILITY/);
+  await expect(route).not.toContainText('TRAIL CARD');
+  await expect(route.locator('.r4m-route-wear')).toHaveCount(0);
 });
 
 test('mobile reveal does not synthesize route metadata when source metadata is absent', async ({ page }, testInfo) => {
@@ -789,4 +790,91 @@ test('mobile primary mode switch changes the primary instrument while legacy Bli
   const legacyBlindEntry = page.locator('#r4mDescentEntry');
   await expect(legacyBlindEntry).toBeVisible();
   await expect(legacyBlindEntry.locator('[data-mobile-action="blind-descent"]')).toBeEnabled();
+});
+
+
+test('mobile KEEP CARD delegates to the existing local card download capability', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  await page.evaluate(() => {
+    window.__keepCardCalls = 0;
+    window.shareCard = () => { window.__keepCardCalls += 1; };
+  });
+
+  const keep = page.locator('#r4mRoute [data-mobile-action="keep"]');
+  await expect(keep).toBeVisible();
+  await keep.click();
+  await expect.poll(() => page.evaluate(() => window.__keepCardCalls)).toBe(1);
+});
+
+test('mobile result shows source title when available but keeps proof detail in Inspect', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  await page.evaluate(() => {
+    document.getElementById('ogTitle').textContent = 'Example Security Resource';
+    document.getElementById('ogDesc').textContent = 'A concise source-provided description.';
+    window.__r4b1tSyncMobileRoute();
+  });
+
+  const route = page.locator('#r4mRoute');
+  await expect(route.locator('#r4mTitle')).toHaveText('Example Security Resource');
+  await expect(route.locator('#r4mDescription')).toHaveText('A concise source-provided description.');
+  await expect(route).not.toContainText('PROVENANCE');
+  await expect(route).not.toContainText('ELIGIBILITY');
+
+  await route.locator('[data-mobile-action="inspect"]').click();
+  await expect(page.locator('#r4mInspectSheet')).toHaveAttribute('aria-hidden', 'false');
+  await expect(page.locator('#r4mInspectEligibility')).not.toHaveText('UNAVAILABLE');
+  await expect(page.locator('#r4mInspectProvenance')).not.toHaveText('UNAVAILABLE');
+});
+
+test('mobile Branch capability remains reachable after result action simplification', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  await page.locator('#r4mNavMenu').click();
+  const branch = page.locator('#r4mMenuSheet [data-mobile-action="branch"]');
+  await expect(branch).toBeVisible();
+  await branch.click();
+  await expect(page.locator('#r4mBranchSheet')).toHaveAttribute('aria-hidden', 'false');
+});
+
+test('desktop result uses the same open keep roll-again vocabulary', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.locator('#btnGo').click();
+  await expect(page.locator('#previewUrl')).toHaveText(/^https?:\/\//);
+
+  const preview = page.locator('#preview');
+  await expect(preview.locator('#btnVisitMain')).toHaveText('OPEN DESTINATION ↗');
+  await expect(preview.locator('#btnKeepMain')).toHaveText('KEEP CARD');
+  await expect(preview.locator('#btnRollAgainMain')).toHaveText('ROLL AGAIN');
+  await expect(preview.getByRole('button', { name: 'SPROUT' })).toHaveCount(0);
+});
+
+test('desktop KEEP CARD delegates to the existing local card download capability', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.locator('#btnGo').click();
+
+  await page.evaluate(() => {
+    window.__keepCardCalls = 0;
+    window.shareCard = () => { window.__keepCardCalls += 1; };
+  });
+
+  await page.locator('#btnKeepMain').click();
+  await expect.poll(() => page.evaluate(() => window.__keepCardCalls)).toBe(1);
 });
