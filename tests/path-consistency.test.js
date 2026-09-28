@@ -190,3 +190,13 @@ test('post-selection metadata projection loads after corpus authority and before
   assert.ok(authority < metadata);
   assert.ok(metadata < roll);
 });
+
+
+test('anime bootstrap does not override declarative mobile landing copy', () => {
+  const bootstrap = read('anime.min.js');
+  assert.ok(bootstrap.includes('anime-core.min.js'));
+  assert.ok(bootstrap.includes('dual-shell.css'));
+  assert.ok(bootstrap.includes('dual-shell.js'));
+  assert.ok(!bootstrap.includes('hero.innerHTML'));
+  assert.ok(!bootstrap.includes('NO PROFILE.<br>NO TRACKING.'));
+});
