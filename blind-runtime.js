@@ -57,7 +57,7 @@
       var secrets = JSON.parse(localStorage.getItem(PRIVATE_KEY) || '{}');
       if (saved && saved.manifest) {
         await api.verify(await api.envelope(saved.manifest));
-        if (saved.manifest.corpus_revision !== state.corpusRevision) {
+        if (!saved.manifest.genesis || saved.manifest.genesis.corpus_revision !== state.corpusRevision) {
           throw new Error('Corpus revision mismatch');
         }
         state.manifest = saved.manifest;

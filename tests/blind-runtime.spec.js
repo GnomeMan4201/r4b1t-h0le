@@ -209,7 +209,7 @@ test('Blind Descent discards saved state from a different corpus revision', asyn
     const snapshot = await window.getBlindManifest();
     return {
       activeRevision: loaded.revision,
-      manifestRevision: snapshot.manifest.corpus_revision,
+      manifestRevision: snapshot.manifest.genesis.corpus_revision,
       steps: snapshot.manifest.steps.length,
       depth: document.getElementById('blindDepth').textContent,
     };
