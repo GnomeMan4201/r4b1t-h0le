@@ -176,6 +176,9 @@ test('mobile DESCEND BLIND commits once and an internal descent commits once mor
   await page.waitForFunction(() => typeof window.getBlindManifest === 'function');
 
   const before = await page.evaluate(() => window.getBlindManifest());
+  await page.locator('#r4mModeBlind').click();
+  await expect(page.locator('#r4mDescentEntry')).toBeVisible();
+
   const entry = page.locator('[data-mobile-action="blind-descent"]');
   await expect(entry).toBeVisible();
   await entry.click();
@@ -214,6 +217,9 @@ test('mobile blind descent uses real and distinct timed transitions', async ({ p
 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitForApplicationReady(page);
+
+  await page.locator('#r4mModeBlind').click();
+  await expect(page.locator('#r4mDescentEntry')).toBeVisible();
 
   const entry = page.locator('[data-mobile-action="blind-descent"]');
   await expect(entry).toBeVisible();

@@ -156,6 +156,9 @@ test('mobile promotes current trail topology instead of the wear sample', async 
     window.openTrailWearSample = () => { window.__mobileTopologyProbe.sampleCalls += 1; };
   });
 
+  await page.locator('#r4mModeBlind').click();
+  await expect(page.locator('#r4mDescentEntry')).toBeVisible();
+
   const mapTrails = page.locator('.r4m-descent-actions [data-mobile-action="topology"]');
   await expect(mapTrails).toBeVisible();
   await expect(mapTrails).toContainText('MAP TRAILS');
