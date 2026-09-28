@@ -371,3 +371,30 @@ test('mobile Blind keeps manifest position and current depth distinct after RETU
   });
   expect(states).toEqual(['concealed', 'concealed', 'concealed', 'concealed']);
 });
+
+
+test('Blind concealed descent stays out of History until explicit reveal', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.blindDescend === 'function' && typeof window.toggleHistory === 'function');
+
+  await page.evaluate(async () => {
+    await window.openBlindDescent();
+    await window.blindDescend();
+    window.closeBlindDescent();
+    window.toggleHistory();
+  });
+
+  await expect(page.locator('#historyList button')).toHaveCount(0);
+  await expect(page.locator('#historyList')).toContainText('no history yet');
+
+  await page.evaluate(async () => {
+    window.toggleHistory();
+    await window.openBlindDescent();
+    await window.blindReveal();
+    window.closeBlindDescent();
+    window.toggleHistory();
+  });
+
+  await expect(page.locator('#historyList button')).toHaveCount(1);
+});
