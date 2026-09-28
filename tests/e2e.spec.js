@@ -380,9 +380,9 @@ test('mobile connective motion covers press authority reveal ledger and copy sta
   // changes ledger presentation only; create one genuine recorded visit before
   // asserting History row-entry motion.
   await route.locator('[data-mobile-action="visit"]').click();
-  if (typeof await page.evaluate(() => typeof window.closeIframe) === 'string') {
-    await page.evaluate(() => { if (typeof window.closeIframe === 'function') window.closeIframe(); });
-  }
+  await page.evaluate(() => {
+    if (typeof window.closeIframe === 'function') window.closeIframe();
+  });
 
   await page.locator('#r4mNavMenu').click();
   await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
