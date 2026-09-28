@@ -930,3 +930,101 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     transform:none!important;
   }
 }
+
+
+/* RD-4O — simplified mobile landing. Presentation only. */
+@media (max-width:900px){
+  .r4m-header{
+    height:56px;
+    justify-content:flex-start;
+    padding:0 8px;
+  }
+  .r4m-wordmark{
+    font-size:1.72rem;
+    letter-spacing:.05em;
+  }
+  .r4m-wordmark:after{
+    content:none!important;
+    display:none!important;
+  }
+  .r4m-header-actions,
+  .r4m-filter-strip,
+  .r4m-status,
+  .r4m-compat-state{
+    display:none!important;
+  }
+
+  .r4m-mode-switch{
+    margin:10px 0 12px;
+    min-height:44px;
+  }
+  .r4m-mode-switch button{
+    min-height:44px;
+    font-size:.5rem;
+  }
+
+  .r4m-hero{
+    min-height:104px;
+    margin:0 0 10px;
+    padding:16px 10px 14px;
+    grid-template-columns:46px minmax(0,1fr)!important;
+    gap:14px;
+    align-items:center;
+  }
+  .r4m-hero:before{
+    left:0;
+    right:0;
+  }
+  .r4m-hero img{
+    width:46px!important;
+    height:46px!important;
+    opacity:.9;
+  }
+  .r4m-hero-copy{
+    min-width:0;
+  }
+  .r4m-hero small{
+    position:static!important;
+    margin:0!important;
+    color:#a99c89;
+    font-size:.39rem;
+    letter-spacing:.14em;
+    white-space:normal;
+  }
+  .r4m-hero h1{
+    margin:5px 0 0!important;
+    color:#f0e5d3!important;
+    font:500 clamp(1.65rem,7.5vw,2.25rem)/.95 var(--font-head,"Bebas Neue",sans-serif)!important;
+    letter-spacing:.035em!important;
+  }
+  .r4m-hero p{
+    margin:7px 0 0!important;
+    color:#8f8270!important;
+    font:.4rem/1.5 var(--font-mono,"DM Mono",monospace)!important;
+    letter-spacing:.08em!important;
+    text-align:left!important;
+  }
+
+  .r4m-descent-entry[hidden]{
+    display:none!important;
+  }
+  html.r4m-stage-blind .r4m-descent-entry{
+    display:block!important;
+  }
+}
+@media (max-width:390px){
+  .r4m-hero{
+    grid-template-columns:40px minmax(0,1fr)!important;
+    gap:11px;
+    min-height:96px;
+    padding-top:13px;
+    padding-bottom:12px;
+  }
+  .r4m-hero img{
+    width:40px!important;
+    height:40px!important;
+  }
+  .r4m-hero h1{
+    font-size:1.72rem!important;
+  }
+}
