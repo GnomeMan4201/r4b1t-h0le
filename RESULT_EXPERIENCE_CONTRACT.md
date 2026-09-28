@@ -1,6 +1,6 @@
 # R4B1T H0L3 Result Experience Contract v1
 
-Status: DRAFT FOR IMPLEMENTATION
+Status: IMPLEMENTED
 
 ## Goal
 
@@ -90,6 +90,10 @@ It MUST NOT change:
 - metadata verification.
 
 ## Result ownership
+
+A fresh session begins with no selected route. Loading the application MUST NOT
+select or reveal a destination, and MUST NOT fetch post-selection resource
+metadata, until the user explicitly activates ROLL.
 
 One selected route owns the primary stage until the user opens it, keeps a
 card, inspects it, or rolls again.
