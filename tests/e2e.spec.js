@@ -67,6 +67,20 @@ test('loads the correct application shell without runtime errors', async ({ page
   expect(pageErrors).toEqual([]);
 });
 
+test('a fresh session waits for an explicit ROLL before selecting or loading resource metadata', async ({ page }) => {
+  const resourceRequests = [];
+  page.on('request', request => {
+    if (request.url().includes('/resources.json')) resourceRequests.push(request.url());
+  });
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitForApplicationReady(page);
+
+  await expect(page.locator('#previewUrl')).toHaveText('—');
+  await expect(page.locator('#r4mRoute')).toHaveCount(0);
+  expect(resourceRequests).toHaveLength(0);
+});
+
 test('a roll selects a corpus URL through either shell', async ({ page }, testInfo) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitForApplicationReady(page);
@@ -77,10 +91,12 @@ test('a roll selects a corpus URL through either shell', async ({ page }, testIn
 
   if (testInfo.project.name === 'mobile-chromium') {
     await expect(page.locator('#r4mRoute')).toBeVisible();
-    await expect(page.locator('#r4mRouteWear')).toBeVisible();
+    await expect(page.locator('#r4mRouteWear')).toHaveCount(0);
     await expect(page.locator('#r4mDomain')).not.toHaveText('—');
     await expect(page.locator('#r4mUrl')).toHaveText(/^https?:\/\//);
     await expect(page.locator('[data-mobile-action="visit"]')).toBeEnabled();
+    await expect(page.locator('[data-mobile-action="keep"]')).toBeEnabled();
+    await expect(page.locator('#r4mRoute [data-mobile-action="inspect"]')).toBeEnabled();
   } else {
     await expect(page.locator('#preview')).toBeVisible();
     await expect(page.locator('#btnVisitMain')).toBeVisible();
@@ -347,9 +363,9 @@ test('mobile connective motion covers press authority reveal ledger and copy sta
   await expect(rollButton).not.toHaveAttribute('aria-busy', 'true', { timeout: 1500 });
   await expect(page.locator('#r4mRouteNo .r4m-route-digit')).toHaveCount(3);
 
-  const shareButton = page.locator('.r4m-route-actions [data-mobile-action="share"]');
-  await shareButton.click();
-  await expect(shareButton).toHaveClass(/\bcopied-flash\b/);
+  const keepButton = page.locator('.r4m-route-actions [data-mobile-action="keep"]');
+  await keepButton.click();
+  await expect(keepButton).toHaveClass(/\bcopied-flash\b/);
 
   await page.locator('#r4mNavMenu').click();
   await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();

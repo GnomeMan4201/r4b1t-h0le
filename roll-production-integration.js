@@ -12,22 +12,21 @@
     section.className = 'r4m-route';
     section.id = 'r4mRoute';
     section.innerHTML =
-      '<div class="r4m-route-kicker">DESCENT COMPLETE</div>' +
+      '<div class="r4m-route-kicker">SELECTED / COMMITTED</div>' +
       '<div class="r4m-route-top"><span>ROUTE / <b id="r4mRouteNo">001</b></span><strong id="r4mTag" hidden></strong></div>' +
-      '<div class="r4m-route-label">A NEW PLACE</div>' +
-      '<div class="r4m-route-proof" id="r4mTypedMeta" hidden><strong id="r4mResourceType"></strong><span id="r4mEligibility"></span></div>' +
+      '<div class="r4m-route-label">RANDOM CYBERSECURITY RESOURCE</div>' +
+      '<div class="r4m-route-proof" id="r4mTypedMeta" hidden><strong id="r4mResourceType"></strong></div>' +
       '<small id="r4mProtocol" hidden></small>' +
-      '<h2 id="r4mDomain"></h2>' +
+      '<h2 id="r4mTitle"></h2>' +
+      '<div class="r4m-route-domain" id="r4mDomain"></div>' +
       '<p id="r4mDescription" hidden></p>' +
       '<code id="r4mUrl"></code>' +
+      '<button class="r4m-enter" type="button" data-mobile-action="visit">OPEN DESTINATION ↗</button>' +
       '<div class="r4m-route-actions">' +
-        '<button type="button" data-mobile-action="sprout">SPROUT ×4</button>' +
-        '<button type="button" data-mobile-action="share">SHARE</button>' +
-        '<button type="button" data-mobile-action="cut">CUT CARD</button>' +
+        '<button type="button" data-mobile-action="keep">KEEP CARD</button>' +
+        '<button type="button" data-mobile-action="inspect">INSPECT</button>' +
       '</div>' +
-      '<div class="r4m-route-wear" id="r4mRouteWear" aria-label="Persistent route wear"></div>' +
-      '<button class="r4m-enter" type="button" data-mobile-action="visit">FOLLOW THE RABBIT ↗</button>' +
-      '<button class="r4m-next" type="button" data-mobile-action="next">REJECT / NEXT</button>';
+      '<button class="r4m-next" type="button" data-mobile-action="next">ROLL AGAIN</button>';
     return section;
   }
 

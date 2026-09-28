@@ -518,7 +518,7 @@ MOTION: waiting for target…';
       window.setTimeout(syncBranch, 60);
       return;
     }
-    if (action === 'share' || action === 'cut') {
+    if (action === 'keep' || action === 'share' || action === 'cut') {
       flashCopyTarget(sourceElement);
       window.setTimeout(function () { call('shareCard'); }, 120);
       return;
@@ -625,6 +625,7 @@ MOTION: waiting for target…';
     var desc = sourceDesc ? sourceDesc.textContent.trim() : '';
     var tag = tagBadge && tagBadge.style.display !== 'none' ? tagBadge.textContent.trim() : '';
     var protoNode = byId('r4mProtocol');
+    var titleNode = byId('r4mTitle');
     var descNode = byId('r4mDescription');
     var tagNode = byId('r4mTag');
     var verifiedTypedMeta = Boolean(typedMeta && typedMeta.dataset.state === 'verified');
@@ -633,12 +634,12 @@ MOTION: waiting for target…';
     var typedProvenanceText = verifiedTypedMeta && typedProvenance ? typedProvenance.textContent.trim() : '';
     var mobileTypedMeta = byId('r4mTypedMeta');
     var mobileTypedType = byId('r4mResourceType');
-    var mobileEligibility = byId('r4mEligibility');
 
     if (protoNode) {
       protoNode.textContent = proto;
       protoNode.hidden = !proto;
     }
+    if (titleNode) titleNode.textContent = title || displayDomain;
     byId('r4mDomain').textContent = displayDomain.toUpperCase();
     byId('r4mUrl').textContent = url;
     if (descNode) {
@@ -651,7 +652,6 @@ MOTION: waiting for target…';
     }
     if (mobileTypedMeta) mobileTypedMeta.hidden = !verifiedTypedMeta;
     if (mobileTypedType) mobileTypedType.textContent = typedTypeText;
-    if (mobileEligibility) mobileEligibility.textContent = typedReasonText;
     byId('r4mInspectDomain').textContent = displayDomain;
     byId('r4mInspectUrl').textContent = url;
     byId('r4mInspectDesc').textContent = [title, desc].filter(Boolean).join(' — ') || 'NO SOURCE METADATA';

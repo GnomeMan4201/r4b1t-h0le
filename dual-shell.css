@@ -65,14 +65,15 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-route-proof[hidden]{display:none}
   .r4m-route-proof strong{color:#9d2428;border:1px solid rgba(157,36,40,.45);padding:3px 6px;font-size:inherit;letter-spacing:inherit}
   .r4m-route-proof span{color:#706d67;font-size:.4rem;letter-spacing:.1em}
-  .r4m-route h2{font-family:var(--font-head,"Bebas Neue",sans-serif);font-size:clamp(3rem,15vw,5rem);line-height:.88;letter-spacing:.005em;margin:3px 0 12px;overflow-wrap:anywhere;position:relative;z-index:1}
-  .r4m-route>p{font-size:.65rem;line-height:1.58;max-width:88%;margin:0 0 13px;position:relative;z-index:1}
-  .r4m-route>code{font:400 .48rem var(--font-mono,"DM Mono",monospace);display:block;color:#6d6254;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:16px;position:relative;z-index:1}
-  .r4m-route-actions{display:grid;grid-template-columns:1fr .8fr 1fr;border-top:1px solid rgba(20,16,13,.23);position:relative;z-index:1}
-  .r4m-route-actions button{min-height:48px;border:0;border-right:1px solid rgba(20,16,13,.18);background:transparent;color:#9d2428;font:500 .5rem var(--font-mono,"DM Mono",monospace);letter-spacing:.09em;text-decoration:underline;text-underline-offset:5px}.r4m-route-actions button:last-child{border-right:0}
-  .r4m-enter,.r4m-next{position:relative;z-index:1;width:calc(100% + 40px);margin-left:-20px;border:0;font-family:var(--font-mono,"DM Mono",monospace);font-weight:500;letter-spacing:.12em}
-  .r4m-enter{min-height:58px;background:#0d0b09;color:#eee3d0;font-size:.58rem}
-  .r4m-next{min-height:48px;background:var(--r4m-red);color:#110c0a;font-size:.58rem}
+  .r4m-route h2{font-family:var(--font-head,"Bebas Neue",sans-serif);font-size:clamp(2.25rem,10vw,3.9rem);line-height:.96;letter-spacing:.005em;margin:5px 0 4px;overflow-wrap:anywhere;position:relative;z-index:1}
+  .r4m-route-domain{font:500 .52rem var(--font-mono,"DM Mono",monospace);letter-spacing:.1em;color:#7d7263;text-transform:uppercase;margin:0 0 12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;position:relative;z-index:1}
+  .r4m-route>p{font-size:.65rem;line-height:1.58;max-width:92%;margin:0 0 13px;position:relative;z-index:1}
+  .r4m-route>code{font:400 .48rem var(--font-mono,"DM Mono",monospace);display:block;color:#6d6254;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:18px;position:relative;z-index:1}
+  .r4m-route-actions{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(20,16,13,.23);position:relative;z-index:1;width:calc(100% + 40px);margin-left:-20px}
+  .r4m-route-actions button{min-height:48px;border:0;border-right:1px solid rgba(20,16,13,.18);background:transparent;color:#9d2428;font:600 .5rem var(--font-mono,"DM Mono",monospace);letter-spacing:.1em}.r4m-route-actions button:last-child{border-right:0}
+  .r4m-enter,.r4m-next{position:relative;z-index:1;width:calc(100% + 40px);margin-left:-20px;border:0;font-family:var(--font-mono,"DM Mono",monospace);font-weight:600;letter-spacing:.12em}
+  .r4m-enter{min-height:60px;background:#0d0b09;color:#eee3d0;font-size:.58rem;border-top:1px solid rgba(20,16,13,.23)}
+  .r4m-next{min-height:50px;background:var(--r4m-red);color:#110c0a;font-size:.58rem}
 
   .r4m-trail{position:relative;border-top:1px solid #302820;padding:14px 0 8px;min-height:154px}
   .r4m-section-title{display:flex;align-items:center;justify-content:space-between;font-size:.55rem;letter-spacing:.16em;padding:0 4px 9px}.r4m-section-title b{color:var(--r4m-red-hi);font-weight:500}
