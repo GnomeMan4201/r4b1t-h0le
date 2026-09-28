@@ -20,11 +20,7 @@
   }
 
   async function sha256(bytes) {
-    if (!globalThis.crypto || !globalThis.crypto.subtle) {
-      throw new Error('Web Crypto SHA-256 is unavailable');
-    }
-    const digest = await globalThis.crypto.subtle.digest('SHA-256', bytes);
-    return 'sha256:' + Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('');
+    return 'sha256:' + await trail.sha256Hex(bytes);
   }
 
   function validateCardShape(card) {
