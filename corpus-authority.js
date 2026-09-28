@@ -20,6 +20,8 @@
     resourcesUrl: 'corpus/releases/typed-candidate-v0.1/resources.json',
     manifestUrl: 'corpus/releases/typed-candidate-v0.1/manifest.json',
     expectedDigest: 'sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1',
+    expectedResourcesDigest: 'sha256:2c7bd5f0a492646cb5cc250b426ed720f1e0953615172717f562379e88eeb691',
+    expectedResourceCount: 841,
     promotionId: 'typed-candidate-v0.1-active-v1',
     status: 'active',
     selectionAuthority: true
@@ -31,6 +33,8 @@
     resourcesUrl: 'corpus/releases/typed-candidate-v0.1/resources.json',
     manifestUrl: 'corpus/releases/typed-candidate-v0.1/manifest.json',
     expectedDigest: 'sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1',
+    expectedResourcesDigest: 'sha256:2c7bd5f0a492646cb5cc250b426ed720f1e0953615172717f562379e88eeb691',
+    expectedResourceCount: 841,
     status: 'candidate',
     selectionAuthority: false
   });
@@ -56,6 +60,7 @@
   });
 
   var activeLoadPromise = null;
+  var metadataLoadPromise = null;
 
   function active() {
     return activeSource;
@@ -77,6 +82,12 @@
     var value = String(tag || '').trim();
     if (!value) return activeSource.url;
     return activeSource.url + '?v=' + encodeURIComponent(value);
+  }
+
+  function metadataFetchUrl(tag) {
+    var value = String(tag || '').trim();
+    if (!value) return activeSource.resourcesUrl;
+    return activeSource.resourcesUrl + '?v=' + encodeURIComponent(value);
   }
 
   function runtimeFetch(options) {
@@ -186,6 +197,127 @@
     return activeLoadPromise;
   }
 
+  function decodeUtf8(bytes, label) {
+    var Decoder = runtimeTextDecoder();
+    try {
+      return new Decoder('utf-8', { fatal: true }).decode(bytes);
+    } catch (_) {
+      throw new Error((label || 'Content') + ' is not valid UTF-8');
+    }
+  }
+
+  function normalizeResourceRecord(record, activeUrls, byUrl) {
+    if (!record || typeof record !== 'object' || Array.isArray(record)) {
+      throw new Error('Resource metadata record is invalid');
+    }
+
+    var url = record.url;
+    var resourceType = record.resource_type;
+    var provenance = record.provenance;
+    var reason = record.eligibility_reason;
+
+    if (typeof url !== 'string' || !activeUrls.has(url)) {
+      throw new Error('Resource metadata URL is outside active corpus');
+    }
+    if (Object.prototype.hasOwnProperty.call(byUrl, url)) {
+      throw new Error('Resource metadata contains duplicate URL');
+    }
+    if (typeof resourceType !== 'string' || !resourceType) {
+      throw new Error('Resource metadata type is invalid');
+    }
+    if (typeof reason !== 'string' || !reason) {
+      throw new Error('Resource metadata eligibility reason is invalid');
+    }
+    if (
+      typeof provenance !== 'string' ||
+      !/^provenance:sha256:[0-9a-f]{64}$/.test(provenance)
+    ) {
+      throw new Error('Resource metadata provenance is invalid');
+    }
+
+    return Object.freeze({
+      url: url,
+      resource_type: resourceType,
+      provenance: provenance,
+      eligibility_reason: reason
+    });
+  }
+
+  async function loadResourceMetadata(options) {
+    if (metadataLoadPromise) return metadataLoadPromise;
+
+    metadataLoadPromise = (async function () {
+      var active = await loadActive(options);
+      var fetchImpl = runtimeFetch(options);
+      var response = await fetchImpl(metadataFetchUrl('resource-meta-v1'), {
+        cache: 'no-store'
+      });
+      if (!response || !response.ok) {
+        throw new Error('Resource metadata unavailable');
+      }
+
+      var bytes = new Uint8Array(await response.arrayBuffer());
+      var digest = await digestBytes(bytes, options);
+      if (digest !== activeSource.expectedResourcesDigest) {
+        throw new Error(
+          'Resource metadata digest mismatch: expected ' +
+          activeSource.expectedResourcesDigest +
+          ', got ' +
+          digest
+        );
+      }
+
+      var parsed;
+      try {
+        parsed = JSON.parse(decodeUtf8(bytes, 'Resource metadata'));
+      } catch (error) {
+        if (error && /UTF-8/.test(String(error.message || error))) throw error;
+        throw new Error('Resource metadata JSON is invalid');
+      }
+
+      if (
+        !parsed ||
+        parsed.schema !== 'r4b1t-corpus-resources-v1' ||
+        parsed.release_id !== activeSource.releaseId ||
+        !Array.isArray(parsed.resources)
+      ) {
+        throw new Error('Resource metadata document is invalid');
+      }
+      if (parsed.resources.length !== activeSource.expectedResourceCount) {
+        throw new Error('Resource metadata count mismatch');
+      }
+
+      var activeUrls = new Set(active.urls);
+      var byUrl = {};
+      parsed.resources.forEach(function (record) {
+        var normalized = normalizeResourceRecord(record, activeUrls, byUrl);
+        byUrl[normalized.url] = normalized;
+      });
+
+      if (Object.keys(byUrl).length !== active.urls.length) {
+        throw new Error('Resource metadata does not cover active corpus');
+      }
+
+      return Object.freeze({
+        releaseId: parsed.release_id,
+        digest: digest,
+        count: parsed.resources.length,
+        byUrl: Object.freeze(byUrl)
+      });
+    }()).catch(function (error) {
+      metadataLoadPromise = null;
+      throw error;
+    });
+
+    return metadataLoadPromise;
+  }
+
+  async function resourceFor(url, options) {
+    if (typeof url !== 'string' || !url) return null;
+    var metadata = await loadResourceMetadata(options);
+    return metadata.byUrl[url] || null;
+  }
+
   return Object.freeze({
     schema: 'r4b1t-runtime-corpus-authority-v3',
     active: active,
@@ -193,6 +325,8 @@
     legacy: legacy,
     promotion: promotion,
     activeFetchUrl: activeFetchUrl,
-    loadActive: loadActive
+    loadActive: loadActive,
+    loadResourceMetadata: loadResourceMetadata,
+    resourceFor: resourceFor
   });
 }));

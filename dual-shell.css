@@ -61,6 +61,10 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-route-top{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:1;font-size:.54rem;letter-spacing:.13em;margin-bottom:20px}
   .r4m-route-top>strong{background:var(--r4m-red);color:#f0e5d1;padding:6px 13px;font-size:.49rem;letter-spacing:.16em;max-width:42%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .r4m-route>small{display:block;color:#9d2428;font-size:.56rem;letter-spacing:.07em;position:relative;z-index:1}
+  .r4m-route-proof{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:0 0 7px;position:relative;z-index:1;font:600 .43rem var(--font-mono,"DM Mono",monospace);letter-spacing:.12em;text-transform:uppercase}
+  .r4m-route-proof[hidden]{display:none}
+  .r4m-route-proof strong{color:#9d2428;border:1px solid rgba(157,36,40,.45);padding:3px 6px;font-size:inherit;letter-spacing:inherit}
+  .r4m-route-proof span{color:#706d67;font-size:.4rem;letter-spacing:.1em}
   .r4m-route h2{font-family:var(--font-head,"Bebas Neue",sans-serif);font-size:clamp(3rem,15vw,5rem);line-height:.88;letter-spacing:.005em;margin:3px 0 12px;overflow-wrap:anywhere;position:relative;z-index:1}
   .r4m-route>p{font-size:.65rem;line-height:1.58;max-width:88%;margin:0 0 13px;position:relative;z-index:1}
   .r4m-route>code{font:400 .48rem var(--font-mono,"DM Mono",monospace);display:block;color:#6d6254;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:16px;position:relative;z-index:1}

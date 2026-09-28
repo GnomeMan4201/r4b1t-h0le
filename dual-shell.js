@@ -166,6 +166,9 @@
           '<div><small>DOMAIN</small><strong id="r4mInspectDomain">NO ROUTE</strong></div>',
           '<div><small>URL</small><code id="r4mInspectUrl">—</code></div>',
           '<div><small>METADATA</small><p id="r4mInspectDesc">Roll a route to inspect it.</p></div>',
+          '<div><small>RESOURCE TYPE</small><strong id="r4mInspectResourceType">UNAVAILABLE</strong></div>',
+          '<div><small>ELIGIBILITY</small><p id="r4mInspectEligibility">UNAVAILABLE</p></div>',
+          '<div><small>PROVENANCE</small><code id="r4mInspectProvenance">UNAVAILABLE</code></div>',
           '<button type="button" class="r4m-inspect-suggest" data-mobile-action="suggest-url">SUGGEST THIS URL ↗</button>',
         '</div>',
       '</aside>'
@@ -600,6 +603,10 @@ MOTION: waiting for target…';
     var sourceTitle = byId('ogTitle');
     var sourceDesc = byId('ogDesc');
     var tagBadge = byId('tagBadge');
+    var typedMeta = byId('typedResourceMeta');
+    var typedType = byId('typedResourceType');
+    var typedReason = byId('typedEligibilityReason');
+    var typedProvenance = byId('typedProvenance');
     var counter = byId('counter');
 
     if (!route) return;
@@ -620,6 +627,13 @@ MOTION: waiting for target…';
     var protoNode = byId('r4mProtocol');
     var descNode = byId('r4mDescription');
     var tagNode = byId('r4mTag');
+    var verifiedTypedMeta = Boolean(typedMeta && typedMeta.dataset.state === 'verified');
+    var typedTypeText = verifiedTypedMeta && typedType ? typedType.textContent.trim() : '';
+    var typedReasonText = verifiedTypedMeta && typedReason ? typedReason.textContent.trim() : '';
+    var typedProvenanceText = verifiedTypedMeta && typedProvenance ? typedProvenance.textContent.trim() : '';
+    var mobileTypedMeta = byId('r4mTypedMeta');
+    var mobileTypedType = byId('r4mResourceType');
+    var mobileEligibility = byId('r4mEligibility');
 
     if (protoNode) {
       protoNode.textContent = proto;
@@ -635,9 +649,15 @@ MOTION: waiting for target…';
       tagNode.textContent = tag;
       tagNode.hidden = !tag;
     }
+    if (mobileTypedMeta) mobileTypedMeta.hidden = !verifiedTypedMeta;
+    if (mobileTypedType) mobileTypedType.textContent = typedTypeText;
+    if (mobileEligibility) mobileEligibility.textContent = typedReasonText;
     byId('r4mInspectDomain').textContent = displayDomain;
     byId('r4mInspectUrl').textContent = url;
     byId('r4mInspectDesc').textContent = [title, desc].filter(Boolean).join(' — ') || 'NO SOURCE METADATA';
+    byId('r4mInspectResourceType').textContent = typedTypeText || 'UNAVAILABLE';
+    byId('r4mInspectEligibility').textContent = typedReasonText || 'UNAVAILABLE';
+    byId('r4mInspectProvenance').textContent = typedProvenanceText || 'UNAVAILABLE';
     var routeIndex = 0;
     if (counter) {
       var m = counter.textContent.match(/\d+/);
@@ -848,7 +868,7 @@ MOTION: waiting for target…';
 
   function observeSource() {
     if (syncObserver) return;
-    var sources = ['previewDomain', 'previewUrl', 'ogTitle', 'ogDesc', 'tagBadge', 'darkBadge', 'counter'];
+    var sources = ['previewDomain', 'previewUrl', 'ogTitle', 'ogDesc', 'tagBadge', 'darkBadge', 'typedResourceMeta', 'typedResourceType', 'typedEligibilityReason', 'typedProvenance', 'counter'];
     var observer = new MutationObserver(function () { window.requestAnimationFrame(syncRoute); });
     sources.forEach(function (id) {
       var node = byId(id);

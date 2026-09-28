@@ -59,6 +59,7 @@ test('PWA shell prefers current network bytes and uses cache only as offline fal
   assert.ok(!sw.includes('cached || fetch(e.request)'));
   assert.ok(sw.includes("url.pathname.endsWith('/urls.txt')"));
   assert.ok(sw.includes("'./corpus-authority.js'"));
+  assert.ok(sw.includes("'./result-metadata.js'"));
   assert.ok(sw.includes("url.pathname.includes('/corpus/releases/')"));
   assert.ok(sw.includes("url.pathname.endsWith('/resources.json')"));
   assert.ok(sw.includes("url.pathname.endsWith('/manifest.json')"));
@@ -174,4 +175,18 @@ test('generated runtime dialogs expose full focus lifecycle semantics', () => {
   }
 
   assert.ok(blind.includes("event.target.closest('button,a,input,textarea,select,[contenteditable=true]')"));
+});
+
+
+test('post-selection metadata projection loads after corpus authority and before roll integration', () => {
+  const index = read('index.html');
+  const authority = index.indexOf('<script src="corpus-authority.js"></script>');
+  const metadata = index.indexOf('<script src="result-metadata.js"></script>');
+  const roll = index.indexOf('<script src="roll-production-integration.js"></script>');
+
+  assert.notEqual(authority, -1);
+  assert.notEqual(metadata, -1);
+  assert.notEqual(roll, -1);
+  assert.ok(authority < metadata);
+  assert.ok(metadata < roll);
 });

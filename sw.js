@@ -5,6 +5,7 @@ const PRECACHE = [
   './anime.min.js',
   './anime-core.min.js',
   './corpus-authority.js',
+  './result-metadata.js',
   './motion-tokens.js',
   './roll-motion-machine.js',
   './roll-disclosure-boundary.js',

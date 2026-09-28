@@ -12,6 +12,7 @@ const PROMOTION = JSON.parse(
 );
 const LEGACY_DIGEST = 'sha256:5d7339b8cbfe7bd35bb8502ca753e5b4663bc2fc4ba3721b23b791dbace01c41';
 const ACTIVE_DIGEST = 'sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1';
+const RESOURCES_DIGEST = 'sha256:2c7bd5f0a492646cb5cc250b426ed720f1e0953615172717f562379e88eeb691';
 
 function freshAuthority() {
   delete require.cache[require.resolve(MODULE)];
@@ -39,6 +40,8 @@ test('runtime corpus authority promotes the typed release explicitly', () => {
     resourcesUrl: 'corpus/releases/typed-candidate-v0.1/resources.json',
     manifestUrl: 'corpus/releases/typed-candidate-v0.1/manifest.json',
     expectedDigest: ACTIVE_DIGEST,
+    expectedResourcesDigest: RESOURCES_DIGEST,
+    expectedResourceCount: 841,
     promotionId: 'typed-candidate-v0.1-active-v1',
     status: 'active',
     selectionAuthority: true,
@@ -54,6 +57,8 @@ test('release assertion remains historically non-authoritative', () => {
     resourcesUrl: 'corpus/releases/typed-candidate-v0.1/resources.json',
     manifestUrl: 'corpus/releases/typed-candidate-v0.1/manifest.json',
     expectedDigest: ACTIVE_DIGEST,
+    expectedResourcesDigest: RESOURCES_DIGEST,
+    expectedResourceCount: 841,
     status: 'candidate',
     selectionAuthority: false,
   });
@@ -146,4 +151,100 @@ test('authority and promotion descriptors are deeply immutable', () => {
     authority.active().selectionAuthority = false;
   }, TypeError);
   assert.equal(authority.active().selectionAuthority, true);
+});
+
+
+test('resource metadata stays lazy until explicitly requested after selection', async () => {
+  const authority = freshAuthority();
+  const urlBytes = fs.readFileSync(
+    path.join(ROOT, 'corpus', 'releases', 'typed-candidate-v0.1', 'urls.txt'),
+  );
+  const resourceBytes = fs.readFileSync(
+    path.join(ROOT, 'corpus', 'releases', 'typed-candidate-v0.1', 'resources.json'),
+  );
+  const requests = [];
+
+  const active = await authority.loadActive({
+    fetch: async url => {
+      requests.push(String(url));
+      return responseFor(urlBytes);
+    },
+  });
+
+  assert.equal(active.urls.length, 841);
+  assert.equal(requests.length, 1);
+  assert.match(requests[0], /\/urls\.txt\?v=/);
+  assert.equal(requests.some(url => url.includes('resources.json')), false);
+
+  const record = await authority.resourceFor('http://bittwist.sourceforge.net/', {
+    fetch: async url => {
+      requests.push(String(url));
+      return responseFor(resourceBytes);
+    },
+  });
+
+  assert.deepEqual(record, {
+    url: 'http://bittwist.sourceforge.net/',
+    resource_type: 'security_tool',
+    provenance: 'provenance:sha256:96432d916dd42c686bd0b6fcca11b9d1084a22d9aaba7d9ed6f27278668b10b2',
+    eligibility_reason: 'CONCRETE_SECURITY_TOOL',
+  });
+  assert.equal(Object.isFrozen(record), true);
+  assert.equal(requests.filter(url => url.includes('resources.json')).length, 1);
+
+  const cached = await authority.resourceFor('http://bittwist.sourceforge.net/', {
+    fetch: async () => {
+      throw new Error('metadata was fetched twice');
+    },
+  });
+  assert.strictEqual(cached, record);
+});
+
+test('resource metadata is digest-bound and cannot invalidate selected URLs', async () => {
+  const authority = freshAuthority();
+  const urlBytes = fs.readFileSync(
+    path.join(ROOT, 'corpus', 'releases', 'typed-candidate-v0.1', 'urls.txt'),
+  );
+
+  const active = await authority.loadActive({
+    fetch: async () => responseFor(urlBytes),
+  });
+
+  await assert.rejects(
+    authority.resourceFor(active.urls[0], {
+      fetch: async () => responseFor(Buffer.from('{"tampered":true}\n', 'utf8')),
+    }),
+    /metadata digest mismatch/i,
+  );
+
+  const stillActive = await authority.loadActive({
+    fetch: async () => {
+      throw new Error('active URL corpus should remain cached');
+    },
+  });
+
+  assert.strictEqual(stillActive, active);
+  assert.equal(stillActive.urls.length, 841);
+});
+
+test('verified metadata requires one unique record for every active URL', async () => {
+  const authority = freshAuthority();
+  const urlBytes = fs.readFileSync(
+    path.join(ROOT, 'corpus', 'releases', 'typed-candidate-v0.1', 'urls.txt'),
+  );
+  const resourceBytes = fs.readFileSync(
+    path.join(ROOT, 'corpus', 'releases', 'typed-candidate-v0.1', 'resources.json'),
+  );
+
+  await authority.loadActive({ fetch: async () => responseFor(urlBytes) });
+  const metadata = await authority.loadResourceMetadata({
+    fetch: async () => responseFor(resourceBytes),
+  });
+
+  assert.equal(metadata.count, 841);
+  assert.equal(metadata.releaseId, 'typed-candidate-v0.1');
+  assert.equal(metadata.digest, RESOURCES_DIGEST);
+  assert.equal(Object.keys(metadata.byUrl).length, 841);
+  assert.equal(Object.isFrozen(metadata), true);
+  assert.equal(Object.isFrozen(metadata.byUrl), true);
 });
