@@ -1053,8 +1053,8 @@ test('mobile v3 History presents recorded visits oldest to newest without append
   expect(before[0]).toContain('one.example');
   expect(before[1]).toContain('two.example');
   expect(before[2]).toContain('three.example');
-  expect(before[0]).toMatch(/^001\b/);
-  expect(before[2]).toMatch(/^003\b/);
+  await expect(rows.nth(0).locator('span').first()).toHaveText('001');
+  await expect(rows.nth(2).locator('span').first()).toHaveText('003');
   await expect(rows.nth(2)).toHaveAttribute('data-history-latest', 'true');
 
   await rows.nth(0).click();
