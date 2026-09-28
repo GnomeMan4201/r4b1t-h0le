@@ -171,6 +171,10 @@ async function exerciseProductionRoll(page, surface) {
   }
 
   const selectedUrl = (await page.locator('#previewUrl').textContent()).trim();
+  await expect.poll(async () => page.evaluate(async url => {
+    const artifact = await window.getTrailManifest();
+    return artifact.manifest.routes.some(route => route.url === url);
+  }, selectedUrl)).toBe(true);
   const beforeTerrainChange = await exportThroughRenderedLedger(page, surface);
 
   await selectTerrain(page, surface, 'BLOG');

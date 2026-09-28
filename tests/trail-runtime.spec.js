@@ -18,7 +18,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 async function rollAndWaitForTrail(page) {
-  await rollAndWaitForTrail(page);
+  await page.evaluate(() => window.roll());
   await expect.poll(async () => page.evaluate(async () => {
     const snapshot = await window.getTrailManifest();
     return snapshot.manifest.routes.length;

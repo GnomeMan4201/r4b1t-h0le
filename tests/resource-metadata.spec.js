@@ -114,8 +114,10 @@ test('metadata verification failure does not revoke or reroll the selected route
   await expect(page.locator('#typedResourceMeta')).toHaveAttribute('data-state', 'unavailable');
   await expect(page.locator('#typedResourceMeta')).toBeHidden();
 
-  const artifact = await page.evaluate(() => window.getTrailManifest());
-  expect(artifact.manifest.routes.some(route => route.url === selected)).toBe(true);
+  await expect.poll(async () => page.evaluate(async url => {
+    const artifact = await window.getTrailManifest();
+    return artifact.manifest.routes.some(route => route.url === url);
+  }, selected)).toBe(true);
   expect(BY_URL.has(selected)).toBe(true);
 });
 
