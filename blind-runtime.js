@@ -57,6 +57,9 @@
       var secrets = JSON.parse(localStorage.getItem(PRIVATE_KEY) || '{}');
       if (saved && saved.manifest) {
         await api.verify(await api.envelope(saved.manifest));
+        if (!saved.manifest.genesis || saved.manifest.genesis.corpus_revision !== state.corpusRevision) {
+          throw new Error('Corpus revision mismatch');
+        }
         state.manifest = saved.manifest;
         state.currentDepth = Number.isSafeInteger(saved.currentDepth) ?
           Math.min(state.manifest.steps.length, Math.max(0, saved.currentDepth)) : 0;
@@ -66,6 +69,10 @@
     } catch (_) {
       localStorage.removeItem(PUBLIC_KEY);
       localStorage.removeItem(PRIVATE_KEY);
+      state.manifest = null;
+      state.secrets = {};
+      state.currentDepth = 0;
+      state.revealedUrl = null;
     }
     state.manifest = await api.create({
       corpus_revision: state.corpusRevision,

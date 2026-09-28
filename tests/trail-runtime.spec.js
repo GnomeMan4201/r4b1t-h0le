@@ -137,3 +137,114 @@ test('Trail Ledger explains unavailable actions and exposes copy controls for id
   await expect(overlay.locator('#trailLedgerHint')).toContainText('Import or export a trail to enable replay and fork.');
   await expect(overlay.locator('[data-copy-field="seed"]')).toHaveAccessibleName('Copy seed');
 });
+
+
+test('legacy unstamped Trail drafts are stamped only while legacy corpus is active', async ({ page }) => {
+  const legacyRoute = 'https://example.org/legacy-draft';
+  await page.addInitScript(({ route }) => {
+    localStorage.setItem('r4b1t_trail_draft_v1', JSON.stringify({
+      seed: 'legacy-seed',
+      createdAt: '2026-09-27T00:00:00.000Z',
+      routes: [{ url: route, action: 'ROLL' }],
+      parent: null,
+    }));
+  }, { route: legacyRoute });
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.getTrailManifest === 'function');
+
+  const result = await page.evaluate(async () => {
+    const exported = await window.getTrailManifest();
+    const saved = JSON.parse(localStorage.getItem('r4b1t_trail_draft_v1'));
+    return {
+      active: window.R4b1tCorpusAuthority.active(),
+      exportedRevision: exported.manifest.corpus_revision,
+      exportedRoutes: exported.manifest.routes.map(route => route.url),
+      savedRevision: saved.corpusRevision,
+      savedSourceId: saved.corpusSourceId,
+    };
+  });
+
+  expect(result.active.id).toBe('legacy-urls-v1');
+  expect(result.exportedRoutes).toEqual([legacyRoute]);
+  expect(result.savedRevision).toBe(result.exportedRevision);
+  expect(result.savedSourceId).toBe('legacy-urls-v1');
+});
+
+test('Trail resets a restored draft whose corpus revision does not match active bytes', async ({ page }) => {
+  const foreignRevision = 'sha256:' + '0'.repeat(64);
+  await page.addInitScript(({ revision }) => {
+    localStorage.setItem('r4b1t_trail_draft_v1', JSON.stringify({
+      seed: 'foreign-seed',
+      createdAt: '2026-09-27T00:00:00.000Z',
+      corpusRevision: revision,
+      corpusSourceId: 'legacy-urls-v1',
+      routes: [{ url: 'https://example.org/foreign-route', action: 'ROLL' }],
+      parent: null,
+    }));
+  }, { revision: foreignRevision });
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.getTrailManifest === 'function');
+
+  const result = await page.evaluate(async () => {
+    const exported = await window.getTrailManifest();
+    const saved = JSON.parse(localStorage.getItem('r4b1t_trail_draft_v1'));
+    return {
+      active: window.R4b1tCorpusAuthority.active(),
+      routes: exported.manifest.routes,
+      exportedRevision: exported.manifest.corpus_revision,
+      savedRevision: saved.corpusRevision,
+      savedSourceId: saved.corpusSourceId,
+      seed: exported.manifest.sampler.seed,
+    };
+  });
+
+  expect(result.routes).toEqual([]);
+  expect(result.exportedRevision).not.toBe(foreignRevision);
+  expect(result.savedRevision).toBe(result.exportedRevision);
+  expect(result.savedSourceId).toBe(result.active.id);
+  expect(result.seed).not.toBe('foreign-seed');
+});
+
+test('Trail replay may inspect a foreign-corpus artifact but fork rejects it', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => (
+    typeof window.importTrailManifest === 'function' &&
+    typeof window.forkTrailManifest === 'function'
+  ));
+
+  const result = await page.evaluate(async () => {
+    const active = await window.R4b1tCorpusAuthority.loadActive();
+    const foreignRevision = 'sha256:' + '0'.repeat(64);
+    const manifest = await window.R4b1tTrail.createManifest({
+      created_at: '2026-09-27T00:00:00.000Z',
+      corpus_revision: foreignRevision,
+      seed: 'foreign-seed',
+      terrain: 'ALL',
+      routes: [{ url: 'https://example.org/foreign-route', action: 'ROLL' }],
+      parent: null,
+    });
+    const envelope = await window.R4b1tTrail.envelope(manifest);
+    await window.importTrailManifest(envelope);
+    const replayed = await window.replayTrailManifest(0);
+
+    let forkResult = 'accepted';
+    try {
+      await window.forkTrailManifest(1);
+    } catch (error) {
+      forkResult = String(error && error.message || error);
+    }
+
+    return {
+      activeRevision: active.revision,
+      foreignRevision,
+      replayed,
+      forkResult,
+    };
+  });
+
+  expect(result.replayed).toBe('https://example.org/foreign-route');
+  expect(result.foreignRevision).not.toBe(result.activeRevision);
+  expect(result.forkResult).toMatch(/corpus revision mismatch/i);
+});
