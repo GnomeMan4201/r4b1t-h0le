@@ -109,12 +109,12 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
 
 /* Primary mobile entry for the trail wear and blind-descent visual system. */
 @media (max-width:900px){
-  .r4m-descent-entry{position:relative;margin:10px 0 18px;border:1px solid #5a2a27;border-left:5px solid var(--r4m-red-hi);background:linear-gradient(112deg,#1d0b0b 0,#100d0b 58%,#28100f 100%);box-shadow:0 7px 0 #26090a;padding:15px 14px 13px;overflow:hidden}
-  .r4m-descent-entry:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(101deg,transparent 0 22px,#d5222914 23px 24px,transparent 25px 47px);pointer-events:none}
-  .r4m-descent-entry>div{position:relative}.r4m-descent-entry small{display:block;color:var(--r4m-red-hi);font-size:.43rem;letter-spacing:.19em;margin-bottom:5px}.r4m-descent-entry strong{display:block;color:#eee4d2;font-family:var(--font-head,"Bebas Neue",sans-serif);font-size:1.9rem;letter-spacing:.07em;line-height:1}.r4m-descent-entry p{max-width:34em;margin:6px 0 13px;color:#9f9381;font-size:.48rem;line-height:1.55}
-  .r4m-descent-actions{display:grid;grid-template-columns:1.25fr 1fr;gap:7px}.r4m-descent-actions button{min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid #6d302e;background:#15100e;color:#e8deca;padding:10px 11px;text-align:left;font:600 .5rem var(--font-mono,"DM Mono",monospace);letter-spacing:.1em}.r4m-descent-actions button:first-child{border-color:var(--r4m-red-hi);background:var(--r4m-red-hi);color:#090807}.r4m-descent-actions button b{font-size:1.2rem;line-height:1}
+  .r4m-descent-entry{position:relative;margin:14px 0 18px;border:0;border-left:4px solid var(--r4m-red-hi);background:linear-gradient(90deg,#1c0c0c 0,#100d0b 68%,#100d0b 100%);padding:18px 16px 16px;overflow:hidden}
+  .r4m-descent-entry:before{content:"";position:absolute;inset:0;background:url("rabbit-aperture.svg") 112% 42%/46% no-repeat;opacity:.055;pointer-events:none}
+  .r4m-descent-entry>div{position:relative}.r4m-descent-entry small{display:block;color:var(--r4m-red-hi);font-size:.43rem;letter-spacing:.19em;margin-bottom:7px}.r4m-descent-entry strong{display:block;color:#eee4d2;font-family:var(--font-head,"Bebas Neue",sans-serif);font-size:2.2rem;letter-spacing:.06em;line-height:1}.r4m-descent-entry p{max-width:30em;margin:7px 0 16px;color:#9f9381;font-size:.5rem;line-height:1.55}
+  .r4m-descent-actions{display:block}.r4m-descent-actions button{width:100%;min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:0;background:var(--r4m-red-hi);color:#090807;padding:11px 13px;text-align:left;font:700 .54rem var(--font-mono,"DM Mono",monospace);letter-spacing:.11em}.r4m-descent-actions button b{font-size:1.25rem;line-height:1}
 }
-@media (max-width:390px){.r4m-descent-actions{grid-template-columns:1fr}.r4m-descent-entry strong{font-size:1.7rem}}
+@media (max-width:390px){.r4m-descent-entry strong{font-size:2rem}}
 
 
 /* Motion for the ordinary mobile shell — these are the controls users actually touch. */
