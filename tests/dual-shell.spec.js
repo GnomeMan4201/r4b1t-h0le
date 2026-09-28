@@ -921,3 +921,62 @@ test('fresh mobile landing keeps ROLL above persistent navigation at phone heigh
   expect(geometry.rollBottom).toBeLessThanOrEqual(geometry.navTop + 1);
   expect(geometry.documentWidth).toBeLessThanOrEqual(geometry.viewportWidth + 1);
 });
+
+
+test('mobile Blind mode presents one primary descent action while advanced tools stay in MENU', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.waitForFunction(() => typeof window.getBlindManifest === 'function');
+
+  const before = await page.evaluate(async () => {
+    const snapshot = await window.getBlindManifest();
+    return {
+      steps: snapshot.manifest.steps.length,
+      preview: document.getElementById('previewUrl').textContent.trim(),
+    };
+  });
+
+  expect(before.steps).toBe(0);
+  expect(before.preview).toBe('—');
+
+  await page.locator('#r4mModeBlind').click();
+
+  const entry = page.locator('#r4mDescentEntry');
+  await expect(entry).toBeVisible();
+  await expect(entry.locator('small')).toHaveText('COMMIT FIRST / SEE LATER');
+  await expect(entry.locator('strong')).toHaveText('BLIND DESCENT');
+  await expect(entry.locator('p')).toHaveText('Lock one route before it is shown.');
+  await expect(entry.locator('[data-mobile-action="blind-descent"]')).toHaveText('DESCEND BLIND ↓');
+  await expect(entry.locator('[data-mobile-action="topology"]')).toHaveCount(0);
+
+  const afterModeSwitch = await page.evaluate(async () => {
+    const snapshot = await window.getBlindManifest();
+    return snapshot.manifest.steps.length;
+  });
+  expect(afterModeSwitch).toBe(0);
+
+  await entry.locator('[data-mobile-action="blind-descent"]').click();
+
+  const overlay = page.locator('#blindDescentOverlay');
+  await expect(overlay).toHaveClass(/open/);
+  await expect(page.locator('#blindDepth')).toContainText('001');
+  await expect(page.locator('#blindStatus')).toHaveText('CONCEALED / COMMITMENT PRESENT');
+
+  const afterDescend = await page.evaluate(async () => {
+    const snapshot = await window.getBlindManifest();
+    return {
+      steps: snapshot.manifest.steps,
+      preview: document.getElementById('previewUrl').textContent.trim(),
+    };
+  });
+
+  expect(afterDescend.steps).toHaveLength(1);
+  expect(afterDescend.steps[0].state).toBe('concealed');
+  expect(afterDescend.preview).toBe('—');
+
+  await page.keyboard.press('Escape');
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet [data-mobile-action="topology"]')).toBeVisible();
+});
