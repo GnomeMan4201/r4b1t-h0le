@@ -23,9 +23,9 @@ const FIXTURE_DIGEST = (
 );
 const AUTHORITY_PATH = path.resolve(__dirname, '..', 'corpus-authority.js');
 const AUTHORITY_SOURCE = fs.readFileSync(AUTHORITY_PATH, 'utf8');
-const LEGACY_DIGEST = 'sha256:5d7339b8cbfe7bd35bb8502ca753e5b4663bc2fc4ba3721b23b791dbace01c41';
+const ACTIVE_DIGEST = 'sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1';
 const FIXTURE_AUTHORITY_SOURCE = AUTHORITY_SOURCE.replace(
-  LEGACY_DIGEST,
+  ACTIVE_DIGEST,
   FIXTURE_DIGEST,
 );
 
@@ -86,7 +86,7 @@ async function configurePage(page) {
     contentType: 'application/javascript; charset=utf-8',
     body: FIXTURE_AUTHORITY_SOURCE,
   }));
-  await page.route('**/urls.txt?*', route => route.fulfill({
+  await page.route('**/corpus/releases/typed-candidate-v0.1/urls.txt?*', route => route.fulfill({
     status: 200,
     contentType: 'text/plain; charset=utf-8',
     body: FIXTURE_BYTES,

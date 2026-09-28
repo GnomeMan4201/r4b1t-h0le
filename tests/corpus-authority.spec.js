@@ -1,42 +1,54 @@
 'use strict';
 
+const fs = require('node:fs');
+const path = require('node:path');
 const { test, expect } = require('@playwright/test');
 
-test('runtime authority exposes candidate without fetching it for selection', async ({ page }) => {
+const RELEASE = path.resolve(
+  __dirname, '..', 'corpus', 'releases', 'typed-candidate-v0.1', 'urls.txt',
+);
+const ACTIVE_URLS = new Set(
+  fs.readFileSync(RELEASE, 'utf8').split(/\r?\n/).map(value => value.trim()).filter(Boolean),
+);
+
+test('production ROLL selects from explicitly promoted typed corpus', async ({ page }) => {
   const requests = [];
 
   page.on('request', request => {
-    const url = request.url();
-    if (url.includes('urls.txt') || url.includes('typed-candidate-v0.1')) {
-      requests.push(url);
-    }
+    if (request.url().includes('urls.txt')) requests.push(request.url());
   });
 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => (
     window.R4b1tCorpusAuthority &&
-    typeof window.roll === 'function' &&
-    typeof window.openBlindDescent === 'function'
+    typeof window.roll === 'function'
   ));
 
-  const authority = await page.evaluate(() => ({
-    active: window.R4b1tCorpusAuthority.active(),
-    candidate: window.R4b1tCorpusAuthority.candidate(),
-  }));
+  const authority = await page.evaluate(async () => {
+    const loaded = await window.R4b1tCorpusAuthority.loadActive();
+    return {
+      active: window.R4b1tCorpusAuthority.active(),
+      candidate: window.R4b1tCorpusAuthority.candidate(),
+      promotion: window.R4b1tCorpusAuthority.promotion(),
+      count: loaded.urls.length,
+    };
+  });
 
-  expect(authority.active.id).toBe('legacy-urls-v1');
-  expect(authority.active.url).toBe('urls.txt');
+  expect(authority.active.id).toBe('typed-candidate-v0.1');
   expect(authority.active.selectionAuthority).toBe(true);
-  expect(authority.candidate.id).toBe('typed-candidate-v0.1');
   expect(authority.candidate.selectionAuthority).toBe(false);
+  expect(authority.promotion.id).toBe('typed-candidate-v0.1-active-v1');
+  expect(authority.count).toBe(841);
 
+  await page.waitForTimeout(50);
   await page.evaluate(() => window.roll());
-  await page.evaluate(() => window.openBlindDescent());
+  const selected = (await page.locator('#previewUrl').textContent()).trim();
 
+  expect(ACTIVE_URLS.has(selected)).toBe(true);
   expect(
-    requests.some(url => url.includes('corpus/releases/typed-candidate-v0.1')),
-  ).toBe(false);
-  expect(
-    requests.some(url => url.includes('/urls.txt?')),
+    requests.some(url => url.includes('/corpus/releases/typed-candidate-v0.1/urls.txt?')),
   ).toBe(true);
+  expect(
+    requests.some(url => url.includes('/urls.txt?') && !url.includes('/corpus/releases/')),
+  ).toBe(false);
 });

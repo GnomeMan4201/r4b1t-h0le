@@ -62,9 +62,9 @@ A route is rolled from the current eligible ground. From there you can follow it
 
 <table>
 <tr>
-<td width="25%" align="center"><strong>50,109</strong><br><sub>structurally valid URLs</sub></td>
-<td width="25%" align="center"><strong>12,396</strong><br><sub>unique hosts</sub></td>
-<td width="25%" align="center"><strong>0</strong><br><sub>invalid / duplicate / credential-bearing entries admitted</sub></td>
+<td width="25%" align="center"><strong>841</strong><br><sub>typed active resources</sub></td>
+<td width="25%" align="center"><strong>284</strong><br><sub>unique active hosts</sub></td>
+<td width="25%" align="center"><strong>7</strong><br><sub>explicit resource types</sub></td>
 <td width="25%" align="center"><strong>LOCAL</strong><br><sub>trail and session state</sub></td>
 </tr>
 </table>
@@ -219,6 +219,8 @@ The breakpoint changes presentation, not the discovery engine or corpus.
 
 > [!IMPORTANT]
 > **The corpus changes over time. Evidence should not.** A frozen baseline is a statement about one audited revision, not a promise about the future state of the open web.
+
+The table below preserves the **legacy 50,109-URL audit baseline** as historical evidence. It is no longer the active production selection corpus. Production authority is now the digest-bound `typed-candidate-v0.1` release: **841 resources across 284 hosts**.
 
 | Measurement | Frozen baseline |
 | --- | ---: |

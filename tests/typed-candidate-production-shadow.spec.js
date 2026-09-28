@@ -35,40 +35,27 @@ test('typed candidate manifest binds the exact shadow bytes', () => {
   expect(CANDIDATE_URLS.length).toBe(841);
 });
 
-test('digest-bound authority rejects typed candidate bytes impersonating the legacy source', async ({ page }) => {
-  let corpusRequests = 0;
-
-  await page.route('**/urls.txt?*', route => {
-    corpusRequests += 1;
-    return route.fulfill({
-      status: 200,
-      contentType: 'text/plain; charset=utf-8',
-      body: CANDIDATE_BYTES,
-    });
-  });
-
+test('runtime promotion grants authority without rewriting candidate release evidence', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => Boolean(window.R4b1tCorpusAuthority));
 
   const result = await page.evaluate(async () => {
-    try {
-      await window.R4b1tCorpusAuthority.loadActive();
-      return { accepted: true };
-    } catch (error) {
-      return {
-        accepted: false,
-        message: String(error && error.message || error),
-        active: window.R4b1tCorpusAuthority.active(),
-        candidate: window.R4b1tCorpusAuthority.candidate(),
-      };
-    }
+    const loaded = await window.R4b1tCorpusAuthority.loadActive();
+    return {
+      active: window.R4b1tCorpusAuthority.active(),
+      candidate: window.R4b1tCorpusAuthority.candidate(),
+      promotion: window.R4b1tCorpusAuthority.promotion(),
+      revision: loaded.revision,
+      count: loaded.urls.length,
+    };
   });
 
-  expect(result.accepted).toBe(false);
-  expect(result.message).toMatch(/digest mismatch/i);
-  expect(result.active.id).toBe('legacy-urls-v1');
-  expect(result.active.expectedDigest).not.toBe(CANDIDATE_REVISION);
-  expect(result.candidate.expectedDigest).toBe(CANDIDATE_REVISION);
+  expect(result.active.id).toBe('typed-candidate-v0.1');
+  expect(result.active.selectionAuthority).toBe(true);
+  expect(result.active.expectedDigest).toBe(CANDIDATE_REVISION);
   expect(result.candidate.selectionAuthority).toBe(false);
-  expect(corpusRequests).toBeGreaterThan(0);
+  expect(result.candidate.expectedDigest).toBe(CANDIDATE_REVISION);
+  expect(result.promotion.id).toBe('typed-candidate-v0.1-active-v1');
+  expect(result.revision).toBe(CANDIDATE_REVISION);
+  expect(result.count).toBe(841);
 });

@@ -139,7 +139,7 @@ test('Trail Ledger explains unavailable actions and exposes copy controls for id
 });
 
 
-test('legacy unstamped Trail drafts are stamped only while legacy corpus is active', async ({ page }) => {
+test('unstamped historical Trail drafts reset when typed corpus becomes active', async ({ page }) => {
   const legacyRoute = 'https://example.org/legacy-draft';
   await page.addInitScript(({ route }) => {
     localStorage.setItem('r4b1t_trail_draft_v1', JSON.stringify({
@@ -154,21 +154,27 @@ test('legacy unstamped Trail drafts are stamped only while legacy corpus is acti
   await page.waitForFunction(() => typeof window.getTrailManifest === 'function');
 
   const result = await page.evaluate(async () => {
+    const loaded = await window.R4b1tCorpusAuthority.loadActive();
     const exported = await window.getTrailManifest();
     const saved = JSON.parse(localStorage.getItem('r4b1t_trail_draft_v1'));
     return {
       active: window.R4b1tCorpusAuthority.active(),
+      activeUrls: loaded.urls,
       exportedRevision: exported.manifest.corpus_revision,
       exportedRoutes: exported.manifest.routes.map(route => route.url),
       savedRevision: saved.corpusRevision,
       savedSourceId: saved.corpusSourceId,
+      seed: exported.manifest.sampler.seed,
     };
   });
 
-  expect(result.active.id).toBe('legacy-urls-v1');
-  expect(result.exportedRoutes).toEqual([legacyRoute]);
+  expect(result.active.id).toBe('typed-candidate-v0.1');
+  expect(result.exportedRoutes).not.toContain(legacyRoute);
+  expect(result.exportedRoutes.every(url => result.activeUrls.includes(url))).toBe(true);
+  expect(result.activeUrls).toHaveLength(841);
   expect(result.savedRevision).toBe(result.exportedRevision);
-  expect(result.savedSourceId).toBe('legacy-urls-v1');
+  expect(result.savedSourceId).toBe('typed-candidate-v0.1');
+  expect(result.seed).not.toBe('legacy-seed');
 });
 
 test('Trail resets a restored draft whose corpus revision does not match active bytes', async ({ page }) => {

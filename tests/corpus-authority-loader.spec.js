@@ -2,16 +2,15 @@
 
 const { test, expect } = require('@playwright/test');
 
-const LEGACY_DIGEST = 'sha256:5d7339b8cbfe7bd35bb8502ca753e5b4663bc2fc4ba3721b23b791dbace01c41';
+const ACTIVE_DIGEST = 'sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1';
+const ACTIVE_PATH = '/corpus/releases/typed-candidate-v0.1/urls.txt?';
 
-test('ROLL, Trail, and Blind share one verified legacy corpus load', async ({ page }) => {
+test('ROLL, Trail, and Blind share one verified promoted corpus load', async ({ page }) => {
   const requests = [];
 
   page.on('request', request => {
     const url = request.url();
-    if (url.includes('/urls.txt?') || url.includes('typed-candidate-v0.1')) {
-      requests.push(url);
-    }
+    if (url.includes('urls.txt')) requests.push(url);
   });
 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
@@ -29,29 +28,40 @@ test('ROLL, Trail, and Blind share one verified legacy corpus load', async ({ pa
     const blind = await window.getBlindManifest();
     return {
       loadedRevision: loaded.revision,
+      count: loaded.urls.length,
       sourceId: loaded.source.id,
       trailRevision: trail.manifest.corpus_revision,
-      blindRevision: blind.manifest.corpus_revision,
-      candidateAuthority: window.R4b1tCorpusAuthority.candidate().selectionAuthority,
+      blindRevision: blind.manifest.genesis.corpus_revision,
+      activeAuthority: window.R4b1tCorpusAuthority.active().selectionAuthority,
+      releaseAuthority: window.R4b1tCorpusAuthority.candidate().selectionAuthority,
     };
   });
 
-  expect(result.loadedRevision).toBe(LEGACY_DIGEST);
-  expect(result.trailRevision).toBe(LEGACY_DIGEST);
-  expect(result.blindRevision).toBe(LEGACY_DIGEST);
-  expect(result.sourceId).toBe('legacy-urls-v1');
-  expect(result.candidateAuthority).toBe(false);
-  expect(requests.filter(url => url.includes('/urls.txt?'))).toHaveLength(1);
-  expect(requests.some(url => url.includes('typed-candidate-v0.1'))).toBe(false);
+  expect(result.loadedRevision).toBe(ACTIVE_DIGEST);
+  expect(result.trailRevision).toBe(ACTIVE_DIGEST);
+  expect(result.blindRevision).toBe(ACTIVE_DIGEST);
+  expect(result.count).toBe(841);
+  expect(result.sourceId).toBe('typed-candidate-v0.1');
+  expect(result.activeAuthority).toBe(true);
+  expect(result.releaseAuthority).toBe(false);
+  expect(requests.filter(url => url.includes(ACTIVE_PATH))).toHaveLength(1);
+  expect(
+    requests.some(url => url.includes('/urls.txt?') && !url.includes('/corpus/releases/')),
+  ).toBe(false);
 });
 
-test('active corpus digest mismatch fails closed before selection authority is usable', async ({ page }) => {
-  await page.route('**/urls.txt?*', async route => {
+test('promoted corpus digest mismatch fails closed without legacy fallback', async ({ page }) => {
+  let legacyRequests = 0;
+  await page.route('**/corpus/releases/typed-candidate-v0.1/urls.txt?*', async route => {
     await route.fulfill({
       status: 200,
       contentType: 'text/plain; charset=utf-8',
       body: 'https://tampered.example/\n',
     });
+  });
+  await page.route('**/r4b1t-h0le/urls.txt?*', async route => {
+    legacyRequests += 1;
+    await route.continue();
   });
 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
@@ -67,4 +77,5 @@ test('active corpus digest mismatch fails closed before selection authority is u
   });
 
   expect(message).toMatch(/digest mismatch/i);
+  expect(legacyRequests).toBe(0);
 });

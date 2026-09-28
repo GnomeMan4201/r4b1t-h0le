@@ -31,8 +31,8 @@ function excludes(content, value, label) {
   claim(!content.includes(value), `${label}: stale value still present: ${value}`);
 }
 
-function verifyCorpusClaims(readme) {
-  const lines = read('urls.txt').split(/\r?\n/);
+function corpusMetricsFromText(content) {
+  const lines = content.split(/\r?\n/);
   let validUrls = 0;
   const hosts = new Set();
 
@@ -46,22 +46,62 @@ function verifyCorpusClaims(readme) {
       validUrls += 1;
       hosts.add(parsed.hostname.replace(/\.$/, '').toLowerCase());
     } catch {
-      // Invalid entries are accounted for by corpus-health CI; they are not public valid-URL claims.
+      // Invalid entries are accounted for by corpus-health CI.
     }
   }
 
-  const validLabel = validUrls.toLocaleString('en-US');
-  const hostLabel = hosts.size.toLocaleString('en-US');
+  return { validUrls, uniqueHosts: hosts.size };
+}
+
+function verifyCorpusClaims(readme) {
+  const legacy = corpusMetricsFromText(read('urls.txt'));
+  const releaseManifest = JSON.parse(
+    read('corpus/releases/typed-candidate-v0.1/manifest.json'),
+  );
+  const promotion = JSON.parse(read('corpus/runtime/active-v1.json'));
+
+  const activeCount = releaseManifest.counts.resources;
+  const activeHosts = releaseManifest.counts.unique_hosts;
+  const activeTypes = Object.keys(releaseManifest.counts.resource_types || {}).length;
 
   claim(
-    readme.includes(`Structurally valid URLs | **${validLabel}**`) &&
-      readme.includes(`<strong>${validLabel}</strong><br><sub>structurally valid URLs</sub>`),
-    `README corpus count drift: expected ${validLabel} structurally valid URLs`,
+    promotion.active.source_id === 'typed-candidate-v0.1' &&
+      promotion.active.selection_authority === true &&
+      promotion.active.expected_digest === releaseManifest.urls_digest,
+    'runtime promotion drift: active typed release does not match release manifest',
   );
   claim(
-    readme.includes(`Unique hosts | **${hostLabel}**`) &&
-      readme.includes(`<strong>${hostLabel}</strong><br><sub>unique hosts</sub>`),
-    `README host count drift: expected ${hostLabel} unique hosts`,
+    promotion.release_assertion.selection_authority === false,
+    'runtime promotion drift: historical release assertion must remain non-authoritative',
+  );
+
+  claim(
+    readme.includes(`<strong>${activeCount.toLocaleString('en-US')}</strong><br><sub>typed active resources</sub>`),
+    `README active corpus count drift: expected ${activeCount.toLocaleString('en-US')} typed resources`,
+  );
+  claim(
+    readme.includes(`<strong>${activeHosts.toLocaleString('en-US')}</strong><br><sub>unique active hosts</sub>`),
+    `README active host count drift: expected ${activeHosts.toLocaleString('en-US')} active hosts`,
+  );
+  claim(
+    readme.includes(`<strong>${activeTypes.toLocaleString('en-US')}</strong><br><sub>explicit resource types</sub>`),
+    `README active type count drift: expected ${activeTypes.toLocaleString('en-US')} resource types`,
+  );
+
+  const legacyValidLabel = legacy.validUrls.toLocaleString('en-US');
+  const legacyHostLabel = legacy.uniqueHosts.toLocaleString('en-US');
+  claim(
+    readme.includes(`Structurally valid URLs | **${legacyValidLabel}**`),
+    `README legacy baseline drift: expected ${legacyValidLabel} structurally valid URLs`,
+  );
+  claim(
+    readme.includes(`Unique hosts | **${legacyHostLabel}**`),
+    `README legacy host baseline drift: expected ${legacyHostLabel} unique hosts`,
+  );
+  claim(
+    readme.includes('legacy 50,109-URL audit baseline') &&
+      readme.includes('It is no longer the active production selection corpus'),
+    'README must distinguish legacy frozen evidence from current runtime authority',
   );
 }
 
