@@ -136,7 +136,10 @@ test('mobile viewport exposes one-thumb controls', async ({ page }, testInfo) =>
 
   await expect(page.locator('#r4mRoll')).toBeVisible();
   await expect(page.locator('.r4m-nav')).toBeVisible();
-  await expect(page.locator('[data-mobile-action="filter"]').first()).toBeVisible();
+  await expect(page.locator('.r4m-filter-strip')).toHaveCount(0);
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet [data-mobile-action="filter"]')).toBeVisible();
+  await page.locator('#r4mNavRoll').click();
   await page.locator('#r4mRoll').click();
   await expect(page.locator('#r4mRoute')).toBeVisible();
   await expect(page.locator('[data-mobile-action="visit"]')).toBeVisible();

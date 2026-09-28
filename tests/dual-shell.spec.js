@@ -56,13 +56,15 @@ test('mobile terrain filter can select and return to all signals', async ({ page
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  await page.locator('[data-mobile-action="filter"]').first().click();
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
   await expect(page.locator('#r4mFilterSheet')).toHaveClass(/\bopen\b/);
   await page.locator('#r4mFilterOptions .r4m-filter-proxy', { hasText: 'CODE' }).click();
   await expect(page.locator('#r4mFilterLabel')).toHaveText('CODE');
   await expect(page.locator('#r4mRollScope')).toHaveText('CODE ROUTES');
 
-  await page.locator('[data-mobile-action="filter"]').first().click();
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
   await page.locator('#r4mFilterOptions .r4m-filter-proxy', { hasText: 'ALL SIGNALS' }).click();
   await expect(page.locator('#r4mFilterLabel')).toHaveText('ALL SIGNALS');
   await expect(page.locator('#r4mRollScope')).toHaveText('FULL CORPUS');
@@ -420,22 +422,24 @@ test('mobile redesign survives portrait-landscape-portrait without overflow or l
   await expect(page.locator('.r4m-nav')).toBeVisible();
 });
 
-test('mobile redesign keeps contract language and existing capability actions reachable', async ({ page }, testInfo) => {
+test('mobile landing keeps one primary decision while MENU retains secondary capabilities', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  await expect(page.locator('#r4mHero')).toContainText('A DOOR.');
-  await expect(page.locator('#r4mHero')).toContainText('NOT A FEED.');
-  await expect(page.locator('#r4mHero h1')).toContainText('NO PROFILE.');
-  await expect(page.locator('#r4mHero h1')).toContainText('NO TRACKING.');
-  await expect(page.locator('#r4mHero h1')).toContainText('NO RANKING.');
+  await expect(page.locator('#r4mHero h1')).toHaveText('A DOOR, NOT A FEED.');
+  await expect(page.locator('#r4mHero p')).toHaveText('NO PROFILE. NO RANKING. COMMITTED BEFORE REVEAL.');
   await expect(page.locator('#r4mRoll')).toContainText('COMMIT → REVEAL → EXPLORE');
+  await expect(page.locator('.r4m-header-actions')).toHaveCount(0);
+  await expect(page.locator('.r4m-filter-strip')).toHaveCount(0);
+  await expect(page.locator('.r4m-status')).toHaveCount(0);
+  await expect(page.locator('#r4mDescentEntry')).toBeHidden();
 
   await page.locator('#r4mNavMenu').click();
-  for (const action of ['filter', 'branch', 'history', 'inspect', 'replay-inspection', 'trail-file', 'comparison', 'proof-session']) {
+  for (const action of ['filter', 'branch', 'history', 'inspect', 'replay-inspection', 'trail-file', 'comparison', 'proof-session', 'topology', 'help', 'theme']) {
     await expect(page.locator('#r4mMenuSheet [data-mobile-action="' + action + '"]')).toBeVisible();
   }
+  await expect(page.locator('#r4mMenuZip')).toBeVisible();
 });
 
 
@@ -592,7 +596,8 @@ test('P2-4 mobile theme control reuses the persisted cross-shell preference', as
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  const theme = page.locator('#r4mTheme');
+  await page.locator('#r4mNavMenu').click();
+  const theme = page.locator('#r4mMenuTheme');
   await expect(theme).toBeVisible();
   const startedLight = await page.locator('html').evaluate((el) => el.classList.contains('light'));
   await theme.click();
@@ -779,14 +784,18 @@ test('mobile primary stage swaps ROLL for the disclosed result without auto-scro
   await expect(page.locator('html')).toHaveClass(/r4m-stage-result/);
 });
 
-test('mobile primary mode switch changes the primary instrument while legacy Blind Descent remains reachable', async ({ page }, testInfo) => {
+test('mobile primary mode switch gives exactly one exploration instrument the stage', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
+  await expect(page.locator('#r4mRoll')).toBeVisible();
+  await expect(page.locator('#r4mDescentEntry')).toBeHidden();
+
   await page.locator('#r4mModeBlind').click();
   await expect(page.locator('html')).toHaveClass(/r4m-stage-blind/);
   await expect(page.locator('#r4mDescentEntry')).toBeVisible();
+  await expect(page.locator('#r4mDescentEntry [data-mobile-action="blind-descent"]')).toBeEnabled();
   await expect(page.locator('#r4mRoll')).toBeHidden();
 
   await page.locator('#r4mModeRoll').click();
@@ -794,12 +803,7 @@ test('mobile primary mode switch changes the primary instrument while legacy Bli
   await expect(page.locator('#r4mModeRoll')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('#r4mModeBlind')).toHaveAttribute('aria-pressed', 'false');
   await expect(page.locator('#r4mRoll')).toBeVisible();
-
-  // Compatibility checkpoint: the established Blind Descent entry remains
-  // visibly reachable until Part 2 deliberately migrates it into MENU.
-  const legacyBlindEntry = page.locator('#r4mDescentEntry');
-  await expect(legacyBlindEntry).toBeVisible();
-  await expect(legacyBlindEntry.locator('[data-mobile-action="blind-descent"]')).toBeEnabled();
+  await expect(page.locator('#r4mDescentEntry')).toBeHidden();
 });
 
 
@@ -887,4 +891,30 @@ test('desktop KEEP CARD delegates to the existing local card download capability
 
   await page.locator('#btnKeepMain').click();
   await expect.poll(() => page.evaluate(() => window.__keepCardCalls)).toBe(1);
+});
+
+
+test('fresh mobile landing keeps ROLL above persistent navigation at phone height', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const geometry = await page.evaluate(() => {
+    const roll = document.getElementById('r4mRoll').getBoundingClientRect();
+    const nav = document.querySelector('.r4m-nav').getBoundingClientRect();
+    return {
+      scrollY: window.scrollY,
+      rollTop: roll.top,
+      rollBottom: roll.bottom,
+      navTop: nav.top,
+      documentWidth: document.documentElement.scrollWidth,
+      viewportWidth: document.documentElement.clientWidth,
+    };
+  });
+
+  expect(geometry.scrollY).toBe(0);
+  expect(geometry.rollTop).toBeGreaterThanOrEqual(0);
+  expect(geometry.rollBottom).toBeLessThanOrEqual(geometry.navTop + 1);
+  expect(geometry.documentWidth).toBeLessThanOrEqual(geometry.viewportWidth + 1);
 });
