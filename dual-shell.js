@@ -85,16 +85,15 @@
           '<img src="rabbit-aperture.svg" alt="" aria-hidden="true">',
           '<div class="r4m-hero-copy"><small id="r4mApertureState">RANDOM DISCOVERY / CYBERSECURITY WEB</small><h1>A DOOR, NOT A FEED.</h1><p>NO PROFILE. NO RANKING. COMMITTED BEFORE REVEAL.</p></div>',
         '</section>',
-        '<button class="r4m-roll" id="r4mRoll" type="button" data-presentation-state="idle" aria-label="ROLL — commit a route before reveal">',
-          '<span class="r4m-roll-chassis" aria-hidden="true">',
-            '<span class="r4m-roll-ring r4m-roll-ring-outer"></span>',
-            '<span class="r4m-roll-ring r4m-roll-ring-inner"></span>',
-            '<span class="r4m-roll-face">',
-              '<span class="r4m-roll-rabbit" aria-hidden="true"></span>',
-              '<strong>ROLL</strong>',
-            '</span>',
-          '</span>',
-          '<span class="r4m-roll-meta"><small>COMMIT → REVEAL → EXPLORE</small><em id="r4mRollScope">FULL CORPUS</em></span>',
+        '<button class="r4m-roll r4m-roll-door" id="r4mRoll" type="button" data-mobile-instrument="seam-door" data-presentation-state="idle" aria-label="ROLL — commit a route before reveal">',
+          '<span class="r4m-door-panel r4m-door-panel-left" aria-hidden="true"></span>',
+          '<span class="r4m-door-panel r4m-door-panel-right" aria-hidden="true"></span>',
+          '<img class="r4m-door-aperture" src="rabbit-aperture.svg" alt="" aria-hidden="true">',
+          '<span class="r4m-door-seam" aria-hidden="true"></span>',
+          '<span class="r4m-door-kicker">COMMIT → REVEAL → EXPLORE</span>',
+          '<strong class="r4m-door-label">ROLL</strong>',
+          '<em class="r4m-door-scope" id="r4mRollScope">FULL CORPUS</em>',
+          '<i class="r4m-roll-strip" aria-hidden="true"></i>',
         '</button>',
         '<section class="r4m-descent-entry" id="r4mDescentEntry" aria-label="Blind Descent entry" hidden>',
           '<div><small>COMMIT FIRST / SEE LATER</small><strong>BLIND DESCENT</strong><p>Lock one route before it is shown.</p></div>',
@@ -106,32 +105,42 @@
         '<button type="button" class="r4m-roll-again" data-mobile-action="roll-again" id="r4mRollAgain" hidden>ROLL AGAIN</button>',
         '</div>',
         '<nav class="r4m-nav r4m-nav-minimal" aria-label="Mobile controls">',
-          '<button type="button" data-mobile-action="nav-roll" id="r4mNavRoll"><span>●</span>ROLL</button>',
-          '<button type="button" data-mobile-action="menu" id="r4mNavMenu" aria-expanded="false" aria-controls="r4mMenuSheet"><span>≡</span>MENU</button>',
+          '<button type="button" data-mobile-action="nav-roll" id="r4mNavRoll"><span class="r4m-nav-door" aria-hidden="true"><i></i></span><b>ROLL</b></button>',
+          '<button type="button" data-mobile-action="menu" id="r4mNavMenu" aria-expanded="false" aria-controls="r4mMenuSheet"><b id="r4mNavMenuLabel">MENU</b><span class="r4m-nav-menu-icon" aria-hidden="true"><i></i><i></i></span></button>',
         '</nav>',
       '</main>',
       '<div class="r4m-sheet-backdrop" id="r4mBackdrop" hidden></div>',
       '<aside class="r4m-sheet r4m-menu-sheet" id="r4mMenuSheet" aria-hidden="true">',
         '<div class="r4m-sheet-head"><strong>INSTRUMENTS</strong><button type="button" data-mobile-action="close-sheets">CLOSE</button></div>',
         '<div class="r4m-menu-body">',
-          '<section class="r4m-trail">',
-            '<div class="r4m-section-title"><span>TRAIL</span><b id="r4mTrailCount">00</b></div>',
+          '<section class="r4m-menu-group r4m-menu-app" data-menu-group="app">',
+            '<h3>THIS APP</h3>',
+            '<div class="r4m-menu-app-actions"><button type="button" data-mobile-action="help">TOUCH GUIDE</button><button type="button" data-mobile-action="theme" id="r4mMenuTheme" aria-label="Toggle light or dark theme">THEME</button><a id="r4mMenuZip" href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP</a></div>',
+          '</section>',
+          '<section class="r4m-menu-group r4m-menu-proof" data-menu-group="proof">',
+            '<h3>TRAIL FILES &amp; PROOF</h3>',
+            '<div class="r4m-menu-proof-grid">',
+              '<button type="button" data-mobile-action="trail-file">TRAIL FILE / REPLAY</button>',
+              '<button type="button" data-mobile-action="comparison">COMPARE TRAILS</button>',
+              '<button type="button" data-mobile-action="replay-inspection">VERIFY + REPLAY</button>',
+              '<button type="button" data-mobile-action="proof-session">PROOF SESSION</button>',
+            '</div>',
+          '</section>',
+          '<section class="r4m-menu-group r4m-menu-trail" data-menu-group="trail">',
+            '<h3>YOUR TRAIL</h3>',
+            '<b class="r4m-menu-group-count" id="r4mTrailCount">00</b>',
             '<div class="r4m-trail-scroll" id="r4mTrailItems"><span class="r4m-empty">NO ROUTES YET</span></div>',
             '<button type="button" class="r4m-ledger" data-mobile-action="history">HISTORY</button>',
-            '<button type="button" class="r4m-ledger" data-mobile-action="trail-file">TRAIL FILE / REPLAY ↗</button>',
             '<button type="button" class="r4m-ledger" data-mobile-action="copy-trail">COPY TRAIL</button>',
-            '<button type="button" class="r4m-ledger" data-mobile-action="comparison">COMPARE TRAILS ↗</button>',
-            '<button type="button" class="r4m-ledger" data-mobile-action="proof-session">PROOF SESSION ↗</button>',
-            '<button type="button" class="r4m-ledger" data-mobile-action="replay-inspection">VERIFY + REPLAY ↗</button>',
+            '<button type="button" class="r4m-ledger" data-mobile-action="topology">MAP TRAILS</button>',
           '</section>',
-          '<section class="r4m-menu-tools" aria-label="Route and exploration tools">',
-            '<button type="button" data-mobile-action="filter">TERRAIN FILTER ↗</button>',
-            '<button type="button" data-mobile-action="branch">BRANCH ↗</button>',
-            '<button type="button" data-mobile-action="inspect">ROUTE INFO ↗</button>',
-            '<button type="button" data-mobile-action="topology">MAP TRAILS ↗</button>',
-            '<button type="button" data-mobile-action="help">TOUCH GUIDE ↗</button>',
+          '<section class="r4m-menu-group r4m-menu-from-here" data-menu-group="from-here">',
+            '<h3>FROM HERE</h3>',
+            '<span class="r4m-menu-group-context">THIS ROUTE, THE NEXT ROLL</span>',
+            '<button type="button" data-mobile-action="branch">BRANCH</button>',
+            '<button type="button" data-mobile-action="inspect">ROUTE INFO</button>',
+            '<button type="button" data-mobile-action="filter">TERRAIN FILTER</button>',
           '</section>',
-          '<div class="r4m-menu-utilities"><button type="button" data-mobile-action="theme" id="r4mMenuTheme" aria-label="Toggle light or dark theme">THEME</button><a id="r4mMenuZip" href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a></div>',
         '</div>',
       '</aside>',
       '<aside class="r4m-sheet" id="r4mFilterSheet" aria-hidden="true">',
@@ -189,7 +198,7 @@
     bindPressLifecycle(host);
     runInitialStagger();
     var mobileTheme = byId('r4mMenuTheme');
-    if (mobileTheme) mobileTheme.textContent = document.documentElement.classList.contains('light') ? '◑ DARK' : '◑ LIGHT';
+    if (mobileTheme) { mobileTheme.textContent = 'THEME'; mobileTheme.dataset.theme = document.documentElement.classList.contains('light') ? 'light' : 'dark'; }
     syncEverything();
     observeSource();
   }
@@ -304,8 +313,36 @@
     var list = byId('historyList');
     if (!list) return;
     if (ledgerRowObserver) ledgerRowObserver.disconnect();
-    var rows = Array.from(list.children);
-    rows.forEach(function (row) { row.classList.add('r4m-ledger-row'); });
+
+    var allRows = Array.from(list.children);
+    allRows.forEach(function (row) {
+      if (row) row.classList.add('r4m-ledger-row', 'row-in');
+    });
+    var storedRows = allRows.filter(function (row) {
+      return row && row.tagName === 'BUTTON';
+    });
+    var total = storedRows.length;
+    var presentation = storedRows.map(function (row, storedIndex) {
+      return {
+        row: row,
+        storedIndex: storedIndex,
+        chronologicalNumber: total - storedIndex,
+        latest: storedIndex === 0
+      };
+    }).reverse();
+
+    presentation.forEach(function (record) {
+      var row = record.row;
+      row.classList.add('r4m-ledger-row', 'row-in');
+      row.dataset.historyStoredIndex = String(record.storedIndex);
+      row.dataset.historyChronological = String(record.chronologicalNumber);
+      row.dataset.historyLatest = String(record.latest);
+      var number = row.querySelector('span');
+      if (number) number.textContent = String(record.chronologicalNumber).padStart(3, '0');
+      list.appendChild(row);
+    });
+
+    var rows = presentation.map(function (record) { return record.row; });
     if (!('IntersectionObserver' in window)) {
       rows.forEach(function (row) { row.classList.add('row-in'); });
       return;
@@ -464,7 +501,7 @@ MOTION: waiting for target…';
       localStorage.setItem('r4b1t_theme', light ? 'light' : 'dark');
       var mobileTheme = byId('r4mMenuTheme');
       var desktopTheme = byId('themeBtn');
-      if (mobileTheme) mobileTheme.textContent = light ? '◑ DARK' : '◑ LIGHT';
+      if (mobileTheme) { mobileTheme.textContent = 'THEME'; mobileTheme.dataset.theme = light ? 'light' : 'dark'; }
       if (desktopTheme) desktopTheme.textContent = light ? '◑ DARK' : '◑ LIGHT';
       return;
     }
@@ -473,7 +510,11 @@ MOTION: waiting for target…';
       closeSheets();
       return resetRollStage();
     }
-    if (action === 'menu') return openSheet('r4mMenuSheet');
+    if (action === 'menu') {
+      var menuSheet = byId('r4mMenuSheet');
+      if (menuSheet && menuSheet.classList.contains('open')) return closeSheets();
+      return openSheet('r4mMenuSheet');
+    }
     if (action === 'stage-blind') return setPrimaryMode('blind');
     if (action === 'roll-again') {
       resetRollStage();
@@ -516,12 +557,27 @@ MOTION: waiting for target…';
       window.setTimeout(function () { call('shareCard'); }, 120);
       return;
     }
-    if (action === 'history') return toggleHistoryWithMotion();
-    if (action === 'trail-file') return call('openTrailLedger');
+    if (action === 'history') {
+      closeSheets();
+      return toggleHistoryWithMotion();
+    }
+    if (action === 'trail-file') {
+      closeSheets();
+      return call('openTrailLedger');
+    }
     if (action === 'copy-trail') return call('shareTrail');
-    if (action === 'comparison') return call('toggleTrailComparison');
-    if (action === 'proof-session') return call('toggleProofSession');
-    if (action === 'replay-inspection') return call('openReplayInspection');
+    if (action === 'comparison') {
+      closeSheets();
+      return call('toggleTrailComparison');
+    }
+    if (action === 'proof-session') {
+      closeSheets();
+      return call('toggleProofSession');
+    }
+    if (action === 'replay-inspection') {
+      closeSheets();
+      return call('openReplayInspection');
+    }
     if (action === 'suggest-url') return call('submitUrl');
     if (action === 'blind-descent') {
       if (typeof window.openBlindDescent !== 'function' || typeof window.blindDescend !== 'function') return;
@@ -531,6 +587,7 @@ MOTION: waiting for target…';
       return;
     }
     if (action === 'topology') {
+      closeSheets();
       if (typeof window.getTrailManifest !== 'function' || typeof window.openTrailTopology !== 'function') return;
       Promise.resolve(window.getTrailManifest())
         .then(function (snapshot) { return window.openTrailTopology(snapshot); })
@@ -567,7 +624,13 @@ MOTION: waiting for target…';
     });
     document.documentElement.classList.add('r4m-sheet-open');
     var menuButton = byId('r4mNavMenu');
-    if (menuButton) menuButton.setAttribute('aria-expanded', String(id === 'r4mMenuSheet'));
+    if (menuButton) {
+      var menuOpen = id === 'r4mMenuSheet';
+      menuButton.setAttribute('aria-expanded', String(menuOpen));
+      menuButton.classList.toggle('active', menuOpen);
+      var menuLabel = byId('r4mNavMenuLabel');
+      if (menuLabel) menuLabel.textContent = menuOpen ? 'CLOSE' : 'MENU';
+    }
   }
 
   function closeSheets() {
@@ -586,7 +649,12 @@ MOTION: waiting for target…';
     }
     document.documentElement.classList.remove('r4m-sheet-open');
     var menuButton = byId('r4mNavMenu');
-    if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
+    if (menuButton) {
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.classList.remove('active');
+      var menuLabel = byId('r4mNavMenuLabel');
+      if (menuLabel) menuLabel.textContent = 'MENU';
+    }
   }
 
   function syncRoute() {

@@ -982,3 +982,85 @@ test('mobile Blind mode presents one primary descent action while advanced tools
   await page.locator('#r4mNavMenu').click();
   await expect(page.locator('#r4mMenuSheet [data-mobile-action="topology"]')).toBeVisible();
 });
+
+
+test('mobile v3 ROLL uses the seam-door composition while retaining the authoritative control', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const roll = page.locator('#r4mRoll');
+  await expect(roll).toBeVisible();
+  await expect(roll).toHaveAttribute('data-mobile-instrument', 'seam-door');
+  await expect(roll.locator('.r4m-door-panel')).toHaveCount(2);
+  await expect(roll.locator('.r4m-door-seam')).toBeVisible();
+  await expect(roll.locator('.r4m-door-aperture')).toBeVisible();
+  await expect(roll.locator('.r4m-roll-chassis')).toHaveCount(0);
+});
+
+test('mobile v3 MENU groups the existing capabilities by the object they act on', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mNavMenu').click();
+  const menu = page.locator('#r4mMenuSheet');
+  await expect(menu.locator('[data-menu-group="from-here"] > h3')).toHaveText('FROM HERE');
+  await expect(menu.locator('[data-menu-group="trail"] > h3')).toHaveText('YOUR TRAIL');
+  await expect(menu.locator('[data-menu-group="proof"] > h3')).toHaveText('TRAIL FILES & PROOF');
+  await expect(menu.locator('[data-menu-group="app"] > h3')).toHaveText('THIS APP');
+
+  const expectedActions = [
+    'filter', 'branch', 'inspect',
+    'topology', 'history', 'copy-trail',
+    'trail-file', 'comparison', 'proof-session', 'replay-inspection',
+    'help', 'theme'
+  ];
+  for (const action of expectedActions) {
+    await expect(menu.locator('[data-mobile-action="' + action + '"]')).toHaveCount(1);
+  }
+  await expect(menu.locator('#r4mMenuZip')).toHaveCount(1);
+
+  await page.locator('#r4mNavMenu').click();
+  await expect(menu).toHaveAttribute('aria-hidden', 'true');
+});
+
+test('mobile v3 History presents recorded visits oldest to newest without appending on revisit', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const urls = [
+    'https://one.example/alpha',
+    'https://two.example/bravo',
+    'https://three.example/charlie',
+  ];
+
+  for (const url of urls) {
+    await page.evaluate((value) => {
+      window.selectUrl(value);
+      window.visit();
+      if (typeof window.closeIframe === 'function') window.closeIframe();
+    }, url);
+  }
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
+
+  const rows = page.locator('#historyList .r4m-ledger-row');
+  await expect(rows).toHaveCount(3);
+  const before = await rows.evaluateAll((nodes) => nodes.map((node) => node.textContent.replace(/\s+/g, ' ').trim()));
+  expect(before[0]).toContain('one.example');
+  expect(before[1]).toContain('two.example');
+  expect(before[2]).toContain('three.example');
+  await expect(rows.nth(0).locator('span').first()).toHaveText('001');
+  await expect(rows.nth(2).locator('span').first()).toHaveText('003');
+  await expect(rows.nth(2)).toHaveAttribute('data-history-latest', 'true');
+
+  await rows.nth(0).click();
+  await expect(page.locator('#previewUrl')).toHaveText('https://one.example/alpha');
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
+  await expect(page.locator('#historyList .r4m-ledger-row')).toHaveCount(3);
+});
