@@ -1132,8 +1132,9 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-menu-sheet .r4m-menu-body{height:100%;min-height:100%;overflow-y:auto;overscroll-behavior:contain;padding:50px 0 12px;display:flex;flex-direction:column;justify-content:flex-end}
   .r4m-menu-group{flex:none;margin:0 0 18px;color:var(--r4m-v3-ink)}
   .r4m-menu-group h3{margin:0 0 8px;color:#5e5b55;font:600 .5rem var(--font-mono,"DM Mono",monospace);letter-spacing:.11em}
-  .r4m-menu-group-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
-  .r4m-menu-group-head>span,.r4m-menu-group-head>b{margin-bottom:8px;color:#5e5b55;font:500 .48rem var(--font-mono,"DM Mono",monospace);letter-spacing:.07em}
+  .r4m-menu-trail,.r4m-menu-from-here{position:relative}
+  .r4m-menu-group-count,.r4m-menu-group-context{position:absolute;right:0;top:0;color:#5e5b55;font:500 .48rem var(--font-mono,"DM Mono",monospace);letter-spacing:.07em}
+  .r4m-menu-group-context{max-width:56%;text-align:right}
   .r4m-menu-app-actions{height:44px;border-top:1px solid var(--r4m-v3-ink);display:grid;grid-template-columns:1fr auto auto;gap:18px;align-items:center}
   .r4m-menu-app-actions button,.r4m-menu-app-actions a{min-height:44px;padding:0;border:0;background:transparent;color:var(--r4m-v3-ink);font:600 .56rem var(--font-mono,"DM Mono",monospace);letter-spacing:.05em;text-decoration:none;display:flex;align-items:center}
   .r4m-menu-proof-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--r4m-v3-ink)}
