@@ -25,7 +25,7 @@ test('mobile landing states the product once and leaves utilities to MENU', asyn
 
   const hero = page.locator('#r4mHero');
   await expect(hero).toBeVisible();
-  await expect(hero.locator('img[src="rabbit-aperture.svg"]')).toBeVisible();
+  await expect(page.locator('#r4mRoll .r4m-door-aperture[src="rabbit-aperture.svg"]')).toBeVisible();
   await expect(page.locator('#r4mApertureState')).toHaveText('RANDOM DISCOVERY / CYBERSECURITY WEB');
   await expect(hero.locator('h1')).toHaveText('A DOOR, NOT A FEED.');
   await expect(hero.locator('p')).toHaveText('NO PROFILE. NO RANKING. COMMITTED BEFORE REVEAL.');
