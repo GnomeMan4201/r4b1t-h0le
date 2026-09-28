@@ -14,9 +14,13 @@
   'use strict';
 
   var activeSource = Object.freeze({
-    id: 'legacy-urls-v1',
-    url: 'urls.txt',
-    expectedDigest: 'sha256:5d7339b8cbfe7bd35bb8502ca753e5b4663bc2fc4ba3721b23b791dbace01c41',
+    id: 'typed-candidate-v0.1',
+    releaseId: 'typed-candidate-v0.1',
+    url: 'corpus/releases/typed-candidate-v0.1/urls.txt',
+    resourcesUrl: 'corpus/releases/typed-candidate-v0.1/resources.json',
+    manifestUrl: 'corpus/releases/typed-candidate-v0.1/manifest.json',
+    expectedDigest: 'sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1',
+    promotionId: 'typed-candidate-v0.1-active-v1',
     status: 'active',
     selectionAuthority: true
   });
@@ -31,6 +35,26 @@
     selectionAuthority: false
   });
 
+  var legacySource = Object.freeze({
+    id: 'legacy-urls-v1',
+    url: 'urls.txt',
+    expectedDigest: 'sha256:5d7339b8cbfe7bd35bb8502ca753e5b4663bc2fc4ba3721b23b791dbace01c41',
+    status: 'rollback',
+    selectionAuthority: false
+  });
+
+  var promotionDescriptor = Object.freeze({
+    id: 'typed-candidate-v0.1-active-v1',
+    schema: 'r4b1t-runtime-corpus-promotion-v1',
+    sourceId: 'typed-candidate-v0.1',
+    releaseId: 'typed-candidate-v0.1',
+    expectedDigest: activeSource.expectedDigest,
+    releaseSelectionAuthority: false,
+    runtimeSelectionAuthority: true,
+    rollbackSourceId: 'legacy-urls-v1',
+    fallback: 'none'
+  });
+
   var activeLoadPromise = null;
 
   function active() {
@@ -39,6 +63,14 @@
 
   function candidate() {
     return candidateSource;
+  }
+
+  function legacy() {
+    return legacySource;
+  }
+
+  function promotion() {
+    return promotionDescriptor;
   }
 
   function activeFetchUrl(tag) {
@@ -155,9 +187,11 @@
   }
 
   return Object.freeze({
-    schema: 'r4b1t-runtime-corpus-authority-v2',
+    schema: 'r4b1t-runtime-corpus-authority-v3',
     active: active,
     candidate: candidate,
+    legacy: legacy,
+    promotion: promotion,
     activeFetchUrl: activeFetchUrl,
     loadActive: loadActive
   });
