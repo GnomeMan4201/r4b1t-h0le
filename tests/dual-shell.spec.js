@@ -1025,7 +1025,7 @@ test('mobile v3 MENU groups the existing capabilities by the object they act on'
   await expect(menu).toHaveAttribute('aria-hidden', 'true');
 });
 
-test('mobile v3 History presents recorded visits oldest to newest without appending on revisit', async ({ page }, testInfo) => {
+test('mobile v3 History presents stored disclosures oldest to newest without appending on revisit', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
@@ -1036,13 +1036,9 @@ test('mobile v3 History presents recorded visits oldest to newest without append
     'https://three.example/charlie',
   ];
 
-  for (const url of urls) {
-    await page.evaluate((value) => {
-      window.selectUrl(value);
-      window.visit();
-      if (typeof window.closeIframe === 'function') window.closeIframe();
-    }, url);
-  }
+  await page.evaluate((values) => {
+    values.forEach((value) => window.__r4b1tRecordHistorySelection(value, 'PRESENTATION_FIXTURE'));
+  }, urls);
 
   await page.locator('#r4mNavMenu').click();
   await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
@@ -1063,4 +1059,68 @@ test('mobile v3 History presents recorded visits oldest to newest without append
   await page.locator('#r4mNavMenu').click();
   await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
   await expect(page.locator('#historyList .r4m-ledger-row')).toHaveCount(3);
+});
+
+
+test('History records ROLL disclosure before OPEN and OPEN does not duplicate it', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
+  await expect(page.locator('#historyList button')).toHaveCount(1);
+
+  await page.evaluate(() => window.toggleHistory());
+  await page.locator('#r4mRoute [data-mobile-action="visit"]').click();
+  await page.evaluate(() => {
+    if (typeof window.closeIframe === 'function') window.closeIframe();
+  });
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
+  await expect(page.locator('#historyList button')).toHaveCount(1);
+});
+
+test('History revisit and direct selectUrl projection do not append discovery records', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
+  const first = page.locator('#historyList button').first();
+  await expect(first).toBeVisible();
+  await first.click();
+
+  await page.evaluate(() => window.selectUrl('https://projection.example/not-a-discovery'));
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
+  await expect(page.locator('#historyList button')).toHaveCount(1);
+  await expect(page.locator('#historyList')).not.toContainText('projection.example');
+});
+
+test('explicit Branch direction selection records one disclosed History entry', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'desktop-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.evaluate(() => {
+    window.selectUrl('https://github.com/');
+    window.setMode('branch');
+  });
+
+  const branch = page.locator('#branchGrid .branch-item').first();
+  await expect(branch).toBeVisible({ timeout: 5000 });
+  await branch.click();
+
+  await page.evaluate(() => window.toggleHistory());
+  await expect(page.locator('#historyList button')).toHaveCount(1);
 });

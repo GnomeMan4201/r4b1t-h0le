@@ -376,13 +376,8 @@ test('mobile connective motion covers press authority reveal ledger and copy sta
   await keepButton.click();
   await expect(keepButton).toHaveClass(/\bcopied-flash\b/);
 
-  // Current History recording remains owned by the OPEN/visit path. This PR
-  // changes ledger presentation only; create one genuine recorded visit before
-  // asserting History row-entry motion.
-  await route.locator('[data-mobile-action="visit"]').click();
-  await page.evaluate(() => {
-    if (typeof window.closeIframe === 'function') window.closeIframe();
-  });
+  // ROLL disclosure already owns the History record. OPEN is intentionally
+  // unnecessary here and must not be required for ledger-entry motion.
 
   await page.locator('#r4mNavMenu').click();
   await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();

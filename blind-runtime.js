@@ -126,6 +126,9 @@
     delete state.secrets[String(selected)];
     save();
     if (typeof window.selectUrl === 'function') window.selectUrl(secret.url);
+    if (typeof window.__r4b1tRecordHistorySelection === 'function') {
+      window.__r4b1tRecordHistorySelection(secret.url, 'BLIND_REVEAL');
+    }
     render('REVEALED / COMMITMENT VERIFIED', { revealIndex: selected, motion: 'reveal' });
     return secret.url;
   }
