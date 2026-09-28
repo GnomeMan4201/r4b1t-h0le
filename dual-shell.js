@@ -329,7 +329,7 @@
 
     presentation.forEach(function (record) {
       var row = record.row;
-      row.classList.add('r4m-ledger-row');
+      row.classList.add('r4m-ledger-row', 'row-in');
       row.dataset.historyStoredIndex = String(record.storedIndex);
       row.dataset.historyChronological = String(record.chronologicalNumber);
       row.dataset.historyLatest = String(record.latest);
