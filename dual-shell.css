@@ -149,6 +149,20 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
 
   .r4m-nav button:active,.r4m-route-actions button:active,.r4m-enter:active,.r4m-next:active{transform:translateY(2px) scale(.97);transition:transform 90ms ease-out}
 }
+
+@media (max-width:900px) and (orientation:landscape) and (max-height:560px){
+  .r4m-menu-trail .r4m-trail-scroll{
+    display:grid;
+    grid-auto-flow:column;
+    grid-auto-columns:minmax(180px,1fr);
+    grid-template-rows:repeat(2,51px);
+    align-content:start;
+    min-height:102px;
+    overflow-x:auto;
+  }
+  .r4m-menu-trail .r4m-trail-chip{width:100%;max-width:none;min-width:0;height:51px}
+}
+
 @media (prefers-reduced-motion:reduce) and (max-width:900px){
   .r4m-roll,.r4m-route,.r4m-sheet,.r4m-sheet-backdrop,#historyOverlay,#historyOverlay>div,.r4m-filter-options>button,.r4m-branch-options>button{animation-duration:.001ms!important;transition-duration:.001ms!important}
 }
@@ -1140,8 +1154,8 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-menu-proof-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--r4m-v3-ink)}
   .r4m-menu-proof-grid button{min-height:44px;padding:0 8px 0 0;border:0;border-bottom:1px solid #c9c5bb;background:transparent;color:var(--r4m-v3-ink);font:600 .54rem var(--font-mono,"DM Mono",monospace);letter-spacing:.045em;text-align:left}
   .r4m-menu-proof-grid button:nth-child(even){padding-left:12px;border-left:1px solid #c9c5bb}
-  .r4m-menu-trail .r4m-trail-scroll{height:38px;padding:0;gap:8px;border-top:1px solid var(--r4m-v3-ink);display:flex;align-items:center;overflow-x:auto}
-  .r4m-menu-trail .r4m-trail-chip{min-width:auto;max-width:155px;height:30px;padding:0;border:0;background:transparent;color:#5e5b55;font-size:.48rem}
+  .r4m-menu-trail .r4m-trail-scroll{min-height:50px;padding:0;gap:8px;border-top:1px solid var(--r4m-v3-ink);display:flex;align-items:center;overflow-x:auto}
+  .r4m-menu-trail .r4m-trail-chip{min-width:140px;max-width:175px;height:48px;padding:0 4px;border:0;background:transparent;color:#5e5b55;font-size:.48rem}
   .r4m-menu-trail .r4m-trail-chip b{color:#5e5b55}
   .r4m-menu-trail .r4m-trail-chip:last-child,.r4m-menu-trail .r4m-trail-chip:last-child b{color:var(--r4m-v3-ink);font-weight:700}
   .r4m-menu-trail .r4m-empty{padding:0;color:#5e5b55;font-size:.48rem}
