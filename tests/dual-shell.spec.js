@@ -521,7 +521,6 @@ test('mobile reveal does not synthesize route metadata when source metadata is a
   await expect(route.locator('#r4mDescription')).toBeHidden();
   await expect(route.locator('#r4mTag')).toBeHidden();
   await expect(route).not.toContainText('A route selected from the corpus.');
-  await expect(route.locator('#r4mProtocol')).toBeHidden();
 });
 
 

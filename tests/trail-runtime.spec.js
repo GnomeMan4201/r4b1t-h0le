@@ -17,10 +17,18 @@ test.beforeEach(async ({ page }) => {
   await blockExternalNetwork(page);
 });
 
+async function rollAndWaitForTrail(page) {
+  await rollAndWaitForTrail(page);
+  await expect.poll(async () => page.evaluate(async () => {
+    const snapshot = await window.getTrailManifest();
+    return snapshot.manifest.routes.length;
+  })).toBeGreaterThan(0);
+}
+
 test('exports a verifiable manifest and replays its exact route', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => typeof window.getTrailManifest === 'function' && typeof window.roll === 'function');
-  await page.evaluate(() => window.roll());
+  await rollAndWaitForTrail(page);
 
   const result = await page.evaluate(async () => {
     const exported = await window.getTrailManifest();
@@ -46,7 +54,7 @@ test('exports a verifiable manifest and replays its exact route', async ({ page 
 test('rejects a tampered imported trail', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => typeof window.getTrailManifest === 'function');
-  await page.evaluate(() => window.roll());
+  await rollAndWaitForTrail(page);
 
   const message = await page.evaluate(async () => {
     const exported = await window.getTrailManifest();
@@ -65,7 +73,7 @@ test('rejects a tampered imported trail', async ({ page }) => {
 test('forks a replayed trail with verifiable parent lineage', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => typeof window.getTrailManifest === 'function' && typeof window.roll === 'function');
-  await page.evaluate(() => window.roll());
+  await rollAndWaitForTrail(page);
 
   const result = await page.evaluate(async () => {
     const parent = await window.getTrailManifest();
