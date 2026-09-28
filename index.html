@@ -67,13 +67,17 @@
 
   <!-- ── Preview card ────────────────────────────────────────────────────── -->
     <div id="preview" style="border:1px solid #2a2825;border-top:2px solid #cc1111;margin-bottom:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 18px;border-bottom:1px solid #1e1c18;font-size:.38rem;letter-spacing:.18em;text-transform:uppercase">
+      <span style="color:#cc1111">SELECTED / COMMITTED</span>
+      <span style="color:#3a342a">RANDOM CYBERSECURITY RESOURCE</span>
+    </div>
     <div id="ogImageWrap" style="width:100%;height:0;overflow:hidden;transition:height 0.15s;background:#0e0d0b"><img id="ogImage" alt="" style="width:100%;display:block;object-fit:cover;background:#0e0d0b"></div>
     <div style="display:flex;align-items:flex-start;gap:12px;padding:16px 18px 10px">
       <img id="previewFavicon" src="" alt="" style="width:28px;height:28px;flex-shrink:0;border-radius:3px;background:#1c1a16;object-fit:contain;margin-top:3px" onerror="this.style.display='none';document.getElementById('faviconPlaceholder').style.display='flex'">
       <div id="faviconPlaceholder" style="display:none;width:28px;height:28px;flex-shrink:0;background:#1c1a16;border:1px solid #2a2825;border-radius:3px;align-items:center;justify-content:center;font-size:.48rem;color:#3a342a;margin-top:3px">?</div>
       <div style="flex:1;min-width:0">
-        <div id="previewDomain" style="font-family:var(--font-head);font-size:1.45rem;letter-spacing:.05em;color:#e8e0d0;line-height:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</div>
-        <div id="ogTitle" style="font-size:.58rem;color:#9a8f7a;margin-top:4px;line-height:1.4;word-break:break-word"></div>
+        <div id="ogTitle" style="font-family:var(--font-head);font-size:1.45rem;letter-spacing:.03em;color:#e8e0d0;line-height:1.05;word-break:break-word"></div>
+        <div id="previewDomain" style="font-size:.52rem;letter-spacing:.08em;color:#9a8f7a;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
         <span id="tagBadge" style="display:none;font-size:.38rem;letter-spacing:.18em;border:1px solid currentColor;padding:2px 5px;text-transform:uppercase;opacity:.75"></span>
@@ -83,15 +87,15 @@
     <div id="previewLoading" style="display:none;padding:2px 18px 4px;font-size:.4rem;letter-spacing:.18em;color:#3a342a;text-transform:uppercase">fetching metadata…</div>
     <div id="typedResourceMeta" data-state="idle" hidden style="display:flex;align-items:center;gap:8px;padding:5px 18px 8px;border-bottom:1px solid #1e1c18;font-size:.4rem;letter-spacing:.12em;text-transform:uppercase">
       <span id="typedResourceType" style="color:#cc1111;border:1px solid #4a1010;padding:2px 5px"></span>
-      <span id="typedEligibilityReason" style="color:#6a5f52"></span>
+      <span id="typedEligibilityReason" hidden></span>
       <span id="typedProvenance" hidden></span>
     </div>
     <div id="ogDesc" style="display:none;width:100%;padding:6px 18px 12px;font-size:.58rem;color:#6a5f52;line-height:1.65;font-style:italic;border-bottom:1px solid #1e1c18"></div>
     <div id="previewUrl" style="padding:6px 18px 8px;font-size:.44rem;color:#3a342a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-bottom:1px solid #1e1c18">—</div>
-    <div style="display:flex;width:100%;min-height:44px;border-top:1px solid #1e1c18">
-      <button id="btnVisitMain" onclick="if(typeof anime!=='undefined'){anime({targets:this,scale:[1,0.95,1],duration:200,easing:'easeOutQuad'});}visit()" style="flex:1;font-family:var(--font-mono);font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;padding:0 16px;background:#cc1111;color:#fff;border:none;cursor:pointer;font-weight:500">VISIT ↗</button>
-      <button onclick="sprout()" style="font-family:var(--font-mono);font-size:.46rem;letter-spacing:.12em;text-transform:uppercase;padding:0 14px;background:transparent;color:#6a5f52;border:none;border-left:1px solid #1e1c18;cursor:pointer">SPROUT</button>
-      <button onclick="var _sp=document.getElementById('preview');if(typeof anime!=='undefined'&&_sp&&_sp.style.display!=='none'){if(window._r4b1tRolling)return;window._r4b1tRolling=true;anime.remove(_sp);anime({targets:_sp,translateX:[0,-40],opacity:[1,0],duration:200,easing:'easeInQuad',complete:function(){anime.set(_sp,{translateX:0,opacity:1});window._r4b1tRolling=false;roll();}});}else{roll();}" style="font-family:var(--font-mono);font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;padding:0 14px;background:transparent;color:#6a5f52;border:none;border-left:1px solid #1e1c18;cursor:pointer">SKIP →</button>
+    <div style="display:grid;grid-template-columns:1fr auto auto;width:100%;min-height:48px;border-top:1px solid #1e1c18">
+      <button id="btnVisitMain" onclick="if(typeof anime!=='undefined'){anime({targets:this,scale:[1,0.95,1],duration:200,easing:'easeOutQuad'});}visit()" style="font-family:var(--font-mono);font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;padding:0 16px;background:#cc1111;color:#fff;border:none;cursor:pointer;font-weight:500">OPEN DESTINATION ↗</button>
+      <button id="btnKeepMain" onclick="shareCard()" style="font-family:var(--font-mono);font-size:.46rem;letter-spacing:.11em;text-transform:uppercase;padding:0 14px;background:transparent;color:#9a8f7a;border:none;border-left:1px solid #1e1c18;cursor:pointer">KEEP CARD</button>
+      <button id="btnRollAgainMain" onclick="var _sp=document.getElementById('preview');if(typeof anime!=='undefined'&&_sp&&_sp.style.display!=='none'){if(window._r4b1tRolling)return;window._r4b1tRolling=true;anime.remove(_sp);anime({targets:_sp,translateX:[0,-40],opacity:[1,0],duration:200,easing:'easeInQuad',complete:function(){anime.set(_sp,{translateX:0,opacity:1});window._r4b1tRolling=false;roll();}});}else{roll();}" style="font-family:var(--font-mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;padding:0 14px;background:transparent;color:#6a5f52;border:none;border-left:1px solid #1e1c18;cursor:pointer">ROLL AGAIN</button>
     </div>
   </div>
 
