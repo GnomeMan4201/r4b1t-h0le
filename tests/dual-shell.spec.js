@@ -158,12 +158,14 @@ test('mobile promotes current trail topology instead of the wear sample', async 
 
   await page.locator('#r4mModeBlind').click();
   await expect(page.locator('#r4mDescentEntry')).toBeVisible();
+  await expect(page.locator('#r4mDescentEntry [data-mobile-action="topology"]')).toHaveCount(0);
+  await expect(page.locator('#r4mDescentEntry [data-mobile-action="wear-sample"]')).toHaveCount(0);
+  await expect(page.locator('#trailTopologyOverlay .topology-sample')).toHaveText('VIEW SAMPLE');
 
-  const mapTrails = page.locator('.r4m-descent-actions [data-mobile-action="topology"]');
+  await page.locator('#r4mNavMenu').click();
+  const mapTrails = page.locator('#r4mMenuSheet [data-mobile-action="topology"]');
   await expect(mapTrails).toBeVisible();
   await expect(mapTrails).toContainText('MAP TRAILS');
-  await expect(page.locator('.r4m-descent-actions [data-mobile-action="wear-sample"]')).toHaveCount(0);
-  await expect(page.locator('#trailTopologyOverlay .topology-sample')).toHaveText('VIEW SAMPLE');
 
   await mapTrails.click();
   await page.waitForFunction(() => window.__mobileTopologyProbe && window.__mobileTopologyProbe.opened);
