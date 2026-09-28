@@ -59,7 +59,7 @@ test('promoted corpus digest mismatch fails closed without legacy fallback', asy
       body: 'https://tampered.example/\n',
     });
   });
-  await page.route('**/urls.txt?*', async route => {
+  await page.route('**/r4b1t-h0le/urls.txt?*', async route => {
     legacyRequests += 1;
     await route.continue();
   });
