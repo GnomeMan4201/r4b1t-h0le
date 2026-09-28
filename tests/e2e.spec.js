@@ -67,6 +67,20 @@ test('loads the correct application shell without runtime errors', async ({ page
   expect(pageErrors).toEqual([]);
 });
 
+test('a fresh session waits for an explicit ROLL before selecting or loading resource metadata', async ({ page }) => {
+  const resourceRequests = [];
+  page.on('request', request => {
+    if (request.url().includes('/resources.json')) resourceRequests.push(request.url());
+  });
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitForApplicationReady(page);
+
+  await expect(page.locator('#previewUrl')).toHaveText('—');
+  await expect(page.locator('#r4mRoute')).toHaveCount(0);
+  expect(resourceRequests).toHaveLength(0);
+});
+
 test('a roll selects a corpus URL through either shell', async ({ page }, testInfo) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitForApplicationReady(page);
