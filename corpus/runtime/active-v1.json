@@ -1,0 +1,26 @@
+{
+  "schema": "r4b1t-runtime-corpus-promotion-v1",
+  "promotion_id": "typed-candidate-v0.1-active-v1",
+  "active": {
+    "source_id": "typed-candidate-v0.1",
+    "release_id": "typed-candidate-v0.1",
+    "url": "corpus/releases/typed-candidate-v0.1/urls.txt",
+    "resources_url": "corpus/releases/typed-candidate-v0.1/resources.json",
+    "manifest_url": "corpus/releases/typed-candidate-v0.1/manifest.json",
+    "expected_digest": "sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1",
+    "selection_authority": true
+  },
+  "release_assertion": {
+    "status": "candidate",
+    "selection_authority": false,
+    "urls_digest": "sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1",
+    "resources_digest": "sha256:2c7bd5f0a492646cb5cc250b426ed720f1e0953615172717f562379e88eeb691",
+    "resources": 841
+  },
+  "rollback": {
+    "source_id": "legacy-urls-v1",
+    "url": "urls.txt",
+    "expected_digest": "sha256:5d7339b8cbfe7bd35bb8502ca753e5b4663bc2fc4ba3721b23b791dbace01c41"
+  },
+  "fallback": "none"
+}

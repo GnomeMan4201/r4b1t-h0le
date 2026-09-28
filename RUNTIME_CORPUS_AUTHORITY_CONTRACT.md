@@ -1,110 +1,73 @@
-# R4B1T H0L3 Runtime Corpus Authority Contract v2
+# R4B1T H0L3 Runtime Corpus Authority Contract v3
 
 Status: DRAFT FOR IMPLEMENTATION  
 Runtime API: `R4b1tCorpusAuthority`
 
-## Purpose
+## Active policy
 
-One page session must have one active corpus byte sequence, one verified corpus
-revision, and one parsed route set shared by ROLL, Blind Descent, and Trail.
+Runtime selection authority is granted by
+`corpus/runtime/active-v1.json`.
 
-The runtime authority owns that load. Consumers do not independently fetch or
-hash corpus files.
+The active source is the exact checked-in `typed-candidate-v0.1` URL release:
 
-RD-4J keeps the legacy corpus active. It only strengthens the authority seam
-ahead of a later reviewed promotion.
+- URL: `corpus/releases/typed-candidate-v0.1/urls.txt`
+- expected SHA-256: `sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1`
+- resource count: 841
+- runtime selection authority: true
 
-## Active legacy source
+The release manifest remains historical evidence with
+`selection_authority: false`; the separate promotion record is the authority
+change.
 
-```json
-{
-  "id": "legacy-urls-v1",
-  "url": "urls.txt",
-  "expectedDigest": "sha256:5d7339b8cbfe7bd35bb8502ca753e5b4663bc2fc4ba3721b23b791dbace01c41",
-  "status": "active",
-  "selectionAuthority": true
-}
-```
+## Rollback descriptor
 
-## Typed candidate
+Legacy `urls.txt` remains digest-bound rollback material:
 
-```json
-{
-  "id": "typed-candidate-v0.1",
-  "url": "corpus/releases/typed-candidate-v0.1/urls.txt",
-  "resourcesUrl": "corpus/releases/typed-candidate-v0.1/resources.json",
-  "manifestUrl": "corpus/releases/typed-candidate-v0.1/manifest.json",
-  "expectedDigest": "sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1",
-  "status": "candidate",
-  "selectionAuthority": false
-}
-```
+- source: `legacy-urls-v1`
+- SHA-256: `sha256:5d7339b8cbfe7bd35bb8502ca753e5b4663bc2fc4ba3721b23b791dbace01c41`
+- runtime selection authority: false
 
-Candidate metadata remains informational and non-authoritative in this slice.
+It is not an automatic fallback.
 
-## Shared active load
+## API
 
-`loadActive()` is the only production corpus-byte loader.
+The frozen runtime API exposes:
 
-On first call it:
+- `active()` — the promoted typed source;
+- `candidate()` — the original non-authoritative release descriptor;
+- `legacy()` — the non-authoritative rollback descriptor;
+- `promotion()` — the immutable promotion identity;
+- `loadActive()` — one page-session digest-verified load.
 
-1. fetches the active source with `cache: no-store`;
-2. reads exact response bytes;
-3. computes SHA-256 over those bytes;
-4. compares the digest to `active().expectedDigest`;
-5. fails closed on mismatch;
-6. decodes the bytes as UTF-8;
-7. derives the non-empty HTTP(S) route list;
-8. returns an immutable object containing:
-   - `source`;
-   - `revision`;
-   - `urls`;
-   - exact byte length.
+## Shared-byte invariant
 
-The successful promise is cached for the page session. Concurrent or later
-consumers receive the same result object without another corpus request.
+ROLL, Trail, and Blind Descent all consume `loadActive()`.
 
-A failed load clears the cached promise so an explicit retry may re-fetch, but
-no consumer silently falls back to another source.
+The exact active bytes are fetched once per successful page session, verified
+against the promoted digest, parsed once, and shared.
 
-## Required consumers
+Digest failure rejects the load. There is no fallback to legacy.
 
-- primary ROLL populates its selection pool from `loadActive().urls`;
-- Blind Descent uses `loadActive().urls` and
-  `loadActive().revision`;
-- Trail uses `loadActive().revision`.
+## Persisted state
 
-Those consumers MUST NOT call `fetch()` for the corpus themselves.
+`PERSISTED_CORPUS_STATE_CONTRACT.md` governs migration.
 
-## Revision semantics
+Because active source is no longer `legacy-urls-v1`:
 
-`revision` is the SHA-256 digest of the exact active corpus bytes.
+- historical unstamped Trail drafts reset;
+- Trail drafts stamped with the legacy revision reset;
+- Blind geneses stamped with the legacy revision reset;
+- imported legacy artifacts remain inspectable/replayable but cannot fork into
+  the new active corpus.
 
-The query string used for transport/cache busting is not part of corpus
-identity.
+## Selection semantics
 
-## Fail closed
+Promotion changes the active population, not the selection algorithm.
 
-A response error, digest mismatch, invalid UTF-8, or empty usable route set
-rejects `loadActive()`.
-
-The authority does not fall back to legacy or candidate bytes after a failure.
-
-## No promotion in RD-4J
-
-This contract does not change:
-
-- active source ID;
-- active URL;
-- production selection distribution;
-- category filtering;
-- Blind Descent semantics;
-- replay semantics;
-- candidate release metadata.
-
-The typed candidate remains `selectionAuthority: false`.
+No ranking, recommendation, score, provenance weighting, popularity, or
+personalization is introduced.
 
 ## Final invariant
 
-> ROLL, Blind Descent, and Trail consume one verified active corpus load and
-> therefore share one corpus revision by construction.
+> One promoted, digest-bound 841-resource corpus supplies selection bytes to
+> ROLL, Trail, and Blind; legacy is explicit rollback material only.
