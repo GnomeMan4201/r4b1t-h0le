@@ -11,6 +11,10 @@
     seed: randomSeed(),
     createdAt: new Date().toISOString(),
     corpusRevision: null,
+    corpusSourceId: null,
+    restoredFromStorage: false,
+    restoredCorpusRevision: null,
+    restoredCorpusSourceId: null,
     routes: [],
     parent: null,
     sampler: null,
@@ -32,6 +36,9 @@
     try {
       var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
       if (saved && typeof saved.seed === 'string' && Array.isArray(saved.routes)) {
+        state.restoredFromStorage = true;
+        state.restoredCorpusRevision = typeof saved.corpusRevision === 'string' ? saved.corpusRevision : null;
+        state.restoredCorpusSourceId = typeof saved.corpusSourceId === 'string' ? saved.corpusSourceId : null;
         state.seed = saved.seed;
         state.createdAt = typeof saved.createdAt === 'string' ? saved.createdAt : state.createdAt;
         state.routes = saved.routes.filter(function (route) {
@@ -48,14 +55,46 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       seed: state.seed,
       createdAt: state.createdAt,
+      corpusRevision: state.corpusRevision,
+      corpusSourceId: state.corpusSourceId,
       routes: state.routes,
       parent: state.parent
     }));
   }
 
+  function clearDraftState() {
+    state.seed = randomSeed();
+    state.createdAt = new Date().toISOString();
+    state.sampler = api.createSampler(state.seed);
+    state.samplerCursor = 0;
+    state.transactionSequence = 0;
+    state.selectionTerrain = null;
+    state.routes = [];
+    state.parent = null;
+    state.imported = null;
+    state.replayIndex = 0;
+  }
+
   async function loadCorpusRevision() {
     var loaded = await corpusAuthority.loadActive();
+    var restoredHasState = state.routes.length > 0 || Boolean(state.parent);
+
+    if (state.restoredFromStorage && restoredHasState) {
+      if (state.restoredCorpusRevision) {
+        if (state.restoredCorpusRevision !== loaded.revision) {
+          clearDraftState();
+        }
+      } else if (loaded.source.id !== 'legacy-urls-v1') {
+        clearDraftState();
+      }
+    }
+
     state.corpusRevision = loaded.revision;
+    state.corpusSourceId = loaded.source.id;
+    state.restoredFromStorage = false;
+    state.restoredCorpusRevision = null;
+    state.restoredCorpusSourceId = null;
+    persist();
     renderPanel();
   }
 
@@ -185,6 +224,12 @@
   async function forkTrail(index) {
     if (!state.imported) throw new Error('Import or export a trail first');
     var parent = await api.verify(state.imported);
+    var loaded = await corpusAuthority.loadActive();
+    if (parent.manifest.corpus_revision !== loaded.revision) {
+      throw new Error('Corpus revision mismatch: imported trail cannot fork into the active corpus');
+    }
+    state.corpusRevision = loaded.revision;
+    state.corpusSourceId = loaded.source.id;
     var forkAt = typeof index === 'number' ? index : state.replayIndex;
     if (!Number.isSafeInteger(forkAt) || forkAt < 0 || forkAt > parent.manifest.routes.length) {
       throw new Error('Fork position is invalid');
@@ -192,6 +237,9 @@
     state.seed = randomSeed();
     state.createdAt = new Date().toISOString();
     state.sampler = api.createSampler(state.seed);
+    state.samplerCursor = 0;
+    state.transactionSequence = 0;
+    state.selectionTerrain = null;
     state.routes = parent.manifest.routes.slice(0, forkAt).map(function (route) {
       return { url: route.url, action: route.action };
     });
@@ -206,16 +254,10 @@
   }
 
   function resetTrail() {
-    state.seed = randomSeed();
-    state.createdAt = new Date().toISOString();
-    state.sampler = api.createSampler(state.seed);
-    state.samplerCursor = 0;
-    state.transactionSequence = 0;
-    state.selectionTerrain = null;
-    state.routes = [];
-    state.parent = null;
-    state.imported = null;
-    state.replayIndex = 0;
+    clearDraftState();
+    state.restoredFromStorage = false;
+    state.restoredCorpusRevision = null;
+    state.restoredCorpusSourceId = null;
     persist();
     renderPanel('NEW SEED / TRAIL EMPTY');
   }
