@@ -136,7 +136,10 @@ test('mobile viewport exposes one-thumb controls', async ({ page }, testInfo) =>
 
   await expect(page.locator('#r4mRoll')).toBeVisible();
   await expect(page.locator('.r4m-nav')).toBeVisible();
-  await expect(page.locator('[data-mobile-action="filter"]').first()).toBeVisible();
+  await expect(page.locator('.r4m-filter-strip')).toHaveCount(0);
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet [data-mobile-action="filter"]')).toBeVisible();
+  await page.locator('#r4mNavRoll').click();
   await page.locator('#r4mRoll').click();
   await expect(page.locator('#r4mRoute')).toBeVisible();
   await expect(page.locator('[data-mobile-action="visit"]')).toBeVisible();
@@ -173,6 +176,9 @@ test('mobile DESCEND BLIND commits once and an internal descent commits once mor
   await page.waitForFunction(() => typeof window.getBlindManifest === 'function');
 
   const before = await page.evaluate(() => window.getBlindManifest());
+  await page.locator('#r4mModeBlind').click();
+  await expect(page.locator('#r4mDescentEntry')).toBeVisible();
+
   const entry = page.locator('[data-mobile-action="blind-descent"]');
   await expect(entry).toBeVisible();
   await entry.click();
@@ -211,6 +217,9 @@ test('mobile blind descent uses real and distinct timed transitions', async ({ p
 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitForApplicationReady(page);
+
+  await page.locator('#r4mModeBlind').click();
+  await expect(page.locator('#r4mDescentEntry')).toBeVisible();
 
   const entry = page.locator('[data-mobile-action="blind-descent"]');
   await expect(entry).toBeVisible();

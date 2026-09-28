@@ -77,19 +77,13 @@
       '<main class="r4m-shell" aria-label="r4b1t mobile interface">',
         '<header class="r4m-header">',
           '<div class="r4m-wordmark"><span>R4B1T</span> H0L3</div>',
-          '<div class="r4m-header-actions"><button type="button" data-mobile-action="theme" id="r4mTheme" aria-label="Toggle light or dark theme">◑ LIGHT</button><button type="button" data-mobile-action="help" aria-label="Open touch guide">?</button><a class="r4m-zip" href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a></div>',
         '</header>',
-        '<section class="r4m-filter-strip" aria-label="Terrain filter">',
-          '<div><small>TERRAIN FILTER</small><strong id="r4mFilterLabel">ALL SIGNALS</strong></div>',
-          '<button type="button" data-mobile-action="filter">SET ↗</button>',
-        '</section>',
-        '<div class="r4m-status"><span>APERTURE / RANDOM</span><b id="r4mModeLabel">UNBOUNDED</b></div>',
+        '<div class="r4m-compat-state" hidden aria-hidden="true"><span id="r4mFilterLabel">ALL SIGNALS</span><b id="r4mModeLabel">UNBOUNDED</b></div>',
         '<div class="r4m-mode-switch" role="group" aria-label="Primary exploration mode"><button type="button" class="active" data-mobile-action="stage-roll" id="r4mModeRoll" aria-pressed="true">ROLL</button><button type="button" data-mobile-action="stage-blind" id="r4mModeBlind" aria-pressed="false">BLIND DESCENT</button></div>',
         '<div class="r4m-primary-stage" id="r4mPrimaryStage">',
         '<section class="r4m-hero" id="r4mHero">',
           '<img src="rabbit-aperture.svg" alt="" aria-hidden="true">',
-          '<div class="r4m-hero-copy"><small id="r4mApertureState">APERTURE EMPTY / READY</small><h1>NO PROFILE. NO TRACKING. NO RANKING.</h1></div>',
-          '<p>A DOOR. NOT A FEED. SELECTION IS COMMITTED BEFORE THE DESTINATION IS EXPOSED.</p>',
+          '<div class="r4m-hero-copy"><small id="r4mApertureState">RANDOM DISCOVERY / CYBERSECURITY WEB</small><h1>A DOOR, NOT A FEED.</h1><p>NO PROFILE. NO RANKING. COMMITTED BEFORE REVEAL.</p></div>',
         '</section>',
         '<button class="r4m-roll" id="r4mRoll" type="button" data-presentation-state="idle" aria-label="ROLL — commit a route before reveal">',
           '<span class="r4m-roll-chassis" aria-hidden="true">',
@@ -138,7 +132,7 @@
             '<button type="button" data-mobile-action="topology">MAP TRAILS ↗</button>',
             '<button type="button" data-mobile-action="help">TOUCH GUIDE ↗</button>',
           '</section>',
-          '<div class="r4m-menu-utilities"><button type="button" data-mobile-action="theme" aria-label="Toggle light or dark theme">THEME</button><a href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a></div>',
+          '<div class="r4m-menu-utilities"><button type="button" data-mobile-action="theme" id="r4mMenuTheme" aria-label="Toggle light or dark theme">THEME</button><a id="r4mMenuZip" href="https://github.com/GnomeMan4201/r4b1t-h0le/archive/refs/heads/main.zip" rel="noopener">.ZIP ↓</a></div>',
         '</div>',
       '</aside>',
       '<aside class="r4m-sheet" id="r4mFilterSheet" aria-hidden="true">',
@@ -195,14 +189,14 @@
     if (backdrop) backdrop.addEventListener('click', closeSheets);
     bindPressLifecycle(host);
     runInitialStagger();
-    var mobileTheme = byId('r4mTheme');
+    var mobileTheme = byId('r4mMenuTheme');
     if (mobileTheme) mobileTheme.textContent = document.documentElement.classList.contains('light') ? '◑ DARK' : '◑ LIGHT';
     syncEverything();
     observeSource();
   }
 
   function runInitialStagger() {
-    var selectors = ['.r4m-header', '.r4m-filter-strip', '.r4m-status', '.r4m-hero', '.r4m-roll'];
+    var selectors = ['.r4m-header', '.r4m-mode-switch', '.r4m-hero', '.r4m-roll'];
     selectors.forEach(function (selector, index) {
       var element = document.querySelector(selector);
       if (!element) return;
@@ -469,7 +463,7 @@ MOTION: waiting for target…';
       document.documentElement.classList.toggle('light');
       var light = document.documentElement.classList.contains('light');
       localStorage.setItem('r4b1t_theme', light ? 'light' : 'dark');
-      var mobileTheme = byId('r4mTheme');
+      var mobileTheme = byId('r4mMenuTheme');
       var desktopTheme = byId('themeBtn');
       if (mobileTheme) mobileTheme.textContent = light ? '◑ DARK' : '◑ LIGHT';
       if (desktopTheme) desktopTheme.textContent = light ? '◑ DARK' : '◑ LIGHT';
@@ -614,8 +608,6 @@ MOTION: waiting for target…';
     route.hidden = !active;
     document.documentElement.classList.toggle('r4m-has-route', active);
     if (active && !document.documentElement.classList.contains('r4m-stage-blind')) document.documentElement.classList.add('r4m-stage-result');
-    var apertureState = byId('r4mApertureState');
-    if (apertureState) apertureState.textContent = active ? 'APERTURE OPEN / ROUTE READY' : 'APERTURE EMPTY / READY';
     if (!active) return;
 
     var displayDomain = hostnameFor(url, domain);
