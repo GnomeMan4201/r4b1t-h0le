@@ -314,7 +314,11 @@
     if (!list) return;
     if (ledgerRowObserver) ledgerRowObserver.disconnect();
 
-    var storedRows = Array.from(list.children).filter(function (row) {
+    var allRows = Array.from(list.children);
+    allRows.forEach(function (row) {
+      if (row) row.classList.add('r4m-ledger-row', 'row-in');
+    });
+    var storedRows = allRows.filter(function (row) {
       return row && row.tagName === 'BUTTON';
     });
     var total = storedRows.length;
