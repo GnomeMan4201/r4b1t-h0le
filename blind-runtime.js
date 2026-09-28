@@ -19,6 +19,10 @@
     ready: null
   };
 
+  function mobileBlindStage() {
+    return window.matchMedia('(max-width: 900px)').matches;
+  }
+
   function terrain() {
     return 'ALL SIGNALS';
   }
@@ -199,6 +203,41 @@
       '@media(max-width:600px){.blind-grid{padding:18px 14px}.blind-card{min-height:360px;padding:24px 20px}.blind-actions{grid-template-columns:1fr 1fr}.blind-actions button:last-child{grid-column:1/-1}}';
     document.head.appendChild(style);
 
+    var mobileStyle = document.createElement('style');
+    mobileStyle.textContent =
+      '@media(max-width:900px){' +
+      '#blindDescentOverlay{inset:0 0 calc(64px + env(safe-area-inset-bottom)) 0;z-index:9000;background:#0c0c0b;color:#ece9e1;overflow:auto}' +
+      '#blindDescentOverlay .blind-grid{width:min(100%,560px);min-height:100%;margin:0 auto;padding:18px 20px 24px;gap:0;grid-template-rows:auto 1fr auto;background:none}' +
+      '#blindDescentOverlay .blind-head{padding:0 0 14px;border-bottom:1px solid #2b2a27;align-items:flex-end}' +
+      '#blindDescentOverlay .blind-kicker{color:#8e8b84;font-size:8px;letter-spacing:.16em}' +
+      '#blindDescentOverlay .blind-title{margin:4px 0 0;color:#ece9e1;font-size:clamp(42px,14vw,66px);letter-spacing:.01em}' +
+      '#blindDescentOverlay .blind-depth{color:#ece9e1;font-size:44px}' +
+      '#blindDescentOverlay .blind-depth small{color:#8e8b84;letter-spacing:.12em}' +
+      '#blindDescentOverlay .blind-card{min-height:150px;margin:22px 0 12px;padding:18px 0;border:0;border-radius:0!important;background:transparent;box-shadow:none!important;transform:none!important}' +
+      '#blindDescentOverlay .blind-card:before{display:none}' +
+      '#blindDescentOverlay .blind-state{margin-bottom:14px;color:#8e8b84;font-size:8px;letter-spacing:.14em}' +
+      '#blindDescentOverlay .blind-message{font-size:clamp(38px,12vw,58px);color:#ece9e1}' +
+      '#blindDescentOverlay .blind-proof{margin-top:14px;color:#77746e;font-size:8px;line-height:1.5}' +
+      '#blindDescentOverlay .blind-strata{position:relative;margin:8px 0 18px;padding:4px 0 4px 22px;border-left:1px solid #3a3935}' +
+      '#blindDescentOverlay .blind-stratum{position:relative;display:grid;grid-template-columns:42px 1fr auto;align-items:center;min-height:36px;border-bottom:1px solid #20201e;color:#6f6c66;font-size:8px;letter-spacing:.09em}' +
+      '#blindDescentOverlay .blind-stratum:before{content:"";position:absolute;left:-27px;top:50%;width:10px;height:1px;background:#4a4944}' +
+      '#blindDescentOverlay .blind-stratum[data-current-depth="true"]{color:#ece9e1}' +
+      '#blindDescentOverlay .blind-stratum[data-current-depth="true"]:before{left:-29px;width:14px;height:2px;background:#ece9e1}' +
+      '#blindDescentOverlay .blind-stratum[data-reveal-target="true"]{color:#ff3333}' +
+      '#blindDescentOverlay .blind-stratum[data-reveal-target="true"]:after{content:"";position:absolute;inset:5px -2px 5px -9px;border:1px solid #ff3333;pointer-events:none}' +
+      '#blindDescentOverlay .blind-stratum-depth{font-family:"Bebas Neue",sans-serif;font-size:20px;letter-spacing:.04em}' +
+      '#blindDescentOverlay .blind-stratum-state{text-align:right}' +
+      '#blindDescentOverlay .blind-reveal-target{min-height:28px;display:flex;align-items:center;border-top:1px solid #2b2a27;color:#ff3333;font-size:8px;letter-spacing:.13em}' +
+      '#blindDescentOverlay .blind-wear{margin:0 0 18px;opacity:.7}' +
+      '#blindDescentOverlay .blind-actions{grid-template-columns:1fr 1fr 90px;gap:0;border-top:1px solid #2b2a27;border-bottom:1px solid #2b2a27}' +
+      '#blindDescentOverlay .blind-actions button{min-height:56px;border:0;border-right:1px solid #2b2a27;background:transparent;color:#ece9e1;padding:10px;font-size:9px}' +
+      '#blindDescentOverlay .blind-actions button[data-blind-action="descend"],#blindDescentOverlay .blind-actions button[data-blind-action="reveal"]{background:transparent;color:#ece9e1;border-color:#2b2a27}' +
+      '#blindDescentOverlay .blind-actions button[data-blind-action="return"]{border-right:0;color:#8e8b84}' +
+      '#blindDescentOverlay .blind-subactions{gap:0;margin:8px 0 0;flex-wrap:wrap}' +
+      '#blindDescentOverlay .blind-subactions button{min-height:36px;border:0;border-bottom:1px solid #2b2a27;color:#77746e;padding:8px 6px;font-size:7px}' +
+      '}' ;
+    document.head.appendChild(mobileStyle);
+
     var overlay = document.createElement('section');
     overlay.id = 'blindDescentOverlay';
     overlay.setAttribute('role', 'dialog');
@@ -208,8 +247,8 @@
     overlay.setAttribute('tabindex', '-1');
     overlay.innerHTML = '<div class="blind-grid">' +
       '<header class="blind-head"><div><div class="blind-kicker">APERTURE / BLIND</div><h2 class="blind-title" id="blindDescentTitle">BLIND DESCENT</h2></div><div class="blind-depth" id="blindDepth">000<small>DEPTH / COMMITTED</small></div></header>' +
-      '<div><article class="blind-card" id="blindCard"><div class="blind-state" id="blindStatus">READY / NOTHING SELECTED</div><div class="blind-message" id="blindMessage">DESCEND WITHOUT <span>LOOKING.</span></div><div class="blind-proof" id="blindProof">Selection happens before reveal. Reveal cannot reroll, replace, filter, or reject.</div></article><div class="blind-wear" id="blindWear" aria-label="Persistent trail wear"></div></div>' +
-      '<footer><div class="blind-actions"><button type="button" data-blind-action="descend">DESCEND BLIND</button><button type="button" data-blind-action="reveal">REVEAL ROUTE</button><button type="button" data-blind-action="return">RETURN</button></div><div class="blind-subactions"><button type="button" data-blind-action="export">EXPORT PUBLIC SNAPSHOT</button><button type="button" data-blind-action="topology">MAP TRAILS</button><button type="button" data-blind-action="reset">NEW GENESIS</button><button type="button" data-blind-action="close">CLOSE</button></div></footer>' +
+      '<div><article class="blind-card" id="blindCard"><div class="blind-state" id="blindStatus">READY / NOTHING SELECTED</div><div class="blind-message" id="blindMessage">DESCEND WITHOUT <span>LOOKING.</span></div><div class="blind-proof" id="blindProof">Selection happens before reveal. Reveal cannot reroll, replace, filter, or reject.</div></article><div class="blind-strata" id="blindStrata" aria-label="Blind descent strata"></div><div class="blind-wear" id="blindWear" aria-label="Persistent trail wear"></div></div>' +
+      '<footer><div class="blind-reveal-target" id="blindRevealTarget">NO CONCEALED COMMITMENT</div><div class="blind-actions"><button type="button" data-blind-action="descend">DESCEND BLIND</button><button type="button" data-blind-action="reveal" aria-describedby="blindRevealTarget">REVEAL ROUTE</button><button type="button" data-blind-action="return">RETURN</button></div><div class="blind-subactions"><button type="button" data-blind-action="export">EXPORT PUBLIC SNAPSHOT</button><button type="button" data-blind-action="topology">MAP TRAILS</button><button type="button" data-blind-action="reset">NEW GENESIS</button><button type="button" data-blind-action="close">CLOSE</button></div></footer>' +
     '</div>';
     overlay.addEventListener('click', function (event) {
       var button = event.target.closest('[data-blind-action]');
@@ -226,6 +265,44 @@
     document.body.appendChild(overlay);
   }
 
+  function renderStrata() {
+    var host = document.getElementById('blindStrata');
+    var target = document.getElementById('blindRevealTarget');
+    if (!host || !target || !state.manifest) return;
+
+    var revealIndex = lastConcealedIndex();
+    var revealDepth = revealIndex >= 0 ? revealIndex + 1 : 0;
+    host.replaceChildren();
+
+    state.manifest.steps.forEach(function (step, index) {
+      var depth = index + 1;
+      var row = document.createElement('div');
+      row.className = 'blind-stratum';
+      row.dataset.blindDepth = String(depth);
+      if (depth === state.currentDepth) row.dataset.currentDepth = 'true';
+      if (index === revealIndex) row.dataset.revealTarget = 'true';
+
+      var depthNode = document.createElement('span');
+      depthNode.className = 'blind-stratum-depth';
+      depthNode.textContent = String(depth).padStart(2, '0');
+
+      var commitment = document.createElement('span');
+      commitment.className = 'blind-stratum-commitment';
+      commitment.textContent = String(step.commitment || '').slice(0, 12);
+
+      var stateNode = document.createElement('span');
+      stateNode.className = 'blind-stratum-state';
+      stateNode.textContent = String(step.state || '').toUpperCase();
+
+      row.append(depthNode, commitment, stateNode);
+      host.appendChild(row);
+    });
+
+    target.textContent = revealDepth ?
+      'LAST CONCEALED · ' + String(revealDepth).padStart(2, '0') :
+      'NO CONCEALED COMMITMENT';
+  }
+
   function render(status, transition) {
     ensureOverlay();
     if (!state.manifest) return;
@@ -235,6 +312,7 @@
     var proof = document.getElementById('blindProof');
     document.getElementById('blindDepth').firstChild.nodeValue = String(state.currentDepth).padStart(3, '0');
     document.getElementById('blindStatus').textContent = status || 'READY / COMMIT LOCALLY';
+    renderStrata();
     card.style.transform = 'rotate(' + Math.min(wear.committed_count * 0.13, 1.3) + 'deg)';
     card.style.borderRadius = '0 0 ' + wear.fold_size + 'px 0';
     transition = transition || {};
@@ -311,6 +389,9 @@
     render('READY / COMMIT LOCALLY');
     var overlay = document.getElementById('blindDescentOverlay');
     overlayFocus = document.activeElement;
+    var mobile = mobileBlindStage();
+    overlay.classList.toggle('mobile-stage', mobile);
+    overlay.setAttribute('aria-modal', mobile ? 'false' : 'true');
     overlay.classList.add('open');
     overlay.setAttribute('aria-hidden', 'false');
     setTimeout(function () { focusOverlay(overlay); }, 0);
@@ -349,7 +430,7 @@
       close();
       return;
     }
-    if (trapOverlayTab(event, overlay)) {
+    if (!mobileBlindStage() && trapOverlayTab(event, overlay)) {
       event.stopImmediatePropagation();
       return;
     }

@@ -138,7 +138,8 @@ test('wear is persistent and descend, return, and reveal remain visually distinc
   expect(result.revealed).toBe(1);
 });
 
-test('Blind Descent traps focus, restores opener, and keeps focused buttons native', async ({ page }) => {
+test('desktop Blind Descent traps focus, restores opener, and keeps focused buttons native', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile-chromium');
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => typeof window.openBlindDescent === 'function');
 
@@ -251,4 +252,122 @@ test('Blind Descent preserves saved state when corpus revision still matches', a
   });
 
   expect(restoredTrailId).toBe(originalTrailId);
+});
+
+
+test('mobile Blind stage leaves the persistent ROLL and MENU rail operable', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openBlindDescent === 'function');
+
+  await page.locator('#r4mModeBlind').click();
+  await page.evaluate(() => window.openBlindDescent());
+
+  const overlay = page.locator('#blindDescentOverlay');
+  const nav = page.locator('.r4m-nav-minimal');
+  await expect(overlay).toHaveClass(/open/);
+  await expect(nav).toBeVisible();
+  await expect(overlay).toHaveAttribute('aria-modal', 'false');
+
+  const geometry = await page.evaluate(() => {
+    const overlay = document.getElementById('blindDescentOverlay').getBoundingClientRect();
+    const nav = document.querySelector('.r4m-nav-minimal').getBoundingClientRect();
+    return {
+      overlayBottom: overlay.bottom,
+      navTop: nav.top,
+      overlayZ: Number.parseInt(getComputedStyle(document.getElementById('blindDescentOverlay')).zIndex || '0', 10),
+      navZ: Number.parseInt(getComputedStyle(document.querySelector('.r4m-nav-minimal')).zIndex || '0', 10),
+    };
+  });
+  expect(geometry.overlayBottom).toBeLessThanOrEqual(geometry.navTop + 1);
+  expect(geometry.navZ).toBeGreaterThan(geometry.overlayZ);
+
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'false');
+  await expect(overlay).toHaveClass(/open/);
+});
+
+test('mobile bottom ROLL exits Blind without selecting or committing', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.getBlindManifest === 'function');
+
+  await page.locator('#r4mModeBlind').click();
+  await page.evaluate(() => window.openBlindDescent());
+
+  const before = await page.evaluate(async () => {
+    const snapshot = await window.getBlindManifest();
+    return {
+      steps: snapshot.manifest.steps.length,
+      preview: document.getElementById('previewUrl').textContent.trim(),
+    };
+  });
+
+  await page.locator('#r4mNavRoll').click();
+
+  await expect(page.locator('#blindDescentOverlay')).not.toHaveClass(/open/);
+  await expect(page.locator('#r4mModeRoll')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#r4mRoll')).toBeVisible();
+
+  const after = await page.evaluate(async () => {
+    const snapshot = await window.getBlindManifest();
+    return {
+      steps: snapshot.manifest.steps.length,
+      preview: document.getElementById('previewUrl').textContent.trim(),
+    };
+  });
+
+  expect(after).toEqual(before);
+});
+
+test('mobile Blind separates current depth from the last concealed reveal target after RETURN', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.blindDescend === 'function');
+
+  await page.evaluate(async () => {
+    await window.openBlindDescent();
+    await window.blindDescend();
+    await window.blindDescend();
+    await window.blindDescend();
+    await window.blindReturn();
+  });
+
+  const current = page.locator('#blindStrata [data-blind-depth="2"]');
+  const revealTarget = page.locator('#blindStrata [data-blind-depth="3"]');
+  await expect(current).toHaveAttribute('data-current-depth', 'true');
+  await expect(current).not.toHaveAttribute('data-reveal-target', 'true');
+  await expect(revealTarget).toHaveAttribute('data-reveal-target', 'true');
+  await expect(page.locator('#blindRevealTarget')).toHaveText('LAST CONCEALED · 03');
+
+  await page.locator('[data-blind-action="reveal"]').click();
+  await expect.poll(async () => page.evaluate(async () => {
+    const snapshot = await window.getBlindManifest();
+    return snapshot.manifest.steps.map((step) => step.state);
+  })).toEqual(['concealed', 'concealed', 'revealed']);
+});
+
+test('mobile Blind keeps manifest position and current depth distinct after RETURN then DESCEND', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.blindDescend === 'function');
+
+  await page.evaluate(async () => {
+    await window.openBlindDescent();
+    await window.blindDescend();
+    await window.blindDescend();
+    await window.blindDescend();
+    await window.blindReturn();
+    await window.blindDescend();
+  });
+
+  await expect(page.locator('#blindStrata [data-blind-depth="3"]')).toHaveAttribute('data-current-depth', 'true');
+  await expect(page.locator('#blindStrata [data-blind-depth="4"]')).toHaveAttribute('data-reveal-target', 'true');
+  await expect(page.locator('#blindRevealTarget')).toHaveText('LAST CONCEALED · 04');
+
+  const states = await page.evaluate(async () => {
+    const snapshot = await window.getBlindManifest();
+    return snapshot.manifest.steps.map((step) => step.state);
+  });
+  expect(states).toEqual(['concealed', 'concealed', 'concealed', 'concealed']);
 });

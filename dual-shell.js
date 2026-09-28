@@ -505,9 +505,13 @@ MOTION: waiting for target…';
       if (desktopTheme) desktopTheme.textContent = light ? '◑ DARK' : '◑ LIGHT';
       return;
     }
-    if (action === 'stage-roll') return resetRollStage();
+    if (action === 'stage-roll') {
+      call('closeBlindDescent');
+      return resetRollStage();
+    }
     if (action === 'nav-roll') {
       closeSheets();
+      call('closeBlindDescent');
       return resetRollStage();
     }
     if (action === 'menu') {
