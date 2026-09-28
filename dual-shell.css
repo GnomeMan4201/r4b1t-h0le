@@ -1196,3 +1196,19 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
 @media (prefers-reduced-motion:reduce) and (max-width:900px){
   .r4m-door-panel,.r4m-door-aperture,.r4m-door-seam{transition:none!important}
 }
+
+
+/* Mobile v3 final landscape compatibility. */
+@media (max-width:900px) and (orientation:landscape) and (max-height:560px){
+  .r4m-shell{width:100%;max-width:none}
+  .r4m-menu-trail .r4m-trail-scroll{
+    display:grid;
+    grid-auto-flow:column;
+    grid-auto-columns:minmax(180px,1fr);
+    grid-template-rows:repeat(2,51px);
+    align-content:start;
+    min-height:102px;
+    overflow-x:auto;
+  }
+  .r4m-menu-trail .r4m-trail-chip{width:100%;max-width:none;min-width:0;height:51px}
+}

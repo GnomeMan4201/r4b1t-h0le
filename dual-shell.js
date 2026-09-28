@@ -553,12 +553,27 @@ MOTION: waiting for target…';
       window.setTimeout(function () { call('shareCard'); }, 120);
       return;
     }
-    if (action === 'history') return toggleHistoryWithMotion();
-    if (action === 'trail-file') return call('openTrailLedger');
+    if (action === 'history') {
+      closeSheets();
+      return toggleHistoryWithMotion();
+    }
+    if (action === 'trail-file') {
+      closeSheets();
+      return call('openTrailLedger');
+    }
     if (action === 'copy-trail') return call('shareTrail');
-    if (action === 'comparison') return call('toggleTrailComparison');
-    if (action === 'proof-session') return call('toggleProofSession');
-    if (action === 'replay-inspection') return call('openReplayInspection');
+    if (action === 'comparison') {
+      closeSheets();
+      return call('toggleTrailComparison');
+    }
+    if (action === 'proof-session') {
+      closeSheets();
+      return call('toggleProofSession');
+    }
+    if (action === 'replay-inspection') {
+      closeSheets();
+      return call('openReplayInspection');
+    }
     if (action === 'suggest-url') return call('submitUrl');
     if (action === 'blind-descent') {
       if (typeof window.openBlindDescent !== 'function' || typeof window.blindDescend !== 'function') return;
@@ -568,6 +583,7 @@ MOTION: waiting for target…';
       return;
     }
     if (action === 'topology') {
+      closeSheets();
       if (typeof window.getTrailManifest !== 'function' || typeof window.openTrailTopology !== 'function') return;
       Promise.resolve(window.getTrailManifest())
         .then(function (snapshot) { return window.openTrailTopology(snapshot); })
