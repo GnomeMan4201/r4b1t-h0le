@@ -1262,3 +1262,69 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-hero-copy{display:none}
   .r4m-roll.r4m-roll-aperture{min-height:390px;height:390px;margin-bottom:0}
 }
+
+
+/* Mobile v5 production-mark shell unification.
+   Presentation only. Keeps selection/proof/motion authorities unchanged. */
+@media (max-width:900px){
+  :root{
+    --r4m-v5-red:#FB0118;
+    --r4m-v5-white:#FEFEFE;
+    --r4m-v5-black:#000;
+    --r4m-v5-dim:#858585;
+    --r4m-v5-rule:#2a2a2a;
+  }
+  html.r4-mobile-active,html.r4-mobile-active body{background:var(--r4m-v5-black)!important;color:var(--r4m-v5-white)}
+  .r4m-shell{background:var(--r4m-v5-black)}
+  .r4m-header{height:52px;min-height:52px;border-bottom:1px solid var(--r4m-v5-rule);background:#000}
+  .r4m-wordmark,.r4m-wordmark span{color:var(--r4m-v5-white)}
+  .r4m-mode-switch{height:52px;right:10px}
+  .r4m-mode-switch button{min-height:52px;color:#666}
+  .r4m-mode-switch button.active{color:var(--r4m-v5-white);box-shadow:inset 0 -2px 0 var(--r4m-v5-red)}
+  .r4m-production-mark{margin:0}
+  .r4m-roll.r4m-roll-aperture{
+    min-height:0!important;height:92px!important;margin:10px 0 16px!important;
+    border:1px solid var(--r4m-v5-white)!important;background:#000!important;
+    overflow:hidden;text-align:left;
+  }
+  .r4m-ap-label{left:18px;bottom:18px;color:var(--r4m-v5-white);font-size:2rem}
+  .r4m-ap-scope{right:18px;bottom:20px;color:var(--r4m-v5-dim)}
+  .r4m-roll.r4m-roll-aperture:active{background:var(--r4m-v5-red)!important}
+  .r4m-route{min-height:0;margin:0;padding:12px 0 18px}
+  .r4m-route-top{padding:0 0 12px;border-bottom:1px solid var(--r4m-v5-rule);color:var(--r4m-v5-dim)}
+  .r4m-route>small{margin:24px 0 7px;color:var(--r4m-v5-dim)}
+  .r4m-route-domain{font-size:clamp(2.7rem,13vw,4rem);line-height:.9;color:var(--r4m-v5-white)}
+  .r4m-route-mouth{width:58px;height:5px;margin:12px 0 16px;border:0;border-radius:0;background:var(--r4m-v5-red);transform:none}
+  #r4mRouteMount #r4mTitle{color:var(--r4m-v5-white)!important}
+  .r4m-route>p{color:#aaa}
+  .r4m-route>code{color:var(--r4m-v5-dim)}
+  .r4m-route-actions{border-top:1px solid var(--r4m-v5-rule)}
+  .r4m-route-actions button:last-child{border-left:1px solid var(--r4m-v5-rule)}
+  .r4m-enter{min-height:58px!important;padding:0 16px!important;background:var(--r4m-v5-red)!important;color:var(--r4m-v5-white)!important;font-weight:800}
+  #r4mRouteMount #r4mRoute > button.r4m-enter[data-mobile-action="visit"]{background:var(--r4m-v5-red)!important;color:var(--r4m-v5-white)!important}
+  .r4m-next{min-height:58px;color:var(--r4m-v5-white)}
+  .r4m-next-aperture,.r4m-nav-aperture{border-color:var(--r4m-v5-red);border-radius:0}
+  .r4m-next-aperture .r4m-ap-depth-ring{display:none}
+  .r4m-nav-minimal{background:#000;border-top:1px solid var(--r4m-v5-rule)}
+  .r4m-nav-minimal button{color:var(--r4m-v5-white)}
+  #r4mNavRoll:before,#r4mNavMenu.active:before{background:var(--r4m-v5-red)}
+  #r4mNavMenu{border-left:1px solid var(--r4m-v5-rule)}
+  .r4m-menu-sheet{background:#000;color:var(--r4m-v5-white)}
+  .r4m-menu-sheet .r4m-menu-body{padding-top:28px}
+  .r4m-menu-group{color:var(--r4m-v5-white)}
+  .r4m-menu-group h3,.r4m-menu-group-count,.r4m-menu-group-context{color:var(--r4m-v5-dim)}
+  .r4m-menu-app-actions,.r4m-menu-proof-grid,.r4m-menu-trail .r4m-trail-scroll{border-color:var(--r4m-v5-rule)}
+  .r4m-menu-app-actions button,.r4m-menu-app-actions a,.r4m-menu-proof-grid button{color:var(--r4m-v5-white)}
+  .r4m-menu-proof-grid button{border-bottom-color:var(--r4m-v5-rule)}
+  .r4m-menu-proof-grid button:nth-child(even){border-left-color:var(--r4m-v5-rule)}
+  .r4m-menu-trail .r4m-trail-chip,.r4m-menu-trail .r4m-trail-chip b,.r4m-menu-trail .r4m-empty{color:var(--r4m-v5-dim)}
+  .r4m-menu-trail .r4m-trail-chip:last-child,.r4m-menu-trail .r4m-trail-chip:last-child b{color:var(--r4m-v5-white)}
+  .r4m-menu-trail .r4m-ledger{border-top-color:var(--r4m-v5-rule);color:var(--r4m-v5-white)}
+  .r4m-menu-from-here>button{border-top-color:var(--r4m-v5-rule);color:var(--r4m-v5-white)}
+  .r4m-menu-from-here>button:first-of-type{border-top:2px solid var(--r4m-v5-red)}
+  #historyOverlay>div{background:#000!important;border-top:2px solid var(--r4m-v5-red)!important}
+}
+@media (max-width:430px) and (orientation:portrait){
+  .r4m-production-mark{height:120px}
+  .r4m-roll.r4m-roll-aperture{height:92px!important;min-height:92px!important}
+}
