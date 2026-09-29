@@ -1310,3 +1310,65 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     padding-bottom:calc(80px + env(safe-area-inset-bottom))!important;
   }
 }
+
+
+/* Mobile v4 iPhone acceptance polish.
+   Visual-only adjustments from real-device review. */
+@media (max-width:430px) and (orientation:portrait){
+  .r4m-roll.r4m-roll-aperture{
+    min-height:380px;
+  }
+
+  .r4m-ap-lip,
+  .r4m-ap-void,
+  .r4m-ap-rim{
+    top:43%;
+    width:min(86%,326px);
+  }
+
+  .r4m-ap-lip{
+    border-width:1.5px;
+    border-color:#44423d;
+  }
+
+  .r4m-ap-void{
+    box-shadow:
+      inset 0 18px 44px rgba(255,255,255,.025),
+      inset 0 -22px 50px rgba(255,255,255,.035);
+  }
+
+  .r4m-ap-rabbit{
+    width:88%;
+    opacity:.94;
+    transform:translate(-50%,-50%) scale(.78);
+    filter:contrast(1.08);
+  }
+
+  .r4m-ap-ring[data-ring="1"]{
+    opacity:.09;
+  }
+  .r4m-ap-ring[data-ring="2"]{
+    opacity:.055;
+  }
+  .r4m-ap-ring[data-ring="3"]{
+    opacity:.03;
+  }
+
+  .r4m-ap-label{
+    left:10px;
+    bottom:10px;
+    font-size:2.65rem;
+    letter-spacing:.015em;
+  }
+
+  .r4m-ap-scope{
+    right:10px;
+    bottom:14px;
+  }
+
+  #r4mRouteMount:not(:empty){
+    border-left:0!important;
+    box-shadow:none!important;
+    background:transparent!important;
+  }
+}
