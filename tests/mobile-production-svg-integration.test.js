@@ -30,6 +30,14 @@ test('menu and blind descent project visual state without selecting routes', () 
   assert.match(source, /resetRollStage[\s\S]*'blind-descending'/);
 });
 
+test('production SVG locks ancestor-state priority for MENU, RESULT, ROLL, and BLIND', () => {
+  assert.match(svg, /Public states \(class on this svg element or any ancestor\):[\s\S]*\.blind-descending\s*>\s*\.rolling\s*>\s*\.result-ready\s*>\s*\.menu-open\s*>\s*idle/);
+  assert.match(svg, /#r4h-root:is\(\.menu-open \*\):not\(\.blind-descending \*\) #r4h-menu-glint/);
+  assert.match(svg, /#r4h-root:is\(\.menu-open \*\):is\(\.rolling \*\):not\(\.blind-descending \*\) #r4h-menu-ear/);
+  assert.match(svg, /#r4h-root:is\(\.result-ready \*\):not\(\.rolling \*\):not\(\.blind-descending \*\) #r4h-result-card-slot/);
+  assert.match(svg, /#r4h-root:is\(\.blind-descending \*\) #r4h-blind-rabbit/);
+});
+
 test('mobile CSS gives the production mark a responsive landing surface', () => {
   assert.match(css, /\.r4m-production-mark\{/);
   assert.match(css, /\.r4m-production-mark svg\{/);
