@@ -5,7 +5,8 @@
    One copy of the artwork. Each motion system moves only its own wrappers:
      r4h-blind-*  >  r4h-roll-*  >  r4h-result-*  >  r4h-menu-*  >  r4h-idle-*
      >  r4h-entrance-*  >  master geometry (never animated)
-   Public states (class on this svg element or any ancestor):
+   Public states (class on #r4h-root, on this svg element, or on any ancestor;
+   every gate matches .state and .state * so all three placements are equal):
      .blind-descending  >  .rolling  >  .result-ready  >  .menu-open  >  idle
    A lower system is switched off by selector gates while a higher one owns
    the character, so no two systems ever write the same property.
@@ -43,19 +44,19 @@
 
 /* held poses that represent a state (apply with or without motion) */
 #r4h-root #r4h-result-card-slot{transform:translate(0,130px)}
-#r4h-root:is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-card-slot{transform:none}
-#r4h-root:is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-paw-exA{transform:translate(0,22px)}
-#r4h-root:is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-paw-exB{transform:translate(0,-22px)}
+#r4h-root:is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-card-slot{transform:none}
+#r4h-root:is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-paw-exA{transform:translate(0,22px)}
+#r4h-root:is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-paw-exB{transform:translate(0,-22px)}
 #r4h-root #r4h-result-eye-left-socket,#r4h-root #r4h-blind-eye-left-socket{visibility:hidden}
-#r4h-root:is(.blind-descending *) #r4h-blind-rabbit{transform:translate(0,950px)}
-#r4h-root:is(.blind-descending *) #r4h-blind-paw-left,#r4h-root:is(.blind-descending *) #r4h-blind-paw-right{transform:translate(0,44px)}
-#r4h-root:is(.blind-descending *) #r4h-blind-ear-left{transform:rotate(-5deg)}
-#r4h-root:is(.blind-descending *) #r4h-blind-ear-right{transform:rotate(6deg)}
-#r4h-root:is(.blind-descending *) #r4h-blind-eyes{transform:scale(1,.86)}
-#r4h-root:is(.blind-descending *) .r4h-blind-glint{transform:translate(0,16px)}
-#r4h-root:is(.blind-descending *) .r4h-blind-hole-exA{transform:scale(1.03,1.05)}
-#r4h-root:is(.blind-descending *) .r4h-blind-hole-exB{transform:scale(0.970874,0.952381)}
-#r4h-root:is(.blind-descending *) #r4h-blind-eye-left-socket{visibility:visible}
+#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-rabbit{transform:translate(0,950px)}
+#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-paw-left,#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-paw-right{transform:translate(0,44px)}
+#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-ear-left{transform:rotate(-5deg)}
+#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-ear-right{transform:rotate(6deg)}
+#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-eyes{transform:scale(1,.86)}
+#r4h-root:is(.blind-descending, .blind-descending *) .r4h-blind-glint{transform:translate(0,16px)}
+#r4h-root:is(.blind-descending, .blind-descending *) .r4h-blind-hole-exA{transform:scale(1.03,1.05)}
+#r4h-root:is(.blind-descending, .blind-descending *) .r4h-blind-hole-exB{transform:scale(0.970874,0.952381)}
+#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-eye-left-socket{visibility:visible}
 
 @media (prefers-reduced-motion:no-preference){
 
@@ -75,71 +76,71 @@
 #r4h-root.is-entering #r4h-entrance-wordmark-bottom{animation:r4h-entrance-wordmark-bottom 300ms cubic-bezier(.2,.8,.2,1) 750ms 1 backwards}
 
 /* ── IDLE (rare blink + rare ear twitch) ── */
-#r4h-root.is-idle:not(.menu-open *):not(.result-ready *):not(.rolling *):not(.blind-descending *) .r4h-idle-blink{animation:r4h-idle-blink-a 7300ms linear 3500ms infinite}
-#r4h-root.is-idle:not(.menu-open *):not(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-idle-ear{animation:r4h-idle-twitch-a 9000ms ease-in-out 3000ms infinite}
-#r4h-root.is-idle:is(.menu-open *):not(.result-ready *):not(.rolling *):not(.blind-descending *) .r4h-idle-blink{animation:r4h-idle-blink-b 7300ms linear 3500ms infinite}
-#r4h-root.is-idle:is(.menu-open *):not(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-idle-ear{animation:r4h-idle-twitch-b 9000ms ease-in-out 3000ms infinite}
-#r4h-root.is-idle:not(.menu-open *):is(.result-ready *):not(.rolling *):not(.blind-descending *) .r4h-idle-blink{animation:r4h-idle-blink-c 7300ms linear 3500ms infinite}
-#r4h-root.is-idle:not(.menu-open *):is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-idle-ear{animation:r4h-idle-twitch-c 9000ms ease-in-out 3000ms infinite}
-#r4h-root.is-idle:is(.menu-open *):is(.result-ready *):not(.rolling *):not(.blind-descending *) .r4h-idle-blink{animation:r4h-idle-blink-d 7300ms linear 3500ms infinite}
-#r4h-root.is-idle:is(.menu-open *):is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-idle-ear{animation:r4h-idle-twitch-d 9000ms ease-in-out 3000ms infinite}
+#r4h-root.is-idle:not(.menu-open, .menu-open *):not(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-idle-blink{animation:r4h-idle-blink-a 7300ms linear 3500ms infinite}
+#r4h-root.is-idle:not(.menu-open, .menu-open *):not(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-idle-ear{animation:r4h-idle-twitch-a 9000ms ease-in-out 3000ms infinite}
+#r4h-root.is-idle:is(.menu-open, .menu-open *):not(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-idle-blink{animation:r4h-idle-blink-b 7300ms linear 3500ms infinite}
+#r4h-root.is-idle:is(.menu-open, .menu-open *):not(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-idle-ear{animation:r4h-idle-twitch-b 9000ms ease-in-out 3000ms infinite}
+#r4h-root.is-idle:not(.menu-open, .menu-open *):is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-idle-blink{animation:r4h-idle-blink-c 7300ms linear 3500ms infinite}
+#r4h-root.is-idle:not(.menu-open, .menu-open *):is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-idle-ear{animation:r4h-idle-twitch-c 9000ms ease-in-out 3000ms infinite}
+#r4h-root.is-idle:is(.menu-open, .menu-open *):is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-idle-blink{animation:r4h-idle-blink-d 7300ms linear 3500ms infinite}
+#r4h-root.is-idle:is(.menu-open, .menu-open *):is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-idle-ear{animation:r4h-idle-twitch-d 9000ms ease-in-out 3000ms infinite}
 
 /* ── MENU ── */
-#r4h-root:not(.menu-open *):not(.blind-descending *) #r4h-menu-ear{transition:transform 240ms cubic-bezier(.34,1.3,.5,1) 80ms}
-#r4h-root:not(.menu-open *):not(.blind-descending *) #r4h-menu-glint{transition:transform 130ms cubic-bezier(.4,-.35,.3,1.3) 0ms}
-#r4h-root:is(.menu-open *):not(.blind-descending *) #r4h-menu-glint{transform:translate(var(--glance-x),var(--glance-y));
+#r4h-root:not(.menu-open, .menu-open *):not(.blind-descending, .blind-descending *) #r4h-menu-ear{transition:transform 240ms cubic-bezier(.34,1.3,.5,1) 80ms}
+#r4h-root:not(.menu-open, .menu-open *):not(.blind-descending, .blind-descending *) #r4h-menu-glint{transition:transform 130ms cubic-bezier(.4,-.35,.3,1.3) 0ms}
+#r4h-root:is(.menu-open, .menu-open *):not(.blind-descending, .blind-descending *) #r4h-menu-glint{transform:translate(var(--glance-x),var(--glance-y));
   transition:transform 150ms cubic-bezier(.45,-.45,.3,1.35) 0ms}
-#r4h-root:is(.menu-open *):not(.blind-descending *) #r4h-menu-ear{transform:rotate(var(--ear-rot));
+#r4h-root:is(.menu-open, .menu-open *):not(.blind-descending, .blind-descending *) #r4h-menu-ear{transform:rotate(var(--ear-rot));
   transition:transform 260ms cubic-bezier(.5,-.3,.3,1.3) 50ms}
-#r4h-root:is(.menu-open *):is(.rolling *):not(.blind-descending *) #r4h-menu-ear{animation:r4h-menu-yield-roll-ear 1000ms linear 0ms 1 none}
-#r4h-root:is(.menu-open *):is(.rolling *):not(.blind-descending *) #r4h-menu-glint{animation:r4h-menu-yield-roll-glint 1000ms linear 0ms 1 none}
-#r4h-root:is(.menu-open *):is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-menu-glint{animation:r4h-menu-yield-result-glint 880ms linear 0ms 1 none}
+#r4h-root:is(.menu-open, .menu-open *):is(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-menu-ear{animation:r4h-menu-yield-roll-ear 1000ms linear 0ms 1 none}
+#r4h-root:is(.menu-open, .menu-open *):is(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-menu-glint{animation:r4h-menu-yield-roll-glint 1000ms linear 0ms 1 none}
+#r4h-root:is(.menu-open, .menu-open *):is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-menu-glint{animation:r4h-menu-yield-result-glint 880ms linear 0ms 1 none}
 
 /* ── ROLL ── */
-#r4h-root:is(.rolling *):not(.blind-descending *) #r4h-roll-stage{clip-path:url(#r4h-roll-clip)}
-#r4h-root:is(.rolling *):not(.blind-descending *) #r4h-roll-rabbit{animation:r4h-roll-rabbit 1000ms linear 0ms 1 none}
-#r4h-root:is(.rolling *):not(.blind-descending *) #r4h-roll-head{animation:r4h-roll-head 1000ms linear 0ms 1 none}
-#r4h-root:is(.rolling *):not(.blind-descending *) #r4h-roll-paw-left{animation:r4h-roll-paw 1000ms linear 0ms 1 none}
-#r4h-root:is(.rolling *):not(.blind-descending *) #r4h-roll-paw-right{animation:r4h-roll-paw 1000ms linear 14ms 1 none}
-#r4h-root:is(.rolling *):not(.blind-descending *) #r4h-roll-ear-left{animation:r4h-roll-ear-left 1000ms linear 0ms 1 none}
-#r4h-root:is(.rolling *):not(.blind-descending *) #r4h-roll-ear-right{animation:r4h-roll-ear-right 1000ms linear 0ms 1 none}
-#r4h-root:is(.rolling *):not(.blind-descending *) #r4h-roll-eyes{animation:r4h-roll-eyes 1000ms linear 0ms 1 none}
-#r4h-root:is(.rolling *):not(.blind-descending *) .r4h-roll-hole{animation:r4h-roll-hole 1000ms linear 0ms 1 none}
-#r4h-root:is(.rolling *):not(.blind-descending *) #r4h-roll-lip{animation:r4h-roll-lip 1000ms linear 0ms 1 none}
+#r4h-root:is(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-roll-stage{clip-path:url(#r4h-roll-clip)}
+#r4h-root:is(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-roll-rabbit{animation:r4h-roll-rabbit 1000ms linear 0ms 1 none}
+#r4h-root:is(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-roll-head{animation:r4h-roll-head 1000ms linear 0ms 1 none}
+#r4h-root:is(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-roll-paw-left{animation:r4h-roll-paw 1000ms linear 0ms 1 none}
+#r4h-root:is(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-roll-paw-right{animation:r4h-roll-paw 1000ms linear 14ms 1 none}
+#r4h-root:is(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-roll-ear-left{animation:r4h-roll-ear-left 1000ms linear 0ms 1 none}
+#r4h-root:is(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-roll-ear-right{animation:r4h-roll-ear-right 1000ms linear 0ms 1 none}
+#r4h-root:is(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-roll-eyes{animation:r4h-roll-eyes 1000ms linear 0ms 1 none}
+#r4h-root:is(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-roll-hole{animation:r4h-roll-hole 1000ms linear 0ms 1 none}
+#r4h-root:is(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-roll-lip{animation:r4h-roll-lip 1000ms linear 0ms 1 none}
 
 /* ── RESULT ── */
-#r4h-root:not(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-card-slot{transition:transform 170ms cubic-bezier(.6,0,.9,.4) 30ms}
-#r4h-root:not(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-paw-exB{transition:transform 110ms cubic-bezier(.5,0,.8,.5) 0ms}
-#r4h-root:not(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-paw-exA{transition:transform 130ms cubic-bezier(.2,.6,.3,1) 170ms}
-#r4h-root:is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-glint-left{animation:r4h-result-glint-left 880ms linear 0ms 1 none}
-#r4h-root:is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-glint-right{animation:r4h-result-glint-right 880ms linear 0ms 1 none}
-#r4h-root:is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-eye-left-socket{animation:r4h-result-socket 880ms linear 0ms 1 none}
-#r4h-root:is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-head{animation:r4h-result-head 880ms linear 0ms 1 none}
-#r4h-root:is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-ear-right{animation:r4h-result-ear-right 880ms linear 0ms 1 none}
-#r4h-root:is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-ear-left{animation:r4h-result-ear-left 880ms linear 0ms 1 none}
-#r4h-root:is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-paw{animation:r4h-result-paw 880ms linear 0ms 1 none}
-#r4h-root:is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-result-card-slot{animation:r4h-result-card 880ms linear 0ms 1 none}
-#r4h-root:is(.result-ready *):not(.rolling *):not(.blind-descending *) #r4h-roll-backing-right{animation:r4h-result-backing 880ms linear 0ms 1 none}
+#r4h-root:not(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-card-slot{transition:transform 170ms cubic-bezier(.6,0,.9,.4) 30ms}
+#r4h-root:not(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-paw-exB{transition:transform 110ms cubic-bezier(.5,0,.8,.5) 0ms}
+#r4h-root:not(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-paw-exA{transition:transform 130ms cubic-bezier(.2,.6,.3,1) 170ms}
+#r4h-root:is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-glint-left{animation:r4h-result-glint-left 880ms linear 0ms 1 none}
+#r4h-root:is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-glint-right{animation:r4h-result-glint-right 880ms linear 0ms 1 none}
+#r4h-root:is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-eye-left-socket{animation:r4h-result-socket 880ms linear 0ms 1 none}
+#r4h-root:is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-head{animation:r4h-result-head 880ms linear 0ms 1 none}
+#r4h-root:is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-ear-right{animation:r4h-result-ear-right 880ms linear 0ms 1 none}
+#r4h-root:is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-ear-left{animation:r4h-result-ear-left 880ms linear 0ms 1 none}
+#r4h-root:is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-paw{animation:r4h-result-paw 880ms linear 0ms 1 none}
+#r4h-root:is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-result-card-slot{animation:r4h-result-card 880ms linear 0ms 1 none}
+#r4h-root:is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-roll-backing-right{animation:r4h-result-backing 880ms linear 0ms 1 none}
 
 /* ── BLIND DESCENT ── */
-#r4h-root:not(.blind-descending *) #r4h-blind-rabbit{transition:transform 300ms cubic-bezier(.16,.84,.3,1.02) 20ms}
-#r4h-root:not(.blind-descending *) #r4h-blind-paw-left{transition:transform 80ms cubic-bezier(.7,0,1,.5) 205ms}
-#r4h-root:not(.blind-descending *) #r4h-blind-paw-right{transition:transform 80ms cubic-bezier(.7,0,1,.5) 222ms}
-#r4h-root:not(.blind-descending *) #r4h-blind-ear-right{transition:transform 150ms cubic-bezier(.3,.6,.3,1) 200ms}
-#r4h-root:not(.blind-descending *) #r4h-blind-ear-left{transition:transform 170ms cubic-bezier(.3,.6,.3,1) 215ms}
-#r4h-root:not(.blind-descending *) #r4h-blind-eyes{transition:transform 90ms cubic-bezier(.2,.7,.3,1) 305ms}
-#r4h-root:not(.blind-descending *) .r4h-blind-glint{transition:transform 90ms cubic-bezier(.2,.7,.3,1) 290ms}
-#r4h-root:not(.blind-descending *) .r4h-blind-hole-exB{transition:transform 60ms cubic-bezier(.4,0,.6,1) 0ms}
-#r4h-root:not(.blind-descending *) .r4h-blind-hole-exA{transition:transform 220ms cubic-bezier(.3,0,.2,1) 70ms}
-#r4h-root:not(.blind-descending *) #r4h-blind-eye-left-socket{transition:visibility 0s linear 400ms}
-#r4h-root:is(.blind-descending *) .r4h-blind-hole{animation:r4h-blind-hole 880ms linear 0ms 1 none}
-#r4h-root:is(.blind-descending *) #r4h-blind-rabbit{animation:r4h-blind-rabbit 880ms linear 0ms 1 none}
-#r4h-root:is(.blind-descending *) #r4h-blind-paw-left{animation:r4h-blind-paw-left 880ms linear 0ms 1 none}
-#r4h-root:is(.blind-descending *) #r4h-blind-paw-right{animation:r4h-blind-paw-right 880ms linear 0ms 1 none}
-#r4h-root:is(.blind-descending *) #r4h-blind-ear-left{animation:r4h-blind-ear-left 880ms linear 0ms 1 none}
-#r4h-root:is(.blind-descending *) #r4h-blind-ear-right{animation:r4h-blind-ear-right 880ms linear 0ms 1 none}
-#r4h-root:is(.blind-descending *) #r4h-blind-eyes{animation:r4h-blind-eyes 880ms linear 0ms 1 none}
-#r4h-root:is(.blind-descending *) .r4h-blind-glint{animation:r4h-blind-glint 880ms linear 0ms 1 none}
+#r4h-root:not(.blind-descending, .blind-descending *) #r4h-blind-rabbit{transition:transform 300ms cubic-bezier(.16,.84,.3,1.02) 20ms}
+#r4h-root:not(.blind-descending, .blind-descending *) #r4h-blind-paw-left{transition:transform 80ms cubic-bezier(.7,0,1,.5) 205ms}
+#r4h-root:not(.blind-descending, .blind-descending *) #r4h-blind-paw-right{transition:transform 80ms cubic-bezier(.7,0,1,.5) 222ms}
+#r4h-root:not(.blind-descending, .blind-descending *) #r4h-blind-ear-right{transition:transform 150ms cubic-bezier(.3,.6,.3,1) 200ms}
+#r4h-root:not(.blind-descending, .blind-descending *) #r4h-blind-ear-left{transition:transform 170ms cubic-bezier(.3,.6,.3,1) 215ms}
+#r4h-root:not(.blind-descending, .blind-descending *) #r4h-blind-eyes{transition:transform 90ms cubic-bezier(.2,.7,.3,1) 305ms}
+#r4h-root:not(.blind-descending, .blind-descending *) .r4h-blind-glint{transition:transform 90ms cubic-bezier(.2,.7,.3,1) 290ms}
+#r4h-root:not(.blind-descending, .blind-descending *) .r4h-blind-hole-exB{transition:transform 60ms cubic-bezier(.4,0,.6,1) 0ms}
+#r4h-root:not(.blind-descending, .blind-descending *) .r4h-blind-hole-exA{transition:transform 220ms cubic-bezier(.3,0,.2,1) 70ms}
+#r4h-root:not(.blind-descending, .blind-descending *) #r4h-blind-eye-left-socket{transition:visibility 0s linear 400ms}
+#r4h-root:is(.blind-descending, .blind-descending *) .r4h-blind-hole{animation:r4h-blind-hole 880ms linear 0ms 1 none}
+#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-rabbit{animation:r4h-blind-rabbit 880ms linear 0ms 1 none}
+#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-paw-left{animation:r4h-blind-paw-left 880ms linear 0ms 1 none}
+#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-paw-right{animation:r4h-blind-paw-right 880ms linear 0ms 1 none}
+#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-ear-left{animation:r4h-blind-ear-left 880ms linear 0ms 1 none}
+#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-ear-right{animation:r4h-blind-ear-right 880ms linear 0ms 1 none}
+#r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-eyes{animation:r4h-blind-eyes 880ms linear 0ms 1 none}
+#r4h-root:is(.blind-descending, .blind-descending *) .r4h-blind-glint{animation:r4h-blind-glint 880ms linear 0ms 1 none}
 }
 
 /* keyframes (bodies copied verbatim from the approved files) */

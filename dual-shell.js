@@ -184,28 +184,45 @@
         if (!host.isConnected) return;
         host.innerHTML = markup;
         host.dataset.mounted = 'true';
-        var svg = host.querySelector('svg');
-        if (!svg) throw new Error('production SVG root missing');
-        svg.classList.add('is-entering');
-        window.setTimeout(function () {
-          svg.classList.remove('is-entering');
-          svg.classList.add('is-idle');
-          syncProductionMarkState();
-        }, 1100);
+        if (!byId('r4h-root')) throw new Error('production SVG root missing');
+        // The mark's own markup carries is-entering/is-idle on #r4h-root; the entrance
+        // plays once from insertion and needs no classes from the app.
+        syncProductionMarkState();
       })
       .catch(function (error) {
         console.error('R4B1T production mark failed to mount', error);
       });
   }
 
+  // The production mark is presentation only. Its ROLL is a fixed 1000ms sequence
+  // (r4h-roll-*, right paw +14ms), longer than the strip phases (~660ms), so the
+  // mark holds .rolling for its full run instead of mirroring the phases, and only
+  // then shows .result-ready. Otherwise the roll is cut mid-launch and snaps home.
+  var MARK_ROLL_MS = 1050;
+  var markRollTimer = null;
   function syncProductionMarkState() {
     var root = document.documentElement;
-    var svg = byId('r4h-root');
-    if (!svg) return;
+    if (!byId('r4h-root')) return;
     var presentation = root.getAttribute('data-r4m-presentation') || 'idle';
     var rolling = ['contact','compression','committed','travel','brake','seat'].indexOf(presentation) !== -1;
     var resultReady = presentation === 'reveal' || presentation === 'revealed';
-    root.classList.toggle('rolling', rolling);
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      // no mark motion to wait for: represent the state directly
+      root.classList.toggle('rolling', rolling);
+      root.classList.toggle('result-ready', resultReady);
+      return;
+    }
+    if (rolling && markRollTimer === null) {
+      root.classList.remove('result-ready');
+      root.classList.add('rolling');
+      markRollTimer = window.setTimeout(function () {
+        markRollTimer = null;
+        root.classList.remove('rolling');
+        syncProductionMarkState();
+      }, MARK_ROLL_MS);
+    }
+    if (markRollTimer !== null) return;
     root.classList.toggle('result-ready', resultReady);
   }
 
@@ -943,6 +960,7 @@ MOTION: waiting for target…';
   }
 
   function resetRollStage() {
+    if (markRollTimer !== null) { window.clearTimeout(markRollTimer); markRollTimer = null; }
     document.documentElement.classList.remove('r4m-stage-result', 'blind-descending', 'rolling', 'result-ready');
     var mount = byId('r4mRouteMount');
     if (mount) mount.hidden = false;

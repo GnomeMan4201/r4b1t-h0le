@@ -19,7 +19,12 @@ test('production mark remains presentation-only and follows authoritative ROLL p
   assert.match(source, /var rolling = \['contact','compression','committed','travel','brake','seat'\]/);
   assert.doesNotMatch(source, /var rolling = \[[^\n]*'reveal'/);
   assert.match(source, /var resultReady = presentation === 'reveal' \|\| presentation === 'revealed'/);
-  assert.match(source, /classList\.toggle\('rolling', rolling\)/);
+  // the mark holds .rolling for its full 1000ms ROLL rather than mirroring the ~660ms strip phases
+  assert.match(source, /var MARK_ROLL_MS = 1050;/);
+  assert.match(source, /if \(rolling && markRollTimer === null\)[\s\S]*classList\.add\('rolling'\)[\s\S]*setTimeout\([\s\S]*classList\.remove\('rolling'\)[\s\S]*MARK_ROLL_MS\)/);
+  assert.match(source, /if \(markRollTimer !== null\) return;\s*root\.classList\.toggle\('result-ready', resultReady\)/);
+  // only the reduced-motion branch may mirror the phases directly
+  assert.match(source, /if \(reduced\) \{[\s\S]*classList\.toggle\('rolling', rolling\)[\s\S]*return;\s*\}/);
   assert.match(source, /classList\.toggle\('result-ready', resultReady\)/);
   assert.match(source, /function projectAuthoritativeRollPresentation\(machineState\)/);
 });
@@ -30,12 +35,14 @@ test('menu and blind descent project visual state without selecting routes', () 
   assert.match(source, /resetRollStage[\s\S]*'blind-descending'/);
 });
 
-test('production SVG locks ancestor-state priority for MENU, RESULT, ROLL, and BLIND', () => {
-  assert.match(svg, /Public states \(class on this svg element or any ancestor\):[\s\S]*\.blind-descending\s*>\s*\.rolling\s*>\s*\.result-ready\s*>\s*\.menu-open\s*>\s*idle/);
-  assert.match(svg, /#r4h-root:is\(\.menu-open \*\):not\(\.blind-descending \*\) #r4h-menu-glint/);
-  assert.match(svg, /#r4h-root:is\(\.menu-open \*\):is\(\.rolling \*\):not\(\.blind-descending \*\) #r4h-menu-ear/);
-  assert.match(svg, /#r4h-root:is\(\.result-ready \*\):not\(\.rolling \*\):not\(\.blind-descending \*\) #r4h-result-card-slot/);
-  assert.match(svg, /#r4h-root:is\(\.blind-descending \*\) #r4h-blind-rabbit/);
+test('production SVG locks state priority for MENU, RESULT, ROLL, and BLIND on #r4h-root, the svg, or any ancestor', () => {
+  assert.match(svg, /Public states \(class on #r4h-root, on this svg element, or on any ancestor;[\s\S]*\.blind-descending\s*>\s*\.rolling\s*>\s*\.result-ready\s*>\s*\.menu-open\s*>\s*idle/);
+  assert.match(svg, /#r4h-root:is\(\.menu-open, \.menu-open \*\):not\(\.blind-descending, \.blind-descending \*\) #r4h-menu-glint/);
+  assert.match(svg, /#r4h-root:is\(\.menu-open, \.menu-open \*\):is\(\.rolling, \.rolling \*\):not\(\.blind-descending, \.blind-descending \*\) #r4h-menu-ear/);
+  assert.match(svg, /#r4h-root:is\(\.result-ready, \.result-ready \*\):not\(\.rolling, \.rolling \*\):not\(\.blind-descending, \.blind-descending \*\) #r4h-result-card-slot/);
+  assert.match(svg, /#r4h-root:is\(\.blind-descending, \.blind-descending \*\) #r4h-blind-rabbit/);
+  // no gate may match only descendants (that ignored a class placed on #r4h-root itself)
+  assert.doesNotMatch(svg, /:(?:is|not)\(\.(?:menu-open|rolling|result-ready|blind-descending) \*\)/);
 });
 
 test('production mark has a single accessible identity owned by the inline SVG', () => {
