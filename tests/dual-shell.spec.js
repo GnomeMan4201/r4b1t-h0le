@@ -984,7 +984,7 @@ test('mobile Blind mode presents one primary descent action while advanced tools
 });
 
 
-test('mobile v3 ROLL uses an aperture composition while retaining the authoritative control', async ({ page }, testInfo) => {
+test('mobile locked ROLL is the authoritative solid-red control', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
@@ -992,23 +992,14 @@ test('mobile v3 ROLL uses an aperture composition while retaining the authoritat
   const roll = page.locator('#r4mRoll');
   await expect(roll).toBeVisible();
   await expect(roll).toHaveAttribute('data-mobile-instrument', 'aperture');
-  await expect(roll.locator('.r4m-ap-lip')).toBeVisible();
-  await expect(roll.locator('.r4m-ap-void')).toBeVisible();
-  await expect(roll.locator('.r4m-ap-rabbit[src="rabbit-aperture-void.svg"]')).toBeVisible();
-  await expect(roll.locator('.r4m-ap-ring')).toHaveCount(2);
-  await expect(roll.locator('.r4m-ap-rim')).toBeVisible();
-  await expect(roll.locator('.r4m-door-panel')).toHaveCount(0);
-  const idleLegibility = await page.evaluate(() => {
-    const lip = getComputedStyle(document.querySelector('#r4mRoll .r4m-ap-lip'));
-    const rabbit = getComputedStyle(document.querySelector('#r4mRoll .r4m-ap-rabbit'));
-    const border = lip.borderTopColor.match(/[\d.]+/g).map(Number);
-    return {
-      lipAlpha: border.length === 4 ? border[3] : 1,
-      rabbitOpacity: Number(rabbit.opacity),
-    };
+  const visual = await roll.evaluate((node) => {
+    const style = getComputedStyle(node);
+    return { background: style.backgroundColor, radius: style.borderRadius };
   });
-  expect(idleLegibility.lipAlpha).toBeGreaterThanOrEqual(0.28);
-  expect(idleLegibility.rabbitOpacity).toBeGreaterThanOrEqual(0.88);
+  expect(visual.background).toBe('rgb(251, 1, 24)');
+  expect(visual.radius).toBe('0px');
+  await expect(roll.locator('.r4m-ap-void')).toBeHidden();
+  await expect(roll.locator('.r4m-ap-rabbit')).toBeHidden();
 });
 
 test('mobile v3 MENU groups the existing capabilities by the object they act on', async ({ page }, testInfo) => {
@@ -1192,49 +1183,45 @@ test('mobile revealed result uses an aperture mouth without vertical result rail
   expect(domainBorder).toBe('0px');
 });
 
-test('mobile ROLL AGAIN and bottom ROLL use distinct aperture glyphs for action versus navigation', async ({ page }, testInfo) => {
+test('mobile persistent navigation keeps locked ROLL and MENU controls distinct', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
   const navRoll = page.locator('#r4mNavRoll');
-  await expect(navRoll.locator('.r4m-nav-aperture')).toBeVisible();
-  const navAperture = navRoll.locator('.r4m-nav-aperture');
-  await expect(navAperture).toHaveAttribute('data-aperture-role', 'navigation');
-  await expect(navRoll.locator('.r4m-nav-door')).toHaveCount(0);
-  await expect(navAperture.locator('.r4m-ap-depth-ring')).toHaveCount(0);
-  const navStyle = await navAperture.evaluate((node) => ({
-    fill: getComputedStyle(node).backgroundColor,
-    border: getComputedStyle(node).borderTopColor,
-  }));
-  expect(navStyle.fill).toBe('rgba(0, 0, 0, 0)');
-
-  await page.locator('#r4mRoll').click();
-  const rollAgain = page.locator('#r4mRoute [data-mobile-action="next"]');
-  await expect(rollAgain).toBeVisible();
-  await expect(rollAgain.locator('.r4m-next-aperture')).toHaveAttribute('data-aperture-role', 'selection');
-  await expect(rollAgain.locator('.r4m-next-aperture .r4m-ap-depth-ring')).toHaveCount(1);
+  const menu = page.locator('#r4mNavMenu');
+  await expect(navRoll).toBeVisible();
+  await expect(menu).toBeVisible();
+  const visual = await page.evaluate(() => {
+    const roll = getComputedStyle(document.getElementById('r4mNavRoll'));
+    const menu = getComputedStyle(document.getElementById('r4mNavMenu'));
+    return {
+      rollBackground: roll.backgroundColor,
+      menuBackground: menu.backgroundColor,
+      menuBorder: menu.borderTopWidth + ' ' + menu.borderTopColor,
+    };
+  });
+  expect(visual.rollBackground).toBe('rgb(251, 1, 24)');
+  expect(visual.menuBackground).toBe('rgb(0, 0, 0)');
+  expect(visual.menuBorder).toContain('2px');
 });
 
-
-test('real-device aperture scales up on tall 512px phone canvas', async ({ page }, testInfo) => {
+test('real-device locked landing master fits a tall 512px phone canvas', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.setViewportSize({ width: 512, height: 1108 });
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  const geometry = await page.locator('#r4mRoll').evaluate((roll) => {
-    const outer = roll.getBoundingClientRect();
-    const aperture = roll.querySelector('.r4m-ap-void').getBoundingClientRect();
-    return {
-      ratio: aperture.width / outer.width,
-      apertureWidth: aperture.width,
-      rollWidth: outer.width,
-    };
+  const master = page.locator('#r4mHero .r4m-landing-master');
+  await expect(master).toBeVisible();
+  await expect(master).toHaveAttribute('src', 'r4b1t-h0l3-master.svg');
+  const geometry = await master.evaluate((node) => {
+    const box = node.getBoundingClientRect();
+    return { left: box.left, right: box.right, width: box.width };
   });
-
-  expect(geometry.ratio).toBeGreaterThanOrEqual(0.72);
-  expect(geometry.apertureWidth).toBeGreaterThanOrEqual(330);
+  expect(geometry.left).toBeGreaterThanOrEqual(0);
+  expect(geometry.right).toBeLessThanOrEqual(512);
+  expect(geometry.width).toBeGreaterThan(300);
 });
 
 test('revealed result is free of legacy red rail, generated DESCENT label, and red CTA override', async ({ page }, testInfo) => {
