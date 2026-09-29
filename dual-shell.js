@@ -82,7 +82,7 @@
         '<div class="r4m-mode-switch" role="group" aria-label="Primary exploration mode"><button type="button" class="active" data-mobile-action="stage-roll" id="r4mModeRoll" aria-pressed="true">ROLL</button><button type="button" data-mobile-action="stage-blind" id="r4mModeBlind" aria-pressed="false">BLIND DESCENT</button></div>',
         '<div class="r4m-primary-stage" id="r4mPrimaryStage">',
         '<section class="r4m-hero" id="r4mHero">',
-          '<img src="rabbit-aperture.svg" alt="" aria-hidden="true">',
+          '<img class="r4m-landing-master" src="r4b1t-h0l3-master.svg" alt="R4B1T H0L3" decoding="async">',
           '<div class="r4m-hero-copy"><small id="r4mApertureState">RANDOM DISCOVERY / CYBERSECURITY WEB</small><h1>A HOLE, NOT A FEED.</h1><p>NO PROFILE. NO RANKING. COMMITTED BEFORE REVEAL.</p></div>',
         '</section>',
         '<button class="r4m-roll r4m-roll-aperture" id="r4mRoll" type="button" data-mobile-instrument="aperture" data-presentation-state="idle" aria-label="ROLL — commit a route before reveal">',
