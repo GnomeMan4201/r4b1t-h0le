@@ -97,7 +97,7 @@ async function beginLocalOnlyObservation(page) {
   };
 }
 
-test('live front door, exploration, topology, and proof entry points remain usable', async ({ page }, testInfo) => {
+test('live site root, exploration, topology, and proof entry points remain usable', async ({ page }, testInfo) => {
   await loadProduction(page);
 
   const dimensions = await page.evaluate(() => ({

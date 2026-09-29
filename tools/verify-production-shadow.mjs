@@ -233,7 +233,7 @@ async function verifyAssetParity() {
   }
 }
 
-async function verifyFrontDoor() {
+async function verifySiteRoot() {
   const response = await fetchWithTimeout(SITE);
 
   if (!response.ok) {
@@ -285,7 +285,7 @@ try {
   await verifyCustomDomainDns();
   await verifyHttpRedirect();
   await verifyPagesRedirect();
-  await verifyFrontDoor();
+  await verifySiteRoot();
   await verifyAssetParity();
   await verifyWorkerHeaders();
 } catch (error) {
