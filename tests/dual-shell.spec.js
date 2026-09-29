@@ -1286,3 +1286,48 @@ test('revealed result keeps the aperture mouth as the only red structural origin
   expect(result.routeBorderLeft).toBe('0px');
   expect(result.mouthBorder).toBe('rgb(255, 51, 51)');
 });
+
+
+test('iPhone idle aperture has enough visual weight before commitment', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const metrics = await page.locator('#r4mRoll').evaluate((roll) => {
+    const lip = roll.querySelector('.r4m-ap-lip');
+    const rabbit = roll.querySelector('.r4m-ap-rabbit');
+    const label = roll.querySelector('.r4m-ap-label');
+    const rollRect = roll.getBoundingClientRect();
+    const lipRect = lip.getBoundingClientRect();
+    return {
+      apertureRatio: lipRect.width / rollRect.width,
+      rabbitOpacity: Number.parseFloat(getComputedStyle(rabbit).opacity),
+      labelSize: Number.parseFloat(getComputedStyle(label).fontSize),
+    };
+  });
+
+  expect(metrics.apertureRatio).toBeGreaterThanOrEqual(0.84);
+  expect(metrics.rabbitOpacity).toBeGreaterThanOrEqual(0.9);
+  expect(metrics.labelSize).toBeGreaterThanOrEqual(40);
+});
+
+test('revealed result mount cannot inherit the legacy red left rail', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  const style = await page.locator('#r4mRouteMount').evaluate((node) => {
+    const computed = getComputedStyle(node);
+    return {
+      boxShadow: computed.boxShadow,
+      borderLeftWidth: computed.borderLeftWidth,
+      borderLeftColor: computed.borderLeftColor,
+    };
+  });
+
+  expect(style.boxShadow).toBe('none');
+  expect(style.borderLeftWidth).toBe('0px');
+});
