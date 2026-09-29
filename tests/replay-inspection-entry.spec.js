@@ -61,6 +61,37 @@ test('production shell exposes Replay explicitly on desktop and phone width', as
   expect(metrics.scroll).toBeLessThanOrEqual(metrics.width + 1);
 });
 
+test('Replay focus lifecycle enters, wraps, closes, and restores the desktop opener', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile-chromium', 'desktop opener focus lifecycle');
+
+  await loadIntegrated(page);
+  await page.waitForFunction(() => document.documentElement.dataset.r4b1tInterface === 'desktop');
+
+  const opener = page.getByRole('button', { name: 'replay', exact: true });
+  await opener.focus();
+  await expect(opener).toBeFocused();
+  await opener.press('Enter');
+
+  const dialog = page.getByRole('dialog', { name: 'Replay Inspection' });
+  await expect(dialog).toBeVisible();
+
+  const close = dialog.getByRole('button', { name: 'close' });
+  await expect(close).toBeFocused();
+
+  const last = dialog.locator('button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])').last();
+  await last.focus();
+  await expect(last).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(close).toBeFocused();
+
+  await page.keyboard.press('Shift+Tab');
+  await expect(last).toBeFocused();
+
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+});
+
 test('integrated Replay verifies local bytes, navigates, and discards state on close', async ({ page }) => {
   await loadIntegrated(page);
   const source = await trailSource(page, [

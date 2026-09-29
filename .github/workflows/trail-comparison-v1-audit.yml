@@ -21,6 +21,8 @@ on:
       - 'tests/trail-comparison-final-contract-audit.test.js'
       - 'tests/trail-comparison-renderer.spec.js'
       - 'tests/trail-comparison-import.spec.js'
+      - 'playwright.trail-comparison.config.js'
+      - 'playwright.trail-comparison.config.js'
       - 'package.json'
       - '.github/workflows/trail-comparison-v1-audit.yml'
   push:
@@ -66,3 +68,7 @@ jobs:
         run: npm ci
       - name: Run Trail Comparison schema, core, and bundle tests
         run: node --test tests/trail-comparison-schema.test.js tests/trail-comparison-projection.test.js tests/trail-comparison-bundle.test.js tests/trail-comparison-final-contract-audit.test.js
+      - name: Install Chromium for Trail Comparison browser audit
+        run: npx playwright install --with-deps chromium
+      - name: Run Trail Comparison browser audit
+        run: npm run test:comparison-ui
