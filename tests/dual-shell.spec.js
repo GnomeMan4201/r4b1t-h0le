@@ -1320,7 +1320,6 @@ test('secondary production mark poses return to canonical wrappers', async ({ pa
     ['branch-open', '#r4h-act-head', 340],
     ['trail-open', '#r4h-act-card', 560],
     ['topology-open', '#r4h-act-rabbit', 520],
-    ['replay-open', '#r4h-act-card', 940],
   ]) {
     await setState(item[0], true);
     await page.waitForTimeout(item[2]);
@@ -1329,6 +1328,17 @@ test('secondary production mark poses return to canonical wrappers', async ({ pa
     await page.waitForTimeout(500);
     await expectHome(item[1]);
   }
+
+  await setState('replay-open', true);
+  await page.waitForTimeout(940);
+  await expectMoved('#r4h-act-card');
+  await expectMoved('#r4h-act-eyes');
+  await setState('replay-open', false);
+  await page.waitForTimeout(80);
+  await expectMoved('#r4h-act-eyes');
+  await page.waitForTimeout(420);
+  await expectHome('#r4h-act-card');
+  await expectHome('#r4h-act-eyes');
 
   await setState('history-open', true);
   await page.waitForTimeout(340);
