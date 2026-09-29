@@ -12,7 +12,7 @@ const { test, expect } = require('@playwright/test');
 const MARK = 'r4b1t-h0l3-production.svg';
 
 async function openShell(page) {
-  await page.goto('/');
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForSelector('#r4mRoll', { state: 'visible' });
 }
 
@@ -33,7 +33,7 @@ async function instrument(page) {
       try { const s = window.__r4b1tSessionHistorySnapshot && window.__r4b1tSessionHistorySnapshot(); return Array.isArray(s) ? s.length : (s && s.length) || 0; } catch (e) { return 0; }
     };
     let lastHistory = history(), lastRolling = false, lastResult = false, lastPresentation = null;
-    let disclosed = false, againShown = false;
+    let disclosed = false;
     const sample = () => {
       if (log.t0 !== null) {
         const p = html.getAttribute('data-r4m-presentation');
@@ -43,8 +43,6 @@ async function instrument(page) {
         const h = history(); if (h > lastHistory) { lastHistory = h; mark('trail-recorded'); }
         const mount = document.getElementById('r4mRouteMount');
         if (!disclosed && mount && mount.classList.contains('roll-disclosed') && mount.childElementCount > 0) { disclosed = true; mark('result-mounted'); }
-        const again = document.getElementById('r4mRollAgain');
-        if (!againShown && again && !again.hidden && again.offsetParent !== null) { againShown = true; mark('roll-again-available'); }
       }
       requestAnimationFrame(sample);
     };
@@ -52,7 +50,8 @@ async function instrument(page) {
     requestAnimationFrame(sample);
     const rabbit = document.getElementById('r4h-roll-rabbit');
     if (rabbit) rabbit.addEventListener('animationend', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-end'); });
-    window.__markStart = () => { log.t0 = performance.now(); };
+    // each roll gets a fresh timeline; last-seen states carry over so only changes are logged
+    window.__markStart = () => { log.events.length = 0; disclosed = false; log.t0 = performance.now(); };
   });
 }
 
