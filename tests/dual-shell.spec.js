@@ -155,6 +155,12 @@ test('mobile branch sheet explains the empty state and offers a recovery action'
   });
 
   await page.locator('#r4mNavMenu').click();
+  const menuIdleMotion = await page.locator('#r4h-root').evaluate((root) => ({
+    blink: getComputedStyle(root.querySelector('.r4h-idle-blink')).animationName,
+    ear: getComputedStyle(root.querySelector('#r4h-idle-ear')).animationName,
+  }));
+  expect(menuIdleMotion.blink).toBe('none');
+  expect(menuIdleMotion.ear).toBe('none');
   await page.locator('#r4mMenuSheet [data-mobile-action="branch"]').click();
   const empty = page.locator('#r4mBranchOptions .r4m-branch-empty');
   await expect(empty).toBeVisible();
@@ -1286,3 +1292,142 @@ test('revealed result uses the production red rule instead of the retired apertu
 
 
 
+
+
+test('secondary production mark poses return to canonical wrappers', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.waitForTimeout(1150);
+
+  const transformOf = async (selector) => page.locator(selector).evaluate((node) => getComputedStyle(node).transform);
+  const expectMoved = async (selector) => {
+    const value = await transformOf(selector);
+    expect(value).not.toBe('none');
+    expect(value).not.toBe('matrix(1, 0, 0, 1, 0, 0)');
+  };
+  const expectHome = async (selector) => {
+    const value = await transformOf(selector);
+    expect(['none', 'matrix(1, 0, 0, 1, 0, 0)']).toContain(value);
+  };
+  const setState = async (state, on) => page.evaluate(({ state, on }) => {
+    document.documentElement.classList.remove('result-ready', 'rolling', 'blind-descending');
+    document.documentElement.classList.toggle(state, on);
+  }, { state, on });
+
+  for (const item of [
+    ['branch-open', '#r4h-act-head', 340],
+    ['trail-open', '#r4h-act-card', 560],
+    ['topology-open', '#r4h-act-rabbit', 520],
+  ]) {
+    await setState(item[0], true);
+    await page.waitForTimeout(item[2]);
+    await expectMoved(item[1]);
+    await setState(item[0], false);
+    await page.waitForTimeout(500);
+    await expectHome(item[1]);
+  }
+
+  await setState('replay-open', true);
+  await page.waitForTimeout(940);
+  await expectMoved('#r4h-act-card');
+  await expectMoved('#r4h-act-eyes');
+  await setState('replay-open', false);
+  await page.waitForTimeout(80);
+  await expectMoved('#r4h-act-eyes');
+  await page.waitForTimeout(420);
+  await expectHome('#r4h-act-card');
+  await expectHome('#r4h-act-eyes');
+
+  await setState('history-open', true);
+  await page.waitForTimeout(340);
+  await expectMoved('#r4h-act-head');
+  await page.waitForTimeout(650);
+  await expectHome('#r4h-act-head');
+  await setState('history-open', false);
+
+  await setState('copy-trail', true);
+  await page.waitForTimeout(230);
+  await expectMoved('#r4h-copy-card');
+  await page.waitForTimeout(260);
+  await expectHome('#r4h-copy-card');
+  await setState('copy-trail', false);
+
+  await setState('branch-open', true);
+  await page.waitForTimeout(340);
+  await expectMoved('#r4h-act-head');
+  await page.evaluate(() => document.documentElement.classList.add('rolling'));
+  await page.waitForTimeout(420);
+  await expectHome('#r4h-act-head');
+  await page.evaluate(() => document.documentElement.classList.remove('rolling', 'branch-open'));
+});
+
+test('mobile secondary actions project and clear presentation-only state classes', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const html = page.locator('html');
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="branch"]').click();
+  await expect(html).toHaveClass(/\bbranch-open\b/);
+  await page.locator('#r4mBranchSheet [data-mobile-action="close-sheets"]').click();
+  await expect(html).not.toHaveClass(/\bbranch-open\b/);
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="copy-trail"]').click();
+  await expect(html).toHaveClass(/\bcopy-trail\b/);
+  await page.waitForTimeout(500);
+  await expect(html).not.toHaveClass(/\bcopy-trail\b/);
+  await page.locator('#r4mNavMenu').click();
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
+  await expect(html).toHaveClass(/\bhistory-open\b/);
+  await expect(page.locator('#historyOverlay')).toBeVisible();
+  await page.locator('#historyOverlay button').last().click();
+  await expect(html).not.toHaveClass(/\bhistory-open\b/);
+});
+
+test('reduced motion uses semantic secondary poses without travel', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const read = async (selector) => page.locator(selector).evaluate((node) => getComputedStyle(node).transform);
+  const moved = async (selector) => {
+    const value = await read(selector);
+    expect(value).not.toBe('none');
+    expect(value).not.toBe('matrix(1, 0, 0, 1, 0, 0)');
+  };
+  const home = async (selector) => {
+    const value = await read(selector);
+    expect(['none', 'matrix(1, 0, 0, 1, 0, 0)']).toContain(value);
+  };
+
+  await page.evaluate(() => document.documentElement.classList.add('menu-open'));
+  await moved('#r4h-menu-ear');
+  await page.evaluate(() => document.documentElement.classList.remove('menu-open'));
+  await home('#r4h-menu-ear');
+
+  await page.evaluate(() => document.documentElement.classList.add('branch-open'));
+  await moved('#r4h-act-head');
+  await page.evaluate(() => document.documentElement.classList.remove('branch-open'));
+  await home('#r4h-act-head');
+
+  await page.evaluate(() => document.documentElement.classList.add('history-open'));
+  await moved('#r4h-act-head');
+  await page.waitForTimeout(260);
+  await home('#r4h-act-head');
+  await page.evaluate(() => document.documentElement.classList.remove('history-open'));
+
+  await page.evaluate(() => document.documentElement.classList.add('copy-trail'));
+  await moved('#r4h-copy-card');
+  await page.evaluate(() => document.documentElement.classList.remove('copy-trail'));
+  await home('#r4h-copy-card');
+});

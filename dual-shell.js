@@ -14,6 +14,47 @@
   var pendingRouteMotion = null;
   var rollPendingTimer = null;
   var ledgerRowObserver = null;
+  var secondaryMarkStates = ['branch-open', 'trail-open', 'topology-open', 'history-open', 'replay-open'];
+  var secondaryDismissedResult = false;
+  var copyTrailMotionTimer = null;
+  var historyMotionObserver = null;
+
+  function setSecondaryMarkState(state) {
+    var root = document.documentElement;
+    secondaryMarkStates.forEach(function (name) { root.classList.remove(name); });
+    if (state) {
+      // A secondary instrument dismisses the previous RESULT presentation only.
+      // The revealed route/data remains authoritative and unchanged.
+      secondaryDismissedResult = true;
+      root.classList.remove('result-ready');
+      root.classList.add(state);
+    }
+  }
+
+  function clearSecondaryMarkState(state) {
+    var root = document.documentElement;
+    if (state) root.classList.remove(state);
+    else secondaryMarkStates.forEach(function (name) { root.classList.remove(name); });
+  }
+
+  function clearCopyTrailMotion() {
+    window.clearTimeout(copyTrailMotionTimer);
+    copyTrailMotionTimer = null;
+    document.documentElement.classList.remove('copy-trail');
+  }
+
+  function pulseCopyTrailMotion() {
+    var root = document.documentElement;
+    clearCopyTrailMotion();
+    // COPY owns only its nested presentation layer. RESULT or TRAIL may keep
+    // their outer pose while this one-shot capture/detach gesture runs.
+    void root.offsetWidth;
+    root.classList.add('copy-trail');
+    copyTrailMotionTimer = window.setTimeout(function () {
+      copyTrailMotionTimer = null;
+      root.classList.remove('copy-trail');
+    }, 440);
+  }
   var motionDebugEnabled = /[?&]debug-motion=1(?:&|$)/.test(window.location.search);
 
   function byId(id) { return document.getElementById(id); }
@@ -206,6 +247,8 @@
     var presentation = root.getAttribute('data-r4m-presentation') || 'idle';
     var rolling = ['contact','compression','committed','travel','brake','seat'].indexOf(presentation) !== -1;
     var resultReady = presentation === 'reveal' || presentation === 'revealed';
+    if (rolling) secondaryDismissedResult = false;
+    if (secondaryDismissedResult) resultReady = false;
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
       // no mark motion to wait for: represent the state directly
@@ -234,6 +277,7 @@
     host.innerHTML = shellMarkup();
     document.body.appendChild(host);
     mountProductionMark();
+    observeHistoryMotionState();
 
     host.addEventListener('click', function (event) {
       var target = event.target.closest('[data-mobile-action]');
@@ -525,12 +569,32 @@ MOTION: waiting for target…';
     }, 240);
   }
 
+  function observeHistoryMotionState() {
+    if (historyMotionObserver) return;
+    var overlay = byId('historyOverlay');
+    if (!overlay) return;
+    historyMotionObserver = new MutationObserver(function () {
+      var open = overlay.style.display === 'flex' && overlay.getAttribute('aria-hidden') !== 'true';
+      var root = document.documentElement;
+      if (open) {
+        if (!root.classList.contains('history-open')) setSecondaryMarkState('history-open');
+      } else {
+        clearSecondaryMarkState('history-open');
+      }
+    });
+    historyMotionObserver.observe(overlay, {
+      attributes: true,
+      attributeFilter: ['style', 'class', 'aria-hidden']
+    });
+  }
+
   function toggleHistoryWithMotion() {
     reportTap('HISTORY');
     var overlay = byId('historyOverlay');
     if (!overlay) return call('toggleHistory');
     var open = overlay.style.display === 'flex';
     if (!open) {
+      setSecondaryMarkState('history-open');
       call('toggleHistory');
       // The legacy ledger returns early when empty; mobile history must still
       // open and animate so an empty trail is an explicit state, not a dead tap.
@@ -541,6 +605,7 @@ MOTION: waiting for target…';
       });
       return;
     }
+    clearSecondaryMarkState('history-open');
     playMotion(overlay, 'ledger-close', 260);
     window.setTimeout(function () { call('toggleHistory'); }, 250);
   }
@@ -618,9 +683,15 @@ MOTION: waiting for target…';
     }
     if (action === 'trail-file') {
       closeSheets();
-      return call('openTrailLedger');
+      setSecondaryMarkState('trail-open');
+      var trailOpened = call('openTrailLedger');
+      if (!trailOpened) clearSecondaryMarkState('trail-open');
+      return trailOpened;
     }
-    if (action === 'copy-trail') return call('shareTrail');
+    if (action === 'copy-trail') {
+      pulseCopyTrailMotion();
+      return call('shareTrail');
+    }
     if (action === 'comparison') {
       closeSheets();
       return call('toggleTrailComparison');
@@ -631,11 +702,16 @@ MOTION: waiting for target…';
     }
     if (action === 'replay-inspection') {
       closeSheets();
-      return call('openReplayInspection');
+      setSecondaryMarkState('replay-open');
+      var replayOpened = call('openReplayInspection');
+      if (!replayOpened) clearSecondaryMarkState('replay-open');
+      return replayOpened;
     }
     if (action === 'suggest-url') return call('submitUrl');
     if (action === 'blind-descent') {
       if (typeof window.openBlindDescent !== 'function' || typeof window.blindDescend !== 'function') return;
+      clearSecondaryMarkState();
+      clearCopyTrailMotion();
       document.documentElement.classList.add('blind-descending');
       Promise.resolve(window.openBlindDescent())
         .then(function () { return window.blindDescend(); })
@@ -645,9 +721,13 @@ MOTION: waiting for target…';
     if (action === 'topology') {
       closeSheets();
       if (typeof window.getTrailManifest !== 'function' || typeof window.openTrailTopology !== 'function') return;
+      setSecondaryMarkState('topology-open');
       Promise.resolve(window.getTrailManifest())
         .then(function (snapshot) { return window.openTrailTopology(snapshot); })
-        .catch(function (error) { console.error('Trail topology failed', error); });
+        .catch(function (error) {
+          clearSecondaryMarkState('topology-open');
+          console.error('Trail topology failed', error);
+        });
       return;
     }
     if (action === 'inspect') {
@@ -680,6 +760,8 @@ MOTION: waiting for target…';
     });
     document.documentElement.classList.add('r4m-sheet-open');
     document.documentElement.classList.toggle('menu-open', id === 'r4mMenuSheet');
+    if (id === 'r4mBranchSheet') setSecondaryMarkState('branch-open');
+    else clearSecondaryMarkState('branch-open');
     var menuButton = byId('r4mNavMenu');
     if (menuButton) {
       var menuOpen = id === 'r4mMenuSheet';
@@ -706,6 +788,7 @@ MOTION: waiting for target…';
     }
     document.documentElement.classList.remove('r4m-sheet-open');
     document.documentElement.classList.remove('menu-open');
+    clearSecondaryMarkState('branch-open');
     var menuButton = byId('r4mNavMenu');
     if (menuButton) {
       menuButton.setAttribute('aria-expanded', 'false');
@@ -961,6 +1044,9 @@ MOTION: waiting for target…';
 
   function resetRollStage() {
     if (markRollTimer !== null) { window.clearTimeout(markRollTimer); markRollTimer = null; }
+    secondaryDismissedResult = false;
+    clearSecondaryMarkState();
+    clearCopyTrailMotion();
     document.documentElement.classList.remove('r4m-stage-result', 'blind-descending', 'rolling', 'result-ready');
     var mount = byId('r4mRouteMount');
     if (mount) mount.hidden = false;
