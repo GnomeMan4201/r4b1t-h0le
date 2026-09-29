@@ -63,3 +63,13 @@ test('blind return releases the production descent state only at the surface', (
   const blind = fs.readFileSync('blind-runtime.js', 'utf8');
   assert.match(blind, /function returnTowardSurface\(\)[\s\S]*state\.currentDepth = Math\.max\(0, state\.currentDepth - 1\)[\s\S]*if \(state\.currentDepth === 0\) \{[\s\S]*classList\.remove\('blind-descending'\)/);
 });
+
+
+test('mobile ROLL retires legacy aperture artwork but preserves motion-machine hooks', () => {
+  assert.doesNotMatch(source, /rabbit-aperture-void\.svg/);
+  assert.doesNotMatch(source, /class="r4m-ap-(?:lip|void|ring|rim|rabbit|kicker)"/);
+  assert.match(source, /id="r4mRoll"[^>]*aria-label="ROLL — commit a route before reveal"/);
+  assert.match(source, /class="r4m-ap-label">ROLL<\/strong>/);
+  assert.match(source, /id="r4mRollScope">FULL CORPUS<\/em>/);
+  assert.match(source, /class="r4m-roll-strip" aria-hidden="true"/);
+});
