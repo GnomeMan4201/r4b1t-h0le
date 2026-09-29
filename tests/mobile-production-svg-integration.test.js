@@ -35,14 +35,42 @@ test('menu and blind descent project visual state without selecting routes', () 
   assert.match(source, /resetRollStage[\s\S]*'blind-descending'/);
 });
 
-test('production SVG locks state priority for MENU, RESULT, ROLL, and BLIND on #r4h-root, the svg, or any ancestor', () => {
-  assert.match(svg, /Public states \(class on #r4h-root, on this svg element, or on any ancestor;[\s\S]*\.blind-descending\s*>\s*\.rolling\s*>\s*\.result-ready\s*>\s*\.menu-open\s*>\s*idle/);
-  assert.match(svg, /#r4h-root:is\(\.menu-open, \.menu-open \*\):not\(\.blind-descending, \.blind-descending \*\) #r4h-menu-glint/);
-  assert.match(svg, /#r4h-root:is\(\.menu-open, \.menu-open \*\):is\(\.rolling, \.rolling \*\):not\(\.blind-descending, \.blind-descending \*\) #r4h-menu-ear/);
+test('production SVG locks approved state priority on #r4h-root, the svg, or any ancestor', () => {
+  assert.match(svg, /Public states \(class on #r4h-root, on this svg element, or on any ancestor;[\s\S]*\.blind-descending\s*>\s*\.rolling\s*>\s*\.result-ready\s*>\s*secondary interaction\s*>\s*\.menu-open\s*>\s*idle/);
+  assert.match(svg, /#r4h-root:is\(\.menu-open, \.menu-open \*\).*#r4h-menu-glint/);
   assert.match(svg, /#r4h-root:is\(\.result-ready, \.result-ready \*\):not\(\.rolling, \.rolling \*\):not\(\.blind-descending, \.blind-descending \*\) #r4h-result-card-slot/);
   assert.match(svg, /#r4h-root:is\(\.blind-descending, \.blind-descending \*\) #r4h-blind-rabbit/);
   // no gate may match only descendants (that ignored a class placed on #r4h-root itself)
-  assert.doesNotMatch(svg, /:(?:is|not)\(\.(?:menu-open|rolling|result-ready|blind-descending) \*\)/);
+  assert.doesNotMatch(svg, /:(?:is|not)\(\.(?:menu-open|rolling|result-ready|blind-descending|branch-open|trail-open|topology-open|history-open|replay-open|copy-trail) \*\)/);
+});
+
+test('production SVG owns secondary motion through the approved act/copy wrapper layers', () => {
+  assert.match(svg, /r4h-result-\*\s*>\s*r4h-act-\*\s*>\s*r4h-copy-\*\s*>\s*r4h-menu-\*/);
+  assert.equal((svg.match(/id="r4h-act-/g) || []).length, 12);
+  assert.equal((svg.match(/id="r4h-copy-/g) || []).length, 3);
+
+  for (const state of ['branch-open', 'trail-open', 'topology-open', 'history-open', 'replay-open']) {
+    assert.match(svg, new RegExp('#r4h-root:is\\(\\.' + state + ', \\.' + state + ' \\*\\)'));
+  }
+  assert.match(svg, /#r4h-root:is\(\.copy-trail, \.copy-trail \*\)/);
+
+  for (const id of [
+    'r4h-act-rabbit', 'r4h-act-head', 'r4h-act-ear-left', 'r4h-act-ear-right',
+    'r4h-act-eyes', 'r4h-act-glint-left', 'r4h-act-glint-right',
+    'r4h-act-paw-left', 'r4h-act-paw-right', 'r4h-act-card',
+    'r4h-act-hole', 'r4h-act-hole-front',
+    'r4h-copy-paw-left', 'r4h-copy-paw-right', 'r4h-copy-card'
+  ]) {
+    assert.match(svg, new RegExp('id="' + id + '"'));
+  }
+});
+
+test('mobile shell projects secondary presentation state without becoming action authority', () => {
+  assert.match(source, /var SECONDARY_MARK_STATES = \['branch-open','trail-open','topology-open','history-open','replay-open'\];/);
+  assert.match(source, /function syncProductionSecondaryState\(\)/);
+  assert.match(source, /matches\.length === 1[\s\S]*classList\.add\(matches\[0\]\)/);
+  assert.match(source, /function pulseCopyTrailPresentation\(\)/);
+  assert.match(source, /action === 'copy-trail'[\s\S]*pulseCopyTrailPresentation\(\)[\s\S]*call\('shareTrail'\)/);
 });
 
 test('production mark has a single accessible identity owned by the inline SVG', () => {
