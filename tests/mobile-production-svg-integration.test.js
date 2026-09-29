@@ -38,6 +38,13 @@ test('production SVG locks ancestor-state priority for MENU, RESULT, ROLL, and B
   assert.match(svg, /#r4h-root:is\(\.blind-descending \*\) #r4h-blind-rabbit/);
 });
 
+test('production mark has a single accessible identity owned by the inline SVG', () => {
+  assert.match(source, /<div class="r4m-production-mark" id="r4mProductionMark"><\/div>/);
+  assert.doesNotMatch(source, /id="r4mProductionMark"[^>]*aria-label=/);
+  assert.match(svg, /<svg[^>]*role="img"[^>]*aria-labelledby="r4h-title"/);
+  assert.match(svg, /<title id="r4h-title">R4B1T H0L3<\/title>/);
+});
+
 test('mobile CSS gives the production mark a responsive landing surface', () => {
   assert.match(css, /\.r4m-production-mark\{/);
   assert.match(css, /\.r4m-production-mark svg\{/);
