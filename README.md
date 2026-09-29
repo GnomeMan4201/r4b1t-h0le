@@ -332,7 +332,7 @@ The production surface is static HTML, CSS, and JavaScript. Node.js exists prima
 
 ### Production
 
-**Project front door**  
+**Project site**  
 https://r4b1t.badbananaresearch.com
 
 **Direct application**  
@@ -393,7 +393,7 @@ npm run claims:verify:live
 
 The frozen deployment evidence for the current Worker baseline is recorded in [`docs/releases/2026-09-18-worker-verification.md`](./docs/releases/2026-09-18-worker-verification.md).
 
-Production shadow CI separately compares the exact bytes served by GitHub Pages for critical application assets against the repository checkout, then rechecks the public front door and Worker security headers:
+Production shadow CI separately compares the exact bytes served by GitHub Pages for critical application assets against the repository checkout, then rechecks the public site root and Worker security headers:
 
 ```bash
 npm run shadow:verify
