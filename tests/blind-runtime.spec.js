@@ -398,3 +398,24 @@ test('Blind concealed descent stays out of History until explicit reveal', async
 
   await expect(page.locator('#historyList button')).toHaveCount(1);
 });
+
+
+test('mobile Blind keeps the active strata and action rail visually connected', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.blindDescend === 'function');
+
+  await page.evaluate(async () => {
+    await window.openBlindDescent();
+    await window.blindDescend();
+    await window.blindDescend();
+  });
+
+  const gap = await page.evaluate(() => {
+    const strata = document.getElementById('blindStrata').getBoundingClientRect();
+    const actions = document.querySelector('#blindDescentOverlay .blind-actions').getBoundingClientRect();
+    return actions.top - strata.bottom;
+  });
+
+  expect(gap).toBeLessThanOrEqual(180);
+});
