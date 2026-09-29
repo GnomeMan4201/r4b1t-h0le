@@ -21,11 +21,11 @@ test('mobile landing states the product once and leaves utilities to MENU', asyn
 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => typeof window.roll === 'function');
-  await page.waitForSelector('#r4mProductionMark #r4h-root');
+  await page.waitForSelector('#r4mProductionMark > svg[role="img"]');
 
   const hero = page.locator('#r4mHero');
   await expect(hero).toBeVisible();
-  const productionMark = page.locator('#r4mProductionMark #r4h-root');
+  const productionMark = page.locator('#r4mProductionMark > svg[role="img"]');
   await expect(productionMark).toBeVisible();
   await expect(productionMark.locator('title#r4h-title')).toHaveText('R4B1T H0L3');
   await expect(page.locator('#r4mRoll .r4m-ap-rabbit[src="rabbit-aperture-void.svg"]')).toBeVisible();
