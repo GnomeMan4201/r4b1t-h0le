@@ -164,6 +164,7 @@
 /* ── SECONDARY ACTIONS ── */
 #r4h-root :is(#r4h-act-glint-left,#r4h-act-glint-right){transition:transform 180ms cubic-bezier(.4,0,.3,1)}
 #r4h-root #r4h-act-head{transition:transform 300ms cubic-bezier(.4,0,.3,1)}
+#r4h-root #r4h-act-eyes{transition:transform 380ms cubic-bezier(.4,0,.3,1) 40ms}
 #r4h-root :is(#r4h-act-ear-left,#r4h-act-ear-right){transition:transform 380ms cubic-bezier(.4,0,.3,1) 60ms}
 #r4h-root :is(#r4h-act-paw-left,#r4h-act-paw-right){transition:transform 300ms cubic-bezier(.4,0,.3,1)}
 #r4h-root #r4h-act-card{transition:transform 260ms cubic-bezier(.4,0,.3,1)}
