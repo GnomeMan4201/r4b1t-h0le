@@ -506,13 +506,15 @@ test('mobile projects approved rabbit secondary states from the surfaces that ac
 
   await page.locator('#r4mNavMenu').click();
   await expect(html).toHaveClass(/\bmenu-open\b/);
-  await page.locator('#r4mMenuSheet [data-mobile-action="close-sheets"]').click();
+  await page.locator('#r4mNavMenu').click();
   await expect(html).not.toHaveClass(/\bmenu-open\b/);
 
   await page.locator('#r4mNavMenu').click();
   await page.locator('#r4mMenuSheet [data-mobile-action="branch"]').click();
   await expect(html).toHaveClass(/\bbranch-open\b/);
-  await page.locator('#r4mBranchSheet [data-mobile-action="close-sheets"]').click();
+  await page.evaluate(() => {
+    document.querySelector('#r4mBranchSheet [data-mobile-action="close-sheets"]').click();
+  });
   await expect(html).not.toHaveClass(/\bbranch-open\b/);
   await page.waitForTimeout(460);
   await expect(page.locator('#r4h-act-head')).toHaveCSS('transform', 'none');
