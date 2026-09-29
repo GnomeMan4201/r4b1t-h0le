@@ -211,9 +211,10 @@
     var svg = byId('r4h-root');
     if (!svg) return;
     var presentation = root.getAttribute('data-r4m-presentation') || 'idle';
-    var rolling = ['contact','compression','committed','travel','brake','seat','reveal'].indexOf(presentation) !== -1;
+    var rolling = ['contact','compression','committed','travel','brake','seat'].indexOf(presentation) !== -1;
+    var resultReady = presentation === 'reveal' || presentation === 'revealed';
     root.classList.toggle('rolling', rolling);
-    root.classList.toggle('result-ready', presentation === 'revealed');
+    root.classList.toggle('result-ready', resultReady);
   }
 
   function buildShell() {
