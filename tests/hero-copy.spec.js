@@ -28,7 +28,8 @@ test('mobile landing states the product once and leaves utilities to MENU', asyn
   const productionMark = page.locator('#r4mProductionMark > svg[role="img"]');
   await expect(productionMark).toBeVisible();
   await expect(productionMark.locator('title#r4h-title')).toHaveText('R4B1T H0L3');
-  await expect(page.locator('#r4mRoll .r4m-ap-rabbit[src="rabbit-aperture-void.svg"]')).toBeVisible();
+  await expect(page.locator('#r4mRoll')).toContainText('ROLL');
+  await expect(page.locator('#r4mRoll .r4m-ap-rabbit')).toHaveCount(0);
   await expect(page.locator('#r4mApertureState')).toHaveText('RANDOM DISCOVERY / CYBERSECURITY WEB');
   await expect(hero.locator('.r4m-hero-copy')).toBeHidden();
 
