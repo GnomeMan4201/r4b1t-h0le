@@ -155,6 +155,12 @@ test('mobile branch sheet explains the empty state and offers a recovery action'
   });
 
   await page.locator('#r4mNavMenu').click();
+  const menuIdleMotion = await page.locator('#r4h-root').evaluate((root) => ({
+    blink: getComputedStyle(root.querySelector('.r4h-idle-blink')).animationName,
+    ear: getComputedStyle(root.querySelector('#r4h-idle-ear')).animationName,
+  }));
+  expect(menuIdleMotion.blink).toBe('none');
+  expect(menuIdleMotion.ear).toBe('none');
   await page.locator('#r4mMenuSheet [data-mobile-action="branch"]').click();
   const empty = page.locator('#r4mBranchOptions .r4m-branch-empty');
   await expect(empty).toBeVisible();
