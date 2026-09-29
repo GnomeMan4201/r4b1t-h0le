@@ -37,20 +37,6 @@
     else secondaryMarkStates.forEach(function (name) { root.classList.remove(name); });
   }
 
-  function watchHistoryMarkState() {
-    if (historyMotionObserver) return;
-    var overlay = byId('historyOverlay');
-    if (!overlay) return;
-    historyMotionObserver = new MutationObserver(function () {
-      var open = overlay.style.display === 'flex' || overlay.getAttribute('aria-hidden') === 'false';
-      if (!open) clearSecondaryMarkState('history-open');
-    });
-    historyMotionObserver.observe(overlay, {
-      attributes: true,
-      attributeFilter: ['style', 'aria-hidden', 'class']
-    });
-  }
-
   function clearCopyTrailMotion() {
     window.clearTimeout(copyTrailMotionTimer);
     copyTrailMotionTimer = null;
@@ -292,7 +278,6 @@
     document.body.appendChild(host);
     mountProductionMark();
     observeHistoryMotionState();
-    watchHistoryMarkState();
 
     host.addEventListener('click', function (event) {
       var target = event.target.closest('[data-mobile-action]');
