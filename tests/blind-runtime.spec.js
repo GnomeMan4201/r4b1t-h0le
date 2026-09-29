@@ -402,6 +402,7 @@ test('Blind concealed descent stays out of History until explicit reveal', async
 
 test('mobile Blind keeps the active strata and action rail visually connected', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.setViewportSize({ width: 512, height: 1108 });
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => typeof window.blindDescend === 'function');
 
