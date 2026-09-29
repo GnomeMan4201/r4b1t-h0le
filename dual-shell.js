@@ -90,7 +90,6 @@
           '<span class="r4m-ap-void" aria-hidden="true">',
             '<span class="r4m-ap-ring" data-ring="1"></span>',
             '<span class="r4m-ap-ring" data-ring="2"></span>',
-            '<span class="r4m-ap-ring" data-ring="3"></span>',
             '<img class="r4m-ap-rabbit" src="rabbit-aperture-void.svg" alt="" aria-hidden="true">',
           '</span>',
           '<span class="r4m-ap-rim" aria-hidden="true"></span>',

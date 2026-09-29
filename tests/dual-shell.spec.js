@@ -995,10 +995,20 @@ test('mobile v3 ROLL uses an aperture composition while retaining the authoritat
   await expect(roll.locator('.r4m-ap-lip')).toBeVisible();
   await expect(roll.locator('.r4m-ap-void')).toBeVisible();
   await expect(roll.locator('.r4m-ap-rabbit[src="rabbit-aperture-void.svg"]')).toBeVisible();
-  await expect(roll.locator('.r4m-ap-ring')).toHaveCount(3);
+  await expect(roll.locator('.r4m-ap-ring')).toHaveCount(2);
   await expect(roll.locator('.r4m-ap-rim')).toBeVisible();
   await expect(roll.locator('.r4m-door-panel')).toHaveCount(0);
-  await expect(roll.locator('.r4m-door-seam')).toHaveCount(0);
+  const idleLegibility = await page.evaluate(() => {
+    const lip = getComputedStyle(document.querySelector('#r4mRoll .r4m-ap-lip'));
+    const rabbit = getComputedStyle(document.querySelector('#r4mRoll .r4m-ap-rabbit'));
+    const border = lip.borderTopColor.match(/[\d.]+/g).map(Number);
+    return {
+      lipAlpha: border.length === 4 ? border[3] : 1,
+      rabbitOpacity: Number(rabbit.opacity),
+    };
+  });
+  expect(idleLegibility.lipAlpha).toBeGreaterThanOrEqual(0.28);
+  expect(idleLegibility.rabbitOpacity).toBeGreaterThanOrEqual(0.88);
 });
 
 test('mobile v3 MENU groups the existing capabilities by the object they act on', async ({ page }, testInfo) => {
