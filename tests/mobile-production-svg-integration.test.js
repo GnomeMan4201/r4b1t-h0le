@@ -16,8 +16,11 @@ test('mobile landing mounts the canonical production SVG instead of the legacy h
 
 test('production mark remains presentation-only and follows authoritative ROLL projection', () => {
   assert.match(source, /function syncProductionMarkState\(\)/);
+  assert.match(source, /var rolling = \['contact','compression','committed','travel','brake','seat'\]/);
+  assert.doesNotMatch(source, /var rolling = \[[^\n]*'reveal'/);
+  assert.match(source, /var resultReady = presentation === 'reveal' \|\| presentation === 'revealed'/);
   assert.match(source, /classList\.toggle\('rolling', rolling\)/);
-  assert.match(source, /classList\.toggle\('result-ready', presentation === 'revealed'\)/);
+  assert.match(source, /classList\.toggle\('result-ready', resultReady\)/);
   assert.match(source, /function projectAuthoritativeRollPresentation\(machineState\)/);
 });
 
