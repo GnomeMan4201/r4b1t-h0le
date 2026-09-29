@@ -1158,7 +1158,7 @@ test('mobile aperture uses red only from the committed boundary onward', async (
   expect(await rim.evaluate((node) => getComputedStyle(node).borderTopColor)).toBe(neutral);
 });
 
-test('mobile revealed result uses an aperture mouth rather than door-jamb presentation', async ({ page }, testInfo) => {
+test('mobile revealed result uses an aperture mouth without vertical result rails', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
