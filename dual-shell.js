@@ -194,7 +194,6 @@
         host.dataset.mounted = 'true';
         var svg = host.querySelector('svg');
         if (!svg) throw new Error('production SVG root missing');
-        svg.id = 'r4h-root';
         svg.classList.add('is-entering');
         window.setTimeout(function () {
           svg.classList.remove('is-entering');
