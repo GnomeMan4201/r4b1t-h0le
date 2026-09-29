@@ -18,7 +18,7 @@ Before the first selection, the mobile shell shows:
 
 1. R4B1T H0L3 brand;
 2. primary mode switch: ROLL / BLIND DESCENT;
-3. the product statement `A DOOR, NOT A FEED.`;
+3. the product statement `A HOLE, NOT A FEED.`;
 4. one short explanatory line;
 5. the active primary instrument;
 6. persistent bottom navigation: ROLL / MENU.
@@ -56,7 +56,7 @@ Fresh ROLL mode uses:
 
 ```text
 RANDOM DISCOVERY / CYBERSECURITY WEB
-A DOOR, NOT A FEED.
+A HOLE, NOT A FEED.
 NO PROFILE. NO RANKING. COMMITTED BEFORE REVEAL.
 ```
 
