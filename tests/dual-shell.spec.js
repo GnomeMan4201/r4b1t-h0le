@@ -1205,3 +1205,84 @@ test('mobile ROLL AGAIN and bottom ROLL use distinct aperture glyphs for action 
   await expect(rollAgain.locator('.r4m-next-aperture')).toHaveAttribute('data-aperture-role', 'selection');
   await expect(rollAgain.locator('.r4m-next-aperture .r4m-ap-depth-ring')).toHaveCount(1);
 });
+
+
+test('real-device aperture scales up on tall 512px phone canvas', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({ width: 512, height: 1108 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const geometry = await page.locator('#r4mRoll').evaluate((roll) => {
+    const outer = roll.getBoundingClientRect();
+    const aperture = roll.querySelector('.r4m-ap-void').getBoundingClientRect();
+    return {
+      ratio: aperture.width / outer.width,
+      apertureWidth: aperture.width,
+      rollWidth: outer.width,
+    };
+  });
+
+  expect(geometry.ratio).toBeGreaterThanOrEqual(0.72);
+  expect(geometry.apertureWidth).toBeGreaterThanOrEqual(330);
+});
+
+test('revealed result is free of legacy red rail, generated DESCENT label, and red CTA override', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({ width: 512, height: 1108 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  const route = page.locator('#r4mRoute');
+  await expect(route).toBeVisible();
+
+  const visual = await page.locator('#r4mRouteMount').evaluate((mount) => {
+    const style = getComputedStyle(mount);
+    const before = getComputedStyle(mount, '::before');
+    const title = mount.querySelector('#r4mTitle');
+    const domain = mount.querySelector('#r4mDomain');
+    const open = mount.querySelector('[data-mobile-action="visit"]');
+    return {
+      boxShadow: style.boxShadow,
+      paddingLeft: style.paddingLeft,
+      beforeContent: before.content,
+      beforeDisplay: before.display,
+      titleSize: Number.parseFloat(getComputedStyle(title).fontSize),
+      domainSize: Number.parseFloat(getComputedStyle(domain).fontSize),
+      openBackground: getComputedStyle(open).backgroundColor,
+    };
+  });
+
+  expect(visual.boxShadow).toBe('none');
+  expect(visual.paddingLeft).toBe('0px');
+  expect(['none', 'normal', '""']).toContain(visual.beforeContent);
+  expect(visual.beforeDisplay).toBe('none');
+  expect(visual.titleSize).toBeLessThan(visual.domainSize * 0.55);
+  expect(visual.openBackground).not.toBe('rgb(227, 29, 39)');
+});
+
+test('revealed result keeps the aperture mouth as the only red structural origin mark', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  const mouth = page.locator('#r4mRoute .r4m-route-mouth');
+  await expect(mouth).toBeVisible();
+
+  const result = await page.locator('#r4mRouteMount').evaluate((mount) => {
+    const style = getComputedStyle(mount);
+    const route = getComputedStyle(mount.querySelector('#r4mRoute'));
+    const mouth = getComputedStyle(mount.querySelector('.r4m-route-mouth'));
+    return {
+      mountBorderLeft: style.borderLeftWidth,
+      routeBorderLeft: route.borderLeftWidth,
+      mouthBorder: mouth.borderTopColor,
+    };
+  });
+
+  expect(result.mountBorderLeft).toBe('0px');
+  expect(result.routeBorderLeft).toBe('0px');
+  expect(result.mouthBorder).toBe('rgb(255, 51, 51)');
+});
