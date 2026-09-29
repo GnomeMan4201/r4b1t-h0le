@@ -156,3 +156,11 @@ test('secondary dismissal prevents stale RESULT presentation from reasserting', 
   assert.match(source, /setSecondaryMarkState\('replay-open'\)[\s\S]*openReplayInspection/);
   assert.match(source, /setSecondaryMarkState\('topology-open'\)[\s\S]*openTrailTopology/);
 });
+
+
+test('REPLAY preserves the approved asymmetric evidence-inspection gaze', () => {
+  assert.match(svg, /#r4h-act-glint-left\{[^}]*animation:r4h-replay-glint-left 900ms/);
+  assert.match(svg, /#r4h-act-glint-right\{[^}]*animation:r4h-replay-glint-right 900ms/);
+  assert.match(svg, /@keyframes r4h-replay-glint-left\{[\s\S]*42%\{transform:translate\(1px,6px\)\}[\s\S]*69%\{transform:translate\(4px,5px\)\}[\s\S]*82%\{transform:translate\(-3px,2px\)\}/);
+  assert.match(svg, /@keyframes r4h-replay-glint-right\{[\s\S]*42%\{transform:translate\(1px,6px\)\}[\s\S]*69%\{transform:translate\(-1px,6px\)\}[\s\S]*82%\{transform:translate\(-3px,2px\)\}/);
+});
