@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   preview:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.number == 176
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.number == 215
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -34,12 +34,12 @@ jobs:
             --exclude='test-results' \
             --exclude='playwright-report' \
             ./ preview/
-          printf '%s\n' "PR #176 preview — commit $GITHUB_SHA" > preview/PREVIEW_BUILD.txt
+          printf '%s\n' "PR #215 preview — commit $GITHUB_SHA" > preview/PREVIEW_BUILD.txt
 
       - name: Upload preview artifact
         uses: actions/upload-artifact@v4
         with:
-          name: r4b1t-pr176-mobile-preview
+          name: r4b1t-pr215-mobile-preview
           path: preview/
           retention-days: 3
           if-no-files-found: error
