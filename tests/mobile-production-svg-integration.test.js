@@ -32,3 +32,10 @@ test('mobile CSS gives the production mark a responsive landing surface', () => 
   assert.match(css, /\.r4m-production-mark svg\{/);
   assert.match(css, /max-height:230px/);
 });
+
+test('production mark stays outside the hero hidden by RESULT and BLIND stage CSS', () => {
+  assert.match(source, /id="r4mPrimaryStage">',[\s\S]*id="r4mProductionMark"[\s\S]*<section class="r4m-hero" id="r4mHero">/);
+  assert.match(css, /html\.r4m-stage-result \.r4m-hero,[\s\S]*display:none!important/);
+  assert.match(css, /html\.r4m-stage-blind \.r4m-hero,[\s\S]*display:none!important/);
+  assert.doesNotMatch(css, /html\.r4m-stage-(?:result|blind) \.r4m-production-mark/);
+});
