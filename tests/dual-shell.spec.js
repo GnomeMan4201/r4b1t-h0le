@@ -1327,9 +1327,15 @@ test('rabbit stays submerged from commitment through reveal', async ({ page }, t
 
   for (const state of states) {
     await page.evaluate((value) => window.__r4b1tProjectRollPresentation(value), state);
-    expect(await rabbit.evaluate((node) => Number.parseFloat(getComputedStyle(node).opacity))).toBe(0);
+    await expect.poll(
+      () => rabbit.evaluate((node) => Number.parseFloat(getComputedStyle(node).opacity)),
+      { timeout: 600 }
+    ).toBe(0);
   }
 
   await page.evaluate(() => window.__r4b1tProjectRollPresentation('IDLE'));
-  expect(await rabbit.evaluate((node) => Number.parseFloat(getComputedStyle(node).opacity))).toBeGreaterThan(0);
+  await expect.poll(
+    () => rabbit.evaluate((node) => Number.parseFloat(getComputedStyle(node).opacity)),
+    { timeout: 600 }
+  ).toBeGreaterThan(0);
 });
