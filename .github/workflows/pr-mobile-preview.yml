@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   preview:
@@ -43,3 +43,48 @@ jobs:
           path: preview/
           retention-days: 3
           if-no-files-found: error
+
+
+  publish-preview:
+    if: github.event_name == 'pull_request' && github.event.pull_request.number == 215
+    needs: preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out PR source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          path: source
+
+      - name: Check out published Pages branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: gh-pages
+          path: pages
+          fetch-depth: 0
+
+      - name: Publish isolated PR 215 preview path
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf pages/pr-215
+          mkdir -p pages/pr-215
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='preview' \
+            --exclude='test-results' \
+            --exclude='playwright-report' \
+            source/ pages/pr-215/
+          printf '%s\n' "PR #215 preview — commit $GITHUB_SHA" > pages/pr-215/PREVIEW_BUILD.txt
+          cd pages
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add pr-215
+          if git diff --cached --quiet; then
+            echo "Preview already current."
+            exit 0
+          fi
+          git commit -m "preview: publish PR 215 at /pr-215/"
+          git push origin HEAD:gh-pages
