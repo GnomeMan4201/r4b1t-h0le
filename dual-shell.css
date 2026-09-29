@@ -1257,7 +1257,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     width:min(88%,360px);
   }
   .r4m-ap-ring{width:88%}
-  .r4m-ap-lip{border-color:rgba(236,233,225,.22)}
+  .r4m-ap-lip{border-color:rgba(236,233,225,.32)}
   .r4m-ap-rabbit{opacity:.94;filter:contrast(1.12) brightness(1.08)}
 
   /* Retire legacy result-container styling that had higher specificity than v4.
