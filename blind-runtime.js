@@ -211,7 +211,7 @@
       '@media(max-width:900px){' +
       '#blindDescentOverlay{inset:0 0 calc(64px + env(safe-area-inset-bottom)) 0;z-index:9000;background:#0c0c0b;color:#ece9e1;overflow:auto}' +
       '#blindDescentOverlay .blind-grid{width:min(100%,560px);min-height:100%;margin:0 auto;padding:18px 20px 24px;gap:0;grid-template-rows:auto auto auto;align-content:start;background:none}' +
-      '#blindDescentOverlay footer{margin-top:28px}' +
+      '#blindDescentOverlay footer{margin-top:0}' +
       '#blindDescentOverlay .blind-head{padding:0 0 14px;border-bottom:1px solid #2b2a27;align-items:flex-end}' +
       '#blindDescentOverlay .blind-kicker{color:#8e8b84;font-size:8px;letter-spacing:.16em}' +
       '#blindDescentOverlay .blind-title{margin:4px 0 0;color:#ece9e1;font-size:clamp(42px,14vw,66px);letter-spacing:.01em}' +
