@@ -6,6 +6,9 @@ on:
     paths:
       - 'dual-shell.js'
       - 'dual-shell.css'
+      - 'r4b1t-h0l3-master.svg'
+      - 'tests/locked-mobile-surface.test.js'
+      - 'package.json'
       - '.github/workflows/pr-mobile-preview.yml'
   workflow_dispatch:
 
@@ -14,7 +17,6 @@ permissions:
 
 jobs:
   preview:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.number == 176
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -34,12 +36,12 @@ jobs:
             --exclude='test-results' \
             --exclude='playwright-report' \
             ./ preview/
-          printf '%s\n' "PR #176 preview — commit $GITHUB_SHA" > preview/PREVIEW_BUILD.txt
+          printf '%s\n' "PR #${{ github.event.pull_request.number || 'manual' }} preview — commit $GITHUB_SHA" > preview/PREVIEW_BUILD.txt
 
       - name: Upload preview artifact
         uses: actions/upload-artifact@v4
         with:
-          name: r4b1t-pr176-mobile-preview
+          name: r4b1t-pr-${{ github.event.pull_request.number || 'manual' }}-mobile-preview
           path: preview/
           retention-days: 3
           if-no-files-found: error
