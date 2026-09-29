@@ -995,7 +995,7 @@ test('mobile v3 ROLL uses an aperture composition while retaining the authoritat
   await expect(roll.locator('.r4m-ap-lip')).toBeVisible();
   await expect(roll.locator('.r4m-ap-void')).toBeVisible();
   await expect(roll.locator('.r4m-ap-rabbit[src="rabbit-aperture-void.svg"]')).toBeVisible();
-  await expect(roll.locator('.r4m-ap-ring')).toHaveCount(2);
+  await expect(roll.locator('.r4m-ap-ring')).toHaveCount(3);
   await expect(roll.locator('.r4m-ap-rim')).toBeVisible();
   await expect(roll.locator('.r4m-door-panel')).toHaveCount(0);
   await expect(roll.locator('.r4m-door-seam')).toHaveCount(0);
@@ -1140,7 +1140,17 @@ test('mobile aperture uses red only from the committed boundary onward', async (
   await page.evaluate(() => window.__r4b1tProjectRollPresentation('PRESSED'));
   expect(await rim.evaluate((node) => getComputedStyle(node).borderTopColor)).toBe(neutral);
 
-  await page.evaluate(() => window.__r4b1tProjectRollPresentation('RELEASED'));
+  await page.evaluate(() => {
+    const roll = document.getElementById('r4mRoll');
+    roll.classList.add('roll-pending');
+    window.__r4b1tProjectRollPresentation('STRIP_ACCELERATING');
+  });
+  expect(await rim.evaluate((node) => getComputedStyle(node).borderTopColor)).toBe(neutral);
+
+  await page.evaluate(() => {
+    document.getElementById('r4mRoll').classList.remove('roll-pending');
+    window.__r4b1tProjectRollPresentation('RELEASED');
+  });
   const committed = await rim.evaluate((node) => getComputedStyle(node).borderTopColor);
   expect(committed).not.toBe(neutral);
 
@@ -1156,7 +1166,10 @@ test('mobile revealed result uses an aperture mouth rather than door-jamb presen
   await page.locator('#r4mRoll').click();
   const route = page.locator('#r4mRoute');
   await expect(route).toBeVisible();
-  await expect(route.locator('.r4m-route-mouth')).toBeVisible();
+  const mouth = route.locator('.r4m-route-mouth');
+  await expect(mouth).toBeVisible();
+  await expect(mouth).toHaveAttribute('aria-hidden', 'true');
+  await expect(mouth).toHaveText('');
 
   const stagePseudo = await page.locator('#r4mPrimaryStage').evaluate((node) => ({
     before: getComputedStyle(node, '::before').content,
@@ -1176,8 +1189,15 @@ test('mobile ROLL AGAIN and bottom ROLL use distinct aperture glyphs for action 
 
   const navRoll = page.locator('#r4mNavRoll');
   await expect(navRoll.locator('.r4m-nav-aperture')).toBeVisible();
-  await expect(navRoll.locator('.r4m-nav-aperture')).toHaveAttribute('data-aperture-role', 'navigation');
+  const navAperture = navRoll.locator('.r4m-nav-aperture');
+  await expect(navAperture).toHaveAttribute('data-aperture-role', 'navigation');
   await expect(navRoll.locator('.r4m-nav-door')).toHaveCount(0);
+  await expect(navAperture.locator('.r4m-ap-depth-ring')).toHaveCount(0);
+  const navStyle = await navAperture.evaluate((node) => ({
+    fill: getComputedStyle(node).backgroundColor,
+    border: getComputedStyle(node).borderTopColor,
+  }));
+  expect(navStyle.fill).toBe('rgba(0, 0, 0, 0)');
 
   await page.locator('#r4mRoll').click();
   const rollAgain = page.locator('#r4mRoute [data-mobile-action="next"]');
