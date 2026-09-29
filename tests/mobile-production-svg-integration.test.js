@@ -39,3 +39,9 @@ test('production mark stays outside the hero hidden by RESULT and BLIND stage CS
   assert.match(css, /html\.r4m-stage-blind \.r4m-hero,[\s\S]*display:none!important/);
   assert.doesNotMatch(css, /html\.r4m-stage-(?:result|blind) \.r4m-production-mark/);
 });
+
+
+test('blind return releases the production descent state only at the surface', () => {
+  const blind = fs.readFileSync('blind-runtime.js', 'utf8');
+  assert.match(blind, /function returnTowardSurface\(\)[\s\S]*state\.currentDepth = Math\.max\(0, state\.currentDepth - 1\)[\s\S]*if \(state\.currentDepth === 0\) \{[\s\S]*classList\.remove\('blind-descending'\)/);
+});
