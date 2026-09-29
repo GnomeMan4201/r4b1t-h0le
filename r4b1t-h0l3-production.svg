@@ -108,9 +108,11 @@
   #r4h-root:is(.replay-open, .replay-open *):not(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transform:translate(-6px,-10px) rotate(-3deg)}
   #r4h-root:is(.replay-open, .replay-open *):not(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-card{transform:translate(-8px,-136px) rotate(-4deg)}
 
-  #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *) #r4h-copy-card{transform:translate(7px,-139px) rotate(-3deg)}
-  #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *) #r4h-copy-paw-left{transform:translate(40px,-4px) rotate(4deg)}
-  #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *) #r4h-copy-paw-right{transform:translate(0,-1px)}
+  #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.trail-open, .trail-open *):not(.result-ready, .result-ready *) #r4h-copy-card{transform:translate(7px,-139px) rotate(-3deg)}
+  #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):is(.trail-open, .trail-open *) #r4h-copy-card,
+  #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):is(.result-ready, .result-ready *) #r4h-copy-card{transform:translate(7px,-9px) rotate(-3deg)}
+  #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-copy-paw-left{transform:translate(40px,-4px) rotate(4deg)}
+  #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-copy-paw-right{transform:translate(0,-1px)}
 }
 @keyframes r4h-history-reduced{0%,99.9%{transform:translate(-5px,-2px)}100%{transform:none}}
 @keyframes r4h-history-reduced-head{0%,99.9%{transform:translate(-6px,-2px) rotate(-3deg)}100%{transform:none}}
@@ -196,9 +198,11 @@
 #r4h-root:is(.replay-open, .replay-open *):not(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transform:translate(-6px,-10px) rotate(-3deg);animation:r4h-replay-paw 900ms linear 0ms 1 none}
 #r4h-root:is(.replay-open, .replay-open *):not(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-card{transform:translate(-8px,-136px) rotate(-4deg);animation:r4h-replay-card 900ms linear 0ms 1 none}
 
-#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *) #r4h-copy-card{animation:r4h-copy-card 420ms linear 0ms 1 none}
-#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *) #r4h-copy-paw-left{animation:r4h-copy-paw-left 420ms linear 0ms 1 none}
-#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *) #r4h-copy-paw-right{animation:r4h-copy-paw-right 420ms linear 0ms 1 none}
+#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.trail-open, .trail-open *):not(.result-ready, .result-ready *) #r4h-copy-card{animation:r4h-copy-card 420ms linear 0ms 1 none}
+#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):is(.trail-open, .trail-open *) #r4h-copy-card,
+#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):is(.result-ready, .result-ready *) #r4h-copy-card{animation:r4h-copy-card-presented 420ms linear 0ms 1 none}
+#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-copy-paw-left{animation:r4h-copy-paw-left 420ms linear 0ms 1 none}
+#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-copy-paw-right{animation:r4h-copy-paw-right 420ms linear 0ms 1 none}
 
 /* Secondary interaction suppresses lower MENU/idle activity; COPY may compose with MENU. */
 #r4h-root:is(.branch-open, .branch-open *, .trail-open, .trail-open *, .topology-open, .topology-open *, .history-open, .history-open *, .replay-open, .replay-open *) :is(#r4h-menu-ear,#r4h-menu-glint){animation:none!important;transition:none!important;transform:none!important}
@@ -234,6 +238,7 @@
 @keyframes r4h-replay-card{0%,42%{transform:none}69%,100%{transform:translate(-8px,-136px) rotate(-4deg)}}
 
 @keyframes r4h-copy-card{0%,19%{transform:translate(0,-130px)}43%{transform:translate(0,-130px)}62%{transform:translate(7px,-139px) rotate(-3deg)}100%{transform:none}}
+@keyframes r4h-copy-card-presented{0%,43%{transform:none}62%{transform:translate(7px,-9px) rotate(-3deg)}100%{transform:none}}
 @keyframes r4h-copy-paw-left{0%,19%{transform:none}43%{transform:translate(58px,-8px) rotate(6deg)}62%{transform:translate(40px,-4px) rotate(4deg)}100%{transform:none}}
 @keyframes r4h-copy-paw-right{0%{transform:none}19%,43%{transform:translate(0,-3px)}62%{transform:translate(0,-1px)}100%{transform:none}}
 
