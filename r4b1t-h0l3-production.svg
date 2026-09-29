@@ -145,6 +145,10 @@
 #r4h-root.is-idle:is(.menu-open, .menu-open *):is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-idle-blink{animation:r4h-idle-blink-d 7300ms linear 3500ms infinite}
 #r4h-root.is-idle:is(.menu-open, .menu-open *):is(.result-ready, .result-ready *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-idle-ear{animation:r4h-idle-twitch-d 9000ms ease-in-out 3000ms infinite}
 
+/* MENU is a held reaction, not an idle-loop surface. */
+#r4h-root.is-idle:is(.menu-open, .menu-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-idle-blink,
+#r4h-root.is-idle:is(.menu-open, .menu-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-idle-ear{animation:none!important}
+
 /* ── MENU ── */
 #r4h-root:not(.menu-open, .menu-open *):not(.blind-descending, .blind-descending *) #r4h-menu-ear{transition:transform 240ms cubic-bezier(.34,1.3,.5,1) 80ms}
 #r4h-root:not(.menu-open, .menu-open *):not(.blind-descending, .blind-descending *) #r4h-menu-glint{transition:transform 130ms cubic-bezier(.4,-.35,.3,1.3) 0ms}
