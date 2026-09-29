@@ -1590,3 +1590,30 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     .r4m-roll,.r4m-route,.r4m-sheet,.r4m-nav button{transition:none!important;animation:none!important}
   }
 }
+
+
+/* Exact locked 1700x925 landing master. The SVG owns its reveal motion. */
+@media (max-width:900px){
+  #r4mHero{
+    min-height:0;
+    padding:0;
+    display:grid;
+    place-items:center;
+    overflow:visible;
+  }
+  #r4mHero .r4m-landing-master{
+    display:block;
+    width:min(100%,calc((100svh - 250px) * 1.83784));
+    max-width:1100px;
+    height:auto;
+    margin:0 auto;
+    opacity:1;
+  }
+  #r4mHero .r4m-hero-copy{display:none}
+}
+@media (max-width:390px){
+  #r4mHero .r4m-landing-master{
+    width:min(112%,calc((100svh - 238px) * 1.83784));
+    max-width:none;
+  }
+}
