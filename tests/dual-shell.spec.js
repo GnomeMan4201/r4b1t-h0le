@@ -68,7 +68,7 @@ test('mobile production mark stays visible and in viewport across landing, ROLL 
   await page.locator('#r4mRoll').click();
   await expect(page.locator('#r4mRoute')).toBeVisible();
   await expect(mark).toBeVisible();
-  await expect(page.locator('html')).toHaveClass(/\\bresult-ready\\b/);
+  await expect(page.locator('html')).toHaveClass(/\bresult-ready\b/);
   await assertMarkReachable();
 
   await page.locator('#r4mModeBlind').click();
