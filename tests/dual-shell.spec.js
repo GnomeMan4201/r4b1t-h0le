@@ -30,6 +30,53 @@ test('desktop keeps the native r4b1t shell', async ({ page }, testInfo) => {
   await expect(page.locator('#r4mShellHost')).toBeHidden();
 });
 
+test('mobile production mark stays visible and in viewport across landing, ROLL result, and BLIND stage', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const mark = page.locator('#r4mProductionMark > svg[role="img"]');
+  await expect(mark).toBeVisible();
+
+  const assertMarkReachable = async () => {
+    const geometry = await mark.evaluate((node) => {
+      const rect = node.getBoundingClientRect();
+      return {
+        top: rect.top,
+        bottom: rect.bottom,
+        left: rect.left,
+        right: rect.right,
+        width: rect.width,
+        height: rect.height,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+        scrollWidth: document.documentElement.scrollWidth,
+      };
+    });
+    expect(geometry.width).toBeGreaterThan(0);
+    expect(geometry.height).toBeGreaterThan(0);
+    expect(geometry.left).toBeGreaterThanOrEqual(0);
+    expect(geometry.right).toBeLessThanOrEqual(geometry.viewportWidth + 1);
+    expect(geometry.top).toBeGreaterThanOrEqual(0);
+    expect(geometry.top).toBeLessThan(geometry.viewportHeight);
+    expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.viewportWidth + 1);
+  };
+
+  await assertMarkReachable();
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expect(mark).toBeVisible();
+  await expect(page.locator('html')).toHaveClass(/\\bresult-ready\\b/);
+  await assertMarkReachable();
+
+  await page.locator('#r4mModeBlind').click();
+  await expect(page.locator('#r4mDescentEntry')).toBeVisible();
+  await expect(mark).toBeVisible();
+  await assertMarkReachable();
+});
+
 test('mobile selects the dedicated shell and rolls through the shared engine', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
