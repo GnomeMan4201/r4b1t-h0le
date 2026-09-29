@@ -1286,3 +1286,25 @@ test('revealed result keeps the aperture mouth as the only red structural origin
   expect(result.routeBorderLeft).toBe('0px');
   expect(result.mouthBorder).toBe('rgb(255, 51, 51)');
 });
+
+
+test('real-device dormant aperture reads as a hole and keeps irregular depth contours', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({ width: 512, height: 1108 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const lip = page.locator('#r4mRoll .r4m-ap-lip');
+  const voidNode = page.locator('#r4mRoll .r4m-ap-void');
+  const lipColor = await lip.evaluate((node) => getComputedStyle(node).borderTopColor);
+  expect(lipColor).toContain('236, 233, 225');
+  expect(await voidNode.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none');
+
+  const ringShapes = await page.locator('#r4mRoll .r4m-ap-ring').evaluateAll((nodes) =>
+    nodes.map((node) => getComputedStyle(node).borderRadius)
+  );
+  expect(new Set(ringShapes).size).toBeGreaterThan(1);
+
+  const rim = page.locator('#r4mRoll .r4m-ap-rim');
+  expect(await rim.evaluate((node) => getComputedStyle(node).borderTopColor)).toBe('rgba(255, 51, 51, 0)');
+});
