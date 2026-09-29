@@ -33,6 +33,8 @@
     mountFresh();
     overlay.hidden = false;
     overlay.setAttribute('aria-hidden', 'false');
+    document.documentElement.classList.remove('branch-open', 'trail-open', 'topology-open', 'history-open', 'result-ready');
+    document.documentElement.classList.add('replay-open');
     document.documentElement.classList.add('replay-inspection-open');
 
     var nodes = focusables(overlay);
@@ -53,6 +55,7 @@
 
     overlay.hidden = true;
     overlay.setAttribute('aria-hidden', 'true');
+    document.documentElement.classList.remove('replay-open');
     document.documentElement.classList.remove('replay-inspection-open');
 
     if (priorFocus && typeof priorFocus.focus === 'function') {
