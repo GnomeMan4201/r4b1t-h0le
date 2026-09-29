@@ -1,15 +1,7 @@
 <p align="center">
   <a href="https://r4b1t.badbananaresearch.com">
-    <img src="./docs/readme/r4b1t_h0le-banner.jpg" alt="r4b1t_h0le — not search, not a feed, down the rabbit hole" width="100%">
+    <img src="./docs/readme/readme-hero.webp" alt="R4B1T H0L3 — chance-driven discovery across security, OSINT, research, development, and the weird web" width="100%">
   </a>
-</p>
-
-<p align="center">
-  <img src="./docs/readme/field-reel-mobile-shell.svg" alt="r4b1t_h0le field reel — first contact, route and sprout, terrain lock, and local ledger" width="100%">
-</p>
-
-<p align="center">
-  <img src="./docs/readme/r4b1t_h0le-mechanism.jpg" alt="r4b1t_h0le mechanism — corpus, route, branch, terrain, and device-local trail" width="100%">
 </p>
 
 <h1 align="center">r4b1t_h0le</h1>
@@ -59,6 +51,10 @@ You do not begin with a query. You begin with an aperture.
 A route is rolled from the current eligible ground. From there you can follow it, refuse it, inspect it, narrow the terrain, or sprout outward in a new direction. The route you actually make can be preserved locally as a trail.
 
 <p align="center"><code>CORPUS → CHANCE → ROUTE → BRANCH → DEVICE-LOCAL TRAIL</code></p>
+
+<p align="center">
+  <img src="./docs/readme/readme-application-overview.webp" alt="Application overview — Discovery Without Algorithms" width="100%">
+</p>
 
 <table>
 <tr>
@@ -120,6 +116,10 @@ The original public build notes are here:
 ---
 
 ## How it works
+
+<p align="center">
+  <img src="./docs/readme/readme-core-mechanics.webp" alt="Core application mechanics — the roll, route inspection, and trail topology" width="100%">
+</p>
 
 <table>
 <tr>
@@ -262,6 +262,10 @@ The guiding rule is simple: **do not upgrade a structural observation into a str
 `r4b1t_h0le` can export content-addressed trail material without requiring a server-side identity record.
 
 The trail system separates what can be cryptographically verified from stronger claims an artifact cannot support. A verified reveal can establish that disclosed route material matches its commitment; it does not, by itself, establish authorship or prove real-world wall-clock ordering.
+
+<p align="center">
+  <img src="./docs/readme/readme-session-proofs.webp" alt="Provenance data and session integrity — cryptographic session proofs" width="100%">
+</p>
 
 <table>
 <tr>
@@ -460,4 +464,8 @@ Start with [`CONTRIBUTING.md`](./CONTRIBUTING.md). New corpus candidates should 
   <a href="https://r4b1t.badbananaresearch.com">r4b1t_h0le</a>
 </p>
 
-<p align="center"><strong>NOT SEARCH. NOT A FEED. DOWN THE RABBIT HOLE.</strong></p>
+<p align="center">
+  <a href="https://gnomeman4201.github.io/r4b1t-h0le/">
+    <img src="./docs/readme/readme-enter-the-hole.webp" alt="Enter the hole" width="100%">
+  </a>
+</p>
