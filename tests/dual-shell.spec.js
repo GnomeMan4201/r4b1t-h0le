@@ -496,6 +496,67 @@ test('mobile landing keeps one primary decision while MENU retains secondary cap
 });
 
 
+test('mobile projects approved rabbit secondary states from the surfaces that actually own them', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await expect(page.locator('#r4mProductionMark #r4h-root')).toHaveCount(1);
+
+  const html = page.locator('html');
+
+  await page.locator('#r4mNavMenu').click();
+  await expect(html).toHaveClass(/\bmenu-open\b/);
+  await page.locator('#r4mNavMenu').click();
+  await expect(html).not.toHaveClass(/\bmenu-open\b/);
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="branch"]').click();
+  await expect(html).toHaveClass(/\bbranch-open\b/);
+  await page.evaluate(() => {
+    document.querySelector('#r4mBranchSheet [data-mobile-action="close-sheets"]').click();
+  });
+  await expect(html).not.toHaveClass(/\bbranch-open\b/);
+  await page.waitForTimeout(460);
+  await expect(page.locator('#r4h-act-head')).toHaveCSS('transform', 'none');
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="trail-file"]').click();
+  await expect(html).toHaveClass(/\btrail-open\b/);
+  await page.evaluate(() => window.closeTrailLedger());
+  await expect(html).not.toHaveClass(/\btrail-open\b/);
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="history"]').click();
+  await expect(html).toHaveClass(/\bhistory-open\b/);
+  await page.evaluate(() => window.toggleHistory());
+  await expect(html).not.toHaveClass(/\bhistory-open\b/);
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="replay-inspection"]').click();
+  await expect(html).toHaveClass(/\breplay-open\b/);
+  await page.evaluate(() => window.closeReplayInspection());
+  await expect(html).not.toHaveClass(/\breplay-open\b/);
+
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="topology"]').click();
+  await expect(page.locator('#trailTopologyOverlay')).toHaveClass(/\bopen\b/);
+  await expect(html).toHaveClass(/\btopology-open\b/);
+  await page.evaluate(() => window.closeTrailTopology());
+  await expect(html).not.toHaveClass(/\btopology-open\b/);
+
+  await page.evaluate(() => {
+    window.__motionCopyTrailCalls = 0;
+    window.shareTrail = () => { window.__motionCopyTrailCalls += 1; };
+  });
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="copy-trail"]').click();
+  await expect(html).toHaveClass(/\bcopy-trail\b/);
+  await expect.poll(() => page.evaluate(() => window.__motionCopyTrailCalls)).toBe(1);
+  await expect(html).not.toHaveClass(/\bcopy-trail\b/, { timeout: 1200 });
+});
+
+
+
 test('fresh session stays unselected until an explicit ROLL', async ({ page }, testInfo) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
