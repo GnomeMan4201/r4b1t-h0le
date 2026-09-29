@@ -14,6 +14,43 @@
   var pendingRouteMotion = null;
   var rollPendingTimer = null;
   var ledgerRowObserver = null;
+  var secondaryMarkStates = ['branch-open', 'trail-open', 'topology-open', 'history-open', 'replay-open'];
+  var copyTrailMotionTimer = null;
+
+  function setSecondaryMarkState(state) {
+    var root = document.documentElement;
+    secondaryMarkStates.forEach(function (name) { root.classList.remove(name); });
+    if (state) {
+      // RESULT owns the mark until the user deliberately enters a secondary
+      // instrument. Dropping only this presentation class leaves reveal/data authority untouched.
+      root.classList.remove('result-ready');
+      root.classList.add(state);
+    }
+  }
+
+  function clearSecondaryMarkState(state) {
+    var root = document.documentElement;
+    if (state) root.classList.remove(state);
+    else secondaryMarkStates.forEach(function (name) { root.classList.remove(name); });
+  }
+
+  function clearCopyTrailMotion() {
+    window.clearTimeout(copyTrailMotionTimer);
+    copyTrailMotionTimer = null;
+    document.documentElement.classList.remove('copy-trail');
+  }
+
+  function pulseCopyTrailMotion() {
+    var root = document.documentElement;
+    clearCopyTrailMotion();
+    root.classList.remove('result-ready');
+    void root.offsetWidth;
+    root.classList.add('copy-trail');
+    copyTrailMotionTimer = window.setTimeout(function () {
+      copyTrailMotionTimer = null;
+      root.classList.remove('copy-trail');
+    }, 440);
+  }
   var motionDebugEnabled = /[?&]debug-motion=1(?:&|$)/.test(window.location.search);
 
   function byId(id) { return document.getElementById(id); }
@@ -531,6 +568,7 @@ MOTION: waiting for target…';
     if (!overlay) return call('toggleHistory');
     var open = overlay.style.display === 'flex';
     if (!open) {
+      setSecondaryMarkState('history-open');
       call('toggleHistory');
       // The legacy ledger returns early when empty; mobile history must still
       // open and animate so an empty trail is an explicit state, not a dead tap.
@@ -541,6 +579,7 @@ MOTION: waiting for target…';
       });
       return;
     }
+    clearSecondaryMarkState('history-open');
     playMotion(overlay, 'ledger-close', 260);
     window.setTimeout(function () { call('toggleHistory'); }, 250);
   }
@@ -620,7 +659,10 @@ MOTION: waiting for target…';
       closeSheets();
       return call('openTrailLedger');
     }
-    if (action === 'copy-trail') return call('shareTrail');
+    if (action === 'copy-trail') {
+      pulseCopyTrailMotion();
+      return call('shareTrail');
+    }
     if (action === 'comparison') {
       closeSheets();
       return call('toggleTrailComparison');
@@ -636,6 +678,8 @@ MOTION: waiting for target…';
     if (action === 'suggest-url') return call('submitUrl');
     if (action === 'blind-descent') {
       if (typeof window.openBlindDescent !== 'function' || typeof window.blindDescend !== 'function') return;
+      clearSecondaryMarkState();
+      clearCopyTrailMotion();
       document.documentElement.classList.add('blind-descending');
       Promise.resolve(window.openBlindDescent())
         .then(function () { return window.blindDescend(); })
@@ -680,6 +724,8 @@ MOTION: waiting for target…';
     });
     document.documentElement.classList.add('r4m-sheet-open');
     document.documentElement.classList.toggle('menu-open', id === 'r4mMenuSheet');
+    if (id === 'r4mBranchSheet') setSecondaryMarkState('branch-open');
+    else clearSecondaryMarkState('branch-open');
     var menuButton = byId('r4mNavMenu');
     if (menuButton) {
       var menuOpen = id === 'r4mMenuSheet';
@@ -706,6 +752,7 @@ MOTION: waiting for target…';
     }
     document.documentElement.classList.remove('r4m-sheet-open');
     document.documentElement.classList.remove('menu-open');
+    clearSecondaryMarkState('branch-open');
     var menuButton = byId('r4mNavMenu');
     if (menuButton) {
       menuButton.setAttribute('aria-expanded', 'false');
@@ -961,6 +1008,8 @@ MOTION: waiting for target…';
 
   function resetRollStage() {
     if (markRollTimer !== null) { window.clearTimeout(markRollTimer); markRollTimer = null; }
+    clearSecondaryMarkState();
+    clearCopyTrailMotion();
     document.documentElement.classList.remove('r4m-stage-result', 'blind-descending', 'rolling', 'result-ready');
     var mount = byId('r4mRouteMount');
     if (mount) mount.hidden = false;
