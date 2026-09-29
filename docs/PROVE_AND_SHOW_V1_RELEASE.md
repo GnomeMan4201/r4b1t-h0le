@@ -222,7 +222,7 @@ Acceptance workflow:
 - locked dependency install and high-severity dependency audit passed
 - full frozen proof/Product Contract unit gate passed
 - live Production Shadow serving-layer parity re-verification passed
-- live desktop production front door, exploration, topology, and proof entry-point flow passed
+- live desktop production site root, exploration, topology, and proof entry-point flow passed
 - live Trail Comparison accepted two explicit local files, produced VERIFIED frozen semantics, and produced no storage writes or off-origin requests
 - live iPhone 13-width production flow passed without blocking horizontal overflow
 - live phone-width Proof Session accepted multiple local files, collapsed exact duplicate bytes, recomputed after removals, cleared the final source, preserved diagnostic-only inputs, discarded state on close, and remained empty after reload
