@@ -1665,3 +1665,11 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     #r4mRouteMount{transition:none!important}
   }
 }
+
+
+/* Locked mobile acceptance repairs: keep Blind clear of the persistent rail and
+   remove the retired result rail. Presentation only; no selection authority. */
+@media (max-width:900px){
+  #blindDescentOverlay.open{bottom:calc(70px + env(safe-area-inset-bottom))!important}
+  #r4mRoute{border-left-width:0!important}
+}
