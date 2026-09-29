@@ -135,3 +135,14 @@ test('application projects secondary presentation classes without adding selecti
     assert.doesNotMatch(source, new RegExp(state + '[^\\n]{0,120}(?:roll\\(|__r4b1tCommitRoll|selectUrl|blindDescend)'));
   }
 });
+
+
+test('secondary wrappers are physically nested by transform priority', () => {
+  assert.match(svg, /<g id="r4h-blind-rabbit"><g id="r4h-roll-rabbit"><g id="r4h-act-rabbit"><g id="r4h-entrance-rise">/);
+  assert.match(svg, /<g id="r4h-roll-head"><g id="r4h-result-head"><g id="r4h-act-head">/);
+  assert.match(svg, /<g id="r4h-blind-ear-right"><g id="r4h-roll-ear-right"><g id="r4h-result-ear-right"><g id="r4h-act-ear-right"><g id="r4h-menu-ear"><g id="r4h-idle-ear"><g id="r4h-entrance-ear-right">/);
+  assert.match(svg, /<g id="r4h-blind-glint-left"[^>]*><g id="r4h-result-glint-left"[^>]*><g id="r4h-act-glint-left"/);
+  assert.match(svg, /<g id="r4h-result-paw"><g id="r4h-act-paw-right"><g id="r4h-copy-paw-right">/);
+  assert.match(svg, /<g id="r4h-roll-hole"[^>]*><g id="r4h-act-hole"[^>]*><g id="r4h-entrance-hole"/);
+  assert.match(svg, /<g id="r4h-roll-hole-front"[^>]*><g id="r4h-act-hole-front"[^>]*><g id="r4h-entrance-hole-front"/);
+});
