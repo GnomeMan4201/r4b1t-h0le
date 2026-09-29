@@ -432,7 +432,7 @@ test('mobile landing keeps one primary decision while MENU retains secondary cap
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  await expect(page.locator('#r4mHero h1')).toHaveText('A DOOR, NOT A FEED.');
+  await expect(page.locator('#r4mHero h1')).toHaveText('A HOLE, NOT A FEED.');
   await expect(page.locator('#r4mHero p')).toHaveText('NO PROFILE. NO RANKING. COMMITTED BEFORE REVEAL.');
   await expect(page.locator('#r4mRoll')).toContainText('COMMIT → REVEAL → EXPLORE');
   await expect(page.locator('.r4m-header-actions')).toHaveCount(0);
@@ -984,18 +984,21 @@ test('mobile Blind mode presents one primary descent action while advanced tools
 });
 
 
-test('mobile v3 ROLL uses the seam-door composition while retaining the authoritative control', async ({ page }, testInfo) => {
+test('mobile v3 ROLL uses an aperture composition while retaining the authoritative control', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
   const roll = page.locator('#r4mRoll');
   await expect(roll).toBeVisible();
-  await expect(roll).toHaveAttribute('data-mobile-instrument', 'seam-door');
-  await expect(roll.locator('.r4m-door-panel')).toHaveCount(2);
-  await expect(roll.locator('.r4m-door-seam')).toBeVisible();
-  await expect(roll.locator('.r4m-door-aperture')).toBeVisible();
-  await expect(roll.locator('.r4m-roll-chassis')).toHaveCount(0);
+  await expect(roll).toHaveAttribute('data-mobile-instrument', 'aperture');
+  await expect(roll.locator('.r4m-ap-lip')).toBeVisible();
+  await expect(roll.locator('.r4m-ap-void')).toBeVisible();
+  await expect(roll.locator('.r4m-ap-rabbit[src="rabbit-aperture-void.svg"]')).toBeVisible();
+  await expect(roll.locator('.r4m-ap-ring')).toHaveCount(2);
+  await expect(roll.locator('.r4m-ap-rim')).toBeVisible();
+  await expect(roll.locator('.r4m-door-panel')).toHaveCount(0);
+  await expect(roll.locator('.r4m-door-seam')).toHaveCount(0);
 });
 
 test('mobile v3 MENU groups the existing capabilities by the object they act on', async ({ page }, testInfo) => {
@@ -1123,4 +1126,62 @@ test('explicit Branch direction selection records one disclosed History entry', 
 
   await page.evaluate(() => window.toggleHistory());
   await expect(page.locator('#historyList button')).toHaveCount(1);
+});
+
+
+test('mobile aperture uses red only from the committed boundary onward', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const rim = page.locator('#r4mRoll .r4m-ap-rim');
+  const neutral = await rim.evaluate((node) => getComputedStyle(node).borderTopColor);
+
+  await page.evaluate(() => window.__r4b1tProjectRollPresentation('PRESSED'));
+  expect(await rim.evaluate((node) => getComputedStyle(node).borderTopColor)).toBe(neutral);
+
+  await page.evaluate(() => window.__r4b1tProjectRollPresentation('RELEASED'));
+  const committed = await rim.evaluate((node) => getComputedStyle(node).borderTopColor);
+  expect(committed).not.toBe(neutral);
+
+  await page.evaluate(() => window.__r4b1tProjectRollPresentation('CANCELLED'));
+  expect(await rim.evaluate((node) => getComputedStyle(node).borderTopColor)).toBe(neutral);
+});
+
+test('mobile revealed result uses an aperture mouth rather than door-jamb presentation', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  await page.locator('#r4mRoll').click();
+  const route = page.locator('#r4mRoute');
+  await expect(route).toBeVisible();
+  await expect(route.locator('.r4m-route-mouth')).toBeVisible();
+
+  const stagePseudo = await page.locator('#r4mPrimaryStage').evaluate((node) => ({
+    before: getComputedStyle(node, '::before').content,
+    after: getComputedStyle(node, '::after').content,
+  }));
+  expect(stagePseudo.before).toBe('none');
+  expect(stagePseudo.after).toBe('none');
+
+  const domainBorder = await route.locator('#r4mDomain').evaluate((node) => getComputedStyle(node).borderLeftWidth);
+  expect(domainBorder).toBe('0px');
+});
+
+test('mobile ROLL AGAIN and bottom ROLL use distinct aperture glyphs for action versus navigation', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const navRoll = page.locator('#r4mNavRoll');
+  await expect(navRoll.locator('.r4m-nav-aperture')).toBeVisible();
+  await expect(navRoll.locator('.r4m-nav-aperture')).toHaveAttribute('data-aperture-role', 'navigation');
+  await expect(navRoll.locator('.r4m-nav-door')).toHaveCount(0);
+
+  await page.locator('#r4mRoll').click();
+  const rollAgain = page.locator('#r4mRoute [data-mobile-action="next"]');
+  await expect(rollAgain).toBeVisible();
+  await expect(rollAgain.locator('.r4m-next-aperture')).toHaveAttribute('data-aperture-role', 'selection');
+  await expect(rollAgain.locator('.r4m-next-aperture .r4m-ap-depth-ring')).toHaveCount(1);
 });
