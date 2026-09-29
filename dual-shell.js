@@ -16,6 +16,7 @@
   var ledgerRowObserver = null;
   var secondaryMarkStates = ['branch-open', 'trail-open', 'topology-open', 'history-open', 'replay-open'];
   var copyTrailMotionTimer = null;
+  var historyMotionObserver = null;
 
   function setSecondaryMarkState(state) {
     var root = document.documentElement;
@@ -32,6 +33,20 @@
     var root = document.documentElement;
     if (state) root.classList.remove(state);
     else secondaryMarkStates.forEach(function (name) { root.classList.remove(name); });
+  }
+
+  function watchHistoryMarkState() {
+    if (historyMotionObserver) return;
+    var overlay = byId('historyOverlay');
+    if (!overlay) return;
+    historyMotionObserver = new MutationObserver(function () {
+      var open = overlay.style.display === 'flex' || overlay.getAttribute('aria-hidden') === 'false';
+      if (!open) clearSecondaryMarkState('history-open');
+    });
+    historyMotionObserver.observe(overlay, {
+      attributes: true,
+      attributeFilter: ['style', 'aria-hidden', 'class']
+    });
   }
 
   function clearCopyTrailMotion() {
@@ -272,6 +287,7 @@
     host.innerHTML = shellMarkup();
     document.body.appendChild(host);
     mountProductionMark();
+    watchHistoryMarkState();
 
     host.addEventListener('click', function (event) {
       var target = event.target.closest('[data-mobile-action]');
