@@ -73,3 +73,11 @@ test('mobile ROLL retires legacy aperture artwork but preserves motion-machine h
   assert.match(source, /id="r4mRollScope">FULL CORPUS<\/em>/);
   assert.match(source, /class="r4m-roll-strip" aria-hidden="true"/);
 });
+
+
+test('retired ROLL aperture visual selectors stay out of the mobile stylesheet', () => {
+  const css = fs.readFileSync(path.join(__dirname, '..', 'dual-shell.css'), 'utf8');
+  for (const selector of ['r4m-ap-lip', 'r4m-ap-void', 'r4m-ap-rim', 'r4m-ap-rabbit', 'r4m-ap-ring', 'r4m-ap-kicker']) {
+    assert.doesNotMatch(css, new RegExp('\\\\.' + selector + '(?![\\\\w-])'));
+  }
+});
