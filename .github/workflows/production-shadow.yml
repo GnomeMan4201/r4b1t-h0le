@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: read
+  deployments: read
 
 concurrency:
   group: production-shadow
@@ -21,7 +22,7 @@ jobs:
   shadow:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Check out deployed revision
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -36,6 +37,31 @@ jobs:
 
       - name: Run production-shadow regression tests
         run: node --test tests/production-shadow.test.js
+
+      # Deploy to GitHub Pages only force-pushes main to gh-pages; GitHub's own
+      # "pages build and deployment" publishes it afterwards. Wait for that
+      # github-pages deployment of this exact commit to succeed, or the parity
+      # check below compares the live site against files not yet served.
+      - name: Wait for GitHub Pages to publish the deployed revision
+        if: github.event_name == 'workflow_run'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          for attempt in $(seq 1 40); do
+            statuses=$(gh api "repos/$REPO/deployments?environment=github-pages&sha=$SHA&per_page=1" --jq '.[0].statuses_url // empty')
+            state=""
+            if [ -n "$statuses" ]; then state=$(gh api "$statuses" --jq '.[0].state // empty'); fi
+            echo "attempt $attempt: github-pages deployment of $SHA is ${state:-not created yet}"
+            case "$state" in
+              success) exit 0 ;;
+              failure|error|inactive) echo "::error::GitHub Pages deployment of $SHA ended as $state"; exit 1 ;;
+            esac
+            sleep 15
+          done
+          echo "::error::GitHub Pages did not publish $SHA within 10 minutes"
+          exit 1
 
       - name: Verify serving-layer parity, redirects, cache headers, and boundary
         run: node tools/verify-production-shadow.mjs
