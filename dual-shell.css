@@ -1314,3 +1314,401 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     padding-bottom:calc(80px + env(safe-area-inset-bottom))!important;
   }
 }
+
+
+/* LOCKED R4B1T H0L3 MOBILE SURFACE
+   Presentation-only extension of the approved landing reference.
+   No selection, corpus, commit/reveal, Trail, or Blind Descent authority lives here. */
+@media (max-width:900px){
+  :root{
+    --r4m-locked-red:#FB0118;
+    --r4m-locked-white:#FEFEFE;
+    --r4m-locked-black:#000;
+  }
+
+  html,body,
+  .r4m-shell{
+    background:var(--r4m-locked-black)!important;
+    color:var(--r4m-locked-white)!important;
+  }
+
+  .r4m-shell{
+    padding-left:max(18px,env(safe-area-inset-left));
+    padding-right:max(18px,env(safe-area-inset-right));
+    padding-bottom:calc(82px + env(safe-area-inset-bottom));
+  }
+
+  .r4m-header{
+    min-height:62px;
+    height:62px;
+    padding:env(safe-area-inset-top) 0 0;
+    background:var(--r4m-locked-black);
+    border:0;
+  }
+
+  .r4m-wordmark{
+    color:var(--r4m-locked-white);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:1rem;
+    font-weight:900;
+    letter-spacing:.075em;
+  }
+  .r4m-wordmark span{color:var(--r4m-locked-red)}
+
+  .r4m-mode-switch{
+    margin:0 0 18px;
+    border:0;
+    border-bottom:1px solid rgba(254,254,254,.28);
+    background:var(--r4m-locked-black);
+  }
+  .r4m-mode-switch button{
+    min-height:42px;
+    background:var(--r4m-locked-black);
+    border:0;
+    color:rgba(254,254,254,.52);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:.68rem;
+    font-weight:700;
+    letter-spacing:.12em;
+  }
+  .r4m-mode-switch button.active{
+    background:var(--r4m-locked-black);
+    color:var(--r4m-locked-white);
+    box-shadow:inset 0 -3px 0 var(--r4m-locked-red);
+  }
+
+  .r4m-hero{
+    min-height:132px;
+    margin:0;
+    padding:22px 0 18px;
+    display:block;
+    background:var(--r4m-locked-black);
+    border:0;
+  }
+  .r4m-hero:before{display:none}
+  .r4m-hero img{
+    width:48px;
+    height:48px;
+    margin:0 0 18px;
+    opacity:1;
+  }
+  .r4m-hero small{
+    color:var(--r4m-locked-red);
+    font:700 .58rem/1.25 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.14em;
+  }
+  .r4m-hero h1{
+    margin:7px 0 8px;
+    color:var(--r4m-locked-white);
+    font:900 clamp(2.45rem,12vw,4.5rem)/.88 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    letter-spacing:-.055em;
+  }
+  .r4m-hero p{
+    max-width:34em;
+    margin:0;
+    color:rgba(254,254,254,.62);
+    font:600 .6rem/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;
+    letter-spacing:.08em;
+    text-align:left;
+  }
+
+  .r4m-roll{
+    width:100%;
+    min-height:64px;
+    margin:12px 0 20px;
+    padding:0 24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--r4m-locked-red);
+    color:var(--r4m-locked-white);
+    border:2px solid var(--r4m-locked-red);
+    border-radius:0;
+    box-shadow:none;
+    overflow:hidden;
+  }
+  .r4m-roll:before,.r4m-roll:after,
+  .r4m-ap-lip,.r4m-ap-void,.r4m-ap-rim,.r4m-ap-kicker,.r4m-roll-strip{display:none}
+  .r4m-roll-chassis{display:none}
+  .r4m-ap-label{
+    display:block;
+    color:var(--r4m-locked-white)!important;
+    font:900 1.05rem/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif!important;
+    letter-spacing:.14em!important;
+  }
+  .r4m-ap-scope{
+    display:block;
+    margin-left:14px;
+    color:rgba(254,254,254,.72)!important;
+    font:700 .5rem/1 ui-monospace,SFMono-Regular,Menlo,monospace!important;
+    letter-spacing:.1em!important;
+  }
+  .r4m-roll:active{transform:translateY(1px)}
+  .r4m-roll:focus-visible{outline:2px solid var(--r4m-locked-white);outline-offset:4px}
+
+  .r4m-route{
+    margin:0 0 18px;
+    padding:24px 0 0;
+    background:var(--r4m-locked-black);
+    color:var(--r4m-locked-white);
+    border:0;
+    border-left:3px solid var(--r4m-locked-red);
+    border-radius:0;
+    box-shadow:none;
+  }
+  .r4m-route:before{display:none}
+  .r4m-route-top{padding:0 18px;margin-bottom:18px;color:rgba(254,254,254,.55)}
+  .r4m-route-top>strong{
+    max-width:100%;
+    padding:0;
+    background:transparent;
+    color:var(--r4m-locked-red);
+  }
+  .r4m-route>small,
+  .r4m-route-proof,
+  .r4m-route h2,
+  .r4m-route-domain,
+  .r4m-route>p,
+  .r4m-route>code{margin-left:18px;margin-right:18px}
+  .r4m-route h2{
+    color:var(--r4m-locked-white);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:clamp(2.5rem,12vw,4.7rem);
+    font-weight:900;
+    line-height:.9;
+    letter-spacing:-.055em;
+  }
+  .r4m-route-domain,.r4m-route>code{color:rgba(254,254,254,.5)}
+  .r4m-route>p{color:rgba(254,254,254,.78);font-size:.72rem;line-height:1.55}
+  .r4m-route-actions{
+    width:100%;
+    margin:20px 0 0;
+    border-top:1px solid rgba(254,254,254,.22);
+  }
+  .r4m-route-actions button{
+    color:var(--r4m-locked-white);
+    border-right:1px solid rgba(254,254,254,.22);
+  }
+  .r4m-enter,.r4m-next{
+    width:100%;
+    margin-left:0;
+    border-radius:0;
+  }
+  .r4m-enter{
+    min-height:58px;
+    background:var(--r4m-locked-red);
+    color:var(--r4m-locked-white);
+    border:0;
+  }
+  .r4m-next{
+    min-height:52px;
+    background:var(--r4m-locked-black);
+    color:var(--r4m-locked-white);
+    border-top:1px solid rgba(254,254,254,.22);
+  }
+
+  .r4m-roll-again{
+    min-height:54px;
+    background:var(--r4m-locked-red);
+    color:var(--r4m-locked-white);
+    border:2px solid var(--r4m-locked-red);
+    border-radius:0;
+  }
+
+  .r4m-nav{
+    z-index:9300;
+    height:calc(70px + env(safe-area-inset-bottom));
+    padding:8px max(18px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(18px,env(safe-area-inset-left));
+    gap:10px!important;
+    background:var(--r4m-locked-black);
+    border-top:1px solid rgba(254,254,254,.18);
+    backdrop-filter:none;
+  }
+  .r4m-nav-minimal button{
+    min-height:52px;
+    border-radius:0;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:.78rem;
+    font-weight:900;
+    letter-spacing:.13em;
+  }
+  #r4mNavRoll{
+    background:var(--r4m-locked-red);
+    color:var(--r4m-locked-white);
+    border:2px solid var(--r4m-locked-red);
+  }
+  #r4mNavMenu{
+    background:var(--r4m-locked-black);
+    color:var(--r4m-locked-white);
+    border:2px solid var(--r4m-locked-white);
+  }
+  .r4m-nav-aperture,.r4m-nav-menu-icon{display:none!important}
+
+  .r4m-sheet-backdrop{background:rgba(0,0,0,.78);backdrop-filter:none}
+  .r4m-sheet,.r4m-menu-sheet{
+    background:var(--r4m-locked-black);
+    color:var(--r4m-locked-white);
+    border-top:3px solid var(--r4m-locked-red);
+    box-shadow:none;
+  }
+  .r4m-sheet-head{
+    background:var(--r4m-locked-black);
+    border-bottom:1px solid rgba(254,254,254,.22);
+  }
+  .r4m-sheet-head button,
+  .r4m-menu-tools button,
+  .r4m-menu-utilities button,
+  .r4m-menu-utilities a,
+  .r4m-menu-proof-grid button,
+  .r4m-menu-app-actions button,
+  .r4m-menu-app-actions a{
+    background:var(--r4m-locked-black);
+    color:var(--r4m-locked-white);
+    border:1px solid rgba(254,254,254,.32);
+    border-radius:0;
+    box-shadow:none;
+  }
+
+  .r4m-descent-entry{
+    background:var(--r4m-locked-black);
+    color:var(--r4m-locked-white);
+    border:0;
+    border-left:3px solid var(--r4m-locked-red);
+    box-shadow:none;
+  }
+  .r4m-descent-entry:before{opacity:.035}
+}
+
+@media (max-width:390px){
+  .r4m-shell{padding-left:16px;padding-right:16px}
+  .r4m-hero{min-height:124px;padding-top:18px}
+  .r4m-hero h1{font-size:clamp(2.35rem,13vw,3.4rem)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  @media (max-width:900px){
+    .r4m-roll,.r4m-route,.r4m-sheet,.r4m-nav button{transition:none!important;animation:none!important}
+  }
+}
+
+
+/* Exact locked 1700x925 landing master. The SVG owns its reveal motion. */
+@media (max-width:900px){
+  #r4mHero{
+    min-height:0;
+    padding:0;
+    display:grid;
+    place-items:center;
+    overflow:visible;
+  }
+  #r4mHero .r4m-landing-master{
+    display:block;
+    width:min(100%,calc((100svh - 250px) * 1.83784));
+    max-width:1100px;
+    height:auto;
+    margin:0 auto;
+    opacity:1;
+  }
+  #r4mHero .r4m-hero-copy{display:none}
+}
+@media (max-width:390px){
+  #r4mHero .r4m-landing-master{
+    width:min(112%,calc((100svh - 238px) * 1.83784));
+    max-width:none;
+  }
+}
+
+
+/* Landing -> result continuity. These selectors only project authoritative
+   roll-machine state; they never select, commit, or expose a route. */
+@media (max-width:900px){
+  #r4mHero{
+    pointer-events:none;
+    transform-origin:50% 78%;
+    will-change:transform,opacity,max-height;
+  }
+  html[data-r4m-landing-state="LANDING_EXIT"] #r4mHero{
+    animation:r4mLandingYield 420ms cubic-bezier(.42,0,.2,1) both;
+  }
+  html[data-r4m-landing-state="RESULT"] #r4mHero{
+    max-height:0;
+    margin:0;
+    padding:0;
+    opacity:0;
+    overflow:hidden;
+    visibility:hidden;
+  }
+  html[data-r4m-landing-state="LANDING_EXIT"] #r4mRoll,
+  html[data-r4m-landing-state="RESULT"] #r4mRoll{
+    display:none;
+  }
+  html[data-r4m-landing-state="LANDING_EXIT"] #r4mRouteMount{
+    opacity:0;
+    transform:translateY(12px);
+  }
+  html[data-r4m-landing-state="RESULT"] #r4mRouteMount{
+    opacity:1;
+    transform:none;
+  }
+  #r4mRouteMount{
+    transition:opacity 220ms ease,transform 280ms cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes r4mLandingYield{
+    0%{opacity:1;transform:translateY(0) scale(1);max-height:70svh}
+    58%{opacity:1;transform:translateY(14px) scale(.985);max-height:70svh}
+    100%{opacity:0;transform:translateY(48px) scale(.96);max-height:0}
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  @media (max-width:900px){
+    html[data-r4m-landing-state="LANDING_EXIT"] #r4mHero{animation:none!important;max-height:0;opacity:0;visibility:hidden}
+    #r4mRouteMount{transition:none!important}
+  }
+}
+
+
+/* Locked mobile acceptance repairs: keep Blind clear of the persistent rail and
+   remove the retired result rail. Presentation only; no selection authority. */
+@media (max-width:900px){
+  #blindDescentOverlay.open{bottom:calc(70px + env(safe-area-inset-bottom))!important}
+  #r4mRoute{border-left-width:0!important}
+}
+
+
+/* Locked master cascade boundary. Retired aperture/reference-fidelity rules above
+   must not repaint or constrain the approved mobile landing surface. */
+@media (max-width:900px){
+  #r4mHero{
+    grid-template-columns:minmax(0,1fr)!important;
+    width:100%;
+    background:#000;
+    border:0;
+  }
+  #r4mHero .r4m-landing-master{
+    grid-column:1;
+    width:min(100%,calc((100svh - 250px) * 1.83784))!important;
+    min-width:0;
+    height:auto!important;
+    filter:none!important;
+  }
+  #r4mRoll{
+    min-height:clamp(64px,12svh,92px);
+    margin:12px 0 18px;
+    padding:14px 18px;
+    background:#FB0118!important;
+    color:#FEFEFE!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+  }
+  #r4mRoll:before,#r4mRoll:after,
+  #r4mRoll .r4m-ap-lip,#r4mRoll .r4m-ap-void,#r4mRoll .r4m-ap-rim,
+  #r4mRoll .r4m-roll-chassis,#r4mRoll .r4m-roll-strip{display:none!important}
+  #r4mRoll .r4m-ap-kicker,#r4mRoll .r4m-ap-scope{display:none}
+  #r4mRoll .r4m-ap-label{display:block;font-size:clamp(2rem,10vw,3.4rem);line-height:1;color:#FEFEFE}
+}
+@media (max-width:390px){
+  #r4mHero .r4m-landing-master{
+    width:min(112%,calc((100svh - 238px) * 1.83784))!important;
+  }
+}
