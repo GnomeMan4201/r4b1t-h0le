@@ -1246,3 +1246,61 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   }
   .r4m-menu-trail .r4m-trail-chip{width:100%;max-width:none;min-width:0;height:51px}
 }
+
+
+/* Mobile v4 real-device acceptance polish.
+   Corrects visual cascade/scale issues found in the 512x1108 iPhone recording.
+   Presentation only: no selection, commit/reveal, Blind, or History authority changes. */
+@media (max-width:900px){
+  /* The aperture was capped at 292px, which made it read like a badge on wider/tall phones. */
+  .r4m-ap-lip,
+  .r4m-ap-void,
+  .r4m-ap-rim{
+    width:min(88%,360px);
+  }
+  .r4m-ap-ring{width:88%}
+  .r4m-ap-lip{border-color:#393733}
+  .r4m-ap-rabbit{opacity:.94;filter:contrast(1.12) brightness(1.08)}
+
+  /* Retire legacy result-container styling that had higher specificity than v4.
+     The flattened aperture mouth is the structural red origin mark. */
+  #r4mRouteMount:not(:empty){
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+  }
+  #r4mRouteMount:not(:empty)::before{
+    content:none!important;
+    display:none!important;
+  }
+  #r4mRouteMount #r4mTitle{
+    margin:0!important;
+    color:var(--r4m-v3-paper)!important;
+    font:700 1.32rem/1.2 var(--font-head,"Bebas Neue",sans-serif)!important;
+    letter-spacing:.01em!important;
+    text-transform:none;
+    text-wrap:balance;
+  }
+  #r4mRouteMount #r4mDomain{
+    border-left:0!important;
+  }
+  #r4mRouteMount [data-mobile-action="visit"]{
+    background:var(--r4m-v3-paper)!important;
+    border:0!important;
+    color:var(--r4m-v3-ink)!important;
+    box-shadow:none!important;
+  }
+  #r4mRouteMount [data-mobile-action="keep"],
+  #r4mRouteMount [data-mobile-action="inspect"]{
+    background:transparent!important;
+    color:var(--r4m-v3-paper)!important;
+    box-shadow:none!important;
+  }
+}
+
+@media (min-width:431px) and (max-width:900px) and (orientation:portrait){
+  .r4m-roll.r4m-roll-aperture{min-height:400px}
+  .r4m-ap-lip,.r4m-ap-void,.r4m-ap-rim{top:44%}
+}
