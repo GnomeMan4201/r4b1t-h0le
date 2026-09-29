@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://r4b1t.badbananaresearch.com">
-    <img src="./docs/readme/readme-hero.webp" alt="R4B1T H0L3 — chance-driven discovery across security, OSINT, research, development, and the weird web" width="100%">
+    <img src="./docs/readme/readme-hero.jpg" alt="R4B1T H0L3 — chance-driven discovery across security, OSINT, research, development, and the weird web" width="100%">
   </a>
 </p>
 
@@ -53,7 +53,7 @@ A route is rolled from the current eligible ground. From there you can follow it
 <p align="center"><code>CORPUS → CHANCE → ROUTE → BRANCH → DEVICE-LOCAL TRAIL</code></p>
 
 <p align="center">
-  <img src="./docs/readme/readme-application-overview.webp" alt="Application overview — Discovery Without Algorithms" width="100%">
+  <img src="./docs/readme/readme-application-overview.jpg" alt="Application overview — Discovery Without Algorithms" width="100%">
 </p>
 
 <table>
@@ -118,7 +118,7 @@ The original public build notes are here:
 ## How it works
 
 <p align="center">
-  <img src="./docs/readme/readme-core-mechanics.webp" alt="Core application mechanics — the roll, route inspection, and trail topology" width="100%">
+  <img src="./docs/readme/readme-core-mechanics.jpg" alt="Core application mechanics — the roll, route inspection, and trail topology" width="100%">
 </p>
 
 <table>
@@ -264,7 +264,7 @@ The guiding rule is simple: **do not upgrade a structural observation into a str
 The trail system separates what can be cryptographically verified from stronger claims an artifact cannot support. A verified reveal can establish that disclosed route material matches its commitment; it does not, by itself, establish authorship or prove real-world wall-clock ordering.
 
 <p align="center">
-  <img src="./docs/readme/readme-session-proofs.webp" alt="Provenance data and session integrity — cryptographic session proofs" width="100%">
+  <img src="./docs/readme/readme-session-proofs.jpg" alt="Provenance data and session integrity — cryptographic session proofs" width="100%">
 </p>
 
 <table>
@@ -466,6 +466,6 @@ Start with [`CONTRIBUTING.md`](./CONTRIBUTING.md). New corpus candidates should 
 
 <p align="center">
   <a href="https://gnomeman4201.github.io/r4b1t-h0le/">
-    <img src="./docs/readme/readme-enter-the-hole.webp" alt="Enter the hole" width="100%">
+    <img src="./docs/readme/readme-enter-the-hole.jpg" alt="Enter the hole" width="100%">
   </a>
 </p>
