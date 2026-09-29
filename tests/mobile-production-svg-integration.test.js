@@ -6,6 +6,22 @@ const source = fs.readFileSync('dual-shell.js', 'utf8');
 const css = fs.readFileSync('dual-shell.css', 'utf8');
 const svg = fs.readFileSync('r4b1t-h0l3-production.svg', 'utf8');
 
+function groupAncestors(markup, targetId) {
+  const body = markup.slice(markup.indexOf('</style>') + 8);
+  const stack = [];
+  const re = /<g\b[^>]*\bid="([^"]+)"[^>]*>|<\/g>/g;
+  let match;
+  while ((match = re.exec(body))) {
+    if (match[0].startsWith('</g')) {
+      stack.pop();
+      continue;
+    }
+    if (match[1] === targetId) return stack.slice();
+    stack.push(match[1]);
+  }
+  return [];
+}
+
 test('mobile landing mounts the canonical production SVG instead of the legacy hero rabbit', () => {
   assert.match(source, /id="r4mProductionMark"/);
   assert.match(source, /fetch\('r4b1t-h0l3-production\.svg'/);
@@ -53,6 +69,23 @@ test('production SVG owns secondary motion through the approved act/copy wrapper
     assert.match(svg, new RegExp('#r4h-root:is\\(\\.' + state + ', \\.' + state + ' \\*\\)'));
   }
   assert.match(svg, /#r4h-root:is\(\.copy-trail, \.copy-trail \*\)/);
+
+
+  assert.ok(groupAncestors(svg, 'r4h-act-rabbit').includes('r4h-roll-rabbit'));
+  assert.ok(groupAncestors(svg, 'r4h-act-head').includes('r4h-result-head'));
+  assert.ok(groupAncestors(svg, 'r4h-act-ear-left').includes('r4h-result-ear-left'));
+  assert.ok(groupAncestors(svg, 'r4h-act-ear-right').includes('r4h-result-ear-right'));
+  assert.ok(groupAncestors(svg, 'r4h-menu-ear').includes('r4h-act-ear-right'));
+  assert.ok(groupAncestors(svg, 'r4h-act-glint-left').includes('r4h-result-glint-left'));
+  assert.ok(groupAncestors(svg, 'r4h-menu-glint').includes('r4h-act-glint-right'));
+  assert.ok(groupAncestors(svg, 'r4h-act-paw-left').includes('r4h-roll-paw-left'));
+  assert.ok(groupAncestors(svg, 'r4h-copy-paw-left').includes('r4h-act-paw-left'));
+  assert.ok(groupAncestors(svg, 'r4h-act-paw-right').includes('r4h-roll-paw-right'));
+  assert.ok(groupAncestors(svg, 'r4h-copy-paw-right').includes('r4h-act-paw-right'));
+  assert.ok(groupAncestors(svg, 'r4h-act-card').includes('r4h-result-card-slot'));
+  assert.ok(groupAncestors(svg, 'r4h-copy-card').includes('r4h-act-card'));
+  assert.ok(groupAncestors(svg, 'r4h-act-hole').includes('r4h-roll-hole'));
+  assert.ok(groupAncestors(svg, 'r4h-act-hole-front').includes('r4h-roll-hole-front'));
 
   for (const id of [
     'r4h-act-rabbit', 'r4h-act-head', 'r4h-act-ear-left', 'r4h-act-ear-right',
