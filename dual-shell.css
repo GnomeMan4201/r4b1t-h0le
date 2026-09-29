@@ -1084,6 +1084,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-ap-rabbit{position:absolute;z-index:3;left:50%;top:52%;width:84%;height:auto;transform:translate(-50%,-50%) scale(.72);opacity:.82;filter:contrast(1.04);transition:transform var(--roll-decelerate-ms,360ms) cubic-bezier(.2,.8,.2,1),opacity 160ms linear}
   .r4m-ap-ring{position:absolute;z-index:2;left:50%;top:54%;width:86%;aspect-ratio:1.22/1;border:1px solid rgba(142,139,132,.38);border-radius:var(--r4m-ap-shape);transform:translate(-50%,-50%) scale(.72);opacity:0;transition:transform var(--roll-decelerate-ms,360ms) cubic-bezier(.2,.8,.2,1),opacity 180ms linear}
   .r4m-ap-ring[data-ring="2"]{transform:translate(-50%,-44%) scale(.5);opacity:0}
+  .r4m-ap-ring[data-ring="3"]{transform:translate(-50%,-38%) scale(.3);opacity:0}
   .r4m-ap-kicker,.r4m-ap-label,.r4m-ap-scope{position:absolute;z-index:5;pointer-events:none}
   .r4m-ap-kicker{left:14px;top:14px;color:var(--r4m-v3-muted);font:500 .5rem var(--font-mono,"DM Mono",monospace);letter-spacing:.1em}
   .r4m-ap-label{left:14px;bottom:14px;color:var(--r4m-v3-paper);font:900 2.25rem/.82 var(--font-head,"Bebas Neue",sans-serif);letter-spacing:.01em}
@@ -1110,6 +1111,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-roll[data-presentation-state="travel"]:not(.roll-pending) .r4m-ap-rim{border-color:var(--r4m-v3-red);transform:translate(-50%,-50%) scale(.8)}
   .r4m-roll[data-presentation-state="travel"] .r4m-ap-ring{opacity:.45}
   .r4m-roll[data-presentation-state="travel"] .r4m-ap-ring[data-ring="2"]{opacity:.34}
+  .r4m-roll[data-presentation-state="travel"] .r4m-ap-ring[data-ring="3"]{opacity:.24}
   .r4m-roll[data-presentation-state="travel"] .r4m-ap-rabbit{opacity:0}
 
   .r4m-roll[data-presentation-state="brake"] .r4m-ap-lip{transform:translate(-50%,-50%) scale(.96)}
@@ -1117,6 +1119,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-roll[data-presentation-state="brake"] .r4m-ap-rim{border-color:var(--r4m-v3-red);transform:translate(-50%,-50%) scale(.96)}
   .r4m-roll[data-presentation-state="brake"] .r4m-ap-ring{opacity:.5}
   .r4m-roll[data-presentation-state="brake"] .r4m-ap-ring[data-ring="2"]{opacity:.4}
+  .r4m-roll[data-presentation-state="brake"] .r4m-ap-ring[data-ring="3"]{opacity:.28}
 
   .r4m-roll[data-presentation-state="seat"] .r4m-ap-lip{transform:translate(-50%,-50%) scale(1.04)}
   .r4m-roll[data-presentation-state="seat"] .r4m-ap-void{transform:translate(-50%,-50%) scale(1.02)}
