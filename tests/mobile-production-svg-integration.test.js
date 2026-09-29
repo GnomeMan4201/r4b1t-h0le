@@ -146,3 +146,13 @@ test('secondary wrappers are physically nested by transform priority', () => {
   assert.match(svg, /<g id="r4h-roll-hole"[^>]*><g id="r4h-act-hole"[^>]*><g id="r4h-entrance-hole"/);
   assert.match(svg, /<g id="r4h-roll-hole-front"[^>]*><g id="r4h-act-hole-front"[^>]*><g id="r4h-entrance-hole-front"/);
 });
+
+
+test('secondary dismissal prevents stale RESULT presentation from reasserting', () => {
+  assert.match(source, /var secondaryDismissedResult = false;/);
+  assert.match(source, /if \(rolling\) secondaryDismissedResult = false;/);
+  assert.match(source, /if \(secondaryDismissedResult\) resultReady = false;/);
+  assert.match(source, /setSecondaryMarkState\('trail-open'\)[\s\S]*openTrailLedger/);
+  assert.match(source, /setSecondaryMarkState\('replay-open'\)[\s\S]*openReplayInspection/);
+  assert.match(source, /setSecondaryMarkState\('topology-open'\)[\s\S]*openTrailTopology/);
+});
