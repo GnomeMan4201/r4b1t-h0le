@@ -142,6 +142,9 @@
       motion: 'return',
       returnFromIndex: returnFromIndex
     });
+    if (state.currentDepth === 0) {
+      document.documentElement.classList.remove('blind-descending');
+    }
     return state.currentDepth;
   }
 

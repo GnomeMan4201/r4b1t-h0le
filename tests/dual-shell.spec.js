@@ -30,6 +30,53 @@ test('desktop keeps the native r4b1t shell', async ({ page }, testInfo) => {
   await expect(page.locator('#r4mShellHost')).toBeHidden();
 });
 
+test('mobile production mark stays visible and in viewport across landing, ROLL result, and BLIND stage', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const mark = page.locator('#r4mProductionMark > svg[role="img"]');
+  await expect(mark).toBeVisible();
+
+  const assertMarkReachable = async () => {
+    const geometry = await mark.evaluate((node) => {
+      const rect = node.getBoundingClientRect();
+      return {
+        top: rect.top,
+        bottom: rect.bottom,
+        left: rect.left,
+        right: rect.right,
+        width: rect.width,
+        height: rect.height,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+        scrollWidth: document.documentElement.scrollWidth,
+      };
+    });
+    expect(geometry.width).toBeGreaterThan(0);
+    expect(geometry.height).toBeGreaterThan(0);
+    expect(geometry.left).toBeGreaterThanOrEqual(0);
+    expect(geometry.right).toBeLessThanOrEqual(geometry.viewportWidth + 1);
+    expect(geometry.top).toBeGreaterThanOrEqual(0);
+    expect(geometry.top).toBeLessThan(geometry.viewportHeight);
+    expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.viewportWidth + 1);
+  };
+
+  await assertMarkReachable();
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expect(mark).toBeVisible();
+  await expect(page.locator('html')).toHaveClass(/\bresult-ready\b/);
+  await assertMarkReachable();
+
+  await page.locator('#r4mModeBlind').click();
+  await expect(page.locator('#r4mDescentEntry')).toBeVisible();
+  await expect(mark).toBeVisible();
+  await assertMarkReachable();
+});
+
 test('mobile selects the dedicated shell and rolls through the shared engine', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
@@ -434,7 +481,8 @@ test('mobile landing keeps one primary decision while MENU retains secondary cap
 
   await expect(page.locator('#r4mHero h1')).toHaveText('A HOLE, NOT A FEED.');
   await expect(page.locator('#r4mHero p')).toHaveText('NO PROFILE. NO RANKING. COMMITTED BEFORE REVEAL.');
-  await expect(page.locator('#r4mRoll')).toContainText('COMMIT → REVEAL → EXPLORE');
+  await expect(page.locator('#r4mRoll')).toContainText('ROLL');
+  await expect(page.locator('#r4mProductionMark > svg[role="img"]')).toBeVisible();
   await expect(page.locator('.r4m-header-actions')).toHaveCount(0);
   await expect(page.locator('.r4m-filter-strip')).toHaveCount(0);
   await expect(page.locator('.r4m-status')).toHaveCount(0);
@@ -984,32 +1032,7 @@ test('mobile Blind mode presents one primary descent action while advanced tools
 });
 
 
-test('mobile v3 ROLL uses an aperture composition while retaining the authoritative control', async ({ page }, testInfo) => {
-  if (testInfo.project.name !== 'mobile-chromium') test.skip();
-  await page.goto('./', { waitUntil: 'domcontentloaded' });
-  await waitReady(page);
 
-  const roll = page.locator('#r4mRoll');
-  await expect(roll).toBeVisible();
-  await expect(roll).toHaveAttribute('data-mobile-instrument', 'aperture');
-  await expect(roll.locator('.r4m-ap-lip')).toBeVisible();
-  await expect(roll.locator('.r4m-ap-void')).toBeVisible();
-  await expect(roll.locator('.r4m-ap-rabbit[src="rabbit-aperture-void.svg"]')).toBeVisible();
-  await expect(roll.locator('.r4m-ap-ring')).toHaveCount(2);
-  await expect(roll.locator('.r4m-ap-rim')).toBeVisible();
-  await expect(roll.locator('.r4m-door-panel')).toHaveCount(0);
-  const idleLegibility = await page.evaluate(() => {
-    const lip = getComputedStyle(document.querySelector('#r4mRoll .r4m-ap-lip'));
-    const rabbit = getComputedStyle(document.querySelector('#r4mRoll .r4m-ap-rabbit'));
-    const border = lip.borderTopColor.match(/[\d.]+/g).map(Number);
-    return {
-      lipAlpha: border.length === 4 ? border[3] : 1,
-      rabbitOpacity: Number(rabbit.opacity),
-    };
-  });
-  expect(idleLegibility.lipAlpha).toBeGreaterThanOrEqual(0.28);
-  expect(idleLegibility.rabbitOpacity).toBeGreaterThanOrEqual(0.88);
-});
 
 test('mobile v3 MENU groups the existing capabilities by the object they act on', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
@@ -1139,34 +1162,7 @@ test('explicit Branch direction selection records one disclosed History entry', 
 });
 
 
-test('mobile aperture uses red only from the committed boundary onward', async ({ page }, testInfo) => {
-  if (testInfo.project.name !== 'mobile-chromium') test.skip();
-  await page.goto('./', { waitUntil: 'domcontentloaded' });
-  await waitReady(page);
 
-  const rim = page.locator('#r4mRoll .r4m-ap-rim');
-  const neutral = await rim.evaluate((node) => getComputedStyle(node).borderTopColor);
-
-  await page.evaluate(() => window.__r4b1tProjectRollPresentation('PRESSED'));
-  expect(await rim.evaluate((node) => getComputedStyle(node).borderTopColor)).toBe(neutral);
-
-  await page.evaluate(() => {
-    const roll = document.getElementById('r4mRoll');
-    roll.classList.add('roll-pending');
-    window.__r4b1tProjectRollPresentation('STRIP_ACCELERATING');
-  });
-  expect(await rim.evaluate((node) => getComputedStyle(node).borderTopColor)).toBe(neutral);
-
-  await page.evaluate(() => {
-    document.getElementById('r4mRoll').classList.remove('roll-pending');
-    window.__r4b1tProjectRollPresentation('RELEASED');
-  });
-  const committed = await rim.evaluate((node) => getComputedStyle(node).borderTopColor);
-  expect(committed).not.toBe(neutral);
-
-  await page.evaluate(() => window.__r4b1tProjectRollPresentation('CANCELLED'));
-  expect(await rim.evaluate((node) => getComputedStyle(node).borderTopColor)).toBe(neutral);
-});
 
 test('mobile revealed result uses an aperture mouth without vertical result rails', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
@@ -1217,25 +1213,7 @@ test('mobile ROLL AGAIN and bottom ROLL use distinct aperture glyphs for action 
 });
 
 
-test('real-device aperture scales up on tall 512px phone canvas', async ({ page }, testInfo) => {
-  if (testInfo.project.name !== 'mobile-chromium') test.skip();
-  await page.setViewportSize({ width: 512, height: 1108 });
-  await page.goto('./', { waitUntil: 'domcontentloaded' });
-  await waitReady(page);
 
-  const geometry = await page.locator('#r4mRoll').evaluate((roll) => {
-    const outer = roll.getBoundingClientRect();
-    const aperture = roll.querySelector('.r4m-ap-void').getBoundingClientRect();
-    return {
-      ratio: aperture.width / outer.width,
-      apertureWidth: aperture.width,
-      rollWidth: outer.width,
-    };
-  });
-
-  expect(geometry.ratio).toBeGreaterThanOrEqual(0.72);
-  expect(geometry.apertureWidth).toBeGreaterThanOrEqual(330);
-});
 
 test('revealed result is free of legacy red rail, generated DESCENT label, and red CTA override', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
@@ -1272,80 +1250,39 @@ test('revealed result is free of legacy red rail, generated DESCENT label, and r
   expect(visual.openBackground).not.toBe('rgb(227, 29, 39)');
 });
 
-test('revealed result keeps the aperture mouth as the only red structural origin mark', async ({ page }, testInfo) => {
+test('revealed result uses the production red rule instead of the retired aperture mouth', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
   await page.locator('#r4mRoll').click();
-  const mouth = page.locator('#r4mRoute .r4m-route-mouth');
-  await expect(mouth).toBeVisible();
+  const mark = page.locator('#r4mRoute .r4m-route-mouth');
+  await expect(mark).toBeVisible();
 
   const result = await page.locator('#r4mRouteMount').evaluate((mount) => {
     const style = getComputedStyle(mount);
     const route = getComputedStyle(mount.querySelector('#r4mRoute'));
-    const mouth = getComputedStyle(mount.querySelector('.r4m-route-mouth'));
+    const mark = getComputedStyle(mount.querySelector('.r4m-route-mouth'));
     return {
       mountBorderLeft: style.borderLeftWidth,
       routeBorderLeft: route.borderLeftWidth,
-      mouthBorder: mouth.borderTopColor,
+      markBackground: mark.backgroundColor,
+      markBorderTopWidth: mark.borderTopWidth,
+      markBorderRadius: mark.borderRadius,
+      markHeight: mark.height,
     };
   });
 
   expect(result.mountBorderLeft).toBe('0px');
   expect(result.routeBorderLeft).toBe('0px');
-  expect(result.mouthBorder).toBe('rgb(255, 51, 51)');
+  expect(result.markBackground).toBe('rgb(251, 1, 24)');
+  expect(result.markBorderTopWidth).toBe('0px');
+  expect(result.markBorderRadius).toBe('0px');
+  expect(result.markHeight).toBe('5px');
 });
 
 
-test('real-device dormant aperture reads as a hole and keeps irregular depth contours', async ({ page }, testInfo) => {
-  if (testInfo.project.name !== 'mobile-chromium') test.skip();
-  await page.setViewportSize({ width: 512, height: 1108 });
-  await page.goto('./', { waitUntil: 'domcontentloaded' });
-  await waitReady(page);
-
-  const lip = page.locator('#r4mRoll .r4m-ap-lip');
-  const voidNode = page.locator('#r4mRoll .r4m-ap-void');
-  const lipColor = await lip.evaluate((node) => getComputedStyle(node).borderTopColor);
-  expect(lipColor).toContain('236, 233, 225');
-  expect(await voidNode.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none');
-
-  const ringShapes = await page.locator('#r4mRoll .r4m-ap-ring').evaluateAll((nodes) =>
-    nodes.map((node) => getComputedStyle(node).borderRadius)
-  );
-  expect(new Set(ringShapes).size).toBeGreaterThan(1);
-
-  const rim = page.locator('#r4mRoll .r4m-ap-rim');
-  expect(await rim.evaluate((node) => getComputedStyle(node).borderTopColor)).toBe('rgba(255, 51, 51, 0)');
-});
 
 
-test('rabbit stays submerged from commitment through reveal', async ({ page }, testInfo) => {
-  if (testInfo.project.name !== 'mobile-chromium') test.skip();
-  await page.goto('./', { waitUntil: 'domcontentloaded' });
-  await waitReady(page);
 
-  const rabbit = page.locator('#r4mRoll .r4m-ap-rabbit');
-  const states = [
-    'RELEASED',
-    'STRIP_ACCELERATING',
-    'STRIP_DECELERATING',
-    'LOCKED',
-    'CARD_ENTERING',
-    'SETTLED',
-  ];
 
-  for (const state of states) {
-    await page.evaluate((value) => window.__r4b1tProjectRollPresentation(value), state);
-    await expect.poll(
-      () => rabbit.evaluate((node) => Number.parseFloat(getComputedStyle(node).opacity)),
-      { timeout: 600 }
-    ).toBe(0);
-  }
-
-  await page.evaluate(() => window.__r4b1tProjectRollPresentation('IDLE'));
-  await expect.poll(
-    () => rabbit.evaluate((node) => Number.parseFloat(getComputedStyle(node).opacity)),
-    { timeout: 600 }
-  ).toBeGreaterThan(0);
-});

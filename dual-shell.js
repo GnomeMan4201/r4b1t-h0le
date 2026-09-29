@@ -81,19 +81,11 @@
         '<div class="r4m-compat-state" hidden aria-hidden="true"><span id="r4mFilterLabel">ALL SIGNALS</span><b id="r4mModeLabel">UNBOUNDED</b></div>',
         '<div class="r4m-mode-switch" role="group" aria-label="Primary exploration mode"><button type="button" class="active" data-mobile-action="stage-roll" id="r4mModeRoll" aria-pressed="true">ROLL</button><button type="button" data-mobile-action="stage-blind" id="r4mModeBlind" aria-pressed="false">BLIND DESCENT</button></div>',
         '<div class="r4m-primary-stage" id="r4mPrimaryStage">',
+        '<div class="r4m-production-mark" id="r4mProductionMark"></div>',
         '<section class="r4m-hero" id="r4mHero">',
-          '<img src="rabbit-aperture.svg" alt="" aria-hidden="true">',
           '<div class="r4m-hero-copy"><small id="r4mApertureState">RANDOM DISCOVERY / CYBERSECURITY WEB</small><h1>A HOLE, NOT A FEED.</h1><p>NO PROFILE. NO RANKING. COMMITTED BEFORE REVEAL.</p></div>',
         '</section>',
         '<button class="r4m-roll r4m-roll-aperture" id="r4mRoll" type="button" data-mobile-instrument="aperture" data-presentation-state="idle" aria-label="ROLL — commit a route before reveal">',
-          '<span class="r4m-ap-lip" aria-hidden="true"></span>',
-          '<span class="r4m-ap-void" aria-hidden="true">',
-            '<span class="r4m-ap-ring" data-ring="1"></span>',
-            '<span class="r4m-ap-ring" data-ring="2"></span>',
-            '<img class="r4m-ap-rabbit" src="rabbit-aperture-void.svg" alt="" aria-hidden="true">',
-          '</span>',
-          '<span class="r4m-ap-rim" aria-hidden="true"></span>',
-          '<span class="r4m-ap-kicker">COMMIT → REVEAL → EXPLORE</span>',
           '<strong class="r4m-ap-label">ROLL</strong>',
           '<em class="r4m-ap-scope" id="r4mRollScope">FULL CORPUS</em>',
           '<i class="r4m-roll-strip" aria-hidden="true"></i>',
@@ -180,6 +172,60 @@
     ].join('');
   }
 
+  function mountProductionMark() {
+    var host = byId('r4mProductionMark');
+    if (!host || host.dataset.mounted === 'true') return Promise.resolve();
+    return fetch('r4b1t-h0l3-production.svg', { credentials: 'same-origin' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('production SVG ' + response.status);
+        return response.text();
+      })
+      .then(function (markup) {
+        if (!host.isConnected) return;
+        host.innerHTML = markup;
+        host.dataset.mounted = 'true';
+        if (!byId('r4h-root')) throw new Error('production SVG root missing');
+        // The mark's own markup carries is-entering/is-idle on #r4h-root; the entrance
+        // plays once from insertion and needs no classes from the app.
+        syncProductionMarkState();
+      })
+      .catch(function (error) {
+        console.error('R4B1T production mark failed to mount', error);
+      });
+  }
+
+  // The production mark is presentation only. Its ROLL is a fixed 1000ms sequence
+  // (r4h-roll-*, right paw +14ms), longer than the strip phases (~660ms), so the
+  // mark holds .rolling for its full run instead of mirroring the phases, and only
+  // then shows .result-ready. Otherwise the roll is cut mid-launch and snaps home.
+  var MARK_ROLL_MS = 1050;
+  var markRollTimer = null;
+  function syncProductionMarkState() {
+    var root = document.documentElement;
+    if (!byId('r4h-root')) return;
+    var presentation = root.getAttribute('data-r4m-presentation') || 'idle';
+    var rolling = ['contact','compression','committed','travel','brake','seat'].indexOf(presentation) !== -1;
+    var resultReady = presentation === 'reveal' || presentation === 'revealed';
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      // no mark motion to wait for: represent the state directly
+      root.classList.toggle('rolling', rolling);
+      root.classList.toggle('result-ready', resultReady);
+      return;
+    }
+    if (rolling && markRollTimer === null) {
+      root.classList.remove('result-ready');
+      root.classList.add('rolling');
+      markRollTimer = window.setTimeout(function () {
+        markRollTimer = null;
+        root.classList.remove('rolling');
+        syncProductionMarkState();
+      }, MARK_ROLL_MS);
+    }
+    if (markRollTimer !== null) return;
+    root.classList.toggle('result-ready', resultReady);
+  }
+
   function buildShell() {
     if (byId('r4mShellHost')) return;
     if (motionDebugEnabled) ensureMotionDebug();
@@ -187,6 +233,7 @@
     host.id = 'r4mShellHost';
     host.innerHTML = shellMarkup();
     document.body.appendChild(host);
+    mountProductionMark();
 
     host.addEventListener('click', function (event) {
       var target = event.target.closest('[data-mobile-action]');
@@ -224,6 +271,7 @@
     roll.setAttribute('data-presentation-state', next);
     document.documentElement.setAttribute('data-r4m-presentation', next);
     reportMotion('PRESENTATION-' + next.toUpperCase(), roll, next);
+    syncProductionMarkState();
   }
 
   function projectAuthoritativeRollPresentation(machineState) {
@@ -588,6 +636,7 @@ MOTION: waiting for target…';
     if (action === 'suggest-url') return call('submitUrl');
     if (action === 'blind-descent') {
       if (typeof window.openBlindDescent !== 'function' || typeof window.blindDescend !== 'function') return;
+      document.documentElement.classList.add('blind-descending');
       Promise.resolve(window.openBlindDescent())
         .then(function () { return window.blindDescend(); })
         .catch(function (error) { console.error('Blind descent failed', error); });
@@ -630,6 +679,7 @@ MOTION: waiting for target…';
       reportMotion(id.replace('r4m', '').replace('Sheet', '').toUpperCase(), sheet, 'open');
     });
     document.documentElement.classList.add('r4m-sheet-open');
+    document.documentElement.classList.toggle('menu-open', id === 'r4mMenuSheet');
     var menuButton = byId('r4mNavMenu');
     if (menuButton) {
       var menuOpen = id === 'r4mMenuSheet';
@@ -655,6 +705,7 @@ MOTION: waiting for target…';
       sheetCloseTimer = window.setTimeout(function () { backdrop.hidden = true; }, 330);
     }
     document.documentElement.classList.remove('r4m-sheet-open');
+    document.documentElement.classList.remove('menu-open');
     var menuButton = byId('r4mNavMenu');
     if (menuButton) {
       menuButton.setAttribute('aria-expanded', 'false');
@@ -909,7 +960,8 @@ MOTION: waiting for target…';
   }
 
   function resetRollStage() {
-    document.documentElement.classList.remove('r4m-stage-result');
+    if (markRollTimer !== null) { window.clearTimeout(markRollTimer); markRollTimer = null; }
+    document.documentElement.classList.remove('r4m-stage-result', 'blind-descending', 'rolling', 'result-ready');
     var mount = byId('r4mRouteMount');
     if (mount) mount.hidden = false;
     setRollPresentationState('idle');

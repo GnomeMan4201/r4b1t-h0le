@@ -21,14 +21,17 @@ test('mobile landing states the product once and leaves utilities to MENU', asyn
 
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => typeof window.roll === 'function');
-  await page.waitForSelector('#r4mHero h1');
+  await page.waitForSelector('#r4mProductionMark > svg[role="img"]');
 
   const hero = page.locator('#r4mHero');
   await expect(hero).toBeVisible();
-  await expect(page.locator('#r4mRoll .r4m-ap-rabbit[src="rabbit-aperture-void.svg"]')).toBeVisible();
+  const productionMark = page.locator('#r4mProductionMark > svg[role="img"]');
+  await expect(productionMark).toBeVisible();
+  await expect(productionMark.locator('title#r4h-title')).toHaveText('R4B1T H0L3');
+  await expect(page.locator('#r4mRoll')).toContainText('ROLL');
+  await expect(page.locator('#r4mRoll .r4m-ap-rabbit')).toHaveCount(0);
   await expect(page.locator('#r4mApertureState')).toHaveText('RANDOM DISCOVERY / CYBERSECURITY WEB');
-  await expect(hero.locator('h1')).toHaveText('A HOLE, NOT A FEED.');
-  await expect(hero.locator('p')).toHaveText('NO PROFILE. NO RANKING. COMMITTED BEFORE REVEAL.');
+  await expect(hero.locator('.r4m-hero-copy')).toBeHidden();
 
   await expect(page.locator('.r4m-header-actions')).toHaveCount(0);
   await expect(page.locator('.r4m-filter-strip')).toHaveCount(0);
