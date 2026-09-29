@@ -19,6 +19,7 @@
       '<small id="r4mProtocol" hidden></small>' +
       '<h2 id="r4mTitle"></h2>' +
       '<div class="r4m-route-domain" id="r4mDomain"></div>' +
+      '<span class="r4m-route-mouth" aria-hidden="true"></span>' +
       '<p id="r4mDescription" hidden></p>' +
       '<code id="r4mUrl"></code>' +
       '<button class="r4m-enter" type="button" data-mobile-action="visit">OPEN DESTINATION ↗</button>' +
@@ -26,7 +27,7 @@
         '<button type="button" data-mobile-action="keep">KEEP CARD</button>' +
         '<button type="button" data-mobile-action="inspect">INSPECT</button>' +
       '</div>' +
-      '<button class="r4m-next" type="button" data-mobile-action="next">ROLL AGAIN</button>';
+      '<button class="r4m-next" type="button" data-mobile-action="next"><span class="r4m-next-aperture" data-aperture-role="selection" aria-hidden="true"><i class="r4m-ap-depth-ring"></i></span><span>ROLL AGAIN</span></button>';
     return section;
   }
 
