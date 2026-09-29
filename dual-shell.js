@@ -82,7 +82,7 @@
         '<div class="r4m-mode-switch" role="group" aria-label="Primary exploration mode"><button type="button" class="active" data-mobile-action="stage-roll" id="r4mModeRoll" aria-pressed="true">ROLL</button><button type="button" data-mobile-action="stage-blind" id="r4mModeBlind" aria-pressed="false">BLIND DESCENT</button></div>',
         '<div class="r4m-primary-stage" id="r4mPrimaryStage">',
         '<section class="r4m-hero" id="r4mHero">',
-          '<img src="rabbit-aperture.svg" alt="" aria-hidden="true">',
+          '<div class="r4m-production-mark" id="r4mProductionMark" aria-label="R4B1T H0L3"></div>',
           '<div class="r4m-hero-copy"><small id="r4mApertureState">RANDOM DISCOVERY / CYBERSECURITY WEB</small><h1>A HOLE, NOT A FEED.</h1><p>NO PROFILE. NO RANKING. COMMITTED BEFORE REVEAL.</p></div>',
         '</section>',
         '<button class="r4m-roll r4m-roll-aperture" id="r4mRoll" type="button" data-mobile-instrument="aperture" data-presentation-state="idle" aria-label="ROLL — commit a route before reveal">',
@@ -180,6 +180,42 @@
     ].join('');
   }
 
+  function mountProductionMark() {
+    var host = byId('r4mProductionMark');
+    if (!host || host.dataset.mounted === 'true') return Promise.resolve();
+    return fetch('r4b1t-h0l3-production.svg', { credentials: 'same-origin' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('production SVG ' + response.status);
+        return response.text();
+      })
+      .then(function (markup) {
+        if (!host.isConnected) return;
+        host.innerHTML = markup;
+        host.dataset.mounted = 'true';
+        var svg = host.querySelector('svg');
+        if (!svg) throw new Error('production SVG root missing');
+        svg.id = 'r4h-root';
+        svg.classList.add('is-entering');
+        window.setTimeout(function () {
+          svg.classList.remove('is-entering');
+          svg.classList.add('is-idle');
+        }, 1100);
+      })
+      .catch(function (error) {
+        console.error('R4B1T production mark failed to mount', error);
+      });
+  }
+
+  function syncProductionMarkState() {
+    var root = document.documentElement;
+    var svg = byId('r4h-root');
+    if (!svg) return;
+    var presentation = root.getAttribute('data-r4m-presentation') || 'idle';
+    var rolling = ['contact','compression','committed','travel','brake','seat','reveal'].indexOf(presentation) !== -1;
+    root.classList.toggle('rolling', rolling);
+    root.classList.toggle('result-ready', presentation === 'revealed');
+  }
+
   function buildShell() {
     if (byId('r4mShellHost')) return;
     if (motionDebugEnabled) ensureMotionDebug();
@@ -187,6 +223,7 @@
     host.id = 'r4mShellHost';
     host.innerHTML = shellMarkup();
     document.body.appendChild(host);
+    mountProductionMark();
 
     host.addEventListener('click', function (event) {
       var target = event.target.closest('[data-mobile-action]');
@@ -224,6 +261,7 @@
     roll.setAttribute('data-presentation-state', next);
     document.documentElement.setAttribute('data-r4m-presentation', next);
     reportMotion('PRESENTATION-' + next.toUpperCase(), roll, next);
+    syncProductionMarkState();
   }
 
   function projectAuthoritativeRollPresentation(machineState) {
@@ -588,6 +626,7 @@ MOTION: waiting for target…';
     if (action === 'suggest-url') return call('submitUrl');
     if (action === 'blind-descent') {
       if (typeof window.openBlindDescent !== 'function' || typeof window.blindDescend !== 'function') return;
+      document.documentElement.classList.add('blind-descending');
       Promise.resolve(window.openBlindDescent())
         .then(function () { return window.blindDescend(); })
         .catch(function (error) { console.error('Blind descent failed', error); });
@@ -630,6 +669,7 @@ MOTION: waiting for target…';
       reportMotion(id.replace('r4m', '').replace('Sheet', '').toUpperCase(), sheet, 'open');
     });
     document.documentElement.classList.add('r4m-sheet-open');
+    document.documentElement.classList.toggle('menu-open', id === 'r4mMenuSheet');
     var menuButton = byId('r4mNavMenu');
     if (menuButton) {
       var menuOpen = id === 'r4mMenuSheet';
@@ -655,6 +695,7 @@ MOTION: waiting for target…';
       sheetCloseTimer = window.setTimeout(function () { backdrop.hidden = true; }, 330);
     }
     document.documentElement.classList.remove('r4m-sheet-open');
+    document.documentElement.classList.remove('menu-open');
     var menuButton = byId('r4mNavMenu');
     if (menuButton) {
       menuButton.setAttribute('aria-expanded', 'false');
@@ -909,7 +950,7 @@ MOTION: waiting for target…';
   }
 
   function resetRollStage() {
-    document.documentElement.classList.remove('r4m-stage-result');
+    document.documentElement.classList.remove('r4m-stage-result', 'blind-descending', 'rolling', 'result-ready');
     var mount = byId('r4mRouteMount');
     if (mount) mount.hidden = false;
     setRollPresentationState('idle');
