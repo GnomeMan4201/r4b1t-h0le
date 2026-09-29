@@ -1262,6 +1262,12 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-ap-ring{width:88%}
   .r4m-ap-lip{border-color:rgba(236,233,225,.22)}
   .r4m-ap-rabbit{opacity:.94;filter:contrast(1.12) brightness(1.08)}
+  .r4m-roll[data-presentation-state="committed"] .r4m-ap-rabbit,
+  .r4m-roll[data-presentation-state="travel"] .r4m-ap-rabbit,
+  .r4m-roll[data-presentation-state="brake"] .r4m-ap-rabbit,
+  .r4m-roll[data-presentation-state="seat"] .r4m-ap-rabbit,
+  .r4m-roll[data-presentation-state="reveal"] .r4m-ap-rabbit,
+  .r4m-roll[data-presentation-state="revealed"] .r4m-ap-rabbit{opacity:0}
 
   /* Retire legacy result-container styling that had higher specificity than v4.
      The flattened aperture mouth is the structural red origin mark. */

@@ -1308,3 +1308,34 @@ test('real-device dormant aperture reads as a hole and keeps irregular depth con
   const rim = page.locator('#r4mRoll .r4m-ap-rim');
   expect(await rim.evaluate((node) => getComputedStyle(node).borderTopColor)).toBe('rgba(255, 51, 51, 0)');
 });
+
+
+test('rabbit stays submerged from commitment through reveal', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  const rabbit = page.locator('#r4mRoll .r4m-ap-rabbit');
+  const states = [
+    'RELEASED',
+    'STRIP_ACCELERATING',
+    'STRIP_DECELERATING',
+    'LOCKED',
+    'CARD_ENTERING',
+    'SETTLED',
+  ];
+
+  for (const state of states) {
+    await page.evaluate((value) => window.__r4b1tProjectRollPresentation(value), state);
+    await expect.poll(
+      () => rabbit.evaluate((node) => Number.parseFloat(getComputedStyle(node).opacity)),
+      { timeout: 600 }
+    ).toBe(0);
+  }
+
+  await page.evaluate(() => window.__r4b1tProjectRollPresentation('IDLE'));
+  await expect.poll(
+    () => rabbit.evaluate((node) => Number.parseFloat(getComputedStyle(node).opacity)),
+    { timeout: 600 }
+  ).toBeGreaterThan(0);
+});
