@@ -15,6 +15,7 @@
   var rollPendingTimer = null;
   var ledgerRowObserver = null;
   var secondaryMarkStates = ['branch-open', 'trail-open', 'topology-open', 'history-open', 'replay-open'];
+  var secondaryDismissedResult = false;
   var copyTrailMotionTimer = null;
   var historyMotionObserver = null;
 
@@ -22,8 +23,9 @@
     var root = document.documentElement;
     secondaryMarkStates.forEach(function (name) { root.classList.remove(name); });
     if (state) {
-      // RESULT owns the mark until the user deliberately enters a secondary
-      // instrument. Dropping only this presentation class leaves reveal/data authority untouched.
+      // A secondary instrument dismisses the previous RESULT presentation only.
+      // The revealed route/data remains authoritative and unchanged.
+      secondaryDismissedResult = true;
       root.classList.remove('result-ready');
       root.classList.add(state);
     }
@@ -259,6 +261,8 @@
     var presentation = root.getAttribute('data-r4m-presentation') || 'idle';
     var rolling = ['contact','compression','committed','travel','brake','seat'].indexOf(presentation) !== -1;
     var resultReady = presentation === 'reveal' || presentation === 'revealed';
+    if (rolling) secondaryDismissedResult = false;
+    if (secondaryDismissedResult) resultReady = false;
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
       // no mark motion to wait for: represent the state directly
@@ -694,7 +698,10 @@ MOTION: waiting for target…';
     }
     if (action === 'trail-file') {
       closeSheets();
-      return call('openTrailLedger');
+      setSecondaryMarkState('trail-open');
+      var trailOpened = call('openTrailLedger');
+      if (!trailOpened) clearSecondaryMarkState('trail-open');
+      return trailOpened;
     }
     if (action === 'copy-trail') {
       pulseCopyTrailMotion();
@@ -710,7 +717,10 @@ MOTION: waiting for target…';
     }
     if (action === 'replay-inspection') {
       closeSheets();
-      return call('openReplayInspection');
+      setSecondaryMarkState('replay-open');
+      var replayOpened = call('openReplayInspection');
+      if (!replayOpened) clearSecondaryMarkState('replay-open');
+      return replayOpened;
     }
     if (action === 'suggest-url') return call('submitUrl');
     if (action === 'blind-descent') {
@@ -726,9 +736,13 @@ MOTION: waiting for target…';
     if (action === 'topology') {
       closeSheets();
       if (typeof window.getTrailManifest !== 'function' || typeof window.openTrailTopology !== 'function') return;
+      setSecondaryMarkState('topology-open');
       Promise.resolve(window.getTrailManifest())
         .then(function (snapshot) { return window.openTrailTopology(snapshot); })
-        .catch(function (error) { console.error('Trail topology failed', error); });
+        .catch(function (error) {
+          clearSecondaryMarkState('topology-open');
+          console.error('Trail topology failed', error);
+        });
       return;
     }
     if (action === 'inspect') {
@@ -1045,6 +1059,7 @@ MOTION: waiting for target…';
 
   function resetRollStage() {
     if (markRollTimer !== null) { window.clearTimeout(markRollTimer); markRollTimer = null; }
+    secondaryDismissedResult = false;
     clearSecondaryMarkState();
     clearCopyTrailMotion();
     document.documentElement.classList.remove('r4m-stage-result', 'blind-descending', 'rolling', 'result-ready');
