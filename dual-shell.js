@@ -43,7 +43,8 @@
   function pulseCopyTrailMotion() {
     var root = document.documentElement;
     clearCopyTrailMotion();
-    root.classList.remove('result-ready');
+    // COPY owns only its nested presentation layer. RESULT or TRAIL may keep
+    // their outer pose while this one-shot capture/detach gesture runs.
     void root.offsetWidth;
     root.classList.add('copy-trail');
     copyTrailMotionTimer = window.setTimeout(function () {
