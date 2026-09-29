@@ -202,6 +202,7 @@
     runInitialStagger();
     var mobileTheme = byId('r4mMenuTheme');
     if (mobileTheme) { mobileTheme.textContent = 'THEME'; mobileTheme.dataset.theme = document.documentElement.classList.contains('light') ? 'light' : 'dark'; }
+    setLandingPresentationState('LANDING');
     syncEverything();
     observeSource();
   }
@@ -215,6 +216,13 @@
       element.classList.add('motion-stagger-in');
       window.setTimeout(function () { element.classList.remove('motion-stagger-in'); }, 620 + (index * 60));
     });
+  }
+
+  function setLandingPresentationState(state) {
+    var next = state || 'LANDING';
+    document.documentElement.setAttribute('data-r4m-landing-state', next);
+    var hero = byId('r4mHero');
+    if (hero) hero.setAttribute('data-landing-state', next);
   }
 
   function setRollPresentationState(state) {
@@ -242,6 +250,14 @@
     var next = projection[machineState];
     if (!next) return false;
     setRollPresentationState(next);
+    if (machineState === 'RELEASED' || machineState === 'STRIP_ACCELERATING' || machineState === 'STRIP_DECELERATING' || machineState === 'LOCKED') {
+      setLandingPresentationState('LANDING_EXIT');
+    } else if (machineState === 'CARD_ENTERING' || machineState === 'SETTLED') {
+      setLandingPresentationState('RESULT');
+    } else if (machineState === 'CANCELLED' || machineState === 'IDLE') {
+      var route = byId('r4mRouteMount');
+      setLandingPresentationState(route && route.classList.contains('roll-disclosed') ? 'RESULT' : 'LANDING');
+    }
     return true;
   }
 
@@ -681,7 +697,7 @@ MOTION: waiting for target…';
     var active = Boolean(domain && url);
     route.hidden = !active;
     document.documentElement.classList.toggle('r4m-has-route', active);
-    if (active && !document.documentElement.classList.contains('r4m-stage-blind')) document.documentElement.classList.add('r4m-stage-result');
+    if (active && !document.documentElement.classList.contains('r4m-stage-blind')) { document.documentElement.classList.add('r4m-stage-result'); setLandingPresentationState('RESULT'); }
     if (!active) return;
 
     var displayDomain = hostnameFor(url, domain);
