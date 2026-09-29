@@ -1250,29 +1250,35 @@ test('revealed result is free of legacy red rail, generated DESCENT label, and r
   expect(visual.openBackground).not.toBe('rgb(227, 29, 39)');
 });
 
-test('revealed result keeps the aperture mouth as the only red structural origin mark', async ({ page }, testInfo) => {
+test('revealed result uses the production red rule instead of the retired aperture mouth', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
   await page.locator('#r4mRoll').click();
-  const mouth = page.locator('#r4mRoute .r4m-route-mouth');
-  await expect(mouth).toBeVisible();
+  const mark = page.locator('#r4mRoute .r4m-route-mouth');
+  await expect(mark).toBeVisible();
 
   const result = await page.locator('#r4mRouteMount').evaluate((mount) => {
     const style = getComputedStyle(mount);
     const route = getComputedStyle(mount.querySelector('#r4mRoute'));
-    const mouth = getComputedStyle(mount.querySelector('.r4m-route-mouth'));
+    const mark = getComputedStyle(mount.querySelector('.r4m-route-mouth'));
     return {
       mountBorderLeft: style.borderLeftWidth,
       routeBorderLeft: route.borderLeftWidth,
-      mouthBorder: mouth.borderTopColor,
+      markBackground: mark.backgroundColor,
+      markBorderTopWidth: mark.borderTopWidth,
+      markBorderRadius: mark.borderRadius,
+      markHeight: mark.height,
     };
   });
 
   expect(result.mountBorderLeft).toBe('0px');
   expect(result.routeBorderLeft).toBe('0px');
-  expect(result.mouthBorder).toBe('rgb(255, 51, 51)');
+  expect(result.markBackground).toBe('rgb(251, 1, 24)');
+  expect(result.markBorderTopWidth).toBe('0px');
+  expect(result.markBorderRadius).toBe('0px');
+  expect(result.markHeight).toBe('5px');
 });
 
 
