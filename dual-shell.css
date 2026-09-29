@@ -1673,3 +1673,42 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   #blindDescentOverlay.open{bottom:calc(70px + env(safe-area-inset-bottom))!important}
   #r4mRoute{border-left-width:0!important}
 }
+
+
+/* Locked master cascade boundary. Retired aperture/reference-fidelity rules above
+   must not repaint or constrain the approved mobile landing surface. */
+@media (max-width:900px){
+  #r4mHero{
+    grid-template-columns:minmax(0,1fr)!important;
+    width:100%;
+    background:#000;
+    border:0;
+  }
+  #r4mHero .r4m-landing-master{
+    grid-column:1;
+    width:min(100%,calc((100svh - 250px) * 1.83784))!important;
+    min-width:0;
+    height:auto!important;
+    filter:none!important;
+  }
+  #r4mRoll{
+    min-height:clamp(64px,12svh,92px);
+    margin:12px 0 18px;
+    padding:14px 18px;
+    background:#FB0118!important;
+    color:#FEFEFE!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+  }
+  #r4mRoll:before,#r4mRoll:after,
+  #r4mRoll .r4m-ap-lip,#r4mRoll .r4m-ap-void,#r4mRoll .r4m-ap-rim,
+  #r4mRoll .r4m-roll-chassis,#r4mRoll .r4m-roll-strip{display:none!important}
+  #r4mRoll .r4m-ap-kicker,#r4mRoll .r4m-ap-scope{display:none}
+  #r4mRoll .r4m-ap-label{display:block;font-size:clamp(2rem,10vw,3.4rem);line-height:1;color:#FEFEFE}
+}
+@media (max-width:390px){
+  #r4mHero .r4m-landing-master{
+    width:min(112%,calc((100svh - 238px) * 1.83784))!important;
+  }
+}
