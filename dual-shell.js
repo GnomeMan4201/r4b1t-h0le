@@ -199,6 +199,7 @@
         window.setTimeout(function () {
           svg.classList.remove('is-entering');
           svg.classList.add('is-idle');
+          syncProductionMarkState();
         }, 1100);
       })
       .catch(function (error) {
