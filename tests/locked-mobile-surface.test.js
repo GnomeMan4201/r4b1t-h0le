@@ -40,3 +40,20 @@ test('mobile landing uses the exact locked animated master asset', () => {
   assert.match(svg, /\.is-entering/);
   assert.match(svg, /#FB0118/i);
 });
+
+
+test('landing exit is presentation-only and projected from authoritative roll states', () => {
+  const js = fs.readFileSync(path.join(__dirname, '..', 'dual-shell.js'), 'utf8');
+  assert.match(js, /function setLandingPresentationState\(state\)/);
+  assert.match(js, /projectAuthoritativeRollPresentation[\s\S]*setLandingPresentationState\(next\)/);
+  assert.match(js, /LANDING_EXIT/);
+  assert.match(js, /RESULT/);
+  assert.doesNotMatch(js, /setLandingPresentationState[\s\S]{0,300}(?:Math\.random|call\('roll'\))/);
+});
+
+test('locked landing yields the central stage to results without scrolling', () => {
+  const css = fs.readFileSync(path.join(__dirname, '..', 'dual-shell.css'), 'utf8');
+  assert.match(css, /data-r4m-landing-state="LANDING_EXIT"/);
+  assert.match(css, /data-r4m-landing-state="RESULT"/);
+  assert.match(css, /#r4mHero[\s\S]*pointer-events:\s*none/);
+});
