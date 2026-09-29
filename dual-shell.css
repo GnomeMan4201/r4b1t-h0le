@@ -1205,10 +1205,6 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
    Corrects visual cascade/scale issues found in the 512x1108 iPhone recording.
    Presentation only: no selection, commit/reveal, Blind, or History authority changes. */
 @media (max-width:900px){
-  /* The aperture was capped at 292px{
-    width:min(88%,360px);
-  }
-
   /* Retire legacy result-container styling that had higher specificity than v4.
      The flattened aperture mouth is the structural red origin mark. */
   #r4mRouteMount:not(:empty){
