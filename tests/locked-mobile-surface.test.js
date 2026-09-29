@@ -29,3 +29,14 @@ test('locked mobile navigation keeps ROLL primary and MENU outlined', () => {
 test('locked mobile surface preserves reduced-motion handling', () => {
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
 });
+
+
+test('mobile landing uses the exact locked animated master asset', () => {
+  const js = fs.readFileSync(path.join(__dirname, '..', 'dual-shell.js'), 'utf8');
+  const svg = fs.readFileSync(path.join(__dirname, '..', 'r4b1t-h0l3-master.svg'), 'utf8');
+  assert.match(js, /r4b1t-h0l3-master\.svg/);
+  assert.match(svg, /viewBox="0 0 1700 925"/);
+  assert.match(svg, /id="r4h"/);
+  assert.match(svg, /\.is-entering/);
+  assert.match(svg, /#FB0118/i);
+});
