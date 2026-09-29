@@ -1617,3 +1617,51 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     max-width:none;
   }
 }
+
+
+/* Landing -> result continuity. These selectors only project authoritative
+   roll-machine state; they never select, commit, or expose a route. */
+@media (max-width:900px){
+  #r4mHero{
+    pointer-events:none;
+    transform-origin:50% 78%;
+    will-change:transform,opacity,max-height;
+  }
+  html[data-r4m-landing-state="LANDING_EXIT"] #r4mHero{
+    animation:r4mLandingYield 420ms cubic-bezier(.42,0,.2,1) both;
+  }
+  html[data-r4m-landing-state="RESULT"] #r4mHero{
+    max-height:0;
+    margin:0;
+    padding:0;
+    opacity:0;
+    overflow:hidden;
+    visibility:hidden;
+  }
+  html[data-r4m-landing-state="LANDING_EXIT"] #r4mRoll,
+  html[data-r4m-landing-state="RESULT"] #r4mRoll{
+    display:none;
+  }
+  html[data-r4m-landing-state="LANDING_EXIT"] #r4mRouteMount{
+    opacity:0;
+    transform:translateY(12px);
+  }
+  html[data-r4m-landing-state="RESULT"] #r4mRouteMount{
+    opacity:1;
+    transform:none;
+  }
+  #r4mRouteMount{
+    transition:opacity 220ms ease,transform 280ms cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes r4mLandingYield{
+    0%{opacity:1;transform:translateY(0) scale(1);max-height:70svh}
+    58%{opacity:1;transform:translateY(14px) scale(.985);max-height:70svh}
+    100%{opacity:0;transform:translateY(48px) scale(.96);max-height:0}
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  @media (max-width:900px){
+    html[data-r4m-landing-state="LANDING_EXIT"] #r4mHero{animation:none!important;max-height:0;opacity:0;visibility:hidden}
+    #r4mRouteMount{transition:none!important}
+  }
+}
