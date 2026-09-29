@@ -287,6 +287,7 @@
     host.innerHTML = shellMarkup();
     document.body.appendChild(host);
     mountProductionMark();
+    observeHistoryMotionState();
     watchHistoryMarkState();
 
     host.addEventListener('click', function (event) {
@@ -577,6 +578,25 @@ MOTION: waiting for target…';
       call('roll');
       routeTransitionBusy = false;
     }, 240);
+  }
+
+  function observeHistoryMotionState() {
+    if (historyMotionObserver) return;
+    var overlay = byId('historyOverlay');
+    if (!overlay) return;
+    historyMotionObserver = new MutationObserver(function () {
+      var open = overlay.style.display === 'flex' && overlay.getAttribute('aria-hidden') !== 'true';
+      var root = document.documentElement;
+      if (open) {
+        if (!root.classList.contains('history-open')) setSecondaryMarkState('history-open');
+      } else {
+        clearSecondaryMarkState('history-open');
+      }
+    });
+    historyMotionObserver.observe(overlay, {
+      attributes: true,
+      attributeFilter: ['style', 'class', 'aria-hidden']
+    });
   }
 
   function toggleHistoryWithMotion() {
