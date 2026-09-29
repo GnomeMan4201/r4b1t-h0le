@@ -45,7 +45,7 @@ test('mobile landing uses the exact locked animated master asset', () => {
 test('landing exit is presentation-only and projected from authoritative roll states', () => {
   const js = fs.readFileSync(path.join(__dirname, '..', 'dual-shell.js'), 'utf8');
   assert.match(js, /function setLandingPresentationState\(state\)/);
-  assert.match(js, /projectAuthoritativeRollPresentation[\s\S]*setLandingPresentationState\(next\)/);
+  assert.match(js, /projectAuthoritativeRollPresentation[\s\S]*machineState === 'RELEASED'[\s\S]*setLandingPresentationState\('LANDING_EXIT'\)[\s\S]*machineState === 'CARD_ENTERING'[\s\S]*setLandingPresentationState\('RESULT'\)/);
   assert.match(js, /LANDING_EXIT/);
   assert.match(js, /RESULT/);
   assert.doesNotMatch(js, /setLandingPresentationState[\s\S]{0,300}(?:Math\.random|call\('roll'\))/);
