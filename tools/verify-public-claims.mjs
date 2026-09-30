@@ -54,6 +54,7 @@ function corpusMetricsFromText(content) {
 }
 
 function verifyCorpusClaims(readme) {
+  const legacyEvidence = read('docs/readme/legacy-corpus-evidence.md');
   const legacy = corpusMetricsFromText(read('urls.txt'));
   const releaseManifest = JSON.parse(
     read('corpus/releases/typed-candidate-v0.1/manifest.json'),
@@ -76,31 +77,33 @@ function verifyCorpusClaims(readme) {
   );
 
   claim(
-    readme.includes(`<strong>${activeCount.toLocaleString('en-US')}</strong><br><sub>typed active resources</sub>`),
+    readme.includes(`**${activeCount.toLocaleString('en-US')} resources across ${activeHosts.toLocaleString('en-US')} hosts**`),
     `README active corpus count drift: expected ${activeCount.toLocaleString('en-US')} typed resources`,
   );
   claim(
-    readme.includes(`<strong>${activeHosts.toLocaleString('en-US')}</strong><br><sub>unique active hosts</sub>`),
-    `README active host count drift: expected ${activeHosts.toLocaleString('en-US')} active hosts`,
+    readme.includes('./corpus/runtime/active-v1.json') &&
+      readme.includes('./corpus/releases/typed-candidate-v0.1/manifest.json'),
+    'README must link active corpus authority and release evidence',
   );
   claim(
-    readme.includes(`<strong>${activeTypes.toLocaleString('en-US')}</strong><br><sub>explicit resource types</sub>`),
+    readme.includes(`**${activeTypes.toLocaleString('en-US')} resource types**`),
     `README active type count drift: expected ${activeTypes.toLocaleString('en-US')} resource types`,
   );
 
   const legacyValidLabel = legacy.validUrls.toLocaleString('en-US');
   const legacyHostLabel = legacy.uniqueHosts.toLocaleString('en-US');
   claim(
-    readme.includes(`Structurally valid URLs | **${legacyValidLabel}**`),
-    `README legacy baseline drift: expected ${legacyValidLabel} structurally valid URLs`,
+    legacyEvidence.includes(`Structurally valid URLs | **${legacyValidLabel}**`),
+    `legacy evidence drift: expected ${legacyValidLabel} structurally valid URLs`,
   );
   claim(
-    readme.includes(`Unique hosts | **${legacyHostLabel}**`),
-    `README legacy host baseline drift: expected ${legacyHostLabel} unique hosts`,
+    legacyEvidence.includes(`Unique hosts | **${legacyHostLabel}**`),
+    `legacy evidence drift: expected ${legacyHostLabel} unique hosts`,
   );
   claim(
-    readme.includes('legacy 50,109-URL audit baseline') &&
-      readme.includes('It is no longer the active production selection corpus'),
+    legacyEvidence.includes('legacy 50,109-URL audit baseline') &&
+      legacyEvidence.includes('It is no longer the active production selection corpus') &&
+      readme.includes('./docs/readme/legacy-corpus-evidence.md'),
     'README must distinguish legacy frozen evidence from current runtime authority',
   );
 }
