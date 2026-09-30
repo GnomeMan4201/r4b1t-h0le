@@ -20,11 +20,7 @@ No recommendation profile. No engagement feed. History does not steer the next r
 2. **OPEN DESTINATION** to visit it, **KEEP CARD** to download a local PNG, or **INSPECT** to examine its metadata on mobile.
 3. **ROLL AGAIN** for another selection. Keeping or refusing a resource does not train a profile.
 
-On phones, the result takes over the primary stage. **MENU** holds filters, branching, history, trail files, and the deeper instruments. Desktop exposes more of those controls directly; both shells use the same active corpus and ROLL authority.
-
-<p align="center">
-  <img src="./docs/readme/open-instrument-result.png" width="350" alt="Live mobile result showing the selected resource, Open Destination, Keep Card, Inspect, and Roll Again">
-</p>
+On a phone, each roll replaces the landing screen with its result. Open **MENU** for filters, branching, history, and trail tools.
 
 **Filters change eligibility, not ranking.** Choose a terrain explicitly before rolling. The sampler does not infer filters from your activity.
 
