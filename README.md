@@ -55,12 +55,12 @@ The [product contract](./CONTRACT.md), [anti-ranking ADR](./docs/adr/0001-anti-r
 
 Route and session state are device-local. Trails preserve recorded routes in their actual order; replay uses those recorded URLs rather than substituting a newer corpus. Session History records disclosed discovery selections and is distinct from proof that a destination was opened.
 
-| Check | What it establishes | What it does not establish |
-| --- | --- | --- |
-| Trail identifier | Integrity of the canonical manifest | Authorship, truthful sampler execution, or destination visits |
-| Parent and child artifacts | Declared lineage and the matching inherited prefix | Lineage from a parent identifier alone |
-| Revealed Blind commitment | Route and nonce match the recorded commitment and context | Wall-clock ordering or absence of a privately truncated tail |
-| Concealed Blind step | Snapshot integrity and structural placement | A verified reveal or a resolved cryptographic chain |
+| Check | Evidence and limit |
+| --- | --- |
+| Trail identifier | Establishes canonical manifest integrity. Does not establish authorship, truthful sampler execution, or destination visits. |
+| Parent + child | Establishes declared lineage and the matching inherited prefix. A parent identifier alone is insufficient. |
+| Blind reveal | Establishes that route and nonce match the recorded commitment and context. Does not prove wall-clock ordering or absence of a privately truncated tail. |
+| Concealed step | Establishes snapshot integrity and structural placement. Does not verify a reveal or resolve the cryptographic chain. |
 
 Exported files can be checked without an account:
 
