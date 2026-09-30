@@ -52,9 +52,6 @@ A route is rolled from the current eligible ground. From there you can follow it
 
 <p align="center"><code>CORPUS → CHANCE → ROUTE → BRANCH → DEVICE-LOCAL TRAIL</code></p>
 
-<p align="center">
-  <img src="./docs/readme/readme-application-overview.jpg" alt="Application overview — Discovery Without Algorithms" width="100%">
-</p>
 
 <table>
 <tr>
@@ -117,9 +114,6 @@ The original public build notes are here:
 
 ## How it works
 
-<p align="center">
-  <img src="./docs/readme/readme-core-mechanics.jpg" alt="Core application mechanics — the roll, route inspection, and trail topology" width="100%">
-</p>
 
 <table>
 <tr>
@@ -263,9 +257,6 @@ The guiding rule is simple: **do not upgrade a structural observation into a str
 
 The trail system separates what can be cryptographically verified from stronger claims an artifact cannot support. A verified reveal can establish that disclosed route material matches its commitment; it does not, by itself, establish authorship or prove real-world wall-clock ordering.
 
-<p align="center">
-  <img src="./docs/readme/readme-session-proofs.jpg" alt="Provenance data and session integrity — cryptographic session proofs" width="100%">
-</p>
 
 <table>
 <tr>
