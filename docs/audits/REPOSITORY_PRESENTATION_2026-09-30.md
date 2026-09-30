@@ -38,3 +38,16 @@ Target description: “Chance-driven discovery across security, OSINT, research,
 Target homepage: `https://r4b1t.badbananaresearch.com`.
 
 Target topics: `discovery`, `security`, `osint`, `security-research`, `local-first`, `pwa`, `vanilla-js`. Remove redundant `infosec`, comparison-brand `stumbleupon`, and `tor` (the active typed release excludes onion resources). No changes to repository features, permissions, or deployment settings.
+
+## Verification after organization
+
+- Authored local Markdown/HTML links and documentation CI filters: 225 checked by `npm run docs:verify`. A temporary missing-link negative control was rejected. Pinned catalog snapshots are deliberately excluded from navigation linting; their bytes remain corpus evidence.
+- `npm run claims:verify` and `npm run claims:verify:live`: PASS.
+- `npm test`: all 400 unit tests PASS. Browser phase could not launch Chromium (234 launch failures, 4 skipped). The browser installer received truncated ZIP archives; this is not behavioral acceptance evidence.
+- Python maintenance/corpus suites: 85 tests PASS after installing the declared sweep requirements.
+- Documented pinned-catalog → aggregation → eligibility → release recipe: PASS; all three generated release files match the checked-in typed candidate byte-for-byte.
+- Runtime HTML/JS/CSS, production and README SVGs, Worker, PWA files, corpus/authority bytes, machine schemas, existing ADRs, and root product contract: unchanged.
+- All 46 old moved paths are absent. Repository searches found no stale consumers; same-directory links to unchanged basenames are valid references to their new location.
+- `npm run shadow:verify`: blocked by refused DNS CNAME lookup (`ECONNREFUSED`) and a timed-out serving check in this environment. Live public-claims checks passed separately; they do not replace the broader shadow check.
+- GitHub branch root, README opening, and documentation map inspected at desktop width. Phone-width visual inspection remains pending: the available browser control surface does not expose viewport resizing.
+- Metadata targets above are prepared but not applied: the connector exposes no repository-metadata update operation and the available browser is signed out. Metadata and outstanding visual/CI checks remain completion gates; this branch must not be merged yet.
