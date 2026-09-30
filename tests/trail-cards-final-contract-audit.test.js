@@ -115,7 +115,7 @@ test('REJECTED and UNVERIFIED remain diagnostic and cannot carry verified displa
 });
 
 test('detached-card authority is explicitly denied in renderer, bundle, and handoff copy', () => {
-  const spec = read('docs/TRAIL_CARDS_V1_SPEC.md');
+  const spec = read('docs/contracts/TRAIL_CARDS_V1_SPEC.md');
   const bundleSource = read('trail-card-bundle.js');
   const shareSource = read('trail-card-share.js');
 
