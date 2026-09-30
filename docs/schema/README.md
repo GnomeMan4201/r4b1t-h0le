@@ -1,18 +1,14 @@
-# Trail Topology export schema v0.1
+# Projection schemas
 
-This directory contains the normative machine-export schema for Trail Topology v2.
+[Documentation map](../README.md) · [Feature contracts](../contracts/README.md)
 
-- `trail-topology-export-v0.1.schema.json` defines proof-relevant export structure.
-- `tests/fixtures/topology-v2/golden-vectors.json` provides one committed fixture for each categorical proof state required by the v2 specification.
+| Format | Machine schema | Human-readable boundary |
+| --- | --- | --- |
+| Trail Topology export v0.1 | [JSON Schema](trail-topology-export-v0.1.schema.json) | [Topology specification](../contracts/TRAIL_TOPOLOGY_V2_SPEC.md) |
+| Trail Card v0.1 | [JSON Schema](trail-card-v0.1.schema.json) | [Projection document](TRAIL_CARD_V0.1_SCHEMA.md) |
+| Trail Comparison v0.1 | [JSON Schema](trail-comparison-v0.1.schema.json) | [Projection document](TRAIL_COMPARISON_V0.1_SCHEMA.md) |
+| Proof Session v0.1 | [JSON Schema](proof-session-v0.1.schema.json) | [Projection document](PROOF_SESSION_V0.1_SCHEMA.md) |
 
-The five baseline states are deliberately categorical:
+Each document retains its recorded status. Derived projections do not acquire evidence authority. The format-specific source verifier establishes only its supported claims; a detached rendered image is not independently verifiable proof.
 
-- `VERIFIED`
-- `REJECTED`
-- `PARENT ABSENT`
-- `CONCEALED`
-- `REVEALED`
-
-They are facts at different scopes, not confidence levels. A rejected artifact belongs in diagnostics and must not enter the verified graph. A missing parent is an unresolved relationship, not a failed child artifact. Concealed and revealed are stop states, not quality judgments.
-
-The schema carries the original manifest because the format-specific trail verifier remains authoritative. Rendered topology images are presentation artifacts and are not independently verifiable by themselves.
+Committed [golden vectors](../../tests/fixtures/) exercise categorical states and rejection boundaries. Corpus/provenance/eligibility machine schemas remain under root [`schemas/`](../../schemas/); their paths and bytes are unchanged.

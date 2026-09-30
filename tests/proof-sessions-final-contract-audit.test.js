@@ -370,6 +370,6 @@ test('Trail Topology v2, Trail Cards v1, and Trail Comparison v1 remain independ
   assert.equal(sources.includes('R4b1tTrailCard'), false);
   assert.equal(sources.includes("require('./trail-card.js')"), false);
 
-  const spec = read('docs/PROOF_SESSIONS_V1_SPEC.md');
+  const spec = read('docs/contracts/PROOF_SESSIONS_V1_SPEC.md');
   assert.match(spec, /Depends on: .*Trail Topology v2 \(frozen\).*Trail Cards v1 \(frozen\).*Trail Comparison \/ Divergence v1 \(frozen\)/);
 });

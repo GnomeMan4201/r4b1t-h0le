@@ -1,9 +1,11 @@
 # README assets
 
-The repository front page uses one visual asset:
+[Documentation map](../README.md)
 
-- `open-instrument-hero.svg`: a static projection of the checked-in `r4b1t-h0l3-production.svg` master. Geometry and #FB0118 identity are preserved; motion rules and state-only overlays are removed. No product claims are embedded in the artwork.
+The repository front page uses only [`open-instrument-hero.svg`](open-instrument-hero.svg), a static projection of the checked-in [`r4b1t-h0l3-production.svg`](../../r4b1t-h0l3-production.svg) master. Visible geometry and the #FB0118 accent are preserved. The production master and this projection are unchanged by the repository organization pass.
 
-The authority table is native Markdown in README.md; it requires no embedded renderer. Exact claims, commands, and evidence boundaries remain selectable Markdown text.
+The projection omits the production animation rules and contains no script or product claims. It retains clip paths, masks, nested transform/state wrappers, and state-only elements. A small stylesheet hides `r4h-result-card-slot`, `r4h-result-eye-left-socket`, and `r4h-blind-eye-left-socket`; it does not remove those elements. This is a static display asset, not an interaction harness or selection authority.
 
-`legacy-corpus-evidence.md` preserves the historical audit moved out of the main reading path. Older image assets are retained as historical material; they are not used by the redesigned README.
+Authority tables and evidence limits remain native Markdown in the root README. [Legacy corpus evidence](../evidence/legacy-corpus-evidence.md) belongs to the evidence collection, not to artwork.
+
+The earlier [field-reel SVG](../history/readme/field-reel-mobile-shell.svg) is explicitly historical. Unreferenced JPEG/WebP experiments were removed from the active tree; their source commits and classification are recorded in the [presentation audit](../audits/REPOSITORY_PRESENTATION_2026-09-30.md).

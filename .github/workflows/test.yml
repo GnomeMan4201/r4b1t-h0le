@@ -48,6 +48,9 @@ jobs:
             --exclude='test-results' \
             ./ test-site/r4b1t-h0le/
 
+      - name: Verify repository documentation links and CI paths
+        run: npm run docs:verify
+
       - name: Run desktop and mobile browser tests
         env:
           BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/

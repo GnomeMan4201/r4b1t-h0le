@@ -11,7 +11,7 @@ on:
       - 'urls.txt'
       - 'requirements-pool-sweep.txt'
       - '.github/workflows/pool-sweep.yml'
-      - 'docs/POOL_SWEEP_OPERATIONS.md'
+      - 'docs/operations/POOL_SWEEP_OPERATIONS.md'
 
 permissions:
   contents: read

@@ -1,4 +1,4 @@
-# Contributing to r4b1t
+# Contributing to R4B1T H0L3
 
 Low-ceremony. One maintainer. Contributions are welcome when they fit the project's philosophy and preserve the evidence/maintenance boundaries documented in the repository.
 
@@ -48,16 +48,16 @@ Do not include credentials, private browsing data, or third-party sensitive info
 
 ## Code contributions
 
-The application lives primarily in `index.html`: vanilla JavaScript, HTML, and CSS with no production build step. Keep that property unless there is a concrete technical reason to change it.
+The client is static HTML, JavaScript, and CSS with no production build step. `index.html` is the canonical entry; root modules implement the shell, selection, trails, and proof surfaces. The [application map](docs/architecture/README.md) explains those boundaries. Keep runtime paths stable unless a change has a concrete architectural reason.
 
 Supporting tooling lives in `tools/` and `pool_sweep.py`; the service worker is `sw.js`.
 
 **Before opening a PR:**
 
-- run `npm test`
+- run `npm test`, `npm run claims:verify`, and `npm run docs:verify`
 - run `python -m unittest discover -s tests -p 'test_*.py' -v` after installing `requirements-pool-sweep.txt`
 - test the mobile layout
-- preserve the no-tracking/no-account model
+- preserve device-local session/trail state and the absence of r4b1t analytics, recommendation profiles, and engagement tracking; [network requests have a separate boundary](docs/WORKER_TRUST_BOUNDARY.md)
 - do not introduce new production JavaScript dependencies without a demonstrated need
 - preserve the deployed `/r4b1t-h0le/` path behavior
 - make targeted changes and verify the affected output before committing
@@ -66,26 +66,13 @@ Prefer small, reviewable PRs over framework migrations or unrelated rewrites.
 
 ---
 
-## Pool tooling
+## Corpus and tooling
 
-The `tools/` directory contains supporting corpus-maintenance utilities:
+The active source is the digest-bound typed release named by [`corpus/runtime/active-v1.json`](corpus/runtime/active-v1.json). Root `urls.txt` preserves the historical/rollback corpus. A URL submission, liveness observation, tagger output, or edit to `urls.txt` does not promote a resource into the active population.
 
-| Script | Purpose |
-|--------|---------|
-| `extract_pool.py` | Extract URLs from `index.html` |
-| `clean_pool.py` | Deduplicate and normalize |
-| `r4b1t_classifier.py` | Assign categories |
-| `r4b1t_tagger.py` | Tag metadata |
-| `r4b1t_pipeline.sh` | Pipeline runner |
+Follow [corpus governance](docs/operations/CORPUS_GOVERNANCE.md) and the [tool guide](tools/README.md) for pinned catalogs, explicit provenance, deterministic eligibility, release construction, and separate runtime promotion. Preserve source hashes and review evidence. Reachability does not establish safety, truth, or relevance.
 
-Example pool sweep:
-
-```bash
-python pool_sweep.py --workers 30 --timeout 8
-sqlite3 pool_sweep.db "SELECT url FROM pool WHERE reachable=1" > urls.txt
-```
-
-Preserve the corpus revision and sweep output when using reachability results as research evidence.
+For network observations, use the [pool sweep operations guide](docs/operations/POOL_SWEEP_OPERATIONS.md). Keep reports in a scratch directory for review; do not pipe reachability results into a canonical corpus file. The older weekly HTML-rebuild recipe is [historical and incomplete](tools/history/README.md).
 
 ---
 

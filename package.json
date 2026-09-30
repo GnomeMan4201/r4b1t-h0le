@@ -23,7 +23,8 @@
     "session:bundle": "node tools/create-proof-session-bundle.js",
     "session:inspect": "node tools/inspect-proof-session-bundle.js",
     "test:replay-ui": "playwright test --config=playwright.replay.config.js",
-    "test:roll-motion": "node --test tests/roll-motion-state-machine.test.js tests/roll-motion-authority.test.js tests/roll-motion-disclosure.test.js tests/roll-renderer.test.js"
+    "test:roll-motion": "node --test tests/roll-motion-state-machine.test.js tests/roll-motion-authority.test.js tests/roll-motion-disclosure.test.js tests/roll-renderer.test.js",
+    "docs:verify": "node tools/verify-repository-docs.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.62.0"

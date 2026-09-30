@@ -5,7 +5,7 @@ Deployment: `https://r4b1t-proxy.badbanana6969.workers.dev`
 
 The Worker that supports the browser application is now versioned in this repository at [`worker/r4b1t-proxy.mjs`](../worker/r4b1t-proxy.mjs), deployed through [`.github/workflows/deploy-worker.yml`](../.github/workflows/deploy-worker.yml), and verified against production after deployment.
 
-The current deployment is **production-equivalent** to the reviewed repository contract recorded in [`docs/releases/2026-09-18-worker-verification.md`](./releases/2026-09-18-worker-verification.md).
+The current deployment is **production-equivalent** to the reviewed repository contract recorded in [`docs/releases/2026-09-18-worker-verification.md`](releases/2026-09-18-worker-verification.md).
 
 ## Why this boundary exists
 

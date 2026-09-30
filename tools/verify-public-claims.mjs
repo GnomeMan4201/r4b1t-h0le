@@ -54,7 +54,7 @@ function corpusMetricsFromText(content) {
 }
 
 function verifyCorpusClaims(readme) {
-  const legacyEvidence = read('docs/readme/legacy-corpus-evidence.md');
+  const legacyEvidence = read('docs/evidence/legacy-corpus-evidence.md');
   const legacy = corpusMetricsFromText(read('urls.txt'));
   const releaseManifest = JSON.parse(
     read('corpus/releases/typed-candidate-v0.1/manifest.json'),
@@ -103,7 +103,7 @@ function verifyCorpusClaims(readme) {
   claim(
     legacyEvidence.includes('legacy 50,109-URL audit baseline') &&
       legacyEvidence.includes('It is no longer the active production selection corpus') &&
-      readme.includes('./docs/readme/legacy-corpus-evidence.md'),
+      readme.includes('./docs/evidence/legacy-corpus-evidence.md'),
     'README must distinguish legacy frozen evidence from current runtime authority',
   );
 }

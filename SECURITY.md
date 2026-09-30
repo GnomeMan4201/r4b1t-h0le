@@ -30,7 +30,7 @@ Third-party URLs in the discovery corpus are external resources, not code mainta
 
 Report findings against the current default branch and, for deployment-specific behavior, include the observed deployment URL and date. Corpus reachability changes are normal maintenance events and are not security defects by themselves.
 
-The Worker source is versioned at [`worker/r4b1t-proxy.mjs`](./worker/r4b1t-proxy.mjs). See [`docs/WORKER_TRUST_BOUNDARY.md`](./docs/WORKER_TRUST_BOUNDARY.md) for its reviewed contract, dated deployment evidence, and verification limits. Later deployments do not automatically inherit earlier verification claims.
+The Worker source is versioned at [`worker/r4b1t-proxy.mjs`](worker/r4b1t-proxy.mjs). See [`docs/WORKER_TRUST_BOUNDARY.md`](docs/WORKER_TRUST_BOUNDARY.md) for its reviewed contract, dated deployment evidence, and verification limits. Later deployments do not automatically inherit earlier verification claims.
 
 ## Disclosure
 

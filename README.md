@@ -75,7 +75,7 @@ Automatic metadata, favicon, preview-image, and optional Wikipedia enrichment re
 
 Opening a destination leaves that boundary. External sites control their own content and request handling. Corpus inclusion, a valid digest, a resource label, or a successful liveness check does not certify safety, truth, or continued availability.
 
-The [legacy corpus baseline](./docs/readme/legacy-corpus-evidence.md) is historical evidence, not the active selection population.
+The [legacy corpus baseline](./docs/evidence/legacy-corpus-evidence.md) is historical evidence, not the active selection population.
 
 ## Run and verify
 
@@ -106,6 +106,6 @@ Browser coverage includes desktop and mobile behavior. A green run establishes t
 
 Useful contributions include concrete resources, broken-link reports, reproducible bugs, accessibility fixes, and corrections to evidence claims. Changes must preserve history-blind selection and the distinction between eligibility, presentation, and verification.
 
-[Contribute](./CONTRIBUTING.md) · [Report a bug or submit a URL](https://github.com/GnomeMan4201/r4b1t-h0le/issues) · [Report a vulnerability privately](./SECURITY.md) · [Releases](https://github.com/GnomeMan4201/r4b1t-h0le/releases) · [MIT license](./LICENSE)
+[Documentation map](./docs/README.md) · [Contribute](./CONTRIBUTING.md) · [Report a bug or submit a URL](https://github.com/GnomeMan4201/r4b1t-h0le/issues) · [Report a vulnerability privately](./SECURITY.md) · [Releases](https://github.com/GnomeMan4201/r4b1t-h0le/releases) · [MIT license](./LICENSE)
 
 **badBANANA Research Collective**

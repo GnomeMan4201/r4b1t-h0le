@@ -1,10 +1,19 @@
-# r4b1t Documentation
+# R4B1T H0L3 — documentation map
 
-- [Corpus governance and removal policy](CORPUS_GOVERNANCE.md)
-- [Pool sweep operations](POOL_SWEEP_OPERATIONS.md)
-- [Closeout quality gate](QUALITY_GATE.md)
-- [Closeout audit — 2026-08-05](CLOSEOUT_AUDIT_2026-08-05.md)
+[Open the instrument](https://r4b1t.badbananaresearch.com) · [Repository overview](../README.md) · [Contribute](../CONTRIBUTING.md)
 
-The `Corpus Quality` workflow generates source-hash-bound JSON and Markdown artifacts and enforces `.github/corpus-policy.json` as the reviewed non-regression baseline. `.github/corpus-policy.example.json` is the stricter target state; it is not currently enforced because the measured corpus does not yet satisfy it.
+| Read for | Location |
+| --- | --- |
+| Product boundaries and feature specifications | [Product contract](../CONTRACT.md) · [Contracts](contracts/README.md) |
+| Architectural decisions and their acceptance status | [ADRs](adr/README.md) |
+| Runtime layout and presentation ownership | [Architecture](architecture/README.md) |
+| Verification results and audit baselines | [Audits](audits/README.md) · [Corpus evidence](evidence/README.md) |
+| Versioned release and deployment records | [Releases](releases/README.md) |
+| Corpus governance and maintenance procedures | [Operations](operations/README.md) · [Tools](../tools/README.md) |
+| Export formats | [Projection schemas](schema/README.md) · [Corpus schemas](../schemas/) |
+| Network and vulnerability boundaries | [Worker boundary](WORKER_TRUST_BOUNDARY.md) · [Security policy](../SECURITY.md) |
+| Current artwork and earlier experiments | [README assets](readme/README_ASSETS.md) · [Historical presentation](history/README.md) |
 
-The `Pool Sweep Evidence` workflow is report-only. Its network observations are uploaded for review and cannot directly replace or push the canonical corpus.
+Runtime authority comes from [`corpus/runtime/active-v1.json`](../corpus/runtime/active-v1.json), which binds the promoted release's URL digest. Release manifests, source catalogs, legacy `urls.txt`, and liveness reports have separate roles; none independently replaces that authority.
+
+Document status matters. Drafts and proposed ADRs remain proposals; dated audits and releases establish evidence only for their recorded baselines. The [workstream handoff](WORKSTREAM_STATUS.md) records an earlier coordination baseline, not a certification of current main.
