@@ -36,16 +36,12 @@ On phones, the result takes over the primary stage. **MENU** holds filters, bran
 
 The active population is the promoted `typed-candidate-v0.1` release: **841 resources across 284 hosts**, with **7 resource types**. The [promotion record](./corpus/runtime/active-v1.json) grants runtime authority to its digest-bound URL bytes; the [release manifest](./corpus/releases/typed-candidate-v0.1/manifest.json) records the release evidence. A digest mismatch rejects the load rather than silently falling back to the legacy pool.
 
-```mermaid
-flowchart TD
-    C["Digest-verified corpus"] --> E["Eligible pool"]
-    F["Explicit terrain and protocol constraints"] --> E
-    E --> S["ROLL sampler"]
-    S --> T["Committed selection transaction"]
-    T --> R["Route disclosure"]
-    T --> L["Local trail recording"]
-    R --> H["Session history and presentation"]
-```
+| Layer | Authority |
+| --- | --- |
+| Corpus | Digest-verified URL bytes define the selection population. |
+| Filters | Explicit terrain and protocol constraints define eligibility. |
+| ROLL | The sampler commits one selection transaction. |
+| Presentation + trail | Disclose and record that transaction; neither can replace its destination. |
 
 History, wear, popularity, and display metadata have no authority over ROLL. The documented immediate-repeat guard is a mechanical exception; accumulated domain history is not a sampler input. Animation presents a committed result and cannot choose or replace it.
 
