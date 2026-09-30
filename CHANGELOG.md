@@ -7,7 +7,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-No changes queued.
+### Changed
+
+- R4B1T H0L3 secondary motion (BRANCH, TRAIL, TOPOLOGY, HISTORY, REPLAY / INSPECT, COPY TRAIL) reimplemented to the approved Motion Board, superseding #218: paw backing and a left-eye socket remove paw ghosts and the eye gap, ears and resting paws move with the head, RESULT keeps its own state while a sheet is open, and reduced motion restores the approved MENU/HISTORY/COPY semantics
+- the mobile shell derives the mark's secondary state from each surface's own open state (one observer, overlay modules untouched); peer switches pass through the canonical pose (380ms canonical-return contract), COPY TRAIL is a short event class, and ROLL / BLIND DESCENT close shell sheets before taking the stage
+
+### Added
+
+- secondary mark state conformance spec (state ownership, peer switch, COPY TRAIL, ROLL / BLIND / RESULT authority) and unit coverage for the wiring and the canonical-return contract
 
 ---
 

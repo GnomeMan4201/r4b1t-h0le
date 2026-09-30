@@ -14,47 +14,6 @@
   var pendingRouteMotion = null;
   var rollPendingTimer = null;
   var ledgerRowObserver = null;
-  var secondaryMarkStates = ['branch-open', 'trail-open', 'topology-open', 'history-open', 'replay-open'];
-  var secondaryDismissedResult = false;
-  var copyTrailMotionTimer = null;
-  var historyMotionObserver = null;
-
-  function setSecondaryMarkState(state) {
-    var root = document.documentElement;
-    secondaryMarkStates.forEach(function (name) { root.classList.remove(name); });
-    if (state) {
-      // A secondary instrument dismisses the previous RESULT presentation only.
-      // The revealed route/data remains authoritative and unchanged.
-      secondaryDismissedResult = true;
-      root.classList.remove('result-ready');
-      root.classList.add(state);
-    }
-  }
-
-  function clearSecondaryMarkState(state) {
-    var root = document.documentElement;
-    if (state) root.classList.remove(state);
-    else secondaryMarkStates.forEach(function (name) { root.classList.remove(name); });
-  }
-
-  function clearCopyTrailMotion() {
-    window.clearTimeout(copyTrailMotionTimer);
-    copyTrailMotionTimer = null;
-    document.documentElement.classList.remove('copy-trail');
-  }
-
-  function pulseCopyTrailMotion() {
-    var root = document.documentElement;
-    clearCopyTrailMotion();
-    // COPY owns only its nested presentation layer. RESULT or TRAIL may keep
-    // their outer pose while this one-shot capture/detach gesture runs.
-    void root.offsetWidth;
-    root.classList.add('copy-trail');
-    copyTrailMotionTimer = window.setTimeout(function () {
-      copyTrailMotionTimer = null;
-      root.classList.remove('copy-trail');
-    }, 440);
-  }
   var motionDebugEnabled = /[?&]debug-motion=1(?:&|$)/.test(window.location.search);
 
   function byId(id) { return document.getElementById(id); }
@@ -247,8 +206,6 @@
     var presentation = root.getAttribute('data-r4m-presentation') || 'idle';
     var rolling = ['contact','compression','committed','travel','brake','seat'].indexOf(presentation) !== -1;
     var resultReady = presentation === 'reveal' || presentation === 'revealed';
-    if (rolling) secondaryDismissedResult = false;
-    if (secondaryDismissedResult) resultReady = false;
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
       // no mark motion to wait for: represent the state directly
@@ -269,6 +226,114 @@
     root.classList.toggle('result-ready', resultReady);
   }
 
+  // ── Secondary mark states ───────────────────────────────────────────────
+  // Presentation only. The production mark reacts to which secondary surface is
+  // open (.branch-open, .trail-open, .topology-open, .history-open, .replay-open)
+  // and to one-shot .copy-trail. This code never opens, closes or orders a surface
+  // and carries no motion: it reads each surface's own open state from the DOM
+  // (so a close from any button, Esc or the desktop shell is seen) and exposes at
+  // most one secondary class on <html>, the same ancestor as .menu-open/.rolling.
+  // ROLL and BLIND need nothing here; the SVG gates the secondary layer off.
+  var MARK_SECONDARY_SURFACES = [ // Motion Board priority: replay > topology > branch > trail > history
+    { cls: 'replay-open', id: 'replayInspectionOverlay' },
+    { cls: 'topology-open', id: 'trailTopologyOverlay' },
+    { cls: 'branch-open', id: 'r4mBranchSheet' },
+    { cls: 'trail-open', id: 'trailLedgerOverlay' },
+    { cls: 'history-open', id: 'historyOverlay' }
+  ];
+  // Canonical-return contract with r4b1t-h0l3-production.svg: the act layer is back
+  // on the exact canonical pose MARK_SECONDARY_RETURN_MS after its class is removed
+  // (the longest return, the ears, lands at 80+300ms). A peer switch removes the old
+  // class and applies the next only once that has elapsed, so no keyframed pose
+  // restarts mid-pose. tests/mobile-production-svg-integration.test.js derives the
+  // value from the SVG's own rules; change it here if the Motion Board timing changes.
+  var MARK_SECONDARY_RETURN_MS = 380;
+  var MARK_COPY_MS = 460; // the SVG's COPY TRAIL one-shot runs 420ms
+  var markSecondary = null;
+  var markSecondarySettleUntil = 0;
+  var markSecondaryTimer = null;
+  var markCopyTimer = null;
+  var markSurfaceObserver = null;
+  var markWatched = {};
+
+  function prefersReducedMotion() {
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  function markSurfaceOpen(surface) {
+    var el = byId(surface.id);
+    if (!el || el.hidden) return false;
+    if (el.getAttribute('aria-hidden') === 'false') return true;
+    // the mobile history motion may show the legacy ledger before it flips aria-hidden
+    return surface.id === 'historyOverlay' && el.style.display === 'flex';
+  }
+
+  function desiredMarkSecondary() {
+    for (var i = 0; i < MARK_SECONDARY_SURFACES.length; i++) {
+      if (markSurfaceOpen(MARK_SECONDARY_SURFACES[i])) return MARK_SECONDARY_SURFACES[i].cls;
+    }
+    return null;
+  }
+
+  function syncMarkSecondary() {
+    var root = document.documentElement;
+    var next = desiredMarkSecondary();
+    if (markSecondary && markSecondary !== next) {
+      root.classList.remove(markSecondary);
+      markSecondary = null;
+      markSecondarySettleUntil = prefersReducedMotion() ? 0 : Date.now() + MARK_SECONDARY_RETURN_MS;
+    }
+    if (!next || markSecondary === next) {
+      window.clearTimeout(markSecondaryTimer);
+      markSecondaryTimer = null;
+      return;
+    }
+    var wait = markSecondarySettleUntil - Date.now();
+    if (wait > 0) {
+      if (markSecondaryTimer === null) {
+        markSecondaryTimer = window.setTimeout(function () {
+          markSecondaryTimer = null;
+          syncMarkSecondary();
+        }, wait);
+      }
+      return;
+    }
+    root.classList.add(next);
+    markSecondary = next;
+  }
+
+  function watchMarkSurfaces() {
+    if (!markSurfaceObserver) markSurfaceObserver = new MutationObserver(syncMarkSecondary);
+    MARK_SECONDARY_SURFACES.forEach(function (surface) {
+      var el = byId(surface.id);
+      if (!el || markWatched[surface.id] === el) return;
+      markWatched[surface.id] = el;
+      markSurfaceObserver.observe(el, { attributes: true, attributeFilter: ['aria-hidden', 'hidden', 'style'] });
+    });
+    syncMarkSecondary();
+  }
+
+  function initMarkSecondary() {
+    watchMarkSurfaces();
+    // trail ledger and topology mount their overlays on first open
+    new MutationObserver(watchMarkSurfaces).observe(document.body, { childList: true });
+  }
+
+  // COPY TRAIL is an event, not a state: a short-lived class per completed copy action.
+  function pulseMarkCopy() {
+    var root = document.documentElement;
+    window.clearTimeout(markCopyTimer);
+    if (root.classList.contains('copy-trail')) {
+      root.classList.remove('copy-trail');
+      void root.offsetWidth; // let the one-shot restart for a repeated copy
+    }
+    root.classList.add('copy-trail');
+    markCopyTimer = window.setTimeout(function () {
+      markCopyTimer = null;
+      root.classList.remove('copy-trail');
+    }, MARK_COPY_MS);
+  }
+
   function buildShell() {
     if (byId('r4mShellHost')) return;
     if (motionDebugEnabled) ensureMotionDebug();
@@ -277,7 +342,6 @@
     host.innerHTML = shellMarkup();
     document.body.appendChild(host);
     mountProductionMark();
-    observeHistoryMotionState();
 
     host.addEventListener('click', function (event) {
       var target = event.target.closest('[data-mobile-action]');
@@ -539,6 +603,8 @@ MOTION: waiting for target…';
   }
 
   function runRollTransition(kind) {
+    // a ROLL takes the stage: no shell sheet stays open over it
+    closeSheets();
     if (kind === 'roll' && window.R4B1TRollProduction && typeof window.R4B1TRollProduction.roll === 'function') {
       return window.R4B1TRollProduction.roll();
     }
@@ -569,32 +635,12 @@ MOTION: waiting for target…';
     }, 240);
   }
 
-  function observeHistoryMotionState() {
-    if (historyMotionObserver) return;
-    var overlay = byId('historyOverlay');
-    if (!overlay) return;
-    historyMotionObserver = new MutationObserver(function () {
-      var open = overlay.style.display === 'flex' && overlay.getAttribute('aria-hidden') !== 'true';
-      var root = document.documentElement;
-      if (open) {
-        if (!root.classList.contains('history-open')) setSecondaryMarkState('history-open');
-      } else {
-        clearSecondaryMarkState('history-open');
-      }
-    });
-    historyMotionObserver.observe(overlay, {
-      attributes: true,
-      attributeFilter: ['style', 'class', 'aria-hidden']
-    });
-  }
-
   function toggleHistoryWithMotion() {
     reportTap('HISTORY');
     var overlay = byId('historyOverlay');
     if (!overlay) return call('toggleHistory');
     var open = overlay.style.display === 'flex';
     if (!open) {
-      setSecondaryMarkState('history-open');
       call('toggleHistory');
       // The legacy ledger returns early when empty; mobile history must still
       // open and animate so an empty trail is an explicit state, not a dead tap.
@@ -605,7 +651,6 @@ MOTION: waiting for target…';
       });
       return;
     }
-    clearSecondaryMarkState('history-open');
     playMotion(overlay, 'ledger-close', 260);
     window.setTimeout(function () { call('toggleHistory'); }, 250);
   }
@@ -683,14 +728,11 @@ MOTION: waiting for target…';
     }
     if (action === 'trail-file') {
       closeSheets();
-      setSecondaryMarkState('trail-open');
-      var trailOpened = call('openTrailLedger');
-      if (!trailOpened) clearSecondaryMarkState('trail-open');
-      return trailOpened;
+      return call('openTrailLedger');
     }
     if (action === 'copy-trail') {
-      pulseCopyTrailMotion();
-      return call('shareTrail');
+      if (call('shareTrail')) pulseMarkCopy();
+      return;
     }
     if (action === 'comparison') {
       closeSheets();
@@ -702,16 +744,12 @@ MOTION: waiting for target…';
     }
     if (action === 'replay-inspection') {
       closeSheets();
-      setSecondaryMarkState('replay-open');
-      var replayOpened = call('openReplayInspection');
-      if (!replayOpened) clearSecondaryMarkState('replay-open');
-      return replayOpened;
+      return call('openReplayInspection');
     }
     if (action === 'suggest-url') return call('submitUrl');
     if (action === 'blind-descent') {
       if (typeof window.openBlindDescent !== 'function' || typeof window.blindDescend !== 'function') return;
-      clearSecondaryMarkState();
-      clearCopyTrailMotion();
+      closeSheets();
       document.documentElement.classList.add('blind-descending');
       Promise.resolve(window.openBlindDescent())
         .then(function () { return window.blindDescend(); })
@@ -721,13 +759,9 @@ MOTION: waiting for target…';
     if (action === 'topology') {
       closeSheets();
       if (typeof window.getTrailManifest !== 'function' || typeof window.openTrailTopology !== 'function') return;
-      setSecondaryMarkState('topology-open');
       Promise.resolve(window.getTrailManifest())
         .then(function (snapshot) { return window.openTrailTopology(snapshot); })
-        .catch(function (error) {
-          clearSecondaryMarkState('topology-open');
-          console.error('Trail topology failed', error);
-        });
+        .catch(function (error) { console.error('Trail topology failed', error); });
       return;
     }
     if (action === 'inspect') {
@@ -760,8 +794,6 @@ MOTION: waiting for target…';
     });
     document.documentElement.classList.add('r4m-sheet-open');
     document.documentElement.classList.toggle('menu-open', id === 'r4mMenuSheet');
-    if (id === 'r4mBranchSheet') setSecondaryMarkState('branch-open');
-    else clearSecondaryMarkState('branch-open');
     var menuButton = byId('r4mNavMenu');
     if (menuButton) {
       var menuOpen = id === 'r4mMenuSheet';
@@ -788,7 +820,6 @@ MOTION: waiting for target…';
     }
     document.documentElement.classList.remove('r4m-sheet-open');
     document.documentElement.classList.remove('menu-open');
-    clearSecondaryMarkState('branch-open');
     var menuButton = byId('r4mNavMenu');
     if (menuButton) {
       menuButton.setAttribute('aria-expanded', 'false');
@@ -1044,9 +1075,6 @@ MOTION: waiting for target…';
 
   function resetRollStage() {
     if (markRollTimer !== null) { window.clearTimeout(markRollTimer); markRollTimer = null; }
-    secondaryDismissedResult = false;
-    clearSecondaryMarkState();
-    clearCopyTrailMotion();
     document.documentElement.classList.remove('r4m-stage-result', 'blind-descending', 'rolling', 'result-ready');
     var mount = byId('r4mRouteMount');
     if (mount) mount.hidden = false;
@@ -1096,6 +1124,11 @@ MOTION: waiting for target…';
 
   function init() {
     buildShell();
+    initMarkSecondary();
+    // the desktop shell's copy control drives the same mark event
+    document.addEventListener('click', function (event) {
+      if (event.target && event.target.closest && event.target.closest('#shareTrailBtn')) pulseMarkCopy();
+    });
     applyViewportMode();
     setPrimaryMode('roll');
     var listener = function () {
