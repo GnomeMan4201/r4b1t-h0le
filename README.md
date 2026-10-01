@@ -79,9 +79,16 @@ Exported files can be checked without an account:
 ```bash
 npm run trail:verify -- trail.json
 npm run trail:verify -- child.json parent.json
+
+# Independent local-sampler derivation check for v0.3 ROLL steps
+python3 tools/reexecute_trail.py trail.json
 ```
 
-The default Trail export is `r4b1t-trail/v0.3`: ROLL steps carry their immutable v2 selection transaction, while SELECT and BRANCH navigation are recorded as explicit step types. `npm run trail:verify` dispatches the supported v0.1, v0.2, and v0.3 integrity/lineage verifiers. Base v0.3 verification establishes recorded structure, identity, transaction shape, and local sampler-interval continuity; it does not independently re-execute the sampler or prove that a declared seed was honestly generated. A labeled legacy v0.1 integrity-only export remains available. Blind Descent remains `r4b1t-trail/v0.2` with its own verification rules.
+The default Trail export is `r4b1t-trail/v0.3`: ROLL steps carry their immutable v2 selection transaction, while SELECT and BRANCH navigation are recorded as explicit step types. `npm run trail:verify` dispatches the supported v0.1, v0.2, and v0.3 integrity/lineage verifiers. Base v0.3 verification establishes recorded structure, identity, transaction shape, and local sampler-interval continuity.
+
+For v0.3 ROLL steps, the separate [independent Python re-executor](./docs/SAMPLER_REEXECUTION.md) rebuilds eligibility from repository evidence and independently runs the declared FNV-1a → Mulberry32 sampler interval. A successful re-execution establishes route derivation from those declared inputs; it does **not** establish fair seed generation, non-cherry-picking, wall-clock ordering, or human viewing.
+
+A labeled legacy v0.1 integrity-only export remains available. Blind Descent remains `r4b1t-trail/v0.2` with its own verification rules.
 
 Trail Cards, Topology, Compare Trails, Proof Sessions, and Verify + Replay expose additional views and checks. Until a surface has an explicit v0.3 adapter, it must not treat a v0.3 artifact as evidence it knows how to verify; current Topology compatibility uses the labeled legacy v0.1 projection. Their outputs carry only the claims supported by their format and verifier; a detached image does not acquire proof authority.
 

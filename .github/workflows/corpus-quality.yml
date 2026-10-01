@@ -12,7 +12,9 @@ on:
       - 'tools/aggregate_provenance.py'
       - 'tools/build_corpus_release.py'
       - 'tools/terrain_index.py'
+      - 'tools/reexecute_trail.py'
       - 'tests/test_terrain_index.py'
+      - 'tests/test_reexecute_trail.py'
       - 'corpus/terrains/**'
       - 'corpus/runtime/eligibility-profiles-v1.json'
       - 'TERRAIN_AUTHORITY_CONTRACT.md'
@@ -52,7 +54,9 @@ on:
       - 'tools/aggregate_provenance.py'
       - 'tools/build_corpus_release.py'
       - 'tools/terrain_index.py'
+      - 'tools/reexecute_trail.py'
       - 'tests/test_terrain_index.py'
+      - 'tests/test_reexecute_trail.py'
       - 'corpus/terrains/**'
       - 'corpus/runtime/eligibility-profiles-v1.json'
       - 'TERRAIN_AUTHORITY_CONTRACT.md'
@@ -114,6 +118,7 @@ jobs:
           tools/aggregate_provenance.py
           tools/build_corpus_release.py
           tools/terrain_index.py
+          tools/reexecute_trail.py
           tests/test_corpus_health.py
           tests/test_compile_eligibility.py
           tests/test_profile_eligibility.py
@@ -122,6 +127,7 @@ jobs:
           tests/test_aggregate_provenance.py
           tests/test_build_corpus_release.py
           tests/test_terrain_index.py
+          tests/test_reexecute_trail.py
 
       - name: Unit tests
         run: |
@@ -133,6 +139,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_aggregate_provenance.py' -v
           python -m unittest discover -s tests -p 'test_build_corpus_release.py' -v
           python -m unittest discover -s tests -p 'test_terrain_index.py' -v
+          python -m unittest discover -s tests -p 'test_reexecute_trail.py' -v
 
       - name: Compile pinned source catalogs
         run: |

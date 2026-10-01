@@ -9,6 +9,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- An independent Python re-executor for `r4b1t-trail/v0.3` ROLL steps. It verifies exact release/terrain evidence and independently reproduces the current FNV-1a → Mulberry32 sampler interval without importing runtime JavaScript; its claim is route derivation, not seed fairness or non-cherry-picking.
 - A proposed 6,859-resource corpus expansion across 37 assertion sources,
   with exact admission declarations, offline reproducible artifacts and
   descriptive diversity evidence. The active runtime corpus is unchanged.
