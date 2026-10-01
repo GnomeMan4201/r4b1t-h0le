@@ -1,0 +1,69 @@
+name: Corpus Expansion Candidate
+
+on:
+  pull_request:
+    paths:
+      - 'corpus/**'
+      - 'tools/capture_source_index.py'
+      - 'tools/reviewed_source_index.py'
+      - 'tools/build_expanded_corpus.py'
+      - 'tools/source_catalog.py'
+      - 'tools/corpus_provenance.py'
+      - 'tools/aggregate_provenance.py'
+      - 'tools/compile_eligibility.py'
+      - 'tools/build_corpus_release.py'
+      - 'tests/test_reviewed_source_index.py'
+      - 'tests/test_build_expanded_corpus.py'
+      - 'schemas/*source*index*.json'
+      - 'schemas/expansion-registry-v1.schema.json'
+      - 'docs/CORPUS_EXPANSION_V1.md'
+      - '.github/workflows/corpus-expansion.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'corpus/**'
+      - 'tools/**'
+      - 'tests/test_reviewed_source_index.py'
+      - 'tests/test_build_expanded_corpus.py'
+      - 'schemas/*source*index*.json'
+      - 'schemas/expansion-registry-v1.schema.json'
+      - 'docs/CORPUS_EXPANSION_V1.md'
+      - '.github/workflows/corpus-expansion.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.11'
+      - name: Verify public compiler boundaries
+        run: |
+          python -m compileall -q tools/reviewed_source_index.py tools/capture_source_index.py tools/build_expanded_corpus.py
+          python -m unittest discover -s tests -p 'test_reviewed_source_index.py' -v
+          python -m unittest discover -s tests -p 'test_build_expanded_corpus.py' -v
+      - name: Rebuild and compare pinned candidate
+        run: |
+          python tools/build_expanded_corpus.py --registry corpus/expansion/registry-v1.json --out-dir expansion-build
+          diff -ru corpus/releases/diverse-candidate-v0.2 expansion-build/release
+          diff -u corpus/expansion/diversity-v1.json expansion-build/diversity.json
+          diff -u corpus/expansion/diversity-v1.md expansion-build/diversity.md
+      - name: Rebuild and compare unusual-resource candidate
+        run: |
+          python tools/build_expanded_corpus.py --registry corpus/expansion/registry-v2.json --out-dir strange-build
+          diff -ru corpus/releases/strange-candidate-v0.3 strange-build/release
+          diff -u corpus/expansion/diversity-v2.json strange-build/diversity.json
+          diff -u corpus/expansion/diversity-v2.md strange-build/diversity.md
+      - name: Publish diversity evidence
+        run: cat expansion-build/diversity.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: expanded-corpus-evidence-${{ github.sha }}
+          path: expansion-build/
+          retention-days: 30

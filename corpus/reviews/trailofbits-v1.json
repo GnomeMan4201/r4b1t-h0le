@@ -1,0 +1,1988 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2012/06/11/analyzing-the-md5-collision-in-flame/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2012/10/29/ending-the-love-affair-with-exploitshield/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2013/05/13/elderwood-and-the-department-of-labor-hack/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2013/05/14/writing-exploits-with-the-elderwood-kit-part-1/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2013/05/20/writing-exploits-with-the-elderwood-kit-part-2/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2013/06/03/free-ruby-security-workshop/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2013/07/24/iverify-is-now-available-on-github/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/02/23/semantic-analysis-of-native-programs-introducing-codereason/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/02/24/introducing-javelin/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/04/27/using-static-analysis-and-clang-to-find-heartbleed/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/05/20/trail-of-bits-releases-capture-the-flag-field-guide/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/06/03/dear-darpa-challenge-accepted/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/06/04/weve-moved/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/06/23/a-preview-of-mcsema/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/07/30/education-initiative-spotlight-build-it-break-it/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/08/07/mcsema-is-officially-open-source/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/08/20/remastering-applications-by-obfuscating-during-compilation/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/09/02/enabling-two-factor-authentication-2fa-for-apple-id-and-dropbox/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/09/29/nyu-womens-cybersecurity-symposium/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/10/02/threads-14-scaling-security/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/11/25/close-encounters-with-symbolic-execution/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2014/12/04/close-encounters-with-symbolic-execution-part-2/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2015/01/05/the-foundation-of-2015-2014-in-review/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2015/05/13/closing-the-windows-gap/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2015/06/08/introducing-the-rubysec-field-guide/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2015/07/07/how-to-harden-your-google-apps/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2015/07/15/how-we-fared-in-the-cyber-grand-challenge/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2015/07/21/hardware-side-channels-in-the-cloud/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2015/09/09/flare-on-reversing-challenges-2015/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2015/10/30/why-we-give-so-much-to-csaw/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2015/12/15/self-hosted-video-chat-with-tuber/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/01/05/lets-encrypt-the-internet/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/01/07/2015-in-review/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/01/13/hacking-for-charity-automated-bug-finding-in-libotr/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/02/02/software-security-ideas-ahead-of-their-time/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/02/09/tidas-a-new-service-for-building-password-less-apps/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/02/17/apple-can-comply-with-the-fbi-court-order/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/03/09/the-problem-with-dynamic-program-analysis/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/04/01/hacker-handle-bounty/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/05/05/the-dbirs-forest-of-exploit-signatures/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/05/18/protofuzz-a-protobuf-fuzzer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/06/03/2000-cuts-with-binary-ninja/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/06/23/its-time-to-take-ownership-of-our-image/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/06/28/start-using-the-secure-enclave-crypto-api/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/07/11/why-i-didnt-catch-any-pokemon-today/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/08/01/your-tool-works-better-than-mine-prove-it/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/08/02/engineering-solutions-to-hard-program-analysis-problems/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/09/12/plug-into-new-yorks-infosec-community/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/09/27/windows-network-security-now-easier-with-osquery/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/10/04/first-ever-automated-code-audit/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/10/17/lets-talk-about-cfi-clang-edition/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/10/26/come-find-us-at-oreilly-security/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/11/02/shin-grr-make-fuzzing-fast-again/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/12/12/meet-algo-the-vpn-that-works/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2016/12/27/lets-talk-about-cfi-microsoft-edition/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/01/31/breaking-down-binary-ninjas-low-level-il/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/02/13/devirtualizing-c-with-binary-ninja/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/02/16/the-smart-fuzzer-revolution/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/02/20/the-challenges-of-deploying-security-mitigations/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/03/14/mcsema-im-liftin-it/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/03/23/april-means-infiltrate/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/04/14/a-walk-down-memory-lane/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/04/27/manticore-symbolic-execution-for-humans/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/05/15/magic-with-manticore/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/07/30/an-extra-bit-of-analysis-for-clemency/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/08/02/microsoft-didnt-sandbox-windows-defender-so-i-did/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/10/10/tracking-a-stolen-code-signing-certificate-with-osquery/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/10/12/ios-jailbreak-detection-toolkit-now-available/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/10/19/trail-of-bits-joins-the-enterprise-ethereum-alliance/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/11/06/hands-on-the-ethernaut-ctf/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/11/09/how-are-teams-currently-using-osquery/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/12/14/announcing-the-trail-of-bits-osquery-extension-repository/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2017/12/21/osquery-pain-points/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/01/23/heavy-lifting-with-mcsema-2-0/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/01/30/an-accessible-overview-of-meltdown-and-spectre-part-1/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/02/09/parity-technologies-engages-trail-of-bits/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/03/08/2017-in-review/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/03/09/echidna-a-smart-fuzzer-for-ethereum/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/03/15/amd-flaws-technical-summary/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/03/22/an-accessible-overview-of-meltdown-and-spectre-part-2/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/03/23/use-our-suite-of-ethereum-security-tools/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/04/04/vulnerability-modeling-with-binary-ninja/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/04/06/how-to-prepare-for-a-security-audit/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/04/10/what-do-you-wish-osquery-could-do/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/05/03/state-machine-testing-with-echidna/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/05/28/collect-ntfs-forensic-information-with-osquery/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/05/29/manage-santa-within-osquery/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/05/30/manage-your-fleets-firewalls-with-osquery/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/06/08/querycon-2018-our-talks-and-takeaways/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/07/06/optimizing-lifted-bitcode-with-dead-store-elimination/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/08/01/bluetooth-invalid-curve-points/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/08/14/fault-analysis-on-rsa-signing/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/08/22/get-an-open-source-security-multiplier/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/08/23/introducing-windows-acl-working-with-acls-in-rust/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/09/05/contract-upgrade-anti-patterns/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/09/06/rattle-an-ethereum-evm-binary-analysis-framework/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/09/10/protecting-software-against-exploitation-with-darpas-cfar/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/09/26/effortless-security-feature-detection-with-winchecksec/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/10/04/ethereum-security-guidance-for-all/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/10/05/how-to-spot-good-fuzzing-research/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/10/12/introduction-to-verifiable-delay-functions-vdfs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/10/19/slither-a-solidity-static-analysis-framework/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/10/22/a-guide-to-post-quantum-cryptography/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/10/26/the-good-the-bad-and-the-weird/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/10/29/how-contract-migration-works/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/11/07/we-crypto-now/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/11/16/trail-of-bits-devcon-iv-recap/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/11/27/10-rules-for-the-secure-use-of-cryptocurrency-hardware-wallets/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/12/17/csaw-ctf-crypto-challenge-breaking-dsa/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/12/20/10000-research-fellowships-for-underrepresented-talent/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2018/12/31/fuzzing-like-its-1989/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/01/02/what-do-la-croix-octonions-and-second-life-have-in-common/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/01/14/on-bounties-and-boffins/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/01/17/how-to-write-a-rootkit-without-really-trying/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/01/21/how-mcsema-handles-c-exceptions/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/01/22/fuzzing-an-api-with-deepstate-part-1/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/01/23/fuzzing-an-api-with-deepstate-part-2/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/01/25/symbolic-path-merging-in-manticore/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/03/25/what-application-developers-need-to-know-about-tls-early-data-0rtt/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/03/28/fuzzing-in-the-year-2000/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/04/01/performing-concolic-execution-on-cryptographic-primitives/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/04/08/user-friendly-fuzzing-with-sienna-locomotive/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/04/18/announcing-the-community-oriented-osquery-fork-osql/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/05/27/slither-the-leading-static-analyzer-for-smart-contracts/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/05/30/announcing-automated-reverse-engineering-trainings/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/05/31/fuzzing-unit-tests-with-deepstate-and-eclipser/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/05/31/using-osquery-for-remote-forensics/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/06/07/announcing-manticore-0-3-0/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/06/17/leaves-of-hash/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/06/18/why-you-should-go-to-querycon-this-week/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/06/19/trail-of-bits-icse-2019-recap/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/06/20/getting-2fa-right-in-2019/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/06/25/creating-an-llvm-sanitizer-from-hopes-and-dreams/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/06/26/panicking-the-right-way-in-go/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/06/27/use-constexpr-for-faster-smaller-and-safer-code/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/07/01/siderophile-expose-your-crates-unsafety/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/07/02/state/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/07/03/avoiding-smart-contract-gridlock-with-slither/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/07/08/fuck-rsa/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/07/12/librabft/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/07/16/trail-of-bits-named-in-forrester-wave-as-a-leader-in-midsize-cybersecurity-consulting-services/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/07/19/understanding-docker-container-escapes/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/08/02/crytic-continuous-assurance-for-smart-contracts/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/08/06/better-encrypted-group-chat/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/08/07/from-the-depths-of-counterfeit-smartphones/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/08/08/246-findings-from-our-smart-contract-audits-an-executive-summary/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/08/09/a-day-in-the-life-of-alessandro-gario-senior-security-engineer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/08/26/wrappers-delight/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/08/29/reverse-taint-analysis-using-binary-ninja/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/08/30/binary-symbolic-execution-with-klee-native/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/09/02/rewriting-functions-in-compiled-binaries/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/09/03/deepstate-now-supports-ensemble-fuzzing/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/09/11/crypto-2019-takeaways/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/09/20/querycon-2019-a-turning-point-for-osquery/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/09/27/tethered-jailbreaks-are-back/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/10/03/tsc-frequency-for-all-better-profiling-and-benchmarking/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/10/04/multi-party-computation-on-machine-learning/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/10/24/watch-your-language-our-first-vyper-audit/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/10/25/formal-analysis-of-the-cbc-casper-consensus-algorithm-with-tla/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/10/30/how-safe-browsing-fails-to-protect-user-privacy/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/10/31/destroying-x86_64-instruction-decoders-with-differential-fuzzing/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/11/01/two-new-tools-that-tame-the-treachery-of-files/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/11/07/attacking-go-vr-ttps/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/11/11/test-case-reduction/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/11/14/introducing-iverify-the-security-toolkit-for-iphone-users/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/11/27/64-bits-ought-to-be-enough-for-anybody/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2019/12/09/introducing-mainnet360-a-joint-economic-and-security-assessment-with-prysm-group/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/01/16/exploiting-the-windows-cryptoapi-vulnerability/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/01/23/themes-from-real-world-crypto-2020/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/01/31/symbolically-executing-webassembly-in-manticore/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/03/03/manticore-discovers-the-ens-bug/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/03/13/our-full-report-on-the-voatz-mobile-voting-platform/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/03/16/real-time-file-monitoring-on-windows-with-osquery/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/03/18/financial-cryptography-2020-recap/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/03/23/announcing-the-zeek-agent/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/03/30/an-echidna-for-all-seasons/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/04/17/revisiting-2000-cuts-using-binary-ninjas-new-decompiler/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/05/15/bug-hunting-with-crytic/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/05/21/reinventing-vulnerability-disclosure-using-zero-knowledge-proofs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/05/27/verifying-windows-binaries-without-windows/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/05/29/detecting-bad-openssl-usage/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/06/05/breaking-the-solidity-compiler-with-a-fuzzer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/06/09/how-to-check-if-a-mutex-is-locked-in-go/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/06/11/ecdsa-handle-with-care/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/06/12/upgradeable-contracts-made-safer-with-crytic/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/06/17/advocating-for-change/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/07/12/new-manticore-verifier-for-smart-contracts/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/08/05/accidentally-stepping-on-a-defi-lego/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/08/12/sinter-new-user-mode-security-enforcement-for-macos/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/08/17/using-echidna-to-test-a-smart-contract-library/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/08/28/graphtage/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/10/08/privacyraven-has-left-the-nest/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/10/09/detecting-iterator-invalidation-with-codeql/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/10/14/osquery-using-d-bus-to-query-systemd-data/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/10/22/lets-build-a-high-performance-fuzzer-with-gpus/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/10/23/efficient-audits-with-machine-learning-and-slither-simil/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/10/30/good-idea-bad-design-how-the-diamond-standard-falls-short/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/11/24/smart-and-simple-ways-to-prevent-symlink-attacks-in-go/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/11/25/high-fidelity-build-instrumentation-with-blight/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/12/14/reverie-an-optimized-zero-knowledge-proof-system/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2020/12/16/breaking-aave-upgradeability/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/02/02/pdf-is-broken-a-justctf-challenge/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/02/05/confessions-of-a-smart-contract-paper-reviewer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/02/19/serving-up-zero-knowledge-proofs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/02/26/the-tao-of-continuous-integration/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/03/15/never-a-dill-moment-exploiting-machine-learning-pickle-files/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/03/19/un-bee-lievable-performance-fast-coverage-guided-fuzzing-with-honeybee-and-intel-processor-trace/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/03/23/a-year-in-the-life-of-a-compiler-fuzzing-campaign/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/04/02/solar-context-free-interactive-analysis-for-solidity/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/11/08/discovering-goroutine-leaks-with-semgrep/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/11/09/all-your-tracing-are-belong-to-bpf/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/11/09/privacyraven-implementing-a-proof-of-concept-for-model-inversion/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/11/09/write-rust-lints-without-forking-clippy/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/11/10/announcing-osquery-5-now-with-endpointsecurity-on-macos/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/11/11/motivating-global-stabilization/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/11/12/how-to-choose-an-interesting-project/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/11/17/mui-visualizing-symbolic-execution-with-manticore-and-binary-ninja/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/12/16/detecting-miso-and-opyns-msg-value-reuse-vulnerability-with-slither/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/12/16/it-depends/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2021/12/21/disclosing-shamirs-secret-sharing-vulnerabilities-and-announcing-zkdocs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/01/05/toward-a-best-of-both-worlds-binary-disassembler/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/01/11/finding-unhandled-errors-using-codeql/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/01/19/c-your-data-structures-with-rellic-headergen/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/01/26/part-1-the-life-of-an-optimization-barrier/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/02/01/part-2-rusty-crypto/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/02/23/maat-symbolic-execution-made-easy/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/03/02/optimizing-a-smart-contract-fuzzer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/03/25/towards-practical-security-optimizations-for-binaries/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/04/13/part-1-coordinated-disclosure-of-vulnerabilities-affecting-girault-bulletproofs-and-plonk/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/04/14/the-frozen-heart-vulnerability-in-giraults-proof-of-knowledge/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/04/15/the-frozen-heart-vulnerability-in-bulletproofs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/04/18/the-frozen-heart-vulnerability-in-plonk/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/04/20/amarna-static-analysis-for-cairo-programs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/04/26/improving-the-state-of-go-fuzz/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/05/03/themes-from-real-world-crypto-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/05/17/interactive-decompilation-with-rellic-xref/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/06/09/themes-from-pycon-us-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/06/21/are-blockchains-decentralized/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/06/24/managing-risk-in-blockchain-deployments/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/06/30/a-typical-day-as-a-trail-of-bits-engineer-consultant/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/07/01/libmagic-the-blathering/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/07/28/shedding-smart-contract-storage-with-slither/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/08/12/the-road-to-the-apprenticeship/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/08/17/using-mutants-to-improve-slither/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/08/25/magnifier-an-experiment-with-interactive-decompilation/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/09/15/it-pays-to-be-circomspect/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/10/03/semgrep-maching-learning-static-analysis/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/10/05/trail-of-bits-internship-blockchain-tealer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/10/12/solana-jit-compiler-ebpf-arm64/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/10/25/sqlite-vulnerability-july-2022-library-api/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/11/08/sigstore-code-signing-verification-software-supply-chain/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/11/10/divergent-representations-variable-overflows-c-compiler/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/11/14/livestream-workshop-fuzzing-echidna-slither/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/11/15/python-wheels-abi-abi3audit/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/11/29/specialized-zero-knowledge-proof-failures/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/12/08/hybrid-echidna-fuzzing-optik-maat/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/12/13/manticore-gui-plugin-binary-ninja-ghidra/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/12/15/manitcoreui-symbolic-execution-gui/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/12/20/process-reparenting-microsoft-windows/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/12/22/curl-security-audit-threat-model/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2022/12/22/syntax-searching-c-c-clang-ast/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/01/10/open-source-contributions-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/01/12/wolfssl-vulnerabilities-tlspuffin-fuzzing-ssh/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/01/13/sigstore-python/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/01/17/rpc-investigator-microsoft-windows-remote-procedure-call/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/01/19/ebpf-verifier-harness/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/02/14/curl-audit-fuzzing-libcurl-command-line-interface/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/02/16/suid-logic-bug-linux-readline/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/02/21/vscode-extension-escape-vulnerability/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/02/23/escaping-well-configured-vscode-extensions-for-profit/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/02/27/reusable-properties-ethereum-contracts-echidna/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/03/14/ai-security-safety-audit-assurance-heidy-khlaaf-odd/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/03/21/circomspect-static-analyzer-circom-more-passes/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/03/22/codex-and-gpt4-cant-beat-humans-on-smart-contract-audits/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/03/30/acropalypse-polytracker-blind-spots/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/04/18/a-winters-tale-improving-types-and-messages-in-gdbs-python-api/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/04/20/typos-that-omit-security-features-and-how-to-test-for-them/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/04/25/loose-code-sinks-nodes/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/05/15/introducing-windows-notification-facilitys-wnf-code-integrity/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/05/16/real-world-crypto-2023-recap/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/05/23/trusted-publishing-a-new-benchmark-for-packaging-security/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/06/15/finding-bugs-with-mlir-and-vast/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/06/16/trail-of-bitss-response-to-ntia-ai-accountability-rfc/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/07/07/differential-fuzz-testing-upgradeable-smart-contracts-with-diffusc/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/07/12/what-we-told-the-cftc-about-crypto-threats/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/07/14/evaluating-blockchain-security-maturity/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/07/18/trail-of-bitss-response-to-ostp-national-priorities-for-ai-rfi/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/07/21/fuzzing-on-chain-contracts-with-echidna/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/07/26/announcing-the-trail-of-bits-testing-handbook/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/07/28/the-future-of-clang-based-tooling/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/07/31/how-ai-will-affect-cybersecurity-what-we-told-the-cftc/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/08/02/a-mistake-in-the-bulletproofs-paper-could-have-led-to-the-theft-of-millions-of-dollars/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/08/09/use-our-suite-of-ebpf-libraries/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/08/14/can-you-pass-the-rekt-test/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/08/23/the-engineers-guide-to-blockchain-finality/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/08/28/iverify-is-now-an-independent-company/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/08/29/secure-your-apollo-graphql-server-with-semgrep/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/09/11/holy-macroni-a-recipe-for-progressive-language-enhancement/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/09/18/security-flaws-in-an-sso-plugin-for-caddy/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/09/20/dont-overextend-your-oblivious-transfer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/09/25/pitfalls-of-relying-on-ebpf-for-security-monitoring-and-some-solutions/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/10/05/introducing-invariant-development-as-a-service/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/10/23/numbers-turned-weapons-dos-in-osmosis-math-library/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/10/30/the-issue-with-ats-in-apples-macos-and-ios/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/11/06/adding-build-provenance-to-homebrew/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/11/14/our-audit-of-pypi/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/11/15/assessing-the-security-posture-of-a-widely-used-vision-model-yolov7/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/11/20/how-cisa-can-improve-oss-security/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/11/22/etw-internals-for-security-research-and-forensics/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/12/06/publishing-trail-of-bits-codeql-queries/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/12/11/say-hello-to-the-next-chapter-of-the-testing-handbook/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/12/14/darpas-ai-cyber-challenge-were-in/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/12/18/a-trail-of-flipping-bits/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/12/22/catching-openssl-misuse-using-codeql/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/12/26/weve-added-more-content-to-zkdocs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/12/27/ai-in-windows-investigating-windows-copilot/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2023/12/29/billion-times-emptiness/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/01/02/tag-youre-it-signal-tagging-in-circom/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/01/09/securing-open-source-infrastructure-with-ostif/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/01/12/how-to-introduce-semgrep-to-your-organization/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/01/15/internet-freedom-with-the-open-technology-fund/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/01/16/leftoverlocals-listening-to-llm-responses-through-leaked-gpu-local-memory/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/01/17/30-new-semgrep-rules-ansible-java-kotlin-shell-scripts-and-more/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/01/18/our-thoughts-on-aixccs-competition-format/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/01/25/we-build-x-509-chains-so-you-dont-have-to/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/01/26/enhancing-trust-for-sgx-enclaves/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/01/31/introducing-differ-a-new-tool-for-testing-and-validating-transformed-programs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/02/02/chaos-communication-congress-37c3-recap/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/02/05/improving-the-state-of-cosmos-fuzzing/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/02/07/binary-type-inference-in-ghidra/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/02/09/master-fuzzing-with-our-new-testing-handbook-chapter/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/02/12/why-windows-cant-follow-wsl-symlinks/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/02/14/cloud-cryptography-demystified-amazon-web-services/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/02/16/a-few-notes-on-aws-nitro-enclaves-images-and-attestation/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/02/20/breaking-the-shared-key-in-threshold-signature-schemes/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/02/23/continuously-fuzzing-python-c-extensions/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/02/26/circomspect-has-been-integrated-into-the-sindri-cli/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/02/28/our-response-to-the-us-armys-rfi-on-developing-aibom-tools-2/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/03/01/toward-more-effective-curl-fuzzing/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/03/01/when-try-try-try-again-leads-to-out-of-order-execution-bugs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/03/04/relishing-new-fickling-features-for-securing-ml-systems/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/03/05/cryptographic-design-review-of-ockam/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/03/08/out-of-the-kernel-into-the-tokens/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/03/11/darpa-awards-1-million-to-trail-of-bits-for-ai-cyber-challenge/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/03/13/secure-your-blockchain-project-from-the-start/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/03/18/releasing-the-attacknet-a-new-tool-for-finding-bugs-in-blockchain-nodes-using-chaos-testing/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/03/19/read-code-like-a-pro-with-our-weaudit-vscode-extension/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/03/20/streamline-the-static-analysis-triage-process-with-sarif-explorer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/03/22/why-fuzzing-over-formal-verification/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/03/29/introducing-ruzzy-a-coverage-guided-ruby-fuzzer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/04/15/5-reasons-to-strive-for-better-disclosure-processes/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/04/26/announcing-two-new-lms-libraries/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/04/30/curvance-invariants-unleashed/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/05/02/the-life-and-times-of-an-abstract-syntax-tree/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/05/08/using-benchmarks-to-speed-up-echidna/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/05/14/a-peek-into-build-provenance-for-homebrew/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/05/16/understanding-addresssanitizer-better-memory-safety-for-your-code/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/06/07/announcing-ai-ml-safety-and-security-trainings/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/06/11/exploiting-ml-models-with-pickle-file-attacks-part-1/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/06/11/exploiting-ml-models-with-pickle-file-attacks-part-2/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/06/14/announcing-the-burp-suite-professional-chapter-in-the-testing-handbook/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/06/14/pcc-bold-step-forward-not-without-flaws/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/06/14/understanding-apples-on-device-and-server-foundations-model-release/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/06/17/finding-mispriced-opcodes-with-fuzzing/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/06/18/themes-from-real-world-crypto-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/06/21/eurollvm-2024-trip-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/06/24/disarming-fiat-shamir-footguns/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/07/01/quantum-is-unimportant-to-post-quantum/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/07/05/auditing-the-ask-astro-llm-qa-app/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/07/09/trail-of-bits-named-a-leader-in-cybersecurity-consulting-services/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/07/12/announcing-aes-gem-aes-with-galois-extended-mode/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/07/25/our-crypto-experts-answer-10-key-questions/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/07/30/our-audit-of-homebrew/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/08/05/cloud-cryptography-demystified-google-cloud-platform/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/08/09/trail-of-bits-buttercup-heads-to-darpas-aixcc/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/08/12/trail-of-bits-advances-to-aixcc-finals/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/08/15/we-wrote-the-code-and-the-code-won/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/08/21/yolo-is-not-a-valid-hash-construction/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/08/27/provisioning-cloud-infrastructure-the-wrong-way-but-faster/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/09/05/what-would-you-do-with-that-old-gpu/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/09/06/unstripping-binaries-restoring-debugging-information-in-gdb-with-pwndbg/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/09/10/sanitize-your-c-containers-asan-annotations-step-by-step/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/09/13/friends-dont-let-friends-reuse-nonces/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/09/17/inside-def-con-michael-brown-on-how-ai-ml-is-revolutionizing-cybersecurity/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/09/24/notes-on-aws-nitro-enclaves-attack-surface/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/10/01/securing-the-software-supply-chain-with-the-slsa-framework/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/10/10/auditing-gradio-5-hugging-faces-ml-gui-framework/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/10/25/a-deep-dive-into-linuxs-new-mseal-syscall/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/10/31/fuzzing-between-the-lines-in-popular-barcode-software/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/11/13/killing-filecoin-nodes/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/11/14/attestations-a-new-generation-of-signatures-on-pypi/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/11/19/evaluating-solidity-support-in-ai-coding-assistants/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/12/09/35-more-semgrep-rules-infrastructure-supply-chain-and-ruby/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2024/12/11/auditing-the-ruby-ecosystems-central-package-repository/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/01/28/best-practices-for-key-derivation/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/01/30/pypi-now-supports-archiving-projects/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/02/05/preventing-account-takeover-on-centralized-cryptocurrency-exchanges-in-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/02/12/the-call-for-invariant-driven-development/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/02/13/were-partnering-to-strengthen-tons-defi-ecosystem/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/02/14/unleashing-medusa-fast-and-scalable-smart-contract-fuzzing/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/02/21/dont-recurse-on-untrusted-input/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/02/21/the-1.5b-bybit-hack-the-era-of-operational-security-failures-has-arrived/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/02/25/how-threat-modeling-could-have-prevented-the-1.5b-bybit-hack/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/02/28/threat-modeling-the-trail-of-bits-way/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/03/03/continuous-trail/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/03/06/benchmarking-opensearch-and-elasticsearch/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/04/09/introducing-a-new-section-on-snapshot-fuzzing-for-kernel-level-testing-in-the-testing-handbook/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/04/17/mitigating-elusive-comet-zoom-remote-control-attacks/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/04/18/sneak-peek-a-new-asn.1-api-for-python/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/04/21/jumping-the-line-how-mcp-servers-can-attack-you-before-you-ever-use-them/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/04/21/kicking-off-aixccs-finals-with-buttercup/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/04/23/how-mcp-servers-can-steal-your-conversation-history/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/04/29/deceiving-users-with-ansi-terminal-codes-in-mcp/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/04/30/insecure-credential-storage-plagues-mcp/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/05/01/making-pypis-test-suite-81-faster/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/05/14/the-cryptography-behind-passkeys/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/05/29/the-custodial-stablecoin-rekt-test/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/05/30/a-deep-dive-into-axioms-halo2-circuits/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/06/10/what-we-learned-reviewing-one-of-the-first-dkls23-libraries-from-silence-laboratories/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/06/17/unexpected-security-footguns-in-gos-parsers/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/06/25/maturing-your-smart-contracts-beyond-private-key-risk/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/07/02/buckle-up-buttercup-aixccs-scored-round-is-underway/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/07/08/investigate-your-dependencies-with-deptective/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/07/18/building-secure-messaging-is-hard-a-nuanced-take-on-the-bitchat-security-debate/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/07/21/detecting-code-copying-at-scale-with-vendetect/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/07/23/inside-ethcc8-becoming-a-smart-contract-auditor/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/07/25/exploiting-zero-days-in-abandoned-hardware/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/07/28/we-built-the-security-layer-mcp-always-needed/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/07/31/hijacking-multi-agent-systems-in-your-pajamas/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/08/04/uncovering-memory-corruption-in-nvidia-triton-as-a-new-hire/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/08/06/prompt-injection-engineering-for-attackers-exploiting-github-copilot/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/08/07/aixcc-finals-tale-of-the-tape/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/08/08/buttercup-is-now-open-source/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/08/09/trail-of-bits-buttercup-wins-2nd-place-in-aixcc-challenge/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/08/20/marshal-madness-a-brief-history-of-ruby-deserialization-exploits/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/08/21/weaponizing-image-scaling-against-production-ai-systems/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/08/25/speedrunning-the-new-york-subway/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/08/27/implement-eip-7730-today/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/09/03/subverting-code-integrity-checks-to-locally-backdoor-signal-1password-slack-and-more/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/09/05/safer-cold-storage-on-ethereum/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/09/10/how-sui-move-rethinks-flash-loan-security/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/09/18/use-mutation-testing-to-find-the-bugs-your-tests-dont-catch/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/09/24/supply-chain-attacks-are-exploiting-our-assumptions/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/09/25/taming-2500-compiler-warnings-with-codeql-an-openvpn2-case-study/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/10/22/prompt-injection-to-rce-in-ai-agents/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/10/30/vulnerabilities-in-luks2-disk-encryption-for-confidential-vms/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/10/31/the-cryptography-behind-electronic-passports/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/11/07/balancer-hack-analysis-and-guidance-for-the-defi-ecosystem/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/11/13/building-checksec-without-boundaries-with-checksec-anywhere/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/11/14/how-we-avoided-side-channels-in-our-new-post-quantum-go-cryptography-libraries/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/11/15/level-up-your-solidity-llm-tooling-with-slither-mcp/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/11/18/we-found-cryptography-bugs-in-the-elliptic-library-using-wycheproof/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/12/02/introducing-constant-time-support-for-llvm-to-protect-cryptographic-code/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/12/11/introducing-mrva-a-terminal-first-approach-to-codeql-multi-repo-variant-analysis/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/12/12/catching-malicious-package-releases-using-a-transparency-log/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/12/16/use-gwp-asan-to-detect-exploits-in-production-environments/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/12/19/can-chatbots-craft-correct-code/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2025/12/31/detect-gos-silent-arithmetic-bugs-with-go-panikint/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/01/13/lack-of-isolation-in-agentic-browsers-resurfaces-old-vulnerabilities/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/01/29/building-cryptographic-agility-into-sigstore/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/02/18/carelessness-versus-craftsmanship-in-cryptography/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/02/20/using-threat-modeling-and-prompt-injection-to-audit-comet/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/02/25/mquire-linux-memory-forensics-without-external-dependencies/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/03/11/six-mistakes-in-erc-4337-smart-accounts/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/03/24/spotting-issues-in-defi-with-dimensional-analysis/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/03/25/try-our-new-dimensional-analysis-claude-plugin/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/03/31/how-we-made-trail-of-bits-ai-native-so-far/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/04/01/mutation-testing-for-the-agentic-era/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/04/03/simplifying-mba-obfuscation-with-cobra/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/04/07/what-we-learned-about-tee-security-from-auditing-whatsapps-private-inference/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/04/09/master-c-and-c-with-our-new-testing-handbook-chapter/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/04/17/we-beat-googles-zero-knowledge-proof-of-quantum-cryptanalysis/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/04/23/trailmark-turns-code-into-graphs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/04/29/extending-ruzzy-with-libafl/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/05/12/go-fuzzing-was-missing-half-the-toolkit.-we-forked-the-toolchain-to-fix-it./"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/05/22/we-hardened-zizmors-github-actions-static-analyzer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/06/03/the-sorry-state-of-skill-distribution/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/06/12/factoring-short-sleeve-rsa-keys-with-polynomials/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/06/22/introducing-patch-the-planet/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/06/30/shipping-post-quantum-cryptography-to-python/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/07/02/field-reports-from-patch-the-planet/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/07/08/mutation-testing-comes-to-daml/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/07/13/rust-proof-your-code-with-our-new-testing-handbook-chapter/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/07/28/how-we-use-goal-to-find-bugs-in-patch-the-planet/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/07/30/building-secure-uniswap-v4-hooks/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/08/05/a-few-notes-on-aws-nitro-enclaves-kms-integration/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/08/11/how-trail-of-bits-helps-verify-the-integrity-of-your-signal-chats/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/08/25/state-divergence-enables-unauthorized-access/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/08/26/vms-wont-contain-cyber-capable-agents/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/09/09/a-proof-of-fermats-last-theorem-that-fits-the-margin/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/09/15/1passwords-ai-patching-benchmark-is-misleading/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/09/18/auditing-in-the-age-of-good-enough-ai/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/09/21/saml-a-fractal-of-bad-design/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.trailofbits.com/2026/09/25/dont-let-tees-break-your-mpc/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "publisher_research",
+  "rationale": "Proposed review: dated Trail of Bits security engineering and research articles. Recruitment, event announcements, staff spotlights and navigation are omitted. This is an archive-boundary review; per-destination technical depth and liveness are not asserted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:283942289667e2d4a0d1e363fad429a22c4490fc3eff82368b3a5edff6b966b4",
+  "snapshot_path": "corpus/indexes/trailofbits-v1.json",
+  "source_id": "trailofbits-v1"
+}

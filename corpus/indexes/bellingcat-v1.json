@@ -1,0 +1,20 @@
+{
+  "extractor": "feed-entries-v1",
+  "final_url": "https://www.bellingcat.com/category/resources/feed/",
+  "response_digest": "sha256:f7eceec964525b12077ed3ad5211093e16eaedc73f567fc6bed19721e252082b",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://www.bellingcat.com/category/resources/feed/",
+  "urls": [
+    "https://www.bellingcat.com/resources/2025/08/13/the-open-source-tool-that-has-preserved-150000-pieces-of-online-evidence/",
+    "https://www.bellingcat.com/resources/2025/08/14/llms-vs-geolocation-gpt-5-performs-worse-than-other-ai-models/",
+    "https://www.bellingcat.com/resources/2026/01/27/less-lethal-weapons-guide/",
+    "https://www.bellingcat.com/resources/2026/03/05/turnstone-flight-tracking-tool/",
+    "https://www.bellingcat.com/resources/2026/03/30/explosive-misinformation-a-guide-to-mushroom-clouds-sonic-weapons-and-disintegration/",
+    "https://www.bellingcat.com/resources/2026/04/07/tool-damage-assessment-destruction-sentinel-satellite-imagery-iran-us-gulf/",
+    "https://www.bellingcat.com/resources/2026/04/20/xiaohongshu-rednote-open-source-guide/",
+    "https://www.bellingcat.com/resources/2026/06/25/how-to-use-ai-to-help-find-civilian-harm-conflict-report-monitor-war-machine-learning-telegram/",
+    "https://www.bellingcat.com/resources/how-tos/2025/09/01/a-guide-to-monitoring-conflict-amidst-a-sea-of-misinformation/",
+    "https://www.bellingcat.com/resources/how-tos/2026/06/30/burning-forests-tools-for-tracking-and-reporting-wildfire-damage/"
+  ]
+}

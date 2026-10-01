@@ -1,0 +1,20 @@
+{
+  "extractor": "feed-entries-v1",
+  "final_url": "https://blog.nviso.eu/feed/",
+  "response_digest": "sha256:9bec1b9f0f4087801972f994cd18f9c6ced40690f4f9130695194617f2994255",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://blog.nviso.eu/feed/",
+  "urls": [
+    "https://blog.nviso.eu/2026/03/27/why-the-pentesting-playbook-doesnt-fit-belief-assumptions-and-non-determinism/",
+    "https://blog.nviso.eu/2026/04/03/the-axios-npm-supply-chain-incident-fake-dependency-real-backdoor/",
+    "https://blog.nviso.eu/2026/04/10/securitys-blind-spot-physical-keyloggers-that-bypass-antivirus-entirely/",
+    "https://blog.nviso.eu/2026/05/22/securing-ai-systems-without-overconfidence-or-fear-part-2-attack-surfaces-and-the-checkpoint-flow/",
+    "https://blog.nviso.eu/2026/06/04/the-detection-response-chronicles-covert-operations-through-qemu/",
+    "https://blog.nviso.eu/2026/06/17/reducing-microsoft-sentinel-costs-without-compromising-detection-part-1-the-summary-rules-quest/",
+    "https://blog.nviso.eu/2026/06/18/the-road-to-post-quantum-readiness-part-1/",
+    "https://blog.nviso.eu/2026/07/01/the-road-to-post-quantum-readiness-part-2-of-2-the-migration-playbook/",
+    "https://blog.nviso.eu/2026/07/07/reducing-microsoft-sentinel-costs-without-compromising-detection-part-2-the-firewall-quest/",
+    "https://blog.nviso.eu/2026/07/22/intercepting-android-webview-traffic-under-new-certificate-validity-requirement-by-chromium/"
+  ]
+}

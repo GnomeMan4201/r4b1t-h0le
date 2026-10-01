@@ -1,0 +1,1208 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/Hunting-for-Suspicious-Windows-Libraries-for-Execution-and-Evasion"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/aad-graph-activity-logs-threat-detection"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/agentic-soc-alert-triage-alertzero"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/agentic-soc-token-budget-architecture"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/ai-agent-optimization-production-scale"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/ai-coding-agent-audit-cursor-hooks"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/ai-contextual-search-defense-cybersecurity"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/ai-driven-security-analytics"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/ai-esql-detection-rule-creation"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/ai-vulnerability-triage-bug-bounty-hackerone"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/alert-triage-agentic-soc-elastic-workflows"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/alert-triage-agentic-soc-self-correcting-agents"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/analysis-of-log4shell-cve-2021-45046"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/automating-detection-tuning-requests-with-kibana-cases"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/automating-goad-and-live-malware-labs"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/automating-security-protections-rapid-response-to-malware"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/axios-supply-chain-compromise-detections"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/blister-configuration-extractor"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/bpfdoor-configuration-extractor"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/bpfdoor-scanner"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/centralized-alert-triage-cross-project-search"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/claude-code-cowork-monitoring-otel-elastic"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/click-click-boom-automating-protections-testing-with-detonate"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/cloud-monitoring-and-detection-with-elastic-security"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/cobalt-strike-beacon-extractor"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/collecting-cobalt-strike-beacons-with-the-elastic-stack"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/dac-beta-release"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/detect-credential-access"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/detect-domain-generation-algorithm-activity-with-new-kibana-integration"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/detecting-and-responding-to-dirty-pipe-with-elastic"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/detecting-living-off-the-land-attacks-with-new-elastic-integration"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/detecting-log4j2-with-elastic-security"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/detecting-web-server-probing-and-fuzzing"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/detection-and-response-for-the-actively-exploited-proxyshell-vulnerabilities"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/detection-as-code-timeline-and-new-features"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/detection-rules-for-sigred-vulnerability"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/dfir-osquery-elastic-security"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/dynowiper"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-and-keep-join-forces"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-defence-cyber-marvel"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-response-to-the-the-spring4shell-vulnerability-cve-2022-22965"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-security-black-hat-defcon-2026"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-security-google-threat-intelligence"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-security-integrations-roundup-q1-2026"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-security-mcp-app"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-security-opens-public-detection-rules-repo"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/elastic-workflows-ga-9-4"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/elastics-2022-global-threat-report-a-roadmap-for-navigating-todays-growing-threatscape"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/elevate-your-threat-hunting"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/emotet-configuration-extractor"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/emotet-dynamic-configuration-extraction"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/entity-analytics-agent-builder"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/entity-analytics-watchlists"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/entity-resolution-identity-scoring-elastic-security"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/entra-id-oauth-phishing-detection"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/esql-completion-curl-wget-detection-triage"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/exploring-applications-of-chatgpt-to-improve-detection-response-and-understanding"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/exploring-aws-sts-assumeroot"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/extracting-cobalt-strike-beacon-configurations"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/financial-risk-detection-ai"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/forecast-and-recommendations-2022-elastic-global-threat-report"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/forget-vulnerable-drivers-admin-is-all-you-need"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/from-alert-fatigue-to-agentic-response"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/from-qradar-to-elastic"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/getting-started-with-defend-for-containers"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/getting-the-most-out-of-transforms-in-elastic"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/google-cloud-for-cyber-data-analytics"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/gtr-multipart-series-overview"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/handy-elastic-tools-for-the-enthusiastic-detection-engineer"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/higher-order-detection-rules"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/how-elastic-infosec-optimizes-defend"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/hunting-for-lateral-movement-using-event-query-language"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/hunting-for-persistence-using-elastic-security-part-1"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/hunting-for-persistence-using-elastic-security-part-2"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/hunting-memory"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/hunting-memory-net-attacks"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/icedid-configuration-extractor"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/identifying-beaconing-malware-using-elastic"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/ingesting-threat-data-with-the-threat-intel-filebeat-module"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/investigating-from-the-endpoint-across-your-environment"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/kernel-etw-best-etw"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/linux-detection-engineering-with-auditd"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/linux-endpoint-management-elastic-workflows"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/make-the-most-of-network-firewall-logs-with-elastic"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/manage-elastic-with-terraform"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/managing-rules-with-terraform"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/monitoring-okta-threats-with-elastic-security"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/netwire-configuration-extractor"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/netwire-dynamic-configuration-extraction"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/npm-cooldown-removal-detection-elastic-agent"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/parallax-payload-extractor"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/patch-diff-to-system"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/phishing-incident-response-sublime-security"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/proactive-threat-hunting-ai-generated-leads"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/proactive-threat-hunting-with-elastic-security"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/protecting-your-devices-from-information-theft-keylogger-protection"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/qbot-configuration-extractor"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/security-advisory-automation-rag-elastic-agent-builder"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/security-automation-with-elastic-workflows"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/sentinel-detection-rules-migration"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/siem-data-export-comparison"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/skills-elastic-security-9-4"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/soc-case-management-detection-rule-history"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/solarwinds-whd-exploitation"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/speeding-apt-attack-discovery-confirmation-with-attack-discovery-workflows-and-agent-builder"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/starter-guide-to-understanding-okta"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/stixy-situations-ecsaping-your-threat-data"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/stopping-vulnerable-driver-attacks"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/storm-on-the-horizon"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/streamlining-esql-query-and-rule-validation"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/streamlining-security-integrating-amazon-bedrock"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/streamlining-the-security-analyst-experience"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/supercharge-your-soc"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/teampcp-container-attack-scenario"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/the-elastic-container-project"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/time-to-patch-metrics"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/tor-exit-node-monitoring"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/ueba-entity-record-quality-analytics"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/unpacking-icedid"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/unveiling-malware-behavior-trends"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/using-llms-and-esre-to-find-similar-user-sessions"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/using-llms-to-summarize-user-sessions"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/vulnerability-summary-follina"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/vulnerable-driver-detection-elastic-defend-byovd"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/why-2026-is-the-year-to-upgrade-to-an-agentic-ai-soc"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/winvisor-hypervisor-based-emulator"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/blog/wp2shell-wordpress-rce-detection-elastic-defend"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/reports/2022-elastic-global-threat-report-helping-security-leaders-navigate-todays-threat-landscape"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/reports/behind-the-scenes-global-threat-report"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/reports/elastic-av-comparatives-epr-test-2025"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/reports/elastic-publishes-2023-global-threat-report-spring-edition"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/reports/elastic-publishes-2024-gtr"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/reports/elastic-publishes-2025-global-threat-report"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/reports/elastic-security-av-comparatives-business-security-test-2025"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/reports/elastic-security-labs-releases-llm-safety-report"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/reports/fall-2023-global-threat-report-outro"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/reports/sneak-peek-elastic-2022-global-threat-report"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/reports/state-of-detection-engineering-at-elastic-2025"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/500ms-to-midnight"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/DPRK-strikes-using-a-new-variant-of-rustbucket"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/a-peek-behind-the-bpfdoor"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/a-wretch-client"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/abyssworker"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/accelerating-elastic-detection-tradecraft-with-llms"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/advanced-techniques-used-in-malaysian-focused-apt-campaign"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/ai-agent-attack-detection-hugging-face-breach"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/an-elastic-approach-to-large-scale-dynamic-malware-analysis"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/approaching-the-summit-on-persistence"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/attack-chain-leads-to-xworm-and-agenttesla"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/aws-sns-abuse"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/axios-one-rat-to-rule-them-all"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/badiis-to-the-bone-new-insights-to-global-seo-poisoning-campaign"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/behavior-rule-bug-bounty"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/betting-on-bots"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/beyond-behaviors-ai-augmented-detection-engineering-with-esql-completion"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/beyond-the-wail"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/bit-bybit"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/bits-and-bytes-analyzing-bitsloth"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/blister-loader"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/blockchain-c2-phantompulse-rat-sinkhole"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/brushworm-targets-financial-services"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/bughatch-malware-analysis"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/call-stacks-no-more-free-passes-for-malware"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/cloud-threat-emulation-methodology"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/coding-agent-launchagent-tunnel-detection"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/collecting-and-operationalizing-threat-data-from-the-mozi-botnet"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/contagious-interview-malware-svg-steganography"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/continuation-on-persistence-mechanisms"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/copy-fail-dirtyfrag-linux-page-bugs-in-the-wild"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/cuba-ransomware-campaign-analysis"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/cuba-ransomware-malware-analysis"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/cups-overflow"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/dancing-the-night-away-with-named-pipes"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/declawing-pumakit"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/deep-dive-into-the-ttd-ecosystem"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/deobfuscating-alcatraz"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/detecting-cicd-pipeline-abuse-with-llm-augmented-analysis"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/detecting-hotkey-based-keyloggers"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/detonating-beacons-to-illuminate-detection-gaps"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/dipping-into-danger"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/disclosing-the-bloodalchemy-backdoor"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/dismantling-smart-app-control"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/dissecting-remcos-rat-part-four"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/dissecting-remcos-rat-part-one"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/dissecting-remcos-rat-part-three"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/dissecting-remcos-rat-part-two"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/dll-search-order-hijacking-elastic-defend"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/doing-time-with-the-yipphb-dropper"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/doubling-down-etw-callstacks"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/dprk-code-of-conduct"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/eddiestealer"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/effective-parenting-detecting-lrpc-based-parent-pid-spoofing"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-advances-llm-security"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-catches-dprk-passing-out-kandykorn"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-charms-spectralviper"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-protects-against-data-wiper-malware-targeting-ukraine-hermeticwiper"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-releases-debmm"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-security-labs-discovers-lobshot-malware"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-security-labs-steps-through-the-r77-rootkit"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-security-uncovers-blister-malware-campaign"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/elastic-users-protected-from-suddenicon-supply-chain-attack"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/embedding-security-in-llm-workflows"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/embracing-offensive-tooling-building-detections-against-koadic-using-eql"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/emulating-aws-s3-sse-c"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/exploring-the-qbot-attack-pattern"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/exploring-the-ref2731-intrusion-set"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/exploring-windows-uac-bypasses-techniques-and-detection-strategies"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/fake-installers-to-monero"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/false-file-immutability"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/finaldraft"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/finding-truth-in-the-shadows"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/flare-on-9-solutions-burning-down-the-house"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/flipswitch-linux-rootkit"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/formbook-adopts-cab-less-approach"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/fragile-web-ref7707"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/get-injectedthreadex-detection-thread-creation-trampolines"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/getting-gooey-with-guloader-downloader"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/ghostpulse-haunts-victims-using-defense-evasion-bag-o-tricks"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/globally-distributed-stealers"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/going-coast-to-coast-climbing-the-pyramid-with-the-deimos-implant"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/google-workspace-attack-surface-part-one"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/google-workspace-attack-surface-part-two"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/grimresource"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/how-we-caught-the-axios-supply-chain-attack"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/icedids-network-infrastructure-is-alive-and-well"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/illuminating-voidlink"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/immutable-illusion"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/inital-research-of-jokerspy"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/inside-microsofts-plan-to-kill-pplfault"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/into-the-weeds-how-we-run-detonate"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/introducing-the-ref5961-intrusion-set"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/introduction-to-hexrays-decompilation-internals"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/invisible-miners-unveiling-ghostengine"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/itw-windows-lpe-0days-insights-and-detection-strategies"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/katz-and-mouse-game"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/knotweed-assessment-summary"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/kubernetes-audit-logs-container-escape"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/linux-privilege-escalation-detection-framework"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/linux-rootkits-1-hooked-on-linux"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/linux-rootkits-2-caught-in-the-act"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/llm-benchmarking-agentic-soc"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/llm-reversing-vs-llm-obfuscation"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/luna-ransomware-attack-pattern"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/maas-appeal-an-infostealer-rises-from-the-ashes"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/malformed-authenticode-signature"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/malicious-browser-extension-kremlin-banking-malware"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/mcp-tools-attack-defense-recommendations"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/memfd-create-linux-fileless-execution"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/mexican-banking-fraud-scmbanker-ref6045"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/mimicrat-custom-rat-mimics-c2-frameworks"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/misbehaving-modalities"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/nanoremote"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/naplistener-more-bad-dreams-from-the-developers-of-siestagraph"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/nightmare-on-0xelm-street"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/nimbuspwn-leveraging-vulnerabilities-to-exploit-linux-via-privilege-escalation"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/not-sleeping-anymore-somnirecords-wakeup-call"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/okta-and-lapsus-what-you-need-to-know"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/operation-bleeding-bear"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/outlaw-linux-malware"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/oxloader-malware-loader-infostealer"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/peeling-back-the-curtain-with-call-stacks"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/phantom-in-the-vault"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/phoreal-malware-targets-the-southeast-asian-financial-sector"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/pikabot-i-choose-you"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/playing-defense-against-gamaredon-group"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/practical-security-engineering-stateful-detection"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/primer-on-persistence-mechanisms"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/qbot-malware-analysis"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/ransomware-in-the-honeypot-how-we-capture-keys"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/ransomware-interrupted-sodinokibi-and-the-supply-chain"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/ref2924-howto-maintain-persistence-as-an-advanced-threat"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/revisiting-blister-new-developments-of-the-blister-loader"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/revisiting-warmcookie"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/revstealer-credential-harvesting-infostealer"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/roningloader"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/sandboxing-antimalware-products"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/sequel-on-persistence-mechanisms"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/shai-hulud-chaindrop-npm-supply-chain"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/siestagraph-new-implant-uncovered-in-asean-member-foreign-ministry"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/signaling-from-within-how-ebpf-interacts-with-signals"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/silentconnect-delivers-screenconnect"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/sinking-macos-pirate-ships"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/spring-cleaning-with-latrodectus"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/taking-shellter"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/tclbanker-brazilian-banking-trojan"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/telepuz-maas-malware-clickfix"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/testing-okta-visibility-and-detection-dorothy"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/thawing-the-permafrost-of-icedid-summary"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/the-grand-finale-on-linux-persistence"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/the-shelby-strategy"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/tollbooth"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/tricks-and-treats"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/twice-around-the-dance-floor-with-pipedance"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/tycoon-2fa-aitm-detection-engineering"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/under-the-sadbridge-with-gosar"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/unlocking-power-safely-privilege-escalation-via-linux-process-capabilities"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/unmasking-financial-services-intrusion-ref0657"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/update-to-the-REF2924-intrusion-set-and-related-campaigns"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.elastic.co/security-labs/threat-command/upping-the-ante-detecting-in-memory-threats-with-kernel-call-stacks"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "defensive_resources",
+  "rationale": "Proposed review: Elastic Security Labs technical research and detection articles. Product announcements, summary/agent feature announcements and navigation are omitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:7d972d00e0165bdcb2c24f779d72745926de5ceb732a846b59ad991dcd4d9a23",
+  "snapshot_path": "corpus/indexes/elastic-v1.json",
+  "source_id": "elastic-v1"
+}

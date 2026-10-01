@@ -1,0 +1,27 @@
+{
+  "extractor": "html-anchors-v1",
+  "final_url": "https://binary.golf/",
+  "response_digest": "sha256:e640959a591abadc85ca418eaadcb71741639820d740df595703dc0d017ab68a",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://binary.golf/",
+  "urls": [
+    "https://binary.golf/1/",
+    "https://binary.golf/2/",
+    "https://binary.golf/3/",
+    "https://binary.golf/4/",
+    "https://binary.golf/5/",
+    "https://binary.golf/6/",
+    "https://bsky.app/profile/binary.golf",
+    "https://discord.gg/Q3r82zjrK5",
+    "https://github.com/binarygolf/BGGP",
+    "https://github.com/binarygolf/BGGP/tree/main/2020",
+    "https://github.com/binarygolf/BGGP/tree/main/2021",
+    "https://github.com/binarygolf/BGGP/tree/main/2022",
+    "https://github.com/binarygolf/BGGP/tree/main/2023",
+    "https://github.com/binarygolf/BGGP/tree/main/2024",
+    "https://github.com/binarygolf/BGGP/tree/main/2025",
+    "https://haunted.computer/@binarygolf",
+    "https://twitter.com/binarygolf"
+  ]
+}

@@ -59,12 +59,18 @@
     catch (_) { return fallback || ''; }
   }
 
+  // The armed terrain is exposed by the desktop controls' aria-pressed state (TERRAIN_AUTHORITY_CONTRACT.md §6).
   function sourceFilterIsActive(button) {
     if (!button) return false;
-    if (button.classList.contains('active') || button.getAttribute('aria-pressed') === 'true') return true;
-    var color = String(button.style.color || '').replace(/\s+/g, '').toLowerCase();
-    var border = String(button.style.borderColor || '').replace(/\s+/g, '').toLowerCase();
-    return color === '#cc1111' || color === 'rgb(204,17,17)' || border === '#cc1111' || border === 'rgb(204,17,17)';
+    return button.getAttribute('aria-pressed') === 'true';
+  }
+
+  function terrainScopeText(button) {
+    var label = button.dataset.terrainLabel || button.textContent.trim().toUpperCase();
+    var count = button.dataset.eligibleCount;
+    if (count === '1') return label + ' · 1 ROUTE · SINGLE ROUTE';
+    if (count === '2') return label + ' · 2 ROUTES · ALTERNATES';
+    return count ? label + ' · ' + count + ' ROUTES' : label + ' ROUTES';
   }
 
   function branchModeActive() {
@@ -758,8 +764,10 @@ MOTION: waiting for target…';
     }
     if (action === 'topology') {
       closeSheets();
-      if (typeof window.getTrailManifest !== 'function' || typeof window.openTrailTopology !== 'function') return;
-      Promise.resolve(window.getTrailManifest())
+      if (typeof window.getLegacyTrailManifest !== 'function' || typeof window.openTrailTopology !== 'function') return;
+      // Topology v2 verifies trail v0.1/v0.2 only. Use the explicit legacy
+      // projection instead of feeding the default v0.3 artifact into it.
+      Promise.resolve(window.getLegacyTrailManifest())
         .then(function (snapshot) { return window.openTrailTopology(snapshot); })
         .catch(function (error) { console.error('Trail topology failed', error); });
       return;
@@ -942,49 +950,83 @@ MOTION: waiting for target…';
     var source = byId('catFilter');
     var dest = byId('r4mFilterOptions');
     if (!dest) return;
-    var buttons = source ? Array.from(source.querySelectorAll('button')) : [];
+    var allSource = source ? source.querySelector('button[data-terrain-id="ALL"]') : null;
+    var buttons = source ? Array.from(source.querySelectorAll('button[data-terrain-id]')).filter(function (button) {
+      return button.dataset.terrainId !== 'ALL';
+    }) : [];
     var activeSource = buttons.find(sourceFilterIsActive) || null;
+    var allCount = allSource ? allSource.dataset.eligibleCount : '';
     dest.innerHTML = '';
 
     var label = byId('r4mFilterLabel');
     var scope = byId('r4mRollScope');
-    if (label) label.textContent = activeSource ? activeSource.textContent.trim().toUpperCase() : 'ALL SIGNALS';
-    if (scope) scope.textContent = activeSource ? activeSource.textContent.trim().toUpperCase() + ' ROUTES' : 'FULL CORPUS';
+    if (label) label.textContent = activeSource ? (activeSource.dataset.terrainLabel || activeSource.textContent.trim().toUpperCase()) : 'ALL SIGNALS';
+    if (scope && !scope.dataset.selectionStatus) {
+      scope.textContent = activeSource ? terrainScopeText(activeSource) : (allCount ? 'FULL CORPUS · ' + allCount + ' ROUTES' : 'FULL CORPUS');
+    }
 
     var all = document.createElement('button');
     all.type = 'button';
     all.className = 'r4m-filter-proxy' + (!activeSource ? ' active' : '');
-    all.textContent = 'ALL SIGNALS';
+    all.setAttribute('aria-pressed', activeSource ? 'false' : 'true');
+    all.textContent = allCount ? 'ALL SIGNALS · ' + allCount : 'ALL SIGNALS';
     all.addEventListener('click', function () {
-      var sourceButtons = source ? Array.from(source.querySelectorAll('button')) : [];
-      var currentActive = sourceButtons.find(sourceFilterIsActive);
-      if (currentActive) currentActive.click();
+      var currentAll = source ? source.querySelector('button[data-terrain-id="ALL"]') : null;
+      if (currentAll) currentAll.click();
       closeSheets();
       window.setTimeout(syncFilter, 20);
     });
     dest.appendChild(all);
 
-    buttons.forEach(function (button, index) {
+    buttons.forEach(function (button) {
+      var id = button.dataset.terrainId;
       var proxy = document.createElement('button');
       proxy.type = 'button';
       proxy.className = 'r4m-filter-proxy' + (sourceFilterIsActive(button) ? ' active' : '');
       proxy.textContent = button.textContent.trim();
+      proxy.dataset.terrainId = id;
+      proxy.setAttribute('aria-pressed', sourceFilterIsActive(button) ? 'true' : 'false');
+      if (button.disabled) {
+        proxy.disabled = true;
+        proxy.setAttribute('aria-disabled', 'true');
+      }
+      if (button.title) proxy.title = button.title;
       proxy.addEventListener('click', function () {
-        var current = source ? Array.from(source.querySelectorAll('button'))[index] : null;
-        if (current) current.click();
+        var current = source ? source.querySelector('button[data-terrain-id="' + id + '"]') : null;
+        if (current && !current.disabled) current.click();
         closeSheets();
         window.setTimeout(syncFilter, 20);
       });
       dest.appendChild(proxy);
     });
 
-    if (!buttons.length) {
+    var status = byId('terrainStatus');
+    if (status && status.dataset.state !== 'READY') {
       var note = document.createElement('p');
       note.className = 'r4m-sheet-note';
-      note.textContent = 'Category filters appear after the corpus initializes.';
+      note.textContent = status.textContent;
       dest.appendChild(note);
+    } else if (!buttons.length) {
+      var empty = document.createElement('p');
+      empty.className = 'r4m-sheet-note';
+      empty.textContent = 'Terrains appear after the corpus initializes.';
+      dest.appendChild(empty);
     }
   }
+
+  // Selection status (EMPTY / AUTHORITY UNAVAILABLE …) is shown on the ROLL apparatus until the next change.
+  document.addEventListener('r4b1t:selection-status', function (event) {
+    var scope = byId('r4mRollScope');
+    if (!scope) return;
+    var detail = event.detail || {};
+    if (detail.message) {
+      scope.textContent = detail.message;
+      scope.dataset.selectionStatus = detail.status;
+    } else if (scope.dataset.selectionStatus) {
+      delete scope.dataset.selectionStatus;
+      syncFilter();
+    }
+  });
 
   function syncBranch() {
     var source = byId('branchGrid');

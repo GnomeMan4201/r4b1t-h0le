@@ -1,0 +1,1208 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/2020-threat-detection-report-webinar/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/2021-threat-detection-report-preview/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/2021-threat-detection-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/2022-mitre-attack-evals/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/2022-threat-detection-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/2023-threat-detection-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/2024-threat-detection-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/2025-threat-detection-report-midyear/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/2025-threat-detection-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/2026-threat-detection-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/3-technique-regsvr32-t1117/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/4-technique-connection-proxy-t1090/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/a-pastebin-scraper-steganography-and-a-persistent-linux-backdoor/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/adversaries-use-scripting-more-than-any-attck-technique-except-powershell/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/adversarys-gift-linux/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/ai-agent-mode/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/ai-agents/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/ai-cli-tools/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/alert-response/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/applescript/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/assemblyline-browser-extensions/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/atomic-friday-password-filters/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/atomic-stealer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/attacking-a-mac-threat-detection-392/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/attck-t1501-understanding-systemd-service-persistence/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/aws-sourceidentity/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/aws-sso-access-tokens/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/aws-sts/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/azure-openai-abuse/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/bav2ropc/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/better-know-a-data-source/access-tokens/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/better-know-a-data-source/amsi/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/better-know-a-data-source/better-know-a-data-source-files/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/better-know-a-data-source/better-know-a-data-source-network-telemetry/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/better-know-a-data-source/logon-sessions/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/better-know-a-data-source/process-command-line/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/better-know-a-data-source/process-creation/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/better-know-a-data-source/process-integrity-levels/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/bitsadmin/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/black-hat-detecting-the-unknown-and-disclosing-a-new-attack-technique/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/breathing-life-detection-capability/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/brute-force-attacks/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/bypassing-application-whitelisting/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/child-processes/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/chromeloader/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/cloud-attack-techniques/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/cloud-threat-detection-engine/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/cloud-threat-detection/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/code-signing-certificates/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/combing-through-endpoint-data-to-detect-threats/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/computer-worms/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/conditional-access-policies/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/context-in-security-alert-triage/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/cor_profiler-for-persistence/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/credential-access/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/crypters-and-loaders/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/cryptomining-enabled-by-native-windows-tools/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/cybersecurity-metrics/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/defense-evasion-and-phishing-emails/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/defense-evasion-why-is-it-so-prominent-how-can-you-detect-it/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/dependabot-configurator/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detect-repeat-infections/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-all-the-things-with-limited-data/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-and-mitigating-ransomware/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-anomalies-with-surveyor/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-application-shimming/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-attacks-leveraging-the-net-framework/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-credential-access/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-cve-2015-1130-on-mac-os-x-endpoints/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-eggshell-surveillance-tool/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-insider-threats-you-dont-need-a-silver-bullet/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-internet-explorer-zero-day/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-msxsl-attacks/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-persistence-techniques/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-post-exploitation-top-questions/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-potentially-unwanted-programs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-ransomware/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-remote-access-trojan/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-sharepoint-attacks-via-worker-process-activity/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-snake-malware/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-targeted-crimeware-within-30-minutes-of-activating-red-canary/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detecting-wmi/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detection-engineering-storytelling/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/detection-profile-silent-periodic-activity/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/ebpf-for-security/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/ebpf-malware/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/email-forwarding-rules/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/email-payroll-diversion-attack/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-assistive-agents/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-teams/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/entra-id-ai-workflows/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/entra-id-oauth-attacks/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/entra-id-service-principals/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/f1-racing-telemetry/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/faq-2020-threat-detection-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/frameworkpos-and-the-adequate-persistent-threat/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/frankenstein-was-a-hack-the-copy-paste-cryptominer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/gatekeeper-bypass-vulnerabilities/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/gatekeeper/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/gcp-service-accounts/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/getsystem-offsec/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/getting-started-with-attck-new-report-suggests-prioritizing-powershell/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/google-workspace-oauth-attack/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/google-zip-domains/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/heavens-gate-technique-on-linux/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/hijack-my-hijack-my-hijack-my-dll/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/how-to-prevent-ransomware/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/identity-attacks/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/inbox-heist/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/initial-access-techniques/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/installer-packages/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/intelligence-insights-november-2021/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/investigating-powershell-attacks/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/iso-files/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/its-all-fun-and-games-until-ransomware-deletes-the-shadow-copies/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/kens-guide-to-cybersecurity/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/lateral-movement-and-cryptomining/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/lateral-movement-winrm-wmi/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/lateral-movement-with-secure-shell/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/linux-cgroups/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/linux-vfs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/lsass-behaving-badly/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/mac-application-bundles/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/mac-monitor/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/marshmallows-and-kerberoasting/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/mcp-ai-workflows/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/mdr-questions/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/mean-girls/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/microsoft-alerts/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/microsoft-azure-entry/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/microsoft-dde-exploit-email/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/microsoft-html-application-hta-abuse-part-deux/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/midyear-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/misbehaving-rats/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/mitre-sub-techniques/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/ms-driver-block-rules/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/msrpc-to-attack/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/netwire-remote-access-trojan-on-linux/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/network-traffic-tunneling/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/npm-package-compromises/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/o365-email-rules-mindmap/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/oauth-app-attacks/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/openclaw-ai/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/operation-cleaver-blade-dulled/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/phishing-ai-agent/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/phishing-detection/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/poshrat-detection/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/powershell-abuse-webinar-recap/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/privilege-escalation-webinar/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/proactive-threat-hunting/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/process-injection-primer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/process-masquerading/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/process-memory-integrity-code/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/process-memory-integrity-linux/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/process-streams/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/ransomware-decyrptors/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/ransomware-pitfalls/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/rapid-detection-cve-2014-4114-sandworm/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/rclone-mega-extortion/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/retail-cybersecurity-threats/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/right-to-left-override/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/rmm-software/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/rocke-cryptominer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/rogue-code-signing-keys-environment/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/rootkit-webinar/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/ropc-legacy-authentication/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/ryuk-ransomware-attack/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/security-testing-using-mitre-attack/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/shai-hulud-worm/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/shutting-down-osx-shlayer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/signed-mimikatz/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/spearphishing-documents-with-executables/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/stolen-signing-certificate-leads-to-banking-trojan/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/stopping-emotet-before-it-moves-laterally/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/supply-chain-compromises/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/surveyor-part-one/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/system32-binaries/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/threat-detection-cryptocurrency-mining/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/threat-detection-report-practitioner-playbook/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/threat-detection-series-event/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/threat-detection-series-powershell/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/threat-hunting-entropy/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/threat-hunting-guidance/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/threat-hunting-psexec-lateral-movement/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/threat-hunting-scaled/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/threat-mining-vs-threat-hunting/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/threat-research-questions/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/top-techniques-spearphishing-attachment-t1193/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/tracking-driver-inventory-to-expose-rootkits/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/trufflehog-aws/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/user-baseline-identity-security/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/using-alternate-data-streams-bypass-user-account-controls/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/using-cb-response-to-mitigate-eternalblue/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/using-visibility-to-gather-context-and-find-persistence-mechanisms/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/verclsid-exe-threat-detection/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/vscode-attack/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/what-red-canary-detects-process-injection/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/whitelist-evasion-example-threat-detection-723/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/windows-active-directory/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/windows-registry-attacks-threat-detection/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-detection/worms-dominate-2020-threat-detection-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-hunting/qa-threat-hunting-testing-visibility/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/atomic-odyssey-poseidon-stealers/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/blackbyte-ransomware/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/blue-mockingbird-cryptominer/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/blue-mockingbird-detection/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/charcoal-stork/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/clipping-silver-sparrows-wings/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/confluence-exploit-ransomware/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/cve-2023-48788/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/cve-2025-31324/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/cyber-threat-intelligence-hiring/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/dllfake-secondeye/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/dripdropper-linux-malware/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/email-account-compromise-schools/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/email-bombing-virtual-machine/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/google-chrome-app-bound-encryption/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/gootloader/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/grief-ransomware/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/how-one-hospital-thwarted-a-ryuk-ransomware-outbreak/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intel-team/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-april-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-april-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-april-2026/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-august-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-august-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-august-2026/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-december-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-december-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-february-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-february-2026/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-january-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-january-2026/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-july-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-july-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-july-2026/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-june-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-june-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-june-2026/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-march-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-march-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-march-2026/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-may-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-may-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-may-2026/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-november-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-november-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-october-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-october-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-september-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-september-2025/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-april-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-april-2023/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-august-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-august-2023/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-december-2021/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-december-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-december-2023/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-february-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-february-2023/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-february-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-january-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-january-2023/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-january-2024/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-july-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-july-2023/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-june-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-june-2023/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-march-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-march-2023/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-may-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-may-2023/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-november-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-november-2023/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-october-2021/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-october-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-october-2023/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-september-2021/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-september-2022/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-september-2023/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/tax-season-phishing/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/kinsing-malware-citrix-saltstack/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/kmspico-cryptbot/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/microsoft-exchange-attacks/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/mocha-manakin-nodejs-backdoor/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/msix-installers/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/notepad-javascript/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/phishing-rmm-tools/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/qbot-takedown/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/raspberry-robin/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/scarlet-goldfinch-clickfix/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/scarlet-goldfinch/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/social-engineering/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/storm-1811-black-basta/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/strong-communicators/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/tangerine-turkey/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/threat-hunting-mitre-attack/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/threat-intelligence/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://redcanary.com/blog/threat-intelligence/yellow-cockatoo/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "defensive_resources",
+  "rationale": "Proposed review: Red Canary technical threat-detection, threat-intelligence, threat-hunting, malware-analysis and attack-technique articles. News, sales, customer stories, careers, webinars and site navigation are omitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:daa59dafa9c1bd2322015daa15b25c37c623a9245190d2f3664eb652037221b4",
+  "snapshot_path": "corpus/indexes/redcanary-sitemap-v1.json",
+  "source_id": "redcanary-sitemap-v1"
+}

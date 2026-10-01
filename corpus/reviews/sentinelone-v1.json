@@ -1,0 +1,52 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://www.sentinelone.com/labs/agents-at-large-tracing-illicit-openai-agent-activity-on-hugging-face/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.sentinelone.com/labs/context-engineering-compaction-agent-memory-for-automated-malware-analysis/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.sentinelone.com/labs/dont-call-us-well-call-your-apis-tradertraitor-backdoors-resurface-on-victim-with-no-crypto-ties/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.sentinelone.com/labs/frontier-models-tackle-autonomous-long-horizon-malware-analysis/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.sentinelone.com/labs/iran-war-cyber-threat-landscape-a-midyear-assessment-on-what-matters/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.sentinelone.com/labs/labscon25-replay-breach-alpha-trading-on-cyber-fallout/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.sentinelone.com/labs/labscon25-replay-gamaredon-x-turla-unveiling-a-2025-espionage-alliance-targeting-ukraine/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.sentinelone.com/labs/labscon25-replay-keynote-steps-to-an-ecology-of-cyber/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.sentinelone.com/labs/macos-gaslight-rust-backdoor-turns-prompt-injection-on-the-analyst-not-the-sandbox/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.sentinelone.com/labs/the-model-is-the-malware-what-four-agentic-intrusions-tell-defenders/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "defensive_resources",
+  "rationale": "Proposed review: concrete technical threat/vulnerability research articles observed in the sentinelone research feed. Obvious consulting-sales and product-announcement links are omitted; per-page content audit remains pending.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:106f0286a3614ac22e74e9180d32b061947beb6b99b38ba6a114c4b19ad9e596",
+  "snapshot_path": "corpus/indexes/sentinelone-v1.json",
+  "source_id": "sentinelone-v1"
+}

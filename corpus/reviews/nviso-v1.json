@@ -1,0 +1,52 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://blog.nviso.eu/2026/03/27/why-the-pentesting-playbook-doesnt-fit-belief-assumptions-and-non-determinism/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.nviso.eu/2026/04/03/the-axios-npm-supply-chain-incident-fake-dependency-real-backdoor/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.nviso.eu/2026/04/10/securitys-blind-spot-physical-keyloggers-that-bypass-antivirus-entirely/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.nviso.eu/2026/05/22/securing-ai-systems-without-overconfidence-or-fear-part-2-attack-surfaces-and-the-checkpoint-flow/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.nviso.eu/2026/06/04/the-detection-response-chronicles-covert-operations-through-qemu/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.nviso.eu/2026/06/17/reducing-microsoft-sentinel-costs-without-compromising-detection-part-1-the-summary-rules-quest/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.nviso.eu/2026/06/18/the-road-to-post-quantum-readiness-part-1/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.nviso.eu/2026/07/01/the-road-to-post-quantum-readiness-part-2-of-2-the-migration-playbook/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.nviso.eu/2026/07/07/reducing-microsoft-sentinel-costs-without-compromising-detection-part-2-the-firewall-quest/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.nviso.eu/2026/07/22/intercepting-android-webview-traffic-under-new-certificate-validity-requirement-by-chromium/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "defensive_resources",
+  "rationale": "Proposed review: concrete technical threat/vulnerability research articles observed in the nviso research feed. Obvious consulting-sales and product-announcement links are omitted; per-page content audit remains pending.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:35e38c146e39bbcff84905876f9bb12687713cb451db312bee9d91d78cc9fa20",
+  "snapshot_path": "corpus/indexes/nviso-v1.json",
+  "source_id": "nviso-v1"
+}

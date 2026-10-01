@@ -1,0 +1,32 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://trmm.net/Airbreak/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://trmm.net/Thunderstrike/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://trmm.net/Thunderstrike2_details/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://trmm.net/SPI_flash/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://trmm.net/Safeboot/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Concrete firmware extraction, boot-security, reverse-engineering or security-research project; excludes art, category routes and generic navigation.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:98999d2c7b9605b5de38973032bca447eeea34a2b89e505ff730a2a8be7f410d",
+  "snapshot_path": "corpus/indexes/strange-trmm-v1.json",
+  "source_id": "strange-trmm-v1"
+}

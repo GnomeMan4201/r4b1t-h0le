@@ -7,7 +7,7 @@ const { test, expect } = require('@playwright/test');
 const ROOT = path.resolve(__dirname, '..');
 const RESOURCES = JSON.parse(
   fs.readFileSync(
-    path.join(ROOT, 'corpus', 'releases', 'typed-candidate-v0.1', 'resources.json'),
+    path.join(ROOT, 'corpus', 'releases', 'strange-candidate-v0.3', 'resources.json'),
     'utf8',
   ),
 );
@@ -19,7 +19,7 @@ async function allowLocalOnly(page, overrides = {}) {
     const parsed = new URL(requestUrl);
 
     if (overrides.tamperMetadata &&
-        parsed.pathname.endsWith('/corpus/releases/typed-candidate-v0.1/resources.json')) {
+        parsed.pathname.endsWith('/corpus/releases/strange-candidate-v0.3/resources.json')) {
       return route.fulfill({
         status: 200,
         contentType: 'application/json; charset=utf-8',
@@ -66,7 +66,7 @@ test('typed resource metadata is requested only after reveal and describes the s
   await waitReady(page);
   await page.waitForFunction(() => (
     window.R4b1tCorpusAuthority &&
-    window.R4b1tCorpusAuthority.active().id === 'typed-candidate-v0.1'
+    window.R4b1tCorpusAuthority.active().id === 'strange-candidate-v0.3'
   ));
 
   expect(resourceRequests).toHaveLength(0);
@@ -116,7 +116,7 @@ test('metadata verification failure does not revoke or reroll the selected route
 
   await expect.poll(async () => page.evaluate(async url => {
     const artifact = await window.getTrailManifest();
-    return artifact.manifest.routes.some(route => route.url === url);
+    return artifact.manifest.steps.some(step => step.route.url === url);
   }, selected)).toBe(true);
   expect(BY_URL.has(selected)).toBe(true);
 });

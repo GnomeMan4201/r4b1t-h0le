@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://r4b1t.badbananaresearch.com/schemas/terrain-index-v1.schema.json",
+  "title": "r4b1t terrain-index-v1",
+  "description": "Digest-bound terrain membership compiled from a corpus release (TERRAIN_AUTHORITY_CONTRACT.md §2). File bytes are CJ-1(document) followed by one LF. Ordering and membership rules beyond JSON Schema (sorted ids, ascending in-range members, count == members.length, label derivation) are enforced by tools/terrain_index.py and terrain-authority.js validateIndexDocument.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "release", "vocabulary", "terrains"],
+  "properties": {
+    "schema": { "const": "r4b1t-terrain-index-v1" },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["release_id", "urls_digest", "resources_digest"],
+      "properties": {
+        "release_id": { "type": "string", "minLength": 1 },
+        "urls_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "resources_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+      }
+    },
+    "vocabulary": { "const": "resource-type-identity-v1" },
+    "terrains": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label", "rule", "count", "members"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$", "not": { "const": "all" } },
+          "label": { "type": "string", "minLength": 1 },
+          "rule": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["resource_type"],
+            "properties": { "resource_type": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } } }
+          },
+          "count": { "type": "integer", "minimum": 1 },
+          "members": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "integer", "minimum": 0 } }
+        }
+      }
+    }
+  }
+}

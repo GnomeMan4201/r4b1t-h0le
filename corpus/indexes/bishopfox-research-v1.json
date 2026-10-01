@@ -1,0 +1,24 @@
+{
+  "extractor": "sitemap-urls-v1",
+  "final_url": "https://bishopfox.com/sitemaps-1-section-research-1-sitemap.xml",
+  "response_digest": "sha256:9efcea59d70901aa69f0768f44b6ed1fe3be43a652e6f8212536fa5cc417940d",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://bishopfox.com/sitemaps-1-section-research-1-sitemap.xml",
+  "urls": [
+    "https://bishopfox.com/tools/google-hacking-diggity-project-2",
+    "https://bishopfox.com/tools/google-hacking-diggity-project-2/attack-tools",
+    "https://bishopfox.com/tools/google-hacking-diggity-project-2/defense-tools",
+    "https://bishopfox.com/tools/google-hacking-diggity-project-2/google-hacking-history",
+    "https://bishopfox.com/tools/google-hacking-diggity-project-2/media-gallery",
+    "https://bishopfox.com/tools/google-hacking-diggity-project-2/presentation-slides",
+    "https://bishopfox.com/tools/google-hacking-diggity-project-2/white-papers",
+    "https://bishopfox.com/tools/home-and-office-security-system-hacking",
+    "https://bishopfox.com/tools/home-and-office-security-system-hacking/media-gallery",
+    "https://bishopfox.com/tools/home-and-office-security-system-hacking/presentation-slides",
+    "https://bishopfox.com/tools/rfid-hacking-2",
+    "https://bishopfox.com/tools/rfid-hacking-2/attack-tools",
+    "https://bishopfox.com/tools/rfid-hacking-2/media-gallery",
+    "https://bishopfox.com/tools/rfid-hacking-2/presentation-slides"
+  ]
+}

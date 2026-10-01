@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
+import crypto from 'node:crypto';
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 
 const ROOT = path.resolve('.');
@@ -53,22 +55,109 @@ function corpusMetricsFromText(content) {
   return { validUrls, uniqueHosts: hosts.size };
 }
 
-function verifyCorpusClaims(readme) {
-  const legacy = corpusMetricsFromText(read('urls.txt'));
-  const releaseManifest = JSON.parse(
-    read('corpus/releases/typed-candidate-v0.1/manifest.json'),
-  );
+// ADR 0006 / TERRAIN_AUTHORITY_CONTRACT.md: promotion → registry → runtime pins → index bytes → README.
+function verifyTerrainAuthorityClaims(readme) {
   const promotion = JSON.parse(read('corpus/runtime/active-v1.json'));
+  // The release is whatever the promotion record names; nothing release-specific is hard-coded here.
+  const releaseManifest = JSON.parse(read(promotion.active.manifest_url));
+  claim(releaseManifest.release_id === promotion.active.release_id, 'terrain authority drift: promotion manifest is not the active release');
+  const registry = JSON.parse(read('corpus/runtime/eligibility-profiles-v1.json'));
+  const pins = read('terrain-authority.js');
+  claim(registry.schema === 'r4b1t-eligibility-profiles-v1', 'eligibility profile registry schema drift');
+  const active = (registry.profiles || []).filter(p => p.status === 'active' && p.release.release_id === promotion.active.release_id);
+  claim(active.length === 1, 'eligibility profile registry must hold exactly one active profile for the active release');
+  if (active.length !== 1) return;
+  const profile = active[0];
+  claim(profile.release.urls_digest === promotion.active.expected_digest, 'terrain authority drift: profile release is not the active promotion');
+  claim(profile.release.resources_digest === releaseManifest.resources_digest, 'terrain authority drift: profile resources digest');
+  claim(profile.release.release_id === releaseManifest.release_id, 'terrain authority drift: profile release id');
+  claim(profile.promotion_id === promotion.promotion_id, 'terrain authority drift: profile promotion id');
+  const bytes = fs.readFileSync(path.join(ROOT, profile.terrain_index.path));
+  const digest = 'sha256:' + crypto.createHash('sha256').update(bytes).digest('hex');
+  claim(digest === profile.terrain_index.digest, 'terrain authority drift: index bytes do not match the registry digest');
+  for (const value of [profile.profile_id, profile.terrain_index.path, profile.terrain_index.digest, profile.release.urls_digest, profile.release.resources_digest]) {
+    includes(pins, value, 'terrain-authority.js pins');
+  }
+  const index = JSON.parse(bytes.toString('utf8'));
+  claim(readme.includes('./corpus/runtime/eligibility-profiles-v1.json'), 'README must link the eligibility profile registry');
+  for (const terrain of index.terrains) {
+    includes(readme, `| \`${terrain.id}\` | ${terrain.label} | ${terrain.count} |`, 'README terrain table');
+  }
+}
+
+// POST_SELECTION_RESOURCE_METADATA_CONTRACT.md follows the active source; it never pins a release snapshot.
+// promotion → runtime activeSource → release manifest → resources.json bytes, and the contract names only
+// the binding (activeSource.*), never any checked-in release's ID, digests or count.
+function verifyMetadataContractClaims() {
+  const promotion = JSON.parse(read('corpus/runtime/active-v1.json'));
+  const corpusAuthority = createRequire(import.meta.url)(path.join(ROOT, 'corpus-authority.js'));
+  const active = corpusAuthority.active();
+  claim(
+    active.releaseId === promotion.active.release_id &&
+      active.url === promotion.active.url &&
+      active.resourcesUrl === promotion.active.resources_url &&
+      active.manifestUrl === promotion.active.manifest_url &&
+      active.expectedDigest === promotion.active.expected_digest &&
+      active.promotionId === promotion.promotion_id,
+    'metadata source drift: runtime activeSource does not match the promotion record',
+  );
+  const manifest = JSON.parse(read(promotion.active.manifest_url));
+  claim(
+    manifest.release_id === active.releaseId &&
+      manifest.resources_digest === active.expectedResourcesDigest &&
+      manifest.counts.resources === active.expectedResourceCount,
+    'metadata source drift: runtime activeSource does not match the active release manifest',
+  );
+  const resourceBytes = fs.readFileSync(path.join(ROOT, active.resourcesUrl));
+  claim(
+    'sha256:' + crypto.createHash('sha256').update(resourceBytes).digest('hex') === active.expectedResourcesDigest,
+    'metadata source drift: active resources.json bytes do not match expectedResourcesDigest',
+  );
+
+  const label = 'POST_SELECTION_RESOURCE_METADATA_CONTRACT.md';
+  const contract = read(label);
+  for (const binding of ["active source's `resourcesUrl`", 'activeSource.expectedResourcesDigest', 'activeSource.releaseId', 'activeSource.expectedResourceCount']) {
+    includes(contract, binding, `${label} (active-source binding)`);
+  }
+  const releasesDir = path.join(ROOT, 'corpus', 'releases');
+  for (const entry of fs.readdirSync(releasesDir, { withFileTypes: true })) {
+    const manifestPath = path.join(releasesDir, entry.name, 'manifest.json');
+    if (!entry.isDirectory() || !fs.existsSync(manifestPath)) continue;
+    const release = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    for (const pinned of [release.release_id, release.urls_digest, release.resources_digest]) {
+      if (pinned) excludes(contract, pinned, `${label} (release snapshot pinned)`);
+    }
+    const count = release.counts && release.counts.resources;
+    if (Number.isSafeInteger(count)) {
+      for (const form of new Set([String(count), count.toLocaleString('en-US')])) {
+        claim(!new RegExp(`(^|[^0-9,])${form}(?![0-9,])`).test(contract),
+          `${label} (release snapshot pinned): resource count ${form} of ${release.release_id}`);
+      }
+    }
+  }
+}
+
+function verifyCorpusClaims(readme, index) {
+  const legacyEvidence = read('docs/readme/legacy-corpus-evidence.md');
+  const legacy = corpusMetricsFromText(read('urls.txt'));
+  const promotion = JSON.parse(read('corpus/runtime/active-v1.json'));
+  const manifestPath = promotion.active && promotion.active.manifest_url;
+  claim(
+    typeof manifestPath === 'string' && manifestPath.startsWith('corpus/releases/'),
+    'runtime promotion drift: active manifest path is missing or invalid',
+  );
+  const releaseManifest = JSON.parse(read(manifestPath));
 
   const activeCount = releaseManifest.counts.resources;
   const activeHosts = releaseManifest.counts.unique_hosts;
   const activeTypes = Object.keys(releaseManifest.counts.resource_types || {}).length;
 
   claim(
-    promotion.active.source_id === 'typed-candidate-v0.1' &&
+    promotion.active.source_id === releaseManifest.release_id &&
+      promotion.active.release_id === releaseManifest.release_id &&
       promotion.active.selection_authority === true &&
       promotion.active.expected_digest === releaseManifest.urls_digest,
-    'runtime promotion drift: active typed release does not match release manifest',
+    'runtime promotion drift: active release does not match release manifest',
   );
   claim(
     promotion.release_assertion.selection_authority === false,
@@ -76,31 +165,38 @@ function verifyCorpusClaims(readme) {
   );
 
   claim(
-    readme.includes(`<strong>${activeCount.toLocaleString('en-US')}</strong><br><sub>typed active resources</sub>`),
-    `README active corpus count drift: expected ${activeCount.toLocaleString('en-US')} typed resources`,
+    readme.includes(`**${activeCount.toLocaleString('en-US')} resources across ${activeHosts.toLocaleString('en-US')} hosts**`),
+    `README active corpus count drift: expected ${activeCount.toLocaleString('en-US')} resources`,
   );
   claim(
-    readme.includes(`<strong>${activeHosts.toLocaleString('en-US')}</strong><br><sub>unique active hosts</sub>`),
-    `README active host count drift: expected ${activeHosts.toLocaleString('en-US')} active hosts`,
+    readme.includes('./corpus/runtime/active-v1.json') &&
+      readme.includes(`./${manifestPath}`),
+    'README must link active corpus authority and release evidence',
   );
   claim(
-    readme.includes(`<strong>${activeTypes.toLocaleString('en-US')}</strong><br><sub>explicit resource types</sub>`),
+    readme.includes(`**${activeTypes.toLocaleString('en-US')} resource types**`),
     `README active type count drift: expected ${activeTypes.toLocaleString('en-US')} resource types`,
+  );
+
+  claim(
+    !/\b\d[\d,.]*[kKmM]?\s+curated URLs\b/i.test(index),
+    'index.html must not hard-code a corpus-size claim such as "103k curated URLs"',
   );
 
   const legacyValidLabel = legacy.validUrls.toLocaleString('en-US');
   const legacyHostLabel = legacy.uniqueHosts.toLocaleString('en-US');
   claim(
-    readme.includes(`Structurally valid URLs | **${legacyValidLabel}**`),
-    `README legacy baseline drift: expected ${legacyValidLabel} structurally valid URLs`,
+    legacyEvidence.includes(`Structurally valid URLs | **${legacyValidLabel}**`),
+    `legacy evidence drift: expected ${legacyValidLabel} structurally valid URLs`,
   );
   claim(
-    readme.includes(`Unique hosts | **${legacyHostLabel}**`),
-    `README legacy host baseline drift: expected ${legacyHostLabel} unique hosts`,
+    legacyEvidence.includes(`Unique hosts | **${legacyHostLabel}**`),
+    `legacy evidence drift: expected ${legacyHostLabel} unique hosts`,
   );
   claim(
-    readme.includes('legacy 50,109-URL audit baseline') &&
-      readme.includes('It is no longer the active production selection corpus'),
+    legacyEvidence.includes('legacy 50,109-URL audit baseline') &&
+      legacyEvidence.includes('It is no longer the active production selection corpus') &&
+      readme.includes('./docs/readme/legacy-corpus-evidence.md'),
     'README must distinguish legacy frozen evidence from current runtime authority',
   );
 }
@@ -128,7 +224,9 @@ function verifyStaticClaims() {
   includes(readme, APP, 'README');
   excludes(readme, OLD_REPO, 'README');
   excludes(readme, OLD_WORKER, 'README');
-  verifyCorpusClaims(readme);
+  verifyCorpusClaims(readme, index);
+  verifyTerrainAuthorityClaims(readme);
+  verifyMetadataContractClaims();
 
   includes(index, WORKER, 'index.html');
   excludes(index, OLD_WORKER, 'index.html');

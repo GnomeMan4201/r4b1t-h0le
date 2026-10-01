@@ -1,0 +1,32 @@
+{
+  "admissions": [
+    {
+      "resource_type": "writeup",
+      "url": "https://spritesmods.com/?art=bioslimdisk"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://spritesmods.com/?art=biostick"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://spritesmods.com/?art=diskgenie"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://spritesmods.com/?art=securehd"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://spritesmods.com/?art=secustick"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Individual reverse-engineering investigations of protected storage and biometric USB devices; category and navigation pages excluded.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:adfbd3980fa912d0b035b14c225406c00c1b3663f229dd43b57c4ffdf735ca9d",
+  "snapshot_path": "corpus/indexes/strange-spritessecurity-v1.json",
+  "source_id": "strange-spritessecurity-v1"
+}

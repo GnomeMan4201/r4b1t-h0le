@@ -30,3 +30,7 @@ Corpus admission remains a reviewed governance action. Removing an invalid, cred
 ## Verification
 
 Selection code and tests must keep route metadata outside the sampler input. Any future weighted sampler requires a new ADR and must not replace the default unranked sampler silently.
+
+## Amendment — terrain membership (ADR 0006)
+
+"An explicit terrain selected by the user" (item 2 above) has membership defined by the active eligibility profile in `corpus/runtime/eligibility-profiles-v1.json`. That profile is a digest-bound `terrain-index-v1` compiled from release bytes. Terrain membership is not defined by any table in application code. The immediate-repeat guard (item 4) is unchanged.

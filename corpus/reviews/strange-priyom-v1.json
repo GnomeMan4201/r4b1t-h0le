@@ -1,0 +1,44 @@
+{
+  "admissions": [
+    {
+      "resource_type": "reference",
+      "url": "https://priyom.org/number-stations/digital/f06"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://priyom.org/number-stations/digital/hm01"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://priyom.org/number-stations/digital/xpa2"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://priyom.org/number-stations/digital/xpb"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://priyom.org/number-stations/morse/m08a"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://priyom.org/number-stations/english/e07"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://priyom.org/number-stations/other/v07"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://priyom.org/number-stations/operators/polish-11/digital-modes"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "osint",
+  "rationale": "Specific communications-protocol/station-format references for open-source intelligence and encrypted-signal investigation. General schedules, navigation and unsubstantiated operator attribution are not admissions.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:e21aaaac1adc03509355caa3ae042b3d2a3b0711e051165fbff9c44fe54897dc",
+  "snapshot_path": "corpus/indexes/strange-priyom-v1.json",
+  "source_id": "strange-priyom-v1"
+}

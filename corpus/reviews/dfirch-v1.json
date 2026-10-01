@@ -1,0 +1,204 @@
+{
+  "admissions": [
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/asyncrat_quasarrat/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/aws_ransomware/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/azure_batch/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/bedevil_dynamic_linker_patching/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/botnex_fenix/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/canarytokens/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/cleanup_script_rmm/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/compiled_zsh/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/defender_xdr_deception/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/deno/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/dissection_php_backdoor/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/fantastic_passwords_linux/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/fantastic_passwords_windows/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/field_notes_av_impacket/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/field_notes_nssm/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/field_notes_trickdump/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/kentico_cms_rce/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/linux_capabilities/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/macos_extended_attributes/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/microsocks_sonicwall/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/n-iocs/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/php_dangerous_functions_and_webshell/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/publish_python_pth_extension/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/reptile_launcher/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/romhack_edr/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/scriptblock_smuggling/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/search-ms_protocol_handler/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/shell_script_compiler/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/slash-proc/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/strace/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/suspicious_network_traffic_ransomware/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/sysrv/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/systemd_path_activation/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/tainted_kernels/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/tear_down_castle_part_one/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/tear_down_castle_part_two/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/tmate_as_a_backdoor/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/today_i_learned_binfmt_misc/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/today_i_learned_clamav_autoit/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/today_i_learned_device_discovery/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/today_i_learned_lkm_kernel.modules_disabled/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/today_i_learned_nsg_flow_log/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/today_i_learned_protected_symlinks/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/today_i_learned_setfacl/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/today_i_learned_webdav_cache/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/today_i_learned_zsh_sessions/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/today_i_learned_zsh_timestamps/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://dfir.ch/posts/zsh_modules/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Proposed review: individually addressed dfir.ch technical forensic/detection posts. Category, tag and archive pages remain unreviewed.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:7b9e05e3d70ad5a6e303319095bf5637251e9a6bb102b00dfa85bf63b7670a8c",
+  "snapshot_path": "corpus/indexes/dfirch-v1.json",
+  "source_id": "dfirch-v1"
+}

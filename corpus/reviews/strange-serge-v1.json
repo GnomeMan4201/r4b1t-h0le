@@ -1,0 +1,20 @@
+{
+  "admissions": [
+    {
+      "resource_type": "writeup",
+      "url": "https://sergei.nz/dealing-with-data-obfuscation-in-some-chinese-dash-cameras/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://sergei.nz/extracting-gps-data-from-viofo-a119-and-other-novatek-powered-cameras/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Specific reverse-engineering writeups recovering obfuscated GPS records from dash-camera files.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:ea3c9cf97090dfdc61fe7fa51b828c94faa6b5d1beff656e59a2e6571fa7e0c9",
+  "snapshot_path": "corpus/indexes/strange-serge-v1.json",
+  "source_id": "strange-serge-v1"
+}

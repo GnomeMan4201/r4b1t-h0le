@@ -1,0 +1,25 @@
+{
+  "extractor": "feed-entries-v1",
+  "final_url": "https://research.checkpoint.com/feed/",
+  "response_digest": "sha256:29b2f1038b3b79356df811a61b4679b2846b7b9f3a16d4ddceba6fda5039a0ce",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://research.checkpoint.com/feed/",
+  "urls": [
+    "https://research.checkpoint.com/2026/14th-september-threat-intelligence-report/",
+    "https://research.checkpoint.com/2026/17th-august-threat-intelligence-report/",
+    "https://research.checkpoint.com/2026/21st-september-threat-intelligence-report/",
+    "https://research.checkpoint.com/2026/24th-august-threat-intelligence-report/",
+    "https://research.checkpoint.com/2026/28th-september-threat-intelligence-report/",
+    "https://research.checkpoint.com/2026/31th-august-threat-intelligence-report/",
+    "https://research.checkpoint.com/2026/7th-september-threat-intelligence-report/",
+    "https://research.checkpoint.com/2026/ai-threat-landscape-digest-july-august-2026/",
+    "https://research.checkpoint.com/2026/breaking-the-seal-static-deobfuscation-of-jsceals-compiled-v8-bytecode/",
+    "https://research.checkpoint.com/2026/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/",
+    "https://research.checkpoint.com/2026/gaming-the-system-how-a-chinese-speaking-actor-turned-brazilian-government-sites-into-an-seo-weapon/",
+    "https://research.checkpoint.com/2026/puzzlemask-abusing-plain-prose-as-a-covert-ai-attack-vector/",
+    "https://research.checkpoint.com/2026/the-shared-clipboard-inside-the-sandbox-cross-account-data-leakage-in-chatgpt/",
+    "https://research.checkpoint.com/2026/the-state-of-ransomware-q2-2026/",
+    "https://research.checkpoint.com/2026/thousands-of-hacked-wordpress-sites-one-operation-unmasking-stopandprotect/"
+  ]
+}

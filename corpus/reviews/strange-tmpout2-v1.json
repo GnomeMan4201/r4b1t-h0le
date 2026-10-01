@@ -1,0 +1,24 @@
+{
+  "admissions": [
+    {
+      "resource_type": "article",
+      "url": "https://tmpout.sh/2/2.html"
+    },
+    {
+      "resource_type": "article",
+      "url": "https://tmpout.sh/2/3.html"
+    },
+    {
+      "resource_type": "article",
+      "url": "https://tmpout.sh/2/14.html"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "hacker_publications",
+  "rationale": "Exact technical journal articles on binary formats, disassembly, parser robustness, loader or hypervisor analysis. Introductions, interviews, raw infection code, artwork and unrelated articles excluded.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:7bcd7d46dac5dadf4af204fc823bd72f9b0ffe68d66a797c4867a7cfa5016010",
+  "snapshot_path": "corpus/indexes/strange-tmpout2-v1.json",
+  "source_id": "strange-tmpout2-v1"
+}

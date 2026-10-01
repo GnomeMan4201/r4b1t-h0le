@@ -1,351 +1,114 @@
+# R4B1T H0L3
+
 <p align="center">
   <a href="https://r4b1t.badbananaresearch.com">
-    <img src="./docs/readme/readme-hero.jpg" alt="R4B1T H0L3 — chance-driven discovery across security, OSINT, research, development, and the weird web" width="100%">
+    <img src="./docs/readme/open-instrument-hero.svg" width="560" alt="R4B1T H0L3: the rabbit emerging above a red hole">
   </a>
 </p>
 
-<h1 align="center">r4b1t_h0le</h1>
+**Chance-driven discovery for security, OSINT, research, development, and unusual parts of the web.**
 
-<p align="center">
-  <strong>Chance-driven discovery across security, OSINT, research, development, and the weird web.</strong><br>
-  <sub>No recommendation profile. No engagement feed. No ranking model deciding what deserves to be next.</sub>
-</p>
+[**Open the instrument →**](https://r4b1t.badbananaresearch.com) · [GitHub Pages entry](https://gnomeman4201.github.io/r4b1t-h0le/)
 
-<p align="center">
-  <a href="https://r4b1t.badbananaresearch.com"><strong>PROJECT SITE</strong></a>
-  &nbsp;·&nbsp;
-  <a href="https://gnomeman4201.github.io/r4b1t-h0le/"><strong>LAUNCH APP</strong></a>
-  &nbsp;·&nbsp;
-  <a href="https://dev.to/gnomeman4201/r4b1th0l3-5aa3"><strong>DEV WRITE-UP</strong></a>
-  &nbsp;·&nbsp;
-  <a href="https://github.com/GnomeMan4201/r4b1t-h0le/releases"><strong>RELEASES</strong></a>
-</p>
+ROLL discloses one destination from the eligible corpus. You decide whether to open it, inspect it, keep a local card, or roll again. There is no query to write and no ranked results page to work through.
 
-<p align="center">
-  <a href="https://github.com/GnomeMan4201/r4b1t-h0le/actions/workflows/test.yml"><img alt="Playwright E2E" src="https://github.com/GnomeMan4201/r4b1t-h0le/actions/workflows/test.yml/badge.svg"></a>
-  <a href="https://github.com/GnomeMan4201/r4b1t-h0le/actions/workflows/corpus-quality.yml"><img alt="Corpus quality" src="https://github.com/GnomeMan4201/r4b1t-h0le/actions/workflows/corpus-quality.yml/badge.svg"></a>
-  <a href="https://github.com/GnomeMan4201/r4b1t-h0le/actions/workflows/deploy.yml"><img alt="Deploy" src="https://github.com/GnomeMan4201/r4b1t-h0le/actions/workflows/deploy.yml/badge.svg"></a>
-  <a href="./LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/GnomeMan4201/r4b1t-h0le?style=flat-square"></a>
-  <img alt="Local-first" src="https://img.shields.io/badge/state-device--local-111111?style=flat-square">
-  <img alt="Vanilla JavaScript" src="https://img.shields.io/badge/client-vanilla%20JS-d71920?style=flat-square">
-</p>
+No recommendation profile. No engagement feed. History does not steer the next roll.
 
-<p align="center">
-  <a href="#what-r4b1t_h0le-is">WHAT IT IS</a> ·
-  <a href="#how-it-works">HOW IT WORKS</a> ·
-  <a href="#evidence-boundary">EVIDENCE</a> ·
-  <a href="#two-shells-one-engine">ARCHITECTURE</a> ·
-  <a href="#verifiable-trails">TRAILS</a> ·
-  <a href="#trust-privacy--external-content">TRUST</a>
-</p>
+## Use the instrument
 
----
+1. **ROLL** to select and disclose a resource.
+2. **OPEN DESTINATION** to visit it, **KEEP CARD** to download a local PNG, or **INSPECT** to examine its metadata on mobile.
+3. **ROLL AGAIN** for another selection. Keeping or refusing a resource does not train a profile.
 
-## What `r4b1t_h0le` is
+On a phone, each roll replaces the landing screen with its result. Open **MENU** for filters, branching, history, and trail tools.
 
-> [!NOTE]
-> **Not search. Not a feed.** `r4b1t_h0le` is a chance-driven discovery instrument built around a curated corpus rather than a ranked result set.
+**Filters change eligibility, not ranking.** Choose a terrain explicitly before rolling. The sampler does not infer filters from your activity.
 
-You do not begin with a query. You begin with an aperture.
+Terrains are the active release's own resource types. Each control shows its eligible count before you roll. A terrain with no eligible routes cannot be armed, and a single-route terrain says so.
 
-A route is rolled from the current eligible ground. From there you can follow it, refuse it, inspect it, narrow the terrain, or sprout outward in a new direction. The route you actually make can be preserved locally as a trail.
-
-<p align="center"><code>CORPUS → CHANCE → ROUTE → BRANCH → DEVICE-LOCAL TRAIL</code></p>
-
-<p align="center">
-  <img src="./docs/readme/readme-application-overview.jpg" alt="Application overview — Discovery Without Algorithms" width="100%">
-</p>
-
-<table>
-<tr>
-<td width="25%" align="center"><strong>841</strong><br><sub>typed active resources</sub></td>
-<td width="25%" align="center"><strong>284</strong><br><sub>unique active hosts</sub></td>
-<td width="25%" align="center"><strong>7</strong><br><sub>explicit resource types</sub></td>
-<td width="25%" align="center"><strong>LOCAL</strong><br><sub>trail and session state</sub></td>
-</tr>
-</table>
-
-<table>
-<tr>
-<td width="50%" valign="top">
-
-### What it does
-
-- surfaces an eligible route by chance
-- lets you narrow the eligible terrain without ranking it
-- branches in four explicit directions instead of silently profiling you
-- preserves the route you made locally
-- separates corpus claims from stronger claims the evidence cannot support
-
-</td>
-<td width="50%" valign="top">
-
-### What it refuses to become
-
-- a ranked search-results page
-- a personalized recommendation profile
-- an engagement-maximizing feed
-- a cloud account requirement for exploration
-- a claim that structural validity proves safety, truth, or current liveness
-
-</td>
-</tr>
-</table>
-
----
-
-## Why this exists
-
-Modern discovery systems are extremely good at narrowing.
-
-Search engines optimize for relevance. Feeds optimize for engagement. Recommendation systems learn the neighborhood most likely to keep you clicking. Those systems are useful when you know what you want — but they are poor substitutes for wandering.
-
-`r4b1t_h0le` is built for the opposite condition: **you do not know the useful thing yet.**
-
-> [!TIP]
-> The design goal is deliberate serendipity: enough structure to make exploration useful, but not enough invisible scoring to collapse it back into a recommendation engine.
-
-The project grew out of the hole left by StumbleUpon, then became more specific: security research, OSINT, development, technical research, obscure tools, old corners of the web, and the kinds of useful links that rarely win a ranking contest.
-
-The original public build notes are here:
-
-**[r4b1t_h0l3 — 53,000+ curated links for security and OSINT](https://dev.to/gnomeman4201/r4b1th0l3-5aa3)**
-
-<sub>That post documents an earlier corpus revision. The repository and evidence surfaces below are authoritative for the current implementation.</sub>
-
----
-
-## How it works
-
-<p align="center">
-  <img src="./docs/readme/readme-core-mechanics.jpg" alt="Core application mechanics — the roll, route inspection, and trail topology" width="100%">
-</p>
-
-<table>
-<tr>
-<td width="20%" align="center"><kbd>ROLL</kbd><br><sub>chance chooses</sub></td>
-<td width="20%" align="center"><kbd>FOLLOW</kbd><br><sub>open the route</sub></td>
-<td width="20%" align="center"><kbd>REJECT</kbd><br><sub>refuse it</sub></td>
-<td width="20%" align="center"><kbd>SPROUT ×4</kbd><br><sub>branch outward</sub></td>
-<td width="20%" align="center"><kbd>TRAIL</kbd><br><sub>keep the path</sub></td>
-</tr>
-</table>
-
-### `01 / ROLL` — chance chooses
-
-A roll selects one route from the currently eligible terrain. There is no ranked results page and no relevance score exposed as an ordering mechanism. Immediate repetition and excessive domain repetition are constrained so randomness does not collapse into the same host repeatedly.
-
-### `02 / FOLLOW or REJECT` — you choose
-
-A surfaced route is an invitation, not an instruction. Follow it outward, inspect it, share/cut the card, or reject it and roll again. Refusal is part of the route — not a negative engagement signal used to tune a hidden profile.
-
-### `03 / SPROUT` — branch without becoming a feed
-
-| Direction | Intent | Mental model |
+| Terrain | Label | Routes |
 | --- | --- | --- |
-| **DEEPER** | stay near the current niche | same neighborhood, more depth |
-| **SIDEWAYS** | move into adjacent territory | related context, different angle |
-| **OPPOSITE** | deliberately contrast the current route | counter-direction / tension |
-| **WEIRD** | take the low-signal tangent | distant, unusual, serendipitous |
+| `advisory` | ADVISORY | 43 |
+| `article` | ARTICLE | 24 |
+| `challenge` | CHALLENGE | 8 |
+| `dataset` | DATASET | 22 |
+| `documentation` | DOCUMENTATION | 1408 |
+| `lab` | LAB | 283 |
+| `paper` | PAPER | 913 |
+| `reference` | REFERENCE | 897 |
+| `repository` | REPOSITORY | 470 |
+| `research` | RESEARCH | 1605 |
+| `security_tool` | SECURITY TOOL | 212 |
+| `threat_feed` | THREAT FEED | 6 |
+| `training_resource` | TRAINING RESOURCE | 12 |
+| `writeup` | WRITEUP | 1072 |
 
-Branch generation uses available page metadata and lightweight semantic signals against the existing corpus. The branch labels are navigational directions, not a personalized recommendation score.
 
-### `04 / TERRAIN` — narrow the ground, not the ranking
+Membership comes from a [terrain index](./corpus/terrains/strange-candidate-v0.3/terrain-index-v1.json) compiled from the release's `urls.txt` and `resources.json`. The index is authoritative only because the [eligibility profile registry](./corpus/runtime/eligibility-profiles-v1.json) names its digest for the active release. A digest recorded in a trail shows which map was used. It does not make that map authoritative. See the [terrain authority contract](./TERRAIN_AUTHORITY_CONTRACT.md) and [ADR 0006](./docs/adr/0006-release-bound-terrain-authority.md). The `SITE HINT` badge on a result is a display-only hostname hint, not a terrain.
 
-Filtering changes **what is eligible to appear**, not **what the system thinks should appear**.
+**BRANCH is a separate navigation action.** DEEPER, SIDEWAYS, OPPOSITE, and WEIRD offer directions from the current resource. Branch construction uses available metadata and keyword matching; it is not the ROLL sampler. These labels are navigational hints, not factual or security classifications.
 
-<p align="center">
-  <code>CODE</code> · <code>BLOG</code> · <code>NEWS</code> · <code>RESEARCH</code> · <code>PAPER</code> · <code>OSINT</code> · <code>BOUNTY</code> · <code>VIDEO</code> · <code>SOCIAL</code> · <code>REF</code> · <code>ARCHIVE</code> · <code>PKG</code> · <code>COURSE</code> · <code>EVENT</code> · <code>HARDWARE</code> · <code>TOR</code>
-</p>
+**BLIND DESCENT delays disclosure.** An explicit descent creates one concealed route commitment. Reveal checks the disclosed route and nonce against that commitment. Choosing the mode alone does not commit a route.
 
-### `05 / TRAIL` — preserve the route you made
+## Inside a roll
 
-History is useful when it reflects your movement rather than a platform's model of you. Route/session state stays on the device so you can revisit what appeared, where you branched, and where you went next without requiring an account.
+The active population is the promoted `strange-candidate-v0.3` release: **6,975 resources across 345 hosts**, with **14 resource types**. The [promotion record](./corpus/runtime/active-v1.json) grants runtime authority to its digest-bound URL bytes; the [release manifest](./corpus/releases/strange-candidate-v0.3/manifest.json) records the release evidence. A digest mismatch rejects the load rather than silently falling back to the legacy pool.
 
----
+| Layer | Authority |
+| --- | --- |
+| Corpus | Digest-verified URL bytes define the selection population. |
+| Filters | Explicit terrain (registry-anchored terrain index) and protocol constraints define eligibility. |
+| ROLL | The sampler commits one selection transaction. |
+| Presentation + trail | Disclose and record that transaction; neither can replace its destination. |
 
-## Two shells. One engine.
+History, wear, popularity, and display metadata have no authority over ROLL. The documented immediate-repeat guard is a mechanical exception; accumulated domain history is not a sampler input. Animation presents a committed result and cannot choose or replace it.
 
-<table>
-<tr>
-<td width="50%" valign="top">
+The [product contract](./CONTRACT.md), [anti-ranking ADR](./docs/adr/0001-anti-ranking-boundary.md), and [selection transaction ADR](./docs/adr/0004-immutable-selection-transactions.md) describe these boundaries. An ADR's proposed guarantee is not, by itself, evidence that an exported format implements it.
 
-### DESKTOP / WORKSTATION
+## Preserve the route. Inspect the evidence.
 
-**For deliberate exploration.**
+Route and session state are device-local. Trails preserve recorded routes in their actual order; replay uses those recorded URLs rather than substituting a newer corpus. Session History records disclosed discovery selections and is distinct from proof that a destination was opened.
 
-Keyboard-first controls, expanded route context, branch topology, history, trail tooling, and the larger investigative surface.
+| Check | Evidence and limit |
+| --- | --- |
+| Trail identifier | Establishes canonical manifest integrity. Does not establish authorship, truthful sampler execution, or destination visits. |
+| Parent + child | Establishes declared lineage and the matching inherited prefix. A parent identifier alone is insufficient. |
+| Blind reveal | Establishes that route and nonce match the recorded commitment and context. Does not prove wall-clock ordering or absence of a privately truncated tail. |
+| Concealed step | Establishes snapshot integrity and structural placement. Does not verify a reveal or resolve the cryptographic chain. |
 
-<p align="center"><a href="https://gnomeman4201.github.io/r4b1t-h0le/"><strong>LAUNCH WORKSTATION ↗</strong></a></p>
-
-</td>
-<td width="50%" valign="top">
-
-### MOBILE / FIELD SHELL
-
-**For the same engine in your hand.**
-
-First-contact clarity, compact route cards, thumb-first controls, terrain sheets, branching, and the device-local ledger.
-
-<p align="center"><a href="https://gnomeman4201.github.io/r4b1t-h0le/"><strong>LAUNCH FIELD SHELL ↗</strong></a></p>
-
-</td>
-</tr>
-</table>
-
-```text
-                         same corpus
-                             │
-                       shared engine
-                             │
-                   shared session state
-                             │
-                 ┌───────────┴───────────┐
-                 │                       │
-             > 900 px                 ≤ 900 px
-          workstation               field shell
-                 │                       │
-                 └───────────┬───────────┘
-                             │
-           roll / follow / sprout / filter
-           history / trail / share / inspect
-```
-
-The breakpoint changes presentation, not the discovery engine or corpus.
-
----
-
-## Evidence boundary
-
-> [!IMPORTANT]
-> **The corpus changes over time. Evidence should not.** A frozen baseline is a statement about one audited revision, not a promise about the future state of the open web.
-
-The table below preserves the **legacy 50,109-URL audit baseline** as historical evidence. It is no longer the active production selection corpus. Production authority is now the digest-bound `typed-candidate-v0.1` release: **841 resources across 284 hosts**.
-
-| Measurement | Frozen baseline |
-| --- | ---: |
-| Structurally valid URLs | **50,109** |
-| Unique hosts | **12,396** |
-| Invalid entries admitted | **0** |
-| Exact duplicates admitted | **0** |
-| Credential-bearing entries admitted | **0** |
-
-**Baseline SHA-256**
-
-```text
-5d7339b8cbfe7bd35bb8502ca753e5b4663bc2fc4ba3721b23b791dbace01c41
-```
-
-### What this establishes
-
-The baseline provides a reproducible structural count for the audited revision and a cryptographic identifier for the source material being described.
-
-### What it deliberately does not establish
-
-Structural validity does **not** prove that a third-party URL is currently reachable, relevant, trustworthy, safe, unchanged, or factually correct. Those are separate measurements. Liveness sweeps are time-bounded evidence and do not rewrite older frozen evidence because the web later changed.
-
-<details>
-<summary><strong>Corpus inputs and promotion boundary</strong></summary>
-
-<br>
-
-Corpus work has included Start.me OSINT/security collections gathered through browser automation, GitHub awesome-lists across 21 categories, manual curation, automated liveness sweeps, human relevance review, and duplicate/credential/policy checks before evidence-bound revisions are promoted.
-
-The guiding rule is simple: **do not upgrade a structural observation into a stronger claim without the evidence required for that claim.**
-
-</details>
-
----
-
-## Verifiable trails
-
-`r4b1t_h0le` can export content-addressed trail material without requiring a server-side identity record.
-
-The trail system separates what can be cryptographically verified from stronger claims an artifact cannot support. A verified reveal can establish that disclosed route material matches its commitment; it does not, by itself, establish authorship or prove real-world wall-clock ordering.
-
-<p align="center">
-  <img src="./docs/readme/readme-session-proofs.jpg" alt="Provenance data and session integrity — cryptographic session proofs" width="100%">
-</p>
-
-<table>
-<tr>
-<td width="33%" valign="top"><strong>ADR 0001</strong><br><a href="./docs/adr/0001-anti-ranking-boundary.md">Anti-ranking boundary</a></td>
-<td width="33%" valign="top"><strong>ADR 0002</strong><br><a href="./docs/adr/0002-content-addressed-trails.md">Content-addressed trails</a></td>
-<td width="33%" valign="top"><strong>ADR 0003</strong><br><a href="./docs/adr/0003-blind-descent-commit-reveal.md">Blind Descent commit/reveal</a></td>
-</tr>
-</table>
+Exported files can be checked without an account:
 
 ```bash
-# Verify one exported trail
 npm run trail:verify -- trail.json
-
-# Verify a child and its declared parent together
 npm run trail:verify -- child.json parent.json
+
+# Independent local-sampler derivation check for v0.3 ROLL steps
+python3 tools/reexecute_trail.py trail.json
 ```
 
----
+The default Trail export is `r4b1t-trail/v0.3`: ROLL steps carry their immutable v2 selection transaction, while SELECT and BRANCH navigation are recorded as explicit step types. `npm run trail:verify` dispatches the supported v0.1, v0.2, and v0.3 integrity/lineage verifiers. Base v0.3 verification establishes recorded structure, identity, transaction shape, and local sampler-interval continuity.
 
-## Architecture
+For v0.3 ROLL steps, the separate [independent Python re-executor](./docs/SAMPLER_REEXECUTION.md) rebuilds eligibility from repository evidence and independently runs the declared FNV-1a → Mulberry32 sampler interval. A successful re-execution establishes route derivation from those declared inputs; it does **not** establish fair seed generation, non-cherry-picking, wall-clock ordering, or human viewing.
 
-```text
-                           r4b1t_h0le
-                                │
-                      vanilla browser client
-                                │
-                 ┌──────────────┴──────────────┐
-                 │                             │
-        desktop workstation             mobile field shell
-                 │                             │
-                 └──────────────┬──────────────┘
-                                │
-                     corpus + session state
-                                │
-                  optional metadata services
-```
+A labeled legacy v0.1 integrity-only export remains available. Blind Descent remains `r4b1t-trail/v0.2` with its own verification rules.
 
-<table>
-<tr><th>Surface</th><th>Role</th></tr>
-<tr><td><code>index.html</code> / <code>r4b1t.html</code></td><td>application entry surfaces</td></tr>
-<tr><td><code>dual-shell.js</code> / <code>dual-shell.css</code></td><td>shared responsive shell behavior</td></tr>
-<tr><td><code>trail-runtime.js</code> / <code>trail-manifest.js</code></td><td>trail state, export, and verification support</td></tr>
-<tr><td><code>trail-topology.js</code> / <code>topology-runtime.js</code></td><td>trail topology and lineage surfaces</td></tr>
-<tr><td><code>blind-runtime.js</code> / <code>blind-manifest.js</code></td><td>Blind Descent commit/reveal behavior</td></tr>
-<tr><td><code>trail-wear.js</code> / <code>trail-wear.css</code></td><td>persistent visual trail-wear layer</td></tr>
-<tr><td><code>pool_sweep.py</code></td><td>time-bounded liveness and pool maintenance</td></tr>
-<tr><td><code>urls.txt</code></td><td>corpus route material</td></tr>
-<tr><td><code>tests/</code></td><td>browser and regression coverage</td></tr>
-<tr><td><code>docs/adr/</code></td><td>architectural decisions and trust boundaries</td></tr>
-</table>
+Trail Cards, Topology, Compare Trails, Proof Sessions, and Verify + Replay expose additional views and checks. Until a surface has an explicit v0.3 adapter, it must not treat a v0.3 artifact as evidence it knows how to verify; current Topology compatibility uses the labeled legacy v0.1 projection. Their outputs carry only the claims supported by their format and verifier; a detached image does not acquire proof authority.
 
-<details>
-<summary><strong>Why the client stays framework-free</strong></summary>
+Read the [trail ADR](./docs/adr/0002-content-addressed-trails.md) and [Blind Descent ADR](./docs/adr/0003-blind-descent-commit-reveal.md) for serialization, concealment, migration, and verification limits. Concealment protects public exports; it does not hide browser memory from the person controlling the device.
 
-<br>
+## Local state and external requests
 
-The production surface is static HTML, CSS, and JavaScript. Node.js exists primarily for development, test, and verification tooling rather than as an application build requirement. This keeps the browser runtime small, inspectable, and directly hostable while preserving a separate test harness for regression coverage.
+Exploration and trail verification require no r4b1t account. No r4b1t analytics, profile, or engagement tracking is used. Device-local state does not mean the application makes no network requests.
 
-</details>
+Automatic metadata, favicon, preview-image, and optional Wikipedia enrichment requests pass through the project-controlled Worker, which enforces a browser Origin allowlist. Origin checking is a browser/CORS abuse-control boundary, not authentication. The [Worker boundary](./docs/WORKER_TRUST_BOUNDARY.md) separates versioned source, dated deployment evidence, and platform-level logging concerns.
 
----
+Opening a destination leaves that boundary. External sites control their own content and request handling. Corpus inclusion, a valid digest, a resource label, or a successful liveness check does not certify safety, truth, or continued availability.
 
-## Run it
+The [legacy corpus baseline](./docs/readme/legacy-corpus-evidence.md) is historical evidence, not the active selection population.
 
-<table>
-<tr>
-<td width="50%" valign="top">
+## Run and verify
 
-### Production
-
-**Project site**  
-https://r4b1t.badbananaresearch.com
-
-**Direct application**  
-https://gnomeman4201.github.io/r4b1t-h0le/
-
-</td>
-<td width="50%" valign="top">
-
-### Local preview
+The production client is static HTML, CSS, and JavaScript, with no production build step. Node.js supports tests and verification tooling.
 
 ```bash
 git clone https://github.com/GnomeMan4201/r4b1t-h0le.git
@@ -353,119 +116,25 @@ cd r4b1t-h0le
 python3 -m http.server 8080
 ```
 
-Open `http://127.0.0.1:8080/`.
-
-</td>
-</tr>
-</table>
-
-> [!NOTE]
-> Some metadata/preview behavior can depend on deployed services, so a bare static server is not identical to production. It is still suitable for primary client, PWA-shell, navigation, corpus, and interface regression work.
-
----
-
-## Tests and verification
+Open `http://127.0.0.1:8080/`. Some metadata and preview behavior depends on deployed services.
 
 ```bash
 npm ci
 npx playwright install chromium
 npm test
 
-# Python corpus and pool-sweep tests
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements-pool-sweep.txt
-python -m unittest discover -s tests -p 'test_*.py' -v
-```
-
-<table>
-<tr>
-<td width="33%" align="center"><strong>Browser regression</strong><br><sub>desktop + mobile Chromium</sub></td>
-<td width="33%" align="center"><strong>Corpus quality</strong><br><sub>bounded data checks</sub></td>
-<td width="33%" align="center"><strong>Dependency gate</strong><br><sub>high-severity npm audit rejection</sub></td>
-</tr>
-</table>
-
-The browser suite covers shell selection, viewport switching, roll propagation, filtering, branching, route fidelity, overflow containment, trail behavior, Blind Descent leak prevention, topology/tamper cases, and desktop preservation.
-
-Public claims are also checked against repository invariants on every normal test run. A separate scheduled verifier checks the live project site, GitHub Pages client, and Worker contract:
-
-```bash
+# Repository claims; then deployed surfaces
 npm run claims:verify
 npm run claims:verify:live
-```
-
-The frozen deployment evidence for the current Worker baseline is recorded in [`docs/releases/2026-09-18-worker-verification.md`](./docs/releases/2026-09-18-worker-verification.md).
-
-Production shadow CI separately compares the exact bytes served by GitHub Pages for critical application assets against the repository checkout, then rechecks the public site root and Worker security headers:
-
-```bash
 npm run shadow:verify
 ```
 
-That check runs every six hours and can also be triggered manually. It is intended to catch stale, partial, or mismatched deployments that source-only CI cannot detect.
+Browser coverage includes desktop and mobile behavior. A green run establishes the tested behavior for that revision, not the trustworthiness of external destinations. Python corpus checks and pool-maintenance instructions live in [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-> [!WARNING]
-> A green workflow verifies the tested behavior for that revision. It does **not** certify the safety or continued availability of every external destination in the corpus.
+## Sharpen the instrument
 
----
+Useful contributions include concrete resources, broken-link reports, reproducible bugs, accessibility fixes, and corrections to evidence claims. Changes must preserve history-blind selection and the distinction between eligibility, presentation, and verification.
 
-## Trust, privacy & external content
+[Contribute](./CONTRIBUTING.md) · [Report a bug or submit a URL](https://github.com/GnomeMan4201/r4b1t-h0le/issues) · [Report a vulnerability privately](./SECURITY.md) · [Releases](https://github.com/GnomeMan4201/r4b1t-h0le/releases) · [MIT license](./LICENSE)
 
-> [!CAUTION]
-> **`r4b1t_h0le` curates pointers. It does not control the destinations those pointers lead to.**
-
-The application itself is deliberately local-first: no r4b1t account is required for exploration, route/session state is designed to remain device-local, and the core selection loop does not depend on a personalized server-side feed.
-
-No r4b1t analytics, profile, or engagement tracking is used. The browser shell does not load third-party analytics, remote web fonts, Google favicon services, or Microlink. Automatic metadata, favicon, preview-image, and optional Wikipedia enrichment requests are sent through the project-controlled Worker, whose browser Origin allowlist limits which web origins can call it. Origin checking is a browser/CORS abuse-control boundary, not authentication. The browser therefore does not contact those enrichment providers or target image hosts directly. The deployed Worker is versioned in this repository and its production-equivalent contract is documented in [`docs/WORKER_TRUST_BOUNDARY.md`](./docs/WORKER_TRUST_BOUNDARY.md).
-
-That boundary ends when you leave the application origin.
-
-Third-party destinations may log requests, set cookies, require authentication, run analytics, redirect, disappear, change ownership, or become compromised. Inclusion in the corpus is not an endorsement, certification, guarantee of safety, or statement that a resource remains unchanged after review.
-
-Category and branch labels are navigation aids, not legal, security, or factual classifications. A successful liveness check establishes reachability at a point in time — not trustworthiness or content integrity.
-
-The software is distributed under the MIT License and provided **“AS IS”**, without warranty of any kind. See [`LICENSE`](./LICENSE). Vulnerabilities in `r4b1t_h0le` itself should be reported through [`SECURITY.md`](./SECURITY.md); vulnerabilities in third-party destinations belong with the relevant operator.
-
----
-
-## Project links
-
-<table>
-<tr><td><strong>Project site</strong></td><td><a href="https://r4b1t.badbananaresearch.com">r4b1t.badbananaresearch.com</a></td></tr>
-<tr><td><strong>Live application</strong></td><td><a href="https://gnomeman4201.github.io/r4b1t-h0le/">gnomeman4201.github.io/r4b1t-h0le/</a></td></tr>
-<tr><td><strong>Original DEV write-up</strong></td><td><a href="https://dev.to/gnomeman4201/r4b1th0l3-5aa3">r4b1t_h0l3 — 53,000+ curated links for security and OSINT</a></td></tr>
-<tr><td><strong>DEV profile</strong></td><td><a href="https://dev.to/gnomeman4201">dev.to/gnomeman4201</a></td></tr>
-<tr><td><strong>Releases</strong></td><td><a href="https://github.com/GnomeMan4201/r4b1t-h0le/releases">GitHub Releases</a></td></tr>
-<tr><td><strong>Changelog</strong></td><td><a href="./CHANGELOG.md">CHANGELOG.md</a></td></tr>
-<tr><td><strong>Issues / URL submissions</strong></td><td><a href="https://github.com/GnomeMan4201/r4b1t-h0le/issues">GitHub Issues</a></td></tr>
-<tr><td><strong>Contributing</strong></td><td><a href="./CONTRIBUTING.md">CONTRIBUTING.md</a></td></tr>
-<tr><td><strong>Security</strong></td><td><a href="./SECURITY.md">SECURITY.md</a></td></tr>
-</table>
-
----
-
-## Contributing
-
-Useful contributions are the ones that sharpen the instrument without breaking its trust boundary: corpus-quality fixes, broken-link reports, reproducible UI bugs, accessibility problems, evidence/verification corrections, and well-scoped changes that preserve the anti-ranking model.
-
-Start with [`CONTRIBUTING.md`](./CONTRIBUTING.md). New corpus candidates should go through the issue/submission flow rather than silently mutating evidence-bound material.
-
----
-
-<p align="center">
-  <strong>badBANANA Research Collective</strong><br>
-  <sub>open internet exploration · bounded claims · local-first trails</sub>
-</p>
-
-<p align="center">
-  <a href="https://github.com/GnomeMan4201">GitHub</a> ·
-  <a href="https://dev.to/gnomeman4201">DEV</a> ·
-  <a href="https://r4b1t.badbananaresearch.com">r4b1t_h0le</a>
-</p>
-
-<p align="center">
-  <a href="https://gnomeman4201.github.io/r4b1t-h0le/">
-    <img src="./docs/readme/readme-enter-the-hole.jpg" alt="Enter the hole" width="100%">
-  </a>
-</p>
+**badBANANA Research Collective**

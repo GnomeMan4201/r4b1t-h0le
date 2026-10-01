@@ -1,0 +1,52 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://securelist.com/android-head-unit-malware/121106/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://securelist.com/industrial-threat-report-q2-2026/121159/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://securelist.com/macsync-new-version/121383/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://securelist.com/mirage-kitten-new-backdoors-noderabbit-pollcat/121244/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://securelist.com/moviereaper-malware-torrent-odyssey-solana/121344/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://securelist.com/toy-ghouls-new-hivemq-and-element-backdoors/121270/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://securelist.com/tr/nighteagle-apt-ghostcontainer-and-tunneling/121323/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://securelist.com/tr/payload-ransomware-via-group-policy/121335/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://securelist.com/valleyrat-backdoor-adware/121175/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://securelist.com/vulnerabilities-and-exploits-in-q2-2026/121091/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "defensive_resources",
+  "rationale": "Proposed review: concrete technical threat/vulnerability research articles observed in the securelist research feed. Obvious consulting-sales and product-announcement links are omitted; per-page content audit remains pending.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:a0573a23455045830a14676d50ebefef883f6bcbd5c2942aa18e8412fb12a2c8",
+  "snapshot_path": "corpus/indexes/securelist-v1.json",
+  "source_id": "securelist-v1"
+}

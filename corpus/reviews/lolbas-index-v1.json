@@ -1,0 +1,992 @@
+{
+  "admissions": [
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Addinutil/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/AppInstaller/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Applaunch/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Aspnet_Compiler/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/At/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Atbroker/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Bash/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Bitsadmin/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Certoc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Certreq/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Certutil/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Change/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Cipher/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Cmd/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Cmdkey/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Cmdl32/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Cmstp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Colorcpl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/ComputerDefaults/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/ConfigSecurityPolicy/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Conhost/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Control/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Csc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Cscript/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/CustomShellHost/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/DataSvcUtil/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Desktopimgdownldr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/DeviceCredentialDeployment/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Dfsvc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Diantz/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Diskshadow/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Dnscmd/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Esentutl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Eudcedit/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Eventvwr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Expand/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Explorer/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Extexport/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Extrac32/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Findstr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Finger/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/FltMC/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Forfiles/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Fsutil/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Ftp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Gpscript/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Hh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/IMEWDBLD/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Ie4uinit/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Iediagcmd/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Ieexec/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Ilasm/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Infdefaultinstall/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Installutil/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Iscsicpl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Jsc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Ldifde/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Makecab/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Mavinject/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Microsoft.Workflow.Compiler/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Mmc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Mofcomp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/MpCmdRun/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Msbuild/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Msconfig/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Msdt/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Msedge/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Mshta/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Msiexec/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Msoxmled/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Netsh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Ngen/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Odbcconf/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/OfflineScannerShell/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/OneDriveStandaloneUpdater/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Pcalua/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Pcwrun/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Pktmon/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Pnputil/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Presentationhost/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Print/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/PrintBrm/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Provlaunch/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Psr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Query/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Rasautou/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Rdrleakdiag/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Reg/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Regasm/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Regedit/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Regini/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Register-cimprovider/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Regsvcs/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Regsvr32/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Replace/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Reset/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Rpcping/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Rundll32/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Runexehelper/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Runonce/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Runscripthelper/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Sc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Schtasks/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Scp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Scriptrunner/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Setres/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/SettingSyncHost/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Sftp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Sigverif/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Ssh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Stordiag/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Syncappvpublishingserver/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Tar/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Ttdinject/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Tttracer/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Unregmp2/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Vbc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Verclsid/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Vssadmin/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Wab/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Wbadmin/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Wbemtest/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Winget/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Wlrmdr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Wmic/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/WorkFolders/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Wscript/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Wsreset/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Wuauclt/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Xwizard/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/msedge_proxy/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/msedgewebview2/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/odbcad32/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/setupugc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/write/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/wt/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Advpack/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Desk/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Dfshim/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Ieadvpack/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Ieframe/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Mshtml/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Pcwutl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/PhotoViewer/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Scrobj/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Setupapi/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Shdocvw/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Shell32/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Shimgvw/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Syssetup/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Url/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/Zipfldr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Libraries/comsvcs/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/AccCheckConsole/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Adplus/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Agentexecutor/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/AppLauncher/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Appcert/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Appvlp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Bcp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Bginfo/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Cdb/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Coregen/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Createdump/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Csi/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Dbgsrv/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/DefaultPack/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Devinit/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Devtoolslauncher/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Dnx/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Dotnet/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Dsdbutil/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Dtutil/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Dump64/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/DumpMinitool/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Dxcap/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/ECMangen/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Excel/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Fsi/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/FsiAnyCpu/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/IntelliTrace/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Logger/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Mftrace/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Microsoft.NodejsTools.PressAnyKey/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Mpiexec/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Msaccess/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Mscopilot/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Mscopilot_proxy/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Msdeploy/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/MsoHtmEd/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Mspub/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Msxsl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Nmcap/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Ntdsutil/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Ntsd/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/OpenConsole/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Outlook/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Pixtool/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Powerpnt/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Procdump/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/ProtocolHandler/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Rcsi/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Remote/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Sqldumper/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Sqlps/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Sqltoolsps/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Squirrel/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Te/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Teams/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Testwindowremoteagent/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Tracker/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Update/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/VSDiagnostics/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/VSIISExeLauncher/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Visio/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/VisualUiaVerifyNative/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/VsLaunchBrowser/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Vshadow/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Vsjitdebugger/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/WFMFormat/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Wfc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/WinDbg/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Winproj/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Winword/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Wsb/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Wsl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/XBootMgr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/XBootMgrSleep/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/devtunnels/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/dotnet-counters/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/dotnet-trace/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/vsls-agent/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/vstest.console/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/winfile/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/xsd/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Scripts/CL_LoadAssembly/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Scripts/CL_mutexverifiers/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Scripts/Cl_invocation/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Scripts/Launch-VsDevShell/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Scripts/Manage-bde/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Scripts/Pubprn/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Scripts/Syncappvpublishingserver/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Scripts/UtilityFunctions/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Scripts/Winrm/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://lolbas-project.github.io/lolbas/Scripts/pester/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "defensive_resources",
+  "rationale": "Proposed review: individual LOLBAS Windows binary/library/script technique references. Each leaf documents living-off-the-land behavior. Navigation, contribution and fragment links are omitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:bd5c2c5a784454c9251222dd65e3f59f58541a7c27027a4c046dca43376933ff",
+  "snapshot_path": "corpus/indexes/lolbas-index-v1.json",
+  "source_id": "lolbas-index-v1"
+}

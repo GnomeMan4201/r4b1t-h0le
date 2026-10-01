@@ -1,4 +1,4 @@
-const CACHE = 'r4b1t-v23-roll-motion-integration';
+const CACHE = 'r4b1t-v25-branch-determinism';
 const PRECACHE = [
   './',
   './index.html',
@@ -14,6 +14,11 @@ const PRECACHE = [
   './dual-shell.js',
   './dual-shell.css',
   './trail-manifest.js',
+  './cj1.js',
+  './trail-v03.js',
+  './selection-core.js',
+  './branch-core.js',
+  './terrain-authority.js',
   './trail-runtime.js',
   './blind-manifest.js',
   './blind-runtime.js',
@@ -63,10 +68,14 @@ self.addEventListener('fetch', e => {
       url.pathname.endsWith('/manifest.json')
     );
 
+  // Terrain indexes are digest-bound selection evidence (TERRAIN_AUTHORITY_CONTRACT.md §7).
+  const isTerrainEvidence = url.pathname.includes('/corpus/terrains/');
+
   if (
     url.origin !== self.location.origin ||
     url.pathname.endsWith('/urls.txt') ||
     isCorpusReleaseEvidence ||
+    isTerrainEvidence ||
     url.hostname.endsWith('workers.dev')
   ) {
     return;

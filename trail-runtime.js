@@ -2,8 +2,9 @@
   'use strict';
 
   var api = window.R4b1tTrail;
+  var v03 = window.R4b1tTrailV03;
   var corpusAuthority = window.R4b1tCorpusAuthority;
-  if (!api) return;
+  if (!api || !v03) return;
   if (!corpusAuthority) throw new Error('Corpus authority unavailable');
 
   var STORAGE_KEY = 'r4b1t_trail_draft_v1';
@@ -23,13 +24,58 @@
     suppressRecord: false,
     samplerCursor: 0,
     transactionSequence: 0,
-    selectionTerrain: null
+    selectionTerrain: null,
+    repeatGuardReference: null
   };
 
   function randomSeed() {
     var bytes = new Uint8Array(16);
     crypto.getRandomValues(bytes);
     return Array.from(bytes, function (byte) { return byte.toString(16).padStart(2, '0'); }).join('');
+  }
+
+  function restoreSamplerContinuity() {
+    state.sampler = api.createSampler(state.seed);
+    state.samplerCursor = 0;
+    state.transactionSequence = 0;
+    state.repeatGuardReference = null;
+
+    for (var index = state.routes.length - 1; index >= 0; index -= 1) {
+      var route = state.routes[index];
+      var transaction = route && route.selection_transaction;
+      if (!transaction || transaction.transaction_version !== 'r4b1t-selection-transaction/v2' || transaction.action !== 'ROLL') {
+        continue;
+      }
+
+      var sampler = transaction.sampler;
+      var drawStart = sampler && sampler.draw_start;
+      var drawCount = sampler && sampler.draw_count;
+      var sequence = transaction.sequence;
+      var routeUrl = transaction.route && transaction.route.url;
+      var cursor = Number.isSafeInteger(drawStart) && Number.isSafeInteger(drawCount)
+        ? drawStart + drawCount
+        : -1;
+
+      if (
+        !sampler ||
+        sampler.seed !== state.seed ||
+        !Number.isSafeInteger(drawStart) || drawStart < 0 ||
+        !Number.isSafeInteger(drawCount) || drawCount < 1 ||
+        !Number.isSafeInteger(cursor) || cursor < 1 ||
+        !Number.isSafeInteger(sequence) || sequence < 1 ||
+        routeUrl !== route.url
+      ) {
+        return false;
+      }
+
+      for (var consumed = 0; consumed < cursor; consumed += 1) state.sampler();
+      state.samplerCursor = cursor;
+      state.transactionSequence = sequence;
+      state.repeatGuardReference = route.url;
+      return true;
+    }
+
+    return true;
   }
 
   function restore() {
@@ -47,8 +93,7 @@
         state.parent = saved.parent || null;
       }
     } catch (_) {}
-    state.sampler = api.createSampler(state.seed);
-    state.samplerCursor = 0;
+    if (!restoreSamplerContinuity()) clearDraftState();
   }
 
   function persist() {
@@ -69,6 +114,7 @@
     state.samplerCursor = 0;
     state.transactionSequence = 0;
     state.selectionTerrain = null;
+    state.repeatGuardReference = null;
     state.routes = [];
     state.parent = null;
     state.imported = null;
@@ -98,25 +144,55 @@
     renderPanel();
   }
 
+  // The armed terrain comes from the explicit selection constraint, never from presentation.
   function terrain() {
-    var active = document.querySelector('#catFilter button[style*="204, 17, 17"], #catFilter button[style*="#cc1111"]');
-    return active ? active.textContent.trim().toUpperCase() : 'ALL';
+    return typeof window.__r4b1tCaptureSelectionConstraint === 'function'
+      ? window.__r4b1tCaptureSelectionConstraint().terrain
+      : 'ALL';
   }
 
-  function record(url, action, transaction) {
-    if (state.suppressRecord || !/^https?:\/\//i.test(url || '')) return;
-    var previous = state.routes[state.routes.length - 1];
-    if (previous && previous.url === url) return;
+  function record(url, action, transaction, evidence) {
+    if (state.suppressRecord || !/^https?:\/\//i.test(url || '')) return false;
     var route = { url: url, action: action || 'SELECT' };
     if (transaction) route.selection_transaction = transaction;
+    if (evidence && evidence.navigation) route.navigation = evidence.navigation;
+    if (evidence && evidence.imported_source) route.imported_source = evidence.imported_source;
     state.routes.push(route);
     state.imported = null;
     persist();
     renderPanel();
+    return true;
   }
 
-  // DOM mutation is presentation only. Authoritative ROLL provenance is
-  // recorded synchronously from the immutable selection transaction below.
+  function lastRecordedStepForUrl(url) {
+    if (!url) return null;
+    for (var index = state.routes.length - 1; index >= 0; index -= 1) {
+      if (state.routes[index] && state.routes[index].url === url) return index + 1;
+    }
+    return null;
+  }
+
+  function recordNavigation(detail) {
+    if (state.suppressRecord || !detail || !/^https?:\/\//i.test(detail.url || '')) return false;
+    if (detail.kind === 'BRANCH') {
+      var fromStep = lastRecordedStepForUrl(detail.from_url);
+      if (!fromStep) {
+        renderPanel('UNVERIFIED / BRANCH SOURCE STEP ABSENT');
+        return false;
+      }
+      return record(detail.url, 'BRANCH', null, {
+        navigation: {
+          from_step: fromStep,
+          branch_label: String(detail.branch_label || 'BRANCH')
+        }
+      });
+    }
+    if (detail.kind === 'SELECT') return record(detail.url, 'SELECT');
+    return false;
+  }
+
+  // DOM mutation is presentation only. Authoritative provenance is recorded
+  // from the immutable ROLL transaction or explicit navigation events.
   function watchSelections() {}
 
   function deepFreeze(value) {
@@ -129,9 +205,9 @@
     if (typeof window.__r4b1tCommitRoll !== 'function' || window.__r4b1tCommitRoll.__r4b1tAuthority) return false;
     var originalCommit = window.__r4b1tCommitRoll;
     var wrappedCommit = function () {
-      var selectionConstraint = typeof window.__r4b1tCaptureSelectionConstraint === 'function'
-        ? window.__r4b1tCaptureSelectionConstraint()
-        : deepFreeze({ terrain: terrain(), protocolPolicy: { version: 1, excludeOnion: false } });
+      // Fail closed: without the explicit constraint capture there is no selection.
+      if (typeof window.__r4b1tCaptureSelectionConstraint !== 'function') return null;
+      var selectionConstraint = window.__r4b1tCaptureSelectionConstraint();
       var selectionTerrain = selectionConstraint.terrain;
       var drawStart = state.samplerCursor;
       var drawCount = 0;
@@ -140,26 +216,31 @@
         state.samplerCursor += 1;
         return state.sampler();
       };
-      var result = originalCommit(nextFloat, selectionConstraint);
+      var repeatGuardReference = state.repeatGuardReference;
+      var result = originalCommit(nextFloat, selectionConstraint, repeatGuardReference);
       if (!result || !result.url) return result;
 
       var transaction = deepFreeze({
-        transaction_version: 'r4b1t-selection-transaction/v1',
+        transaction_version: 'r4b1t-selection-transaction/v2',
         sequence: ++state.transactionSequence,
         action: 'ROLL',
         constraint: selectionConstraint,
         corpus_revision: state.corpusRevision,
+        eligible_count: result.eligibleCount,
         sampler: {
           algorithm: 'uniform-with-repeat-guard-v1',
           prng: 'mulberry32-v1',
           seed: state.seed,
           draw_start: drawStart,
-          draw_count: drawCount
+          draw_count: drawCount,
+          // The guard reference actually used by this draw (SELECTION_TRANSACTION_V2.md §3).
+          repeat_guard: { reference: result.repeatGuardReference == null ? null : result.repeatGuardReference, max_draws: 30 }
         },
         route: { url: result.url }
       });
 
       state.selectionTerrain = selectionTerrain;
+      state.repeatGuardReference = result.url;
       record(result.url, 'ROLL', transaction);
       return Object.freeze({ url: result.url, transaction: transaction });
     };
@@ -168,7 +249,69 @@
     return true;
   }
 
+  async function buildV03Steps() {
+    var steps = [];
+    for (var index = 0; index < state.routes.length; index += 1) {
+      var draft = state.routes[index];
+      var route = {
+        route_id: await api.routeId(draft.url),
+        url: draft.url
+      };
+      var stepIndex = index + 1;
+
+      if (draft.selection_transaction &&
+          draft.selection_transaction.transaction_version === 'r4b1t-selection-transaction/v2') {
+        steps.push({
+          index: stepIndex,
+          kind: 'ROLL',
+          route: route,
+          transaction: draft.selection_transaction
+        });
+        continue;
+      }
+
+      if (draft.imported_source) {
+        steps.push({
+          index: stepIndex,
+          kind: 'IMPORTED',
+          route: route,
+          source: draft.imported_source
+        });
+        continue;
+      }
+
+      if (draft.action === 'BRANCH' && draft.navigation) {
+        steps.push({
+          index: stepIndex,
+          kind: 'BRANCH',
+          route: route,
+          navigation: draft.navigation
+        });
+        continue;
+      }
+
+      if (draft.action === 'SELECT') {
+        steps.push({ index: stepIndex, kind: 'SELECT', route: route });
+        continue;
+      }
+
+      throw new Error('Legacy draft step lacks v0.3 evidence; export legacy v0.1 or start a new trail');
+    }
+    return steps;
+  }
+
   async function currentEnvelope() {
+    if (!state.corpusRevision) await loadCorpusRevision();
+    return v03.envelope({
+      format: v03.FORMAT,
+      created_at: state.createdAt,
+      corpus_revision: state.corpusRevision,
+      steps: await buildV03Steps(),
+      parent: state.parent
+    });
+  }
+
+  async function currentLegacyEnvelope() {
     if (!state.corpusRevision) await loadCorpusRevision();
     var manifest = await api.createManifest({
       created_at: state.createdAt,
@@ -181,32 +324,72 @@
     return api.envelope(manifest);
   }
 
-  async function exportTrail() {
-    var result = await currentEnvelope();
+  function downloadTrail(result, suffix) {
     var blob = new Blob([JSON.stringify(result, null, 2) + '\n'], { type: 'application/json' });
     var link = document.createElement('a');
-    link.download = 'r4b1t-trail-' + result.trail_id.slice(7, 19) + '.json';
+    link.download = 'r4b1t-trail-' + result.trail_id.slice(7, 19) + (suffix || '') + '.json';
     link.href = URL.createObjectURL(blob);
     link.click();
     setTimeout(function () { URL.revokeObjectURL(link.href); }, 0);
+  }
+
+  async function exportTrail() {
+    var result = await currentEnvelope();
+    downloadTrail(result, '-v03');
     state.imported = result;
-    if (window.rememberTopologySnapshot) await window.rememberTopologySnapshot(result);
-    renderPanel();
+    // Topology v2 currently verifies only trail v0.1 and Blind Descent v0.2.
+    // Do not project v0.3 through it or let an unsupported verifier break export.
+    renderPanel('VERIFIED V0.3 / DOWNSTREAM ADAPTERS PENDING');
     return result;
   }
 
+  async function exportLegacyTrail() {
+    var result = await currentLegacyEnvelope();
+    downloadTrail(result, '-legacy-v01');
+    state.imported = result;
+    if (window.rememberTopologySnapshot) {
+      try { await window.rememberTopologySnapshot(result); } catch (_) {}
+    }
+    renderPanel('LEGACY V0.1 / INTEGRITY ONLY');
+    return result;
+  }
+
+  function artifactFormat(input) {
+    var value = typeof input === 'string' ? JSON.parse(input) : input;
+    return value && value.manifest && value.manifest.format;
+  }
+
+  async function verifyArtifact(input) {
+    var format = artifactFormat(input);
+    if (format === v03.FORMAT) return v03.verify(input);
+    if (format === api.FORMAT) return api.verify(input);
+    throw new TypeError('Unsupported trail format');
+  }
+
+  async function replayUrls(input) {
+    var verified = await verifyArtifact(input);
+    if (verified.manifest.format === v03.FORMAT) {
+      return verified.manifest.steps.map(function (step) { return step.route.url; });
+    }
+    return api.replay(verified);
+  }
+
   async function importTrail(input) {
-    var verified = await api.verify(input);
+    var verified = await verifyArtifact(input);
     state.imported = verified;
-    if (window.rememberTopologySnapshot) await window.rememberTopologySnapshot(verified);
+    if (verified.manifest.format === api.FORMAT && window.rememberTopologySnapshot) {
+      try { await window.rememberTopologySnapshot(verified); } catch (_) {}
+    }
     state.replayIndex = 0;
-    renderPanel('VERIFIED / READY TO REPLAY');
+    renderPanel(verified.manifest.format === v03.FORMAT
+      ? 'VERIFIED V0.3 / READY TO REPLAY'
+      : 'VERIFIED LEGACY V0.1 / READY TO REPLAY');
     return verified;
   }
 
   async function replayStep(index) {
     if (!state.imported) throw new Error('Import or export a trail first');
-    var urls = await api.replay(state.imported);
+    var urls = await replayUrls(state.imported);
     var selected = typeof index === 'number' ? index : state.replayIndex;
     if (selected >= urls.length) selected = 0;
     state.suppressRecord = true;
@@ -223,34 +406,47 @@
 
   async function forkTrail(index) {
     if (!state.imported) throw new Error('Import or export a trail first');
-    var parent = await api.verify(state.imported);
+    var parent = await verifyArtifact(state.imported);
+    var parentFormat = parent.manifest.format;
     var loaded = await corpusAuthority.loadActive();
     if (parent.manifest.corpus_revision !== loaded.revision) {
       throw new Error('Corpus revision mismatch: imported trail cannot fork into the active corpus');
     }
-    state.corpusRevision = loaded.revision;
-    state.corpusSourceId = loaded.source.id;
+
+    var parentRoutes = parentFormat === v03.FORMAT
+      ? parent.manifest.steps.map(function (step) { return step.route; })
+      : parent.manifest.routes;
     var forkAt = typeof index === 'number' ? index : state.replayIndex;
-    if (!Number.isSafeInteger(forkAt) || forkAt < 0 || forkAt > parent.manifest.routes.length) {
+    if (!Number.isSafeInteger(forkAt) || forkAt < 0 || forkAt > parentRoutes.length) {
       throw new Error('Fork position is invalid');
     }
+
+    state.corpusRevision = loaded.revision;
+    state.corpusSourceId = loaded.source.id;
     state.seed = randomSeed();
     state.createdAt = new Date().toISOString();
     state.sampler = api.createSampler(state.seed);
     state.samplerCursor = 0;
     state.transactionSequence = 0;
     state.selectionTerrain = null;
-    state.routes = parent.manifest.routes.slice(0, forkAt).map(function (route) {
-      return { url: route.url, action: route.action };
+    state.repeatGuardReference = null;
+    state.routes = parentRoutes.slice(0, forkAt).map(function (route, routeIndex) {
+      return {
+        url: route.url,
+        action: 'IMPORTED',
+        imported_source: {
+          format: parentFormat,
+          trail_id: parent.trail_id,
+          step_index: routeIndex + 1
+        }
+      };
     });
     state.parent = { trail_id: parent.trail_id, fork_at: forkAt };
     state.imported = null;
     state.replayIndex = 0;
     persist();
-    renderPanel('FORKED / STEP ' + String(forkAt).padStart(3, '0'));
-    var child = await currentEnvelope();
-    if (window.rememberTopologySnapshot) await window.rememberTopologySnapshot(child);
-    return child;
+    renderPanel('FORKED V0.3 / STEP ' + String(forkAt).padStart(3, '0'));
+    return currentEnvelope();
   }
 
   function resetTrail() {
@@ -296,7 +492,8 @@
       '<input id="trailLedgerFile" type="file" accept="application/json,.json" hidden>' +
       '<p id="trailLedgerHint" class="trail-ledger-hint" role="status">Import or export a trail to enable replay and fork.</p>' +
       '<div class="trail-ledger-actions">' +
-        '<button class="btn-share-trail" type="button" data-trail-action="export">EXPORT JSON</button>' +
+        '<button class="btn-share-trail" type="button" data-trail-action="export">EXPORT V0.3</button>' +
+        '<button class="btn-share-trail" type="button" data-trail-action="export-legacy">LEGACY V0.1</button>' +
         '<button class="btn-share-trail" type="button" data-trail-action="import">IMPORT JSON</button>' +
         '<button class="btn-share-trail" type="button" data-trail-action="replay">REPLAY NEXT</button>' +
         '<button class="btn-share-trail" type="button" data-trail-action="fork">FORK HERE</button>' +
@@ -314,12 +511,18 @@
       var action = button.dataset.trailAction;
       if (action === 'close') return closePanel();
       if (action === 'export') return exportTrail().catch(showError);
+      if (action === 'export-legacy') return exportLegacyTrail().catch(showError);
       if (action === 'import') return document.getElementById('trailLedgerFile').click();
       if (action === 'replay') return replayStep().catch(showError);
       if (action === 'fork') return forkTrail().catch(showError);
       if (action === 'blind') { closePanel(); return window.openBlindDescent(); }
       if (action === 'topology') {
-        return currentEnvelope().then(function (snapshot) { closePanel(); return window.openTrailTopology(snapshot); }).catch(showError);
+        // Topology v2 still verifies trail v0.1/v0.2. Preserve the existing
+        // "map the current local trail" behavior through the explicit legacy
+        // projection until a dedicated v0.3 topology adapter lands.
+        return currentLegacyEnvelope()
+          .then(function (snapshot) { closePanel(); return window.openTrailTopology(snapshot); })
+          .catch(showError);
       }
       if (action === 'reset') return resetTrail();
     });
@@ -466,10 +669,12 @@
   window.openTrailLedger = openPanel;
   window.closeTrailLedger = closePanel;
   window.exportTrailManifest = exportTrail;
+  window.exportLegacyTrailManifest = exportLegacyTrail;
   window.importTrailManifest = importTrail;
   window.replayTrailManifest = replayStep;
   window.forkTrailManifest = forkTrail;
   window.getTrailManifest = currentEnvelope;
+  window.getLegacyTrailManifest = currentLegacyEnvelope;
   window.resetReproducibleTrail = resetTrail;
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -506,5 +711,8 @@
     }
   }, true);
 
+  document.addEventListener('r4b1t:navigation', function (event) {
+    recordNavigation(event && event.detail);
+  });
   document.addEventListener('r4b1t:reset', resetTrail);
 })();

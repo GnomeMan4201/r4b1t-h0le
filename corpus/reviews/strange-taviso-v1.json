@@ -1,0 +1,28 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://lock.cmpxchg8b.com/reptar.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://lock.cmpxchg8b.com/zenbleed.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://lock.cmpxchg8b.com/symcoll.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://lock.cmpxchg8b.com/passmgrs.html"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Specific first-party security investigations into CPU behavior, symbol handling or password-manager isolation; excludes unrelated retro software restoration.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:608376f35bf9fc22fff6d53fcc05aec29ef2c83b1d8f27d614ca66cdb1dc0e23",
+  "snapshot_path": "corpus/indexes/strange-taviso-v1.json",
+  "source_id": "strange-taviso-v1"
+}

@@ -1,0 +1,1936 @@
+{
+  "counts": {
+    "excluded": 6,
+    "github_percent": 6.87,
+    "github_urls": 471,
+    "merged_exact_duplicates": 30,
+    "resource_types": {
+      "advisory": 43,
+      "article": 11,
+      "dataset": 22,
+      "documentation": 1408,
+      "lab": 282,
+      "paper": 895,
+      "reference": 871,
+      "repository": 470,
+      "research": 1584,
+      "security_tool": 206,
+      "threat_feed": 6,
+      "training_resource": 12,
+      "writeup": 1049
+    },
+    "resources": 6859,
+    "sources": 37,
+    "unique_hosts": 318
+  },
+  "family_counting": "A resource may have evidence from multiple families; these counts are not selection weights.",
+  "family_coverage": {
+    "academic_research": 895,
+    "datasets_and_feeds": 6,
+    "defensive_resources": 1156,
+    "hacker_publications": 23,
+    "independent_research": 800,
+    "legacy_catalog": 841,
+    "osint": 11,
+    "practical_learning": 772,
+    "publisher_research": 814,
+    "tools_and_documentation": 1541
+  },
+  "hosts": [
+    {
+      "host": "hacktricks.wiki",
+      "percent": 13.38,
+      "resources": 918
+    },
+    {
+      "host": "www.usenix.org",
+      "percent": 13.05,
+      "resources": 895
+    },
+    {
+      "host": "portswigger.net",
+      "percent": 11.28,
+      "resources": 774
+    },
+    {
+      "host": "0xdf.gitlab.io",
+      "percent": 9.08,
+      "resources": 623
+    },
+    {
+      "host": "blog.trailofbits.com",
+      "percent": 7.2,
+      "resources": 494
+    },
+    {
+      "host": "gtfobins.org",
+      "percent": 6.97,
+      "resources": 478
+    },
+    {
+      "host": "github.com",
+      "percent": 6.87,
+      "resources": 471
+    },
+    {
+      "host": "redcanary.com",
+      "percent": 4.36,
+      "resources": 299
+    },
+    {
+      "host": "www.elastic.co",
+      "percent": 4.36,
+      "resources": 299
+    },
+    {
+      "host": "www.synacktiv.com",
+      "percent": 4.1,
+      "resources": 281
+    },
+    {
+      "host": "lolbas-project.github.io",
+      "percent": 3.59,
+      "resources": 246
+    },
+    {
+      "host": "www.malware-traffic-analysis.net",
+      "percent": 2.29,
+      "resources": 157
+    },
+    {
+      "host": "swisskyrepo.github.io",
+      "percent": 2.04,
+      "resources": 140
+    },
+    {
+      "host": "www.stark4n6.com",
+      "percent": 1.6,
+      "resources": 110
+    },
+    {
+      "host": "thedfirreport.com",
+      "percent": 1.41,
+      "resources": 97
+    },
+    {
+      "host": "dfir.ch",
+      "percent": 0.7,
+      "resources": 48
+    },
+    {
+      "host": "pocorgtfo.hacke.rs",
+      "percent": 0.34,
+      "resources": 23
+    },
+    {
+      "host": "projectzero.google",
+      "percent": 0.29,
+      "resources": 20
+    },
+    {
+      "host": "www.manning.com",
+      "percent": 0.29,
+      "resources": 20
+    },
+    {
+      "host": "labs.watchtowr.com",
+      "percent": 0.22,
+      "resources": 15
+    },
+    {
+      "host": "research.checkpoint.com",
+      "percent": 0.22,
+      "resources": 15
+    },
+    {
+      "host": "unit42.paloaltonetworks.com",
+      "percent": 0.2,
+      "resources": 14
+    },
+    {
+      "host": "www.wiley.com",
+      "percent": 0.17,
+      "resources": 12
+    },
+    {
+      "host": "blog.nviso.eu",
+      "percent": 0.15,
+      "resources": 10
+    },
+    {
+      "host": "securelist.com",
+      "percent": 0.15,
+      "resources": 10
+    },
+    {
+      "host": "www.sentinelone.com",
+      "percent": 0.15,
+      "resources": 10
+    },
+    {
+      "host": "blog.ropnop.com",
+      "percent": 0.13,
+      "resources": 9
+    },
+    {
+      "host": "hub.docker.com",
+      "percent": 0.13,
+      "resources": 9
+    },
+    {
+      "host": "www.amazon.com",
+      "percent": 0.12,
+      "resources": 8
+    },
+    {
+      "host": "nostarch.com",
+      "percent": 0.1,
+      "resources": 7
+    },
+    {
+      "host": "sector035.nl",
+      "percent": 0.09,
+      "resources": 6
+    },
+    {
+      "host": "www.owasp.org",
+      "percent": 0.09,
+      "resources": 6
+    },
+    {
+      "host": "bishopfox.com",
+      "percent": 0.07,
+      "resources": 5
+    },
+    {
+      "host": "gitlab.com",
+      "percent": 0.07,
+      "resources": 5
+    },
+    {
+      "host": "samcurry.net",
+      "percent": 0.07,
+      "resources": 5
+    },
+    {
+      "host": "www.bellingcat.com",
+      "percent": 0.07,
+      "resources": 5
+    },
+    {
+      "host": "www.hexacorn.com",
+      "percent": 0.07,
+      "resources": 5
+    },
+    {
+      "host": "www.misp-project.org",
+      "percent": 0.07,
+      "resources": 5
+    },
+    {
+      "host": "blog.doyensec.com",
+      "percent": 0.06,
+      "resources": 4
+    },
+    {
+      "host": "www.elsevier.com",
+      "percent": 0.06,
+      "resources": 4
+    },
+    {
+      "host": "docs.microsoft.com",
+      "percent": 0.04,
+      "resources": 3
+    },
+    {
+      "host": "www.ntop.org",
+      "percent": 0.04,
+      "resources": 3
+    },
+    {
+      "host": "books2read.com",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "code.google.com",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "distrowatch.com",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "inventory.raw.pm",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "nmap.org",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "sourceforge.net",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "www.alienvault.com",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "www.dan.me.uk",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "www.enisa.europa.eu",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "www.exploit-db.com",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "www.hex-rays.com",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "www.kali.org",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "www.nodejs-security.com",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "www.offensive-security.com",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "www.openvas.org",
+      "percent": 0.03,
+      "resources": 2
+    },
+    {
+      "host": "0xacab.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "addons.mozilla.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "administraitor.video",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "aibuilds.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "amzn.to",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "androidtamer.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "angr.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "archstrike.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "atcommands.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "attack.mitre.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "azcwr.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "bazaar.abuse.ch",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "beginners.re",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "binarymist.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "bitbucket.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "bittwist.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "blindelephant.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "blog.gentilkiwi.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "blog.securityonion.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "bruteforce.gr",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "certgrep.sh",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "chipwhisperer.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "cisofy.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "cloudsplaining.readthedocs.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "code.kryo.se",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "codisec.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "conpot.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "cppcheck.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "cutter.re",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "cve.mitre.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "cxsecurity.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "cybrary.it",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "cyware.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "databunker.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "denyhosts.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "digi.ninja",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "dlrobertson.github.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "dnsdumpster.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "doc.emergingthreats.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "domgo.at",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "dotdotpwn.blogspot.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "dpdk.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "dradis.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "drkeithjones.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "dtag-dev-sec.github.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "dumpsterventures.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "elixir.bootlin.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "endgame.readthedocs.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "eternal-todo.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "falco.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "fastandeasyhacking.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "fbb-git.gitlab.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "feodotracker.abuse.ch",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "findbugs.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "frhed.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "getgophish.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "geti2p.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "ghostproject.fr",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "git.kali.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "glastopf.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "graphql-kit.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "gtfobins.github.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "h.foofus.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "hachoir.readthedocs.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "hackingthe.cloud",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "hashcat.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "haveibeensquatted.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "hexed.it",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "hexinator.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "hexway.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "holisticinfosecforwebdevelopers.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "hpi-vdb.de",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "hunter.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "immunityinc.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "info.iet.unipi.it",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "inteltechniques.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "intrigue.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "justniffer.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "kaitai.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "kismetwireless.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "kojoney.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "kube-hunter.aquasec.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "labs.mwrinfosecurity.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "lucideus.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "manning.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "metrics.torproject.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "mig.mozilla.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "mitmproxy.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "netbootcamp.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "netsniff-ng.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "networksecuritytoolkit.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "ngrep.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "nullsecurity.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "nvd.nist.gov",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "onionscan.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "opalopc.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "opensecuritytraining.info",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "openvpn.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "opnsense.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "osintframework.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "ossec.github.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "osv.dev",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "owasp.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "packetstormsecurity.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "packettotal.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "parrotlinux.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "pentest-ground.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "pentestbox.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "pentestreports.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "phishstats.info",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "proxmark3.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "pt.coursera.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "pypi.python.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "rada.re",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "rarcrack.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "reconmap.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "rhinosecuritylabs.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "ridiculousfish.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "rizin.re",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "rkhunter.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "ronin-rb.dev",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "sagan.quadrantsec.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "samy.pl",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "scammerlist.now.sh",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "secapps.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "seclists.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "sectools.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "securityhandbook.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "shell-storm.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "shop.hak5.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "sniff.su",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "snyk.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "spamassassin.apache.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "sparta.secforce.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "spyse.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "sqlmap.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "sslbl.abuse.ch",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "stegonline.georgeom.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "suricata-ids.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "tails.boum.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "tcpreplay.appneta.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "tgcd.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "threatfox.abuse.ch",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "threatjammer.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "thunderclap.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "tools.kali.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "torstatus.blutmagie.de",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "trailofbits.github.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "tsurugi-linux.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "urlhaus.abuse.ch",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "vuldb.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "vulmon.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "vulners.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "w3af.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "wapiti.sourceforge.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "webkay.robinlinus.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "wigle.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "wireedit.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "wpscan.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.0day.today",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.2600.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.abuse.ch",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.aircrack-ng.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.amazon.de",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.ampliasecurity.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.arachni-scanner.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.autoshun.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.bettercap.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.blackarch.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.capstone-engine.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.censys.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.cipherdyne.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.cisa.gov",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.clamav.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.cnnvd.org.cn",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.codef00.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.corelan.be",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.cuckoosandbox.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.cyberpunk.rs",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.defcon.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.dshield.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.elevenpaths.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.ettercap-project.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.fail2ban.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.fing.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.frida.re",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.fuzzing.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.ghidra-sre.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.hachettebookgroup.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.hardenwindows10forsecurity.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.hoppersroppers.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.iwaxx.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.kb.cert.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.leakedin.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.maltego.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.malwaredomains.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.mavetju.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.metasploit.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.mhprofessional.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.modsecurity.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.monkey.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.mozilla.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.nccgroup.trust",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.netsparker.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.ollydbg.de",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.openfpc.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.openwall.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.packtpub.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.passbolt.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.pentest-standard.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.pfsense.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.phishtank.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.phrack.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.prelude-siem.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.projecthoneypot.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.qubes-os.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.rapid7.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.rfxn.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.rudder-project.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.sans.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.securiteam.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.securityfocus.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.shellterproject.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.shodan.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.sno.phy.queensu.ca",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.snort.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.social-engineer.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.spamhaus.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.spiderfoot.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.sqreen.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.sshguard.net",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.tcpdump.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.telerik.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.tenable.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.testandverification.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.thoughtcrime.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.threatcrowd.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.torproject.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.tracewrangler.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.trapkit.de",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.vaultproject.io",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.veil-framework.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.virustotal.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.vividmachines.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.vulnerability-lab.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.vulnerabilityassessment.co.uk",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.wappalyzer.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.webreaver.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.whonix.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.wifipineapple.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.wireshark.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.wxhexeditor.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.xplico.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.zaproxy.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "www.zoomeye.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "x64dbg.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "xmodulo.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "yaraify.abuse.ch",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "zeek.org",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "zerodayinitiative.com",
+      "percent": 0.01,
+      "resources": 1
+    },
+    {
+      "host": "zmap.io",
+      "percent": 0.01,
+      "resources": 1
+    }
+  ],
+  "reachability": "Not asserted by an offline corpus build; separate time-bounded checks are required before promotion.",
+  "registry_digest": "sha256:4484eb283b906d8047b17ab2ea587f4d83d3cb14bb9655d406ca35d45acd0645",
+  "release_id": "diverse-candidate-v0.2",
+  "schema": "r4b1t-corpus-diversity-report-v1",
+  "selection_authority": false,
+  "sources": [
+    {
+      "admitted": 623,
+      "collected": 882,
+      "family": "independent_research",
+      "manifest": "corpus/reviews/0xdf-v1.json",
+      "source_id": "0xdf-v1",
+      "unreviewed": 259
+    },
+    {
+      "admitted": 6,
+      "collected": 32,
+      "family": "datasets_and_feeds",
+      "manifest": "corpus/reviews/abusech-v1.json",
+      "source_id": "abusech-v1",
+      "unreviewed": 26
+    },
+    {
+      "admitted": 564,
+      "collected": 606,
+      "family": "legacy_catalog",
+      "manifest": "corpus/catalogs/awesome-pentest-enaqx-v1.json",
+      "source_id": "awesome-pentest-enaqx-v1",
+      "unreviewed": 42
+    },
+    {
+      "admitted": 313,
+      "collected": 335,
+      "family": "legacy_catalog",
+      "manifest": "corpus/catalogs/awesome-security-sbilly-v1.json",
+      "source_id": "awesome-security-sbilly-v1",
+      "unreviewed": 22
+    },
+    {
+      "admitted": 5,
+      "collected": 10,
+      "family": "osint",
+      "manifest": "corpus/reviews/bellingcat-v1.json",
+      "source_id": "bellingcat-v1",
+      "unreviewed": 5
+    },
+    {
+      "admitted": 5,
+      "collected": 14,
+      "family": "tools_and_documentation",
+      "manifest": "corpus/reviews/bishopfox-research-v1.json",
+      "source_id": "bishopfox-research-v1",
+      "unreviewed": 9
+    },
+    {
+      "admitted": 15,
+      "collected": 15,
+      "family": "defensive_resources",
+      "manifest": "corpus/reviews/check-point-v1.json",
+      "source_id": "check-point-v1",
+      "unreviewed": 0
+    },
+    {
+      "admitted": 48,
+      "collected": 84,
+      "family": "independent_research",
+      "manifest": "corpus/reviews/dfirch-v1.json",
+      "source_id": "dfirch-v1",
+      "unreviewed": 36
+    },
+    {
+      "admitted": 97,
+      "collected": 97,
+      "family": "defensive_resources",
+      "manifest": "corpus/reviews/dfirreport-posts-v1.json",
+      "source_id": "dfirreport-posts-v1",
+      "unreviewed": 0
+    },
+    {
+      "admitted": 4,
+      "collected": 52,
+      "family": "publisher_research",
+      "manifest": "corpus/reviews/doyensec-archive-v1.json",
+      "source_id": "doyensec-archive-v1",
+      "unreviewed": 48
+    },
+    {
+      "admitted": 299,
+      "collected": 302,
+      "family": "defensive_resources",
+      "manifest": "corpus/reviews/elastic-v1.json",
+      "source_id": "elastic-v1",
+      "unreviewed": 3
+    },
+    {
+      "admitted": 478,
+      "collected": 1287,
+      "family": "tools_and_documentation",
+      "manifest": "corpus/reviews/gtfobins-index-v1.json",
+      "source_id": "gtfobins-index-v1",
+      "unreviewed": 809
+    },
+    {
+      "admitted": 918,
+      "collected": 1066,
+      "family": "tools_and_documentation",
+      "manifest": "corpus/reviews/hacktricks-en-v1.json",
+      "source_id": "hacktricks-en-v1",
+      "unreviewed": 148
+    },
+    {
+      "admitted": 5,
+      "collected": 5,
+      "family": "independent_research",
+      "manifest": "corpus/reviews/hexacorn-v1.json",
+      "source_id": "hexacorn-v1",
+      "unreviewed": 0
+    },
+    {
+      "admitted": 245,
+      "collected": 584,
+      "family": "defensive_resources",
+      "manifest": "corpus/reviews/lolbas-index-v1.json",
+      "source_id": "lolbas-index-v1",
+      "unreviewed": 339
+    },
+    {
+      "admitted": 46,
+      "collected": 60,
+      "family": "defensive_resources",
+      "manifest": "corpus/reviews/malwaretraffic-v1.json",
+      "source_id": "malwaretraffic-v1",
+      "unreviewed": 14
+    },
+    {
+      "admitted": 54,
+      "collected": 68,
+      "family": "defensive_resources",
+      "manifest": "corpus/reviews/mta2024-v1.json",
+      "source_id": "mta2024-v1",
+      "unreviewed": 14
+    },
+    {
+      "admitted": 57,
+      "collected": 71,
+      "family": "defensive_resources",
+      "manifest": "corpus/reviews/mta2025-v1.json",
+      "source_id": "mta2025-v1",
+      "unreviewed": 14
+    },
+    {
+      "admitted": 10,
+      "collected": 10,
+      "family": "defensive_resources",
+      "manifest": "corpus/reviews/nviso-v1.json",
+      "source_id": "nviso-v1",
+      "unreviewed": 0
+    },
+    {
+      "admitted": 140,
+      "collected": 142,
+      "family": "tools_and_documentation",
+      "manifest": "corpus/reviews/payloadsallthethings-v1.json",
+      "source_id": "payloadsallthethings-v1",
+      "unreviewed": 2
+    },
+    {
+      "admitted": 23,
+      "collected": 23,
+      "family": "hacker_publications",
+      "manifest": "corpus/reviews/pocorgtfo-v1.json",
+      "source_id": "pocorgtfo-v1",
+      "unreviewed": 0
+    },
+    {
+      "admitted": 772,
+      "collected": 3067,
+      "family": "practical_learning",
+      "manifest": "corpus/reviews/portswigger-sitemap-v1.json",
+      "source_id": "portswigger-sitemap-v1",
+      "unreviewed": 2295
+    },
+    {
+      "admitted": 20,
+      "collected": 64,
+      "family": "publisher_research",
+      "manifest": "corpus/reviews/projectzero-archive-v1.json",
+      "source_id": "projectzero-archive-v1",
+      "unreviewed": 44
+    },
+    {
+      "admitted": 299,
+      "collected": 689,
+      "family": "defensive_resources",
+      "manifest": "corpus/reviews/redcanary-sitemap-v1.json",
+      "source_id": "redcanary-sitemap-v1",
+      "unreviewed": 390
+    },
+    {
+      "admitted": 9,
+      "collected": 56,
+      "family": "independent_research",
+      "manifest": "corpus/reviews/ropnop-archive-v1.json",
+      "source_id": "ropnop-archive-v1",
+      "unreviewed": 47
+    },
+    {
+      "admitted": 5,
+      "collected": 10,
+      "family": "independent_research",
+      "manifest": "corpus/reviews/samcurry-archive-v1.json",
+      "source_id": "samcurry-archive-v1",
+      "unreviewed": 5
+    },
+    {
+      "admitted": 6,
+      "collected": 56,
+      "family": "osint",
+      "manifest": "corpus/reviews/sector035-v1.json",
+      "source_id": "sector035-v1",
+      "unreviewed": 50
+    },
+    {
+      "admitted": 10,
+      "collected": 10,
+      "family": "defensive_resources",
+      "manifest": "corpus/reviews/securelist-v1.json",
+      "source_id": "securelist-v1",
+      "unreviewed": 0
+    },
+    {
+      "admitted": 10,
+      "collected": 10,
+      "family": "defensive_resources",
+      "manifest": "corpus/reviews/sentinelone-v1.json",
+      "source_id": "sentinelone-v1",
+      "unreviewed": 0
+    },
+    {
+      "admitted": 110,
+      "collected": 114,
+      "family": "independent_research",
+      "manifest": "corpus/reviews/stark4n6-v1.json",
+      "source_id": "stark4n6-v1",
+      "unreviewed": 4
+    },
+    {
+      "admitted": 281,
+      "collected": 456,
+      "family": "publisher_research",
+      "manifest": "corpus/reviews/synacktiv-v1.json",
+      "source_id": "synacktiv-v1",
+      "unreviewed": 175
+    },
+    {
+      "admitted": 494,
+      "collected": 813,
+      "family": "publisher_research",
+      "manifest": "corpus/reviews/trailofbits-v1.json",
+      "source_id": "trailofbits-v1",
+      "unreviewed": 319
+    },
+    {
+      "admitted": 14,
+      "collected": 15,
+      "family": "defensive_resources",
+      "manifest": "corpus/reviews/unit42-v1.json",
+      "source_id": "unit42-v1",
+      "unreviewed": 1
+    },
+    {
+      "admitted": 418,
+      "collected": 473,
+      "family": "academic_research",
+      "manifest": "corpus/reviews/usenix-security24-v1.json",
+      "source_id": "usenix-security24-v1",
+      "unreviewed": 55
+    },
+    {
+      "admitted": 455,
+      "collected": 531,
+      "family": "academic_research",
+      "manifest": "corpus/reviews/usenix-security25-v1.json",
+      "source_id": "usenix-security25-v1",
+      "unreviewed": 76
+    },
+    {
+      "admitted": 22,
+      "collected": 61,
+      "family": "academic_research",
+      "manifest": "corpus/reviews/usenix-woot24-v1.json",
+      "source_id": "usenix-woot24-v1",
+      "unreviewed": 39
+    },
+    {
+      "admitted": 15,
+      "collected": 15,
+      "family": "publisher_research",
+      "manifest": "corpus/reviews/watchtowr-v1.json",
+      "source_id": "watchtowr-v1",
+      "unreviewed": 0
+    }
+  ],
+  "status": "candidate",
+  "urls_digest": "sha256:ba52be7e2fc9120f3bd1ac2a6bacbc61fc937764e6d4637df8711ec2212bf75c"
+}

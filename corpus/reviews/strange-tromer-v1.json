@@ -1,0 +1,20 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://cs-people.bu.edu/tromer/acoustic"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://cs-people.bu.edu/tromer/handsoff"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "academic_research",
+  "rationale": "Author project writeups on acoustic and touch-based cryptographic key extraction; excludes profile and publication-index navigation.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:78182537179f02b161059693dcaf9a0be6795d2d99339125f8962ab19a840758",
+  "snapshot_path": "corpus/indexes/strange-tromer-v1.json",
+  "source_id": "strange-tromer-v1"
+}

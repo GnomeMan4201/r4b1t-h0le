@@ -1,0 +1,24 @@
+{
+  "extractor": "html-anchors-v1",
+  "final_url": "https://spritesmods.com/?art=security",
+  "response_digest": "sha256:f8e6fa563ae9eee4af04d9477c3ff4032b750fd99efe1143a46b7d0571593e99",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://spritesmods.com/?art=security",
+  "urls": [
+    "https://fedi.spritesmods.com/fedi/sprite_tm",
+    "https://spritesmods.com/?art=about",
+    "https://spritesmods.com/?art=bioslimdisk",
+    "https://spritesmods.com/?art=biostick",
+    "https://spritesmods.com/?art=consoles",
+    "https://spritesmods.com/?art=contact&af=Security",
+    "https://spritesmods.com/?art=diskgenie",
+    "https://spritesmods.com/?art=hacks",
+    "https://spritesmods.com/?art=hardware",
+    "https://spritesmods.com/?art=main",
+    "https://spritesmods.com/?art=securehd",
+    "https://spritesmods.com/?art=security",
+    "https://spritesmods.com/?art=secustick",
+    "https://spritesmods.com/?art=software"
+  ]
+}

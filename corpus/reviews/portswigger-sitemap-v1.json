@@ -1,0 +1,3100 @@
+{
+  "admissions": [
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/burp-ai/ai-connectivity-troubleshooting"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/burp-ai/ai-credits"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/burp-ai/prompting"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/burp-at/permissions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/burp-at/prompting"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/burp-at/reviewing-findings"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/burp-at/setting-up"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/burp-at/skills"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/burp-at/tasks"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/burp-at/tools"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/burps-layout/customize-tables"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/burps-layout/customize-top-level-tabs"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/bambdas"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/bambdas/creating"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/bambdas/creating/contribute-scripts"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/bambdas/creating/troubleshooting"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/bambdas/creating/writing-custom-actions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/bambdas/creating/writing-custom-actions/ai-best-practices"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/bambdas/creating/writing-custom-actions/developing-ai-features"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/bambdas/creating/writing-custom-actions/worked-example"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/bambdas/creating/writing-custom-actions/writing-guide"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/bambdas/importing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/bambdas/managing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/custom-scan-checks"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/custom-scan-checks/creating"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/custom-scan-checks/creating/active-worked-example"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/custom-scan-checks/creating/passive-worked-example"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/custom-scan-checks/creating/writing-guide"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/custom-scan-checks/importing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/custom-scan-checks/managing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/custom-scan-checks/testing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/bapp-store-acceptance-criteria"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/bapp-store-maintaining-extensions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/bapp-store-submitting-extensions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/creating-ai-extensions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/creating-ai-extensions/best-practices"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/creating-ai-extensions/developing-ai-features"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/debugging"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/debugging/using-debugger"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/extender-api-examples-legacy"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/first-extension"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/loading-in-burp"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/set-up"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/set-up/manual-setup"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/set-up/starter-project"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/tutorials"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/tutorials/hotkey"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/tutorials/settings-panel"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/installing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/installing/bapp-store"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/installing/manual-install"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/managing-extensions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/troubleshooting"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/using-ai-extensions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/viewing-requests-sent-by-burp-extensions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/browser-config-chrome-macos"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/browser-config-chrome-windows"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/browser-config-firefox"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/browser-config-safari"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/certificate"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/certificate/ca-cert-chrome"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/certificate/ca-cert-chrome-linux"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/certificate/ca-cert-chrome-macos"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/certificate/ca-cert-chrome-windows"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/certificate/ca-cert-firefox"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/certificate/ca-cert-safari"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/certificate/proxy-troubleshooting"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/check-browser-configuration"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/check-listener"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/activating-burp-license"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/download-and-install"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/generate-reports"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/intercepting-http-traffic"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/mac-installer"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/modifying-http-requests"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/reissuing-http-requests"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/running-your-first-scan"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/setting-target-scope"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/system-requirements"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/unified-installer-faqs"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/what-next"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/http2/http2-basics-for-burp-users"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/http2/http2-normalization-in-the-message-editor"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/http2/performing-http2-exclusive-attacks"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/mobile/config-android-device"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/mobile/config-ios-device"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/mobile/troubleshooting"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/projects/create-project-file"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/projects/manage-project-files"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/api-scans"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/api-scans/authentication"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/configuring-app-logins"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/configuring-app-logins/adding-recorded-logins"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/configuring-app-logins/adding-usernames-passwords"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/configuring-app-logins/application-login-config-library"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/configuring-scans"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/custom-checks"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/explore-issue-with-ai"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/extension-checks"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/live-tasks"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/live-tasks/creating-live-tasks"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/live-tasks/task-execution-settings"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/managing-resource-pools"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/reporting"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/reporting/manual-issues"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/reporting/report-settings"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/results"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/results/audit-items"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/results/audit-items/insertion-points"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/results/audit-log"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/results/event-log"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/results/issues"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/results/live-crawl-view"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/results/summary"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/setting-pro-scope"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/webapp-scans"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/webapp-scans/full-crawl-and-audit"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/running-scans/webapp-scans/scanning-specific-http-messages"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/ai"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/extensions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/key-settings"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/library"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/network"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/network/connections"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/network/dns"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/network/http"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/network/tls"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/project"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/project/automatic-backup"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/project/collaborator"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/project/logging"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/project/scope"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/project/tasks"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/response-extraction"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/sessions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/sessions/macros"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/sessions/session-handling-rules"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/suite"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/suite/early-adopter"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/suite/performance"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/suite/rest-api"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/suite/shutdown-behavior"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/suite/startup-behavior"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/suite/temp-files-location"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/suite/updates"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/tools"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/tools/burps-browser"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/tools/comparer"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/tools/intruder"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/tools/proxy"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/tools/repeater"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/tools/sequencer"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/ui"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/ui/display"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/ui/hotkeys"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/ui/message-editor"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/ui/side-panel"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/analyzing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/analyzing/evaluating-inputs"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/analyzing/hidden-inputs"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/analyzing/high-risk-functionality"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/analyzing/opaque-data"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/analyzing/opaque-data/decoding-opaque-data"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/analyzing/opaque-data/parts-of-token"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/analyzing/scoping-effort"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/analyzing/supported-http-methods"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/mapping"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/mapping/hidden-content"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/mapping/hidden-content/automated-discovery"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/mapping/hidden-content/hostname-discovery"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/mapping/visible-attack-surface"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/scanner-manual-testing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/test-scope"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/access-controls"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/access-controls/horizontal-access-controls"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/access-controls/param-based-access-control"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/access-controls/privilege-escalation"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/access-controls/testing-for-idors"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/access-controls/using-match-and-replace"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/authentication-mechanisms"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/authentication-mechanisms/brute-forcing-logins"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/authentication-mechanisms/brute-forcing-passwords"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/authentication-mechanisms/credential-stuffing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/authentication-mechanisms/enumerating-usernames"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/authentication-mechanisms/guessing-usernames-for-known-users"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/client-side-controls"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/command-injection"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/command-injection/asynchronous"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/command-injection/exfiltrate-data"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/command-injection/testing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/directory-traversal"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/prototype-pollution"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/sql-injection"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/sql-injection/testing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/xss"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/xss/bypassing-filters"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/xss/dom-xss"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/xss/reflected-input"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/xss/testing-for-blind-xss"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/xss/testing-for-reflected-xss"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/xss/testing-for-stored-xss"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/xss/web-message-dom-xss"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/xxe-injection"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/xxe-injection/blind"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/input-validation/xxe-injection/testing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/session-management"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/session-management/analyzing-session-token-generation"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/session-management/csrf-poc"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/session-management/jwts"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/session-management/maintaining-authenticated-session"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/session-management/session-timeout"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/ssrf"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/ssrf/testing-for-blind-ssrf"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/ssrf/testing-for-ssrf"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/testing-for-clickjacking"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/websockets"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/websockets/manipulating-websocket-handshakes"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/websockets/manipulating-websocket-messages"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/working-with-graphql"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/burps-browser"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/clickbandit"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/collaborator"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/collaborator/getting-started"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/command-palette"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/comparer"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/context-menu"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dashboard"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/decoder"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/dom-clobbering"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/dom-xss"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/enabling"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/prototype-pollution"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/settings"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/settings/attack-types"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/settings/canary"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/settings/main"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/settings/misc"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/settings/prototype-pollution"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/settings/web-messages"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/web-messages"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/engagement-tools"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/engagement-tools/content-discovery"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/engagement-tools/generate-csrf-poc"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/engagement-tools/manual-simulator"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/engagement-tools/target-analyzer"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/filter"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/infiltrator"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/inspector"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/inspector/getting-started-inspector"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/inspector/modify-requests"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack/attack-types"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack/managing-tabs"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack/payload-lists"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack/payload-types"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack/positions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack/processing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack/resource-pool"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack/settings"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/getting-started"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/results"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/results/analyzing-results"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/results/editing-attacks"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/results/filtering-results"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/results/saving-attacks"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/results/viewing-results"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/results/workflow"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/uses"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/uses/enumerating"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/uses/fuzzing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/intruder/uses/harvesting"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/logger"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/logger/custom-columns"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/logger/entries"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/logger/filter"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/logger/filter/capture"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/logger/filter/capture-with-scripts"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/logger/filter/view"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/logger/filter/view-with-scripts"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/logger/getting-started"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/logger/task"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/message-editor"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/message-editor/text-editor"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/organizer"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/organizer/annotate"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/organizer/collections"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/organizer/filter"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/http-history"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/http-history/custom-columns"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/http-history/filter-settings"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/http-history/scripts"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/intercept-messages"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/invisible"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/manage-certificates"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/match-and-replace"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/match-and-replace/creating"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/match-and-replace/scripts"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/match-and-replace/testing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/websockets-history"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/websockets-history/custom-columns"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/websockets-history/filter-settings"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/websockets-history/scripts"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/groups"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/http-messages"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/http-messages/ai-explainer"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/http-messages/burp-ai-in-repeater"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/http-messages/custom-actions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/http-messages/custom-actions/creating"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/http-messages/custom-actions/loading"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/http-messages/custom-actions/managing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/http-messages/custom-actions/running"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/managing-tabs"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/send-group"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/tab-settings"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/repeater/websocket-messages"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/search"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/sequencer"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/sequencer/getting-started"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/sequencer/results"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/sequencer/results/tests"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/sequencer/sample"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/sequencer/sample/live-capture"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/analyze-attack-surface"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/crawl-paths"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/issue-definitions"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/manual-app-map"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/scope"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/site-map"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/site-map/comparing"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/site-map/comparison-results"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/site-map/getting-started"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/site-map/scripts"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/site-map/site-map-filter"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/site-map/site-map-layout"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/site-map/workflow-tools"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/unrequested-items"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/troubleshooting/launch-from-command-line"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/troubleshooting/performance"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/troubleshooting/setting-java-options"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://portswigger.net/burp/documentation/desktop/troubleshooting/troubleshooting"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/a-hacking-hat-trick-previewing-three-portswigger-research-publications-coming-to-def-con-amp-black-hat-usa"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/abusing-chromes-xss-auditor-to-steal-tokens"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/abusing-javascript-frameworks-to-bypass-xss-mitigations"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/abusing-jquery-for-css-powered-timing-attacks"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/adapting-angularjs-payloads-to-exploit-real-world-applications"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/adapting-burp-extensions-for-tailored-pentesting"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/adjusting-your-http-perspective-with-bambdas"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/alert-is-dead-long-live-print"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/ambushed-by-angularjs-a-hidden-csp-bypass-in-piwik-pro"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/angularjs-csp-bypass-in-56-characters"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/attacking-and-defending-javascript-sandboxes"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/backslash-powered-scanning-hunting-unknown-vulnerability-classes"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/blind-css-exfiltration"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/breaking-the-chains-on-http-request-smuggler"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/browser-powered-desync-attacks"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/burp-clickbandit-a-javascript-based-clickjacking-poc-generator"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/bypassing-angularjs-bind-html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/bypassing-character-blocklists-with-unicode-overflows"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/bypassing-csp-using-polyglot-jpegs"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/bypassing-csp-via-dom-clobbering"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/bypassing-csp-with-dangling-iframes"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/bypassing-csp-with-policy-injection"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/bypassing-dompurify-again-with-mutation-xss"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/bypassing-firefoxs-html-sanitizer-api"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/bypassing-wafs-and-cracking-xor-with-hackvertor"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/bypassing-wafs-with-the-phantom-version-cookie"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/bypassing-web-cache-poisoning-countermeasures"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/can-ai-do-novel-security-research"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/concealing-payloads-in-url-credentials"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/cookie-chaos-how-to-bypass-host-and-secure-cookie-prefixes"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/cracking-recaptcha-turbo-intruder-style"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/cracking-the-lens-targeting-https-hidden-attack-surface"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/creating-a-3d-world-in-pure-css"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/crlf-powered-desync-attacks"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/css-the-bomb-inside-your-inbox"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/detecting-and-exploiting-path-relative-stylesheet-import-prssi-vulnerabilities"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/detecting-web-message-misconfigurations-for-cross-domain-credential-theft"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/document-my-pentest"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/documenting-the-impossible-unexploitable-xss-labs"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/dom-based-angularjs-sandbox-escapes"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/dom-clobbering-strikes-back"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/drag-and-pwnd-leverage-ascii-characters-to-exploit-vs-code"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/edge-xss-filter-bypass"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/escaping-javascript-sandboxes-with-parsing-issues"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/evading-csp-with-dom-based-dangling-markup"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/evading-defences-using-vuejs-script-gadgets"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/executing-non-alphanumeric-javascript-without-parenthesis"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/exploiting-cors-misconfigurations-for-bitcoins-and-bounties"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/exploiting-prototype-pollution-in-node-without-the-filesystem"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/exploiting-xss-in-hidden-inputs-and-meta-tags"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/exposing-intranets-with-reliable-browser-based-port-scanning"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/fickle-pdfs-exploiting-browser-rendering-discrepancies"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/finding-dom-polyglot-xss-in-paypal-the-easy-way"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/finding-that-one-weird-endpoint-with-bambdas"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/framing-without-iframes"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/gotta-cache-em-all"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/hackability-inspector"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/hidden-oauth-attack-vectors"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/hiding-payloads-in-java-source-code-strings"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/hijacking-service-workers-via-dom-clobbering"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/how-i-accidentally-framed-myself-for-a-hacking-frenzy"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/how-i-choose-a-security-research-topic"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/how-to-build-custom-scanners-for-web-security-research-automation"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/how-to-distinguish-http-pipelining-from-request-smuggling"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/how-to-turn-security-research-into-profit"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/http-3-connection-contamination"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/http-desync-attacks-what-happened-next"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/http1-must-die"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/http2"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/http3-in-burp-suite"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/hunting-asynchronous-vulnerabilities"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/hunting-evasive-vulnerabilities"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/hunting-nonce-based-csp-bypasses-with-dynamic-analysis"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/inline-style-exfiltration"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/introducing-http-anomaly-rank"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/introducing-signsaboteur-forge-signed-web-tokens-with-ease"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/introducing-the-url-validation-bypass-cheat-sheet"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/javascript-without-parentheses-using-dommatrix"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/json-hijacking-for-the-modern-web"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/listen-to-the-whispers-web-timing-attacks-that-actually-work"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/making-http-header-injection-critical-via-response-queue-poisoning"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/new-crazy-payloads-in-the-url-validation-bypass-cheat-sheet"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/new-exotic-events-in-the-xss-cheat-sheet"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/new-xss-vectors"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/newssitemap"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/noscript-xss-filter-bypass"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/notwasp-bottom-10-vulnerabilities-that-make-you-cry"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/one-xss-cheatsheet-to-rule-them-all"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/our-favourite-community-contributions-to-the-xss-cheat-sheet"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/portable-data-exfiltration"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/practical-web-cache-poisoning"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/pre-auth-rce-in-forgerock-openam-cve-2021-35464"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/provoking-browser-quirks-with-behavioural-fuzzing"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/rce-in-jxbrowser-javascript-java-bridge"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/redefining-impossible-xss-without-arbitrary-javascript"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/repeater-strike-manual-testing-amplified"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/responsible-denial-of-service-with-web-cache-poisoning"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/safari-is-hot-linking-images-to-semi-random-websites"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/saml-roulette-the-hacker-always-wins"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/server-side-prototype-pollution"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/server-side-template-injection"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/shadow-repeater-ai-enhanced-manual-testing"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/smashing-the-state-machine"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/so-you-want-to-be-a-web-security-researcher"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/splitting-the-email-atom"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/stealing-httponly-cookies-with-the-cookie-sandwich-technique"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/stealing-passwords-from-infosec-mastodon-without-bypassing-csp"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/svg-animate-xss-vector"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/the-curl-quirk-that-exposed-burp-suite-amp-google-chrome"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/the-fragile-lock"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/the-seventh-way-to-call-a-javascript-function-without-parentheses"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/the-single-packet-attack-making-remote-race-conditions-local"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2017"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2017-nominations-open"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2017-voting-open"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2018"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2018-nominations-open"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2019"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2019-nominations-open"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2020"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2020-nominations-open"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2021"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2021-nominations-open"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2022"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2022-nominations-open"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2023"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2023-nominations-open"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2024"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2024-nominations-open"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2025"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques-of-2025-nominations-open"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/trace-desync-attack"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/turbo-intruder-embracing-the-billion-request-attack"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/ublock-i-exfiltrate-exploiting-ad-blockers-with-css"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/unearthing-zalgoscript-with-visual-fuzzing"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/using-form-hijacking-to-bypass-csp"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/using-hackability-to-uncover-a-chrome-infoleak"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/web-cache-entanglement"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/web-storage-the-lesser-evil-for-session-tokens"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/websocket-turbo-intruder-unearthing-the-websocket-goldmine"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/whats-in-a-tag-name-javascript-apparently"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/when-alert-fails-exploiting-transient-events"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/when-security-features-collide"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/widespread-prototype-pollution-gadgets"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/xs-leak-detecting-ids-using-portal"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/xs-leak-leaking-ids-using-focus"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/xss-in-hidden-input-fields"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/xss-without-html-client-side-template-injection-with-angularjs"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://portswigger.net/research/xss-without-parentheses-and-semi-colons"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-insecure-direct-object-references"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-method-based-access-control-can-be-circumvented"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-multi-step-process-with-no-access-control-on-one-step"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-referer-based-access-control"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-unprotected-admin-functionality"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-unprotected-admin-functionality-with-unpredictable-url"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-url-based-access-control-can-be-circumvented"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-user-id-controlled-by-request-parameter"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-user-id-controlled-by-request-parameter-with-data-leakage-in-redirect"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-user-id-controlled-by-request-parameter-with-password-disclosure"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-user-id-controlled-by-request-parameter-with-unpredictable-user-ids"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-user-role-can-be-modified-in-user-profile"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/access-control/lab-user-role-controlled-by-request-parameter"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/api-testing/lab-exploiting-api-endpoint-using-documentation"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/api-testing/lab-exploiting-mass-assignment-vulnerability"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/api-testing/lab-exploiting-unused-api-endpoint"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/api-testing/server-side-parameter-pollution/lab-exploiting-server-side-parameter-pollution-in-query-string"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/api-testing/server-side-parameter-pollution/lab-exploiting-server-side-parameter-pollution-in-rest-url"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/multi-factor/lab-2fa-broken-logic"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/multi-factor/lab-2fa-bypass-using-a-brute-force-attack"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/multi-factor/lab-2fa-simple-bypass"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/other-mechanisms/lab-brute-forcing-a-stay-logged-in-cookie"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/other-mechanisms/lab-offline-password-cracking"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/other-mechanisms/lab-password-brute-force-via-password-change"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/other-mechanisms/lab-password-reset-broken-logic"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/other-mechanisms/lab-password-reset-poisoning-via-middleware"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/password-based/lab-broken-brute-force-protection-multiple-credentials-per-request"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/password-based/lab-broken-bruteforce-protection-ip-block"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/password-based/lab-username-enumeration-via-account-lock"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/password-based/lab-username-enumeration-via-different-responses"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/password-based/lab-username-enumeration-via-response-timing"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/authentication/password-based/lab-username-enumeration-via-subtly-different-responses"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/clickjacking/lab-basic-csrf-protected"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/clickjacking/lab-exploiting-to-trigger-dom-based-xss"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/clickjacking/lab-frame-buster-script"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/clickjacking/lab-multistep"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/clickjacking/lab-prefilled-form-input"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cors/lab-basic-origin-reflection-attack"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cors/lab-breaking-https-attack"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cors/lab-null-origin-whitelisted-attack"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/content-security-policy/lab-csp-bypass"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/content-security-policy/lab-very-strict-csp-with-dangling-markup-attack"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/client-side-template-injection/lab-angular-sandbox-escape-and-csp"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/client-side-template-injection/lab-angular-sandbox-escape-without-strings"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-attribute-angle-brackets-html-encoded"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-canonical-link-tag"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-event-handlers-and-href-attributes-blocked"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-href-attribute-double-quotes-html-encoded"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-html-context-with-all-standard-tags-blocked"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-html-context-with-most-tags-and-attributes-blocked"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-javascript-string-angle-brackets-double-quotes-encoded-single-quotes-escaped"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-javascript-string-angle-brackets-html-encoded"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-javascript-string-single-quote-backslash-escaped"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-javascript-template-literal-angle-brackets-single-double-quotes-backslash-backticks-escaped"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-javascript-url-some-characters-blocked"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-onclick-event-angle-brackets-double-quotes-html-encoded-single-quotes-backslash-escaped"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-some-svg-markup-allowed"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-angularjs-expression"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-document-write-sink"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-document-write-sink-inside-select-element"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-dom-xss-reflected"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-dom-xss-stored"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-innerhtml-sink"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-jquery-href-attribute-sink"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-jquery-selector-hash-change-event"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/exploiting/lab-capturing-passwords"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/exploiting/lab-perform-csrf"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/exploiting/lab-stealing-cookies"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/reflected/lab-html-context-nothing-encoded"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/cross-site-scripting/stored/lab-html-context-nothing-encoded"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/csrf/bypassing-referer-based-defenses/lab-referer-validation-broken"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/csrf/bypassing-referer-based-defenses/lab-referer-validation-depends-on-header-being-present"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/csrf/bypassing-samesite-restrictions/lab-samesite-lax-bypass-via-method-override"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/csrf/bypassing-samesite-restrictions/lab-samesite-strict-bypass-via-client-side-redirect"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/csrf/bypassing-samesite-restrictions/lab-samesite-strict-bypass-via-sibling-domain"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/csrf/bypassing-token-validation/lab-token-duplicated-in-cookie"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/csrf/bypassing-token-validation/lab-token-not-tied-to-user-session"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/csrf/bypassing-token-validation/lab-token-tied-to-non-session-cookie"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/csrf/bypassing-token-validation/lab-token-validation-depends-on-request-method"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/csrf/bypassing-token-validation/lab-token-validation-depends-on-token-being-present"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/csrf/lab-no-defenses"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-arbitrary-object-injection-in-php"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-developing-a-custom-gadget-chain-for-java-deserialization"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-developing-a-custom-gadget-chain-for-php-deserialization"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-exploiting-java-deserialization-with-apache-commons"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-exploiting-php-deserialization-with-a-pre-built-gadget-chain"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-exploiting-ruby-deserialization-using-a-documented-gadget-chain"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-modifying-serialized-data-types"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-modifying-serialized-objects"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-using-application-functionality-to-exploit-insecure-deserialization"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/deserialization/exploiting/lab-deserialization-using-phar-deserialization-to-deploy-a-custom-gadget-chain"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/dom-based/controlling-the-web-message-source/lab-dom-xss-using-web-messages"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/dom-based/controlling-the-web-message-source/lab-dom-xss-using-web-messages-and-a-javascript-url"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/dom-based/controlling-the-web-message-source/lab-dom-xss-using-web-messages-and-json-parse"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/dom-based/cookie-manipulation/lab-dom-cookie-manipulation"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/dom-based/dom-clobbering/lab-dom-clobbering-attributes-to-bypass-html-filters"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/dom-based/dom-clobbering/lab-dom-xss-exploiting-dom-clobbering"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/dom-based/open-redirection/lab-dom-open-redirection"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/essential-skills/using-burp-scanner-during-manual-testing/lab-discovering-vulnerabilities-quickly-with-targeted-scanning"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/essential-skills/using-burp-scanner-during-manual-testing/lab-scanning-non-standard-data-structures"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-path-traversal/lab-absolute-path-bypass"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-path-traversal/lab-sequences-stripped-non-recursively"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-path-traversal/lab-simple"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-path-traversal/lab-superfluous-url-decode"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-path-traversal/lab-validate-file-extension-null-byte-bypass"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-path-traversal/lab-validate-start-of-path"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-upload/lab-file-upload-remote-code-execution-via-polyglot-web-shell-upload"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-upload/lab-file-upload-remote-code-execution-via-web-shell-upload"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-content-type-restriction-bypass"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-extension-blacklist-bypass"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-obfuscated-file-extension"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-path-traversal"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-race-condition"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/graphql/lab-graphql-accidental-field-exposure"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/graphql/lab-graphql-brute-force-protection-bypass"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/graphql/lab-graphql-csrf-via-graphql-api"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/graphql/lab-graphql-find-the-endpoint"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/graphql/lab-graphql-reading-private-posts"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/host-header/exploiting/lab-host-header-authentication-bypass"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/host-header/exploiting/lab-host-header-host-validation-bypass-via-connection-state-attack"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/host-header/exploiting/lab-host-header-routing-based-ssrf"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/host-header/exploiting/lab-host-header-ssrf-via-flawed-request-parsing"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/host-header/exploiting/lab-host-header-web-cache-poisoning-via-ambiguous-requests"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/host-header/exploiting/password-reset-poisoning/lab-host-header-basic-password-reset-poisoning"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/host-header/exploiting/password-reset-poisoning/lab-host-header-password-reset-poisoning-via-dangling-markup"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/information-disclosure/exploiting/lab-infoleak-authentication-bypass"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/information-disclosure/exploiting/lab-infoleak-in-error-messages"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/information-disclosure/exploiting/lab-infoleak-in-version-control-history"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/information-disclosure/exploiting/lab-infoleak-on-debug-page"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/information-disclosure/exploiting/lab-infoleak-via-backup-files"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/jwt/algorithm-confusion/lab-jwt-authentication-bypass-via-algorithm-confusion"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/jwt/algorithm-confusion/lab-jwt-authentication-bypass-via-algorithm-confusion-with-no-exposed-key"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/jwt/lab-jwt-authentication-bypass-via-flawed-signature-verification"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/jwt/lab-jwt-authentication-bypass-via-jku-header-injection"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/jwt/lab-jwt-authentication-bypass-via-jwk-header-injection"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/jwt/lab-jwt-authentication-bypass-via-kid-header-path-traversal"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/jwt/lab-jwt-authentication-bypass-via-unverified-signature"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/jwt/lab-jwt-authentication-bypass-via-weak-signing-key"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/llm-attacks/ai-powered-scanner-vulnerabilities/lab-bypassing-ai-scanner-defenses-to-exfiltrate-sensitive-information"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/llm-attacks/ai-powered-scanner-vulnerabilities/lab-exploiting-target-website-vulnerabilities-to-bypass-restrictions"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/llm-attacks/ai-powered-scanner-vulnerabilities/lab-indirect-prompt-injection-via-ai-powered-scan"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/llm-attacks/ai-powered-scanner-vulnerabilities/lab-sensitive-information-exfiltration"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/llm-attacks/lab-exploiting-insecure-output-handling-in-llms"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/llm-attacks/lab-exploiting-llm-apis-with-excessive-agency"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/llm-attacks/lab-exploiting-vulnerabilities-in-llm-apis"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/llm-attacks/lab-indirect-prompt-injection"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/logic-flaws/examples/lab-logic-flaws-authentication-bypass-via-encryption-oracle"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/logic-flaws/examples/lab-logic-flaws-authentication-bypass-via-flawed-state-machine"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/logic-flaws/examples/lab-logic-flaws-bypassing-access-controls-using-email-address-parsing-discrepancies"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/logic-flaws/examples/lab-logic-flaws-excessive-trust-in-client-side-controls"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/logic-flaws/examples/lab-logic-flaws-flawed-enforcement-of-business-rules"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/logic-flaws/examples/lab-logic-flaws-high-level"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/logic-flaws/examples/lab-logic-flaws-inconsistent-handling-of-exceptional-input"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/logic-flaws/examples/lab-logic-flaws-inconsistent-security-controls"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/logic-flaws/examples/lab-logic-flaws-infinite-money"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/logic-flaws/examples/lab-logic-flaws-insufficient-workflow-validation"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/logic-flaws/examples/lab-logic-flaws-low-level"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/logic-flaws/examples/lab-logic-flaws-weak-isolation-on-dual-use-endpoint"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/nosql-injection/lab-nosql-injection-bypass-authentication"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/nosql-injection/lab-nosql-injection-detection"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/nosql-injection/lab-nosql-injection-extract-data"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/nosql-injection/lab-nosql-injection-extract-unknown-fields"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/oauth/lab-oauth-account-hijacking-via-redirect-uri"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/oauth/lab-oauth-authentication-bypass-via-oauth-implicit-flow"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/oauth/lab-oauth-forced-oauth-profile-linking"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/oauth/lab-oauth-stealing-oauth-access-tokens-via-a-proxy-page"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/oauth/lab-oauth-stealing-oauth-access-tokens-via-an-open-redirect"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/oauth/openid/lab-oauth-ssrf-via-openid-dynamic-client-registration"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/os-command-injection/lab-blind-out-of-band"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/os-command-injection/lab-blind-out-of-band-data-exfiltration"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/os-command-injection/lab-blind-output-redirection"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/os-command-injection/lab-blind-time-delays"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/os-command-injection/lab-simple"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/prototype-pollution/client-side/browser-apis/lab-prototype-pollution-client-side-prototype-pollution-via-browser-apis"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/prototype-pollution/client-side/lab-prototype-pollution-client-side-prototype-pollution-in-third-party-libraries"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/prototype-pollution/client-side/lab-prototype-pollution-client-side-prototype-pollution-via-flawed-sanitization"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/prototype-pollution/client-side/lab-prototype-pollution-dom-xss-via-an-alternative-prototype-pollution-vector"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/prototype-pollution/client-side/lab-prototype-pollution-dom-xss-via-client-side-prototype-pollution"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/prototype-pollution/server-side/lab-bypassing-flawed-input-filters-for-server-side-prototype-pollution"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/prototype-pollution/server-side/lab-detecting-server-side-prototype-pollution-without-polluted-property-reflection"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/prototype-pollution/server-side/lab-exfiltrating-sensitive-data-via-server-side-prototype-pollution"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/prototype-pollution/server-side/lab-privilege-escalation-via-server-side-prototype-pollution"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/prototype-pollution/server-side/lab-remote-code-execution-via-server-side-prototype-pollution"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/race-conditions/lab-race-conditions-bypassing-rate-limits"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/race-conditions/lab-race-conditions-exploiting-time-sensitive-vulnerabilities"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/race-conditions/lab-race-conditions-limit-overrun"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/race-conditions/lab-race-conditions-multi-endpoint"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/race-conditions/lab-race-conditions-partial-construction"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/race-conditions/lab-race-conditions-single-endpoint"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/advanced/lab-request-smuggling-0cl-request-smuggling"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/advanced/lab-request-smuggling-h2-cl-request-smuggling"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/advanced/lab-request-smuggling-h2-request-smuggling-via-crlf-injection"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/advanced/lab-request-smuggling-h2-request-splitting-via-crlf-injection"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/advanced/request-tunnelling/lab-request-smuggling-h2-bypass-access-controls-via-request-tunnelling"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/advanced/request-tunnelling/lab-request-smuggling-h2-web-cache-poisoning-via-request-tunnelling"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/advanced/response-queue-poisoning/lab-request-smuggling-h2-response-queue-poisoning-via-te-request-smuggling"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/browser/cl-0/lab-cl-0-request-smuggling"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/browser/client-side-desync/lab-client-side-desync"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/browser/pause-based-desync/lab-server-side-pause-based-request-smuggling"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/exploiting/lab-bypass-front-end-controls-cl-te"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/exploiting/lab-bypass-front-end-controls-te-cl"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/exploiting/lab-capture-other-users-requests"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/exploiting/lab-deliver-reflected-xss"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/exploiting/lab-perform-web-cache-deception"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/exploiting/lab-perform-web-cache-poisoning"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/exploiting/lab-reveal-front-end-request-rewriting"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/finding/lab-confirming-cl-te-via-differential-responses"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/finding/lab-confirming-te-cl-via-differential-responses"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/lab-basic-cl-te"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/lab-basic-te-cl"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/request-smuggling/lab-obfuscating-te-header"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-basic"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-basic-code-context"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-in-a-sandboxed-environment"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-in-an-unknown-language-with-a-documented-exploit"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-using-documentation"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-with-a-custom-exploit"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/server-side-template-injection/exploiting/lab-server-side-template-injection-with-information-disclosure-via-user-supplied-objects"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/blind/lab-conditional-errors"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/blind/lab-conditional-responses"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/blind/lab-out-of-band"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/blind/lab-out-of-band-data-exfiltration"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/blind/lab-sql-injection-visible-error-based"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/blind/lab-time-delays"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/blind/lab-time-delays-info-retrieval"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/examining-the-database/lab-listing-database-contents-non-oracle"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/examining-the-database/lab-listing-database-contents-oracle"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-mysql-microsoft"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-oracle"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/lab-login-bypass"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/lab-retrieve-hidden-data"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/lab-sql-injection-with-filter-bypass-via-xml-encoding"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/union-attacks/lab-determine-number-of-columns"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/union-attacks/lab-find-column-containing-text"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/union-attacks/lab-retrieve-data-from-other-tables"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/sql-injection/union-attacks/lab-retrieve-multiple-values-in-single-column"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/ssrf/blind/lab-out-of-band-detection"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/ssrf/blind/lab-shellshock-exploitation"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/ssrf/lab-basic-ssrf-against-backend-system"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/ssrf/lab-basic-ssrf-against-localhost"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/ssrf/lab-ssrf-filter-bypass-via-open-redirection"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/ssrf/lab-ssrf-with-blacklist-filter"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/ssrf/lab-ssrf-with-whitelist-filter"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-deception/lab-wcd-exploiting-cache-server-normalization"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-deception/lab-wcd-exploiting-exact-match-cache-rules"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-deception/lab-wcd-exploiting-origin-server-normalization"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-deception/lab-wcd-exploiting-path-delimiters"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-deception/lab-wcd-exploiting-path-mapping"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-design-flaws/lab-web-cache-poisoning-combining-vulnerabilities"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-design-flaws/lab-web-cache-poisoning-targeted-using-an-unknown-header"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-design-flaws/lab-web-cache-poisoning-to-exploit-a-dom-vulnerability-via-a-cache-with-strict-cacheability-criteria"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-design-flaws/lab-web-cache-poisoning-with-an-unkeyed-cookie"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-design-flaws/lab-web-cache-poisoning-with-an-unkeyed-header"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-design-flaws/lab-web-cache-poisoning-with-multiple-headers"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-implementation-flaws/lab-web-cache-poisoning-cache-key-injection"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-implementation-flaws/lab-web-cache-poisoning-fat-get"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-implementation-flaws/lab-web-cache-poisoning-internal"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-implementation-flaws/lab-web-cache-poisoning-normalization"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-implementation-flaws/lab-web-cache-poisoning-param-cloaking"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-implementation-flaws/lab-web-cache-poisoning-unkeyed-param"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-implementation-flaws/lab-web-cache-poisoning-unkeyed-query"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/websockets/lab-manipulating-handshake-to-exploit-vulnerabilities"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/websockets/lab-manipulating-messages-to-exploit-vulnerabilities"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/xxe/blind/lab-xxe-trigger-error-message-by-repurposing-local-dtd"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/xxe/blind/lab-xxe-with-data-retrieval-via-error-messages"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/xxe/blind/lab-xxe-with-out-of-band-exfiltration"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/xxe/blind/lab-xxe-with-out-of-band-interaction"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/xxe/blind/lab-xxe-with-out-of-band-interaction-using-parameter-entities"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/xxe/lab-exploiting-xxe-to-perform-ssrf"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/xxe/lab-exploiting-xxe-to-retrieve-files"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/xxe/lab-xinclude-attack"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://portswigger.net/web-security/xxe/lab-xxe-via-file-upload"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "practical_learning",
+  "rationale": "Proposed review: individually addressed Web Security Academy lab descriptions, Burp desktop technical documentation, vulnerability knowledge-base entries, and security research publications. Product sales, careers, release histories, author pages and archive/navigation routes are omitted. Lab descriptions are public; launching some labs requires an account.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:f9a8f67d438cfb730d3c0891d0e55a3ab9ddcbbe4348369ff2b3fa65455b0833",
+  "snapshot_path": "corpus/indexes/portswigger-sitemap-v1.json",
+  "source_id": "portswigger-sitemap-v1"
+}

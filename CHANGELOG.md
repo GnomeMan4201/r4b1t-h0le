@@ -7,15 +7,37 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+- An independent Python re-executor for `r4b1t-trail/v0.3` ROLL steps. It verifies exact release/terrain evidence and independently reproduces the current FNV-1a → Mulberry32 sampler interval without importing runtime JavaScript; its claim is route derivation, not seed fairness or non-cherry-picking.
+- The `strange-candidate-v0.3` corpus adds 116 unusual security resources and expands the promoted population to 6,975 resources across 345 hosts and 14 resource types, with exact admission declarations and reproducible candidate evidence.
+- URL-only archive, RSS/Atom and sitemap collection plus a separate reviewed
+  index compiler; collection alone cannot admit or promote a resource.
+- secondary mark state conformance spec (state ownership, peer switch, COPY TRAIL, ROLL / BLIND / RESULT authority) and unit coverage for the wiring and the canonical-return contract
+
 ### Changed
 
 - R4B1T H0L3 secondary motion (BRANCH, TRAIL, TOPOLOGY, HISTORY, REPLAY / INSPECT, COPY TRAIL) reimplemented to the approved Motion Board, superseding #218: paw backing and a left-eye socket remove paw ghosts and the eye gap, ears and resting paws move with the head, RESULT keeps its own state while a sheet is open, and reduced motion restores the approved MENU/HISTORY/COPY semantics
 - the mobile shell derives the mark's secondary state from each surface's own open state (one observer, overlay modules untouched); peer switches pass through the canonical pose (380ms canonical-return contract), COPY TRAIL is a short event class, and ROLL / BLIND DESCENT close shell sheets before taking the stage
 - TRAIL now returns in the board's order (artifact, paw, head, eyes last) through its own eye-glance wrapper (`r4h-act-glance-*`); the other peers keep eyes-first, and every return still lands inside the 380ms contract
+- BRANCH suggestions are now a deterministic function of the origin URL and active corpus only. Display metadata, Wikipedia enrichment, session topology, ambient randomness, and file-order tie breaking no longer influence offered routes (ADR 0007).
+- BRANCH reason text now states the mechanical driver (scope/URL-token overlap or deterministic fallback) instead of implying stronger semantic classification.
+- Trail export now defaults to `r4b1t-trail/v0.3`, preserving ROLL selection transactions and explicit SELECT/BRANCH navigation as step evidence; labeled legacy v0.1 export remains available for compatibility.
+- `trail:verify` now verifies v0.3 integrity and v0.3 parent lineage in addition to existing v0.1/v0.2 formats. Topology continues through the explicit legacy v0.1 projection until a v0.3 adapter lands.
+- Terrain eligibility now comes from a digest-bound `terrain-index-v1` compiled from the active release's `urls.txt` and `resources.json`. It is anchored by `corpus/runtime/eligibility-profiles-v1.json` (ADR 0006, `TERRAIN_AUTHORITY_CONTRACT.md`). The legacy hostname→terrain table no longer decides membership.
+- The terrain vocabulary follows the active release's resource types. The `strange-candidate-v0.3` promotion adds `challenge` and binds all 14 types through its release-specific terrain index; every one of the 6,975 routes belongs to exactly one terrain.
+- Every terrain control shows its eligible count before ROLL. A dry terrain cannot be armed. Single-route and two-route terrains are labelled `SINGLE ROUTE` and `ALTERNATES`.
+- ROLL transactions advance to `r4b1t-selection-transaction/v2`. They now record the terrain index binding, the eligible count, and the repeat-guard reference actually used. Sampler behavior is unchanged.
+- An empty eligible pool, or a missing selection authority, is reported explicitly (`#rollStatus`, mobile ROLL scope) instead of silently doing nothing. `ee()` no longer falls back to `Math.random`.
+- The hostname table's result badge now reads `SITE HINT · <tag>` and is described as display-only.
 
-### Added
+### Fixed
 
-- secondary mark state conformance spec (state ownership, peer switch, COPY TRAIL, ROLL / BLIND / RESULT authority) and unit coverage for the wiring and the canonical-return contract
+- Local ROLL sampler continuity now survives page reloads: the draft restores the consumed draw cursor and transaction sequence from its latest v2 transaction.
+- Every committed ROLL is persisted even when a one-route or max-draw result repeats the previous URL.
+- The immediate-repeat guard is trail-scoped. RESET and FORK begin with a null guard reference instead of inheriting page-session state.
+
+- The last row of mobile bottom sheets was covered by the fixed bottom navigation and could not be tapped. On `main`, this affected the TOR filter.
 
 ---
 

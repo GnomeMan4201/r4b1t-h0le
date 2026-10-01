@@ -20,10 +20,10 @@ test('browser shell does not call Google favicon or Microlink services directly'
   assert.ok(!index.includes('api.microlink.io'));
 });
 
-test('automatic Wikipedia enrichment is routed through the controlled Worker', () => {
+test('BRANCH no longer performs automatic Wikipedia enrichment', () => {
   const index = read('index.html');
-  assert.doesNotMatch(index, /fetch\("https:\/\/en\.wikipedia\.org\/w\/api\.php/);
-  assert.match(index, /fetch\(Ge\+encodeURIComponent\("https:\/\/en\.wikipedia\.org\/w\/api\.php/);
+  assert.doesNotMatch(index, /en\.wikipedia\.org\/w\/api\.php/);
+  assert.doesNotMatch(index, /_wikiWords|_ogWords/);
 });
 
 test('favicon and preview images are loaded through the controlled Worker proxy', () => {

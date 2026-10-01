@@ -23,7 +23,7 @@ const FIXTURE_DIGEST = (
 );
 const AUTHORITY_PATH = path.resolve(__dirname, '..', 'corpus-authority.js');
 const AUTHORITY_SOURCE = fs.readFileSync(AUTHORITY_PATH, 'utf8');
-const ACTIVE_DIGEST = 'sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1';
+const ACTIVE_DIGEST = 'sha256:f85a1c710977814c920ff13eb95cf0b86805486668c99dba2d5024d6b1bda3a7';
 const FIXTURE_AUTHORITY_SOURCE = AUTHORITY_SOURCE.replace(
   ACTIVE_DIGEST,
   FIXTURE_DIGEST,
@@ -31,6 +31,31 @@ const FIXTURE_AUTHORITY_SOURCE = AUTHORITY_SOURCE.replace(
 
 if (FIXTURE_AUTHORITY_SOURCE === AUTHORITY_SOURCE) {
   throw new Error('CF-1 fixture could not bind corpus-authority.js to fixture digest');
+}
+
+// PR 1: terrain membership comes from a registry-anchored terrain index bound to the active release.
+// The fixture corpus gets a matching fixture index: CODE_POOL → repository, BLOG_POOL → reference.
+const CODE_TERRAIN = 'REPOSITORY';
+const BLOG_TERRAIN = 'REFERENCE';
+const ACTIVE_RESOURCES_DIGEST = 'sha256:347bf83b013e3eec3aff9301863c6cd3acb62d62db6d39e5fa8c27f4c814dee1';
+const ACTIVE_INDEX_DIGEST = 'sha256:8282156e330ef423acfba8304e4f7419e6d978d7441ef7e5f146a76b9f6b5a00';
+const cj1 = require(path.resolve(__dirname, '..', 'cj1.js'));
+const FIXTURE_INDEX_BYTES = Buffer.from(cj1.serialize({
+  schema: 'r4b1t-terrain-index-v1',
+  release: { release_id: 'strange-candidate-v0.3', urls_digest: FIXTURE_DIGEST, resources_digest: ACTIVE_RESOURCES_DIGEST },
+  vocabulary: 'resource-type-identity-v1',
+  terrains: [
+    { id: 'reference', label: 'REFERENCE', rule: { resource_type: ['reference'] }, count: 2, members: [5, 6] },
+    { id: 'repository', label: 'REPOSITORY', rule: { resource_type: ['repository'] }, count: 5, members: [0, 1, 2, 3, 4] },
+  ],
+}) + '\n', 'utf8');
+const FIXTURE_INDEX_DIGEST = 'sha256:' + crypto.createHash('sha256').update(FIXTURE_INDEX_BYTES).digest('hex');
+const TERRAIN_AUTHORITY_SOURCE = fs.readFileSync(path.resolve(__dirname, '..', 'terrain-authority.js'), 'utf8');
+const FIXTURE_TERRAIN_AUTHORITY_SOURCE = TERRAIN_AUTHORITY_SOURCE
+  .replace(ACTIVE_DIGEST, FIXTURE_DIGEST)
+  .replace(ACTIVE_INDEX_DIGEST, FIXTURE_INDEX_DIGEST);
+if (!FIXTURE_TERRAIN_AUTHORITY_SOURCE.includes(FIXTURE_DIGEST) || !FIXTURE_TERRAIN_AUTHORITY_SOURCE.includes(FIXTURE_INDEX_DIGEST)) {
+  throw new Error('CF-1 fixture could not bind terrain-authority.js to the fixture release and index');
 }
 
 function independentSampler(seed) {
@@ -86,7 +111,17 @@ async function configurePage(page) {
     contentType: 'application/javascript; charset=utf-8',
     body: FIXTURE_AUTHORITY_SOURCE,
   }));
-  await page.route('**/corpus/releases/typed-candidate-v0.1/urls.txt?*', route => route.fulfill({
+  await page.route('**/terrain-authority.js', route => route.fulfill({
+    status: 200,
+    contentType: 'application/javascript; charset=utf-8',
+    body: FIXTURE_TERRAIN_AUTHORITY_SOURCE,
+  }));
+  await page.route('**/corpus/terrains/strange-candidate-v0.3/terrain-index-v1.json?*', route => route.fulfill({
+    status: 200,
+    contentType: 'application/json; charset=utf-8',
+    body: FIXTURE_INDEX_BYTES,
+  }));
+  await page.route('**/corpus/releases/strange-candidate-v0.3/urls.txt?*', route => route.fulfill({
     status: 200,
     contentType: 'text/plain; charset=utf-8',
     body: FIXTURE_BYTES,
@@ -144,21 +179,17 @@ async function exerciseProductionRoll(page, surface) {
     typeof window.resetReproducibleTrail === 'function' &&
     document.getElementById('r4mShellHost'));
 
-  const initialUrl = (await page.locator('#previewUrl').textContent()).trim();
   await page.evaluate(() => window.resetReproducibleTrail());
-  await selectTerrain(page, surface, 'CODE');
+  await selectTerrain(page, surface, CODE_TERRAIN);
 
   const seed = await page.evaluate(() => {
     const saved = JSON.parse(localStorage.getItem('r4b1t_trail_draft_v1'));
     return saved.seed;
   });
-  const independentCodeSelection = independentlySelect(CODE_POOL, seed, initialUrl);
+  const independentCodeSelection = independentlySelect(CODE_POOL, seed, null);
 
-  // Force ambient Math.random to a different eligible CODE route. Desktop's
-  // production wrapper should ignore this and consume its declared sampler;
-  // mobile's production integration is under test for whether it does so.
-  const forcedIndex = CODE_POOL.findIndex(url =>
-    url !== initialUrl && url !== independentCodeSelection.selected);
+  // Ambient Math.random must not alter the explicit ROLL sampler.
+  const forcedIndex = CODE_POOL.findIndex(url => url !== independentCodeSelection.selected);
   const forcedUrl = CODE_POOL[forcedIndex];
   await page.evaluate(value => { Math.random = () => value; }, (forcedIndex + 0.1) / CODE_POOL.length);
 
@@ -173,20 +204,25 @@ async function exerciseProductionRoll(page, surface) {
   const selectedUrl = (await page.locator('#previewUrl').textContent()).trim();
   await expect.poll(async () => page.evaluate(async url => {
     const artifact = await window.getTrailManifest();
-    return artifact.manifest.routes.some(route => route.url === url);
+    return artifact.manifest.steps.some(step => step.route.url === url);
   }, selectedUrl)).toBe(true);
   const beforeTerrainChange = await exportThroughRenderedLedger(page, surface);
 
-  await selectTerrain(page, surface, 'BLOG');
+  await selectTerrain(page, surface, BLOG_TERRAIN);
   const afterTerrainChange = await exportThroughRenderedLedger(page, surface);
 
-  const beforeRoute = beforeTerrainChange.manifest.routes[0];
-  const afterRoute = afterTerrainChange.manifest.routes[0];
-  const independentDeclaredCode = independentlySelect(CODE_POOL, beforeTerrainChange.manifest.sampler.seed, initialUrl);
-  const independentClaimedBlog = independentlySelect(BLOG_POOL, afterTerrainChange.manifest.sampler.seed, initialUrl);
+  const beforeStep = beforeTerrainChange.manifest.steps[0];
+  const afterStep = afterTerrainChange.manifest.steps[0];
+  const beforeTransaction = beforeStep.transaction;
+  const afterTransaction = afterStep.transaction;
+  const independentDeclaredCode = independentlySelect(
+    CODE_POOL,
+    beforeTransaction.sampler.seed,
+    beforeTransaction.sampler.repeat_guard.reference,
+  );
   const verification = await page.evaluate(async artifact => {
     try {
-      const verified = await window.R4b1tTrail.verify(artifact);
+      const verified = await window.R4b1tTrailV03.verify(artifact);
       return { accepted: true, trailId: verified.trail_id };
     } catch (error) {
       return { accepted: false, error: String(error && error.message || error) };
@@ -196,26 +232,26 @@ async function exerciseProductionRoll(page, surface) {
   return {
     surface,
     productionEntry: surface === 'mobile' ? '#r4mRoll' : '#btnGo',
-    initialUrl,
-    selectionTerrain: 'CODE',
+    selectionTerrain: CODE_TERRAIN,
     selectedUrl,
     forcedAmbientUrl: forcedUrl,
     beforeTerrainChange: {
-      action: beforeRoute.action,
-      claimedTerrain: beforeTerrainChange.manifest.terrain,
-      declaredSampler: beforeTerrainChange.manifest.sampler,
+      format: beforeTerrainChange.manifest.format,
+      action: beforeTransaction.action,
+      claimedTerrain: beforeTransaction.constraint.terrain.toUpperCase(),
+      declaredSampler: beforeTransaction.sampler,
       independentlyReproducedUrl: independentDeclaredCode.selected,
       independentAttempts: independentDeclaredCode.attempts,
       trailId: beforeTerrainChange.trail_id,
-      routeId: beforeRoute.route_id,
+      routeId: beforeStep.route.route_id,
     },
     afterTerrainChange: {
-      action: afterRoute.action,
-      claimedTerrain: afterTerrainChange.manifest.terrain,
-      declaredSampler: afterTerrainChange.manifest.sampler,
-      independentlyReproducedUrlFromClaimedTerrain: independentClaimedBlog.selected,
+      format: afterTerrainChange.manifest.format,
+      action: afterTransaction.action,
+      claimedTerrain: afterTransaction.constraint.terrain.toUpperCase(),
+      declaredSampler: afterTransaction.sampler,
       trailId: afterTerrainChange.trail_id,
-      routeId: afterRoute.route_id,
+      routeId: afterStep.route.route_id,
     },
     verification,
   };
@@ -243,16 +279,16 @@ test('CF-1: rendered mobile and desktop ROLL exports truthful equivalent provena
         'window.__r4b1tCommitRoll()',
         'ROLL disclosure boundary',
         'window.__r4b1tRevealRoll()',
-        'previewUrl mutation',
-        'trail-runtime.js watchSelections() -> record()',
+        'immutable ROLL transaction committed',
+        'trail-runtime.js records exact transaction as v0.3 ROLL step',
         'rendered Trail Ledger EXPORT JSON',
       ],
       desktop: [
         'rendered #btnGo click',
         'wrapped window.roll()',
         'bundled production commit/reveal',
-        'previewUrl mutation',
-        'trail-runtime.js watchSelections() -> record()',
+        'immutable ROLL transaction committed',
+        'trail-runtime.js records exact transaction as v0.3 ROLL step',
         'rendered Trail Ledger EXPORT JSON',
       ],
     },
@@ -266,15 +302,15 @@ test('CF-1: rendered mobile and desktop ROLL exports truthful equivalent provena
   });
 
   expect.soft(mobile.beforeTerrainChange.action, 'mobile production ROLL must export action ROLL').toBe('ROLL');
-  expect.soft(mobile.beforeTerrainChange.claimedTerrain, 'mobile artifact must claim the selection-time terrain').toBe(mobile.selectionTerrain);
+  expect.soft(mobile.beforeTerrainChange.claimedTerrain, 'mobile ROLL step must preserve the selection-time terrain').toBe(mobile.selectionTerrain);
   expect.soft(
     mobile.beforeTerrainChange.independentlyReproducedUrl,
     'mobile declared sampler/seed must reproduce the selected route from the declared CODE pool',
   ).toBe(mobile.selectedUrl);
-  expect.soft(mobile.afterTerrainChange.claimedTerrain, 'later filter changes must not rewrite prior route provenance').toBe(mobile.selectionTerrain);
+  expect.soft(mobile.afterTerrainChange.claimedTerrain, 'later filter changes must not rewrite the committed ROLL step').toBe(mobile.selectionTerrain);
   expect.soft(mobile.afterTerrainChange.trailId, 'unchanged recorded routes must retain the same artifact identity after presentation-only filter changes').toBe(mobile.beforeTerrainChange.trailId);
   expect.soft(mobile.afterTerrainChange.routeId, 'changing terrain must not change URL/hash integrity').toBe(mobile.beforeTerrainChange.routeId);
-  expect.soft(mobile.verification.accepted, 'existing v0.1 verification still accepts the exported artifact').toBe(true);
+  expect.soft(mobile.verification.accepted, 'v0.3 verification accepts the exported artifact').toBe(true);
 
   expect.soft(desktop.beforeTerrainChange.action, 'desktop production ROLL must export action ROLL').toBe('ROLL');
   expect.soft(

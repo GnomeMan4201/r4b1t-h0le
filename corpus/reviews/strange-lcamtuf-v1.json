@@ -1,0 +1,40 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://lcamtuf.coredump.cx/css_calc/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://lcamtuf.coredump.cx/postxss/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://lcamtuf.coredump.cx/newtcp/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://lcamtuf.coredump.cx/oldtcp/tcpseq.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://lcamtuf.coredump.cx/ipfrag.txt"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://lcamtuf.coredump.cx/signals.txt"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://lcamtuf.coredump.cx/tmp_paper.txt"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Concrete original security research into data exfiltration, injection, transport prediction, fragmentation, signal handlers or temporary-file races; excludes unrelated personal hobbies.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:c4fddb3cd8115f2c985b267ba64e1556a4540d1117753b2af4e9d39ab6b6f4d7",
+  "snapshot_path": "corpus/indexes/strange-lcamtuf-v1.json",
+  "source_id": "strange-lcamtuf-v1"
+}

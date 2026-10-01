@@ -1,0 +1,28 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://blog.doyensec.com/2026/06/17/session-switcher.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.doyensec.com/2026/09/10/oneplus-session-takeover.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.doyensec.com/2026/09/17/ovs.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://blog.doyensec.com/2026/09/24/chrome-ios-policy-bypass.html"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "publisher_research",
+  "rationale": "Proposed review: dated Doyensec vulnerability research and security engineering posts observed on its archive page. Landing and external references are omitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:45324d0a11b4581b3ca655878a2c2272a8f71c116afe89b3db199508268d46f5",
+  "snapshot_path": "corpus/indexes/doyensec-archive-v1.json",
+  "source_id": "doyensec-archive-v1"
+}

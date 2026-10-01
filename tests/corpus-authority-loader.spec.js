@@ -2,8 +2,8 @@
 
 const { test, expect } = require('@playwright/test');
 
-const ACTIVE_DIGEST = 'sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1';
-const ACTIVE_PATH = '/corpus/releases/typed-candidate-v0.1/urls.txt?';
+const ACTIVE_DIGEST = 'sha256:f85a1c710977814c920ff13eb95cf0b86805486668c99dba2d5024d6b1bda3a7';
+const ACTIVE_PATH = '/corpus/releases/strange-candidate-v0.3/urls.txt?';
 
 test('ROLL, Trail, and Blind share one verified promoted corpus load', async ({ page }) => {
   const requests = [];
@@ -40,8 +40,8 @@ test('ROLL, Trail, and Blind share one verified promoted corpus load', async ({ 
   expect(result.loadedRevision).toBe(ACTIVE_DIGEST);
   expect(result.trailRevision).toBe(ACTIVE_DIGEST);
   expect(result.blindRevision).toBe(ACTIVE_DIGEST);
-  expect(result.count).toBe(841);
-  expect(result.sourceId).toBe('typed-candidate-v0.1');
+  expect(result.count).toBe(6975);
+  expect(result.sourceId).toBe('strange-candidate-v0.3');
   expect(result.activeAuthority).toBe(true);
   expect(result.releaseAuthority).toBe(false);
   expect(requests.filter(url => url.includes(ACTIVE_PATH))).toHaveLength(1);
@@ -52,7 +52,7 @@ test('ROLL, Trail, and Blind share one verified promoted corpus load', async ({ 
 
 test('promoted corpus digest mismatch fails closed without legacy fallback', async ({ page }) => {
   let legacyRequests = 0;
-  await page.route('**/corpus/releases/typed-candidate-v0.1/urls.txt?*', async route => {
+  await page.route('**/corpus/releases/strange-candidate-v0.3/urls.txt?*', async route => {
     await route.fulfill({
       status: 200,
       contentType: 'text/plain; charset=utf-8',

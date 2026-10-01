@@ -65,3 +65,25 @@ jobs:
 
       - name: Verify serving-layer parity, redirects, cache headers, and boundary
         run: node tools/verify-production-shadow.mjs
+
+      - name: Install dependencies for corpus cutover acceptance
+        run: npm ci --ignore-scripts
+
+      - name: Install Chromium for corpus cutover acceptance
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify live corpus authority and ROLL/Trail/Blind cutover
+        env:
+          BASE_URL: https://gnomeman4201.github.io/r4b1t-h0le/
+        run: npx playwright test --config=playwright.corpus-production.config.js
+
+      - name: Upload corpus acceptance report on failure
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: corpus-production-acceptance-${{ github.sha }}
+          path: |
+            playwright-production-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7

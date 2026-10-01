@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://r4b1t.badbananaresearch.com/schema/trail-v0.3.schema.json",
+  "title": "R4B1T Trail v0.3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "created_at", "corpus_revision", "steps", "parent"],
+  "properties": {
+    "format": { "const": "r4b1t-trail/v0.3" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "corpus_revision": { "$ref": "#/$defs/sha256" },
+    "steps": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/rollStep" },
+          { "$ref": "#/$defs/selectStep" },
+          { "$ref": "#/$defs/branchStep" },
+          { "$ref": "#/$defs/importedStep" }
+        ]
+      }
+    },
+    "parent": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/parent" }
+      ]
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["route_id", "url"],
+      "properties": {
+        "route_id": { "$ref": "#/$defs/sha256" },
+        "url": { "type": "string", "pattern": "^https?://" }
+      }
+    },
+    "parent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trail_id", "fork_at"],
+      "properties": {
+        "trail_id": { "$ref": "#/$defs/sha256" },
+        "fork_at": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "protocolPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "excludeOnion"],
+      "properties": {
+        "version": { "const": 1 },
+        "excludeOnion": { "type": "boolean" }
+      }
+    },
+    "terrainIndex": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "digest"],
+      "properties": {
+        "schema": { "const": "r4b1t-terrain-index-v1" },
+        "digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["terrain", "terrainIndex", "protocolPolicy"],
+      "properties": {
+        "terrain": { "type": "string", "minLength": 1 },
+        "terrainIndex": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/terrainIndex" }
+          ]
+        },
+        "protocolPolicy": { "$ref": "#/$defs/protocolPolicy" }
+      }
+    },
+    "repeatGuard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reference", "max_draws"],
+      "properties": {
+        "reference": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "string", "pattern": "^https?://" }
+          ]
+        },
+        "max_draws": { "const": 30 }
+      }
+    },
+    "sampler": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "prng", "seed", "draw_start", "draw_count", "repeat_guard"],
+      "properties": {
+        "algorithm": { "const": "uniform-with-repeat-guard-v1" },
+        "prng": { "const": "mulberry32-v1" },
+        "seed": { "type": "string", "minLength": 1 },
+        "draw_start": { "type": "integer", "minimum": 0 },
+        "draw_count": { "type": "integer", "minimum": 1 },
+        "repeat_guard": { "$ref": "#/$defs/repeatGuard" }
+      }
+    },
+    "transactionRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url"],
+      "properties": {
+        "url": { "type": "string", "pattern": "^https?://" }
+      }
+    },
+    "transaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transaction_version", "sequence", "action", "constraint", "corpus_revision",
+        "eligible_count", "sampler", "route"
+      ],
+      "properties": {
+        "transaction_version": { "const": "r4b1t-selection-transaction/v2" },
+        "sequence": { "type": "integer", "minimum": 1 },
+        "action": { "const": "ROLL" },
+        "constraint": { "$ref": "#/$defs/constraint" },
+        "corpus_revision": { "$ref": "#/$defs/sha256" },
+        "eligible_count": { "type": "integer", "minimum": 1 },
+        "sampler": { "$ref": "#/$defs/sampler" },
+        "route": { "$ref": "#/$defs/transactionRoute" }
+      }
+    },
+    "rollStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "kind", "route", "transaction"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 1 },
+        "kind": { "const": "ROLL" },
+        "route": { "$ref": "#/$defs/route" },
+        "transaction": { "$ref": "#/$defs/transaction" }
+      }
+    },
+    "selectStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "kind", "route"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 1 },
+        "kind": { "const": "SELECT" },
+        "route": { "$ref": "#/$defs/route" }
+      }
+    },
+    "navigation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from_step", "branch_label"],
+      "properties": {
+        "from_step": { "type": "integer", "minimum": 1 },
+        "branch_label": { "type": "string", "minLength": 1 }
+      }
+    },
+    "branchStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "kind", "route", "navigation"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 1 },
+        "kind": { "const": "BRANCH" },
+        "route": { "$ref": "#/$defs/route" },
+        "navigation": { "$ref": "#/$defs/navigation" }
+      }
+    },
+    "importSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "trail_id", "step_index"],
+      "properties": {
+        "format": {
+          "enum": ["r4b1t-trail/v0.1", "r4b1t-trail/v0.3"]
+        },
+        "trail_id": { "$ref": "#/$defs/sha256" },
+        "step_index": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "importedStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "kind", "route", "source"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 1 },
+        "kind": { "const": "IMPORTED" },
+        "route": { "$ref": "#/$defs/route" },
+        "source": { "$ref": "#/$defs/importSource" }
+      }
+    }
+  }
+}

@@ -20,24 +20,16 @@ body:
   - type: dropdown
     id: category
     attributes:
-      label: Suggested terrain
+      label: Suggested resource type
+      description: Terrains are the release's resource types. Maintainers assign the final type during corpus review.
       options:
-        - CODE
-        - BLOG
-        - NEWS
-        - RESEARCH
-        - PAPER
-        - OSINT
-        - BOUNTY
-        - VIDEO
-        - SOCIAL
-        - REF
-        - ARCHIVE
-        - PKG
-        - COURSE
-        - EVENT
-        - HARDWARE
-        - TOR
+        - dataset
+        - documentation
+        - lab
+        - reference
+        - repository
+        - security_tool
+        - training_resource
         - Unsure
     validations:
       required: true

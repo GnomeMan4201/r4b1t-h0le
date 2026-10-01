@@ -36,7 +36,10 @@ test('RA-2A: production exposes one captured selection constraint consumed by po
 });
 
 test('RA-2A: immutable transaction records versioned protocol policy even when exclusion is false', () => {
-  assert.match(TRAIL_RUNTIME, /protocolPolicy\s*:\s*\{\s*version\s*:\s*1\s*,\s*excludeOnion\s*:/, 'transaction constraint must explicitly bind protocolPolicy v1 and excludeOnion');
+  // PR 1 amendment: trail-runtime no longer synthesizes a fallback constraint (it fails closed when the
+  // capture is unavailable), so the protocol-policy literal is asserted at the single capture point.
+  assert.match(INDEX, /function captureSelectionConstraint\(\)\{[^]*?protocolPolicy:Object\.freeze\(\{version:1,excludeOnion:/, 'captured constraint must explicitly bind protocolPolicy v1 and excludeOnion');
+  assert.match(TRAIL_RUNTIME, /if \(typeof window\.__r4b1tCaptureSelectionConstraint !== 'function'\) return null;/, 'transaction authority must fail closed without the explicit constraint capture');
   assert.match(TRAIL_RUNTIME, /constraint\s*:\s*selectionConstraint/, 'the committed transaction must consume the captured selection constraint');
   assert.doesNotMatch(TRAIL_RUNTIME, /constraint\s*:\s*\{\s*terrain\s*:\s*selectionTerrain\s*\}/, 'terrain-only transaction constraints are incomplete');
 });
