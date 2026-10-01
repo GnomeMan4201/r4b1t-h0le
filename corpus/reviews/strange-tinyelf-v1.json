@@ -1,0 +1,28 @@
+{
+  "admissions": [
+    {
+      "resource_type": "reference",
+      "url": "https://www.muppetlabs.com/~breadbox/software/tiny/teensy.html"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://www.muppetlabs.com/~breadbox/software/tiny/revisit.html"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://www.muppetlabs.com/~breadbox/software/tiny/somewhat.html"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://www.muppetlabs.com/~breadbox/software/tiny/teensyps.html"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Concrete ELF format and loader-behavior tutorials usable for binary analysis; excludes collections, unrelated programs and site roots.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:ba5f1ea5112496b46496c9b9d7764fa893ea57abc8c6c5c7c04d941c37cff08a",
+  "snapshot_path": "corpus/indexes/strange-tinyelf-v1.json",
+  "source_id": "strange-tinyelf-v1"
+}

@@ -1,0 +1,28 @@
+{
+  "admissions": [
+    {
+      "resource_type": "reference",
+      "url": "https://www.sigidwiki.com/wiki/Aircraft_Communications_Addressing_and_Reporting_System_(ACARS)"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://www.sigidwiki.com/wiki/Automatic_Dependent_Surveillance-Broadcast_(ADS-B)"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://www.sigidwiki.com/wiki/Automatic_Identification_System_(AIS)"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://www.sigidwiki.com/wiki/CRY2001_Voice_Scrambler"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "osint",
+  "rationale": "Individually addressed protocol/signal references usable in open-source transport intelligence or communications privacy analysis; the broad category itself is never admitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:b98302529e2b6ef5bfc4fa6e69dd79ad99235ad4b4d1033740d623f7a0034f98",
+  "snapshot_path": "corpus/indexes/strange-sigidwiki-v1.json",
+  "source_id": "strange-sigidwiki-v1"
+}

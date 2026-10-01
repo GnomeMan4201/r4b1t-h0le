@@ -1,0 +1,16 @@
+{
+  "admissions": [
+    {
+      "resource_type": "reference",
+      "url": "https://tls13.xargs.org/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Concrete byte-by-byte TLS 1.3 handshake walkthrough, not a generic domain root.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:438ca1e5de410f0ddb38cfaf7cf2259e2ec21331200b780733d36c87dadac37a",
+  "snapshot_path": "corpus/indexes/strange-binarygolf5-v1.json",
+  "source_id": "strange-binarygolf5-v1"
+}

@@ -1,0 +1,16 @@
+{
+  "admissions": [
+    {
+      "resource_type": "lab",
+      "url": "https://www.pwnadventure.com/#about"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "practical_learning",
+  "rationale": "One concrete deliberately vulnerable game with local-server material. Fragment canonicalizes to the single game artifact, not several routes.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:56e74d8328757bb1b3c2855034f58f43f69b5163ab55e6cbbcc1b2c5784c4cd8",
+  "snapshot_path": "corpus/indexes/strange-pwnadventure-v1.json",
+  "source_id": "strange-pwnadventure-v1"
+}

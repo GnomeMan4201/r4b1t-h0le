@@ -1,0 +1,18 @@
+{
+  "extractor": "html-anchors-v1",
+  "final_url": "https://www.spammimic.com/",
+  "response_digest": "sha256:d061d10263e261cb8a69a483f6290d6cb059033587432fa69fa14073a7e1abb9",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://www.spammimic.com/",
+  "urls": [
+    "https://www.spammimic.com/credits.shtml",
+    "https://www.spammimic.com/decode.shtml",
+    "https://www.spammimic.com/encode.shtml",
+    "https://www.spammimic.com/explain.shtml",
+    "https://www.spammimic.com/feedback.shtml",
+    "https://www.spammimic.com/index.cgi",
+    "https://www.spammimic.com/index.cgi?lang=fr",
+    "https://www.spammimic.com/terms.shtml"
+  ]
+}

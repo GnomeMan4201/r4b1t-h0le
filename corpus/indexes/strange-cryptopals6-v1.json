@@ -1,0 +1,21 @@
+{
+  "extractor": "html-anchors-v1",
+  "final_url": "https://cryptopals.com/sets/6",
+  "response_digest": "sha256:cf9934aef72fc2359b7c47342fd488c86fe24a66957bf028fb4cde583dadd0e2",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://cryptopals.com/sets/6",
+  "urls": [
+    "https://cryptopals.com/",
+    "https://cryptopals.com/sets/6/challenges/41",
+    "https://cryptopals.com/sets/6/challenges/42",
+    "https://cryptopals.com/sets/6/challenges/43",
+    "https://cryptopals.com/sets/6/challenges/44",
+    "https://cryptopals.com/sets/6/challenges/45",
+    "https://cryptopals.com/sets/6/challenges/46",
+    "https://cryptopals.com/sets/6/challenges/47",
+    "https://cryptopals.com/sets/6/challenges/48",
+    "https://cryptoservices.github.io/",
+    "https://www.nccgroup.trust/us/"
+  ]
+}

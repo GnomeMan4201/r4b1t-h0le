@@ -1,0 +1,32 @@
+{
+  "admissions": [
+    {
+      "resource_type": "writeup",
+      "url": "https://cturt.github.io/freedvdboot.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://cturt.github.io/shogihax.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://cturt.github.io/ps2-yabasic.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://cturt.github.io/mast1c0re.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://cturt.github.io/mast1c0re-2.html"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "First-party console vulnerability and exploitation analyses involving game, DVD and interpreter interfaces.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:7f15036e1b07588f6e8882d1ab5e100fe14be10e655c242c29c90cef5241eafc",
+  "snapshot_path": "corpus/indexes/strange-cturtarticles-v1.json",
+  "source_id": "strange-cturtarticles-v1"
+}

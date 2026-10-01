@@ -1,0 +1,25 @@
+{
+  "extractor": "html-anchors-v1",
+  "final_url": "https://www.pwnadventure.com/",
+  "response_digest": "sha256:e4c7300927c569b1a274f26e3c593d525c31aa729e26d5f9dc75a0aaa0a1a7a2",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://www.pwnadventure.com/",
+  "urls": [
+    "http://ghostintheshellcode.com",
+    "http://ghostintheshellcode.com/#pwnadventure2",
+    "http://shmoocon.org",
+    "https://twitter.com/fuzyll",
+    "https://twitter.com/shellghostcode",
+    "https://vector35.com/",
+    "https://www.pwnadventure.com/#about",
+    "https://www.pwnadventure.com/#contact",
+    "https://www.pwnadventure.com/#downloads",
+    "https://www.pwnadventure.com/#features",
+    "https://www.pwnadventure.com/#release",
+    "https://www.pwnadventure.com/#server",
+    "https://www.pwnadventure.com/PwnAdventure3Server.tar.gz",
+    "https://www.pwnadventure.com/PwnAdventure3_Linux.zip",
+    "https://www.pwnadventure.com/PwnAdventure3_Windows.zip"
+  ]
+}

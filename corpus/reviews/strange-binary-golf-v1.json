@@ -1,0 +1,24 @@
+{
+  "admissions": [
+    {
+      "resource_type": "challenge",
+      "url": "https://binary.golf/3/"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://binary.golf/4/"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://binary.golf/5/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "practical_learning",
+  "rationale": "Concrete bounded format-hacking challenges exploring unusually small binaries and polyglots; social and repository-directory links excluded.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:233537484659c25a2cb3866cbe7824ce06cd3e99530798ae7944ca96202a9f3b",
+  "snapshot_path": "corpus/indexes/strange-binary-golf-v1.json",
+  "source_id": "strange-binary-golf-v1"
+}

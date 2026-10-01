@@ -1,0 +1,48 @@
+{
+  "admissions": [
+    {
+      "resource_type": "reference",
+      "url": "https://pagedout.institute/download/PagedOut_001.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pagedout.institute/download/PagedOut_002.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pagedout.institute/download/PagedOut_003.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pagedout.institute/download/PagedOut_004.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pagedout.institute/download/PagedOut_005.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pagedout.institute/download/PagedOut_006.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pagedout.institute/download/PagedOut_007.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pagedout.institute/download/PagedOut_008.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pagedout.institute/download/PagedOut_009.pdf"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "hacker_publications",
+  "rationale": "Complete publisher-released technical magazine issues containing security, reverse engineering and hacker computing material. Mixed-topic issues are explicit references, not claims that every page is cybersecurity; merchandise and wallpapers excluded.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:da31cb8a9af753f846c3879a2b27a114150c4134a47a4f6f6a514e1c7c701c1e",
+  "snapshot_path": "corpus/indexes/strange-pagedout-v1.json",
+  "source_id": "strange-pagedout-v1"
+}

@@ -1,0 +1,20 @@
+{
+  "admissions": [
+    {
+      "resource_type": "security_tool",
+      "url": "https://www.spammimic.com/encode.shtml"
+    },
+    {
+      "resource_type": "security_tool",
+      "url": "https://www.spammimic.com/explain.shtml"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Concrete public steganographic encoder and explanation of disguising messages as spam-like text; no account or data submission required for discovery.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:ed23f975069a4c42e280af749af40818640ddead5e65d6ab5fc0a407e1b5b07c",
+  "snapshot_path": "corpus/indexes/strange-spammimic-v1.json",
+  "source_id": "strange-spammimic-v1"
+}
