@@ -517,11 +517,12 @@
       if (action === 'fork') return forkTrail().catch(showError);
       if (action === 'blind') { closePanel(); return window.openBlindDescent(); }
       if (action === 'topology') {
-        if (state.imported && state.imported.manifest && state.imported.manifest.format === api.FORMAT) {
-          closePanel();
-          return window.openTrailTopology(state.imported).catch(showError);
-        }
-        return renderPanel('UNVERIFIED / TOPOLOGY V0.3 ADAPTER PENDING');
+        // Topology v2 still verifies trail v0.1/v0.2. Preserve the existing
+        // "map the current local trail" behavior through the explicit legacy
+        // projection until a dedicated v0.3 topology adapter lands.
+        return currentLegacyEnvelope()
+          .then(function (snapshot) { closePanel(); return window.openTrailTopology(snapshot); })
+          .catch(showError);
       }
       if (action === 'reset') return resetTrail();
     });
