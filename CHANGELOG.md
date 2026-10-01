@@ -17,6 +17,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+- Trail export now defaults to `r4b1t-trail/v0.3`, preserving ROLL selection transactions and explicit SELECT/BRANCH navigation as step evidence; labeled legacy v0.1 export remains available for compatibility.
+- `trail:verify` now verifies v0.3 integrity and v0.3 parent lineage in addition to existing v0.1/v0.2 formats. Topology continues through the explicit legacy v0.1 projection until a v0.3 adapter lands.
 - Terrain eligibility now comes from a digest-bound `terrain-index-v1` compiled from the active release's `urls.txt` and `resources.json`. It is anchored by `corpus/runtime/eligibility-profiles-v1.json` (ADR 0006, `TERRAIN_AUTHORITY_CONTRACT.md`). The legacy hostname→terrain table no longer decides membership.
 - The terrain vocabulary is the active release's 13 resource types, replacing 16 legacy labels. Against the promoted 6,859-route corpus, 12 legacy labels had no eligible routes and 5,564 routes were reachable only under ALL. The 13 types partition the release, so every route belongs to exactly one terrain.
 - Every terrain control shows its eligible count before ROLL. A dry terrain cannot be armed. Single-route and two-route terrains are labelled `SINGLE ROUTE` and `ALTERNATES`.
