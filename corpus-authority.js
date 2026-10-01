@@ -14,27 +14,27 @@
   'use strict';
 
   var activeSource = Object.freeze({
-    id: 'typed-candidate-v0.1',
-    releaseId: 'typed-candidate-v0.1',
-    url: 'corpus/releases/typed-candidate-v0.1/urls.txt',
-    resourcesUrl: 'corpus/releases/typed-candidate-v0.1/resources.json',
-    manifestUrl: 'corpus/releases/typed-candidate-v0.1/manifest.json',
-    expectedDigest: 'sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1',
-    expectedResourcesDigest: 'sha256:2c7bd5f0a492646cb5cc250b426ed720f1e0953615172717f562379e88eeb691',
-    expectedResourceCount: 841,
-    promotionId: 'typed-candidate-v0.1-active-v1',
+    id: 'diverse-candidate-v0.2',
+    releaseId: 'diverse-candidate-v0.2',
+    url: 'corpus/releases/diverse-candidate-v0.2/urls.txt',
+    resourcesUrl: 'corpus/releases/diverse-candidate-v0.2/resources.json',
+    manifestUrl: 'corpus/releases/diverse-candidate-v0.2/manifest.json',
+    expectedDigest: 'sha256:ba52be7e2fc9120f3bd1ac2a6bacbc61fc937764e6d4637df8711ec2212bf75c',
+    expectedResourcesDigest: 'sha256:529a3bcf10b0933ce92428932035750ae0fe93f1490aaa1a40c1384d7ec57aca',
+    expectedResourceCount: 6859,
+    promotionId: 'diverse-candidate-v0.2-active-v1',
     status: 'active',
     selectionAuthority: true
   });
 
   var candidateSource = Object.freeze({
-    id: 'typed-candidate-v0.1',
-    url: 'corpus/releases/typed-candidate-v0.1/urls.txt',
-    resourcesUrl: 'corpus/releases/typed-candidate-v0.1/resources.json',
-    manifestUrl: 'corpus/releases/typed-candidate-v0.1/manifest.json',
-    expectedDigest: 'sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1',
-    expectedResourcesDigest: 'sha256:2c7bd5f0a492646cb5cc250b426ed720f1e0953615172717f562379e88eeb691',
-    expectedResourceCount: 841,
+    id: 'diverse-candidate-v0.2',
+    url: 'corpus/releases/diverse-candidate-v0.2/urls.txt',
+    resourcesUrl: 'corpus/releases/diverse-candidate-v0.2/resources.json',
+    manifestUrl: 'corpus/releases/diverse-candidate-v0.2/manifest.json',
+    expectedDigest: 'sha256:ba52be7e2fc9120f3bd1ac2a6bacbc61fc937764e6d4637df8711ec2212bf75c',
+    expectedResourcesDigest: 'sha256:529a3bcf10b0933ce92428932035750ae0fe93f1490aaa1a40c1384d7ec57aca',
+    expectedResourceCount: 6859,
     status: 'candidate',
     selectionAuthority: false
   });
@@ -48,10 +48,10 @@
   });
 
   var promotionDescriptor = Object.freeze({
-    id: 'typed-candidate-v0.1-active-v1',
+    id: 'diverse-candidate-v0.2-active-v1',
     schema: 'r4b1t-runtime-corpus-promotion-v1',
-    sourceId: 'typed-candidate-v0.1',
-    releaseId: 'typed-candidate-v0.1',
+    sourceId: 'diverse-candidate-v0.2',
+    releaseId: 'diverse-candidate-v0.2',
     expectedDigest: activeSource.expectedDigest,
     releaseSelectionAuthority: false,
     runtimeSelectionAuthority: true,

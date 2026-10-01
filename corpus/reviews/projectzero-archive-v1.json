@@ -1,0 +1,92 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2021/09/fuzzing-closed-source-javascript.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2021/12/a-deep-dive-into-nso-zero-click.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2025/05/breaking-sound-barrier-part-i-fuzzing.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2025/08/from-chrome-renderer-code-exec-to-kernel.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2025/09/pointer-leaks-through-pointer-keyed.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2025/11/defeating-kaslr-by-doing-nothing-at-all.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2025/12/android-itw-dng.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2025/12/thinking-outside-the-box.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2025/12/windows-exploitation-techniques.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2026/01/pixel-0-click-part-1.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2026/01/pixel-0-click-part-2.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2026/01/pixel-0-click-part-3.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2026/01/sound-barrier-2.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2026/02/gphfh-deep-dive.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2026/02/windows-administrator-protection.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2026/03/mutational-grammar-fuzzing.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2026/05/pixel-10-exploit.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2026/09/maccconc-race-condition.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2026/09/windows-dangling-com.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://projectzero.google/2026/26/windows-administrator-protection.html"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "publisher_research",
+  "rationale": "Proposed review: individually linked Project Zero technical research articles. Migration welcome, archive, tracking-dashboard and external citation links are omitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:265398d4c2d35487ce8e89237380c71a49690280b17f14bf14b603a252a08d62",
+  "snapshot_path": "corpus/indexes/projectzero-archive-v1.json",
+  "source_id": "projectzero-archive-v1"
+}

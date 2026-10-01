@@ -1,0 +1,72 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/14th-september-threat-intelligence-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/17th-august-threat-intelligence-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/21st-september-threat-intelligence-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/24th-august-threat-intelligence-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/28th-september-threat-intelligence-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/31th-august-threat-intelligence-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/7th-september-threat-intelligence-report/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/ai-threat-landscape-digest-july-august-2026/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/breaking-the-seal-static-deobfuscation-of-jsceals-compiled-v8-bytecode/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/gaming-the-system-how-a-chinese-speaking-actor-turned-brazilian-government-sites-into-an-seo-weapon/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/puzzlemask-abusing-plain-prose-as-a-covert-ai-attack-vector/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/the-shared-clipboard-inside-the-sandbox-cross-account-data-leakage-in-chatgpt/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/the-state-of-ransomware-q2-2026/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://research.checkpoint.com/2026/thousands-of-hacked-wordpress-sites-one-operation-unmasking-stopandprotect/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "defensive_resources",
+  "rationale": "Proposed review: concrete technical threat/vulnerability research articles observed in the check-point research feed. Obvious consulting-sales and product-announcement links are omitted; per-page content audit remains pending.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:274c0621acd4613c6997895c950e35a0bd34d75c5a1a5ac5ad0c673bd6646abb",
+  "snapshot_path": "corpus/indexes/check-point-v1.json",
+  "source_id": "check-point-v1"
+}

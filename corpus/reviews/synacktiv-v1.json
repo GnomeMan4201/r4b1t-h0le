@@ -1,0 +1,1136 @@
+{
+  "admissions": [
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/activid-authentication-bypass.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/code-execution-in-cisco-secure-client-with-nam.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/crater-invoice-unauthenticated-remote-command-execution-when-appkey-known.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/dangerous-feature-in-commvault-commserve-1134.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/etic-telecom-ipl-dac-400-le-multiple-vulnerabilities.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/file-read-in-itop.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/fortimanager-multiple-vulnerabilities.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/help-scout-mass-assignment-vulnerability-on-inbox-settings.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/invoiceninja-unauthenticated-remote-command-execution-when-appkey-known.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/ivanti-epmm-mobileiron-core-multiple-vulnerabilities.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/ivanti-sentry-mobileiron-sentry-unauthenticated-remote-code-execution.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/jpgraph-professional-version-pre-authenticated-remote-code-execution.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/livewire-remote-command-execution-through-unmarshaling.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/local-privilege-escalation-in-sap.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/local-privilege-escalation-in-windows-velociraptor-service.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/microsoft-configuration-manager-configmgr-2403-unauthenticated-sql-injections.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/misp-arbitrary-file-read.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/multiple-vulnerabilities-in-collabora-online.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/multiple-vulnerabilities-in-delmia-apriso-2019-to-2024.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/multiple-vulnerabilities-in-glpi.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/multiple-vulnerabilities-in-the-xpra-client.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/multiple-vulnerabilities-on-gestsup-3244.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/multiple-vulnerabilities-on-itop.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/netwrix-directory-manager-groupid-local-privilege-escalation-due-to-cross-site-scripting.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/oracle-retail-xstore-suite-pre-authenticated-path-traversal.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/phar-deserialization-cve-2023-28115-patch-bypass.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/remote-code-execution-from-any-domain-account-in-biztalk360.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/remote-code-execution-on-cisco-access-point-wap371-firmware-1307.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/remote-code-execution-on-pyres-termod-before-1004w.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/sap-financial-consolidation-admin-authentication-bypass.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/scriptcase-pre-authenticated-remote-command-execution.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/security-vulnerabilities-in-snipe-it.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/snipe-it-unauthenticated-remote-command-execution-when-appkey-known.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/solidserver-ddi-remote-command-execution-as-root.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/sonarqube-github-integration-information-leakage.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/ssrpm-arbitrary-password-reset-on-default-client-web-interface-installation.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/ubika-waap-gateway-multiple-vulnerabilities-including-preauth-rce-as-root.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/unauthenticated-server-side-request-forgery-crlf-injection-in-geoserver-wms.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/usercube-netwrix-multiple-vulnerabilities.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/vulnerable-upgrade-mechanism-in-zkteco-f18-device.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/windows-10-plugscheduler-elevation-of-privilege.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/windows-authenticated-remote-command-execution.html"
+    },
+    {
+      "resource_type": "advisory",
+      "url": "https://www.synacktiv.com/advisories/windows-smb-server-elevation-of-privilege-vulnerabilities.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/2018-summer-challenge-metrocross.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/2018-summer-challenge-writeup.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/2019-summer-challenge-alonzo.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/2019-summer-challenge-writeup.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/2025-summer-challenge-ocinception.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/2025-summer-challenge-writeup.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/2025-winter-challenge-quinindrome.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/2025-winter-challenge-writeup.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/a-dive-into-microsoft-defender-for-identity.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/a-journey-in-reversing-uefi-lenovo-passwords-management.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/a-study-on-windows-http-authentication-part-ii.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/abusing-multicast-poisoning-for-pre-authenticated-kerberos-relay-over-http-with.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/activid-administrator-account-takeover-the-story-behind-hid-psa-2025-002.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/advent-ctf-2019-overthewire-day2-writeup.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/an-interesting-feature-in-the-samsung-dsp-driver.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/analyse-dun-decodeur-tnt.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/analysis-and-exploitation-of-the-ios-kernel-vulnerability-cve-2021-1782.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/appledbrs-un-outil-daide-a-la-recherche-sur-plateformes-apple.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/arlo-im-watching-you.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/attaque-du-tesla-wall-connector-depuis-le-port-de-charge.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/au-dela-des-acl-cartographier-les-chemins-delevation-de-privileges-windows-avec.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/automated-network-security-with-rust-detecting-and-blocking-port-scanners.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/aws-forensics-what-you-need-to-know.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/azure-ad-introduction-for-red-teamers.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/azure-devops-build-agent-analysis.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/baking-mojolicious-cookies.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/battle-of-the-parsers-peg-vs-combinators.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/behind-the-shield-unmasking-scudos-defenses.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/bfs-2019-exploitation-challenge.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/binder-analysis-and-exploitation-of-cve-2020-0041.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/binder-secctx-patch-analysis.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/binder-transactions-in-the-bowels-of-the-linux-kernel.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/breaking-namespace-isolation-with-pf_ring-before-700.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/breaking-the-beestation-inside-our-pwn2own-2025-exploit-journey.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/building-a-iouring-based-network-scanner-in-rust.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/bypassing-naxsi-filtering-engine.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/bypassing-windows-authentication-reflection-mitigations-for-system-shells-part-1.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/bypassing-windows-authentication-reflection-mitigations-for-system-shells-part.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/captain-hook-how-not-to-look-for-vulnerabilities-in-java-applications.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/car-hijacking-swapping-a-single-bit.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/caught-in-the-octopus-trap-unauthenticated-rce-in-argo-cd-with-codeql.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/ccleaner-forensics.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/charting-your-way-in-injection-de-templates-helm.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/cicd-secrets-extraction-tips-and-tricks.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/cisco-ise-15-passwords-decryption.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/code-checkmate-in-smm.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/coldfusion-cfmx_compat-lolcryption.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/completer-la-conformite-par-la-preuve-une-approche-bottom-up-pour-nis2-dora-et-le.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/construire-un-binaire-rust-two-face-pour-linux.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/cool-vulns-dont-live-long-netgear-and-pwn2own.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/cracking-radmin-server-3-passwords.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/credential-stuffing-speeding-up-massive-leaks-databases.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/cve-2022-31813-forwarding-addresses-is-hard.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/cve-2025-23016-exploiter-la-bibliotheque-fastcgi.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/defend-against-vampires-with-10-gbps-network-encryption.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/dissecting-dcom-partie-1.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/dissecting-ntlm-epa-with-love-building-a-mitm-proxy.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/dites-bonjour-a-pike.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/diving-into-adb-protocol-internals-12.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/diving-into-adb-protocol-internals-22.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/dji-android-go-4-application-security-analysis.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/dji-pilot-android-application-security-analysis-0.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/dont-fear-the-bark-tsrewrite-to-dodge-the-mark.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/dumping-the-sonos-one-smart-speaker.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/e-ink-maiden-bring-your-reader-to-the-reverser.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/elfinder-the-story-of-a-repwning.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/entra-id-banned-password-lists-password-spraying-optimizations-and-defenses.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/escaping-from-bhyve.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/etude-de-cas-comment-hunters-international-et-ses-affilies-ciblent-vos-hyperviseurs.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/evm-unravelled-recovering-abi-from-bytecode.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploitation-du-tesla-wall-connector-depuis-le-connecteur-de-charge-partie-2.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploitation-of-a-double-free-vulnerability-in-ubuntu-shiftfs-driver-cve-2021-3492.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploiter-la-rbcd-en-environnements-cross-domain-cross-forest-partie-2.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploiter-la-rbcd-en-environnements-cross-domain-cross-forest.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploiting-a-blind-format-string-vulnerability-in-modern-binaries-a-case-study-from.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploiting-a-no-name-freebsd-kernel-vulnerability.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploiting-a-remote-heap-overflow-with-a-custom-tcp-stack.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploiting-american-conquest.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploiting-anno-1404.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploiting-cve-2021-25770-a-server-side-template-injection-in-youtrack.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploiting-cve-2022-24816-a-code-injection-in-the-jt-jiffle-extension-of-geoserver.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploiting-heroes-of-might-and-magic-v.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploiting-neverwinter-nights.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploiting-titan-quest.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploring-android-heap-allocations-in-jemalloc-new.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploring-counter-strike-global-offensive-attack-surface.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/exploring-grapheneos-secure-allocator-hardened-malloc.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/extraction-des-archives-chiffrees-synology-pwn2own-irlande-2024.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/faut-il-faire-confiance-au-zero-trust-contourner-les-controles-de-posture-zscaler.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/fic2020-prequals-ctf-write-up.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/finding-a-pop-chain-on-a-common-symfony-bundle-part-1.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/finding-a-pop-chain-on-a-common-symfony-bundle-part-2.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/finding-gadgets-like-its-2015-part-1.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/finding-gadgets-like-its-2015-part-2.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/finding-gadgets-like-its-2022.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/forensic-analysis-of-bitwarden-self-hosted-server.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/forensic-aspects-of-microsoft-remote-access-vpn.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/forensic-aws-eks-sources-de-donnees-et-methodes-dinvestigation.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/frinet-reverse-engineering-made-easier.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/from-cheap-iot-toy-to-your-smartphone-getting-rce-by-leveraging-a-companion-app.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/fuzzing-confused-dependencies-with-depfuzzer.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/github-actions-exploitation-dependabot.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/github-actions-exploitation-introduction.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/github-actions-exploitation-repo-jacking-and-environment-manipulation.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/github-actions-exploitation-self-hosted-runners.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/github-actions-exploitation-untrusted-input.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/gpgme-used-confusion-its-super-effective.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/gpoddity-exploiting-active-directory-gpos-through-ntlm-relaying-and-more.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/grand-saut-dans-le-deploiement-sur-site-dun-serveur-llm-a-moindres-privileges.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/grehack-2018-qualification-challenge.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/hardware-investigation-of-wireless-keyloggers.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/heap-tricks-never-get-old-insomnihack-teaser-2022.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/hijacking-github-runners-to-compromise-the-organization.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/hooking-windows-named-pipes.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/how-to-exploit-cve-2021-40539-on-manageengine-adselfservice-plus.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/how-to-exploit-liferay-cve-2020-7961-quick-journey-to-poc.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/how-to-voltage-fault-injection.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/hp-ilo-talk-at-recon-brx-2018.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/htb-business-ctf-write-ups.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/hunting-mobile-devices-endpoints-the-rf-and-the-hard-way.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/i-hack-u-boot.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/icmp-reachable.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/im-smbghost-daba-dee-daba-da.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/injecting-java-in-memory-payloads-for-post-exploitation.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/inside-the-ios-bug-that-made-deleted-photos-reappear.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/introducing-ntdissector-a-swiss-army-knife-for-your-ntdsdit-files.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/investigating-ida-lumina-feature.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/ios-1-day-hunting-uncovering-and-exploiting-cve-2020-27950-kernel-memory-leak.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/ios-184-dlsym-considered-harmful.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/ios-a-journey-in-the-usb-networking-stack.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/ios12-kernelcache-laundering.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/is-it-post-quantum-time-yet.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/izi-izi-pwn2own-ics-miami.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/java-deserialization-tricks.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/kinibi-tee-trusted-application-exploitation.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/krustyloader-rust-malware-linked-to-ivanti-connectsecure-compromises.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/kubernetes-forensics-13-what-the-container.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/kubernetes-namespaces-isolation-what-it-is-what-it-isnt-life-universe-and-everything.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/kyc-contourner-la-verification-dage-avec-des-modeles-generatifs-video.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/la-reflexion-ntlm-est-morte-vive-la-reflexion-ntlm-analyse-approfondie-de-la-cve-2025.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/lapsus-is-dead-long-live-hexalocker.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/laravel-analyse-de-fuite-dappkey.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/le-probleme-unicode-de-sql-server-pourquoi-vos-donnees-ne-sont-peut-etre-pas-ce-que.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/legitimate-exfiltration-tools-summary-and-detection-for-incident-response-and-threat.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/legitimate-rats-a-comprehensive-forensic-analysis-of-the-usual-suspects.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/let-me-cook-you-a-vulnerability-exploitation-du-thermomix-tm5.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/leveraging-binary-ninja-il-to-reverse-a-custom-isa-cracking-the-pot-of-gold-37c3.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/lextension-fantome-infiltrer-chrome-par-des-voies-inexplorees.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/lightspeed-a-race-for-an-iosmacos-sandbox-escape.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/linkpro-analyse-dun-rootkit-ebpf.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/livewire-execution-de-commandes-a-distance-via-unmarshaling.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/llm-poisoning-13-lire-les-pensees-dun-transformer.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/looting-symfony-with-eos.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/lsa-secrets-revisiting-secretsdump.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/macos-xpc-exploitation-sandbox-share-case-study.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/magento-for-security-audit.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/magento-template-engine-a-story-of-cve-2022-24086.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/make-it-blink-compromission-a-distance-du-bridge-philips-hue.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/memory-leak-and-use-after-free-in-squid.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/mitmproxy-for-fun-and-profit-interception-et-analyse-de-flux-applicatifs.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/netdata-appsplugin-security-fixes.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/no-grave-but-the-sip-reversing-a-voip-phone-firmware.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/old-bug-shallow-bug-exploiting-ubuntu-at-pwn2own-vancouver-2023.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/on-the-clock-escaping-vmware-workstation-at-pwn2own-berlin-2025.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/ounedpy-exploiting-hidden-organizational-units-acl-attack-vectors-in-active-directory.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/outils-open-source-des-attaquants-exploitant-ivanti-csa.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/paint-it-blue-attacking-the-bluetooth-stack.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/pcapan-a-pcap-analysis-helper.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/pentesting-cisco-aci-lldp-mishandling.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/pentesting-cisco-sd-wan-part-1-attacking-vmanage.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/pentesting-cisco-sd-wan-part-2-breaking-routers.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/persistent-php-payloads-in-pngs-how-to-inject-php-code-in-an-image-and-keep-it-there.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/php-filter-chains-file-read-from-error-based-oracle.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/php-filters-chain-what-is-it-and-how-to-use-it.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/playing-with-imagetragick-like-its-2016.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/practical-dma-attack-on-windows-10.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/presentation-de-lequipe-reverse.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/presentation-of-the-pentest-team.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/pridelocker-a-new-fork-of-babuk-esx-encryptor.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/pull-up-your-bootloader.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/pwn2own-austin-2021-defeating-the-netgear-r6700v3.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/pwn2own-tokyo-2020-defeating-the-tp-link-ac1750.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/pwning-an-outdated-kibana-with-not-so-sad-vulnerabilities.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/quantum-readiness-hash-based-signatures.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/quantum-readiness-introduction-to-modern-cryptography.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/quantum-readiness-lattice-based-pqc.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/que-pourrait-il-arriver-de-dangereux-lorsque-le-mode-sql-strict-de-mysql-est-desactive.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/rce-vulnerability-in-hp-ilo.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/ready-for-it-2022-back-to-attacks-on-new-digital-uses.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/relaying-kerberos-over-smb-using-krbrelayx.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/return-of-the-ios-sandbox-escape-lightspeeds-back-in-the-race.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/rm-rf-is-the-root-of-all-evil.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/rulesfinder-automatically-create-good-password-cracking-rulesets.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/rutorrent-code-review.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/sccmsecretspy-exploiting-sccm-policies-distribution-for-credentials-harvesting-initial.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/scraps-of-notes-on-exploiting-exim-vulnerabilities.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/sharkyctf-ezdump-writeups-linux-forensics-introduction.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/simuler-des-services-active-directory-legitimes-sur-un-reseau-interne-le-cas-de.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/site-unseen-enumerer-et-attaquer-les-sites-active-directory.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/so-i-became-a-node-exploiting-bootstrap-tokens-in-azure-kubernetes-service.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/souls-without-bodies-phantom-types-shenanigans.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/survivre-a-la-deferlante-de-lpe-linux-la-defense-en-profondeur-nest-pas-morte.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/systemd-hardening-made-easy-with-shh.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/taking-the-relaying-capabilities-of-multicast-poisoning-to-the-next-level-tricking.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/the-fix-for-cve-2020-9859-and-the-lightspeed-vulnerability.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/the-printer-goes-brrrrr-again.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/the-printer-goes-brrrrr.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/the-reverse-engineering-team-presentation.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/this-is-for-the-pwners-exploiting-a-webkit-0-day-in-playstation-4.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/through-the-smm-class-and-a-vulnerability-found-there.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/traces-of-windows-remote-command-execution.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/transition-post-quantique-lhybridation-des-echanges-de-cles.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/transition-post-quantique-lhybridation-des-signatures.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/treasure-chest-party-quest-from-doom-to-exploit.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/typo3-leak-to-remote-code-execution.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/ubuntu-ppps-cve-2020-15704-wrap-up.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/understanding-and-evading-microsoft-defender-for-identity-pkinit-detection.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/unleash-the-dino-time-based-strategies-to-improve-password-cracking.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/unransomware.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/using-ntdissector-to-extract-secrets-from-adam-ntds-files.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/using-veeam-metadata-for-efficient-extraction-of-backup-artefacts-13.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/using-veeam-metadata-for-efficient-extraction-of-backup-artefacts-23.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/using-your-bmc-as-a-dma-device-plugging-pcileech-to-hpe-ilo-4.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/vmware-esxi-forensic-with-velociraptor.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/web-architect-an-introduction.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/whfb-and-entra-id-say-hello-to-your-new-cache-flow.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/windows-secrets-extraction-a-summary.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/wireless-infidelity-pentest-wi-fi-en-2025.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/wordpress-for-security-audit.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/writing-a-decent-win32-keylogger-13.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/writing-a-decent-win32-keylogger-23.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/writing-a-decent-win32-keylogger-33.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/writing-a-toy-symbolic-interpreter-and-solving-challenges-part-1.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/writing-a-toy-symbolic-interpreter-and-solving-challenges-part-2.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/writing-a-toy-symbolic-interpreter-and-solving-challenges-part-3.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/writing-a-toy-symbolic-interpreter-and-solving-challenges-part-4.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/yet-another-bec-investigation-on-m365.html"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.synacktiv.com/publications/your-vulnerability-is-in-another-oem.html"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "publisher_research",
+  "rationale": "Proposed review: individually addressed Synacktiv technical publications and vulnerability advisories. Services, training sales, recruitment, language duplicates and node routes are omitted. Native publication languages are retained rather than inventing translations.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:d6997c06595b63191d567b25ae86029c7a9f81ed22b1e1ff7483ddcfc2c1c843",
+  "snapshot_path": "corpus/indexes/synacktiv-v1.json",
+  "source_id": "synacktiv-v1"
+}

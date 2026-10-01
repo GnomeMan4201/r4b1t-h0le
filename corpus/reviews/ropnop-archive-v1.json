@@ -1,0 +1,48 @@
+{
+  "admissions": [
+    {
+      "resource_type": "writeup",
+      "url": "https://blog.ropnop.com/attacking-default-installs-of-helm-on-kubernetes/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://blog.ropnop.com/configuring-burp-suite-with-android-nougat/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://blog.ropnop.com/docker-for-pentesters/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://blog.ropnop.com/extracting-ssh-private-keys-from-windows-10-ssh-agent/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://blog.ropnop.com/hosting-clr-in-golang/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://blog.ropnop.com/proxying-cli-tools/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://blog.ropnop.com/sans-holiday-hack-2017-writeup/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://blog.ropnop.com/serverless-toolkit-for-pentesters/"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://blog.ropnop.com/storing-tokens-in-browser/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Proposed review: exact ropnop pentesting and security engineering articles. General programming, series, tag, social, and navigation pages are omitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:675a4cafa209c58aa1b39719370c537c7408e500fa74b850427d324446a00cd7",
+  "snapshot_path": "corpus/indexes/ropnop-archive-v1.json",
+  "source_id": "ropnop-archive-v1"
+}

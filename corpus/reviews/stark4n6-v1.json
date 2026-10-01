@@ -1,0 +1,452 @@
+{
+  "admissions": [
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/03/bloomcon-0x06-forensics-ctf.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/04/forensic-happy-hour-pour-me-another.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/04/forensics-startme-updates-412022.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/04/whats-buzz-bumble-on-ios.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/05/check-marks-spot-google-tasks-from.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/05/forensics-startme-updates-512022.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/05/magnet-virtual-summit-2022-ctf-android.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/05/magnet-virtual-summit-2022-ctf-egg-hunt.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/06/cellebrite-ctf-2022-beths-iphone.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/06/cellebrite-ctf-2022-heisenbergs-android.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/06/cellebrite-ctf-2022-marshas-iphone.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/06/cellebrite-ctf-2022-marshas-pc.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/06/forensics-startme-updates-612022.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/06/magnet-user-summit-2022-ctf-egg-hunt.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/06/magnet-user-summit-2022-ctf-iphone.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/06/magnet-user-summit-2022-ctf-linux.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/08/audio-and-app-usage-in-apple-health.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/08/forensics-startme-updates-812022.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/08/hitchhikers-guide-to-dfir-v1-officially.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/09/forensics-startme-updates-912022.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/09/its-all-about-semantics-location.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/10/forensics-startme-updates-1012022.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/11/forensics-startme-updates-1112022.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/11/the-bots-are-buzzing-bumble-on-android.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/12/forensics-startme-updates-1212022.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/12/thawing-ice-age-mastodon-on-android.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2022/12/thawing-ice-age-pt-2-tusky-on-android.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/01/forensics-startme-updates-112023.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/01/gabbing-about-garmin-connect-for-android.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/02/forensics-startme-updates-212023.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/02/forensics-startme-updates-312023.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/03/introducing-sqlitewalker.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/03/magnet-virtual-summit-2023-ctf-cipher.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/03/magnet-virtual-summit-2023-ctf-ios-16.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/03/magnet-virtual-summit-2023-ctf-windows.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/03/magnet-virtual-summit-2023-ctf-windows_8.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/04/forensics-startme-updates-412023.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/04/magnet-user-summit-2023-recap.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/05/forensics-startme-updates-512023.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/05/gboard-and-clipboard-history.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/05/magnet-user-summit-2023-ctf-android.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/05/magnet-user-summit-2023-ctf-android_5.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/05/magnet-user-summit-2023-ctf-cipher.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/06/forensics-startme-updates-612023.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/06/nahamcon-ctf-2023-forensics.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/07/forensics-startme-updates-712023.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/08/forensics-startme-updates-812023.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/08/sans-dfir-summit-2023-recap.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/09/cyber5ws-ccdfa-certification-review.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/09/forensics-startme-updates-912023.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/10/cellebrite-ctf-2023-abe.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/10/cellebrite-ctf-2023-felix.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/10/introducing-teralogger.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2023/12/forensics-startme-updates-1212023.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/01/analyzing-life360-on-android.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/01/analyzing-life360-on-ios.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/01/forensics-startme-updates-112024.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/02/forensics-startme-updates-212024.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/03/forensics-startme-updates-312024.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/03/magnet-virtual-summit-2024-ctf-android.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/03/magnet-virtual-summit-2024-ctf-cipher.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/03/magnet-virtual-summit-2024-ctf-ios.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/04/forensics-startme-updates-412024.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/04/splitwise-on-ios.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/05/forensics-startme-updates-512024.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/10/introducing-zipwalker.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/12/forensics-startme-updates-1212024.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2024/12/merry-dfirmas-happy-new-year.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/01/forensics-startme-updates-112025.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/01/magnet-virtual-summit-2025-ctf-workshop.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/02/forensics-startme-updates-212025.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/03/forensics-startme-updates-312025.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/03/magnet-virtual-summit-2025-ctf-android.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/03/magnet-virtual-summit-2025-ctf-android_24.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/03/magnet-virtual-summit-2025-ctf-ciphers.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/03/magnet-virtual-summit-2025-ctf-ios.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/03/magnet-virtual-summit-2025-ctf-windows.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/03/magnet-virtual-summit-2025-ctf.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/03/magnet-virtual-summit-2025-ctf_19.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/03/tracking-hardware-software-via-apple.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/04/forensics-startme-updates-412025.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/04/tracking-ios-app-installs-and-purchase.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/06/forensics-startme-updates-612025.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/07/forensics-startme-updates-712025.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/07/introducing-asp-app-store-package-search.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/07/introducing-dirlisthash-directory.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/07/ios-app-storage-usage-via-amdsqlite-db.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/08/forensics-startme-updates-812025.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/09/forensics-startme-updates-912025.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/10/bsides-nyc-2025-ctf-forensics.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/10/cyber-unpacked-with-magnet-forensics.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/11/forensics-startme-updates-november-2025.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/11/the-evidence-locker-dfir-image.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2025/12/forensics-startme-updates-december-2025.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/02/forensics-startme-updates-february-2026.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/03/bdc-more-battery-temps-charging-stats.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/03/forensics-startme-updates-march-2026.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/04/magnet-user-summit-2026-recap.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/06/forensics-startme-updates-june-2026.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/06/leapping-with-lava.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/06/sqlitewalker-v100-new-hope.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/07/forensics-startme-updates-july-2026.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/07/script-stash-hunting-segb-streams.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/07/script-stash-plist-mapping-with-python.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/08/consensual-forensics-with-android.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/08/forensics-startme-updates-august-2026.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/08/pouring-pints-untappd-for-android.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/08/tracking-timezone-changes-in-digital.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/09/forensics-startme-updates-september-2026.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.stark4n6.com/2026/09/the-evidence-locker-v2-now-with-file.html"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Proposed review: dated Stark4n6 technical forensic and forensic-CTF articles. Podcast/interview/event pages are omitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:f7a2cf0281476c2d05cc9083972c5fdc504b9e2a86a3755d7abcd43d21535731",
+  "snapshot_path": "corpus/indexes/stark4n6-v1.json",
+  "source_id": "stark4n6-v1"
+}

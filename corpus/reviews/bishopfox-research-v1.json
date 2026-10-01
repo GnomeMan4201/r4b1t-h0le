@@ -1,0 +1,32 @@
+{
+  "admissions": [
+    {
+      "resource_type": "security_tool",
+      "url": "https://bishopfox.com/tools/google-hacking-diggity-project-2/attack-tools"
+    },
+    {
+      "resource_type": "security_tool",
+      "url": "https://bishopfox.com/tools/google-hacking-diggity-project-2/defense-tools"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://bishopfox.com/tools/home-and-office-security-system-hacking"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://bishopfox.com/tools/rfid-hacking-2"
+    },
+    {
+      "resource_type": "security_tool",
+      "url": "https://bishopfox.com/tools/rfid-hacking-2/attack-tools"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "tools_and_documentation",
+  "rationale": "Proposed review: individually linked Bishop Fox attack/defense tools and RFID/home security system technical references; media galleries and collection-only links are omitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:1494397287990293ff849c549f4a10554ac414e30aa5da2ab05c0e5013b65f53",
+  "snapshot_path": "corpus/indexes/bishopfox-research-v1.json",
+  "source_id": "bishopfox-research-v1"
+}

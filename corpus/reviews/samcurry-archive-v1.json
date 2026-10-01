@@ -1,0 +1,32 @@
+{
+  "admissions": [
+    {
+      "resource_type": "writeup",
+      "url": "https://samcurry.net/hacking-clubwpt-gold"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://samcurry.net/hacking-kia"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://samcurry.net/hacking-millions-of-modems"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://samcurry.net/hacking-subaru"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://samcurry.net/points-com"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Proposed review: Sam Curry first-party vulnerability investigation writeups. About, social and feed links are omitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:2154852ac87a0f05fe913d522bdab8aa2e2548891bff48c6e7d6d51b8637089f",
+  "snapshot_path": "corpus/indexes/samcurry-archive-v1.json",
+  "source_id": "samcurry-archive-v1"
+}

@@ -7,7 +7,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-No changes queued.
+### Added
+
+- A proposed 6,859-resource corpus expansion across 37 assertion sources,
+  with exact admission declarations, offline reproducible artifacts and
+  descriptive diversity evidence. The active runtime corpus is unchanged.
+- URL-only archive, RSS/Atom and sitemap collection plus a separate reviewed
+  index compiler; collection alone cannot admit or promote a resource.
 
 ---
 

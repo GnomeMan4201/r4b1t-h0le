@@ -1,0 +1,1924 @@
+{
+  "admissions": [
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/7z/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/R/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/aa-exec/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ab/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/acr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/agetty/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/alpine/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ansible-playbook/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ansible-test/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/aoss/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/apache2/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/apache2ctl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/apport-cli/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/apt-get/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/apt/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/aptitude/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ar/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/arch-nspawn/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/aria2c/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/arj/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/arp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/as/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ascii-xfr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ascii85/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ash/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/aspell/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/asterisk/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/at/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/atobm/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/autoconf/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/autoheader/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/autoreconf/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/awk/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/aws/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/base32/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/base58/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/base64/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/basenc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/basez/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/bash/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/bashbug/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/batcat/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/bbot/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/bc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/bconsole/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/bee/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/borg/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/bpftrace/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/bridge/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/bundle/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/bundler/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/busctl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/busybox/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/byebug/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/bzip2/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/c89/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/c99/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cabal/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cancel/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/capsh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cargo/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cat/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cdist/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/certbot/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/chattr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/check_by_ssh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/check_cups/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/check_log/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/check_memory/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/check_raid/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/check_ssl_cert/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/check_statusfile/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/chmod/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/choom/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/chown/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/chroot/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/chrt/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/clamscan/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/clisp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cmake/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cmp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cobc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/code/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/codex/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/column/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/comm/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/composer/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cowsay/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cowthink/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cpan/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cpio/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cpulimit/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/crash/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/crontab/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/csh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/csplit/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/csvtool/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ctr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cupsfilter/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/curl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/cut/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dash/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/date/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dd/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/debugfs/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dhclient/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dialog/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/diff/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dig/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/distcc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dmesg/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dmidecode/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dmsetup/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dnf/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dnsmasq/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/doas/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/docker/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dos2unix/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dosbox/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dotnet/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dpkg/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dstat/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/dvips/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/easy_install/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/easyrsa/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/eb/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ed/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/efax/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/egrep/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/elvish/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/emacs/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/enscript/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/env/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/eqn/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/espeak/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ex/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/exiftool/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/expand/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/expect/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/facter/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/fail2ban-client/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/fastfetch/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ffmpeg/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/fgrep/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/file/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/find/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/finger/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/firejail/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/fish/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/flock/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/fmt/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/fold/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/forge/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/fping/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ftp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/fzf/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/g++/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/gawk/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/gcc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/gcloud/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/gcore/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/gdb/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/gem/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/genie/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/genisoimage/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/getent/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ghc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ghci/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/gimp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ginsh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/git/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/gnuplot/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/go/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/grc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/grep/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/gtester/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/guile/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/gzip/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/hashcat/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/hd/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/head/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/hexdump/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/hg/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/highlight/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/hping3/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/iconv/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/iftop/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/install/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ionice/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ip/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/iptables-save/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/irb/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ispell/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/java/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/jjs/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/joe/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/join/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/journalctl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/jq/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/jrunscript/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/jshell/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/jtag/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/julia/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/knife/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ksh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ksshell/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ksu/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/kubectl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/last/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/lastb/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/latex/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/latexmk/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ld/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ldconfig/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/less/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/lftp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/links/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ln/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/loginctl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/logrotate/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/logsave/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/look/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/lp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ltrace/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/lua/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/lualatex/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/luatex/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/lwp-download/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/lwp-request/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/lxd/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/m4/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/mail/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/make/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/man/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/mawk/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/minicom/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/more/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/mosh-server/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/mosquitto/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/mount/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/msfconsole/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/msgattrib/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/msgcat/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/msgconv/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/msgfilter/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/msgmerge/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/msguniq/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/mtr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/multitime/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/mutt/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/mv/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/mypy/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/mysql/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nano/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nasm/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nawk/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ncdu/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ncftp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/needrestart/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/neofetch/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nft/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nginx/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nice/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nm/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nmap/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/node/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nohup/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/npm/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nroff/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nsenter/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ntpdate/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/nvim/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/octave/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/od/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/opencode/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/openssl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/openvpn/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/openvt/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/opkg/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pandoc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/passwd/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/paste/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pax/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pdb/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pdflatex/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pdftex/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/perf/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/perl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/perlbug/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pexec/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pg/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/php/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pic/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pico/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pidstat/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pip/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pipx/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pkexec/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pkg/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/plymouth/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/podman/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/poetry/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/posh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/procmail/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pry/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/psftp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/psql/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ptx/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/puppet/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pwsh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pygmentize/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/pyright/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/python/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/qpdf/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rake/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ranger/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/readelf/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/red/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/redcarpet/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/redis/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/restic/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rev/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rlogin/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rlwrap/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rpm/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rpmdb/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rpmquery/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rpmverify/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rsync/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rsyslogd/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rtorrent/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ruby/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/run-mailcap/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/run-parts/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/runscript/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rustc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rustdoc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rustfmt/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rustup/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rview/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/rvim/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/sash/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/scanmem/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/scp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/screen/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/script/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/scrot/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/sed/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/service/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/setarch/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/setcap/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/setfacl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/setlock/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/sftp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/sg/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/shred/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/shuf/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/slsh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/smbclient/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/snap/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/socat/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/socket/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/soelim/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/softlimit/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/sort/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/split/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/sqlite3/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/sqlmap/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ss/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ssh-agent/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ssh-copy-id/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ssh-keygen/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ssh-keyscan/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ssh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/sshfs/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/sshpass/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/sshuttle/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/start-stop-daemon/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/stdbuf/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/strace/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/strings/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/su/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/sudo/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/sysctl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/systemctl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/systemd-resolve/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/systemd-run/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tac/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tail/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tailscale/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tar/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/task/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/taskset/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tasksh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tbl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tclsh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tcpdump/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tcsh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tdbtool/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tee/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/telnet/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/terraform/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tex/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tftp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tic/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/time/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/timedatectl/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/timeout/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tmate/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tmux/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/top/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/torify/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/torsocks/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/troff/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tsc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/tshark/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/ul/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/unexpand/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/uniq/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/unshare/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/unsquashfs/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/unzip/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/update-alternatives/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/urlget/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/uuencode/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/uv/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/vagrant/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/valgrind/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/varnishncsa/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/vi/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/view/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/vigr/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/vim/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/vimdiff/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/vipw/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/virsh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/volatility/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/w3m/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/wall/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/watch/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/wc/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/wg-quick/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/wget/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/whiptail/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/whois/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/wireshark/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/wish/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/xargs/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/xdg-user-dir/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/xdotool/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/xelatex/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/xetex/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/xmodmap/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/xmore/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/xpad/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/xxd/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/xz/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/yarn/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/yash/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/yelp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/yt-dlp/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/yum/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/zathura/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/zcat/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/zgrep/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/zic/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/zip/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/zless/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/zsh/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/zsoelim/"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://gtfobins.org/gtfobins/zypper/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "tools_and_documentation",
+  "rationale": "Proposed review: individual GTFOBins Unix-binary technique references, from the official redirected index at gtfobins.org. Fragment variants, contribution pages and platform links are omitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:3d1511e36567c02232bc9eb3d049e1d78bbeef12a4480ff6b81aa86b8dffa150",
+  "snapshot_path": "corpus/indexes/gtfobins-index-v1.json",
+  "source_id": "gtfobins-index-v1"
+}

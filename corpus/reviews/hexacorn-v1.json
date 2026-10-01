@@ -1,0 +1,32 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://www.hexacorn.com/blog/2026/06/07/little-secret-of-msconfig-exe/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.hexacorn.com/blog/2026/09/14/win11_26h2-build-xta-phantom-libraries/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.hexacorn.com/blog/2026/09/26/1-little-known-secret-of-aidd-dll/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.hexacorn.com/blog/2026/09/26/1-little-known-secret-of-uieorchestratorstub-exe/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://www.hexacorn.com/blog/2026/09/26/1-little-known-secret-of-wincsflags-exe/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Proposed review: Hexacorn Windows execution internals and forensic research posts observed in its feed.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:ef5a06c1307a7fa539d563dd67bcd62bfdacaded8cc887e14fc33cfa3d6d9718",
+  "snapshot_path": "corpus/indexes/hexacorn-v1.json",
+  "source_id": "hexacorn-v1"
+}

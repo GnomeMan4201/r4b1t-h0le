@@ -1,0 +1,3684 @@
+{
+  "admissions": [
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-Assisted-Fuzzing-and-Vulnerability-Discovery.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-Burp-MCP.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-Deep-Learning.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-MCP-Servers.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-Model-Data-Preparation-and-Evaluation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-Models-RCE.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-Prompts.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-Reinforcement-Learning-Algorithms.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-Risk-Frameworks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-Supervised-Learning-Algorithms.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-Unsupervised-Learning-Algorithms.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-llm-architecture/0.-basic-llm-concepts.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-llm-architecture/1.-tokenizing.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-llm-architecture/2.-data-sampling.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-llm-architecture/3.-token-embeddings.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-llm-architecture/4.-attention-mechanisms.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-llm-architecture/5.-llm-architecture.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-llm-architecture/6.-pre-training-and-loading-models.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-llm-architecture/7.0.-lora-improvements-in-fine-tuning.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-llm-architecture/7.1.-fine-tuning-for-classification.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/AI-llm-architecture/7.2.-fine-tuning-to-follow-instructions.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/KYC-Bypass-Using-AI.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/AI/Web-Black-Box-AI-Pentester-Bots.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/arbitrary-write-2-exec/aw2exec-__malloc_hook.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/arbitrary-write-2-exec/aw2exec-__printf_arginfo_table.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/arbitrary-write-2-exec/aw2exec-got-plt.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/arbitrary-write-2-exec/aw2exec-sips-icc-profile.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/arbitrary-write-2-exec/www2exec-.dtors-and-.fini_array.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/arbitrary-write-2-exec/www2exec-atexit.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/array-indexing.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/basic-stack-binary-exploitation-methodology/elf-tricks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/basic-stack-binary-exploitation-methodology/tools/pwntools.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/chrome-exploiting.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/common-binary-protections-and-bypasses/aslr/ret2plt.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/common-binary-protections-and-bypasses/aslr/ret2ret.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/common-binary-protections-and-bypasses/cet-and-shadow-stack.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/common-binary-protections-and-bypasses/libc-protections.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/common-binary-protections-and-bypasses/memory-tagging-extension-mte.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/common-binary-protections-and-bypasses/no-exec-nx.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/common-binary-protections-and-bypasses/pie/bypassing-canary-and-pie.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/common-binary-protections-and-bypasses/relro.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/common-binary-protections-and-bypasses/stack-canaries/bf-forked-stack-canaries.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/common-binary-protections-and-bypasses/stack-canaries/print-stack-canary.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/common-exploiting-problems-unsafe-relocation-fixups.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/common-exploiting-problems.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/format-strings/format-strings-arbitrary-read-example.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/format-strings/format-strings-template.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/freebsd-ptrace-rfi-vm_map-prot_exec-bypass-ps5.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/integer-overflow-and-underflow.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/ios-exploiting/CVE-2020-27950-mach_msg_trailer_t.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/ios-exploiting/CVE-2021-30807-IOMobileFrameBuffer.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/ios-exploiting/imessage-media-parser-zero-click-coreaudio-pac-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/ios-exploiting/ios-corellium.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/ios-exploiting/ios-example-heap-exploit.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/ios-exploiting/ios-physical-uaf-iosurface.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/ios-exploiting/webkit-dfg-store-barrier-uaf-angle-oob.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/ios-exploiting/xnu-vm-map-cow-vnode-toctou.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/bins-and-memory-allocations.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/double-free.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/fast-bin-attack.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/gnu-obstack-function-pointer-hijack.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/heap-memory-functions/free.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/heap-memory-functions/heap-functions-security-checks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/heap-memory-functions/malloc-and-sysmalloc.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/heap-memory-functions/unlink.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/heap-overflow.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/house-of-einherjar.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/house-of-force.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/house-of-lore.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/house-of-orange.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/house-of-rabbit.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/house-of-roman.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/house-of-spirit.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/large-bin-attack.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/off-by-one-overflow.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/overwriting-a-freed-chunk.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/tcache-bin-attack.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/unlink-attack.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/unsorted-bin-attack.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/use-after-free/first-fit.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/virtualbox-slirp-nat-packet-heap-exploitation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/linux-kernel-exploitation/adreno-a7xx-sds-rb-priv-bypass-gpu-smmu-kernel-rw.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/linux-kernel-exploitation/af-unix-msg-oob-uaf-skb-primitives.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/linux-kernel-exploitation/arm64-static-linear-map-kaslr-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/linux-kernel-exploitation/futex-pi-uaf-pipe-buffer-workqueue-usermodehelper.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/linux-kernel-exploitation/ksmbd-streams_xattr-oob-write-cve-2025-37947.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/linux-kernel-exploitation/pixel-bigwave-bigo-job-timeout-uaf-kernel-write.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/linux-kernel-exploitation/posix-cpu-timers-toctou-cve-2025-38352.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/qemu-kvm-vm-escape-chains.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/rop-return-oriented-programing/brop-blind-return-oriented-programming.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/rop-return-oriented-programing/ret2csu.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/rop-return-oriented-programing/ret2dlresolve.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/rop-return-oriented-programing/ret2esp-ret2reg.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/rop-return-oriented-programing/ret2lib/one-gadget.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/rop-return-oriented-programing/ret2lib/ret2lib-printf-leak-arm64.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/rop-return-oriented-programing/ret2lib/rop-leaking-libc-address/rop-leaking-libc-template.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/rop-return-oriented-programing/ret2vdso.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/rop-return-oriented-programing/rop-syscall-execv/ret2syscall-arm64.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/rop-return-oriented-programing/srop-sigreturn-oriented-programming/srop-arm64.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/stack-overflow/pointer-redirecting.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/stack-overflow/ret2win/ret2win-arm64.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/stack-overflow/stack-pivoting.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/stack-overflow/stack-shellcode/stack-shellcode-arm64.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/stack-overflow/uninitialized-variables.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/stack-overflow/windows-seh-overflow.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/vmware-workstation-pvscsi-lfh-escape.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/windows-exploiting-basic-guide-oscp-lvl.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/binary-exploitation/windows-vectored-overloading.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/blockchain/blockchain-and-crypto-currencies/defi-amm-hook-precision.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/blockchain/blockchain-and-crypto-currencies/defi-amm-virtual-balance-cache-exploitation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/blockchain/blockchain-and-crypto-currencies/erc-4337-smart-account-security-pitfalls.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/blockchain/blockchain-and-crypto-currencies/state-divergence-default-value-authorization-bypasses.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/blockchain/blockchain-and-crypto-currencies/value-centric-web3-red-teaming.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/blockchain/blockchain-and-crypto-currencies/web3-signing-workflow-compromise-safe-delegatecall-proxy-takeover.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/blockchain/smart-contract-security/mutation-testing-with-slither.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-hacking/archive-extraction-path-traversal.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-hacking/brute-force.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-hacking/esim-javacard-exploitation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-hacking/exfiltration.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-hacking/reverse-shells/expose-local-to-the-internet.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-hacking/reverse-shells/full-ttys.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-hacking/reverse-shells/linux.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-hacking/reverse-shells/msfvenom.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-hacking/reverse-shells/windows.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-hacking/search-exploits.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-hacking/tunneling-and-port-forwarding.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/adaptixc2-config-extraction-and-ttps.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/android-malware-post-exploitation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/anti-forensic-techniques.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/docker-forensics.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/file-integrity-monitoring.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/image-acquisition-and-mount.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/ios-backup-forensics.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/linux-forensics.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/malware-analysis.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/memory-dump-analysis/volatility-cheatsheet.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/partitions-file-systems-carving/file-data-carving-recovery-tools.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/pcap-inspection/dnscat-exfiltration.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/pcap-inspection/suricata-and-iptables-cheatsheet.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/pcap-inspection/usb-keystrokes.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/pcap-inspection/wifi-pcap-analysis.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/pcap-inspection/wireshark-tricks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/.pyc.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/browser-artifacts.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/desofuscation-vbs-cscript.exe.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/discord-cache-forensics.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/local-cloud-storage.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/mach-o-entitlements-and-ipsw-indexing.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/office-file-analysis.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/pdf-file-analysis.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/png-tricks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/structural-file-format-exploit-detection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/svg-font-glyph-analysis-and-web-drm-deobfuscation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/video-and-audio-file-analysis.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/zips-tricks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/windows-forensics/interesting-windows-registry-keys.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/external-recon-methodology/database-leaks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/external-recon-methodology/github-leaked-secrets.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/fuzzing.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-methodology.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/dds-rtps-security.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/dhcpv6.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/eigrp-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/glbp-and-hsrp-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/ids-evasion.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/lateral-vlan-segmentation-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/network-protocols-explained-esp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/nmap-summary-esp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/pentesting-ipv6.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/spoofing-llmnr-nbt-ns-mdns-dns-and-wpad-and-relay-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/spoofing-ssdp-and-upnp-devices.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/telecom-network-exploitation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-network/webrtc-dos.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/captive-portals.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/eap-methods.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/enable-nexmon-monitor-and-injection-on-android.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/evil-twin-eap-tls.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/evil-twin-rogue-ap-and-client-association-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/fragattacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/modern-wifi-roaming-6ghz-and-mlo.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/open-wifi-opn.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/owe.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/passpoint-hotspot-2.0-and-openroaming.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/protected-management-frames-pmf.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wep.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-client-and-supplicant-assessment.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-defense-monitoring-and-wids.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-direct-and-iot-provisioning.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-dos-and-management-frame-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-easy-connect-dpp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-fundamentals.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-hardware-drivers-and-linux.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-mesh-and-easymesh.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-post-association-and-client-isolation-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-privacy-tracking-and-side-channels.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-reconnaissance-and-wardriving.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-reconnaissance-setups.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wifi-tools-reference.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wpa-enterprise-8021x.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wpa-tkip.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wpa2-personal-psk.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wpa3-personal-sae.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/pentesting-wifi/wps.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/phishing-methodology/ai-agent-abuse-local-ai-cli-tools-and-mcp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/phishing-methodology/ai-agent-mode-phishing-abusing-hosted-agent-browsers.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/phishing-methodology/clipboard-hijacking.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/phishing-methodology/clone-a-website.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/phishing-methodology/detecting-phising.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/phishing-methodology/discord-invite-hijacking.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/phishing-methodology/homograph-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/phishing-methodology/mobile-phishing-malicious-apps.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/phishing-methodology/phishing-documents.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/basic-python.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/bruteforce-hash-few-chars.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/bypass-python-sandboxes/js2py-sandbox-escape-cve-2024-28397.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/bypass-python-sandboxes/load_name-load_const-opcode-oob-read.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/bypass-python-sandboxes/reportlab-xhtml2pdf-triple-brackets-expression-evaluation-rce-cve-2023-33733.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/class-pollution-pythons-prototype-pollution.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/keras-model-deserialization-rce-and-gadget-hunting.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/pyscript.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/python-internal-read-gadgets.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/venv.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/web-requests.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/side-channel-attacks-on-messaging-protocols.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/threat-modeling.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/hardware-physical-access/escaping-from-gui-applications.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/hardware-physical-access/firmware-analysis/android-mediatek-secure-boot-bl2_ext-bypass-el3.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/hardware-physical-access/firmware-analysis/bootloader-testing.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/hardware-physical-access/firmware-analysis/firmware-integrity.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/hardware-physical-access/firmware-analysis/mediatek-xflash-carbonara-da2-hash-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/hardware-physical-access/firmware-analysis/synology-encrypted-archive-decryption.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/hardware-physical-access/firmware-analysis/uefi-ifr-nvram-security-setting-patching.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/hardware-physical-access/physical-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/assessment-and-hardening.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/authorization-plugins.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/distroless.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/image-security-and-secrets.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/privileged-containers.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/apparmor.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/capabilities.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/cgroups.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/masked-paths.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/namespaces/cgroup-namespace.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/namespaces/ipc-namespace.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/namespaces/mount-namespace.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/namespaces/network-namespace.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/namespaces/pid-namespace.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/namespaces/time-namespace.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/namespaces/user-namespace.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/namespaces/uts-namespace.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/no-new-privileges.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/read-only-paths.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/seccomp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/protections/selinux.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/runtime-api-and-daemon-exposure.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/runtimes-and-engines.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/container-security/sensitive-host-mounts.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/containerd-ctr-privilege-escalation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/containers-namespaces/runc-privilege-escalation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/interesting-files-permissions/ld.so.conf-example.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/interesting-files-permissions/linux-capabilities.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/interesting-files-permissions/nfs-no_root_squash-misconfiguration-pe.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/interesting-files-permissions/selinux.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/interesting-files-permissions/suid-shared-library-and-linker-abuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/interesting-files-permissions/wildcards-spare-tricks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/interesting-files-permissions/write-to-root.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/linux-basics/bypass-linux-restrictions/bypass-fs-protections-read-only-no-exec-distroless/ddexec.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/linux-basics/linux-environment-variables.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/linux-basics/useful-linux-commands.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/main-system-information/escaping-from-limited-bash.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/main-system-information/filesystem-inodes-and-recovery.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/main-system-information/kernel-lpe-cves/copy-fail-af_alg-splice-page-cache-overwrite-cve-2026-31431.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/main-system-information/kernel-lpe-cves/linux-ptrace-exit-race-pidfd_getfd-fd-theft.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/main-system-information/kernel-lpe-cves/posix-cpu-timers-toctou-cve-2025-38352.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/main-system-information/kernel-lpe-cves/vmware-tools-service-discovery-untrusted-search-path-cve-2025-41244.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/main-system-information/kernel-modules-and-modprobe.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/main-system-information/linux-privilege-escalation-checklist.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/main-system-information/sudo-command-abuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/network-information/cisco-vmanage.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/network-information/local-network-and-socket-triage.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/network-information/socket-command-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/post-exploitation/linux-post-exploitation/trojanized-system-daemons-and-reverse-proxies.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/processes-crontab-systemd-dbus/d-bus-enumeration-and-command-injection-privilege-escalation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/processes-crontab-systemd-dbus/payloads-to-execute.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/software-information/android-rooting-frameworks-manager-auth-bypass-syscall-hook.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/software-information/electron-cef-chromium-debugger-abuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/software-information/freeipa-pentesting.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/software-information/logstash.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/software-information/pam-pluggable-authentication-modules.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/software-information/splunk-lpe-and-persistence.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/user-information/euid-ruid-suid.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/user-information/interesting-groups-linux-pe/lxd-privilege-escalation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/user-information/linux-active-directory.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/linux-hardening/user-information/ssh-forward-agent-exploitation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-auto-start-locations.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-red-teaming/macos-keychain.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-red-teaming/macos-mdm/enrolling-devices-in-other-organisations.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-red-teaming/macos-mdm/macos-serial-number.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/mac-os-architecture/macos-iokit.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/mac-os-architecture/macos-kernel-extensions.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/mac-os-architecture/macos-kernel-vulnerabilities.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/mac-os-architecture/macos-nvram.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/mac-os-architecture/macos-system-extensions.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-applefs.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-apps-inspecting-debugging-and-fuzzing/arm64-basic-assembly.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-apps-inspecting-debugging-and-fuzzing/introduction-to-x64.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-apps-inspecting-debugging-and-fuzzing/objects-in-memory.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-basic-objective-c.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-bypassing-firewalls.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-defensive-apps.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-file-extension-apps.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-files-folders-and-binaries/macos-bundles.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-files-folders-and-binaries/macos-installers-abuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-files-folders-and-binaries/macos-memory-dumping.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-files-folders-and-binaries/macos-sensitive-locations.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-files-folders-and-binaries/universal-binaries-and-mach-o-format.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-gcd-grand-central-dispatch.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-privilege-escalation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-.net-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-automator-preference-panes-nsservices.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-bash-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-chromium-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-dirty-nib.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-electron-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-erlang-elixir-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-function-hooking.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-ipc-inter-process-communication/macos-mig-mach-interface-generator.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-ipc-inter-process-communication/macos-thread-injection-via-task-port.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-ipc-inter-process-communication/macos-xpc/macos-xpc-authorization.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-ipc-inter-process-communication/macos-xpc/macos-xpc-connecting-process-check/macos-pid-reuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-ipc-inter-process-communication/macos-xpc/macos-xpc-connecting-process-check/macos-xpc_connection_get_audit_token-attack.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-java-apps-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-julia-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-library-injection/macos-dyld-hijacking-and-dyld_insert_libraries.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-library-injection/macos-dyld-process.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-lua-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-nodejs-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-octave-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-perl-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-php-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-powershell-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-python-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-quicklook-generators.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-r-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-ruby-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-vim-applications-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-xpc-mach-services-abuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-protocols.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-amfi-applemobilefileintegrity.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-authorizations-db-and-authd.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-code-signing-weaknesses-and-sandbox-escapes.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-code-signing.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-dangerous-entitlements.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-fs-tricks/macos-xattr-acls-extra-stuff.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-gatekeeper.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-input-monitoring-screen-capture-accessibility.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-launch-environment-constraints.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-macf-mandatory-access-control-framework.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-sandbox/macos-default-sandbox-debug.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-sandbox/macos-sandbox-debug-and-bypass/macos-office-sandbox-bypasses.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-sealed-system-volume-and-datavault.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-sip.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-tcc/macos-apple-events.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-tcc/macos-tcc-bypasses/macos-apple-scripts.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-tcc/macos-tcc-credential-and-data-theft.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-tcc/macos-tcc-payloads.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-users.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-useful-commands.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/abusing-android-media-pipelines-image-parsers.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/accessibility-services-abuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/adb-commands.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/android-anti-instrumentation-and-ssl-pinning-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/android-application-level-virtualization.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/android-applications-basics.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/android-enterprise-work-profile-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/android-hce-nfc-emv-relay-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/android-physical-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/android-task-hijacking.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/android-vpn-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/apk-decompilers.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/avd-android-virtual-device.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/baseband-and-soc-isolation-exploitation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/bypass-biometric-authentication-android.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/content-protocol.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/drozer-tutorial/exploiting-content-providers.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/exploiting-a-debuggeable-applciation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/firmware-level-zygote-backdoor-libandroid_runtime.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/flutter.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/frida-tutorial/frida-tutorial-1.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/frida-tutorial/frida-tutorial-2.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/frida-tutorial/objection-tutorial.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/frida-tutorial/owaspuncrackable-1.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/google-ctf-2018-shall-we-play-a-game.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/in-memory-jni-shellcode-execution.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/inputmethodservice-ime-abuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/insecure-in-app-update-rce.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/install-burp-certificate.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/intent-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/make-apk-accept-ca-certificate.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/manual-deobfuscation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/play-integrity-attestation-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/react-native-application.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/reversing-native-libraries.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/shizuku-privileged-api.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/smali-changes.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/spoofing-your-location-in-play-store.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/tapjacking.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-app-pentesting/webview-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/android-checklist.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/cordova-apps.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting-checklist.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/air-keyboard-remote-input-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/basic-ios-testing-operations.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/burp-configuration-for-ios.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/extracting-entitlements-from-compiled-application.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/frida-configuration-in-ios.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/ios-app-extensions.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/ios-basics.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/ios-custom-uri-handlers-deeplinks-custom-schemes.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/ios-hooking-with-objection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/ios-pentesting-without-jailbreak.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/ios-protocol-handlers.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/ios-serialisation-and-encoding.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/ios-testing-environment.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/ios-uiactivity-sharing.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/ios-uipasteboard.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/ios-universal-links.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/ios-webviews.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/itunesstored-bookassetd-sandbox-escape.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/ios-pentesting/zero-click-messaging-image-parser-chains.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/mobile-pentesting/xamarin-apps.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/10000-network-data-management-protocol-ndmp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/1026-pentesting-rusersd.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/1080-pentesting-socks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/1099-pentesting-java-rmi.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/11211-memcache/memcache-commands.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/113-pentesting-ident.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/12346-udp-pentesting-cisco-sd-wan-control-plane.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/135-pentesting-msrpc.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/137-138-139-pentesting-netbios.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/1414-pentesting-ibmmq.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/1521-1522-1529-pentesting-oracle-listener.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/15672-pentesting-rabbitmq-management.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/1723-pentesting-pptp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/1883-pentesting-mqtt-mosquitto.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/2375-pentesting-docker.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/24007-24008-24009-49152-pentesting-glusterfs.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/27017-27018-mongodb.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/3128-pentesting-squid.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/32100-udp-pentesting-pppp-cs2-p2p-cameras.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/3260-pentesting-iscsi.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/3299-pentesting-saprouter.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/3632-pentesting-distcc.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/3690-pentesting-subversion-svn-server.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/3702-udp-pentesting-ws-discovery.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/4222-pentesting-nats.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/43-pentesting-whois.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/4369-pentesting-erlang-port-mapper-daemon-epmd.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/44134-pentesting-tiller-helm.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/44818-ethernetip.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/47808-udp-bacnet.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/4786-cisco-smart-install.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/4840-pentesting-opc-ua.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/49-pentesting-tacacs+.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/5000-pentesting-docker-registry.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/50030-50060-50070-50075-50090-pentesting-hadoop.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/512-pentesting-rexec.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/515-pentesting-line-printer-daemon-lpd.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/5353-udp-multicast-dns-mdns.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/5439-pentesting-redshift.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/554-8554-pentesting-rtsp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/5555-android-debug-bridge.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/5601-pentesting-kibana.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/5671-5672-pentesting-amqp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/584-pentesting-afp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/5984-pentesting-couchdb.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/5985-5986-pentesting-omi.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/5985-5986-pentesting-winrm.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/6000-pentesting-x11.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/623-udp-ipmi.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/6379-pentesting-redis.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/69-udp-tftp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/7-tcp-udp-pentesting-echo.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/700-pentesting-epp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/8009-pentesting-apache-jserv-protocol-ajp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/8086-pentesting-influxdb.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/8089-splunkd.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/8333-18333-38333-18444-pentesting-bitcoin.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/873-pentesting-rsync.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/9000-pentesting-fastcgi.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/9001-pentesting-hsqldb.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/9100-pjl.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/cassandra.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/ipsec-ike-vpn-pentesting.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/nfs-service-pentesting.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-264-check-point-firewall-1.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-631-internet-printing-protocol-ipp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-compaq-hp-insight-manager.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-dns.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-finger.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-ftp/ftp-bounce-attack.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-ftp/ftp-bounce-download-2oftp-file.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-imap.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-irc.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-iso-8583-payment-sockets.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-jdwp-java-debug-wire-protocol.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-kerberos-88/harvesting-tickets-from-linux.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-kerberos-88/harvesting-tickets-from-windows.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-ldap.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-modbus.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-mssql-microsoft-sql-server/types-of-mssql-users.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-mysql.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-ntp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-pop.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-postgresql.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-rdp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-remote-gdbserver.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-rlogin.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-rpcbind.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-rsh.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-sap.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-smb/ksmbd-attack-surface-and-fuzzing-syzkaller.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-smb/rpcclient-enumeration.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-smtp/smtp-commands.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-smtp/smtp-smuggling.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-snmp/cisco-snmp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-snmp/snmp-rce.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-ssh.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-telnet.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-veeam-backup-and-replication.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-vnc.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-voip/basic-voip-protocols/sip-session-initiation-protocol.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/403-and-401-bypasses.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/aem-adobe-experience-cloud.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/angular.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/apache-tapestry.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/apache.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/artifactory-hacking-guide.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/bolt-cms.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/buckets/firebase-database.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/cgi.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/code-review-tools.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/custom-protocols.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/django.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/dotnet-soap-wsdl-client-exploitation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/dotnetnuke-dnn.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/drupal/drupal-rce.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/electron-desktop-apps/electron-contextisolation-rce-via-electron-internal-code.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/electron-desktop-apps/electron-contextisolation-rce-via-ipc.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/electron-desktop-apps/electron-contextisolation-rce-via-preload-code.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/flask.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/fortinet-fortiweb.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/geonetwork.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/git.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/golang.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/grafana.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/graphql.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/h2-java-sql-database.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/iis-internet-information-services.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/imagemagick-security.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/ispconfig.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/jboss.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/jira.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/joomla.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/jsp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/laravel.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/meshcentral.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/microsoft-sharepoint.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/moodle.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/nextjs.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/nginx.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/nodejs-express.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/perl-tricks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-rce-abusing-object-creation-new-usd_get-a-usd_get-b.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-ssrf.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-dl-function.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-imagick-less-than-3.3.0-php-greater-than-5.4-exploit.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-mod_cgi.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-php-4-greater-than-4.2.0-php-5-pcntl_exec.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-php-5.2-fopen-exploit.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-php-5.2.3-win32std-ext-protections-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-php-5.2.4-and-5.2.5-php-curl.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-php-7.0-7.4-nix-only.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-php-fpm-fastcgi.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-php-less-than-5.2.9-on-windows.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-php-perl-extension-safe_mode-bypass-exploit.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-php-safe_mode-bypass-via-proc_open-and-custom-environment-exploit.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-via-mem.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-php-5.2.4-ioncube-extension-exploit.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-php-5.x-shellshock-exploit.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/prestashop.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/proxmox-ve.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/put-method-webdav.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/python.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/rocket-chat.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/roundcube.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/ruby-tricks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/servicenow.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/special-http-headers.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/spring-actuators.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/symphony.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/telerik-ui-aspnet-ajax-unsafe-reflection-webresource-axd.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/traefik.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/uncovering-cloudflare.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/veeam-service-provider-console.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/vmware-esx-vcenter....html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/vuejs.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/web-api-pentesting.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/werkzeug.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/wordpress.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/wsgi.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/zabbix.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/zoneminder-motioneye-motion.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/2fa-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/abusing-hop-by-hop-headers.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/account-takeover.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/browser-extension-pentesting-methodology/browext-clickjacking.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/browser-extension-pentesting-methodology/browext-permissions-and-host_permissions.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/browser-extension-pentesting-methodology/browext-xss-example.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/browser-extension-pentesting-methodology/forced-extension-load-preferences-mac-forgery-windows.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/bypass-payment-process.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/cache-deception/cache-poisoning-to-dos.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/cache-deception/cache-poisoning-via-url-discrepancies.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/captcha-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/clickjacking.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/client-side-path-traversal.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/client-side-template-injection-csti.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/command-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/content-security-policy-csp-bypass/csp-bypass-self-+-unsafe-inline-with-iframes.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/cors-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/crlf-0d-0a.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/csrf-cross-site-request-forgery.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/dangling-markup-html-scriptless-injection/ss-leaks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/dapps-DecentralizedApplications.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/dependency-confusion.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/basic-.net-deserialization-objectdataprovider-gadgets-expandedwrapper-and-json.net.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/basic-java-deserialization-objectinputstream-readobject.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/exploiting-__viewstate-knowing-the-secret.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/exploiting-__viewstate-parameter.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/java-dns-deserialization-and-gadgetprobe.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/java-jsf-viewstate-.faces-deserialization.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/java-signedobject-gated-deserialization.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/java-transformers-to-rutime-exec-payload.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/jndi-java-naming-and-directory-interface-and-log4shell.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/livewire-hydration-synthesizer-abuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/nodejs-proto-prototype-pollution/client-side-prototype-pollution.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/nodejs-proto-prototype-pollution/express-prototype-pollution-gadgets.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/nodejs-proto-prototype-pollution/prototype-pollution-to-rce.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/php-deserialization-+-autoload-classes.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/python-yaml-deserialization.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/ruby-_json-pollution.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/ruby-class-pollution.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/domain-subdomain-takeover.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/email-injections.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/file-inclusion/lfi2rce-via-compress.zlib-+-php_stream_prefer_studio-+-path-disclosure.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/file-inclusion/lfi2rce-via-eternal-waiting.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/file-inclusion/lfi2rce-via-nginx-temp-files.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/file-inclusion/lfi2rce-via-php-filters.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/file-inclusion/lfi2rce-via-phpinfo.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/file-inclusion/lfi2rce-via-segmentation-fault.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/file-inclusion/lfi2rce-via-temp-file-uploads.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/file-inclusion/phar-deserialization.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/file-inclusion/via-php_session_upload_progress.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/file-upload/pdf-upload-xxe-and-cors-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/formula-csv-doc-latex-ghostscript-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/grpc-web-pentest.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/h2c-smuggling.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/hacking-jwt-json-web-tokens.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/hacking-with-cookies/cookie-bomb.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/hacking-with-cookies/cookie-jar-overflow.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/hacking-with-cookies/cookie-tossing.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/http-connection-contamination.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/http-connection-request-smuggling.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/http-request-smuggling/browser-http-request-smuggling.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/http-request-smuggling/request-smuggling-in-http-2-downgrades.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/http-response-smuggling-desync.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/idor.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/iframe-traps.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/json-xml-yaml-hacking.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/ldap-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/login-bypass/sql-login-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/mass-assignment-cwe-915.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/nosql-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/oauth-to-account-takeover.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/open-redirect.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/orm-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/parameter-pollution.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/phone-number-injections.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/pocs-and-polygloths-cheatsheet/web-vulns-list.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/postmessage-vulnerabilities/blocking-main-page-to-steal-postmessage.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/postmessage-vulnerabilities/bypassing-sop-with-iframes-1.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/postmessage-vulnerabilities/bypassing-sop-with-iframes-2.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/postmessage-vulnerabilities/steal-postmessage-modifying-iframe-location.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/proxy-waf-protections-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/race-condition.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/rate-limit-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/registration-vulnerabilities.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/regular-expression-denial-of-service-redos.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/reset-password.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/reverse-tab-nabbing.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/rsql-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/saml-attacks/saml-basics.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/server-side-inclusion-edge-side-inclusion-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/soap-jax-ws-threadlocal-auth-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/cypher-injection-neo4j.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/ms-access-sql-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/mssql-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/mysql-injection/mysql-ssrf.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/oracle-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/postgresql-injection/big-binary-files-upload-postgresql.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/postgresql-injection/dblink-lo_import-data-exfiltration.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/postgresql-injection/network-privesc-port-scanner-and-ntlm-chanllenge-response-disclosure.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/postgresql-injection/pl-pgsql-password-bruteforce.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/postgresql-injection/rce-with-postgresql-extensions.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/postgresql-injection/rce-with-postgresql-languages.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/sqlmap.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/sql-injection/sqlmap/second-order-injection-sqlmap.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/ssrf-server-side-request-forgery/cloud-ssrf.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/ssrf-server-side-request-forgery/ssrf-vulnerable-platforms.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/ssrf-server-side-request-forgery/url-format-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/ssti-server-side-template-injection/el-expression-language.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/ssti-server-side-template-injection/jinja2-ssti.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/timing-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/unicode-injection/unicode-normalization.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/uuid-insecurities.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/web-tool-wfuzz.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/web-vulnerabilities-methodology.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/websocket-attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xpath-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xs-search/connection-pool-by-destination-example.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xs-search/connection-pool-example.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xs-search/cookie-bomb-+-onerror-xs-leak.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xs-search/css-injection/css-injection-code.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xs-search/css-injection/less-code-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xs-search/event-loop-blocking-+-lazy-images.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xs-search/javascript-execution-xs-leak.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xs-search/performance.now-+-force-heavy-task.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xs-search/performance.now-example.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xs-search/url-max-length-client-side.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xslt-server-side-injection-extensible-stylesheet-language-transformations.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/abusing-service-workers.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/chrome-cache-to-xss.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/debugging-client-side-js.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/dom-clobbering.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/dom-invader.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/dom-xss.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/iframes-in-xss-and-csp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/integer-overflow.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/js-hoisting.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/other-js-tricks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/pdf-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/server-side-xss-dynamic-pdf.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/shadow-dom.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/sniff-leak.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/some-same-origin-method-execution.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/steal-info-js.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/wasm-linear-memory-template-overwrite-xss.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/xss-in-markdown.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xssi-cross-site-script-inclusion.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/pentesting-web/xxe-xee-xml-external-entity.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/advanced-network-privacy-architectures.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/anonymous-internet-access-techniques.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/anonymous-payment-techniques.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/attribution-detection-and-countermeasures.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/authorized-adversary-emulation-labs.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/authorized-red-team-infrastructure.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/capture-resilient-authorized-field-nodes.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/covert-physical-wireless-access.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/cryptocurrency-privacy.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/financial-obfuscation-tradecraft.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/government-and-apt-case-studies.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/network-privacy-and-anonymous-connectivity.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/offensive-infrastructure-and-attribution-evasion.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/operational-privacy-playbooks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/privacy-operating-systems.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/privacy-preserving-communications-and-sharing.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/privacy-preserving-payment-protocols.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/private-digital-payments.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/reproducible-privacy-testing.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/privacy/threat-modeling-and-identity-separation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/reversing/common-api-used-in-malware.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/reversing/reversing-tools-basic-methods/angr/angr-examples.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/reversing/reversing-tools-basic-methods/blobrunner.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/reversing/reversing-tools-basic-methods/cheat-engine.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/reversing/reversing-tools-basic-methods/nodejs-v8-cached-bytecode.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/reversing/reversing-tools-basic-methods/satisfiability-modulo-theories-smt-z3.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/reversing/word-macros.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/android-forensics.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/burp-suite.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/hardware-hacking/fault_injection_attacks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/hardware-hacking/i2c.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/hardware-hacking/jtag.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/hardware-hacking/radio.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/hardware-hacking/side_channel_analysis.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/hardware-hacking/spi.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/hardware-hacking/uart.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/industrial-control-systems-hacking/modbus.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/interesting-http.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/more-tools.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/online-platforms-with-api.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/other-web-tricks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/post-exploitation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/fissure-the-rf-framework.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/flipper-zero/fz-125khz-rfid.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/flipper-zero/fz-ibutton.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/flipper-zero/fz-infrared.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/flipper-zero/fz-nfc.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/flipper-zero/fz-sub-ghz.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/ibutton.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/infrared.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/low-power-wide-area-network.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/maxiprox-mobile-cloner.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/pentesting-ble-bluetooth-low-energy.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/pentesting-rfid.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/proxmark-3.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/sub-ghz-rf.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/rust-basics.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/stealing-sensitive-information-disclosure-from-a-web.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/todo/test-llms.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/TimeRoasting.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/abusing-ad-mssql.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/acl-persistence-abuse/BadSuccessor.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/acl-persistence-abuse/shadow-credentials.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/ad-certificates.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/ad-certificates/account-persistence.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/ad-certificates/certificate-theft.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/ad-certificates/domain-escalation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/ad-certificates/domain-persistence.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/ad-dns-records.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/ad-dynamic-objects-anti-forensics.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/ad-information-in-printers.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/adws-enumeration.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/asreproast.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/badsuccessor-dmsa-migration-abuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/bloodhound.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/constrained-delegation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/custom-ssp.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/dcshadow.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/dcsync.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/diamond-ticket.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/dsrm-credentials.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/external-forest-domain-one-way-outbound.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/external-forest-domain-oneway-inbound.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/golden-dmsa-gmsa.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/golden-ticket.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/kerberoast.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/kerberos-authentication.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/kerberos-double-hop-problem.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/lansweeper-security.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/laps.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/ldap-signing-and-channel-binding.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/over-pass-the-hash-pass-the-key.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/pass-the-ticket.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/password-spraying.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/printers-spooler-service-abuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/printnightmare.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/privileged-groups-and-token-privileges.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/rdp-sessions-abuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/resource-based-constrained-delegation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/sccm-management-point-relay-sql-policy-secrets.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/security-descriptors.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/sid-history-injection.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/silver-ticket.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/skeleton-key.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/unconstrained-delegation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/authentication-credentials-uac-and-efs.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/authentication-credentials-uac-and-efs/uac-user-account-control.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/av-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/basic-cmd-for-pentesters.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/basic-powershell-for-pentesters/powerview.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/checklist-windows-privilege-escalation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/cobalt-strike.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/lateral-movement/atexec.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/lateral-movement/dcomexec.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/lateral-movement/psexec-and-winexec.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/lateral-movement/rdpexec.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/lateral-movement/scmexec.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/lateral-movement/winrm.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/lateral-movement/wmiexec.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/mythic.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/ntlm/places-to-steal-ntlm-creds.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/protocol-handler-shell-execute-abuse.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/stealing-credentials/credentials-mimikatz.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/stealing-credentials/credentials-protections.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/stealing-credentials/wts-impersonator.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/abusing-auto-updaters-and-ipc.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/access-tokens.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/acls-dacls-sacls-aces.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/appenddata-addsubdirectory-permission-over-service-registry.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/arbitrary-kernel-rw-token-theft.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/com-hijacking.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/create-msi-with-wix.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/dll-hijacking/advanced-html-staged-dll-sideloading.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/dll-hijacking/windows-cpython-build-landmark-sys-path-hijacking.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/dll-hijacking/writable-sys-path-dll-hijacking-privesc.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/dpapi-extracting-passwords.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/from-high-integrity-to-system-with-name-pipes.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/integrity-levels.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/juicypotato.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/kernel-race-condition-object-manager-slowdown.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/leaked-handle-exploitation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/local-ntlm-reflection-via-smb-arbitrary-port.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/msi-wrapper.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/named-pipe-client-impersonation.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/notepad-plus-plus-plugin-autoload-persistence.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/privilege-escalation-abusing-tokens.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/privilege-escalation-with-autorun-binaries.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/roguepotato-and-printspoofer.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/secure-desktop-accessibility-registry-propagation-regpwn.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/sedebug-+-seimpersonate-copy-token.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/seimpersonate-from-high-to-system.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/semanagevolume-perform-volume-maintenance-tasks.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/service-triggers.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/telephony-tapsrv-arbitrary-dword-write-to-rce.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/uiaccess-admin-protection-bypass.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/windows-c-payloads.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/windows-kernel-rootkits-and-dkom.html"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/windows-registry-hive-exploitation.html"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "tools_and_documentation",
+  "rationale": "Proposed review: concrete English HackTricks technical chapters. Legal, credits, donation, search, and chapter-directory pages are omitted. Publisher scope is penetration testing and exploitation; the snapshot is a collected URL index, not the original sitemap bytes.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:02dcbca5e245031e64fadfcbc83c25d8e8542edd03e4b629f62942399ddcadb3",
+  "snapshot_path": "corpus/indexes/hacktricks-en-v1.json",
+  "source_id": "hacktricks-en-v1"
+}

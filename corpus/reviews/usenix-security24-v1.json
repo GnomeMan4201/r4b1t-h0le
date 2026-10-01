@@ -1,0 +1,1684 @@
+{
+  "admissions": [
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/abbas"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ablove"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/acharya"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/afek"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ahn"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/akgul"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/al-ishtiaq"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/albayaydh"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ali"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/allen"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ammar"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/an"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/angel"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/angelakopoulos"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/annamalai-linear"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/annamalai-theory"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/anwar"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/arkalakis"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/arunasalam"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ashiq"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/asmita"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/avllazagaj"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/b%C3%A4umer"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/badva"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bailey"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/basque"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/benaloh"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bernardo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bethany"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bhargavan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bielova"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bienstock"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bisping"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bocovich"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bognar"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/borem"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/borkar"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bouhoula"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/brown"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/brumley"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bulekov"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/busch-globalconfusion"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/busch-tea"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cai-yifeng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cai-yuandao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/calderonio"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cao-guodong"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cao-leo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/chakraborty"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/chaliasos"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/chang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/chen-baodong"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/chen-boru"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/chen-meng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/chen-yihao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cheng-kaiming"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cheng-xiaoyu"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cheon"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cherubin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/chesser"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cho-chongwon"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cho-kyuwon"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/choudhuri"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/collins"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/coppola"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cornelissen"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cortier"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/crimmins"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cuevas"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/dahiya"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/de-castro"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/de-pasquale"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/de-silva"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/debenedetti"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/delaune"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/deng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/dentan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/dhondt"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/diaa"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/dong-kai"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/dong-zikan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/dossche"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/dramko"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/dreier"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/du"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/duan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/dunsche"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/duta"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/eldridge"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/eskandarian"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ethembabaoglu"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/fabrega"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/fang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/feng-siyue"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/feng-yuanyuan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/fischer"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/fourne"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/fuller"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/g%C3%BCler"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/gajland"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/gast"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ge-attacks"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ge-hijacking"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/gegenhuber"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/geihs"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/george"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ghafourian"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/gibbs"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ginesin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/gohil"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/goldberg"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/gr%C3%B6ber-content-creators"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/gr%C3%B6ber-private-clouds"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/grosse"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/guo-keyan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/guo-qian"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/guo-ruoyang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/guo-yanan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/guo-yihao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/guo-ziyi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/gupta"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/h%C3%B6ltervennhoff"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/han-seunghun"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/han-tianshuo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/hao-meng-scalable"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/hao-meng-unbalanced"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/hao-qingying"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/hasegawa"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/he-haojie"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/he-yi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/hielscher"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/hoang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/hoover"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/horvath"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/huaman"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/huang-cheng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/huang-xuanbo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/huang-zirui"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/huang-zonghao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/jahanshahi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/jain"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/jattke"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/jedermann"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ji"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/jia-grace"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/jia-yanxue"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/jia-zian"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/jiang-nan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/jiang-qisheng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/jiang-zhifeng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/jin-di"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/jin-shuaifan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/johannesmeyer"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/joslin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/kang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/kaspereit"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/kayondo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/khandelwal"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/kirchner"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/koisser"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/kon"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/kondracki"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/kostan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/krauss-clearstamp"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/krauss-verify"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/krish"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/kumari"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lamster"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lassak"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/layton"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lazzaretti"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/le"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lee"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lei"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/len"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/levi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/li-changjiang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/li-hanjun"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/li-jiacheng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/li-jiawei"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/li-kecen"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/li-luyi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/li-penghui"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/li-shaofeng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/li-songze"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/li-tuo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/li-yuexin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lin-yan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lin-zhenpeng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lin-zilong"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lin-ziyu"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lindenmeier"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ling"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/linker"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lisowski"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/little"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-changming"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-dexin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-dinghao-detecting"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-dinghao-improving"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-dongli"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-fengrun"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-han"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-hongbin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-jian"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-mingyi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-peiyu"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-ruofan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-shigang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-shuofeng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-tiantian"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-tong"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-yijing"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-yupei"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-zeyu"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/longo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lopez-morales"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lorch"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lou"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lu-haoran"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lu-hongyi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/luick"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lycklama"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lyu"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ma-jinrui"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ma-xiaoyue"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/maar-defects"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/maar-slubstick"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/mahdavi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/mandal"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/mankali"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/maxam"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/mazzocca"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/meeus"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/meng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/menon"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/mera"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/mirkin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/mirnajafizadeh"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/mitseva"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/mohamed"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/mondal"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/muller"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/munir"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/nayan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/nazari"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/nguyen"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/nie"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/nino"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/noorbakhsh"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/oconnell"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ogut"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/olgun"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/olsson"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/oqaily"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/oygenblik"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/palazzo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/pan-shidong-hope"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/pan-shidong-trap"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/pan-yepeng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/panahi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/pantelaios"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/paudel-enabling"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/paudel-pixelmod"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/pegoraro"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/pourali"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/qi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/qin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ragab"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/rahman"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/raj"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ramesh"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ramjit"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ramulu"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ren"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/risse"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/rong"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/roth"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/rothblum"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/sabzi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/sawaya"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/sb"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/scarlata"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/sch%C3%B6ps"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/schilling"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/schl%C3%BCter"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/schr%C3%B6der"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/schwarz"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/serafini"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/seymour"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/shagam"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/shao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/sharevski"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/sharma"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/shen-meng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/shen-xinyue"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/shimmi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/slocum"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/sokoto"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/solt"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/soneji"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/song-wei"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/song-yuanming"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/sridhara"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/stafeev"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/su-ting"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/su-weihao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/su-zihao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/sun-bing"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/sun-chenxin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/sun-tianle"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/tabassum"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/tan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/tang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/teoh"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/thirumuruganathan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/thompson"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/thudi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/tiwari"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/tobah"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/tsang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/tu"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/uetz"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/vetrivel"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/virkud"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-chao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-haichen"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-jialai"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-jiming"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-kun"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-lijin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-mingzhe"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-ping-lun"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-shuo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-songlei"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-xingkai"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-yibo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-yujie"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-zicheng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-zihao-dpadapter"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-zihao-tossing"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wei-jianghong"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wei-miranda-solk"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wei-miranda-understanding"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/weiss"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wen"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wessels"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wiebing"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/williams"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wu-chuxiong"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wu-jianliang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wu-mingli"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wu-yixin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wu-yuhao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wyss"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xia"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xiang-chong"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xiang-yi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xie-qinge"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xie-xiang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xing-jiarong"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xing-yunlong"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xiu"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xu-dandan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xu-haichuan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xu-zhangchen"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xu-zhibo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xue-bridging"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xue-fingerprinting"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yaish"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yang-fangfei"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yang-limin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yang-tianchang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yang-yibin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yang-yupeng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yang-zhuolin"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ye"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yoo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yu-feiyang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yu-jiahao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yu-le"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yu-tingfeng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yu-yinbo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yu-zheng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yu-zhiyuan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yuan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yue"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhai"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-boyang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-guangsheng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-guoming"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-jipeng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-mingfei"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-peihua"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-qibo"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-qifan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-qingzhao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-rui"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-ruisi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-ruiyi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-tingwei"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-yifan"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-yunyi-dark"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-yunyi-rethinking"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-yunyi-zone"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-zheng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-zhenkai"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-zongyang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zheng"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhu-chang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhu-shenchen"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zhuang"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/zou"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "academic_research",
+  "rationale": "Proposed review: individual accepted-paper presentation pages from usenixsecurity24 security proceedings. These pages carry abstracts and paper/presentation material. Sponsors, schedules, social links and external artifacts are not admitted by this review.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:183bdf5a7ab484132b142c2890e8135dddb5dea5310178faf037d334c8bee0cb",
+  "snapshot_path": "corpus/indexes/usenix-security24-v1.json",
+  "source_id": "usenix-security24-v1"
+}

@@ -1,0 +1,2504 @@
+{
+  "admissions": [
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/01/15/home-lab-on-the-super-cheap-esxi.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/01/15/home-lab-on-the-super-cheap-the-hardware.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/04/29/htb-bashed.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/05/12/htb-fluxcapacitor.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/06/03/htb-crimestoppers.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/06/04/emotet-doc-sample.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/06/08/malware-analysis-facture-impayee-30-mai0730-04071885doc.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/06/10/intro-to-ssh-tunneling.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/06/18/htb-chatterbox.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/06/23/htb-falafel.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/06/30/htb-nibbles.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/07/07/malware-analysis-faktura_vat_115590300178js.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/07/07/second-order-sql-injection-on-htb-nightmare.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/07/15/htb-bart.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/07/21/htb-aragog.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/07/24/sans-sec599-review.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/07/28/htb-valentine.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/07/31/malware-analysis-muddoc.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/08/04/htb-silo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/08/06/malware-analysis-inovoice-019338pdf.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/08/07/malware-analysis-penn-national-health-and-wellness-program-2018doc.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/08/09/malware-analysis-dotanfiledoc.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/08/25/htb-celestial.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/08/25/secnotes-now-live-on-hackthebox.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/09/01/htb-stratosphere.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/09/08/htb-poison.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/09/12/malware-analysis-yourexploitpdf.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/09/15/htb-canape.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/09/15/malware-analysis-bmw_of_sterlindoc.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/09/22/htb-olympus.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/09/29/htb-sunday.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/10/11/pwk-notes-post-exploitation-windows-file-transfers.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/10/13/htb-devoops.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/10/20/htb-tartarsauce.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/10/21/htb-tartarsauce-part-2-backuperer-follow-up.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/10/27/htb-bounty.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/11/03/htb-dropzone.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/11/08/powershell-history-file.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/11/10/htb-reel.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/11/13/malware-analysis-phishing-docs-from-htb-reel.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/11/17/htb-jerry.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/11/24/htb-smasher-bof.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/11/24/htb-smasher.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/11/30/htb-hawk.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/12/02/pwk-notes-smb-enumeration-checklist-update1.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/12/08/htb-active.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/12/15/htb-waldo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2018/12/19/jq.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/01/05/htb-mischief.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/01/08/htb-mischief-more-root.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/01/12/htb-oz.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/01/13/getting-net-ntlm-hases-from-windows.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/01/19/htb-secnotes.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/01/26/htb-reddish.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/02/02/htb-dab.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/02/09/htb-ypuffy.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/02/13/playing-with-dirty-sock.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/02/16/htb-giddy.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/02/21/htb-legacy.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/02/22/wl-dummy.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/02/23/htb-zipper.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/02/27/playing-with-jenkins-rce-vulnerability.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/02/htb-access.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/05/htb-devel.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/06/htb-granny.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/09/htb-ethereal-pbox.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/09/htb-ethereal-shell.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/09/htb-ethereal.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/12/htb-bastard.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/15/htb-ethereal-cor.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/16/htb-carrier.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/23/htb-frolic.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/26/htb-october.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/27/analyzing-document-macros-with-yara.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/03/30/htb-curling.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/04/03/wl-devlife.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/04/06/htb-vault.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/04/09/commando-vm-installation.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/04/10/commando-vm-overview.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/04/13/htb-redcross.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/04/15/commando-vm-lessons.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/04/20/htb-teacher.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/04/27/htb-irked.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/05/04/htb-bighead-bof.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/05/04/htb-bighead.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/05/11/htb-lightweight.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/05/18/htb-conceal.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/05/21/malware-analysis-unnamed-emotet-doc.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/05/22/emotet-pivot.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/05/25/htb-chaos.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/06/01/htb-sizzle.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/06/08/htb-help.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/06/15/htb-flujab.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/06/22/htb-querier.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/06/29/htb-netmon.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/07/01/darling-running-macos-binaries-on-linux.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/07/06/htb-hackback.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/07/13/htb-friendzone.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/07/20/htb-ctf.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/07/27/htb-lacasadepapel.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/08/02/bypassing-php-disable_functions-with-chankro.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/08/03/htb-fortune.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/08/10/htb-arkham.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/08/17/htb-helpline-kali.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/08/17/htb-helpline-win.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/08/17/htb-helpline.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/08/24/htb-unattended.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/08/31/htb-onetwoseven.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/09/07/htb-bastion.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/09/11/htb-holiday.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/09/14/htb-luke.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/09/21/htb-kryptos.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/09/28/htb-swagshop.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/10/05/htb-ghoul.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/10/12/htb-writeup.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/10/19/htb-ellingson.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/10/26/htb-safe.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/11/02/htb-haystack.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/11/09/htb-jarvis.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/11/16/htb-networked.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/11/23/htb-chainsaw.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/11/26/htb-chainsaw-rootkit.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/11/30/htb-heist.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/12/07/htb-wall.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2019/12/14/htb-smasher2.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/01/04/htb-craft.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/01/11/htb-bitlab.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/01/18/htb-player.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/01/25/htb-ai.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/01/26/digging-into-psexec-with-htb-nest.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/02/01/htb-re.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/02/15/htb-json.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/02/22/htb-zetta.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/02/29/htb-scavenger.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/03/07/htb-bankrobber.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/03/14/htb-postman.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/03/21/htb-forest.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/03/24/update-alternatives.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/03/28/htb-sniper.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/04/04/htb-registry.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/04/07/htb-lame.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/04/08/htb-lame-more.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/04/09/htb-sniper-beyondroot.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/04/11/htb-traverxec.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/04/14/htb-cronos.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/04/18/htb-mango.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/04/22/htb-nineveh.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/04/25/htb-control.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/04/30/htb-solidstate.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/05/02/htb-openadmin.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/05/04/covid-19-ctf-covidscammers.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/05/09/htb-obscurity.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/05/12/ngrok-ftw.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/05/16/htb-patents.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/05/19/htb-arctic.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/05/23/htb-rope.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/05/28/htb-grandpa.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/05/30/htb-resolute.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/06/01/resolute-more-beyond-root.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/06/06/htb-nest.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/06/08/endgame-poo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/06/13/htb-monteverde.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/06/17/endgame-xen.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/06/20/htb-servmon.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/06/23/htb-popcorn.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/06/27/htb-playertwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/06/30/htb-blocky.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/07/04/htb-forwardslash.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/07/07/htb-bank.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/07/11/htb-book.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/07/14/htb-tenten.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/07/18/htb-sauna.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/07/22/htb-shrek.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/07/25/htb-cascade.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/07/29/htb-lazy.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/08/01/htb-oouch.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/08/04/htb-pwnbox-review.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/08/08/htb-fatty.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/08/08/jar-files-analysis-and-modifications.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/08/13/htb-joker.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/08/15/htb-traceback.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/08/22/htb-magic.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/08/27/htb-calamity.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/08/29/htb-quick.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/09/03/htb-mantis.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/09/05/htb-remote.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/09/08/roguepotato-on-remote.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/09/10/htb-haircut.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/09/12/htb-travel.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/09/17/zerologon-owning-htb-machines-with-cve-2020-1472.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/09/19/htb-multimaster.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/09/26/htb-admirer.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/10/03/htb-blackfield.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/10/10/htb-cache.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/10/17/htb-blunder.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/10/24/htb-dyplesher.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/10/31/htb-fuse.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/11/07/htb-tabby.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/11/14/htb-intense.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/11/21/htb-buff.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/11/28/htb-sneakymailer.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/12/05/htb-unbalanced.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/12/12/htb-openkeys.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2020/12/19/htb-laser.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/01/09/htb-omni.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/01/16/htb-ropetwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/01/23/htb-compromised.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/01/30/htb-worker.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/02/02/htb-europa.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/02/06/htb-doctor.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/02/09/htb-apocalyst.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/02/13/htb-jewel.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/02/16/htb-charon.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/02/20/htb-feline.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/02/23/htb-beep.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/02/27/htb-academy.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/03/02/htb-sneaky.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/03/06/htb-passage.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/03/11/htb-sense.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/03/13/htb-reel2.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/03/15/reel2-root-shell.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/03/17/htb-optimum.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/03/20/htb-crossfit.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/03/27/htb-luanne.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/04/03/htb-time.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/04/10/htb-apt.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/04/17/htb-laboratory.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/04/24/htb-bucket.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/04/27/htb-toolbox.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/05/01/htb-sharp.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/05/03/more-bucket-beyond-root.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/05/04/networking-vms-for-htb.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/05/08/htb-attended.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/05/11/htb-blue.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/05/15/htb-ready.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/05/17/digging-into-cgroups.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/05/19/htb-kotarak.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/05/22/htb-delivery.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/05/25/htb-shocker.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/05/29/htb-cereal.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/05/31/htb-cereal-unintended.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/06/05/htb-scriptkiddie.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/06/08/htb-node.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/06/12/htb-tenet.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/06/16/htb-enterprise.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/06/19/htb-tentacle.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/06/26/htb-spectra.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/07/03/htb-ophiuchi.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/07/08/playing-with-printnightmare.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/07/10/htb-atom.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/07/17/htb-breadcrumbs.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/07/24/htb-armageddon.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/07/31/htb-thenotebook.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/08/07/htb-love.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/08/14/htb-crossfittwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/08/21/htb-proper.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/08/27/pivoting-off-phishing-domain.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/08/28/htb-knife.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/08/30/htb-gobox.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/09/04/htb-unobtainium.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/09/11/htb-schooled.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/09/14/htb-validation.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/09/18/htb-sink.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/09/25/htb-pit.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/09/27/htb-jarmis.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/10/02/htb-cap.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/10/09/htb-monitors.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/10/16/htb-dynstr.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/10/23/htb-spider.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/10/26/htb-spooktrol.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/10/30/htb-explore.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/11/02/htb-nunchucks.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/11/06/htb-pivotapi.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/11/08/htb-pivotapi-more.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/11/13/htb-seal.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/11/18/runcode-live-2021-solutions.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/11/20/htb-bountyhunter.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/11/22/htb-union.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/11/27/htb-intelligence.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/12/04/htb-pikaboo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/12/11/htb-writer.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/12/18/htb-static.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2021/12/29/htb-logforge.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/01/08/htb-previse.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/01/10/htb-nodeblog.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/01/15/htb-developer.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/01/22/htb-forge.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/01/29/htb-anubis.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/02/03/htb-pressed.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/02/05/htb-horizontall.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/02/07/funware-cactuscon-2022-ctf.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/02/09/htb-flustered.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/02/12/htb-earlyaccess.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/02/14/htb-steamcloud.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/02/19/htb-bolt.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/02/23/htb-goodgames.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/02/26/htb-driver.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/02/28/htb-object.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/03/05/htb-hancliffe.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/03/10/htb-epsilon.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/03/12/htb-devzat.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/03/15/htb-ransom.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/03/19/htb-stacked.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/03/26/htb-secret.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/03/30/htb-altered.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/02/htb-shibboleth.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/04/htb-inception.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/07/htb-minion.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/09/htb-overflow.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/11/htb-tally.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/12/htb-backend.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/14/htb-jeeves.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/16/htb-toby.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/20/htb-ariekei.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/23/htb-backdoor.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/24/parallelizing-in-bash-and-python.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/25/htb-fighter.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/28/htb-rabbit.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/04/30/htb-search.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/05/02/htb-backendtwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/05/03/htb-antique.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/05/05/htb-return.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/05/07/htb-unicode.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/05/11/htb-fulcrum.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/05/14/htb-fingerprint.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/05/16/htb-brainfuck.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/05/18/htb-mirai.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/05/21/htb-pandora.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/05/23/htb-jail.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/05/28/htb-admirertoo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/05/31/setuid-rabbithole.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/06/04/htb-timing.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/06/11/htb-meta.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/06/18/htb-paper.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/06/25/htb-phoenix.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/07/02/htb-undetected.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/07/09/htb-routerspace.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/07/16/htb-acute.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/07/23/htb-catch.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/07/30/htb-late.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/08/06/htb-overgraph.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/08/13/htb-retired.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/08/20/htb-timelapse.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/08/27/htb-talkative.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/09/03/htb-noter.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/09/10/htb-scanned.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/09/17/htb-streamio.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/09/24/htb-seventeen.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/09/28/htb-noter-alternative-root-first-blood.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/10/01/htb-scrambled-beyond-root.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/10/01/htb-scrambled-linux.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/10/01/htb-scrambled-win.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/10/01/htb-scrambled.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/10/08/htb-opensource.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/10/15/htb-perspective.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/10/22/htb-faculty.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/10/29/htb-trick.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/11/05/htb-moderators.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/11/12/htb-shared.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/11/19/htb-hathor.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/11/21/htb-squashed.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/11/26/htb-redpanda.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/12/03/htb-carpediem.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/12/10/htb-outdated.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2022/12/17/htb-support.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/01/07/htb-health.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/01/14/htb-shoppy.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/01/21/htb-updown.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/01/28/htb-ambassador.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/02/04/htb-response.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/02/11/htb-photobomb.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/02/18/htb-rainyday.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/02/25/htb-awkward.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/03/04/htb-forgot.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/03/11/htb-mentor.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/03/18/htb-extension.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/03/25/htb-vessel.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/04/01/htb-sekhmet.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/04/08/htb-broscience.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/04/15/htb-encoding.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/04/22/htb-investigation.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/04/29/htb-metatwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/05/06/htb-flight.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/05/13/htb-interface.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/05/20/htb-precious.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/05/27/htb-absolute.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/06/03/htb-bagel.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/06/07/htb-twomillion.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/06/10/htb-soccer.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/06/17/htb-escape.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/06/24/htb-stocker.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/07/01/htb-pollution.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/07/08/htb-inject.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/07/15/htb-socket.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/07/22/htb-derailed.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/07/29/htb-cerberus.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/08/05/htb-agile.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/08/12/htb-busqueda.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/08/19/htb-mailroom.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/08/26/htb-onlyforyou.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/09/02/htb-monitorstwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/09/09/htb-pikatwoo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/09/16/htb-wifinetic.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/09/23/htb-snoopy.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/09/28/htb-aero.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/09/30/htb-format.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/10/07/htb-pc.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/10/11/exploiting-the-looney-tunables-vulnerability-on-htb-cve-2023-4911-htb-blog.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/10/14/htb-intentions.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/10/21/htb-jupiter.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/10/28/htb-gofer.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/11/04/htb-topology.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/11/09/htb-broker.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/11/11/htb-download.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/11/17/htb-sherlock-i-like-to.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/11/18/htb-sandworm.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/11/25/htb-pilgrimage.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/12/02/htb-cybermonday.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/12/04/htb-sherlock-knock-knock.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/12/09/htb-authority.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/12/14/htb-sherlock-tick-tock.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2023/12/16/htb-coder.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/01/06/htb-sau.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/01/13/htb-zipping.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/01/20/htb-bookworm.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/01/27/htb-clicker.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/02/03/htb-registrytwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/02/10/htb-keeper.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/02/12/htb-builder.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/02/17/htb-drive.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/02/24/htb-visual.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/03/02/htb-cozyhosting.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/03/09/htb-appsanity.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/03/16/htb-manager.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/03/23/htb-analytics.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/03/30/htb-rebound.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/04/06/htb-codify.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/04/09/htb-sherlock-brutus.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/04/11/htb-sherlock-unit42.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/04/13/htb-hospital.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/04/17/htb-sherlock-bft.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/04/18/htb-sherlock-subatomic.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/04/20/htb-surveillance.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/04/23/htb-sherlock-meerkat.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/04/27/htb-devvortex.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/05/02/htb-sherlock-einladen.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/05/04/htb-napper.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/05/07/gftrace.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/05/09/htb-sherlock-einladen-malware-re.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/05/11/htb-monitored.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/05/16/htb-sherlock-logjammer.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/05/18/htb-ouija.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/05/22/htb-sherlock-bumblebee.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/05/25/htb-bizness.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/05/30/htb-sherlock-nubilum-1.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/06/01/htb-analysis.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/06/05/htb-sherlock-constellation.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/06/08/htb-pov.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/06/13/htb-sherlock-noted.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/06/15/htb-crafty.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/06/22/htb-office.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/06/24/htb-sherlock-campfire-1.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/06/29/htb-jab.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/07/06/htb-perfection.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/07/13/htb-corporate.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/07/20/htb-headless.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/07/23/htb-sherlock-tracer.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/07/26/htb-sherlock-campfire-2.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/07/27/htb-wifinetictwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/08/03/htb-iclean.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/08/10/htb-usage.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/08/17/htb-formulax.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/08/22/htb-sherlock-reaper.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/08/24/htb-runner.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/08/31/htb-skyfall.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/09/04/htb-sherlock-noxious.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/09/07/htb-mailing.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/09/14/htb-intuition.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/09/21/htb-solarlab.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/09/28/htb-boardlight.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/10/02/htb-evilcups.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/10/05/htb-freelancer.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/10/12/htb-blurry.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/10/19/htb-editorial.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/10/22/htb-sherlock-pikaptcha.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/10/26/htb-mist.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/11/02/htb-permx.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/11/09/htb-blazorized.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/11/16/htb-axlle.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/11/23/htb-resource.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/11/30/htb-lantern.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/12/07/htb-greenhorn.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/12/14/htb-compiled.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2024/12/21/htb-sea.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/01/11/htb-sightless.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/01/18/htb-monitorsthree.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/01/25/htb-caption.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/01/28/htb-strutted.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/02/01/htb-trickster.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/02/08/htb-magicgardens.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/02/15/htb-cicada.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/02/22/htb-yummy.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/03/01/htb-instant.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/03/04/htb-unrested.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/03/08/htb-chemistry.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/03/15/htb-certified.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/03/22/htb-alert.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/03/29/htb-blockblock.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/04/05/htb-ghost.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/04/12/htb-linkvortex.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/04/19/htb-administrator.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/04/26/htb-vintage.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/05/03/htb-bigbang.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/05/10/htb-underpass.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/05/17/htb-heal.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/05/24/htb-escapetwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/05/31/htb-checker.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/06/07/htb-backfire.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/06/14/htb-infiltrator.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/06/17/htb-down.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/06/19/htb-shibuya.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/06/21/htb-titanic.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/06/24/htb-retro.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/06/28/htb-haze.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/01/htb-data.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/03/htb-vulncicada.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/05/htb-cat.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/08/htb-vulnescape.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/12/htb-dog.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/15/htb-reset.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/17/htb-redelegate.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/19/htb-scepter.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/22/htb-retrotwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/24/htb-ten.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/26/htb-cypher.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/29/htb-manage.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/07/31/htb-lustroustwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/02/htb-code.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/05/htb-build.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/07/htb-rainbow.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/09/htb-university.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/12/htb-zero.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/14/htb-sweep.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/16/htb-nocturnal.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/19/htb-phantom.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/21/htb-lock.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/23/htb-thefrizz.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/26/htb-reaper.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/28/htb-sendai.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/08/30/htb-eureka.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/09/02/htb-race.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/09/04/htb-media.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/09/06/htb-environment.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/09/12/htb-delegate.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/09/13/htb-planning.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/09/16/htb-forgotten.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/09/19/htb-baby.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/09/20/htb-fluffy.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/09/26/htb-babytwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/09/27/htb-puppy.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/10/04/htb-certificate.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/10/09/htb-watcher.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/10/11/htb-tombwatcher.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/10/18/htb-darkcorp.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/10/25/htb-artificial.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/10/30/htb-store.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/11/01/htb-voleur.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/11/04/htb-dump.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/11/08/htb-rustykey.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/11/15/htb-outbound.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/11/22/htb-mirage.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/11/29/htb-era.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/12/06/htb-editor.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2025/12/13/htb-whiterabbit.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/01/10/htb-previous.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/01/17/htb-hacknet.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/01/24/htb-imagery.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/01/26/htb-job.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/01/27/htb-jobtwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/01/29/barbhack-2025-ctf.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/01/31/htb-codetwo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/02/03/htb-bamboo.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/02/07/htb-signed.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/02/10/htb-breach.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/02/12/htb-slonik.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/02/14/htb-soulmate.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/02/21/htb-giveback.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/02/24/htb-bruno.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/02/28/htb-guardian.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/03/03/htb-barrier.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/03/07/htb-expressway.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/03/14/htb-gavel.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/03/21/htb-conversor.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/03/28/htb-browsed.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/03/30/htb-principal.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/04/01/htb-snapped.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/04/04/htb-darkzero.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/04/11/htb-eighteen.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/04/18/htb-airtouch.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/04/25/htb-sorcery.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/05/09/htb-overwatch.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/05/16/htb-pterodactyl.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/05/23/htb-monitorsfour.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/05/30/htb-interpreter.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/06/06/htb-facts.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/06/13/htb-variatype.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/06/20/htb-nanocorp.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/06/27/htb-wingdata.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/07/04/htb-devarea.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/07/07/htb-abducted.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/07/11/htb-cctv.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/07/14/htb-orion.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/07/18/htb-logging.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/07/25/htb-fries.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/08/01/htb-kobold.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/08/08/htb-helix.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/08/15/htb-cobblestone.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/09/02/htb-nexus.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/09/05/htb-pirate.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/09/12/htb-silentium.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/09/15/htb-ghostlink.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/09/21/htb-hercules.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://0xdf.gitlab.io/2026/09/26/htb-smarthire.html"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Proposed review: dated technical articles from 0xdf cybersecurity/CTF writeup archive. Tag, search, and other navigation pages remain unreviewed. Archive scope review does not assert a per-page content audit.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:3075f96abc09d53974ddc80b6663b4600fccc51b708a0fe4dae5c43bdfc79f4a",
+  "snapshot_path": "corpus/indexes/0xdf-v1.json",
+  "source_id": "0xdf-v1"
+}

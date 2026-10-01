@@ -1,0 +1,51 @@
+{
+  "$id": "source-link-index-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "extractor": {
+      "enum": [
+        "feed-entries-v1",
+        "html-anchors-v1",
+        "sitemap-urls-v1"
+      ]
+    },
+    "final_url": {
+      "format": "uri",
+      "type": "string"
+    },
+    "response_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "r4b1t-source-link-index-v1"
+    },
+    "selection_authority": {
+      "const": false
+    },
+    "source_url": {
+      "format": "uri",
+      "type": "string"
+    },
+    "urls": {
+      "items": {
+        "format": "uri",
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema",
+    "selection_authority",
+    "source_url",
+    "final_url",
+    "response_digest",
+    "extractor",
+    "urls"
+  ],
+  "title": "R4B1T Non-authoritative Source Link Index v1",
+  "type": "object"
+}

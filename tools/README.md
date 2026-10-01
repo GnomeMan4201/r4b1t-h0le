@@ -2,6 +2,17 @@
 
 Pipeline scripts for URL extraction, cleaning, tagging, and BRANCH prompt injection.
 
+## Reviewed corpus expansion
+
+`capture_source_index.py` collects URL-only archive/feed/sitemap candidates.
+`reviewed_source_index.py` compiles exact proposed admissions against pinned
+index bytes. `build_expanded_corpus.py` rebuilds the registered candidate,
+provenance, eligibility and descriptive diversity evidence offline.
+
+See [the expansion workflow](../docs/CORPUS_EXPANSION_V1.md). These scripts do
+not grant selection authority or replace the active runtime corpus. The legacy
+tagging workflow below remains candidate-generation tooling.
+
 ## Workflow
 
 ```bash

@@ -57,7 +57,7 @@ function verifyCorpusClaims(readme) {
   const legacyEvidence = read('docs/readme/legacy-corpus-evidence.md');
   const legacy = corpusMetricsFromText(read('urls.txt'));
   const releaseManifest = JSON.parse(
-    read('corpus/releases/typed-candidate-v0.1/manifest.json'),
+    read('corpus/releases/diverse-candidate-v0.2/manifest.json'),
   );
   const promotion = JSON.parse(read('corpus/runtime/active-v1.json'));
 
@@ -66,7 +66,7 @@ function verifyCorpusClaims(readme) {
   const activeTypes = Object.keys(releaseManifest.counts.resource_types || {}).length;
 
   claim(
-    promotion.active.source_id === 'typed-candidate-v0.1' &&
+    promotion.active.source_id === 'diverse-candidate-v0.2' &&
       promotion.active.selection_authority === true &&
       promotion.active.expected_digest === releaseManifest.urls_digest,
     'runtime promotion drift: active typed release does not match release manifest',
@@ -82,7 +82,7 @@ function verifyCorpusClaims(readme) {
   );
   claim(
     readme.includes('./corpus/runtime/active-v1.json') &&
-      readme.includes('./corpus/releases/typed-candidate-v0.1/manifest.json'),
+      readme.includes('./corpus/releases/diverse-candidate-v0.2/manifest.json'),
     'README must link active corpus authority and release evidence',
   );
   claim(
