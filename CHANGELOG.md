@@ -17,6 +17,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+- BRANCH suggestions are now a deterministic function of the origin URL and active corpus only. Display metadata, Wikipedia enrichment, session topology, ambient randomness, and file-order tie breaking no longer influence offered routes (ADR 0007).
+- BRANCH reason text now states the mechanical driver (scope/URL-token overlap or deterministic fallback) instead of implying stronger semantic classification.
 - Trail export now defaults to `r4b1t-trail/v0.3`, preserving ROLL selection transactions and explicit SELECT/BRANCH navigation as step evidence; labeled legacy v0.1 export remains available for compatibility.
 - `trail:verify` now verifies v0.3 integrity and v0.3 parent lineage in addition to existing v0.1/v0.2 formats. Topology continues through the explicit legacy v0.1 projection until a v0.3 adapter lands.
 - Terrain eligibility now comes from a digest-bound `terrain-index-v1` compiled from the active release's `urls.txt` and `resources.json`. It is anchored by `corpus/runtime/eligibility-profiles-v1.json` (ADR 0006, `TERRAIN_AUTHORITY_CONTRACT.md`). The legacy hostname→terrain table no longer decides membership.

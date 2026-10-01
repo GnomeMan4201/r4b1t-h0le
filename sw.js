@@ -1,4 +1,4 @@
-const CACHE = 'r4b1t-v24-trail-v03-runtime';
+const CACHE = 'r4b1t-v25-branch-determinism';
 const PRECACHE = [
   './',
   './index.html',
@@ -17,6 +17,7 @@ const PRECACHE = [
   './cj1.js',
   './trail-v03.js',
   './selection-core.js',
+  './branch-core.js',
   './terrain-authority.js',
   './trail-runtime.js',
   './blind-manifest.js',
