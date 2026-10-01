@@ -208,3 +208,18 @@ test('V3R-08: mobile MAP TRAILS uses the explicit legacy projection instead of t
   await expect(overlay).toHaveClass(/open/);
   await expect(overlay.locator('.topology-card')).toHaveCount(1);
 });
+
+
+test('V3R-09: Trail Ledger MAP TRAILS preserves current-trail topology through the legacy projection', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+  await commit(page);
+
+  await page.evaluate(() => window.openTrailLedger());
+  await page.locator('#trailLedgerOverlay [data-trail-action="topology"]').click();
+
+  const overlay = page.locator('#trailTopologyOverlay');
+  await expect(overlay).toHaveClass(/open/);
+  await expect(overlay.locator('.topology-card')).toHaveCount(1);
+});
