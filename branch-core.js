@@ -139,7 +139,7 @@
     var origin = parseHttpUrl(originUrl);
     if (!origin || !Array.isArray(corpusUrls)) return [];
 
-    var originText = origin.href;
+    var originText = String(originUrl).trim();
     var originScope = domainKey(originText);
     var seen = new Set();
     var candidates = [];
@@ -147,7 +147,7 @@
     corpusUrls.forEach(function (value) {
       var parsed = parseHttpUrl(value);
       if (!parsed) return;
-      var url = parsed.href;
+      var url = String(value).trim();
       if (url === originText || seen.has(url)) return;
       seen.add(url);
       var scope = domainKey(url);
