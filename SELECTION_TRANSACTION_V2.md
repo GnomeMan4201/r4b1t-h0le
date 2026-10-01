@@ -23,7 +23,7 @@ v1 is never exported. v1 objects already persisted in local drafts stay as they 
 ```json
 {
   "terrain": "security_tool",
-  "terrainIndex": { "schema": "r4b1t-terrain-index-v1", "digest": "sha256:a9bbe4fc56020314a11195c9339fa3a04a14082d6b2f6c259c78be6ee38af5fd" },
+  "terrainIndex": { "schema": "r4b1t-terrain-index-v1", "digest": "sha256:8282156e330ef423acfba8304e4f7419e6d978d7441ef7e5f146a76b9f6b5a00" },
   "protocolPolicy": { "version": 1, "excludeOnion": false }
 }
 ```
@@ -41,8 +41,8 @@ v1 is never exported. v1 objects already persisted in local drafts stay as they 
   "sequence": 1,
   "action": "ROLL",
   "constraint": { "…": "§2" },
-  "corpus_revision": "sha256:ba52be7e2fc9120f3bd1ac2a6bacbc61fc937764e6d4637df8711ec2212bf75c",
-  "eligible_count": 206,
+  "corpus_revision": "sha256:f85a1c710977814c920ff13eb95cf0b86805486668c99dba2d5024d6b1bda3a7",
+  "eligible_count": 212,
   "sampler": {
     "algorithm": "uniform-with-repeat-guard-v1",
     "prng": "mulberry32-v1",

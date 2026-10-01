@@ -13,11 +13,16 @@ const v03 = require('../trail-v03.js');
 const selection = require('../selection-core.js');
 
 const ROOT = path.resolve(__dirname, '..');
-const RELEASE = path.join(ROOT, 'corpus/releases/diverse-candidate-v0.2');
+const PROMOTION = JSON.parse(fs.readFileSync(path.join(ROOT, 'corpus/runtime/active-v1.json'), 'utf8'));
+const RELEASE_ID = PROMOTION.active.release_id;
+const RELEASE = path.join(ROOT, 'corpus/releases', RELEASE_ID);
 const URL_BYTES = fs.readFileSync(path.join(RELEASE, 'urls.txt'));
 const URLS = URL_BYTES.toString('utf8').split(/\r?\n/).map(x => x.trim()).filter(Boolean);
 const MANIFEST = JSON.parse(fs.readFileSync(path.join(RELEASE, 'manifest.json'), 'utf8'));
-const INDEX_PATH = path.join(ROOT, 'corpus/terrains/diverse-candidate-v0.2/terrain-index-v1.json');
+const REGISTRY = JSON.parse(fs.readFileSync(path.join(ROOT, 'corpus/runtime/eligibility-profiles-v1.json'), 'utf8'));
+const PROFILE = REGISTRY.profiles.find(p => p.status === 'active' && p.release.release_id === RELEASE_ID);
+if (!PROFILE) throw new Error('active eligibility profile is missing for ' + RELEASE_ID);
+const INDEX_PATH = path.join(ROOT, PROFILE.terrain_index.path);
 const INDEX_BYTES = fs.readFileSync(INDEX_PATH);
 const INDEX = JSON.parse(INDEX_BYTES.toString('utf8'));
 const INDEX_DIGEST = 'sha256:' + crypto.createHash('sha256').update(INDEX_BYTES).digest('hex');
@@ -106,7 +111,7 @@ test('independent Python re-executor reproduces JS ROLLs across ALL and typed te
   const report = JSON.parse(result.stdout);
   assert.equal(report.status, 'PROVENANCE_REEXECUTED');
   assert.equal(report.roll_steps, 2);
-  assert.equal(report.release_id, 'diverse-candidate-v0.2');
+  assert.equal(report.release_id, RELEASE_ID);
   assert.equal(report.seed_state_bits, 32);
   assert.equal(report.claims.route_derivation, 'PROVEN');
   assert.equal(report.claims.seed_fairness, 'NOT_ESTABLISHED');

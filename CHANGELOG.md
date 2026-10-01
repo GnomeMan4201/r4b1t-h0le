@@ -10,9 +10,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - An independent Python re-executor for `r4b1t-trail/v0.3` ROLL steps. It verifies exact release/terrain evidence and independently reproduces the current FNV-1a → Mulberry32 sampler interval without importing runtime JavaScript; its claim is route derivation, not seed fairness or non-cherry-picking.
-- A proposed 6,859-resource corpus expansion across 37 assertion sources,
-  with exact admission declarations, offline reproducible artifacts and
-  descriptive diversity evidence. The active runtime corpus is unchanged.
+- The `strange-candidate-v0.3` corpus adds 116 unusual security resources and expands the promoted population to 6,975 resources across 345 hosts and 14 resource types, with exact admission declarations and reproducible candidate evidence.
 - URL-only archive, RSS/Atom and sitemap collection plus a separate reviewed
   index compiler; collection alone cannot admit or promote a resource.
 
@@ -23,7 +21,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Trail export now defaults to `r4b1t-trail/v0.3`, preserving ROLL selection transactions and explicit SELECT/BRANCH navigation as step evidence; labeled legacy v0.1 export remains available for compatibility.
 - `trail:verify` now verifies v0.3 integrity and v0.3 parent lineage in addition to existing v0.1/v0.2 formats. Topology continues through the explicit legacy v0.1 projection until a v0.3 adapter lands.
 - Terrain eligibility now comes from a digest-bound `terrain-index-v1` compiled from the active release's `urls.txt` and `resources.json`. It is anchored by `corpus/runtime/eligibility-profiles-v1.json` (ADR 0006, `TERRAIN_AUTHORITY_CONTRACT.md`). The legacy hostname→terrain table no longer decides membership.
-- The terrain vocabulary is the active release's 13 resource types, replacing 16 legacy labels. Against the promoted 6,859-route corpus, 12 legacy labels had no eligible routes and 5,564 routes were reachable only under ALL. The 13 types partition the release, so every route belongs to exactly one terrain.
+- The terrain vocabulary follows the active release's resource types. The `strange-candidate-v0.3` promotion adds `challenge` and binds all 14 types through its release-specific terrain index; every one of the 6,975 routes belongs to exactly one terrain.
 - Every terrain control shows its eligible count before ROLL. A dry terrain cannot be armed. Single-route and two-route terrains are labelled `SINGLE ROUTE` and `ALTERNATES`.
 - ROLL transactions advance to `r4b1t-selection-transaction/v2`. They now record the terrain index binding, the eligible count, and the repeat-guard reference actually used. Sampler behavior is unchanged.
 - An empty eligible pool, or a missing selection authority, is reported explicitly (`#rollStatus`, mobile ROLL scope) instead of silently doing nothing. `ee()` no longer falls back to `Math.random`.
