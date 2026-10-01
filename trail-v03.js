@@ -18,7 +18,7 @@
   var FORMAT = 'r4b1t-trail/v0.3';
   var TRANSACTION = 'r4b1t-selection-transaction/v2';
   var SHA256 = /^sha256:[0-9a-f]{64}$/;
-  var IMPORT_FORMATS = new Set(['r4b1t-trail/v0.1', 'r4b1t-trail/v0.2', FORMAT]);
+  var IMPORT_FORMATS = new Set(['r4b1t-trail/v0.1', FORMAT]);
 
   function clone(value) {
     return JSON.parse(JSON.stringify(value));
