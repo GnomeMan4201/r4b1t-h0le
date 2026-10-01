@@ -1,0 +1,74 @@
+{
+ "profile": "CJ-1",
+ "accept": [
+  {
+   "name": "key order",
+   "value_json": "{\"b\": 1, \"a\": {\"d\": [3, 2, 1], \"c\": null}, \"A\": true}",
+   "canonical_utf8_hex": "7b2241223a747275652c2261223a7b2263223a6e756c6c2c2264223a5b332c322c315d7d2c2262223a317d",
+   "canonical": "{\"A\":true,\"a\":{\"c\":null,\"d\":[3,2,1]},\"b\":1}"
+  },
+  {
+   "name": "uppercase sorts before lowercase",
+   "value_json": "{\"protocolPolicy\": 1, \"excludeOnion\": 2, \"Z\": 3, \"terrainIndex\": 4}",
+   "canonical_utf8_hex": "7b225a223a332c226578636c7564654f6e696f6e223a322c2270726f746f636f6c506f6c696379223a312c227465727261696e496e646578223a347d",
+   "canonical": "{\"Z\":3,\"excludeOnion\":2,\"protocolPolicy\":1,\"terrainIndex\":4}"
+  },
+  {
+   "name": "control chars + quote + backslash",
+   "value_json": "{\"s\": \"a\\\"b\\\\c\\n\\t\\r\\b\\f\\u0001\\u001f\\u007f\"}",
+   "canonical_utf8_hex": "7b2273223a22615c22625c5c635c6e5c745c725c625c665c75303030315c75303031667f227d",
+   "canonical": "{\"s\":\"a\\\"b\\\\c\\n\\t\\r\\b\\f\\u0001\\u001f\"}"
+  },
+  {
+   "name": "non-ASCII raw UTF-8, U+2028/2029 raw",
+   "value_json": "{\"s\": \"\\u00e9\\u6f22\\ud83d\\udf01\\u2028\\u2029\"}",
+   "canonical_utf8_hex": "7b2273223a22c3a9e6bca2f09f9c81e280a8e280a9227d",
+   "canonical": "{\"s\":\"é漢🜁  \"}"
+  },
+  {
+   "name": "URL with percent-encoding kept verbatim",
+   "value_json": "{\"url\": \"http://git.kali.org/gitweb?p=packages%2Fbully.git%3Ba%3Dsummary\"}",
+   "canonical_utf8_hex": "7b2275726c223a22687474703a2f2f6769742e6b616c692e6f72672f6769747765623f703d7061636b6167657325324662756c6c792e6769742533426125334473756d6d617279227d",
+   "canonical": "{\"url\":\"http://git.kali.org/gitweb?p=packages%2Fbully.git%3Ba%3Dsummary\"}"
+  },
+  {
+   "name": "safe integer bounds",
+   "value_json": "{\"max\": 9007199254740991, \"min\": -9007199254740991, \"zero\": 0}",
+   "canonical_utf8_hex": "7b226d6178223a393030373139393235343734303939312c226d696e223a2d393030373139393235343734303939312c227a65726f223a307d",
+   "canonical": "{\"max\":9007199254740991,\"min\":-9007199254740991,\"zero\":0}"
+  },
+  {
+   "name": "empty containers",
+   "value_json": "{\"a\": [], \"o\": {}}",
+   "canonical_utf8_hex": "7b2261223a5b5d2c226f223a7b7d7d",
+   "canonical": "{\"a\":[],\"o\":{}}"
+  }
+ ],
+ "reject": [
+  {
+   "name": "float",
+   "value_json": "{\"x\": 1.5}",
+   "reason": "CJ-1: non-integer number"
+  },
+  {
+   "name": "unsafe integer",
+   "value_json": "{\"x\": 9007199254740992}",
+   "reason": "CJ-1: unsafe integer"
+  },
+  {
+   "name": "lone surrogate",
+   "value_json": "{\"s\": \"\\ud800\"}",
+   "reason": "CJ-1: lone surrogate"
+  },
+  {
+   "name": "non-ASCII key",
+   "value_json": "{\"\\u00e9\": 1}",
+   "reason": "CJ-1: key 'é' outside [A-Za-z0-9_]"
+  },
+  {
+   "name": "key with hyphen",
+   "value_json": "{\"a-b\": 1}",
+   "reason": "CJ-1: key 'a-b' outside [A-Za-z0-9_]"
+  }
+ ]
+}

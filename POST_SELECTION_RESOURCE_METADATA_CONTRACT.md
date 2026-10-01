@@ -35,10 +35,12 @@ manifest.
 Primary selection remains:
 
 ```text
-verified urls.txt -> existing terrain constraint -> sampler -> commit -> reveal
+verified urls.txt ─┐
+                   ├─> declared terrain (membership from the verified, registry-anchored terrain-index-v1) -> protocol policy -> sampler -> commit -> reveal
+verified terrain-index-v1 (compiled at build time from release bytes) ─┘
 ```
 
-Resource metadata is not an input to:
+Runtime-loaded resource metadata (`resources.json` through `loadResourceMetadata()`) is not an input to:
 
 - eligible-pool construction;
 - terrain filtering;
@@ -46,6 +48,8 @@ Resource metadata is not an input to:
 - repeat guard;
 - commitment;
 - Blind Descent commitment selection.
+
+`resource_type` participates in eligibility **only** through the build-time compiled, digest-bound `terrain-index-v1` artifact. That artifact is authoritative through `corpus/runtime/eligibility-profiles-v1.json` (`TERRAIN_AUTHORITY_CONTRACT.md`, ADR 0006). It is verified before selection like `urls.txt`. It contains line positions, not metadata. The runtime never derives eligibility from metadata it loads.
 
 The browser MUST NOT request `resources.json` merely by loading the app.
 
@@ -125,4 +129,6 @@ These are projections of the same desktop source metadata nodes.
 ## Final invariant
 
 > Selection decides the route first. Verified typed metadata may describe that
-> already-selected route afterward, but can never decide what gets selected.
+> already-selected route afterward. A route's type can define eligibility only
+> through a registry-anchored terrain index compiled from release bytes; runtime
+> metadata can never decide what gets selected.

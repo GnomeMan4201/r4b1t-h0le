@@ -1,0 +1,1508 @@
+{
+ "source": "production index.html + trail-runtime.js at main c29d6bd71738873f6085470753e3724f22998b22 (jsdom)",
+ "seed": "5eed0000000000000000000000000001",
+ "corpus_revision": "sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1",
+ "constraint": "ALL, excludeOnion false, fresh page, no reset",
+ "rolls": [
+  {
+   "url": "https://github.com/outflanknl/RedELK",
+   "draw_start": 0,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/hausec/ADAPE-Script",
+   "draw_start": 1,
+   "draw_count": 1
+  },
+  {
+   "url": "https://domgo.at/cxss/intro",
+   "draw_start": 2,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.manning.com/books/spring-boot-in-practice",
+   "draw_start": 3,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/ryhanson/phishery",
+   "draw_start": 4,
+   "draw_count": 1
+  },
+  {
+   "url": "http://denyhosts.sourceforge.net/",
+   "draw_start": 5,
+   "draw_count": 1
+  },
+  {
+   "url": "https://getgophish.com/",
+   "draw_start": 6,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/USSCltd/dorks",
+   "draw_start": 7,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/ring0lab/catphish",
+   "draw_start": 8,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/svaksha/pythonidae",
+   "draw_start": 9,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/future-architect/vuls",
+   "draw_start": 10,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.wiley.com/WileyCDA/WileyTitle/productCd-111860864X.html",
+   "draw_start": 11,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.thoughtcrime.org/software/sslstrip",
+   "draw_start": 12,
+   "draw_count": 1
+  },
+  {
+   "url": "https://wpscan.org/",
+   "draw_start": 13,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/pry0cc/axiom",
+   "draw_start": 14,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/epinna/tplmap",
+   "draw_start": 15,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/trustedsec/hate_crack",
+   "draw_start": 16,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.manning.com/books/azure-security-2",
+   "draw_start": 17,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/kpcyrd/authoscope",
+   "draw_start": 18,
+   "draw_count": 1
+  },
+  {
+   "url": "https://sparta.secforce.com/",
+   "draw_start": 19,
+   "draw_count": 1
+  },
+  {
+   "url": "https://hub.docker.com/r/ismisepaul/securityshepherd",
+   "draw_start": 20,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/lukechilds/reverse-shell",
+   "draw_start": 21,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.hoppersroppers.org/training.html",
+   "draw_start": 22,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/sergiomarotco/Network-segmentation-cheat-sheet",
+   "draw_start": 23,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/fabacab/awesome-cybersecurity-blueteam",
+   "draw_start": 24,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.mhprofessional.com/9780071818469-usa-social-engineering-in-it-security-tools-tactics-and-techniques-group",
+   "draw_start": 25,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.manning.com/books/azure-security-2",
+   "draw_start": 26,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.webreaver.com/",
+   "draw_start": 27,
+   "draw_count": 1
+  },
+  {
+   "url": "https://bitbucket.org/camp0/aiengine",
+   "draw_start": 28,
+   "draw_count": 1
+  },
+  {
+   "url": "https://endgame.readthedocs.io/",
+   "draw_start": 29,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/rafael-santiago/pig",
+   "draw_start": 30,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/segmentio/chamber",
+   "draw_start": 31,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/StackExchange/blackbox",
+   "draw_start": 32,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/fabacab/awesome-lockpicking",
+   "draw_start": 33,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/owasp-amass/amass",
+   "draw_start": 34,
+   "draw_count": 1
+  },
+  {
+   "url": "http://dtag-dev-sec.github.io/mediator/feature/2017/11/07/t-pot-17.10.html",
+   "draw_start": 35,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.mavetju.org/unix/dnstracer.php",
+   "draw_start": 36,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/antirez/hping",
+   "draw_start": 37,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/justmao945/mallory",
+   "draw_start": 38,
+   "draw_count": 1
+  },
+  {
+   "url": "https://0xacab.org/jvoisin/mat2",
+   "draw_start": 39,
+   "draw_count": 1
+  },
+  {
+   "url": "https://distrowatch.com/search.php?category=Security",
+   "draw_start": 40,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.leakedin.com/",
+   "draw_start": 41,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/NorthwaveNL/fridax",
+   "draw_start": 42,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/evilsocket/xray",
+   "draw_start": 43,
+   "draw_count": 1
+  },
+  {
+   "url": "https://amzn.to/2uWh1Up",
+   "draw_start": 44,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118026470.html",
+   "draw_start": 45,
+   "draw_count": 1
+  },
+  {
+   "url": "https://tsurugi-linux.org/",
+   "draw_start": 46,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2017/march/autochrome",
+   "draw_start": 47,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/volatilityfoundation/volatility",
+   "draw_start": 48,
+   "draw_count": 1
+  },
+  {
+   "url": "https://owasp.org/www-project-application-security-verification-standard",
+   "draw_start": 49,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/melvinsh/vcsmap",
+   "draw_start": 50,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/epinna/weevely3",
+   "draw_start": 51,
+   "draw_count": 1
+  },
+  {
+   "url": "https://gtfobins.github.io/",
+   "draw_start": 52,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/Storyyeller/enjarify",
+   "draw_start": 53,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/toniblyx/my-arsenal-of-aws-security-tools",
+   "draw_start": 54,
+   "draw_count": 1
+  },
+  {
+   "url": "https://nostarch.com/xbox.htm",
+   "draw_start": 55,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/tnich/honssh",
+   "draw_start": 56,
+   "draw_count": 1
+  },
+  {
+   "url": "http://dumpsterventures.com/jason/httpry",
+   "draw_start": 57,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.enisa.europa.eu/topics/trainings-for-cybersecurity-specialists/online-training-material",
+   "draw_start": 58,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471237124.html",
+   "draw_start": 59,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/sullo/nikto",
+   "draw_start": 60,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/hatRiot/zarp",
+   "draw_start": 61,
+   "draw_count": 1
+  },
+  {
+   "url": "https://hub.docker.com/r/webgoat/webgoat-8.0",
+   "draw_start": 62,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/skylot/jadx",
+   "draw_start": 63,
+   "draw_count": 1
+  },
+  {
+   "url": "https://threatjammer.com/",
+   "draw_start": 64,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.securiteam.com/",
+   "draw_start": 65,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/zaproxy/zaproxy",
+   "draw_start": 66,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.amazon.com/Penetration-Testing-Procedures-Methodologies-EC-Council/dp/1435483677",
+   "draw_start": 67,
+   "draw_count": 1
+  },
+  {
+   "url": "https://hub.docker.com/r/hmlio/vaas-cve-2014-6271",
+   "draw_start": 68,
+   "draw_count": 1
+  },
+  {
+   "url": "https://tsurugi-linux.org/",
+   "draw_start": 69,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/kpcyrd/rshijack",
+   "draw_start": 70,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/EnableSecurity/wafw00f",
+   "draw_start": 71,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.manning.com/books/aws-security",
+   "draw_start": 72,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/google/rekall",
+   "draw_start": 73,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/BC-SECURITY/Empire",
+   "draw_start": 74,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/ajvb/awesome-tor",
+   "draw_start": 75,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/504ensicsLabs/LiME.git",
+   "draw_start": 76,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/brainfuckSec/kalitorify",
+   "draw_start": 77,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/derv82/wifite",
+   "draw_start": 78,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/meirwah/awesome-incident-response",
+   "draw_start": 79,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/google/grr",
+   "draw_start": 80,
+   "draw_count": 1
+  },
+  {
+   "url": "http://kaitai.io/",
+   "draw_start": 81,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/securestate/king-phisher",
+   "draw_start": 82,
+   "draw_count": 1
+  },
+  {
+   "url": "http://dtag-dev-sec.github.io/mediator/feature/2017/11/07/t-pot-17.10.html",
+   "draw_start": 83,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/kaplanelad/shellfirm",
+   "draw_start": 84,
+   "draw_count": 1
+  },
+  {
+   "url": "https://hexinator.com/",
+   "draw_start": 85,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/cider-security-research/cicd-goat",
+   "draw_start": 86,
+   "draw_count": 1
+  },
+  {
+   "url": "https://cve.mitre.org/",
+   "draw_start": 87,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.nodejs-security.com/",
+   "draw_start": 88,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/cossacklabs/acra",
+   "draw_start": 89,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/kgretzky/evilginx2",
+   "draw_start": 90,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.wiley.com/WileyCDA/WileyTitle/productCd-0764578014.html",
+   "draw_start": 91,
+   "draw_count": 1
+  },
+  {
+   "url": "https://parrotlinux.org/",
+   "draw_start": 92,
+   "draw_count": 1
+  },
+  {
+   "url": "https://portswigger.net/burp",
+   "draw_start": 93,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.phishtank.com/",
+   "draw_start": 94,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/bountyyfi/lonkero",
+   "draw_start": 95,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/simsong/tcpflow",
+   "draw_start": 96,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/jgor/dork-cli",
+   "draw_start": 97,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/Hood3dRob1n/BinGoo",
+   "draw_start": 98,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.amazon.com/Advanced-Penetration-Testing-Hacking-Networks/dp/1119367689",
+   "draw_start": 99,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/Khadinxc/Sigma2KQL",
+   "draw_start": 100,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/narkopolo/fb_friend_list_scraper",
+   "draw_start": 101,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/fuzzdb-project/fuzzdb",
+   "draw_start": 102,
+   "draw_count": 1
+  },
+  {
+   "url": "https://hub.docker.com/r/webgoat/webgoat-8.0",
+   "draw_start": 103,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/bad-antics/nullkia",
+   "draw_start": 104,
+   "draw_count": 1
+  },
+  {
+   "url": "https://hunter.io/",
+   "draw_start": 105,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.owasp.org/",
+   "draw_start": 106,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/joe-shenouda/awesome-cyber-skills",
+   "draw_start": 107,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/dogoncouch/logdissect",
+   "draw_start": 108,
+   "draw_count": 1
+  },
+  {
+   "url": "https://databunker.org/",
+   "draw_start": 109,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/SpiderLabs/Responder",
+   "draw_start": 110,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.manning.com/books/api-security-in-action",
+   "draw_start": 111,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.elsevier.com/books/violent-python/unknown/978-1-59749-957-6",
+   "draw_start": 112,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/apsdehal/awesome-ctf",
+   "draw_start": 113,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/svaksha/pythonidae",
+   "draw_start": 114,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/paralax/awesome-honeypots",
+   "draw_start": 115,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/firezone/firezone",
+   "draw_start": 116,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/RedTeamOperations/PivotSuite",
+   "draw_start": 117,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/ByteSnipers/mobile-pentest-toolkit",
+   "draw_start": 118,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/cider-security-research/cicd-goat",
+   "draw_start": 119,
+   "draw_count": 1
+  },
+  {
+   "url": "https://nostarch.com/bughunter",
+   "draw_start": 120,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/BC-SECURITY/Empire",
+   "draw_start": 121,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/quozd/awesome-dotnet",
+   "draw_start": 122,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.virustotal.com/",
+   "draw_start": 123,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/doyensec/awesome-electronjs-hacking",
+   "draw_start": 124,
+   "draw_count": 1
+  },
+  {
+   "url": "https://cyware.com/community/ctix-feeds",
+   "draw_start": 125,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/hatRiot/zarp",
+   "draw_start": 126,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.cuckoosandbox.org/",
+   "draw_start": 127,
+   "draw_count": 1
+  },
+  {
+   "url": "https://gitlab.com/coroner/cryptolyzer",
+   "draw_start": 128,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.tenable.com/products/nessus-vulnerability-scanner",
+   "draw_start": 129,
+   "draw_count": 1
+  },
+  {
+   "url": "https://digi.ninja/projects/cewl.php",
+   "draw_start": 130,
+   "draw_count": 1
+  },
+  {
+   "url": "https://attack.mitre.org/",
+   "draw_start": 131,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/hatRiot/zarp",
+   "draw_start": 132,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.owasp.org/index.php/Testing_Checklist",
+   "draw_start": 133,
+   "draw_count": 1
+  },
+  {
+   "url": "https://docs.microsoft.com/en-us/security-updates",
+   "draw_start": 134,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/nil0x42/duplicut",
+   "draw_start": 135,
+   "draw_count": 1
+  },
+  {
+   "url": "https://sourceforge.net/projects/high-orbit-ion-cannon",
+   "draw_start": 136,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/netdiscover-scanner/netdiscover",
+   "draw_start": 137,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/dotcppfile/DAws",
+   "draw_start": 138,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/johnnyxmas/ScanCannon",
+   "draw_start": 139,
+   "draw_count": 1
+  },
+  {
+   "url": "https://nostarch.com/metasploit",
+   "draw_start": 140,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/Storyyeller/enjarify",
+   "draw_start": 141,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/johnnyxmas/ScanCannon",
+   "draw_start": 142,
+   "draw_count": 1
+  },
+  {
+   "url": "https://nmap.org/",
+   "draw_start": 143,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/Ganapati/RsaCtfTool",
+   "draw_start": 144,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/ashishb/android-security-awesome",
+   "draw_start": 145,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/jtesta/ssh-mitm",
+   "draw_start": 146,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.manning.com/books/data-privacy",
+   "draw_start": 147,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.frida.re/",
+   "draw_start": 148,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/presidentbeef/brakeman",
+   "draw_start": 149,
+   "draw_count": 1
+  },
+  {
+   "url": "https://code.google.com/archive/p/cms-explorer",
+   "draw_start": 150,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.qubes-os.org/",
+   "draw_start": 151,
+   "draw_count": 1
+  },
+  {
+   "url": "http://blog.gentilkiwi.com/mimikatz",
+   "draw_start": 152,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/LeonardoNve/sslstrip2",
+   "draw_start": 153,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/aleff-github/wayparam",
+   "draw_start": 154,
+   "draw_count": 1
+  },
+  {
+   "url": "https://nostarch.com/pentesting",
+   "draw_start": 155,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/dogoncouch/LogESP",
+   "draw_start": 156,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/evilsocket/pwnagotchi",
+   "draw_start": 157,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/karimhabush/cyberowl",
+   "draw_start": 158,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/SigPloiter/SigPloit",
+   "draw_start": 159,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/jtesta/ssh-mitm",
+   "draw_start": 160,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/trustedsec/ptf",
+   "draw_start": 161,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.hardenwindows10forsecurity.com/",
+   "draw_start": 162,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/MutableSecurity/mutablesecurity",
+   "draw_start": 163,
+   "draw_count": 1
+  },
+  {
+   "url": "https://books2read.com/u/bWzdBx",
+   "draw_start": 164,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/iBotPeaches/Apktool",
+   "draw_start": 165,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/ryhanson/phishery",
+   "draw_start": 166,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/trustedsec/ridenum",
+   "draw_start": 167,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.autoshun.org/",
+   "draw_start": 168,
+   "draw_count": 1
+  },
+  {
+   "url": "http://doc.emergingthreats.net/bin/view/Main/EmergingFAQ",
+   "draw_start": 169,
+   "draw_count": 1
+  },
+  {
+   "url": "http://ridiculousfish.com/hexfiend",
+   "draw_start": 170,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.amazon.com/Black-Hat-Python-Programming-Pentesters/dp/1593275900",
+   "draw_start": 171,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/retracedhq/retraced",
+   "draw_start": 172,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/hvqzao/liffy",
+   "draw_start": 173,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.packtpub.com/networking-and-servers/advanced-penetration-testing-highly-secured-environments-ultimate-security-gu",
+   "draw_start": 174,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/snare/voltron",
+   "draw_start": 175,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/PowerShellMafia/PowerSploit",
+   "draw_start": 176,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/isgasho/finshir",
+   "draw_start": 177,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/rozgo/anevicon",
+   "draw_start": 178,
+   "draw_count": 1
+  },
+  {
+   "url": "https://zeek.org/",
+   "draw_start": 179,
+   "draw_count": 1
+  },
+  {
+   "url": "https://reconmap.com/",
+   "draw_start": 180,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.manning.com/books/effective-software-testing",
+   "draw_start": 181,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.dan.me.uk/tornodes",
+   "draw_start": 182,
+   "draw_count": 1
+  },
+  {
+   "url": "https://atcommands.org/",
+   "draw_start": 183,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.exploit-db.com/google-hacking-database",
+   "draw_start": 184,
+   "draw_count": 1
+  },
+  {
+   "url": "http://shell-storm.org/shellcode",
+   "draw_start": 185,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.testandverification.com/wp-content/uploads/template-penetration-testing-report-v03.pdf",
+   "draw_start": 186,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/melvinsh/vcsmap",
+   "draw_start": 187,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/nccgroup/SCOMDecrypt",
+   "draw_start": 188,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/owasp-amass/amass",
+   "draw_start": 189,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/laramies/metagoofil",
+   "draw_start": 190,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/dogoncouch/logdissect",
+   "draw_start": 191,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.wifipineapple.com/",
+   "draw_start": 192,
+   "draw_count": 1
+  },
+  {
+   "url": "https://aibuilds.net/",
+   "draw_start": 193,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/1N3/Sn1per",
+   "draw_start": 194,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/SimplySecurity/SimplyEmail",
+   "draw_start": 195,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/bad-antics/nullkia",
+   "draw_start": 196,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.manning.com/books/azure-security-2",
+   "draw_start": 197,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/kpcyrd/boxxy-rs",
+   "draw_start": 198,
+   "draw_count": 1
+  },
+  {
+   "url": "https://cve.mitre.org/",
+   "draw_start": 199,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/RustScan/RustScan",
+   "draw_start": 200,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/pixel/hexedit",
+   "draw_start": 201,
+   "draw_count": 1
+  },
+  {
+   "url": "https://angr.io/",
+   "draw_start": 202,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/foospidy/HoneyPy",
+   "draw_start": 203,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/isgasho/finshir",
+   "draw_start": 204,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/corelight/zeek2es",
+   "draw_start": 205,
+   "draw_count": 1
+  },
+  {
+   "url": "http://sniff.su/",
+   "draw_start": 206,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/dafthack/MailSniper",
+   "draw_start": 207,
+   "draw_count": 1
+  },
+  {
+   "url": "https://spamassassin.apache.org/",
+   "draw_start": 208,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/reverse-shell/routersploit",
+   "draw_start": 209,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.manning.com/books/the-art-of-network-penetration-testing",
+   "draw_start": 210,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/ShawnDEvans/smbmap",
+   "draw_start": 211,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/engn33r/awesome-bluetooth-security",
+   "draw_start": 212,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/Kevin-Robertson/Inveigh",
+   "draw_start": 213,
+   "draw_count": 1
+  },
+  {
+   "url": "https://gitlab.com/guballa/tlsmate",
+   "draw_start": 214,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/google/tsunami-security-scanner",
+   "draw_start": 215,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.manning.com/books/real-world-cryptography",
+   "draw_start": 216,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/narkopolo/fb_friend_list_scraper",
+   "draw_start": 217,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/yeyintminthuhtut/Awesome-Red-Teaming",
+   "draw_start": 218,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.securityfocus.com/bid",
+   "draw_start": 219,
+   "draw_count": 1
+  },
+  {
+   "url": "https://hub.docker.com/r/ismisepaul/securityshepherd",
+   "draw_start": 220,
+   "draw_count": 1
+  },
+  {
+   "url": "https://code.kryo.se/iodine",
+   "draw_start": 221,
+   "draw_count": 1
+  },
+  {
+   "url": "https://manning.com/books/securing-devops",
+   "draw_start": 222,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/kost/dvcs-ripper",
+   "draw_start": 223,
+   "draw_count": 1
+  },
+  {
+   "url": "http://seclists.org/fulldisclosure",
+   "draw_start": 224,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/sindresorhus/awesome-nodejs",
+   "draw_start": 225,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/Ekultek/WhatWaf",
+   "draw_start": 226,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/WestpointLtd/tls_prober",
+   "draw_start": 227,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/fireeye/iocs",
+   "draw_start": 228,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/epsylon/ufonet",
+   "draw_start": 229,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/trustedsec/ridenum",
+   "draw_start": 230,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.0day.today/",
+   "draw_start": 231,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.dan.me.uk/dnsbl",
+   "draw_start": 232,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/diogo-fernan/ir-rescue",
+   "draw_start": 233,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/ufrisk/pcileech",
+   "draw_start": 234,
+   "draw_count": 1
+  },
+  {
+   "url": "https://domgo.at/cxss/intro",
+   "draw_start": 235,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/ByteSnipers/awesome-pentest-cheat-sheets",
+   "draw_start": 236,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/PalindromeLabs/awesome-websocket-security",
+   "draw_start": 237,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/lukechilds/reverse-shell",
+   "draw_start": 238,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/docbleach/DocBleach",
+   "draw_start": 239,
+   "draw_count": 1
+  },
+  {
+   "url": "https://hachoir.readthedocs.io/",
+   "draw_start": 240,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/0x4D31/awesome-threat-detection",
+   "draw_start": 241,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/epinna/tplmap",
+   "draw_start": 242,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/WestpointLtd/tls_prober",
+   "draw_start": 243,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/aboul3la/Sublist3r",
+   "draw_start": 244,
+   "draw_count": 1
+  },
+  {
+   "url": "https://cve.mitre.org/",
+   "draw_start": 245,
+   "draw_count": 1
+  },
+  {
+   "url": "http://sourceforge.net/projects/bifrozt",
+   "draw_start": 246,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/retracedhq/retraced",
+   "draw_start": 247,
+   "draw_count": 1
+  },
+  {
+   "url": "https://code.kryo.se/iodine",
+   "draw_start": 248,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.ampliasecurity.com/research/windows-credentials-editor",
+   "draw_start": 249,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.telerik.com/fiddler",
+   "draw_start": 250,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/gyoisamurai/GyoiThon",
+   "draw_start": 251,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.sans.org/",
+   "draw_start": 252,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/google/google-authenticator",
+   "draw_start": 253,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/maaaaz/webscreenshot",
+   "draw_start": 254,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/designsecurity/progpilot",
+   "draw_start": 255,
+   "draw_count": 1
+  },
+  {
+   "url": "https://stegonline.georgeom.net/",
+   "draw_start": 256,
+   "draw_count": 1
+  },
+  {
+   "url": "https://phishstats.info/",
+   "draw_start": 257,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/dloss/python-pentest-tools",
+   "draw_start": 258,
+   "draw_count": 1
+  },
+  {
+   "url": "https://code.google.com/archive/p/cms-explorer",
+   "draw_start": 259,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/espreto/wpsploit",
+   "draw_start": 260,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/pfq/PFQ",
+   "draw_start": 261,
+   "draw_count": 1
+  },
+  {
+   "url": "https://tcpreplay.appneta.com/",
+   "draw_start": 262,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/sensepost/DET",
+   "draw_start": 263,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/epsylon/ufonet",
+   "draw_start": 264,
+   "draw_count": 1
+  },
+  {
+   "url": "https://sparta.secforce.com/",
+   "draw_start": 265,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/firezone/firezone",
+   "draw_start": 266,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/lukechilds/reverse-shell",
+   "draw_start": 267,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/Paradoxis/StegCracker",
+   "draw_start": 268,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/sullo/nikto",
+   "draw_start": 269,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.kali.org/",
+   "draw_start": 270,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/hahwul/dalfox",
+   "draw_start": 271,
+   "draw_count": 1
+  },
+  {
+   "url": "http://ngrep.sourceforge.net/",
+   "draw_start": 272,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.openvas.org/",
+   "draw_start": 273,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/epinna/weevely3",
+   "draw_start": 274,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.wxhexeditor.org/",
+   "draw_start": 275,
+   "draw_count": 1
+  },
+  {
+   "url": "https://endgame.readthedocs.io/",
+   "draw_start": 276,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.wappalyzer.com/",
+   "draw_start": 277,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/apsdehal/awesome-ctf",
+   "draw_start": 278,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/ChrisTruncer/EyeWitness",
+   "draw_start": 279,
+   "draw_count": 1
+  },
+  {
+   "url": "http://tgcd.sourceforge.net/",
+   "draw_start": 280,
+   "draw_count": 1
+  },
+  {
+   "url": "http://lucideus.com/pdf/stw.pdf",
+   "draw_start": 281,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.amazon.de/Blue-Team-Field-Manual-BTFM/dp/154101636X",
+   "draw_start": 282,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/infobyte/faraday",
+   "draw_start": 283,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/hslatman/awesome-threat-intelligence",
+   "draw_start": 284,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/firezone/firezone",
+   "draw_start": 285,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.censys.io/",
+   "draw_start": 286,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/LeonardoNve/sslstrip2",
+   "draw_start": 287,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/HightechSec/git-scanner",
+   "draw_start": 288,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/foospidy/HoneyPy",
+   "draw_start": 289,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/quozd/awesome-dotnet",
+   "draw_start": 290,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/maaaaz/webscreenshot",
+   "draw_start": 291,
+   "draw_count": 1
+  },
+  {
+   "url": "https://www.manning.com/books/effective-software-testing",
+   "draw_start": 292,
+   "draw_count": 1
+  },
+  {
+   "url": "http://www.projecthoneypot.org/",
+   "draw_start": 293,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/ashishb/android-security-awesome",
+   "draw_start": 294,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/kgretzky/evilginx2",
+   "draw_start": 295,
+   "draw_count": 1
+  },
+  {
+   "url": "http://rada.re/r/index.html",
+   "draw_start": 296,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/drk1wi/Modlishka",
+   "draw_start": 297,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/byt3bl33d3r/SprayingToolkit",
+   "draw_start": 298,
+   "draw_count": 1
+  },
+  {
+   "url": "https://github.com/apsdehal/awesome-ctf",
+   "draw_start": 299,
+   "draw_count": 1
+  }
+ ]
+}
