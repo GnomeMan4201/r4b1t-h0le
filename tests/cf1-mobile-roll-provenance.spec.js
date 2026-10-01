@@ -179,7 +179,6 @@ async function exerciseProductionRoll(page, surface) {
     typeof window.resetReproducibleTrail === 'function' &&
     document.getElementById('r4mShellHost'));
 
-  const initialUrl = (await page.locator('#previewUrl').textContent()).trim();
   await page.evaluate(() => window.resetReproducibleTrail());
   await selectTerrain(page, surface, CODE_TERRAIN);
 
@@ -187,13 +186,10 @@ async function exerciseProductionRoll(page, surface) {
     const saved = JSON.parse(localStorage.getItem('r4b1t_trail_draft_v1'));
     return saved.seed;
   });
-  const independentCodeSelection = independentlySelect(CODE_POOL, seed, initialUrl);
+  const independentCodeSelection = independentlySelect(CODE_POOL, seed, null);
 
-  // Force ambient Math.random to a different eligible CODE route. Desktop's
-  // production wrapper should ignore this and consume its declared sampler;
-  // mobile's production integration is under test for whether it does so.
-  const forcedIndex = CODE_POOL.findIndex(url =>
-    url !== initialUrl && url !== independentCodeSelection.selected);
+  // Ambient Math.random must not alter the explicit ROLL sampler.
+  const forcedIndex = CODE_POOL.findIndex(url => url !== independentCodeSelection.selected);
   const forcedUrl = CODE_POOL[forcedIndex];
   await page.evaluate(value => { Math.random = () => value; }, (forcedIndex + 0.1) / CODE_POOL.length);
 
@@ -208,20 +204,25 @@ async function exerciseProductionRoll(page, surface) {
   const selectedUrl = (await page.locator('#previewUrl').textContent()).trim();
   await expect.poll(async () => page.evaluate(async url => {
     const artifact = await window.getTrailManifest();
-    return artifact.manifest.routes.some(route => route.url === url);
+    return artifact.manifest.steps.some(step => step.route.url === url);
   }, selectedUrl)).toBe(true);
   const beforeTerrainChange = await exportThroughRenderedLedger(page, surface);
 
   await selectTerrain(page, surface, BLOG_TERRAIN);
   const afterTerrainChange = await exportThroughRenderedLedger(page, surface);
 
-  const beforeRoute = beforeTerrainChange.manifest.routes[0];
-  const afterRoute = afterTerrainChange.manifest.routes[0];
-  const independentDeclaredCode = independentlySelect(CODE_POOL, beforeTerrainChange.manifest.sampler.seed, initialUrl);
-  const independentClaimedBlog = independentlySelect(BLOG_POOL, afterTerrainChange.manifest.sampler.seed, initialUrl);
+  const beforeStep = beforeTerrainChange.manifest.steps[0];
+  const afterStep = afterTerrainChange.manifest.steps[0];
+  const beforeTransaction = beforeStep.transaction;
+  const afterTransaction = afterStep.transaction;
+  const independentDeclaredCode = independentlySelect(
+    CODE_POOL,
+    beforeTransaction.sampler.seed,
+    beforeTransaction.sampler.repeat_guard.reference,
+  );
   const verification = await page.evaluate(async artifact => {
     try {
-      const verified = await window.R4b1tTrail.verify(artifact);
+      const verified = await window.R4b1tTrailV03.verify(artifact);
       return { accepted: true, trailId: verified.trail_id };
     } catch (error) {
       return { accepted: false, error: String(error && error.message || error) };
@@ -231,26 +232,26 @@ async function exerciseProductionRoll(page, surface) {
   return {
     surface,
     productionEntry: surface === 'mobile' ? '#r4mRoll' : '#btnGo',
-    initialUrl,
     selectionTerrain: CODE_TERRAIN,
     selectedUrl,
     forcedAmbientUrl: forcedUrl,
     beforeTerrainChange: {
-      action: beforeRoute.action,
-      claimedTerrain: beforeTerrainChange.manifest.terrain,
-      declaredSampler: beforeTerrainChange.manifest.sampler,
+      format: beforeTerrainChange.manifest.format,
+      action: beforeTransaction.action,
+      claimedTerrain: beforeTransaction.constraint.terrain.toUpperCase(),
+      declaredSampler: beforeTransaction.sampler,
       independentlyReproducedUrl: independentDeclaredCode.selected,
       independentAttempts: independentDeclaredCode.attempts,
       trailId: beforeTerrainChange.trail_id,
-      routeId: beforeRoute.route_id,
+      routeId: beforeStep.route.route_id,
     },
     afterTerrainChange: {
-      action: afterRoute.action,
-      claimedTerrain: afterTerrainChange.manifest.terrain,
-      declaredSampler: afterTerrainChange.manifest.sampler,
-      independentlyReproducedUrlFromClaimedTerrain: independentClaimedBlog.selected,
+      format: afterTerrainChange.manifest.format,
+      action: afterTransaction.action,
+      claimedTerrain: afterTransaction.constraint.terrain.toUpperCase(),
+      declaredSampler: afterTransaction.sampler,
       trailId: afterTerrainChange.trail_id,
-      routeId: afterRoute.route_id,
+      routeId: afterStep.route.route_id,
     },
     verification,
   };
@@ -278,16 +279,16 @@ test('CF-1: rendered mobile and desktop ROLL exports truthful equivalent provena
         'window.__r4b1tCommitRoll()',
         'ROLL disclosure boundary',
         'window.__r4b1tRevealRoll()',
-        'previewUrl mutation',
-        'trail-runtime.js watchSelections() -> record()',
+        'immutable ROLL transaction committed',
+        'trail-runtime.js records exact transaction as v0.3 ROLL step',
         'rendered Trail Ledger EXPORT JSON',
       ],
       desktop: [
         'rendered #btnGo click',
         'wrapped window.roll()',
         'bundled production commit/reveal',
-        'previewUrl mutation',
-        'trail-runtime.js watchSelections() -> record()',
+        'immutable ROLL transaction committed',
+        'trail-runtime.js records exact transaction as v0.3 ROLL step',
         'rendered Trail Ledger EXPORT JSON',
       ],
     },
@@ -301,15 +302,15 @@ test('CF-1: rendered mobile and desktop ROLL exports truthful equivalent provena
   });
 
   expect.soft(mobile.beforeTerrainChange.action, 'mobile production ROLL must export action ROLL').toBe('ROLL');
-  expect.soft(mobile.beforeTerrainChange.claimedTerrain, 'mobile artifact must claim the selection-time terrain').toBe(mobile.selectionTerrain);
+  expect.soft(mobile.beforeTerrainChange.claimedTerrain, 'mobile ROLL step must preserve the selection-time terrain').toBe(mobile.selectionTerrain);
   expect.soft(
     mobile.beforeTerrainChange.independentlyReproducedUrl,
     'mobile declared sampler/seed must reproduce the selected route from the declared CODE pool',
   ).toBe(mobile.selectedUrl);
-  expect.soft(mobile.afterTerrainChange.claimedTerrain, 'later filter changes must not rewrite prior route provenance').toBe(mobile.selectionTerrain);
+  expect.soft(mobile.afterTerrainChange.claimedTerrain, 'later filter changes must not rewrite the committed ROLL step').toBe(mobile.selectionTerrain);
   expect.soft(mobile.afterTerrainChange.trailId, 'unchanged recorded routes must retain the same artifact identity after presentation-only filter changes').toBe(mobile.beforeTerrainChange.trailId);
   expect.soft(mobile.afterTerrainChange.routeId, 'changing terrain must not change URL/hash integrity').toBe(mobile.beforeTerrainChange.routeId);
-  expect.soft(mobile.verification.accepted, 'existing v0.1 verification still accepts the exported artifact').toBe(true);
+  expect.soft(mobile.verification.accepted, 'v0.3 verification accepts the exported artifact').toBe(true);
 
   expect.soft(desktop.beforeTerrainChange.action, 'desktop production ROLL must export action ROLL').toBe('ROLL');
   expect.soft(

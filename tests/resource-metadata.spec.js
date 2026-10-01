@@ -116,7 +116,7 @@ test('metadata verification failure does not revoke or reroll the selected route
 
   await expect.poll(async () => page.evaluate(async url => {
     const artifact = await window.getTrailManifest();
-    return artifact.manifest.routes.some(route => route.url === url);
+    return artifact.manifest.steps.some(step => step.route.url === url);
   }, selected)).toBe(true);
   expect(BY_URL.has(selected)).toBe(true);
 });

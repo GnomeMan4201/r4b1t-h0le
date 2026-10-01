@@ -726,9 +726,11 @@ MOTION: waiting for target…';
     }
     if (action === 'topology') {
       closeSheets();
-      if (typeof window.getTrailManifest !== 'function' || typeof window.openTrailTopology !== 'function') return;
+      if (typeof window.getLegacyTrailManifest !== 'function' || typeof window.openTrailTopology !== 'function') return;
       setSecondaryMarkState('topology-open');
-      Promise.resolve(window.getTrailManifest())
+      // Topology v2 verifies trail v0.1/v0.2 only. Use the explicit legacy
+      // projection instead of feeding the default v0.3 artifact into it.
+      Promise.resolve(window.getLegacyTrailManifest())
         .then(function (snapshot) { return window.openTrailTopology(snapshot); })
         .catch(function (error) {
           clearSecondaryMarkState('topology-open');

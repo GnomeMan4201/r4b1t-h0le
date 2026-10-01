@@ -9,7 +9,7 @@ test('local topology maps verified snapshots and opens revealed stops', async ({
   await page.waitForFunction(() => typeof window.openTrailTopology === 'function' && typeof window.roll === 'function');
   await page.evaluate(() => window.roll());
   const result = await page.evaluate(async () => {
-    const snapshot = await window.getTrailManifest();
+    const snapshot = await window.getLegacyTrailManifest();
     await window.openTrailTopology(snapshot);
     return {
       open: document.getElementById('trailTopologyOverlay').classList.contains('open'),
