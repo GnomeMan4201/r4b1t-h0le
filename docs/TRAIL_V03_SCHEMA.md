@@ -147,6 +147,8 @@ An imported route carries source identity only. It never receives a synthetic RO
 
 The v0.1 importer verifies the original v0.1 artifact first, then emits IMPORTED steps. The resulting v0.3 artifact is a new artifact with its own ID; the original v0.1 bytes and ID remain unchanged.
 
+Blind Descent v0.2 is deliberately not accepted by this first IMPORTED adapter. Its concealed/revealed commitment model remains a separate format and requires its own explicit projection if it is ever bridged into v0.3.
+
 ## 8. Parent / fork lineage
 
 A child declares:
