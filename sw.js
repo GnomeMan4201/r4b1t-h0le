@@ -1,4 +1,4 @@
-const CACHE = 'r4b1t-v23-roll-motion-integration';
+const CACHE = 'r4b1t-v24-trail-v03-runtime';
 const PRECACHE = [
   './',
   './index.html',
@@ -15,6 +15,7 @@ const PRECACHE = [
   './dual-shell.css',
   './trail-manifest.js',
   './cj1.js',
+  './trail-v03.js',
   './selection-core.js',
   './terrain-authority.js',
   './trail-runtime.js',
