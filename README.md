@@ -81,9 +81,9 @@ npm run trail:verify -- trail.json
 npm run trail:verify -- child.json parent.json
 ```
 
-The ordinary trail verifier checks `r4b1t-trail/v0.1` integrity and declared lineage. Blind Descent uses `r4b1t-trail/v0.2` and its own verification rules. Recording immutable selection transactions does not make v0.1 an independently verified sampler-provenance format.
+The default Trail export is `r4b1t-trail/v0.3`: ROLL steps carry their immutable v2 selection transaction, while SELECT and BRANCH navigation are recorded as explicit step types. `npm run trail:verify` dispatches the supported v0.1, v0.2, and v0.3 integrity/lineage verifiers. Base v0.3 verification establishes recorded structure, identity, transaction shape, and local sampler-interval continuity; it does not independently re-execute the sampler or prove that a declared seed was honestly generated. A labeled legacy v0.1 integrity-only export remains available. Blind Descent remains `r4b1t-trail/v0.2` with its own verification rules.
 
-Trail Cards, Topology, Compare Trails, Proof Sessions, and Verify + Replay expose additional views and checks. Their outputs carry only the claims supported by their format and verifier; a detached image does not acquire proof authority.
+Trail Cards, Topology, Compare Trails, Proof Sessions, and Verify + Replay expose additional views and checks. Until a surface has an explicit v0.3 adapter, it must not treat a v0.3 artifact as evidence it knows how to verify; current Topology compatibility uses the labeled legacy v0.1 projection. Their outputs carry only the claims supported by their format and verifier; a detached image does not acquire proof authority.
 
 Read the [trail ADR](./docs/adr/0002-content-addressed-trails.md) and [Blind Descent ADR](./docs/adr/0003-blind-descent-commit-reveal.md) for serialization, concealment, migration, and verification limits. Concealment protects public exports; it does not hide browser memory from the person controlling the device.
 
