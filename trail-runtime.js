@@ -23,13 +23,58 @@
     suppressRecord: false,
     samplerCursor: 0,
     transactionSequence: 0,
-    selectionTerrain: null
+    selectionTerrain: null,
+    repeatGuardReference: null
   };
 
   function randomSeed() {
     var bytes = new Uint8Array(16);
     crypto.getRandomValues(bytes);
     return Array.from(bytes, function (byte) { return byte.toString(16).padStart(2, '0'); }).join('');
+  }
+
+  function restoreSamplerContinuity() {
+    state.sampler = api.createSampler(state.seed);
+    state.samplerCursor = 0;
+    state.transactionSequence = 0;
+    state.repeatGuardReference = null;
+
+    for (var index = state.routes.length - 1; index >= 0; index -= 1) {
+      var route = state.routes[index];
+      var transaction = route && route.selection_transaction;
+      if (!transaction || transaction.transaction_version !== 'r4b1t-selection-transaction/v2' || transaction.action !== 'ROLL') {
+        continue;
+      }
+
+      var sampler = transaction.sampler;
+      var drawStart = sampler && sampler.draw_start;
+      var drawCount = sampler && sampler.draw_count;
+      var sequence = transaction.sequence;
+      var routeUrl = transaction.route && transaction.route.url;
+      var cursor = Number.isSafeInteger(drawStart) && Number.isSafeInteger(drawCount)
+        ? drawStart + drawCount
+        : -1;
+
+      if (
+        !sampler ||
+        sampler.seed !== state.seed ||
+        !Number.isSafeInteger(drawStart) || drawStart < 0 ||
+        !Number.isSafeInteger(drawCount) || drawCount < 1 ||
+        !Number.isSafeInteger(cursor) || cursor < 1 ||
+        !Number.isSafeInteger(sequence) || sequence < 1 ||
+        routeUrl !== route.url
+      ) {
+        return false;
+      }
+
+      for (var consumed = 0; consumed < cursor; consumed += 1) state.sampler();
+      state.samplerCursor = cursor;
+      state.transactionSequence = sequence;
+      state.repeatGuardReference = route.url;
+      return true;
+    }
+
+    return true;
   }
 
   function restore() {
@@ -47,8 +92,7 @@
         state.parent = saved.parent || null;
       }
     } catch (_) {}
-    state.sampler = api.createSampler(state.seed);
-    state.samplerCursor = 0;
+    if (!restoreSamplerContinuity()) clearDraftState();
   }
 
   function persist() {
@@ -69,6 +113,7 @@
     state.samplerCursor = 0;
     state.transactionSequence = 0;
     state.selectionTerrain = null;
+    state.repeatGuardReference = null;
     state.routes = [];
     state.parent = null;
     state.imported = null;
@@ -108,7 +153,7 @@
   function record(url, action, transaction) {
     if (state.suppressRecord || !/^https?:\/\//i.test(url || '')) return;
     var previous = state.routes[state.routes.length - 1];
-    if (previous && previous.url === url) return;
+    if (previous && previous.url === url && !transaction) return;
     var route = { url: url, action: action || 'SELECT' };
     if (transaction) route.selection_transaction = transaction;
     state.routes.push(route);
@@ -142,7 +187,8 @@
         state.samplerCursor += 1;
         return state.sampler();
       };
-      var result = originalCommit(nextFloat, selectionConstraint);
+      var repeatGuardReference = state.repeatGuardReference;
+      var result = originalCommit(nextFloat, selectionConstraint, repeatGuardReference);
       if (!result || !result.url) return result;
 
       var transaction = deepFreeze({
@@ -165,6 +211,7 @@
       });
 
       state.selectionTerrain = selectionTerrain;
+      state.repeatGuardReference = result.url;
       record(result.url, 'ROLL', transaction);
       return Object.freeze({ url: result.url, transaction: transaction });
     };
@@ -245,6 +292,7 @@
     state.samplerCursor = 0;
     state.transactionSequence = 0;
     state.selectionTerrain = null;
+    state.repeatGuardReference = null;
     state.routes = parent.manifest.routes.slice(0, forkAt).map(function (route) {
       return { url: route.url, action: route.action };
     });
