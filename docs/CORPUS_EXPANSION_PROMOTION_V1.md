@@ -47,10 +47,14 @@ Unit tests bind the runtime descriptors and promotion record to the release's
 actual bytes and metadata. Browser cutover tests load real checked-in bytes,
 assert runtime versus artifact authority and verify the active digest and count.
 The production shadow test is now included in the normal desktop/mobile CI
-suite. Existing Trail, Blind, mobile provenance and metadata browser tests use
+suite alongside ROLL membership and shared ROLL/Trail/Blind load tests. The
+Production Shadow workflow waits for deployment, verifies serving parity, and
+runs the same cutover checks against the live site on desktop and iPhone. Existing Trail, Blind, mobile provenance and metadata browser tests use
 the expanded source.
 
-Broader time-bounded reachability observations are stored in
+Broader reachability checks sampled 363 destinations: 311 reachable responses,
+52 indeterminate responses/timeouts, and no confirmed 404/410 responses.
+Time-bounded observations are stored in
 `corpus/expansion/reachability-promotion-v1.json`. The sample is deterministic,
 not random; blocked responses and timeouts are indeterminate. These observations
 provide no safety or quality assessment and do not automatically remove URLs.
