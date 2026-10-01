@@ -137,23 +137,27 @@ function verifyMetadataContractClaims() {
   }
 }
 
-function verifyCorpusClaims(readme) {
+function verifyCorpusClaims(readme, index) {
   const legacyEvidence = read('docs/readme/legacy-corpus-evidence.md');
   const legacy = corpusMetricsFromText(read('urls.txt'));
-  const releaseManifest = JSON.parse(
-    read('corpus/releases/diverse-candidate-v0.2/manifest.json'),
-  );
   const promotion = JSON.parse(read('corpus/runtime/active-v1.json'));
+  const manifestPath = promotion.active && promotion.active.manifest_url;
+  claim(
+    typeof manifestPath === 'string' && manifestPath.startsWith('corpus/releases/'),
+    'runtime promotion drift: active manifest path is missing or invalid',
+  );
+  const releaseManifest = JSON.parse(read(manifestPath));
 
   const activeCount = releaseManifest.counts.resources;
   const activeHosts = releaseManifest.counts.unique_hosts;
   const activeTypes = Object.keys(releaseManifest.counts.resource_types || {}).length;
 
   claim(
-    promotion.active.source_id === 'diverse-candidate-v0.2' &&
+    promotion.active.source_id === releaseManifest.release_id &&
+      promotion.active.release_id === releaseManifest.release_id &&
       promotion.active.selection_authority === true &&
       promotion.active.expected_digest === releaseManifest.urls_digest,
-    'runtime promotion drift: active typed release does not match release manifest',
+    'runtime promotion drift: active release does not match release manifest',
   );
   claim(
     promotion.release_assertion.selection_authority === false,
@@ -162,16 +166,21 @@ function verifyCorpusClaims(readme) {
 
   claim(
     readme.includes(`**${activeCount.toLocaleString('en-US')} resources across ${activeHosts.toLocaleString('en-US')} hosts**`),
-    `README active corpus count drift: expected ${activeCount.toLocaleString('en-US')} typed resources`,
+    `README active corpus count drift: expected ${activeCount.toLocaleString('en-US')} resources`,
   );
   claim(
     readme.includes('./corpus/runtime/active-v1.json') &&
-      readme.includes('./corpus/releases/diverse-candidate-v0.2/manifest.json'),
+      readme.includes(`./${manifestPath}`),
     'README must link active corpus authority and release evidence',
   );
   claim(
     readme.includes(`**${activeTypes.toLocaleString('en-US')} resource types**`),
     `README active type count drift: expected ${activeTypes.toLocaleString('en-US')} resource types`,
+  );
+
+  claim(
+    !/\b\d[\d,.]*[kKmM]?\s+curated URLs\b/i.test(index),
+    'index.html must not hard-code a corpus-size claim such as "103k curated URLs"',
   );
 
   const legacyValidLabel = legacy.validUrls.toLocaleString('en-US');
@@ -215,7 +224,7 @@ function verifyStaticClaims() {
   includes(readme, APP, 'README');
   excludes(readme, OLD_REPO, 'README');
   excludes(readme, OLD_WORKER, 'README');
-  verifyCorpusClaims(readme);
+  verifyCorpusClaims(readme, index);
   verifyTerrainAuthorityClaims(readme);
   verifyMetadataContractClaims();
 
