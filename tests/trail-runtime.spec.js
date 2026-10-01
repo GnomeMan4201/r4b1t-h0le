@@ -21,7 +21,7 @@ async function rollAndWaitForTrail(page) {
   await page.evaluate(() => window.roll());
   await expect.poll(async () => page.evaluate(async () => {
     const snapshot = await window.getTrailManifest();
-    return snapshot.manifest.routes.length;
+    return snapshot.manifest.steps.length;
   })).toBeGreaterThan(0);
 }
 
@@ -32,8 +32,8 @@ test('exports a verifiable manifest and replays its exact route', async ({ page 
 
   const result = await page.evaluate(async () => {
     const exported = await window.getTrailManifest();
-    const verified = await window.R4b1tTrail.verify(exported);
-    const expected = verified.manifest.routes[0].url;
+    const verified = await window.R4b1tTrailV03.verify(exported);
+    const expected = verified.manifest.steps[0].route.url;
     await window.importTrailManifest(exported);
     const replayed = await window.replayTrailManifest(0);
     return {
@@ -58,7 +58,7 @@ test('rejects a tampered imported trail', async ({ page }) => {
 
   const message = await page.evaluate(async () => {
     const exported = await window.getTrailManifest();
-    exported.manifest.routes[0].url = 'https://attacker.invalid/replaced';
+    exported.manifest.steps[0].route.url = 'https://attacker.invalid/replaced';
     try {
       await window.importTrailManifest(exported);
       return 'accepted';
@@ -85,8 +85,8 @@ test('forks a replayed trail with verifiable parent lineage', async ({ page }) =
       parentId: parent.trail_id,
       declaredParentId: child.manifest.parent.trail_id,
       forkAt: lineage.fork_at,
-      inheritedRoute: child.manifest.routes[0].url,
-      parentRoute: parent.manifest.routes[0].url,
+      inheritedRoute: child.manifest.steps[0].route.url,
+      parentRoute: parent.manifest.steps[0].route.url,
       status: document.getElementById('trailLedgerStatus').textContent,
     };
   });
@@ -169,10 +169,10 @@ test('unstamped historical Trail drafts reset when typed corpus becomes active',
       active: window.R4b1tCorpusAuthority.active(),
       activeUrls: loaded.urls,
       exportedRevision: exported.manifest.corpus_revision,
-      exportedRoutes: exported.manifest.routes.map(route => route.url),
+      exportedRoutes: exported.manifest.steps.map(step => step.route.url),
       savedRevision: saved.corpusRevision,
       savedSourceId: saved.corpusSourceId,
-      seed: exported.manifest.sampler.seed,
+      seed: saved.seed,
     };
   });
 
@@ -206,11 +206,11 @@ test('Trail resets a restored draft whose corpus revision does not match active 
     const saved = JSON.parse(localStorage.getItem('r4b1t_trail_draft_v1'));
     return {
       active: window.R4b1tCorpusAuthority.active(),
-      routes: exported.manifest.routes,
+      routes: exported.manifest.steps,
       exportedRevision: exported.manifest.corpus_revision,
       savedRevision: saved.corpusRevision,
       savedSourceId: saved.corpusSourceId,
-      seed: exported.manifest.sampler.seed,
+      seed: saved.seed,
     };
   });
 
