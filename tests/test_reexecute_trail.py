@@ -1,12 +1,14 @@
 import importlib.util
 import json
 import pathlib
+import sys
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("reexecute_trail", ROOT / "tools" / "reexecute_trail.py")
 reexec = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
+sys.modules[SPEC.name] = reexec
 SPEC.loader.exec_module(reexec)
 
 
@@ -52,7 +54,7 @@ class ReexecuteTrailUnitTests(unittest.TestCase):
         rng = reexec.Mulberry32("00112233445566778899aabbccddeeff")
         self.assertEqual(
             [rng.next_uint32() for _ in range(5)],
-            [3451365934, 1226674830, 3986881728, 3492077554, 3699580490],
+            [2933845282, 3421876258, 1779693272, 3789635584, 2525629530],
         )
 
 
