@@ -106,15 +106,15 @@ test('mobile terrain filter can select and return to all signals', async ({ page
   await page.locator('#r4mNavMenu').click();
   await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
   await expect(page.locator('#r4mFilterSheet')).toHaveClass(/\bopen\b/);
-  await page.locator('#r4mFilterOptions .r4m-filter-proxy', { hasText: 'CODE' }).click();
-  await expect(page.locator('#r4mFilterLabel')).toHaveText('CODE');
-  await expect(page.locator('#r4mRollScope')).toHaveText('CODE ROUTES');
+  await page.locator('#r4mFilterOptions .r4m-filter-proxy', { hasText: 'SECURITY TOOL' }).click();
+  await expect(page.locator('#r4mFilterLabel')).toHaveText('SECURITY TOOL');
+  await expect(page.locator('#r4mRollScope')).toHaveText('SECURITY TOOL · 206 ROUTES');
 
   await page.locator('#r4mNavMenu').click();
   await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
   await page.locator('#r4mFilterOptions .r4m-filter-proxy', { hasText: 'ALL SIGNALS' }).click();
   await expect(page.locator('#r4mFilterLabel')).toHaveText('ALL SIGNALS');
-  await expect(page.locator('#r4mRollScope')).toHaveText('FULL CORPUS');
+  await expect(page.locator('#r4mRollScope')).toHaveText('FULL CORPUS · 6859 ROUTES');
 });
 
 test('mobile navigation opens filter and inspect sheets without horizontal overflow', async ({ page }, testInfo) => {

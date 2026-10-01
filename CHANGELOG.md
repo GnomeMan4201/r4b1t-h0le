@@ -15,6 +15,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - URL-only archive, RSS/Atom and sitemap collection plus a separate reviewed
   index compiler; collection alone cannot admit or promote a resource.
 
+### Changed
+
+- Terrain eligibility now comes from a digest-bound `terrain-index-v1` compiled from the active release's `urls.txt` and `resources.json`. It is anchored by `corpus/runtime/eligibility-profiles-v1.json` (ADR 0006, `TERRAIN_AUTHORITY_CONTRACT.md`). The legacy hostname→terrain table no longer decides membership.
+- The terrain vocabulary is the active release's 13 resource types, replacing 16 legacy labels. Against the promoted 6,859-route corpus, 12 legacy labels had no eligible routes and 5,564 routes were reachable only under ALL. The 13 types partition the release, so every route belongs to exactly one terrain.
+- Every terrain control shows its eligible count before ROLL. A dry terrain cannot be armed. Single-route and two-route terrains are labelled `SINGLE ROUTE` and `ALTERNATES`.
+- ROLL transactions advance to `r4b1t-selection-transaction/v2`. They now record the terrain index binding, the eligible count, and the repeat-guard reference actually used. Sampler behavior is unchanged.
+- An empty eligible pool, or a missing selection authority, is reported explicitly (`#rollStatus`, mobile ROLL scope) instead of silently doing nothing. `ee()` no longer falls back to `Math.random`.
+- The hostname table's result badge now reads `SITE HINT · <tag>` and is described as display-only.
+
+### Fixed
+
+- The last row of mobile bottom sheets was covered by the fixed bottom navigation and could not be tapped. On `main`, this affected the TOR filter.
+
 ---
 
 ## [1.1.0] — 2026-09-18

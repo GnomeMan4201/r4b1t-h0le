@@ -33,6 +33,31 @@ if (FIXTURE_AUTHORITY_SOURCE === AUTHORITY_SOURCE) {
   throw new Error('CF-1 fixture could not bind corpus-authority.js to fixture digest');
 }
 
+// PR 1: terrain membership comes from a registry-anchored terrain index bound to the active release.
+// The fixture corpus gets a matching fixture index: CODE_POOL → repository, BLOG_POOL → reference.
+const CODE_TERRAIN = 'REPOSITORY';
+const BLOG_TERRAIN = 'REFERENCE';
+const ACTIVE_RESOURCES_DIGEST = 'sha256:529a3bcf10b0933ce92428932035750ae0fe93f1490aaa1a40c1384d7ec57aca';
+const ACTIVE_INDEX_DIGEST = 'sha256:a9bbe4fc56020314a11195c9339fa3a04a14082d6b2f6c259c78be6ee38af5fd';
+const cj1 = require(path.resolve(__dirname, '..', 'cj1.js'));
+const FIXTURE_INDEX_BYTES = Buffer.from(cj1.serialize({
+  schema: 'r4b1t-terrain-index-v1',
+  release: { release_id: 'diverse-candidate-v0.2', urls_digest: FIXTURE_DIGEST, resources_digest: ACTIVE_RESOURCES_DIGEST },
+  vocabulary: 'resource-type-identity-v1',
+  terrains: [
+    { id: 'reference', label: 'REFERENCE', rule: { resource_type: ['reference'] }, count: 2, members: [5, 6] },
+    { id: 'repository', label: 'REPOSITORY', rule: { resource_type: ['repository'] }, count: 5, members: [0, 1, 2, 3, 4] },
+  ],
+}) + '\n', 'utf8');
+const FIXTURE_INDEX_DIGEST = 'sha256:' + crypto.createHash('sha256').update(FIXTURE_INDEX_BYTES).digest('hex');
+const TERRAIN_AUTHORITY_SOURCE = fs.readFileSync(path.resolve(__dirname, '..', 'terrain-authority.js'), 'utf8');
+const FIXTURE_TERRAIN_AUTHORITY_SOURCE = TERRAIN_AUTHORITY_SOURCE
+  .replace(ACTIVE_DIGEST, FIXTURE_DIGEST)
+  .replace(ACTIVE_INDEX_DIGEST, FIXTURE_INDEX_DIGEST);
+if (!FIXTURE_TERRAIN_AUTHORITY_SOURCE.includes(FIXTURE_DIGEST) || !FIXTURE_TERRAIN_AUTHORITY_SOURCE.includes(FIXTURE_INDEX_DIGEST)) {
+  throw new Error('CF-1 fixture could not bind terrain-authority.js to the fixture release and index');
+}
+
 function independentSampler(seed) {
   const bytes = new TextEncoder().encode(String(seed));
   let state = 2166136261;
@@ -85,6 +110,16 @@ async function configurePage(page) {
     status: 200,
     contentType: 'application/javascript; charset=utf-8',
     body: FIXTURE_AUTHORITY_SOURCE,
+  }));
+  await page.route('**/terrain-authority.js', route => route.fulfill({
+    status: 200,
+    contentType: 'application/javascript; charset=utf-8',
+    body: FIXTURE_TERRAIN_AUTHORITY_SOURCE,
+  }));
+  await page.route('**/corpus/terrains/diverse-candidate-v0.2/terrain-index-v1.json?*', route => route.fulfill({
+    status: 200,
+    contentType: 'application/json; charset=utf-8',
+    body: FIXTURE_INDEX_BYTES,
   }));
   await page.route('**/corpus/releases/diverse-candidate-v0.2/urls.txt?*', route => route.fulfill({
     status: 200,
@@ -146,7 +181,7 @@ async function exerciseProductionRoll(page, surface) {
 
   const initialUrl = (await page.locator('#previewUrl').textContent()).trim();
   await page.evaluate(() => window.resetReproducibleTrail());
-  await selectTerrain(page, surface, 'CODE');
+  await selectTerrain(page, surface, CODE_TERRAIN);
 
   const seed = await page.evaluate(() => {
     const saved = JSON.parse(localStorage.getItem('r4b1t_trail_draft_v1'));
@@ -177,7 +212,7 @@ async function exerciseProductionRoll(page, surface) {
   }, selectedUrl)).toBe(true);
   const beforeTerrainChange = await exportThroughRenderedLedger(page, surface);
 
-  await selectTerrain(page, surface, 'BLOG');
+  await selectTerrain(page, surface, BLOG_TERRAIN);
   const afterTerrainChange = await exportThroughRenderedLedger(page, surface);
 
   const beforeRoute = beforeTerrainChange.manifest.routes[0];
@@ -197,7 +232,7 @@ async function exerciseProductionRoll(page, surface) {
     surface,
     productionEntry: surface === 'mobile' ? '#r4mRoll' : '#btnGo',
     initialUrl,
-    selectionTerrain: 'CODE',
+    selectionTerrain: CODE_TERRAIN,
     selectedUrl,
     forcedAmbientUrl: forcedUrl,
     beforeTerrainChange: {

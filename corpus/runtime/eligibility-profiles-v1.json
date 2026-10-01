@@ -1,0 +1,21 @@
+{
+  "schema": "r4b1t-eligibility-profiles-v1",
+  "profiles": [
+    {
+      "profile_id": "diverse-candidate-v0.2/resource-type-identity-v1",
+      "status": "active",
+      "release": {
+        "release_id": "diverse-candidate-v0.2",
+        "urls_digest": "sha256:ba52be7e2fc9120f3bd1ac2a6bacbc61fc937764e6d4637df8711ec2212bf75c",
+        "resources_digest": "sha256:529a3bcf10b0933ce92428932035750ae0fe93f1490aaa1a40c1384d7ec57aca"
+      },
+      "promotion_id": "diverse-candidate-v0.2-active-v1",
+      "mapping": "resource-type-identity-v1",
+      "terrain_index": {
+        "path": "corpus/terrains/diverse-candidate-v0.2/terrain-index-v1.json",
+        "schema": "r4b1t-terrain-index-v1",
+        "digest": "sha256:a9bbe4fc56020314a11195c9339fa3a04a14082d6b2f6c259c78be6ee38af5fd"
+      }
+    }
+  ]
+}

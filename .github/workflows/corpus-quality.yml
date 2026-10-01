@@ -11,6 +11,11 @@ on:
       - 'tools/source_catalog.py'
       - 'tools/aggregate_provenance.py'
       - 'tools/build_corpus_release.py'
+      - 'tools/terrain_index.py'
+      - 'tests/test_terrain_index.py'
+      - 'corpus/terrains/**'
+      - 'corpus/runtime/eligibility-profiles-v1.json'
+      - 'TERRAIN_AUTHORITY_CONTRACT.md'
       - 'tests/test_corpus_health.py'
       - 'tests/test_compile_eligibility.py'
       - 'tests/test_profile_eligibility.py'
@@ -46,6 +51,11 @@ on:
       - 'tools/source_catalog.py'
       - 'tools/aggregate_provenance.py'
       - 'tools/build_corpus_release.py'
+      - 'tools/terrain_index.py'
+      - 'tests/test_terrain_index.py'
+      - 'corpus/terrains/**'
+      - 'corpus/runtime/eligibility-profiles-v1.json'
+      - 'TERRAIN_AUTHORITY_CONTRACT.md'
       - 'tests/test_corpus_health.py'
       - 'tests/test_compile_eligibility.py'
       - 'tests/test_profile_eligibility.py'
@@ -103,6 +113,7 @@ jobs:
           tools/source_catalog.py
           tools/aggregate_provenance.py
           tools/build_corpus_release.py
+          tools/terrain_index.py
           tests/test_corpus_health.py
           tests/test_compile_eligibility.py
           tests/test_profile_eligibility.py
@@ -110,6 +121,7 @@ jobs:
           tests/test_source_catalog.py
           tests/test_aggregate_provenance.py
           tests/test_build_corpus_release.py
+          tests/test_terrain_index.py
 
       - name: Unit tests
         run: |
@@ -120,6 +132,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_source_catalog.py' -v
           python -m unittest discover -s tests -p 'test_aggregate_provenance.py' -v
           python -m unittest discover -s tests -p 'test_build_corpus_release.py' -v
+          python -m unittest discover -s tests -p 'test_terrain_index.py' -v
 
       - name: Compile pinned source catalogs
         run: |
@@ -160,6 +173,18 @@ jobs:
           if [[ -d corpus/releases/typed-candidate-v0.1 ]]; then
             diff -ru corpus/releases/typed-candidate-v0.1 typed-corpus-build/release
           fi
+
+      - name: Verify checked-in terrain index regenerates from the release
+        run: |
+          python - <<'PY'
+          import json, subprocess, sys
+          registry = json.load(open('corpus/runtime/eligibility-profiles-v1.json', encoding='utf-8'))
+          for profile in registry['profiles']:
+              release = 'corpus/releases/' + profile['release']['release_id']
+              print(profile['profile_id'], '->', profile['terrain_index']['path'])
+              subprocess.run([sys.executable, 'tools/terrain_index.py', 'check',
+                              '--release', release, '--index', profile['terrain_index']['path']], check=True)
+          PY
 
       - name: Generate and enforce deterministic corpus evidence
         run: |
