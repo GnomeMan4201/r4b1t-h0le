@@ -10,8 +10,8 @@ const ROOT = path.resolve(__dirname, '..');
 const INDEX_HTML = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const TRAIL_RUNTIME = fs.readFileSync(path.join(ROOT, 'trail-runtime.js'), 'utf8');
 const DUAL_SHELL = fs.readFileSync(path.join(ROOT, 'dual-shell.js'), 'utf8');
-const urls = Object.freeze(fs.readFileSync(path.join(ROOT, 'corpus/releases/diverse-candidate-v0.2/urls.txt'), 'utf8').slice(0, -1).split('\n'));
-const index = JSON.parse(fs.readFileSync(path.join(ROOT, 'corpus/terrains/diverse-candidate-v0.2/terrain-index-v1.json'), 'utf8'));
+const urls = Object.freeze(fs.readFileSync(path.join(ROOT, 'corpus/releases/strange-candidate-v0.3/urls.txt'), 'utf8').slice(0, -1).split('\n'));
+const index = JSON.parse(fs.readFileSync(path.join(ROOT, 'corpus/terrains/strange-candidate-v0.3/terrain-index-v1.json'), 'utf8'));
 
 const core = () => require(path.join(ROOT, 'selection-core.js'));
 const constraint = (terrain, excludeOnion = false) => ({
@@ -26,7 +26,7 @@ test('T1-04: eligiblePool equals index membership in release order for every ter
     assert.deepEqual(eligiblePool(urls, index, constraint(terrain.id)), terrain.members.map(i => urls[i]), terrain.id);
   }
   assert.deepEqual(eligiblePool(urls, index, constraint('ALL')), [...urls]);
-  assert.equal(eligiblePool(urls, null, constraint('ALL')).length, 6859, 'ALL does not depend on the index');
+  assert.equal(eligiblePool(urls, null, constraint('ALL')).length, 6975, 'ALL does not depend on the index');
 });
 
 test('T1-04: unknown terrain and missing index fail closed', () => {

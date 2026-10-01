@@ -23,7 +23,7 @@ const FIXTURE_DIGEST = (
 );
 const AUTHORITY_PATH = path.resolve(__dirname, '..', 'corpus-authority.js');
 const AUTHORITY_SOURCE = fs.readFileSync(AUTHORITY_PATH, 'utf8');
-const ACTIVE_DIGEST = 'sha256:ba52be7e2fc9120f3bd1ac2a6bacbc61fc937764e6d4637df8711ec2212bf75c';
+const ACTIVE_DIGEST = 'sha256:f85a1c710977814c920ff13eb95cf0b86805486668c99dba2d5024d6b1bda3a7';
 const FIXTURE_AUTHORITY_SOURCE = AUTHORITY_SOURCE.replace(
   ACTIVE_DIGEST,
   FIXTURE_DIGEST,
@@ -37,12 +37,12 @@ if (FIXTURE_AUTHORITY_SOURCE === AUTHORITY_SOURCE) {
 // The fixture corpus gets a matching fixture index: CODE_POOL → repository, BLOG_POOL → reference.
 const CODE_TERRAIN = 'REPOSITORY';
 const BLOG_TERRAIN = 'REFERENCE';
-const ACTIVE_RESOURCES_DIGEST = 'sha256:529a3bcf10b0933ce92428932035750ae0fe93f1490aaa1a40c1384d7ec57aca';
-const ACTIVE_INDEX_DIGEST = 'sha256:a9bbe4fc56020314a11195c9339fa3a04a14082d6b2f6c259c78be6ee38af5fd';
+const ACTIVE_RESOURCES_DIGEST = 'sha256:347bf83b013e3eec3aff9301863c6cd3acb62d62db6d39e5fa8c27f4c814dee1';
+const ACTIVE_INDEX_DIGEST = 'sha256:8282156e330ef423acfba8304e4f7419e6d978d7441ef7e5f146a76b9f6b5a00';
 const cj1 = require(path.resolve(__dirname, '..', 'cj1.js'));
 const FIXTURE_INDEX_BYTES = Buffer.from(cj1.serialize({
   schema: 'r4b1t-terrain-index-v1',
-  release: { release_id: 'diverse-candidate-v0.2', urls_digest: FIXTURE_DIGEST, resources_digest: ACTIVE_RESOURCES_DIGEST },
+  release: { release_id: 'strange-candidate-v0.3', urls_digest: FIXTURE_DIGEST, resources_digest: ACTIVE_RESOURCES_DIGEST },
   vocabulary: 'resource-type-identity-v1',
   terrains: [
     { id: 'reference', label: 'REFERENCE', rule: { resource_type: ['reference'] }, count: 2, members: [5, 6] },
@@ -116,12 +116,12 @@ async function configurePage(page) {
     contentType: 'application/javascript; charset=utf-8',
     body: FIXTURE_TERRAIN_AUTHORITY_SOURCE,
   }));
-  await page.route('**/corpus/terrains/diverse-candidate-v0.2/terrain-index-v1.json?*', route => route.fulfill({
+  await page.route('**/corpus/terrains/strange-candidate-v0.3/terrain-index-v1.json?*', route => route.fulfill({
     status: 200,
     contentType: 'application/json; charset=utf-8',
     body: FIXTURE_INDEX_BYTES,
   }));
-  await page.route('**/corpus/releases/diverse-candidate-v0.2/urls.txt?*', route => route.fulfill({
+  await page.route('**/corpus/releases/strange-candidate-v0.3/urls.txt?*', route => route.fulfill({
     status: 200,
     contentType: 'text/plain; charset=utf-8',
     body: FIXTURE_BYTES,

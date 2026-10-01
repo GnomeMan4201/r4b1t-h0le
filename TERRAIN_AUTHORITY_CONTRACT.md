@@ -17,7 +17,7 @@ Decision record: `docs/adr/0006-release-bound-terrain-authority.md`
 ```text
 corpus/runtime/active-v1.json                                   (unchanged promotion: active release)
   └─ corpus/runtime/eligibility-profiles-v1.json                 (active profile for that release + expected digest)
-       └─ corpus/terrains/diverse-candidate-v0.2/terrain-index-v1.json   (bytes; SHA-256 must equal the expected digest)
+       └─ corpus/terrains/strange-candidate-v0.3/terrain-index-v1.json   (bytes; SHA-256 must equal the expected digest)
             └─ R4b1tTerrainAuthority.loadIndex()  →  captureSelectionConstraint()  →  R4b1tSelectionCore.eligiblePool()  →  sampler
 ```
 
@@ -77,12 +77,12 @@ corpus/runtime/active-v1.json                                   (unchanged promo
   "schema": "r4b1t-eligibility-profiles-v1",
   "profiles": [
     {
-      "profile_id": "diverse-candidate-v0.2/resource-type-identity-v1",
+      "profile_id": "strange-candidate-v0.3/resource-type-identity-v1",
       "status": "active",
-      "release": { "release_id": "diverse-candidate-v0.2", "urls_digest": "sha256:…", "resources_digest": "sha256:…" },
-      "promotion_id": "diverse-candidate-v0.2-active-v1",
+      "release": { "release_id": "strange-candidate-v0.3", "urls_digest": "sha256:…", "resources_digest": "sha256:…" },
+      "promotion_id": "strange-candidate-v0.3-active-v1",
       "mapping": "resource-type-identity-v1",
-      "terrain_index": { "path": "corpus/terrains/diverse-candidate-v0.2/terrain-index-v1.json", "schema": "r4b1t-terrain-index-v1", "digest": "sha256:…" }
+      "terrain_index": { "path": "corpus/terrains/strange-candidate-v0.3/terrain-index-v1.json", "schema": "r4b1t-terrain-index-v1", "digest": "sha256:…" }
     }
   ]
 }

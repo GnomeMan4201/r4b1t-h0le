@@ -10,7 +10,7 @@ const RELEASE_DIR = path.join(
   ROOT,
   'corpus',
   'releases',
-  'diverse-candidate-v0.2',
+  'strange-candidate-v0.3',
 );
 const CANDIDATE_BYTES = fs.readFileSync(path.join(RELEASE_DIR, 'urls.txt'));
 const CANDIDATE_TEXT = CANDIDATE_BYTES.toString('utf8');
@@ -27,12 +27,12 @@ const CANDIDATE_REVISION = (
 );
 
 test('typed candidate manifest binds the exact shadow bytes', () => {
-  expect(MANIFEST.release_id).toBe('diverse-candidate-v0.2');
+  expect(MANIFEST.release_id).toBe('strange-candidate-v0.3');
   expect(MANIFEST.status).toBe('candidate');
   expect(MANIFEST.selection_authority).toBe(false);
   expect(MANIFEST.urls_digest).toBe(CANDIDATE_REVISION);
   expect(MANIFEST.counts.resources).toBe(CANDIDATE_URLS.length);
-  expect(CANDIDATE_URLS.length).toBe(6859);
+  expect(CANDIDATE_URLS.length).toBe(6975);
 });
 
 test('runtime promotion grants authority without rewriting candidate release evidence', async ({ page }) => {
@@ -50,12 +50,12 @@ test('runtime promotion grants authority without rewriting candidate release evi
     };
   });
 
-  expect(result.active.id).toBe('diverse-candidate-v0.2');
+  expect(result.active.id).toBe('strange-candidate-v0.3');
   expect(result.active.selectionAuthority).toBe(true);
   expect(result.active.expectedDigest).toBe(CANDIDATE_REVISION);
   expect(result.candidate.selectionAuthority).toBe(false);
   expect(result.candidate.expectedDigest).toBe(CANDIDATE_REVISION);
-  expect(result.promotion.id).toBe('diverse-candidate-v0.2-active-v1');
+  expect(result.promotion.id).toBe('strange-candidate-v0.3-active-v1');
   expect(result.revision).toBe(CANDIDATE_REVISION);
-  expect(result.count).toBe(6859);
+  expect(result.count).toBe(6975);
 });

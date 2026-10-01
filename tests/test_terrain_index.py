@@ -10,14 +10,14 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TOOL = ROOT / 'tools' / 'terrain_index.py'
-RELEASE = ROOT / 'corpus' / 'releases' / 'diverse-candidate-v0.2'
-INDEX = ROOT / 'corpus' / 'terrains' / 'diverse-candidate-v0.2' / 'terrain-index-v1.json'
+RELEASE = ROOT / 'corpus' / 'releases' / 'strange-candidate-v0.3'
+INDEX = ROOT / 'corpus' / 'terrains' / 'strange-candidate-v0.3' / 'terrain-index-v1.json'
 REGISTRY = ROOT / 'corpus' / 'runtime' / 'eligibility-profiles-v1.json'
-URLS_DIGEST = 'sha256:ba52be7e2fc9120f3bd1ac2a6bacbc61fc937764e6d4637df8711ec2212bf75c'
-INDEX_DIGEST = 'sha256:a9bbe4fc56020314a11195c9339fa3a04a14082d6b2f6c259c78be6ee38af5fd'
-COUNTS = {'advisory': 43, 'article': 11, 'dataset': 22, 'documentation': 1408, 'lab': 282,
-          'paper': 895, 'reference': 871, 'repository': 470, 'research': 1584, 'security_tool': 206,
-          'threat_feed': 6, 'training_resource': 12, 'writeup': 1049}
+URLS_DIGEST = 'sha256:f85a1c710977814c920ff13eb95cf0b86805486668c99dba2d5024d6b1bda3a7'
+INDEX_DIGEST = 'sha256:8282156e330ef423acfba8304e4f7419e6d978d7441ef7e5f146a76b9f6b5a00'
+COUNTS = {'advisory': 43, 'article': 24, 'challenge': 8, 'dataset': 22, 'documentation': 1408, 'lab': 283,
+          'paper': 913, 'reference': 897, 'repository': 470, 'research': 1605, 'security_tool': 212,
+          'threat_feed': 6, 'training_resource': 12, 'writeup': 1072}
 
 
 def run(*args):
@@ -39,7 +39,7 @@ class TerrainIndexBuild(unittest.TestCase):
         doc = json.loads(INDEX.read_text('utf-8'))
         self.assertEqual({t['id']: t['count'] for t in doc['terrains']}, COUNTS)
         self.assertEqual([t['id'] for t in doc['terrains']], sorted(COUNTS))
-        self.assertEqual(sum(t['count'] for t in doc['terrains']), 6859)
+        self.assertEqual(sum(t['count'] for t in doc['terrains']), 6975)
 
     def test_t1_01_counts_equal_release_manifest_and_no_route_is_all_only(self):
         doc = json.loads(INDEX.read_text('utf-8'))
@@ -114,8 +114,8 @@ class RegistryClassification(unittest.TestCase):
     """T1-14: a digest declared in a trail is evidence of use; only the registry establishes authority.
     Classification binds the complete release: release_id + urls_digest + resources_digest."""
 
-    RELEASE_ID = 'diverse-candidate-v0.2'
-    RESOURCES_DIGEST = 'sha256:529a3bcf10b0933ce92428932035750ae0fe93f1490aaa1a40c1384d7ec57aca'
+    RELEASE_ID = 'strange-candidate-v0.3'
+    RESOURCES_DIGEST = 'sha256:347bf83b013e3eec3aff9301863c6cd3acb62d62db6d39e5fa8c27f4c814dee1'
 
     def classify(self, index_digest, registry=REGISTRY, release_id=None, urls_digest=URLS_DIGEST, resources_digest=None):
         result = run('classify', '--registry', str(registry),
@@ -149,16 +149,15 @@ class RegistryClassification(unittest.TestCase):
 
     def test_t1_14_superseded_profile(self):
         registry = json.loads(REGISTRY.read_text())
-        old = json.loads(json.dumps(registry['profiles'][0]))
-        old['profile_id'] = 'diverse-candidate-v0.2/historical'
-        old['status'] = 'superseded'
-        old['terrain_index']['digest'] = 'sha256:' + 'e' * 64
-        registry['profiles'].insert(0, old)
-        with tempfile.TemporaryDirectory() as tmp:
-            path = pathlib.Path(tmp) / 'registry.json'
-            path.write_text(json.dumps(registry))
-            self.assertEqual(self.classify('sha256:' + 'e' * 64, path), 'AUTHORITATIVE_SUPERSEDED')
-            self.assertEqual(self.classify(INDEX_DIGEST, path), 'AUTHORITATIVE_ACTIVE')
+        old = next(p for p in registry['profiles'] if p['status'] == 'superseded')
+        result = run('classify', '--registry', str(REGISTRY),
+                     '--release-id', old['release']['release_id'],
+                     '--urls-digest', old['release']['urls_digest'],
+                     '--resources-digest', old['release']['resources_digest'],
+                     '--index-digest', old['terrain_index']['digest'])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.strip(), 'AUTHORITATIVE_SUPERSEDED')
+        self.assertEqual(self.classify(INDEX_DIGEST), 'AUTHORITATIVE_ACTIVE')
 
     def test_registry_record_invariants(self):
         registry = json.loads(REGISTRY.read_text())

@@ -6,16 +6,16 @@ const path = require('node:path');
 const { test, expect } = require('@playwright/test');
 
 const ROOT = path.resolve(__dirname, '..');
-const URLS = fs.readFileSync(path.join(ROOT, 'corpus/releases/diverse-candidate-v0.2/urls.txt'), 'utf8').slice(0, -1).split('\n');
-const INDEX_PATH = path.join(ROOT, 'corpus/terrains/diverse-candidate-v0.2/terrain-index-v1.json');
-const INDEX_DIGEST = 'sha256:a9bbe4fc56020314a11195c9339fa3a04a14082d6b2f6c259c78be6ee38af5fd';
-const ACTIVE_DIGEST = 'sha256:ba52be7e2fc9120f3bd1ac2a6bacbc61fc937764e6d4637df8711ec2212bf75c';
-const BASELINE = require('./fixtures/selection/all-roll-baseline-main-9e658c5.json');
+const URLS = fs.readFileSync(path.join(ROOT, 'corpus/releases/strange-candidate-v0.3/urls.txt'), 'utf8').slice(0, -1).split('\n');
+const INDEX_PATH = path.join(ROOT, 'corpus/terrains/strange-candidate-v0.3/terrain-index-v1.json');
+const INDEX_DIGEST = 'sha256:8282156e330ef423acfba8304e4f7419e6d978d7441ef7e5f146a76b9f6b5a00';
+const ACTIVE_DIGEST = 'sha256:f85a1c710977814c920ff13eb95cf0b86805486668c99dba2d5024d6b1bda3a7';
+const BASELINE = require('./fixtures/selection/all-roll-baseline-strange-v0.3.json');
 const COUNTS = {
-  advisory: 43, article: 11, dataset: 22, documentation: 1408, lab: 282, paper: 895, reference: 871,
-  repository: 470, research: 1584, security_tool: 206, threat_feed: 6, training_resource: 12, writeup: 1049,
+  advisory: 43, article: 24, challenge: 8, dataset: 22, documentation: 1408, lab: 283, paper: 913, reference: 897,
+  repository: 470, research: 1605, security_tool: 212, threat_feed: 6, training_resource: 12, writeup: 1072,
 };
-const ACTIVE_COUNT = 6859;
+const ACTIVE_COUNT = 6975;
 
 async function blockExternalNetwork(page) {
   await page.route('**/*', async (route) => {
@@ -33,7 +33,7 @@ async function seedDraft(page, seed) {
     sessionStorage.setItem('__t1Seeded', '1');
     localStorage.setItem('r4b1t_trail_draft_v1', JSON.stringify({
       seed, createdAt: '2026-10-01T12:00:00.000Z', corpusRevision: revision,
-      corpusSourceId: 'diverse-candidate-v0.2', routes: [], parent: null,
+      corpusSourceId: 'strange-candidate-v0.3', routes: [], parent: null,
     }));
   }, { seed, revision: ACTIVE_DIGEST });
 }
@@ -130,7 +130,7 @@ test('T1-05: eligible counts are visible before ROLL on desktop, including ALL a
   for (const [id, count] of Object.entries(COUNTS)) {
     await expect(control(page, id)).toHaveText(`${id.replace(/_/g, ' ').toUpperCase()} · ${count}`);
   }
-  await expect(control(page, 'security_tool')).toHaveText('SECURITY TOOL · 206');
+  await expect(control(page, 'security_tool')).toHaveText('SECURITY TOOL · 212');
   const order = await page.locator('#catFilter button[data-terrain-id]').evaluateAll(b => b.map(x => x.dataset.terrainId));
   expect(order).toEqual(['ALL', ...Object.keys(COUNTS).sort()]);
 });
@@ -146,7 +146,7 @@ test('T1-05: mobile filter shows counts, labels the armed terrain, and scopes RO
   await expect(page.locator('#r4mFilterOptions .r4m-filter-proxy', { hasText: 'DOCUMENTATION · 1408' })).toBeVisible();
   await page.locator('#r4mFilterOptions .r4m-filter-proxy', { hasText: 'SECURITY TOOL' }).click();
   await expect(page.locator('#r4mFilterLabel')).toHaveText('SECURITY TOOL');
-  await expect(page.locator('#r4mRollScope')).toHaveText('SECURITY TOOL · 206 ROUTES');
+  await expect(page.locator('#r4mRollScope')).toHaveText('SECURITY TOOL · 212 ROUTES');
   await page.locator('#r4mNavMenu').click();
   await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
   await page.locator('#r4mFilterOptions .r4m-filter-proxy', { hasText: 'ALL SIGNALS' }).click();
@@ -252,7 +252,7 @@ test('T1-09: ROLL commits selection transaction v2 with index binding, eligible 
   const b = await commit(page);
   expect(a.transaction_version).toBe('r4b1t-selection-transaction/v2');
   expect(a.constraint).toEqual({ terrain: 'security_tool', terrainIndex: { schema: 'r4b1t-terrain-index-v1', digest: INDEX_DIGEST }, protocolPolicy: { version: 1, excludeOnion: false } });
-  expect(a.eligible_count).toBe(206);
+  expect(a.eligible_count).toBe(212);
   expect(a.sampler.repeat_guard).toEqual({ reference: null, max_draws: 30 });
   expect(b.sampler.repeat_guard).toEqual({ reference: a.route.url, max_draws: 30 });
   expect(Object.keys(a).sort()).toEqual(['action', 'constraint', 'corpus_revision', 'eligible_count', 'route', 'sampler', 'sequence', 'transaction_version']);
@@ -299,7 +299,7 @@ test('T1-11: without the trail selection authority, ROLL selects nothing and say
   expect(await page.locator('#previewUrl').textContent()).toBe(before);
 });
 
-test('T1-12: ALL ROLL outcomes are unchanged from main for a fixed seed (300 rolls)', async ({ page }, testInfo) => {
+test('T1-12: ALL ROLL outcomes match the strange-candidate-v0.3 fixed-seed baseline (300 rolls)', async ({ page }, testInfo) => {
   if (testInfo.project.name === 'mobile-chromium') test.skip();
   await seedDraft(page, BASELINE.seed);
   await page.goto('./', { waitUntil: 'domcontentloaded' });
