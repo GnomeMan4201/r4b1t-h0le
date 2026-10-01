@@ -77,3 +77,34 @@ test('production BRANCH authority has no ambient randomness or history exclusion
   expect(source.generate).not.toMatch(/Math\.random|document|localStorage|sessionStorage|fetch\s*\(/);
   expect(source.sprout).not.toMatch(/h\.nodes\.map|new Set\(/);
 });
+
+test('BRANCH selection is recorded as explicit v0.3 navigation evidence', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'mobile-chromium') test.skip();
+  const seen = [];
+  await blockExternalNetwork(page, seen);
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+  await page.waitForFunction(() => window.__r4b1tCommitRoll && window.__r4b1tCommitRoll.__r4b1tAuthority);
+
+  await page.evaluate(() => window.roll());
+  await expect.poll(async () => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length)).toBe(1);
+
+  await page.evaluate(async () => {
+    window.setMode('branch');
+    await window.sprout();
+  });
+  const firstBranch = page.locator('#branchGrid .branch-item').first();
+  await expect(firstBranch).toBeVisible();
+  await firstBranch.click();
+
+  const trail = await page.evaluate(() => window.getTrailManifest());
+  expect(trail.manifest.format).toBe('r4b1t-trail/v0.3');
+  expect(trail.manifest.steps).toHaveLength(2);
+  expect(trail.manifest.steps[0].kind).toBe('ROLL');
+  expect(trail.manifest.steps[1].kind).toBe('BRANCH');
+  expect(trail.manifest.steps[1].navigation.from_step).toBe(1);
+  expect(['deeper', 'sideways', 'opposite', 'weird']).toContain(
+    trail.manifest.steps[1].navigation.branch_label.toLowerCase(),
+  );
+});
+
