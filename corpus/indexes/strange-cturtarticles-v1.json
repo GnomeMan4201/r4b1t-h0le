@@ -1,0 +1,29 @@
+{
+  "extractor": "html-anchors-v1",
+  "final_url": "https://cturt.github.io/articles.html",
+  "response_digest": "sha256:8dff1738033a5adad3e3108ef65a77e9bb82879c88b1a7fb7986f071801d26f0",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://cturt.github.io/articles.html",
+  "urls": [
+    "https://cturt.github.io/SETFKEY.html",
+    "https://cturt.github.io/about.html",
+    "https://cturt.github.io/articles.html",
+    "https://cturt.github.io/bindValue.html",
+    "https://cturt.github.io/compat-info-leaks.html",
+    "https://cturt.github.io/contact.html",
+    "https://cturt.github.io/dlclose-overflow.html",
+    "https://cturt.github.io/freedvdboot.html",
+    "https://cturt.github.io/gamecenter.html",
+    "https://cturt.github.io/index.html",
+    "https://cturt.github.io/mast1c0re-2.html",
+    "https://cturt.github.io/mast1c0re.html",
+    "https://cturt.github.io/poker.html",
+    "https://cturt.github.io/ps2-yabasic.html",
+    "https://cturt.github.io/ps4-2.html",
+    "https://cturt.github.io/ps4-3.html",
+    "https://cturt.github.io/ps4.html",
+    "https://cturt.github.io/sendmsg.html",
+    "https://cturt.github.io/shogihax.html"
+  ]
+}

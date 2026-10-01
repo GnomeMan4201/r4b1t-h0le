@@ -1,0 +1,24 @@
+{
+  "admissions": [
+    {
+      "resource_type": "challenge",
+      "url": "https://cryptopals.com/sets/7/challenges/51"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://cryptopals.com/sets/7/challenges/52"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://cryptopals.com/sets/7/challenges/54"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "practical_learning",
+  "rationale": "Concrete cryptographic attack challenges exploring compression leakage, iterated hash collisions and prediction; excludes generic set containers.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:f2736f29a80a6b1ca7f0fbd09807076ea1fcd2c1a9f368193a4c5a6b91f52aa7",
+  "snapshot_path": "corpus/indexes/strange-cryptopals7-v1.json",
+  "source_id": "strange-cryptopals7-v1"
+}

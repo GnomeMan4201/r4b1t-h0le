@@ -1,0 +1,40 @@
+{
+  "admissions": [
+    {
+      "resource_type": "writeup",
+      "url": "https://www.windytan.com/2013/03/eavesdropping-on-wireless-keyboard.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.windytan.com/2013/05/a-determined-hacker-decrypts-rds-tmc.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.windytan.com/2013/05/descrambling-voice-inversion.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.windytan.com/2015/10/pea-whistle-steganography.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.windytan.com/2017/09/descrambling-split-band-voice-inversion.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.windytan.com/2023/02/using-hdmi-radio-interference-for-high.html"
+    },
+    {
+      "resource_type": "writeup",
+      "url": "https://www.windytan.com/2024/06/ultrasonic-investigations-in-shopping.html"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "independent_research",
+  "rationale": "Individual first-party signal-analysis investigations with concrete wireless privacy, side-channel, steganography or communications-analysis content.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:ba46f088bb48d809ec8a799c95bc00a9bafd19c64f0bde1554e1e5d28b873468",
+  "snapshot_path": "corpus/indexes/strange-windytanposts-v1.json",
+  "source_id": "strange-windytanposts-v1"
+}

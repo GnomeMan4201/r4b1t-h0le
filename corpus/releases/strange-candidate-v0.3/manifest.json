@@ -1,0 +1,35 @@
+{
+  "aggregate_artifact_digest": "sha256:e0769424e5d6be5f2b31f6c9696de211c4b4a0d8ae38f038814bf396902a0156",
+  "counts": {
+    "resource_types": {
+      "advisory": 43,
+      "article": 24,
+      "challenge": 8,
+      "dataset": 22,
+      "documentation": 1408,
+      "lab": 283,
+      "paper": 913,
+      "reference": 897,
+      "repository": 470,
+      "research": 1605,
+      "security_tool": 212,
+      "threat_feed": 6,
+      "training_resource": 12,
+      "writeup": 1072
+    },
+    "resources": 6975,
+    "unique_hosts": 345
+  },
+  "eligibility_output_digest": "sha256:0ddf903669e115bcd32d7c24ceaa5763cac98522826f114c03954154c28a95bc",
+  "eligibility_ruleset": "eligibility-v1",
+  "protocol_policy": {
+    "excludeOnion": true,
+    "version": "1"
+  },
+  "release_id": "strange-candidate-v0.3",
+  "resources_digest": "sha256:347bf83b013e3eec3aff9301863c6cd3acb62d62db6d39e5fa8c27f4c814dee1",
+  "schema": "r4b1t-corpus-release-v1",
+  "selection_authority": false,
+  "status": "candidate",
+  "urls_digest": "sha256:f85a1c710977814c920ff13eb95cf0b86805486668c99dba2d5024d6b1bda3a7"
+}

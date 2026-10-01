@@ -1,0 +1,20 @@
+{
+  "admissions": [
+    {
+      "resource_type": "paper",
+      "url": "https://eprint.iacr.org/2019/459"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://eprint.iacr.org/2020/014.pdf"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "academic_research",
+  "rationale": "Author-linked academic research on SHA-1 collision and chosen-prefix attacks; avoids the repurposed shattered.io host.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:656c1620aaedee3c1df3deb7d9ecdda89f6cdf2b6fe1545d93f31ef17e3e70ae",
+  "snapshot_path": "corpus/indexes/strange-shambles-v1.json",
+  "source_id": "strange-shambles-v1"
+}

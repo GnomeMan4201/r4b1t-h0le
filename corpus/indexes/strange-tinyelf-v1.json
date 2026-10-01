@@ -1,0 +1,21 @@
+{
+  "extractor": "html-anchors-v1",
+  "final_url": "https://www.muppetlabs.com/~breadbox/software/tiny/",
+  "response_digest": "sha256:ba0d64bc640899c41051b3a8d26d2dbdb10b8678977c426a976c4963c418656e",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://www.muppetlabs.com/~breadbox/software/tiny/",
+  "urls": [
+    "http://www.muppetlabs.com/~breadbox/",
+    "http://www.muppetlabs.com/~breadbox/software/",
+    "https://www.muppetlabs.com/~breadbox/software/elfkickers.html",
+    "https://www.muppetlabs.com/~breadbox/software/tiny/return42.html",
+    "https://www.muppetlabs.com/~breadbox/software/tiny/revisit.html",
+    "https://www.muppetlabs.com/~breadbox/software/tiny/somewhat.html",
+    "https://www.muppetlabs.com/~breadbox/software/tiny/techtalk.html",
+    "https://www.muppetlabs.com/~breadbox/software/tiny/teensy.html",
+    "https://www.muppetlabs.com/~breadbox/software/tiny/teensyps.html",
+    "https://www.muppetlabs.com/~breadbox/software/tiny/useful.html",
+    "https://www.muppetlabs.com/~breadbox/software/tiny/useless.html"
+  ]
+}

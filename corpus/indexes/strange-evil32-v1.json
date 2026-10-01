@@ -1,0 +1,19 @@
+{
+  "extractor": "html-anchors-v1",
+  "final_url": "https://evil32.com/",
+  "response_digest": "sha256:dbb7a4ecaded370e56beebaaafd69e850b6aa341b6ae08977ae385b16ee87e3b",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://evil32.com/",
+  "urls": [
+    "http://bugs.gnupg.org/gnupg/issue1579",
+    "http://triciaroxane.wordpress.com/2014/08/06/sometimes-ferocious-is-adorable/",
+    "https://evil32.com/#duplicate-recv-key-example",
+    "https://evil32.com/EricSwanson.gpg",
+    "https://evil32.com/RichardKlafter.gpg",
+    "https://evil32.com/examples.html",
+    "https://github.com/lachesis/scallion",
+    "https://raw.githubusercontent.com/thingless/evil32/gh-pages/cloneset.tar.gz",
+    "https://wiki.debian.org/SecureApt"
+  ]
+}

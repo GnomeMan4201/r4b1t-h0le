@@ -1,0 +1,20 @@
+{
+  "admissions": [
+    {
+      "resource_type": "challenge",
+      "url": "https://cryptopals.com/sets/6/challenges/46"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://cryptopals.com/sets/6/challenges/47"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "practical_learning",
+  "rationale": "Publicly addressed exercises on RSA parity and padding oracles; excludes generic set containers.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:776167e69c602e26f7683c3854b54d81b569fdebafb962a5549ea56b533d4bc6",
+  "snapshot_path": "corpus/indexes/strange-cryptopals6-v1.json",
+  "source_id": "strange-cryptopals6-v1"
+}

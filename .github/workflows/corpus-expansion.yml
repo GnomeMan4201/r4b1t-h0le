@@ -54,6 +54,12 @@ jobs:
           diff -ru corpus/releases/diverse-candidate-v0.2 expansion-build/release
           diff -u corpus/expansion/diversity-v1.json expansion-build/diversity.json
           diff -u corpus/expansion/diversity-v1.md expansion-build/diversity.md
+      - name: Rebuild and compare unusual-resource candidate
+        run: |
+          python tools/build_expanded_corpus.py --registry corpus/expansion/registry-v2.json --out-dir strange-build
+          diff -ru corpus/releases/strange-candidate-v0.3 strange-build/release
+          diff -u corpus/expansion/diversity-v2.json strange-build/diversity.json
+          diff -u corpus/expansion/diversity-v2.md strange-build/diversity.md
       - name: Publish diversity evidence
         run: cat expansion-build/diversity.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
