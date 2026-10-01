@@ -190,3 +190,21 @@ test('V3R-07: v0.3 export does not fail by feeding an unsupported artifact into 
   expect(result.format).toBe('r4b1t-trail/v0.3');
   expect(result.topologyCalls).toBe(0);
 });
+
+
+test('V3R-08: mobile MAP TRAILS uses the explicit legacy projection instead of the default v0.3 artifact', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+
+  await page.evaluate(() => window.roll());
+  await expect.poll(async () => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length)).toBe(1);
+
+  await page.waitForSelector('#r4mShellHost', { state: 'attached' });
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="topology"]').click();
+
+  const overlay = page.locator('#trailTopologyOverlay');
+  await expect(overlay).toHaveClass(/open/);
+  await expect(overlay.locator('.topology-card')).toHaveCount(1);
+});
