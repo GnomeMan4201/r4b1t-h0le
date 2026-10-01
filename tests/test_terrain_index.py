@@ -101,21 +101,41 @@ class TerrainIndexBuild(unittest.TestCase):
 
 
 class RegistryClassification(unittest.TestCase):
-    """T1-14: a digest declared in a trail is evidence of use; only the registry establishes authority."""
+    """T1-14: a digest declared in a trail is evidence of use; only the registry establishes authority.
+    Classification binds the complete release: release_id + urls_digest + resources_digest."""
 
-    def classify(self, urls_digest, index_digest, registry=REGISTRY):
-        result = run('classify', '--registry', str(registry), '--urls-digest', urls_digest, '--index-digest', index_digest)
+    RELEASE_ID = 'typed-candidate-v0.1'
+    RESOURCES_DIGEST = 'sha256:2c7bd5f0a492646cb5cc250b426ed720f1e0953615172717f562379e88eeb691'
+
+    def classify(self, index_digest, registry=REGISTRY, release_id=None, urls_digest=URLS_DIGEST, resources_digest=None):
+        result = run('classify', '--registry', str(registry),
+                     '--release-id', release_id or self.RELEASE_ID,
+                     '--urls-digest', urls_digest,
+                     '--resources-digest', resources_digest or self.RESOURCES_DIGEST,
+                     '--index-digest', index_digest)
         self.assertEqual(result.returncode, 0, result.stderr)
         return result.stdout.strip()
 
     def test_t1_14_active_profile_is_authoritative(self):
-        self.assertEqual(self.classify(URLS_DIGEST, INDEX_DIGEST), 'AUTHORITATIVE_ACTIVE')
+        self.assertEqual(self.classify(INDEX_DIGEST), 'AUTHORITATIVE_ACTIVE')
 
     def test_t1_14_reproducible_but_unregistered_map_is_not_authoritative(self):
-        self.assertEqual(self.classify(URLS_DIGEST, 'sha256:' + 'f' * 64), 'UNREGISTERED_MAP')
+        self.assertEqual(self.classify('sha256:' + 'f' * 64), 'UNREGISTERED_MAP')
 
     def test_t1_14_unknown_release(self):
-        self.assertEqual(self.classify('sha256:' + '0' * 64, INDEX_DIGEST), 'UNREGISTERED_RELEASE')
+        self.assertEqual(self.classify(INDEX_DIGEST, urls_digest='sha256:' + '0' * 64), 'UNREGISTERED_RELEASE')
+
+    def test_t1_14_same_urls_different_resources_is_a_different_release(self):
+        self.assertEqual(self.classify(INDEX_DIGEST, resources_digest='sha256:' + '9' * 64), 'UNREGISTERED_RELEASE')
+
+    def test_t1_14_same_digests_different_release_id_is_a_different_release(self):
+        self.assertEqual(self.classify(INDEX_DIGEST, release_id='typed-candidate-v0.2'), 'UNREGISTERED_RELEASE')
+
+    def test_t1_14_incomplete_binding_is_rejected(self):
+        result = run('classify', '--registry', str(REGISTRY), '--release-id', self.RELEASE_ID,
+                     '--urls-digest', URLS_DIGEST, '--resources-digest', 'not-a-digest', '--index-digest', INDEX_DIGEST)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('RELEASE_BINDING_INCOMPLETE', result.stderr)
 
     def test_t1_14_superseded_profile(self):
         registry = json.loads(REGISTRY.read_text())
@@ -127,8 +147,24 @@ class RegistryClassification(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = pathlib.Path(tmp) / 'registry.json'
             path.write_text(json.dumps(registry))
-            self.assertEqual(self.classify(URLS_DIGEST, 'sha256:' + 'e' * 64, path), 'AUTHORITATIVE_SUPERSEDED')
-            self.assertEqual(self.classify(URLS_DIGEST, INDEX_DIGEST, path), 'AUTHORITATIVE_ACTIVE')
+            self.assertEqual(self.classify('sha256:' + 'e' * 64, path), 'AUTHORITATIVE_SUPERSEDED')
+            self.assertEqual(self.classify(INDEX_DIGEST, path), 'AUTHORITATIVE_ACTIVE')
+
+    def test_registry_record_invariants(self):
+        registry = json.loads(REGISTRY.read_text())
+        self.assertEqual(registry['schema'], 'r4b1t-eligibility-profiles-v1')
+        ids = [p['profile_id'] for p in registry['profiles']]
+        self.assertEqual(len(ids), len(set(ids)), 'profile_id must be unique')
+        active_per_release = {}
+        for p in registry['profiles']:
+            self.assertEqual(set(p), {'profile_id', 'status', 'release', 'promotion_id', 'mapping', 'terrain_index'})
+            self.assertIn(p['status'], ('active', 'superseded'))
+            self.assertEqual(set(p['release']), {'release_id', 'urls_digest', 'resources_digest'})
+            self.assertEqual(set(p['terrain_index']), {'path', 'schema', 'digest'})
+            if p['status'] == 'active':
+                key = (p['release']['release_id'], p['release']['urls_digest'], p['release']['resources_digest'])
+                active_per_release[key] = active_per_release.get(key, 0) + 1
+        self.assertTrue(all(n == 1 for n in active_per_release.values()), 'at most one active profile per release')
 
     def test_registry_binds_the_active_promotion(self):
         registry = json.loads(REGISTRY.read_text())

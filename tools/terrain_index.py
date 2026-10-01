@@ -7,7 +7,7 @@ authoritative only through corpus/runtime/eligibility-profiles-v1.json.
 
   build    --release <dir> --out <file>
   check    --release <dir> --index <file>          byte-identical regeneration (CI)
-  classify --registry <file> --urls-digest <d> --index-digest <d>
+  classify --registry <file> --release-id <id> --urls-digest <d> --resources-digest <d> --index-digest <d>
 """
 from __future__ import annotations
 
@@ -122,10 +122,21 @@ def build_bytes(release_dir: pathlib.Path) -> bytes:
     return (cj1(build_document(release_dir)) + '\n').encode('utf-8')
 
 
-def classify(registry: dict, urls_digest: str, index_digest: str) -> str:
+SHA256_ID = re.compile(r'^sha256:[0-9a-f]{64}$')
+
+
+def classify(registry: dict, release: dict, index_digest: str) -> str:
+    """Classify a terrain-index digest against the complete release binding
+    {release_id, urls_digest, resources_digest}; all three must match a profile."""
     if registry.get('schema') != REGISTRY_SCHEMA:
         raise TerrainIndexError('REGISTRY_INVALID', 'schema')
-    profiles = [p for p in registry.get('profiles', []) if p['release']['urls_digest'] == urls_digest]
+    if (not isinstance(release.get('release_id'), str) or not release.get('release_id')
+            or not SHA256_ID.match(release.get('urls_digest') or '')
+            or not SHA256_ID.match(release.get('resources_digest') or '')):
+        raise TerrainIndexError('RELEASE_BINDING_INCOMPLETE')
+    binding = (release['release_id'], release['urls_digest'], release['resources_digest'])
+    profiles = [p for p in registry.get('profiles', [])
+                if (p['release']['release_id'], p['release']['urls_digest'], p['release']['resources_digest']) == binding]
     if not profiles:
         return 'UNREGISTERED_RELEASE'
     for profile in profiles:
@@ -145,7 +156,9 @@ def main(argv=None) -> int:
     p_check.add_argument('--index', required=True, type=pathlib.Path)
     p_classify = sub.add_parser('classify')
     p_classify.add_argument('--registry', required=True, type=pathlib.Path)
+    p_classify.add_argument('--release-id', required=True)
     p_classify.add_argument('--urls-digest', required=True)
+    p_classify.add_argument('--resources-digest', required=True)
     p_classify.add_argument('--index-digest', required=True)
     args = parser.parse_args(argv)
     try:
@@ -162,7 +175,8 @@ def main(argv=None) -> int:
             print(f'TERRAIN INDEX VERIFIED {sha256_id(actual)}')
         else:
             registry = json.loads(args.registry.read_text('utf-8'))
-            print(classify(registry, args.urls_digest, args.index_digest))
+            release = {'release_id': args.release_id, 'urls_digest': args.urls_digest, 'resources_digest': args.resources_digest}
+            print(classify(registry, release, args.index_digest))
     except TerrainIndexError as error:
         print(str(error), file=sys.stderr)
         return 1

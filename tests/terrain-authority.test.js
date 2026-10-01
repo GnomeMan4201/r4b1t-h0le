@@ -74,16 +74,23 @@ test('T1-07: terrain control state — DRY is not armable; tiny pools are disclo
   assert.equal(terrainControlState({ authority: 'UNAVAILABLE', count: 5 }).armable, false);
 });
 
-test('T1-14: classifyBinding distinguishes use from authority', () => {
+test('T1-14: classifyBinding binds the complete release and distinguishes use from authority', () => {
   const { classifyBinding } = loadAuthority();
   const registry = JSON.parse(read(REGISTRY_PATH));
-  const urls = registry.profiles[0].release.urls_digest;
-  assert.equal(classifyBinding(registry, urls, INDEX_DIGEST), 'AUTHORITATIVE_ACTIVE');
-  assert.equal(classifyBinding(registry, urls, 'sha256:' + 'f'.repeat(64)), 'UNREGISTERED_MAP');
-  assert.equal(classifyBinding(registry, 'sha256:' + '0'.repeat(64), INDEX_DIGEST), 'UNREGISTERED_RELEASE');
+  const release = { ...registry.profiles[0].release };
+  assert.equal(classifyBinding(registry, release, INDEX_DIGEST), 'AUTHORITATIVE_ACTIVE');
+  assert.equal(classifyBinding(registry, release, 'sha256:' + 'f'.repeat(64)), 'UNREGISTERED_MAP');
+  assert.equal(classifyBinding(registry, { ...release, urls_digest: 'sha256:' + '0'.repeat(64) }, INDEX_DIGEST), 'UNREGISTERED_RELEASE');
+  assert.equal(classifyBinding(registry, { ...release, resources_digest: 'sha256:' + '9'.repeat(64) }, INDEX_DIGEST), 'UNREGISTERED_RELEASE',
+    'same URL bytes with different typed metadata is a different release');
+  assert.equal(classifyBinding(registry, { ...release, release_id: 'typed-candidate-v0.2' }, INDEX_DIGEST), 'UNREGISTERED_RELEASE');
+  for (const incomplete of [{ urls_digest: release.urls_digest, resources_digest: release.resources_digest }, { ...release, resources_digest: undefined }, null]) {
+    assert.throws(() => classifyBinding(registry, incomplete, INDEX_DIGEST), e => e.code === 'RELEASE_BINDING_INCOMPLETE');
+  }
   const superseded = JSON.parse(JSON.stringify(registry));
   superseded.profiles.unshift({ ...JSON.parse(JSON.stringify(registry.profiles[0])), profile_id: 'old', status: 'superseded', terrain_index: { ...registry.profiles[0].terrain_index, digest: 'sha256:' + 'e'.repeat(64) } });
-  assert.equal(classifyBinding(superseded, urls, 'sha256:' + 'e'.repeat(64)), 'AUTHORITATIVE_SUPERSEDED');
+  assert.equal(classifyBinding(superseded, release, 'sha256:' + 'e'.repeat(64)), 'AUTHORITATIVE_SUPERSEDED');
+  assert.equal(classifyBinding(superseded, release, INDEX_DIGEST), 'AUTHORITATIVE_ACTIVE');
 });
 
 test('validateIndexDocument rejects structural violations', () => {

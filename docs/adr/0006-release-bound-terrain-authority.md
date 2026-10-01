@@ -29,13 +29,15 @@ Each release route already carries an explicit, provenance-backed `resource_type
 
 A terrain index is reproducible from release bytes, but reproducible does not mean authoritative. A digest written into a selection transaction proves *which* map was used. It does not prove that the map was the project's authoritative mapping for that release.
 
-Authority is anchored in a committed, append-only registry, `corpus/runtime/eligibility-profiles-v1.json` (schema `r4b1t-eligibility-profiles-v1`). It is keyed by release and records for each profile:
+Authority is anchored in a committed, version-controlled registry, `corpus/runtime/eligibility-profiles-v1.json` (schema `r4b1t-eligibility-profiles-v1`). It is keyed by release and records for each profile:
 
 - profile ID and status (`active` or `superseded`)
 - release ID, URL digest and resources digest
 - the promotion it applies to
 - mapping semantics ID
 - terrain index path, schema and expected digest
+
+Profile records are never deleted, and their binding fields are immutable. The only permitted lifecycle mutation is `status: active → superseded`, with at most one active profile per release (`TERRAIN_AUTHORITY_CONTRACT.md` §4).
 
 The authority chain is:
 
@@ -56,14 +58,14 @@ The new chain mirrors each step:
 - `claims:verify` proves `active-v1.json` → registry → pins → file bytes agree.
 - `tools/terrain_index.py --check` proves the bytes regenerate from the release.
 
-**Verifiers never trust a digest supplied inside a trail.** `classifyBinding(registry, urls_digest, index_digest)` (JS, in `terrain-authority.js`; Python, in `tools/terrain_index.py classify`) returns one of four results:
+**Verifiers never trust a digest supplied inside a trail.** `classifyBinding(registry, release, index_digest)` (JS, in `terrain-authority.js`; Python, in `tools/terrain_index.py classify`) takes the complete release binding (`release_id`, `urls_digest`, `resources_digest`) and returns one of four results:
 
 | Result | Meaning |
 |---|---|
 | `AUTHORITATIVE_ACTIVE` | the map is the registry's active profile for that release |
 | `AUTHORITATIVE_SUPERSEDED` | the map was registered for that release, and is no longer active |
-| `UNREGISTERED_MAP` | the release is known, but this map was never registered for it. The trail can be reproducible and still not authoritative |
-| `UNREGISTERED_RELEASE` | no profile exists for that release |
+| `UNREGISTERED_MAP` | the complete release binding is known, but this map was never registered for it. The trail can be reproducible and still not authoritative |
+| `UNREGISTERED_RELEASE` | no profile has that complete release binding (ID, URL digest and resources digest) |
 
 The promotion record `active-v1.json`, `corpus-authority.js` (`r4b1t-runtime-corpus-authority-v3`) and the active population are unchanged. A later promotion format may absorb the profile reference; until then, the registry is the single anchor.
 

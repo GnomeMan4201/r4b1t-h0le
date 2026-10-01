@@ -96,9 +96,19 @@
   }
 
   // A trail-declared digest is evidence of use; only the registry establishes authority.
-  function classifyBinding(registry, urlsDigest, indexDigest) {
+  // `release` is the complete binding {release_id, urls_digest, resources_digest}; all three must match.
+  function classifyBinding(registry, release, indexDigest) {
     if (!registry || registry.schema !== PROFILE.registrySchema || !Array.isArray(registry.profiles)) throw fail('REGISTRY_INVALID');
-    var forRelease = registry.profiles.filter(function (profile) { return profile.release && profile.release.urls_digest === urlsDigest; });
+    if (!release || typeof release.release_id !== 'string' || !release.release_id ||
+        !SHA256.test(release.urls_digest || '') || !SHA256.test(release.resources_digest || '')) {
+      throw fail('RELEASE_BINDING_INCOMPLETE');
+    }
+    var forRelease = registry.profiles.filter(function (profile) {
+      return profile.release &&
+        profile.release.release_id === release.release_id &&
+        profile.release.urls_digest === release.urls_digest &&
+        profile.release.resources_digest === release.resources_digest;
+    });
     if (!forRelease.length) return 'UNREGISTERED_RELEASE';
     for (var position = 0; position < forRelease.length; position += 1) {
       var profile = forRelease[position];

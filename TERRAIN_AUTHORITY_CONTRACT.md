@@ -68,7 +68,7 @@ corpus/runtime/active-v1.json                                   (unchanged promo
 |---|---|
 | `build --release <dir> --out <file>` | write the index |
 | `check --release <dir> --index <file>` | byte-identical regeneration (CI) |
-| `classify --registry <file> --urls-digest <d> --index-digest <d>` | §4 classification |
+| `classify --registry <file> --release-id <id> --urls-digest <d> --resources-digest <d> --index-digest <d>` | §4 classification |
 
 ## 4. Eligibility profile registry (`corpus/runtime/eligibility-profiles-v1.json`)
 
@@ -88,19 +88,26 @@ corpus/runtime/active-v1.json                                   (unchanged promo
 }
 ```
 
-**Rules**
-- Append-only. Entries are never removed or rewritten; a replaced profile changes `status` to `superseded`.
-- At most one `active` profile per `release.release_id`.
+**Lifecycle rules**
+- The registry is a version-controlled file. Its history is the repository history.
+- Profile records are never deleted. `profile_id` is unique.
+- A record's `profile_id`, `release`, `promotion_id`, `mapping` and `terrain_index` (path, schema, digest) are immutable once committed.
+- The only permitted mutation of an existing record is `status: active → superseded`. A replacement map is added as a new record.
+- At most one `active` profile exists per release.
 - The active profile for the active promotion's release must match the pinned constants in `terrain-authority.js` and the actual file bytes. `claims:verify` checks this.
 
-**`classifyBinding(registry, urlsDigest, indexDigest)`**
+The record-level invariants (unique IDs, at most one active profile per release, fields present) are tested. The cross-commit rule (only `active → superseded`) is enforced in review of changes to this file.
+
+**`classifyBinding(registry, release, indexDigest)`**
+
+`release` is the complete binding `{ release_id, urls_digest, resources_digest }`. All three must be present (`RELEASE_BINDING_INCOMPLETE` otherwise). A profile matches a release only when all three fields are equal, so a later release that reuses the same URL bytes with different typed metadata is a different release.
 
 | Result | Condition |
 |---|---|
-| `AUTHORITATIVE_ACTIVE` | the release and digest match a profile whose status is `active` |
-| `AUTHORITATIVE_SUPERSEDED` | the release and digest match a profile whose status is `superseded` |
-| `UNREGISTERED_MAP` | profiles exist for the release, but none has this digest |
-| `UNREGISTERED_RELEASE` | no profile exists for the release |
+| `AUTHORITATIVE_ACTIVE` | a profile with the complete release binding and this index digest has status `active` |
+| `AUTHORITATIVE_SUPERSEDED` | a profile with the complete release binding and this index digest has status `superseded` |
+| `UNREGISTERED_MAP` | profiles exist for the complete release binding, but none has this index digest |
+| `UNREGISTERED_RELEASE` | no profile has this complete release binding |
 
 A trail-declared digest is evidence of *use*. Only this classification establishes *authority*.
 

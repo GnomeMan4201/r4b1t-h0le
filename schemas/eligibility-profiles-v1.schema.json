@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://r4b1t.badbananaresearch.com/schemas/eligibility-profiles-v1.schema.json",
   "title": "r4b1t eligibility profile registry v1",
-  "description": "Append-only authority anchor for terrain maps (TERRAIN_AUTHORITY_CONTRACT.md §4). At most one active profile per release_id; entries are never removed, only superseded.",
+  "description": "Version-controlled authority anchor for terrain maps (TERRAIN_AUTHORITY_CONTRACT.md §4). Profile records are never deleted and their binding fields (profile_id, release, promotion_id, mapping, terrain_index) are immutable; the only permitted lifecycle mutation is status active -> superseded. profile_id is unique and at most one profile per release is active (record-level invariants are tested; the cross-commit transition rule is enforced in review).",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema", "profiles"],
