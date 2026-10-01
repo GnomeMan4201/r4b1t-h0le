@@ -2,6 +2,7 @@
 
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 
 const ROOT = path.resolve('.');
@@ -81,6 +82,58 @@ function verifyTerrainAuthorityClaims(readme) {
   claim(readme.includes('./corpus/runtime/eligibility-profiles-v1.json'), 'README must link the eligibility profile registry');
   for (const terrain of index.terrains) {
     includes(readme, `| \`${terrain.id}\` | ${terrain.label} | ${terrain.count} |`, 'README terrain table');
+  }
+}
+
+// POST_SELECTION_RESOURCE_METADATA_CONTRACT.md follows the active source; it never pins a release snapshot.
+// promotion → runtime activeSource → release manifest → resources.json bytes, and the contract names only
+// the binding (activeSource.*), never any checked-in release's ID, digests or count.
+function verifyMetadataContractClaims() {
+  const promotion = JSON.parse(read('corpus/runtime/active-v1.json'));
+  const corpusAuthority = createRequire(import.meta.url)(path.join(ROOT, 'corpus-authority.js'));
+  const active = corpusAuthority.active();
+  claim(
+    active.releaseId === promotion.active.release_id &&
+      active.url === promotion.active.url &&
+      active.resourcesUrl === promotion.active.resources_url &&
+      active.manifestUrl === promotion.active.manifest_url &&
+      active.expectedDigest === promotion.active.expected_digest &&
+      active.promotionId === promotion.promotion_id,
+    'metadata source drift: runtime activeSource does not match the promotion record',
+  );
+  const manifest = JSON.parse(read(promotion.active.manifest_url));
+  claim(
+    manifest.release_id === active.releaseId &&
+      manifest.resources_digest === active.expectedResourcesDigest &&
+      manifest.counts.resources === active.expectedResourceCount,
+    'metadata source drift: runtime activeSource does not match the active release manifest',
+  );
+  const resourceBytes = fs.readFileSync(path.join(ROOT, active.resourcesUrl));
+  claim(
+    'sha256:' + crypto.createHash('sha256').update(resourceBytes).digest('hex') === active.expectedResourcesDigest,
+    'metadata source drift: active resources.json bytes do not match expectedResourcesDigest',
+  );
+
+  const label = 'POST_SELECTION_RESOURCE_METADATA_CONTRACT.md';
+  const contract = read(label);
+  for (const binding of ["active source's `resourcesUrl`", 'activeSource.expectedResourcesDigest', 'activeSource.releaseId', 'activeSource.expectedResourceCount']) {
+    includes(contract, binding, `${label} (active-source binding)`);
+  }
+  const releasesDir = path.join(ROOT, 'corpus', 'releases');
+  for (const entry of fs.readdirSync(releasesDir, { withFileTypes: true })) {
+    const manifestPath = path.join(releasesDir, entry.name, 'manifest.json');
+    if (!entry.isDirectory() || !fs.existsSync(manifestPath)) continue;
+    const release = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    for (const pinned of [release.release_id, release.urls_digest, release.resources_digest]) {
+      if (pinned) excludes(contract, pinned, `${label} (release snapshot pinned)`);
+    }
+    const count = release.counts && release.counts.resources;
+    if (Number.isSafeInteger(count)) {
+      for (const form of new Set([String(count), count.toLocaleString('en-US')])) {
+        claim(!new RegExp(`(^|[^0-9,])${form}(?![0-9,])`).test(contract),
+          `${label} (release snapshot pinned): resource count ${form} of ${release.release_id}`);
+      }
+    }
   }
 }
 
@@ -164,6 +217,7 @@ function verifyStaticClaims() {
   excludes(readme, OLD_WORKER, 'README');
   verifyCorpusClaims(readme);
   verifyTerrainAuthorityClaims(readme);
+  verifyMetadataContractClaims();
 
   includes(index, WORKER, 'index.html');
   excludes(index, OLD_WORKER, 'index.html');
