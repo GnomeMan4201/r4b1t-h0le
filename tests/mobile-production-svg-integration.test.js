@@ -99,8 +99,8 @@ test('secondary motion layer: act and copy wrappers nest in the approved ownersh
     ['r4h-result-head', 'r4h-act-head'],
     ['r4h-entrance-backing', 'r4h-act-backing', 'r4h-roll-backing'],
     ['r4h-roll-eyes', 'r4h-act-eyes', 'r4h-entrance-eyes'],
-    ['r4h-result-glint-left', 'r4h-act-glint-left'],
-    ['r4h-result-glint-right', 'r4h-act-glint-right', 'r4h-menu-glint'],
+    ['r4h-result-glint-left', 'r4h-act-glint-left', 'r4h-act-glance-left'],
+    ['r4h-result-glint-right', 'r4h-act-glint-right', 'r4h-act-glance-right', 'r4h-menu-glint'],
     ['r4h-roll-paw-left', 'r4h-act-paw-left', 'r4h-copy-paw-left', 'r4h-entrance-paw-left'],
     ['r4h-result-paw', 'r4h-act-paw-right', 'r4h-copy-paw-right'],
     ['r4h-result-card-slot', 'r4h-act-card', 'r4h-copy-card', 'r4h-result-card'],
@@ -109,10 +109,26 @@ test('secondary motion layer: act and copy wrappers nest in the approved ownersh
     const re = new RegExp(chain.map((id) => `<g id="${id}"[^>]*>`).join('\\s*'));
     assert.match(svg, re, chain.join(' > '));
   }
-  // 13 act wrappers + 3 copy wrappers + one act socket that reuses the highlight geometry
-  assert.equal((svg.match(/<g id="r4h-act-/g) || []).length, 13);
+  // 15 act wrappers + 3 copy wrappers + one act socket that reuses the highlight geometry
+  assert.equal((svg.match(/<g id="r4h-act-/g) || []).length, 15);
   assert.equal((svg.match(/<g id="r4h-copy-/g) || []).length, 3);
   assert.match(svg, /<use id="r4h-act-eye-left-socket" href="#r4h-eye-left-highlight"/);
+});
+
+test('secondary motion layer: TRAIL returns its eyes last, after head and paw, inside the 380ms contract', () => {
+  const ms = (rule) => {
+    const m = svg.match(new RegExp(`^#r4h-root ${rule}\\{transition:transform (\\d+)ms [^ ]+ (\\d+)ms\\}`, 'm'));
+    assert.ok(m, rule);
+    return { start: Number(m[2]), end: Number(m[1]) + Number(m[2]) };
+  };
+  const card = ms('#r4h-act-card'), head = ms('#r4h-act-head'), paw = ms('#r4h-act-paw-left'), eyes = ms('\\.r4h-act-glance');
+  assert.ok(card.start <= paw.start && paw.end <= eyes.end && head.end <= eyes.end, 'artifact, paw, head, then eyes');
+  assert.ok(eyes.start >= head.start && eyes.end <= 380);
+  // only TRAIL poses the glance wrappers; every other peer keeps its eyes on r4h-act-glint-*
+  for (const r of svg.match(/^[^\n]*#r4h-act-glance-(?:left|right)\{(?:transform|transition)[^\n]*$/gm) || []) {
+    if (/-open/.test(r)) assert.match(r, /^#r4h-root:is\(\.trail-open, \.trail-open \*\)/, r);
+  }
+  assert.doesNotMatch(svg, /^#r4h-root:is\(\.trail-open, \.trail-open \*\)[^{]*#r4h-act-glint-(?:left|right)\{/m);
 });
 
 test('secondary motion layer: every state gate matches the state element itself and yields to ROLL and BLIND', () => {
