@@ -502,8 +502,6 @@
 
   function activateTopology(overlay) {
     topologyFocus = document.activeElement;
-    document.documentElement.classList.remove('branch-open', 'trail-open', 'history-open', 'replay-open', 'result-ready');
-    document.documentElement.classList.add('topology-open');
     overlay.classList.add('open');
     overlay.setAttribute('aria-hidden', 'false');
     setTimeout(function () { focusTopology(overlay); }, 0);
@@ -553,7 +551,6 @@
     if (map) map.textContent = 'REJECTED / ' + String(error && error.message || error).toUpperCase();
   }
   function close() {
-    document.documentElement.classList.remove('topology-open');
     var overlay = document.getElementById('trailTopologyOverlay');
     if (overlay) {
       overlay.classList.remove('open');

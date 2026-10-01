@@ -35,8 +35,8 @@ test('menu and blind descent project visual state without selecting routes', () 
   assert.match(source, /resetRollStage[\s\S]*'blind-descending'/);
 });
 
-test('production SVG locks state priority for MENU, secondary, RESULT, ROLL, and BLIND on #r4h-root, the svg, or any ancestor', () => {
-  assert.match(svg, /Public states \(class on #r4h-root, on this svg element, or on any ancestor;[\s\S]*\.blind-descending\s*>\s*\.rolling\s*>\s*\.result-ready\s*>\s*secondary interaction\s*>\s*\.menu-open\s*>\s*idle/);
+test('production SVG locks state priority for MENU, RESULT, ROLL, and BLIND on #r4h-root, the svg, or any ancestor', () => {
+  assert.match(svg, /Public states \(class on #r4h-root, on this svg element, or on any ancestor;[\s\S]*\.blind-descending\s*>\s*\.rolling\s*>\s*\.result-ready\s*>\s*\.menu-open\s*>\s*idle/);
   assert.match(svg, /#r4h-root:is\(\.menu-open, \.menu-open \*\):not\(\.blind-descending, \.blind-descending \*\) #r4h-menu-glint/);
   assert.match(svg, /#r4h-root:is\(\.menu-open, \.menu-open \*\):is\(\.rolling, \.rolling \*\):not\(\.blind-descending, \.blind-descending \*\) #r4h-menu-ear/);
   assert.match(svg, /#r4h-root:is\(\.result-ready, \.result-ready \*\):not\(\.rolling, \.rolling \*\):not\(\.blind-descending, \.blind-descending \*\) #r4h-result-card-slot/);
@@ -89,78 +89,142 @@ test('retired ROLL aperture visual selectors stay out of the mobile stylesheet',
 });
 
 
-test('secondary motion wrappers preserve canonical geometry ownership', () => {
-  for (const id of [
-    'r4h-act-rabbit','r4h-act-head','r4h-act-ear-left','r4h-act-ear-right','r4h-act-eyes',
-    'r4h-act-glint-left','r4h-act-glint-right','r4h-act-paw-left','r4h-act-paw-right',
-    'r4h-act-card','r4h-act-hole','r4h-act-hole-front',
-    'r4h-copy-paw-left','r4h-copy-paw-right','r4h-copy-card'
-  ]) {
-    assert.equal((svg.match(new RegExp('id="' + id + '"', 'g')) || []).length, 1, id + ' must exist exactly once');
+test('secondary motion layer: act and copy wrappers nest in the approved ownership order', () => {
+  const chains = [
+    ['r4h-roll-hole', 'r4h-act-hole', 'r4h-entrance-hole'],
+    ['r4h-roll-hole-front', 'r4h-act-hole-front', 'r4h-entrance-hole-front'],
+    ['r4h-roll-rabbit', 'r4h-act-rabbit', 'r4h-entrance-rise'],
+    ['r4h-result-ear-left', 'r4h-act-ear-left', 'r4h-entrance-ear-left'],
+    ['r4h-result-ear-right', 'r4h-act-ear-right', 'r4h-menu-ear'],
+    ['r4h-result-head', 'r4h-act-head'],
+    ['r4h-entrance-backing', 'r4h-act-backing', 'r4h-roll-backing'],
+    ['r4h-roll-eyes', 'r4h-act-eyes', 'r4h-entrance-eyes'],
+    ['r4h-result-glint-left', 'r4h-act-glint-left', 'r4h-act-glance-left'],
+    ['r4h-result-glint-right', 'r4h-act-glint-right', 'r4h-act-glance-right', 'r4h-menu-glint'],
+    ['r4h-roll-paw-left', 'r4h-act-paw-left', 'r4h-copy-paw-left', 'r4h-entrance-paw-left'],
+    ['r4h-result-paw', 'r4h-act-paw-right', 'r4h-copy-paw-right'],
+    ['r4h-result-card-slot', 'r4h-act-card', 'r4h-copy-card', 'r4h-result-card'],
+  ];
+  for (const chain of chains) {
+    const re = new RegExp(chain.map((id) => `<g id="${id}"[^>]*>`).join('\\s*'));
+    assert.match(svg, re, chain.join(' > '));
   }
-  assert.match(svg, /r4h-blind-\*\s*>\s*r4h-roll-\*\s*>\s*r4h-result-\*\s*>\s*r4h-act-\*\s*>\s*r4h-copy-\*\s*>\s*r4h-menu-\*/);
+  // 15 act wrappers + 3 copy wrappers + one act socket that reuses the highlight geometry
+  assert.equal((svg.match(/<g id="r4h-act-/g) || []).length, 15);
+  assert.equal((svg.match(/<g id="r4h-copy-/g) || []).length, 3);
+  assert.match(svg, /<use id="r4h-act-eye-left-socket" href="#r4h-eye-left-highlight"/);
 });
 
-test('secondary states support root, svg, or ancestor placement and yield to RESULT, ROLL, and BLIND', () => {
-  for (const state of ['branch-open','trail-open','topology-open','history-open','replay-open']) {
-    assert.match(svg, new RegExp('#r4h-root:is\\(\\.' + state + ', \\.' + state + ' \\*\\)'));
+test('secondary motion layer: TRAIL returns its eyes last, after head and paw, inside the 380ms contract', () => {
+  const ms = (rule) => {
+    const m = svg.match(new RegExp(`^#r4h-root ${rule}\\{transition:transform (\\d+)ms [^ ]+ (\\d+)ms\\}`, 'm'));
+    assert.ok(m, rule);
+    return { start: Number(m[2]), end: Number(m[1]) + Number(m[2]) };
+  };
+  const card = ms('#r4h-act-card'), head = ms('#r4h-act-head'), paw = ms('#r4h-act-paw-left'), eyes = ms('\\.r4h-act-glance');
+  assert.ok(card.start <= paw.start && paw.end <= eyes.end && head.end <= eyes.end, 'artifact, paw, head, then eyes');
+  assert.ok(eyes.start >= head.start && eyes.end <= 380);
+  // only TRAIL poses the glance wrappers; every other peer keeps its eyes on r4h-act-glint-*
+  for (const r of svg.match(/^[^\n]*#r4h-act-glance-(?:left|right)\{(?:transform|transition)[^\n]*$/gm) || []) {
+    if (/-open/.test(r)) assert.match(r, /^#r4h-root:is\(\.trail-open, \.trail-open \*\)/, r);
   }
-  assert.match(svg, /#r4h-root:is\(\.branch-open, \.branch-open \*\):not\(\.result-ready, \.result-ready \*\):not\(\.rolling, \.rolling \*\):not\(\.blind-descending, \.blind-descending \*\)/);
-  assert.match(svg, /#r4h-root:is\(\.copy-trail, \.copy-trail \*\):not\(\.rolling, \.rolling \*\):not\(\.blind-descending, \.blind-descending \*\)/);
-  assert.doesNotMatch(svg, /:(?:is|not)\(\.(?:branch-open|trail-open|topology-open|history-open|replay-open|copy-trail) \*\)/);
+  assert.doesNotMatch(svg, /^#r4h-root:is\(\.trail-open, \.trail-open \*\)[^{]*#r4h-act-glint-(?:left|right)\{/m);
 });
 
-test('secondary motion has explicit reduced-motion state semantics and canonical return', () => {
-  assert.match(svg, /@media\s*\(prefers-reduced-motion:reduce\)[\s\S]*\.branch-open[\s\S]*\.trail-open[\s\S]*\.topology-open[\s\S]*\.history-open[\s\S]*\.replay-open[\s\S]*\.copy-trail/);
-  assert.match(svg, /@keyframes r4h-history-one-shot[\s\S]*100%\s*\{[^}]*transform:none/);
-  assert.match(svg, /@keyframes r4h-copy-card[\s\S]*100%\s*\{[^}]*transform:none/);
-});
-
-test('application projects secondary presentation classes without adding selection authority', () => {
-  const trailRuntime = fs.readFileSync('trail-runtime.js', 'utf8');
-  const replayRuntime = fs.readFileSync('replay-inspection-overlay.js', 'utf8');
-  const topologyRuntime = fs.readFileSync('topology-runtime.js', 'utf8');
-
-  assert.match(source, /branch-open/);
-  assert.match(source, /history-open/);
-  assert.match(source, /copy-trail/);
-  assert.match(trailRuntime, /classList\.add\('trail-open'\)/);
-  assert.match(trailRuntime, /classList\.remove\('trail-open'\)/);
-  assert.match(replayRuntime, /classList\.add\('replay-open'\)/);
-  assert.match(replayRuntime, /classList\.remove\('replay-open'\)/);
-  assert.match(topologyRuntime, /classList\.add\('topology-open'\)/);
-  assert.match(topologyRuntime, /classList\.remove\('topology-open'\)/);
-
-  for (const state of ['branch-open','trail-open','topology-open','history-open','replay-open','copy-trail']) {
-    assert.doesNotMatch(source, new RegExp(state + '[^\\n]{0,120}(?:roll\\(|__r4b1tCommitRoll|selectUrl|blindDescend)'));
+test('secondary motion layer: every state gate matches the state element itself and yields to ROLL and BLIND', () => {
+  const states = ['branch-open', 'trail-open', 'topology-open', 'history-open', 'replay-open', 'copy-trail'];
+  for (const s of states) {
+    assert.match(svg, new RegExp(`:is\\((?:[^)]*, )?\\.${s}, \\.${s} \\*`), s);
+    assert.doesNotMatch(svg, new RegExp(`:(?:is|not)\\(\\.${s} \\*\\)`), `${s} descendant-only gate`);
+  }
+  // every act/copy rule that sets a pose or motion is switched off by ROLL and BLIND
+  const actRules = svg.match(/^#r4h-root:is\([^{]*(?:-open|copy-trail)[^{]*#r4h-(?:act|copy)-[^{]*\{/gm) || [];
+  assert.ok(actRules.length > 20);
+  for (const r of actRules) assert.match(r, /:not\(\.rolling, \.rolling \*\):not\(\.blind-descending, \.blind-descending \*\)/, r);
+  // the card slot stays RESULT's: act only moves the card while RESULT is not holding it
+  for (const r of svg.match(/^[^\n]*#r4h-act-card\{(?:transform|transition|animation)[^\n]*$/gm) || []) {
+    if (/-open/.test(r)) assert.match(r, /:not\(\.result-ready, \.result-ready \*\)/, r);
   }
 });
 
+test('secondary motion layer: reduced motion shows held poses only, never motion', () => {
+  const media = svg.indexOf('@media (prefers-reduced-motion:no-preference){');
+  const close = svg.indexOf('/* keyframes (bodies copied verbatim');
+  const outside = svg.slice(0, media) + svg.slice(close);
+  const inside = svg.slice(media, close);
+  // no act/copy transition or animation outside the no-preference block
+  assert.doesNotMatch(outside.replace(/@keyframes[\s\S]*$/, ''), /#r4h-(?:act|copy)-[^{]*\{[^}]*(?:transition|animation)/);
+  // held poses for the states that hold (BRANCH, TRAIL, TOPOLOGY, REPLAY) live outside it
+  for (const s of ['branch-open', 'trail-open', 'topology-open', 'replay-open']) {
+    assert.match(outside, new RegExp(`\\.${s}[^{]*#r4h-act-[a-z-]+\\{transform:`), s);
+  }
+  // HISTORY and COPY TRAIL are motion only
+  assert.doesNotMatch(outside.replace(/@keyframes[\s\S]*$/, ''), /\.(?:history-open|copy-trail)[^{]*\{transform:/);
+  assert.match(inside, /\.history-open[^{]*#r4h-act-head\{transition:none;animation:r4h-act-history-head/);
+  assert.match(inside, /\.copy-trail[^{]*#r4h-copy-card\{transition:none;animation:r4h-copy-/);
+});
 
-test('secondary wrappers are physically nested by transform priority', () => {
-  assert.match(svg, /<g id="r4h-blind-rabbit"><g id="r4h-roll-rabbit"><g id="r4h-act-rabbit"><g id="r4h-entrance-rise">/);
-  assert.match(svg, /<g id="r4h-roll-head"><g id="r4h-result-head"><g id="r4h-act-head">/);
-  assert.match(svg, /<g id="r4h-blind-ear-right"><g id="r4h-roll-ear-right"><g id="r4h-result-ear-right"><g id="r4h-act-ear-right"><g id="r4h-menu-ear"><g id="r4h-idle-ear"><g id="r4h-entrance-ear-right">/);
-  assert.match(svg, /<g id="r4h-blind-glint-left"[^>]*><g id="r4h-result-glint-left"[^>]*><g id="r4h-act-glint-left"/);
-  assert.match(svg, /<g id="r4h-result-paw"><g id="r4h-act-paw-right"><g id="r4h-copy-paw-right">/);
-  assert.match(svg, /<g id="r4h-roll-hole"[^>]*><g id="r4h-act-hole"[^>]*><g id="r4h-entrance-hole"/);
-  assert.match(svg, /<g id="r4h-roll-hole-front"[^>]*><g id="r4h-act-hole-front"[^>]*><g id="r4h-entrance-hole-front"/);
+test('secondary motion layer: MENU yields and idle stops without editing the approved rules', () => {
+  assert.match(svg, /-open \*\):is\(\.menu-open, \.menu-open \*\):not\(\.rolling, \.rolling \*\):not\(\.blind-descending, \.blind-descending \*\) #r4h-menu-glint\{transform:none;animation:none;/);
+  assert.match(svg, /#r4h-root\.is-idle:is\([^{]*-open \*\) #r4h-menu-ear > #r4h-idle-ear\{animation:none\}/);
+});
+
+test('secondary motion layer: every new id, keyframe and custom property is r4h- namespaced', () => {
+  const ids = [...svg.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
+  for (const id of ids) assert.match(id, /^r4h-/, id);
+  for (const [, name] of svg.matchAll(/@keyframes ([\w-]+)/g)) assert.match(name, /^r4h-/, name);
+  for (const [, name] of svg.matchAll(/(--[\w-]+)\s*:/g)) assert.ok(['--glance-x', '--glance-y', '--ear-rot'].includes(name) || name.startsWith('--r4h-'), name);
+  assert.doesNotMatch(svg, /<script/i);
 });
 
 
-test('secondary dismissal prevents stale RESULT presentation from reasserting', () => {
-  assert.match(source, /var secondaryDismissedResult = false;/);
-  assert.match(source, /if \(rolling\) secondaryDismissedResult = false;/);
-  assert.match(source, /if \(secondaryDismissedResult\) resultReady = false;/);
-  assert.match(source, /setSecondaryMarkState\('trail-open'\)[\s\S]*openTrailLedger/);
-  assert.match(source, /setSecondaryMarkState\('replay-open'\)[\s\S]*openReplayInspection/);
-  assert.match(source, /setSecondaryMarkState\('topology-open'\)[\s\S]*openTrailTopology/);
+test('shell exposes secondary surfaces to the mark in Motion Board priority, on <html> only', () => {
+  const order = [...source.matchAll(/\{ cls: '([a-z-]+)', id: '([A-Za-z0-9]+)' \}/g)].map((m) => `${m[1]}:${m[2]}`);
+  assert.deepEqual(order, [
+    'replay-open:replayInspectionOverlay',
+    'topology-open:trailTopologyOverlay',
+    'branch-open:r4mBranchSheet',
+    'trail-open:trailLedgerOverlay',
+    'history-open:historyOverlay',
+  ]);
+  const block = source.slice(source.indexOf('// ── Secondary mark states'), source.indexOf('function buildShell()'));
+  // state is read from the surfaces themselves, never inferred from taps
+  assert.match(block, /getAttribute\('aria-hidden'\) === 'false'/);
+  assert.match(block, /markSurfaceObserver\.observe\(el, \{ attributes: true, attributeFilter: \['aria-hidden', 'hidden', 'style'\] \}\)/);
+  // one element carries the classes: the same ancestor as .menu-open / .rolling
+  assert.doesNotMatch(block.replace(/var root = document\.documentElement;/g, ''), /classList\.(?:add|remove|toggle)\((?!next|markSecondary|'copy-trail')/);
+  assert.match(block, /var root = document\.documentElement;/);
+  // JS exposes state only: no transforms, styles, animations or SVG access
+  const code = block.replace(/\/\/[^\n]*/g, '');
+  assert.doesNotMatch(code, /\.style\.[a-zA-Z]+\s*=(?!=)|setAttribute|transform|animate\(|getAnimations|r4h-/);
 });
 
+test('shell peer switch passes through canonical and COPY TRAIL is a short event class', () => {
+  const block = source.slice(source.indexOf('// ── Secondary mark states'), source.indexOf('function buildShell()'));
+  const settle = Number((block.match(/var MARK_SECONDARY_RETURN_MS = (\d+);/) || [])[1]);
+  const copy = Number((block.match(/var MARK_COPY_MS = (\d+);/) || [])[1]);
+  const svgSrc = fs.readFileSync('r4b1t-h0l3-production.svg', 'utf8');
+  // canonical-return contract: the settle equals the SVG's longest act/copy return
+  // (duration + delay of every base return transition), derived from the SVG itself
+  const returns = [...svgSrc.matchAll(/^#r4h-root #(r4h-(?:act|copy)-[a-z-]+)\{transition:([^}]+)\}$/gm)];
+  assert.ok(returns.length >= 15, `found ${returns.length} return rules`);
+  const ends = returns.map(([, id, decl]) => {
+    const times = [...decl.matchAll(/(\d+(?:\.\d+)?)(ms|s)\b/g)].map(([, n, u]) => Number(n) * (u === 's' ? 1000 : 1));
+    return { id, end: times[0] + (times[1] || 0) };
+  });
+  const longest = Math.max(...ends.map((e) => e.end));
+  assert.equal(settle, longest, `MARK_SECONDARY_RETURN_MS must equal the SVG's longest return (${JSON.stringify(ends.filter((e) => e.end === longest))})`);
+  assert.match(svgSrc, /Canonical-return contract: 380ms after a secondary class is removed/);
+  assert.match(source, /Canonical-return contract with r4b1t-h0l3-production\.svg/);
+  // copy lives at least as long as the SVG one-shot, and is removed on a timer
+  assert.match(svgSrc, /r4h-copy-reach-left 420ms/);
+  assert.ok(copy >= 420 && copy < 800, `copy ${copy}`);
+  assert.match(block, /root\.classList\.remove\(markSecondary\);[\s\S]*markSecondarySettleUntil = prefersReducedMotion\(\) \? 0 : Date\.now\(\) \+ MARK_SECONDARY_RETURN_MS/);
+  assert.match(block, /markCopyTimer = window\.setTimeout\(function \(\) \{[\s\S]*root\.classList\.remove\('copy-trail'\);[\s\S]*MARK_COPY_MS\)/);
+  assert.match(source, /if \(action === 'copy-trail'\) \{\s*if \(call\('shareTrail'\)\) pulseMarkCopy\(\);/);
+});
 
-test('REPLAY preserves the approved asymmetric evidence-inspection gaze', () => {
-  assert.match(svg, /#r4h-act-glint-left\{[^}]*animation:r4h-replay-glint-left 900ms/);
-  assert.match(svg, /#r4h-act-glint-right\{[^}]*animation:r4h-replay-glint-right 900ms/);
-  assert.match(svg, /@keyframes r4h-replay-glint-left\{[\s\S]*42%\{transform:translate\(1px,6px\)\}[\s\S]*69%\{transform:translate\(4px,5px\)\}[\s\S]*82%\{transform:translate\(-3px,2px\)\}/);
-  assert.match(svg, /@keyframes r4h-replay-glint-right\{[\s\S]*42%\{transform:translate\(1px,6px\)\}[\s\S]*69%\{transform:translate\(-1px,6px\)\}[\s\S]*82%\{transform:translate\(-3px,2px\)\}/);
+test('ROLL and BLIND entries close shell sheets before the mark takes the stage', () => {
+  assert.match(source, /function runRollTransition\(kind\) \{\s*\/\/[^\n]*\n\s*closeSheets\(\);/);
+  assert.match(source, /action === 'blind-descent'[\s\S]*?closeSheets\(\);\s*document\.documentElement\.classList\.add\('blind-descending'\)/);
 });

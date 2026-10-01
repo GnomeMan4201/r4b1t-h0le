@@ -647,8 +647,6 @@
   function openPanel() {
     ensurePanel();
     renderPanel();
-    document.documentElement.classList.remove('branch-open', 'topology-open', 'history-open', 'replay-open', 'result-ready');
-    document.documentElement.classList.add('trail-open');
     var panel = document.getElementById('trailLedgerOverlay');
     panelFocus = document.activeElement;
     panel.style.display = 'flex';
@@ -657,7 +655,6 @@
   }
 
   function closePanel() {
-    document.documentElement.classList.remove('trail-open');
     var panel = document.getElementById('trailLedgerOverlay');
     if (panel) {
       panel.style.display = 'none';

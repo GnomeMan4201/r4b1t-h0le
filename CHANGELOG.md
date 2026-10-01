@@ -13,9 +13,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The `strange-candidate-v0.3` corpus adds 116 unusual security resources and expands the promoted population to 6,975 resources across 345 hosts and 14 resource types, with exact admission declarations and reproducible candidate evidence.
 - URL-only archive, RSS/Atom and sitemap collection plus a separate reviewed
   index compiler; collection alone cannot admit or promote a resource.
+- secondary mark state conformance spec (state ownership, peer switch, COPY TRAIL, ROLL / BLIND / RESULT authority) and unit coverage for the wiring and the canonical-return contract
 
 ### Changed
 
+- R4B1T H0L3 secondary motion (BRANCH, TRAIL, TOPOLOGY, HISTORY, REPLAY / INSPECT, COPY TRAIL) reimplemented to the approved Motion Board, superseding #218: paw backing and a left-eye socket remove paw ghosts and the eye gap, ears and resting paws move with the head, RESULT keeps its own state while a sheet is open, and reduced motion restores the approved MENU/HISTORY/COPY semantics
+- the mobile shell derives the mark's secondary state from each surface's own open state (one observer, overlay modules untouched); peer switches pass through the canonical pose (380ms canonical-return contract), COPY TRAIL is a short event class, and ROLL / BLIND DESCENT close shell sheets before taking the stage
+- TRAIL now returns in the board's order (artifact, paw, head, eyes last) through its own eye-glance wrapper (`r4h-act-glance-*`); the other peers keep eyes-first, and every return still lands inside the 380ms contract
 - BRANCH suggestions are now a deterministic function of the origin URL and active corpus only. Display metadata, Wikipedia enrichment, session topology, ambient randomness, and file-order tie breaking no longer influence offered routes (ADR 0007).
 - BRANCH reason text now states the mechanical driver (scope/URL-token overlap or deterministic fallback) instead of implying stronger semantic classification.
 - Trail export now defaults to `r4b1t-trail/v0.3`, preserving ROLL selection transactions and explicit SELECT/BRANCH navigation as step evidence; labeled legacy v0.1 export remains available for compatibility.
