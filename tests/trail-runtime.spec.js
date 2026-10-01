@@ -80,7 +80,7 @@ test('forks a replayed trail with verifiable parent lineage', async ({ page }) =
     await window.importTrailManifest(parent);
     await window.replayTrailManifest(0);
     const child = await window.forkTrailManifest();
-    const lineage = await window.R4b1tTrail.verifyLineage(child, parent);
+    const lineage = await window.R4b1tTrailV03.verifyLineage(child, parent);
     return {
       parentId: parent.trail_id,
       declaredParentId: child.manifest.parent.trail_id,
@@ -94,7 +94,7 @@ test('forks a replayed trail with verifiable parent lineage', async ({ page }) =
   expect(result.declaredParentId).toBe(result.parentId);
   expect(result.forkAt).toBe(1);
   expect(result.inheritedRoute).toBe(result.parentRoute);
-  expect(result.status).toBe('FORKED / STEP 001');
+  expect(result.status).toBe('FORKED V0.3 / STEP 001');
 });
 
 test('Trail Ledger traps focus, closes with Escape, and restores opener', async ({ page }) => {
