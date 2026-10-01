@@ -60,12 +60,12 @@ v1 is never exported. v1 objects already persisted in local drafts stay as they 
 | Field | Rule |
 |---|---|
 | `eligible_count` | ≥ 1. An empty pool produces no transaction (EMPTY state) |
-| `repeat_guard.reference` | the URL the sampler compared against for this draw, or `null`. It reports the existing page-session guard (`s.last`) exactly; it does not change it |
+| `repeat_guard.reference` | the URL of the previous committed ROLL in the current trail sampling scope, or `null` at a new trail, reset, or fork. The reference is supplied by trail authority; page/session presentation state is not an input |
 | `repeat_guard.max_draws` | 30 |
 
 All other fields are unchanged from v1.
 
-## 4. Sampler semantics (unchanged)
+## 4. Sampler semantics
 
 ```text
 pool = eligiblePool(activeUrls, index, constraint)           (release order)
@@ -79,13 +79,14 @@ route = t ; draw_count = n
 
 Both are properties of `uniform-with-repeat-guard-v1` and stay that way until a new sampler version is adopted.
 
-## 5. Out of scope
+## 5. Trail-scoped continuity
 
-These sampler-continuity defects are reproduced and tracked for a dedicated change (PR 1b). They are not altered here:
+The local draft is the continuity authority for the current sampling scope.
 
-| Defect | Description |
-|---|---|
-| S1 | the sampler cursor restarts at draw 0 after reload |
-| S2 | the transaction sequence restarts after reload |
-| S3 | a committed ROLL repeating the previous URL is not recorded in the draft |
-| S4 | the guard reference is page state and survives reset and fork |
+- On reload, the runtime finds the latest persisted v2 ROLL transaction for the current seed, advances `mulberry32-v1` through `draw_start + draw_count`, restores the transaction sequence, and uses that ROLL's URL as the next repeat-guard reference.
+- A new trail, RESET, or FORK starts a new sampling scope with `draw_start = 0`, sequence 1, and `repeat_guard.reference = null`.
+- Inherited fork-prefix routes do not become the repeat-guard reference for the child scope.
+- Every committed ROLL is persisted, including a one-route or max-draw result that repeats the previous URL. Consecutive presentation-only selections may still be deduplicated.
+- Historical draft routes without a v2 selection transaction are not assigned invented sampler provenance.
+
+The page-level `s.last` value may remain presentation/bookkeeping state, but `uniform-with-repeat-guard-v1` does not read it.
