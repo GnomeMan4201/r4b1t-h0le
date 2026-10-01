@@ -63,8 +63,9 @@ test('T1-10: armed terrain is never derived from presentation style', () => {
   assert.doesNotMatch(fn[0], /style|cc1111|204,17,17/i, 'mobile must read aria-pressed, not style');
 });
 
-test('T1-11: the sampler has no ambient Math.random fallback', () => {
-  const ee = INDEX_HTML.match(/function ee\(e,rng\)\{[\s\S]*?return t\}/);
+test('T1-11: the sampler has no ambient Math.random or page-state repeat fallback', () => {
+  const ee = INDEX_HTML.match(/function ee\(e,rng,reference\)\{[\s\S]*?return t\}/);
   assert.ok(ee, 'ee present');
   assert.doesNotMatch(ee[0], /Math\.random/);
+  assert.doesNotMatch(ee[0], /s\.last/, 'repeat-guard authority must be supplied explicitly');
 });
