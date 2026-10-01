@@ -21,18 +21,18 @@ async function ready(page) {
   });
 }
 
-async function branchSnapshot(page, origin) {
-  return page.evaluate(async (url) => {
+async function branchSnapshot(page, origin, presentation) {
+  return page.evaluate(async ({ url, title, description }) => {
     window.selectUrl(url);
-    document.getElementById('ogTitle').textContent = 'DISPLAY TEXT SHOULD NOT MATTER';
-    document.getElementById('ogDesc').textContent = 'MUTATED PRESENTATION ONLY';
+    document.getElementById('ogTitle').textContent = title;
+    document.getElementById('ogDesc').textContent = description;
     await window.sprout();
     return Array.from(document.querySelectorAll('#branchGrid .branch-item')).map(button => ({
       type: button.querySelector('.branch-dir-tag')?.textContent || '',
       reason: button.querySelector('.branch-desc')?.textContent || '',
       domain: button.querySelector('.branch-url-hint')?.textContent || '',
     }));
-  }, origin);
+  }, { url: origin, title: presentation.title, description: presentation.description });
 }
 
 test.beforeEach(async ({ page }) => {
@@ -47,13 +47,14 @@ test('BRANCH is stable under presentation mutation and does not fetch enrichment
   await ready(page);
 
   const origin = 'https://github.com/sullo/nikto';
-  const first = await branchSnapshot(page, origin);
-
-  await page.evaluate(() => {
-    document.getElementById('ogTitle').textContent = 'COMPLETELY DIFFERENT TITLE';
-    document.getElementById('ogDesc').textContent = 'COMPLETELY DIFFERENT DESCRIPTION';
+  const first = await branchSnapshot(page, origin, {
+    title: 'DISPLAY TEXT SHOULD NOT MATTER',
+    description: 'MUTATED PRESENTATION ONLY',
   });
-  const second = await branchSnapshot(page, origin);
+  const second = await branchSnapshot(page, origin, {
+    title: 'COMPLETELY DIFFERENT TITLE',
+    description: 'COMPLETELY DIFFERENT DESCRIPTION',
+  });
 
   expect(first).toHaveLength(4);
   expect(second).toEqual(first);
