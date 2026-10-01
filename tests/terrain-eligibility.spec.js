@@ -291,3 +291,28 @@ test('T1-15: the hostname tag badge is labelled as a non-authoritative site hint
   await expect(badge).toHaveText('SITE HINT · CODE');
   await expect(badge).toHaveAttribute('title', /not a terrain/i);
 });
+
+test('T1-16: every mobile terrain proxy is reachable above the bottom navigation', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await terrainsReady(page);
+  await page.waitForSelector('#r4mShellHost', { state: 'attached' });
+  await page.locator('#r4mNavMenu').click();
+  await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
+  await expect(page.locator('#r4mFilterOptions .r4m-filter-proxy')).toHaveCount(8);
+  await expect(page.locator('#r4mFilterSheet')).toHaveClass(/\bopen\b/);
+  // Measure only after the sheet's slide-in and option-reveal animations have settled.
+  await page.waitForFunction(() => document.getElementById('r4mFilterSheet').getAnimations({ subtree: true }).every(a => a.playState !== 'running'));
+  const blocked = await page.evaluate(async () => {
+    const out = [];
+    for (const b of document.querySelectorAll('#r4mFilterOptions .r4m-filter-proxy')) {
+      b.scrollIntoView({ block: 'end' });
+      await new Promise(r => requestAnimationFrame(r));
+      const r = b.getBoundingClientRect();
+      const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      if (!(hit === b || b.contains(hit))) out.push(b.textContent.trim() + ' ← ' + (hit ? (hit.id || hit.className || hit.tagName) : 'none'));
+    }
+    return out;
+  });
+  expect(blocked).toEqual([]);
+});

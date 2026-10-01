@@ -54,7 +54,10 @@ test('T1-04: production eligibility delegates to the selection core, not the hos
 });
 
 test('T1-10: armed terrain is never derived from presentation style', () => {
-  assert.doesNotMatch(TRAIL_RUNTIME, /204, 17, 17|#cc1111/i, 'trail runtime must not read terrain from button style');
+  const terrainFn = TRAIL_RUNTIME.match(/function terrain\(\) \{[\s\S]*?\n  \}/);
+  assert.ok(terrainFn, 'trail-runtime terrain() present');
+  assert.doesNotMatch(terrainFn[0], /style|cc1111|204, 17, 17|#catFilter/i, 'trail runtime must not read terrain from button style');
+  assert.doesNotMatch(TRAIL_RUNTIME, /button\[style\*=/, 'no style-attribute selectors in trail runtime');
   const fn = DUAL_SHELL.match(/function sourceFilterIsActive\(button\) \{[\s\S]*?\n  \}/);
   assert.ok(fn, 'sourceFilterIsActive present');
   assert.doesNotMatch(fn[0], /style|cc1111|204,17,17/i, 'mobile must read aria-pressed, not style');

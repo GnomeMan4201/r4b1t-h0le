@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://r4b1t.badbananaresearch.com/schemas/eligibility-profiles-v1.schema.json",
+  "title": "r4b1t eligibility profile registry v1",
+  "description": "Append-only authority anchor for terrain maps (TERRAIN_AUTHORITY_CONTRACT.md §4). At most one active profile per release_id; entries are never removed, only superseded.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "profiles"],
+  "properties": {
+    "schema": { "const": "r4b1t-eligibility-profiles-v1" },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["profile_id", "status", "release", "promotion_id", "mapping", "terrain_index"],
+        "properties": {
+          "profile_id": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["active", "superseded"] },
+          "release": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["release_id", "urls_digest", "resources_digest"],
+            "properties": {
+              "release_id": { "type": "string", "minLength": 1 },
+              "urls_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+              "resources_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+            }
+          },
+          "promotion_id": { "type": "string", "minLength": 1 },
+          "mapping": { "const": "resource-type-identity-v1" },
+          "terrain_index": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "schema", "digest"],
+            "properties": {
+              "path": { "type": "string", "pattern": "^corpus/terrains/" },
+              "schema": { "const": "r4b1t-terrain-index-v1" },
+              "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

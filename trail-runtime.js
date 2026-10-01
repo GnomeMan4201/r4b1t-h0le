@@ -98,9 +98,11 @@
     renderPanel();
   }
 
+  // The armed terrain comes from the explicit selection constraint, never from presentation.
   function terrain() {
-    var active = document.querySelector('#catFilter button[style*="204, 17, 17"], #catFilter button[style*="#cc1111"]');
-    return active ? active.textContent.trim().toUpperCase() : 'ALL';
+    return typeof window.__r4b1tCaptureSelectionConstraint === 'function'
+      ? window.__r4b1tCaptureSelectionConstraint().terrain
+      : 'ALL';
   }
 
   function record(url, action, transaction) {
@@ -129,9 +131,9 @@
     if (typeof window.__r4b1tCommitRoll !== 'function' || window.__r4b1tCommitRoll.__r4b1tAuthority) return false;
     var originalCommit = window.__r4b1tCommitRoll;
     var wrappedCommit = function () {
-      var selectionConstraint = typeof window.__r4b1tCaptureSelectionConstraint === 'function'
-        ? window.__r4b1tCaptureSelectionConstraint()
-        : deepFreeze({ terrain: terrain(), protocolPolicy: { version: 1, excludeOnion: false } });
+      // Fail closed: without the explicit constraint capture there is no selection.
+      if (typeof window.__r4b1tCaptureSelectionConstraint !== 'function') return null;
+      var selectionConstraint = window.__r4b1tCaptureSelectionConstraint();
       var selectionTerrain = selectionConstraint.terrain;
       var drawStart = state.samplerCursor;
       var drawCount = 0;
@@ -144,17 +146,20 @@
       if (!result || !result.url) return result;
 
       var transaction = deepFreeze({
-        transaction_version: 'r4b1t-selection-transaction/v1',
+        transaction_version: 'r4b1t-selection-transaction/v2',
         sequence: ++state.transactionSequence,
         action: 'ROLL',
         constraint: selectionConstraint,
         corpus_revision: state.corpusRevision,
+        eligible_count: result.eligibleCount,
         sampler: {
           algorithm: 'uniform-with-repeat-guard-v1',
           prng: 'mulberry32-v1',
           seed: state.seed,
           draw_start: drawStart,
-          draw_count: drawCount
+          draw_count: drawCount,
+          // The guard reference actually used by this draw (SELECTION_TRANSACTION_V2.md §3).
+          repeat_guard: { reference: result.repeatGuardReference == null ? null : result.repeatGuardReference, max_draws: 30 }
         },
         route: { url: result.url }
       });

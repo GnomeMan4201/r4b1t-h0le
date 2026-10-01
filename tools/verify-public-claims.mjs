@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -51,6 +52,33 @@ function corpusMetricsFromText(content) {
   }
 
   return { validUrls, uniqueHosts: hosts.size };
+}
+
+// ADR 0006 / TERRAIN_AUTHORITY_CONTRACT.md: promotion → registry → runtime pins → index bytes → README.
+function verifyTerrainAuthorityClaims(readme) {
+  const promotion = JSON.parse(read('corpus/runtime/active-v1.json'));
+  const releaseManifest = JSON.parse(read('corpus/releases/typed-candidate-v0.1/manifest.json'));
+  const registry = JSON.parse(read('corpus/runtime/eligibility-profiles-v1.json'));
+  const pins = read('terrain-authority.js');
+  claim(registry.schema === 'r4b1t-eligibility-profiles-v1', 'eligibility profile registry schema drift');
+  const active = (registry.profiles || []).filter(p => p.status === 'active' && p.release.release_id === promotion.active.release_id);
+  claim(active.length === 1, 'eligibility profile registry must hold exactly one active profile for the active release');
+  if (active.length !== 1) return;
+  const profile = active[0];
+  claim(profile.release.urls_digest === promotion.active.expected_digest, 'terrain authority drift: profile release is not the active promotion');
+  claim(profile.release.resources_digest === releaseManifest.resources_digest, 'terrain authority drift: profile resources digest');
+  claim(profile.promotion_id === promotion.promotion_id, 'terrain authority drift: profile promotion id');
+  const bytes = fs.readFileSync(path.join(ROOT, profile.terrain_index.path));
+  const digest = 'sha256:' + crypto.createHash('sha256').update(bytes).digest('hex');
+  claim(digest === profile.terrain_index.digest, 'terrain authority drift: index bytes do not match the registry digest');
+  for (const value of [profile.profile_id, profile.terrain_index.path, profile.terrain_index.digest, profile.release.urls_digest, profile.release.resources_digest]) {
+    includes(pins, value, 'terrain-authority.js pins');
+  }
+  const index = JSON.parse(bytes.toString('utf8'));
+  claim(readme.includes('./corpus/runtime/eligibility-profiles-v1.json'), 'README must link the eligibility profile registry');
+  for (const terrain of index.terrains) {
+    includes(readme, `| \`${terrain.id}\` | ${terrain.label} | ${terrain.count} |`, 'README terrain table');
+  }
 }
 
 function verifyCorpusClaims(readme) {
@@ -132,6 +160,7 @@ function verifyStaticClaims() {
   excludes(readme, OLD_REPO, 'README');
   excludes(readme, OLD_WORKER, 'README');
   verifyCorpusClaims(readme);
+  verifyTerrainAuthorityClaims(readme);
 
   includes(index, WORKER, 'index.html');
   excludes(index, OLD_WORKER, 'index.html');

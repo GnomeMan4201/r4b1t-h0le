@@ -24,6 +24,20 @@ On a phone, each roll replaces the landing screen with its result. Open **MENU**
 
 **Filters change eligibility, not ranking.** Choose a terrain explicitly before rolling. The sampler does not infer filters from your activity.
 
+Terrains are the active release's own resource types. Each control shows its eligible count before you roll. A terrain with no eligible routes cannot be armed, and a single-route terrain says so.
+
+| Terrain | Label | Routes |
+| --- | --- | --- |
+| `dataset` | DATASET | 22 |
+| `documentation` | DOCUMENTATION | 1 |
+| `lab` | LAB | 10 |
+| `reference` | REFERENCE | 123 |
+| `repository` | REPOSITORY | 470 |
+| `security_tool` | SECURITY TOOL | 203 |
+| `training_resource` | TRAINING RESOURCE | 12 |
+
+Membership comes from a [terrain index](./corpus/terrains/typed-candidate-v0.1/terrain-index-v1.json) compiled from the release's `urls.txt` and `resources.json`. The index is authoritative only because the [eligibility profile registry](./corpus/runtime/eligibility-profiles-v1.json) names its digest for the active release. A digest recorded in a trail shows which map was used. It does not make that map authoritative. See the [terrain authority contract](./TERRAIN_AUTHORITY_CONTRACT.md) and [ADR 0006](./docs/adr/0006-release-bound-terrain-authority.md). The `SITE HINT` badge on a result is a display-only hostname hint, not a terrain.
+
 **BRANCH is a separate navigation action.** DEEPER, SIDEWAYS, OPPOSITE, and WEIRD offer directions from the current resource. Branch construction uses available metadata and keyword matching; it is not the ROLL sampler. These labels are navigational hints, not factual or security classifications.
 
 **BLIND DESCENT delays disclosure.** An explicit descent creates one concealed route commitment. Reveal checks the disclosed route and nonce against that commitment. Choosing the mode alone does not commit a route.
@@ -35,7 +49,7 @@ The active population is the promoted `diverse-candidate-v0.2` release: **6,859 
 | Layer | Authority |
 | --- | --- |
 | Corpus | Digest-verified URL bytes define the selection population. |
-| Filters | Explicit terrain and protocol constraints define eligibility. |
+| Filters | Explicit terrain (registry-anchored terrain index) and protocol constraints define eligibility. |
 | ROLL | The sampler commits one selection transaction. |
 | Presentation + trail | Disclose and record that transaction; neither can replace its destination. |
 
