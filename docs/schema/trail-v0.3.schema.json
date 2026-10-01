@@ -183,7 +183,7 @@
       "required": ["format", "trail_id", "step_index"],
       "properties": {
         "format": {
-          "enum": ["r4b1t-trail/v0.1", "r4b1t-trail/v0.2", "r4b1t-trail/v0.3"]
+          "enum": ["r4b1t-trail/v0.1", "r4b1t-trail/v0.3"]
         },
         "trail_id": { "$ref": "#/$defs/sha256" },
         "step_index": { "type": "integer", "minimum": 1 }
