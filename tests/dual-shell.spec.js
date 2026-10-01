@@ -202,9 +202,17 @@ test('mobile promotes current trail topology instead of the wear sample', async 
   await waitReady(page);
 
   await page.evaluate(() => {
-    const snapshot = { trail_id: 'current-trail-probe', marker: 'current-canonical-snapshot' };
-    window.__mobileTopologyProbe = { snapshot, opened: null, sampleCalls: 0 };
-    window.getTrailManifest = () => Promise.resolve(snapshot);
+    const legacySnapshot = { trail_id: 'current-trail-probe', marker: 'current-legacy-topology-snapshot' };
+    const defaultV03 = { trail_id: 'default-v03-probe', marker: 'default-v03-should-not-open' };
+    window.__mobileTopologyProbe = { legacySnapshot, defaultV03, opened: null, sampleCalls: 0, defaultCalls: 0, legacyCalls: 0 };
+    window.getTrailManifest = () => {
+      window.__mobileTopologyProbe.defaultCalls += 1;
+      return Promise.resolve(defaultV03);
+    };
+    window.getLegacyTrailManifest = () => {
+      window.__mobileTopologyProbe.legacyCalls += 1;
+      return Promise.resolve(legacySnapshot);
+    };
     window.openTrailTopology = (value) => { window.__mobileTopologyProbe.opened = value; };
     window.openTrailWearSample = () => { window.__mobileTopologyProbe.sampleCalls += 1; };
   });
@@ -226,8 +234,12 @@ test('mobile promotes current trail topology instead of the wear sample', async 
   const probe = await page.evaluate(() => ({
     openedMarker: window.__mobileTopologyProbe.opened && window.__mobileTopologyProbe.opened.marker,
     sampleCalls: window.__mobileTopologyProbe.sampleCalls,
+    defaultCalls: window.__mobileTopologyProbe.defaultCalls,
+    legacyCalls: window.__mobileTopologyProbe.legacyCalls,
   }));
-  expect(probe.openedMarker).toBe('current-canonical-snapshot');
+  expect(probe.openedMarker).toBe('current-legacy-topology-snapshot');
+  expect(probe.legacyCalls).toBe(1);
+  expect(probe.defaultCalls).toBe(0);
   expect(probe.sampleCalls).toBe(0);
 });
 
