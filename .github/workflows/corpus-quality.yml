@@ -176,9 +176,15 @@ jobs:
 
       - name: Verify checked-in terrain index regenerates from the release
         run: |
-          python tools/terrain_index.py check \
-            --release corpus/releases/typed-candidate-v0.1 \
-            --index corpus/terrains/typed-candidate-v0.1/terrain-index-v1.json
+          python - <<'PY'
+          import json, subprocess, sys
+          registry = json.load(open('corpus/runtime/eligibility-profiles-v1.json', encoding='utf-8'))
+          for profile in registry['profiles']:
+              release = 'corpus/releases/' + profile['release']['release_id']
+              print(profile['profile_id'], '->', profile['terrain_index']['path'])
+              subprocess.run([sys.executable, 'tools/terrain_index.py', 'check',
+                              '--release', release, '--index', profile['terrain_index']['path']], check=True)
+          PY
 
       - name: Generate and enforce deterministic corpus evidence
         run: |

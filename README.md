@@ -28,15 +28,21 @@ Terrains are the active release's own resource types. Each control shows its eli
 
 | Terrain | Label | Routes |
 | --- | --- | --- |
+| `advisory` | ADVISORY | 43 |
+| `article` | ARTICLE | 11 |
 | `dataset` | DATASET | 22 |
-| `documentation` | DOCUMENTATION | 1 |
-| `lab` | LAB | 10 |
-| `reference` | REFERENCE | 123 |
+| `documentation` | DOCUMENTATION | 1408 |
+| `lab` | LAB | 282 |
+| `paper` | PAPER | 895 |
+| `reference` | REFERENCE | 871 |
 | `repository` | REPOSITORY | 470 |
-| `security_tool` | SECURITY TOOL | 203 |
+| `research` | RESEARCH | 1584 |
+| `security_tool` | SECURITY TOOL | 206 |
+| `threat_feed` | THREAT FEED | 6 |
 | `training_resource` | TRAINING RESOURCE | 12 |
+| `writeup` | WRITEUP | 1049 |
 
-Membership comes from a [terrain index](./corpus/terrains/typed-candidate-v0.1/terrain-index-v1.json) compiled from the release's `urls.txt` and `resources.json`. The index is authoritative only because the [eligibility profile registry](./corpus/runtime/eligibility-profiles-v1.json) names its digest for the active release. A digest recorded in a trail shows which map was used. It does not make that map authoritative. See the [terrain authority contract](./TERRAIN_AUTHORITY_CONTRACT.md) and [ADR 0006](./docs/adr/0006-release-bound-terrain-authority.md). The `SITE HINT` badge on a result is a display-only hostname hint, not a terrain.
+Membership comes from a [terrain index](./corpus/terrains/diverse-candidate-v0.2/terrain-index-v1.json) compiled from the release's `urls.txt` and `resources.json`. The index is authoritative only because the [eligibility profile registry](./corpus/runtime/eligibility-profiles-v1.json) names its digest for the active release. A digest recorded in a trail shows which map was used. It does not make that map authoritative. See the [terrain authority contract](./TERRAIN_AUTHORITY_CONTRACT.md) and [ADR 0006](./docs/adr/0006-release-bound-terrain-authority.md). The `SITE HINT` badge on a result is a display-only hostname hint, not a terrain.
 
 **BRANCH is a separate navigation action.** DEEPER, SIDEWAYS, OPPOSITE, and WEIRD offer directions from the current resource. Branch construction uses available metadata and keyword matching; it is not the ROLL sampler. These labels are navigational hints, not factual or security classifications.
 

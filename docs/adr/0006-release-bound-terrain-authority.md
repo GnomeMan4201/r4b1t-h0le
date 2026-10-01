@@ -6,10 +6,11 @@ Status: Proposed
 
 Terrain is the user-declared eligibility constraint permitted by CONTRACT clause 8 and ADR 0001 §2.
 
-On `main` @ `c29d6bd`, terrain membership is decided by a hostname→tag table embedded in `index.html` (`O`, 43 hosts) and applied by `_getCatFilteredPool()`. Measured on the running page against the promoted `typed-candidate-v0.1` URL bytes:
+On `main` @ `9e658c5`, terrain membership is decided by a hostname→tag table embedded in `index.html` (`O`, 43 hosts) and applied by `_getCatFilteredPool()`. Measured against the promoted `diverse-candidate-v0.2` URL bytes (6,859 routes):
 
 - **12 of 16 terrains select nothing:** BLOG, NEWS, PAPER, OSINT, BOUNTY, VIDEO, SOCIAL, ARCHIVE, PKG, EVENT, HARDWARE and TOR. ROLL returns `null` and the UI does not change.
-- **Two terrains are nearly empty:** RESEARCH has 2 routes and COURSE has 1. 318 of 841 routes are reachable only under ALL.
+- **The rest are uneven:** RESEARCH has 774 routes, CODE 491, REF 29 and COURSE 1. **5,564 of 6,859 routes are reachable only under ALL.**
+- The same table had the same 12 dry terrains against the previous 841-route release (`typed-candidate-v0.1`), where 318 routes were ALL-only. Growing the corpus widened the gap, because the table does not follow the release.
 - **Membership cannot be recomputed.** The terrain behind a recorded ROLL cannot be derived from repository or release bytes, because the table lives in application code.
 - **The armed terrain is read from styles.** `trail-runtime.js terrain()` and `dual-shell.js sourceFilterIsActive()` derive it from button *style* attributes.
 
@@ -42,9 +43,9 @@ Profile records are never deleted, and their binding fields are immutable. The o
 The authority chain is:
 
 ```text
-corpus/runtime/active-v1.json                    active release: typed-candidate-v0.1, urls sha256:5bb70a72…
+corpus/runtime/active-v1.json                    active release: diverse-candidate-v0.2, urls sha256:ba52be7e…
   └─ corpus/runtime/eligibility-profiles-v1.json  active profile for that release + expected terrain-index digest
-       └─ corpus/terrains/typed-candidate-v0.1/terrain-index-v1.json   bytes whose SHA-256 must equal that digest
+       └─ corpus/terrains/diverse-candidate-v0.2/terrain-index-v1.json   bytes whose SHA-256 must equal that digest (sha256:a9bbe4fc…)
             └─ eligible set = members(terrain) → urls.txt lines, then protocol policy
 ```
 
@@ -75,15 +76,21 @@ One terrain per distinct `resource_type` present in the release, with no groupin
 
 | ID | Label | Routes |
 |---|---|---|
+| advisory | ADVISORY | 43 |
+| article | ARTICLE | 11 |
 | dataset | DATASET | 22 |
-| documentation | DOCUMENTATION | 1 |
-| lab | LAB | 10 |
-| reference | REFERENCE | 123 |
+| documentation | DOCUMENTATION | 1,408 |
+| lab | LAB | 282 |
+| paper | PAPER | 895 |
+| reference | REFERENCE | 871 |
 | repository | REPOSITORY | 470 |
-| security_tool | SECURITY TOOL | 203 |
+| research | RESEARCH | 1,584 |
+| security_tool | SECURITY TOOL | 206 |
+| threat_feed | THREAT FEED | 6 |
 | training_resource | TRAINING RESOURCE | 12 |
+| writeup | WRITEUP | 1,049 |
 
-The 16 legacy labels are retired. `ALL` remains the unconstrained state and is not a terrain.
+The 13 types partition the release: every route is in exactly one terrain, so no route is reachable only under ALL. The 16 legacy labels are retired. `ALL` remains the unconstrained state and is not a terrain.
 
 **Why identity**
 - There is no editorial step.

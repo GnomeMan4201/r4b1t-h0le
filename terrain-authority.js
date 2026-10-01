@@ -19,15 +19,15 @@
 
   var PROFILE = Object.freeze({
     registrySchema: 'r4b1t-eligibility-profiles-v1',
-    profileId: 'typed-candidate-v0.1/resource-type-identity-v1',
+    profileId: 'diverse-candidate-v0.2/resource-type-identity-v1',
     mapping: 'resource-type-identity-v1',
-    promotionId: 'typed-candidate-v0.1-active-v1',
-    releaseId: 'typed-candidate-v0.1',
-    urlsDigest: 'sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1',
-    resourcesDigest: 'sha256:2c7bd5f0a492646cb5cc250b426ed720f1e0953615172717f562379e88eeb691',
-    indexPath: 'corpus/terrains/typed-candidate-v0.1/terrain-index-v1.json',
+    promotionId: 'diverse-candidate-v0.2-active-v1',
+    releaseId: 'diverse-candidate-v0.2',
+    urlsDigest: 'sha256:ba52be7e2fc9120f3bd1ac2a6bacbc61fc937764e6d4637df8711ec2212bf75c',
+    resourcesDigest: 'sha256:529a3bcf10b0933ce92428932035750ae0fe93f1490aaa1a40c1384d7ec57aca',
+    indexPath: 'corpus/terrains/diverse-candidate-v0.2/terrain-index-v1.json',
     indexSchema: 'r4b1t-terrain-index-v1',
-    expectedIndexDigest: 'sha256:8bddd48835eeb2a2a17be2966ff02965e3d7f50b1721f7e1a54b1a898189acfb'
+    expectedIndexDigest: 'sha256:a9bbe4fc56020314a11195c9339fa3a04a14082d6b2f6c259c78be6ee38af5fd'
   });
 
   var TERRAIN_ID = /^[a-z][a-z0-9_]*$/;

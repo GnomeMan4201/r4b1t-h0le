@@ -57,7 +57,9 @@ function corpusMetricsFromText(content) {
 // ADR 0006 / TERRAIN_AUTHORITY_CONTRACT.md: promotion → registry → runtime pins → index bytes → README.
 function verifyTerrainAuthorityClaims(readme) {
   const promotion = JSON.parse(read('corpus/runtime/active-v1.json'));
-  const releaseManifest = JSON.parse(read('corpus/releases/typed-candidate-v0.1/manifest.json'));
+  // The release is whatever the promotion record names; nothing release-specific is hard-coded here.
+  const releaseManifest = JSON.parse(read(promotion.active.manifest_url));
+  claim(releaseManifest.release_id === promotion.active.release_id, 'terrain authority drift: promotion manifest is not the active release');
   const registry = JSON.parse(read('corpus/runtime/eligibility-profiles-v1.json'));
   const pins = read('terrain-authority.js');
   claim(registry.schema === 'r4b1t-eligibility-profiles-v1', 'eligibility profile registry schema drift');
@@ -67,6 +69,7 @@ function verifyTerrainAuthorityClaims(readme) {
   const profile = active[0];
   claim(profile.release.urls_digest === promotion.active.expected_digest, 'terrain authority drift: profile release is not the active promotion');
   claim(profile.release.resources_digest === releaseManifest.resources_digest, 'terrain authority drift: profile resources digest');
+  claim(profile.release.release_id === releaseManifest.release_id, 'terrain authority drift: profile release id');
   claim(profile.promotion_id === promotion.promotion_id, 'terrain authority drift: profile promotion id');
   const bytes = fs.readFileSync(path.join(ROOT, profile.terrain_index.path));
   const digest = 'sha256:' + crypto.createHash('sha256').update(bytes).digest('hex');

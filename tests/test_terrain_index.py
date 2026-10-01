@@ -10,13 +10,14 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TOOL = ROOT / 'tools' / 'terrain_index.py'
-RELEASE = ROOT / 'corpus' / 'releases' / 'typed-candidate-v0.1'
-INDEX = ROOT / 'corpus' / 'terrains' / 'typed-candidate-v0.1' / 'terrain-index-v1.json'
+RELEASE = ROOT / 'corpus' / 'releases' / 'diverse-candidate-v0.2'
+INDEX = ROOT / 'corpus' / 'terrains' / 'diverse-candidate-v0.2' / 'terrain-index-v1.json'
 REGISTRY = ROOT / 'corpus' / 'runtime' / 'eligibility-profiles-v1.json'
-URLS_DIGEST = 'sha256:5bb70a7289ca6048275737ed771720e4e7d76c33bbd9fb34c3bc092956a693d1'
-INDEX_DIGEST = 'sha256:8bddd48835eeb2a2a17be2966ff02965e3d7f50b1721f7e1a54b1a898189acfb'
-COUNTS = {'dataset': 22, 'documentation': 1, 'lab': 10, 'reference': 123,
-          'repository': 470, 'security_tool': 203, 'training_resource': 12}
+URLS_DIGEST = 'sha256:ba52be7e2fc9120f3bd1ac2a6bacbc61fc937764e6d4637df8711ec2212bf75c'
+INDEX_DIGEST = 'sha256:a9bbe4fc56020314a11195c9339fa3a04a14082d6b2f6c259c78be6ee38af5fd'
+COUNTS = {'advisory': 43, 'article': 11, 'dataset': 22, 'documentation': 1408, 'lab': 282,
+          'paper': 895, 'reference': 871, 'repository': 470, 'research': 1584, 'security_tool': 206,
+          'threat_feed': 6, 'training_resource': 12, 'writeup': 1049}
 
 
 def run(*args):
@@ -38,7 +39,16 @@ class TerrainIndexBuild(unittest.TestCase):
         doc = json.loads(INDEX.read_text('utf-8'))
         self.assertEqual({t['id']: t['count'] for t in doc['terrains']}, COUNTS)
         self.assertEqual([t['id'] for t in doc['terrains']], sorted(COUNTS))
-        self.assertEqual(sum(t['count'] for t in doc['terrains']), 841)
+        self.assertEqual(sum(t['count'] for t in doc['terrains']), 6859)
+
+    def test_t1_01_counts_equal_release_manifest_and_no_route_is_all_only(self):
+        doc = json.loads(INDEX.read_text('utf-8'))
+        manifest = json.loads((RELEASE / 'manifest.json').read_text('utf-8'))
+        self.assertEqual({t['id']: t['count'] for t in doc['terrains']}, manifest['counts']['resource_types'])
+        self.assertTrue(all(t['count'] >= 1 for t in doc['terrains']), 'every terrain has a nonzero population')
+        members = sorted(i for t in doc['terrains'] for i in t['members'])
+        self.assertEqual(members, list(range(manifest['counts']['resources'])),
+                         'every route belongs to exactly one terrain; none is reachable only under ALL')
 
     def test_t1_01_build_output_is_deterministic(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -104,8 +114,8 @@ class RegistryClassification(unittest.TestCase):
     """T1-14: a digest declared in a trail is evidence of use; only the registry establishes authority.
     Classification binds the complete release: release_id + urls_digest + resources_digest."""
 
-    RELEASE_ID = 'typed-candidate-v0.1'
-    RESOURCES_DIGEST = 'sha256:2c7bd5f0a492646cb5cc250b426ed720f1e0953615172717f562379e88eeb691'
+    RELEASE_ID = 'diverse-candidate-v0.2'
+    RESOURCES_DIGEST = 'sha256:529a3bcf10b0933ce92428932035750ae0fe93f1490aaa1a40c1384d7ec57aca'
 
     def classify(self, index_digest, registry=REGISTRY, release_id=None, urls_digest=URLS_DIGEST, resources_digest=None):
         result = run('classify', '--registry', str(registry),
@@ -140,7 +150,7 @@ class RegistryClassification(unittest.TestCase):
     def test_t1_14_superseded_profile(self):
         registry = json.loads(REGISTRY.read_text())
         old = json.loads(json.dumps(registry['profiles'][0]))
-        old['profile_id'] = 'typed-candidate-v0.1/historical'
+        old['profile_id'] = 'diverse-candidate-v0.2/historical'
         old['status'] = 'superseded'
         old['terrain_index']['digest'] = 'sha256:' + 'e' * 64
         registry['profiles'].insert(0, old)

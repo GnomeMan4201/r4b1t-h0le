@@ -37,12 +37,12 @@ if (FIXTURE_AUTHORITY_SOURCE === AUTHORITY_SOURCE) {
 // The fixture corpus gets a matching fixture index: CODE_POOL → repository, BLOG_POOL → reference.
 const CODE_TERRAIN = 'REPOSITORY';
 const BLOG_TERRAIN = 'REFERENCE';
-const ACTIVE_RESOURCES_DIGEST = 'sha256:2c7bd5f0a492646cb5cc250b426ed720f1e0953615172717f562379e88eeb691';
-const ACTIVE_INDEX_DIGEST = 'sha256:8bddd48835eeb2a2a17be2966ff02965e3d7f50b1721f7e1a54b1a898189acfb';
+const ACTIVE_RESOURCES_DIGEST = 'sha256:529a3bcf10b0933ce92428932035750ae0fe93f1490aaa1a40c1384d7ec57aca';
+const ACTIVE_INDEX_DIGEST = 'sha256:a9bbe4fc56020314a11195c9339fa3a04a14082d6b2f6c259c78be6ee38af5fd';
 const cj1 = require(path.resolve(__dirname, '..', 'cj1.js'));
 const FIXTURE_INDEX_BYTES = Buffer.from(cj1.serialize({
   schema: 'r4b1t-terrain-index-v1',
-  release: { release_id: 'typed-candidate-v0.1', urls_digest: FIXTURE_DIGEST, resources_digest: ACTIVE_RESOURCES_DIGEST },
+  release: { release_id: 'diverse-candidate-v0.2', urls_digest: FIXTURE_DIGEST, resources_digest: ACTIVE_RESOURCES_DIGEST },
   vocabulary: 'resource-type-identity-v1',
   terrains: [
     { id: 'reference', label: 'REFERENCE', rule: { resource_type: ['reference'] }, count: 2, members: [5, 6] },
@@ -116,7 +116,7 @@ async function configurePage(page) {
     contentType: 'application/javascript; charset=utf-8',
     body: FIXTURE_TERRAIN_AUTHORITY_SOURCE,
   }));
-  await page.route('**/corpus/terrains/typed-candidate-v0.1/terrain-index-v1.json?*', route => route.fulfill({
+  await page.route('**/corpus/terrains/diverse-candidate-v0.2/terrain-index-v1.json?*', route => route.fulfill({
     status: 200,
     contentType: 'application/json; charset=utf-8',
     body: FIXTURE_INDEX_BYTES,
