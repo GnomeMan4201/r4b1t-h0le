@@ -325,7 +325,7 @@
   }
 
   function downloadTrail(result, suffix) {
-    var blob = new Blob([JSON.stringify(result, null, 2) + '\\n'], { type: 'application/json' });
+    var blob = new Blob([JSON.stringify(result, null, 2) + '\n'], { type: 'application/json' });
     var link = document.createElement('a');
     link.download = 'r4b1t-trail-' + result.trail_id.slice(7, 19) + (suffix || '') + '.json';
     link.href = URL.createObjectURL(blob);
