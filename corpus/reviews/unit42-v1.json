@@ -1,0 +1,68 @@
+{
+  "admissions": [
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/agentic-ai-kubernetes-operator-risks/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/ai-assisted-cyber-attack-inside-a-unit-42-investigation/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/ai-enabled-malware-analysis/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/ai-tool-use-targeting-latam-orgs/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/atomic-macos-amos-stealer-activity/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/behavioral-clustering-map-to-cloud-identities/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/detecting-exposed-aws-iam-credentials/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/kubernetes-spiffe-spire-identity-spoofing/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/netscaler-zero-days-exploited/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/perturbation-probing-llm-safety/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/ppi-network-malware-campaign-analysis/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/securing-aws-agentcore-harness-credentials/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/soc-cross-environment-pivot/"
+    },
+    {
+      "resource_type": "research",
+      "url": "https://unit42.paloaltonetworks.com/spring-ring-voice-phishing-campaigns/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "defensive_resources",
+  "rationale": "Proposed review: concrete technical threat/vulnerability research articles observed in the unit42 research feed. Obvious consulting-sales and product-announcement links are omitted; per-page content audit remains pending.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:e7d74e46cb224c514a4481872c552dd07598423334f9a32f34282b77627844cd",
+  "snapshot_path": "corpus/indexes/unit42-v1.json",
+  "source_id": "unit42-v1"
+}

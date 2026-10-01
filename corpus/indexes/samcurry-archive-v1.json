@@ -1,0 +1,20 @@
+{
+  "extractor": "html-anchors-v1",
+  "final_url": "https://samcurry.net/",
+  "response_digest": "sha256:c0d9b28ff4f0e7c9041410f332538b9fca1371695b6e82c6ad55f020545c8f1a",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://samcurry.net/",
+  "urls": [
+    "https://discord.gg/aivr",
+    "https://samcurry.net/",
+    "https://samcurry.net/about",
+    "https://samcurry.net/feed.rss",
+    "https://samcurry.net/hacking-clubwpt-gold",
+    "https://samcurry.net/hacking-kia",
+    "https://samcurry.net/hacking-millions-of-modems",
+    "https://samcurry.net/hacking-subaru",
+    "https://samcurry.net/points-com",
+    "https://twitter.com/samwcyo"
+  ]
+}

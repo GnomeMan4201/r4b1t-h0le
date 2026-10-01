@@ -1,0 +1,38 @@
+{
+  "$id": "expansion-registry-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "legacy_catalogs": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "release_id": {
+      "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$",
+      "type": "string"
+    },
+    "reviews": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "schema": {
+      "const": "r4b1t-expansion-registry-v1"
+    }
+  },
+  "required": [
+    "schema",
+    "release_id",
+    "legacy_catalogs",
+    "reviews"
+  ],
+  "title": "R4B1T Expansion Registry v1",
+  "type": "object"
+}

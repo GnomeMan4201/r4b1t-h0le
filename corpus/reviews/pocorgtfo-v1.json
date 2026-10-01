@@ -1,0 +1,104 @@
+{
+  "admissions": [
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo00.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo01.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo02.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo03.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo04.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo05.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo06.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo07.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo08.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo09.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo10.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo11.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo12.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo13.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo14.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo15.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo16.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo17.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo18.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo19.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo20.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo21.pdf"
+    },
+    {
+      "resource_type": "reference",
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo22.pdf"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "hacker_publications",
+  "rationale": "Proposed review: individually linked PoC||GTFO journal issues, technical hacker publications containing exploitation and reverse-engineering research.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:2ae3581633f8bfb380e2d64ff7df1f37ff1cfedeb33425ea10bcb32b8d8f53b5",
+  "snapshot_path": "corpus/indexes/pocorgtfo-v1.json",
+  "source_id": "pocorgtfo-v1"
+}

@@ -1,0 +1,20 @@
+{
+  "extractor": "feed-entries-v1",
+  "final_url": "https://securelist.com/feed/",
+  "response_digest": "sha256:cf6bf67ba87a399ff2a65c3366f52144ed1daaf4010480a7ef4b8b7fff8dcc7d",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://securelist.com/feed/",
+  "urls": [
+    "https://securelist.com/android-head-unit-malware/121106/",
+    "https://securelist.com/industrial-threat-report-q2-2026/121159/",
+    "https://securelist.com/macsync-new-version/121383/",
+    "https://securelist.com/mirage-kitten-new-backdoors-noderabbit-pollcat/121244/",
+    "https://securelist.com/moviereaper-malware-torrent-odyssey-solana/121344/",
+    "https://securelist.com/toy-ghouls-new-hivemq-and-element-backdoors/121270/",
+    "https://securelist.com/tr/nighteagle-apt-ghostcontainer-and-tunneling/121323/",
+    "https://securelist.com/tr/payload-ransomware-via-group-policy/121335/",
+    "https://securelist.com/valleyrat-backdoor-adware/121175/",
+    "https://securelist.com/vulnerabilities-and-exploits-in-q2-2026/121091/"
+  ]
+}

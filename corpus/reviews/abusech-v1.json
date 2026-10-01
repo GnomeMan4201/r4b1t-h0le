@@ -1,0 +1,36 @@
+{
+  "admissions": [
+    {
+      "resource_type": "threat_feed",
+      "url": "https://bazaar.abuse.ch/"
+    },
+    {
+      "resource_type": "threat_feed",
+      "url": "https://feodotracker.abuse.ch/"
+    },
+    {
+      "resource_type": "threat_feed",
+      "url": "https://sslbl.abuse.ch/"
+    },
+    {
+      "resource_type": "threat_feed",
+      "url": "https://threatfox.abuse.ch/"
+    },
+    {
+      "resource_type": "threat_feed",
+      "url": "https://urlhaus.abuse.ch/"
+    },
+    {
+      "resource_type": "threat_feed",
+      "url": "https://yaraify.abuse.ch/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "datasets_and_feeds",
+  "rationale": "Proposed review: the six explicitly linked abuse.ch malware/IOC/YARA threat-data services. These are purpose-built security data resources, not generic platform homepages. Account/community/marketing links are omitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:80b3205b8ac5264677ab4c3f759523529a07868fc2dc878623faea1730f1f5f6",
+  "snapshot_path": "corpus/indexes/abusech-v1.json",
+  "source_id": "abusech-v1"
+}

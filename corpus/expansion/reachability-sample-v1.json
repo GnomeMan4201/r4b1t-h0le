@@ -1,0 +1,1062 @@
+{
+  "candidate_urls_digest": "sha256:ba52be7e2fc9120f3bd1ac2a6bacbc61fc937764e6d4637df8711ec2212bf75c",
+  "observations": [
+    {
+      "checked_at": "2026-10-01T15:11:34.734662+00:00",
+      "final_url": "https://0xdf.gitlab.io/2021/10/16/htb-dynstr.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "0xdf-v1"
+      ],
+      "status": 200,
+      "url": "https://0xdf.gitlab.io/2021/10/16/htb-dynstr.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:34.735665+00:00",
+      "final_url": "https://0xdf.gitlab.io/2024/08/31/htb-skyfall.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "0xdf-v1"
+      ],
+      "status": 200,
+      "url": "https://0xdf.gitlab.io/2024/08/31/htb-skyfall.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:34.736134+00:00",
+      "final_url": "https://0xdf.gitlab.io/2025/06/24/htb-retro.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "0xdf-v1"
+      ],
+      "status": 200,
+      "url": "https://0xdf.gitlab.io/2025/06/24/htb-retro.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:34.736977+00:00",
+      "final_url": "https://bazaar.abuse.ch/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "abusech-v1"
+      ],
+      "status": 200,
+      "url": "https://bazaar.abuse.ch/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:34.737577+00:00",
+      "error": "URLError: <urlopen error timed out>",
+      "observation": "indeterminate",
+      "sources": [
+        "bishopfox-research-v1"
+      ],
+      "url": "https://bishopfox.com/tools/google-hacking-diggity-project-2/attack-tools"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:34.738631+00:00",
+      "error": "URLError: <urlopen error timed out>",
+      "observation": "indeterminate",
+      "sources": [
+        "bishopfox-research-v1"
+      ],
+      "url": "https://bishopfox.com/tools/google-hacking-diggity-project-2/defense-tools"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:34.740921+00:00",
+      "error": "URLError: <urlopen error timed out>",
+      "observation": "indeterminate",
+      "sources": [
+        "bishopfox-research-v1"
+      ],
+      "url": "https://bishopfox.com/tools/home-and-office-security-system-hacking"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:34.741391+00:00",
+      "final_url": "https://blog.doyensec.com/2026/06/17/session-switcher.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "doyensec-archive-v1"
+      ],
+      "status": 200,
+      "url": "https://blog.doyensec.com/2026/06/17/session-switcher.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:40.246446+00:00",
+      "final_url": "https://blog.doyensec.com/2026/09/10/oneplus-session-takeover.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "doyensec-archive-v1"
+      ],
+      "status": 200,
+      "url": "https://blog.doyensec.com/2026/09/10/oneplus-session-takeover.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:40.295722+00:00",
+      "final_url": "https://blog.doyensec.com/2026/09/24/chrome-ios-policy-bypass.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "doyensec-archive-v1"
+      ],
+      "status": 200,
+      "url": "https://blog.doyensec.com/2026/09/24/chrome-ios-policy-bypass.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:40.320982+00:00",
+      "final_url": "https://blog.nviso.eu/2026/03/27/why-the-pentesting-playbook-doesnt-fit-belief-assumptions-and-non-determinism/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "nviso-v1"
+      ],
+      "status": 200,
+      "url": "https://blog.nviso.eu/2026/03/27/why-the-pentesting-playbook-doesnt-fit-belief-assumptions-and-non-determinism/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:41.157647+00:00",
+      "final_url": "https://blog.nviso.eu/2026/06/04/the-detection-response-chronicles-covert-operations-through-qemu/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "nviso-v1"
+      ],
+      "status": 200,
+      "url": "https://blog.nviso.eu/2026/06/04/the-detection-response-chronicles-covert-operations-through-qemu/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:42.089710+00:00",
+      "final_url": "https://blog.nviso.eu/2026/06/17/reducing-microsoft-sentinel-costs-without-compromising-detection-part-1-the-summary-rules-quest/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "nviso-v1"
+      ],
+      "status": 200,
+      "url": "https://blog.nviso.eu/2026/06/17/reducing-microsoft-sentinel-costs-without-compromising-detection-part-1-the-summary-rules-quest/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:42.104850+00:00",
+      "final_url": "https://blog.ropnop.com/configuring-burp-suite-with-android-nougat/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "ropnop-archive-v1"
+      ],
+      "status": 200,
+      "url": "https://blog.ropnop.com/configuring-burp-suite-with-android-nougat/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:42.127535+00:00",
+      "final_url": "https://blog.ropnop.com/proxying-cli-tools/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "ropnop-archive-v1"
+      ],
+      "status": 200,
+      "url": "https://blog.ropnop.com/proxying-cli-tools/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:44.578767+00:00",
+      "final_url": "https://blog.ropnop.com/serverless-toolkit-for-pentesters/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "ropnop-archive-v1"
+      ],
+      "status": 200,
+      "url": "https://blog.ropnop.com/serverless-toolkit-for-pentesters/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:44.633844+00:00",
+      "final_url": "https://blog.trailofbits.com/2023/07/07/differential-fuzz-testing-upgradeable-smart-contracts-with-diffusc/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "trailofbits-v1"
+      ],
+      "status": 200,
+      "url": "https://blog.trailofbits.com/2023/07/07/differential-fuzz-testing-upgradeable-smart-contracts-with-diffusc/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:44.660316+00:00",
+      "final_url": "https://blog.trailofbits.com/2026/07/02/field-reports-from-patch-the-planet/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "trailofbits-v1"
+      ],
+      "status": 200,
+      "url": "https://blog.trailofbits.com/2026/07/02/field-reports-from-patch-the-planet/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:49.283732+00:00",
+      "final_url": "https://blog.trailofbits.com/2026/09/09/a-proof-of-fermats-last-theorem-that-fits-the-margin/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "trailofbits-v1"
+      ],
+      "status": 200,
+      "url": "https://blog.trailofbits.com/2026/09/09/a-proof-of-fermats-last-theorem-that-fits-the-margin/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:49.343847+00:00",
+      "final_url": "https://dfir.ch/posts/macos_extended_attributes/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "dfirch-v1"
+      ],
+      "status": 200,
+      "url": "https://dfir.ch/posts/macos_extended_attributes/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:49.655120+00:00",
+      "final_url": "https://dfir.ch/posts/sysrv/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "dfirch-v1"
+      ],
+      "status": 200,
+      "url": "https://dfir.ch/posts/sysrv/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:49.661368+00:00",
+      "final_url": "https://dfir.ch/posts/today_i_learned_nsg_flow_log/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "dfirch-v1"
+      ],
+      "status": 200,
+      "url": "https://dfir.ch/posts/today_i_learned_nsg_flow_log/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:49.665980+00:00",
+      "final_url": "https://feodotracker.abuse.ch/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "abusech-v1"
+      ],
+      "status": 200,
+      "url": "https://feodotracker.abuse.ch/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:49.759572+00:00",
+      "final_url": "https://gtfobins.org/gtfobins/ntpdate/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "gtfobins-index-v1"
+      ],
+      "status": 200,
+      "url": "https://gtfobins.org/gtfobins/ntpdate/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:49.760115+00:00",
+      "final_url": "https://gtfobins.org/gtfobins/rtorrent/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "gtfobins-index-v1"
+      ],
+      "status": 200,
+      "url": "https://gtfobins.org/gtfobins/rtorrent/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:49.760729+00:00",
+      "final_url": "https://gtfobins.org/gtfobins/zic/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "gtfobins-index-v1"
+      ],
+      "status": 200,
+      "url": "https://gtfobins.org/gtfobins/zic/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:54.109076+00:00",
+      "final_url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/bypass-python-sandboxes/js2py-sandbox-escape-cve-2024-28397.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "hacktricks-en-v1"
+      ],
+      "status": 200,
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/bypass-python-sandboxes/js2py-sandbox-escape-cve-2024-28397.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:55.765677+00:00",
+      "final_url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-electron-applications-injection.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "hacktricks-en-v1"
+      ],
+      "status": 200,
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-proces-abuse/macos-electron-applications-injection.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:55.983902+00:00",
+      "final_url": "https://hacktricks.wiki/en/windows-hardening/stealing-credentials/credentials-mimikatz.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "hacktricks-en-v1"
+      ],
+      "status": 200,
+      "url": "https://hacktricks.wiki/en/windows-hardening/stealing-credentials/credentials-mimikatz.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:55.986484+00:00",
+      "final_url": "https://labs.watchtowr.com/enterprise-tech-in-shell-out-progress-kemp-loadmaster-uninitialized-heap-to-pre-auth-rce-cve-2026-8037/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "watchtowr-v1"
+      ],
+      "status": 200,
+      "url": "https://labs.watchtowr.com/enterprise-tech-in-shell-out-progress-kemp-loadmaster-uninitialized-heap-to-pre-auth-rce-cve-2026-8037/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:55.999482+00:00",
+      "final_url": "https://labs.watchtowr.com/oh-look-the-foot-gun-went-off-again-citrix-netscaler-preauth-command-injection-cve-2026-88771/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "watchtowr-v1"
+      ],
+      "status": 200,
+      "url": "https://labs.watchtowr.com/oh-look-the-foot-gun-went-off-again-citrix-netscaler-preauth-command-injection-cve-2026-88771/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:58.244034+00:00",
+      "final_url": "https://labs.watchtowr.com/why-use-app-level-auth-when-every-database-has-auth-splunk-enterprise-cve-2026-20253-pre-auth-rce/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "watchtowr-v1"
+      ],
+      "status": 200,
+      "url": "https://labs.watchtowr.com/why-use-app-level-auth-when-every-database-has-auth-splunk-enterprise-cve-2026-20253-pre-auth-rce/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:58.281109+00:00",
+      "final_url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Mspub/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "lolbas-index-v1"
+      ],
+      "status": 200,
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Mspub/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:58.317946+00:00",
+      "final_url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/ProtocolHandler/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "lolbas-index-v1"
+      ],
+      "status": 200,
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/ProtocolHandler/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:59.966281+00:00",
+      "final_url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/xsd/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "lolbas-index-v1"
+      ],
+      "status": 200,
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/xsd/"
+    },
+    {
+      "checked_at": "2026-10-01T15:11:59.986137+00:00",
+      "final_url": "https://pocorgtfo.hacke.rs/pocorgtfo07.pdf",
+      "observation": "reachable_at_check",
+      "sources": [
+        "pocorgtfo-v1"
+      ],
+      "status": 200,
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo07.pdf"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:00.065258+00:00",
+      "final_url": "https://pocorgtfo.hacke.rs/pocorgtfo11.pdf",
+      "observation": "reachable_at_check",
+      "sources": [
+        "pocorgtfo-v1"
+      ],
+      "status": 200,
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo11.pdf"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:02.636570+00:00",
+      "final_url": "https://pocorgtfo.hacke.rs/pocorgtfo13.pdf",
+      "observation": "reachable_at_check",
+      "sources": [
+        "pocorgtfo-v1"
+      ],
+      "status": 200,
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo13.pdf"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:02.813129+00:00",
+      "final_url": "https://portswigger.net/burp/documentation/desktop/tools/target/unrequested-items",
+      "observation": "reachable_at_check",
+      "sources": [
+        "portswigger-sitemap-v1"
+      ],
+      "status": 200,
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/unrequested-items"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:02.824841+00:00",
+      "final_url": "https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-mysql-microsoft",
+      "observation": "reachable_at_check",
+      "sources": [
+        "portswigger-sitemap-v1"
+      ],
+      "status": 200,
+      "url": "https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-mysql-microsoft"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:07.367527+00:00",
+      "final_url": "https://portswigger.net/web-security/sql-injection/lab-login-bypass",
+      "observation": "reachable_at_check",
+      "sources": [
+        "portswigger-sitemap-v1"
+      ],
+      "status": 200,
+      "url": "https://portswigger.net/web-security/sql-injection/lab-login-bypass"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:07.635547+00:00",
+      "final_url": "https://projectzero.google/2025/12/thinking-outside-the-box.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "projectzero-archive-v1"
+      ],
+      "status": 200,
+      "url": "https://projectzero.google/2025/12/thinking-outside-the-box.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:07.667563+00:00",
+      "final_url": "https://projectzero.google/2026/05/pixel-10-exploit.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "projectzero-archive-v1"
+      ],
+      "status": 200,
+      "url": "https://projectzero.google/2026/05/pixel-10-exploit.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:10.107225+00:00",
+      "final_url": "https://projectzero.google/2026/26/windows-administrator-protection.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "projectzero-archive-v1"
+      ],
+      "status": 200,
+      "url": "https://projectzero.google/2026/26/windows-administrator-protection.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:10.125068+00:00",
+      "final_url": "https://www.zscaler.com/blogs/cybersecurity-best-practices/lateral-movement-with-secure-shell",
+      "observation": "reachable_at_check",
+      "sources": [
+        "redcanary-sitemap-v1"
+      ],
+      "status": 200,
+      "url": "https://redcanary.com/blog/threat-detection/lateral-movement-with-secure-shell/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:10.153217+00:00",
+      "final_url": "https://www.zscaler.com/blogs/cybersecurity-best-practices/intelligence-insights-january-2023",
+      "observation": "reachable_at_check",
+      "sources": [
+        "redcanary-sitemap-v1"
+      ],
+      "status": 200,
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-january-2023/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:12.237014+00:00",
+      "final_url": "https://www.zscaler.com/blogs/cybersecurity-best-practices/yellow-cockatoo",
+      "observation": "reachable_at_check",
+      "sources": [
+        "redcanary-sitemap-v1"
+      ],
+      "status": 200,
+      "url": "https://redcanary.com/blog/threat-intelligence/yellow-cockatoo/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:12.434924+00:00",
+      "final_url": "https://research.checkpoint.com/2026/24th-august-threat-intelligence-report/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "check-point-v1"
+      ],
+      "status": 200,
+      "url": "https://research.checkpoint.com/2026/24th-august-threat-intelligence-report/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:12.435779+00:00",
+      "final_url": "https://research.checkpoint.com/2026/breaking-the-seal-static-deobfuscation-of-jsceals-compiled-v8-bytecode/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "check-point-v1"
+      ],
+      "status": 200,
+      "url": "https://research.checkpoint.com/2026/breaking-the-seal-static-deobfuscation-of-jsceals-compiled-v8-bytecode/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:14.744733+00:00",
+      "final_url": "https://research.checkpoint.com/2026/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "check-point-v1"
+      ],
+      "status": 200,
+      "url": "https://research.checkpoint.com/2026/btr-reforged-weaponizing-defenders-remediation-driver-as-a-kernel-operation-primitive/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:14.807885+00:00",
+      "final_url": "https://samcurry.net/hacking-clubwpt-gold",
+      "observation": "reachable_at_check",
+      "sources": [
+        "samcurry-archive-v1"
+      ],
+      "status": 200,
+      "url": "https://samcurry.net/hacking-clubwpt-gold"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:14.852910+00:00",
+      "final_url": "https://samcurry.net/hacking-millions-of-modems",
+      "observation": "reachable_at_check",
+      "sources": [
+        "samcurry-archive-v1"
+      ],
+      "status": 200,
+      "url": "https://samcurry.net/hacking-millions-of-modems"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:20.283935+00:00",
+      "final_url": "https://samcurry.net/points-com",
+      "observation": "reachable_at_check",
+      "sources": [
+        "samcurry-archive-v1"
+      ],
+      "status": 200,
+      "url": "https://samcurry.net/points-com"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:20.359897+00:00",
+      "final_url": "https://sector035.nl/articles/2024-27",
+      "observation": "reachable_at_check",
+      "sources": [
+        "sector035-v1"
+      ],
+      "status": 200,
+      "url": "https://sector035.nl/articles/2024-27"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:25.163608+00:00",
+      "final_url": "https://sector035.nl/articles/2024-30",
+      "observation": "reachable_at_check",
+      "sources": [
+        "sector035-v1"
+      ],
+      "status": 200,
+      "url": "https://sector035.nl/articles/2024-30"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:25.283762+00:00",
+      "final_url": "https://sector035.nl/articles/2024-31",
+      "observation": "reachable_at_check",
+      "sources": [
+        "sector035-v1"
+      ],
+      "status": 200,
+      "url": "https://sector035.nl/articles/2024-31"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:25.352810+00:00",
+      "final_url": "https://securelist.com/macsync-new-version/121383/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "securelist-v1"
+      ],
+      "status": 200,
+      "url": "https://securelist.com/macsync-new-version/121383/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:25.368101+00:00",
+      "final_url": "https://securelist.com/tr/nighteagle-apt-ghostcontainer-and-tunneling/121323/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "securelist-v1"
+      ],
+      "status": 200,
+      "url": "https://securelist.com/tr/nighteagle-apt-ghostcontainer-and-tunneling/121323/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:30.969141+00:00",
+      "final_url": "https://securelist.com/tr/payload-ransomware-via-group-policy/121335/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "securelist-v1"
+      ],
+      "status": 200,
+      "url": "https://securelist.com/tr/payload-ransomware-via-group-policy/121335/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:31.009026+00:00",
+      "final_url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Linux%20-%20Persistence/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "payloadsallthethings-v1"
+      ],
+      "status": 200,
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Linux%20-%20Persistence/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:31.591820+00:00",
+      "final_url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Powershell%20-%20Cheatsheet/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "payloadsallthethings-v1"
+      ],
+      "status": 200,
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Powershell%20-%20Cheatsheet/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:31.690241+00:00",
+      "final_url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Windows%20-%20Persistence/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "payloadsallthethings-v1"
+      ],
+      "status": 200,
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Windows%20-%20Persistence/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:31.723839+00:00",
+      "final_url": "https://thedfirreport.com/2020/11/12/cryptominers-exploiting-weblogic-rce-cve-2020-14882/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "dfirreport-posts-v1"
+      ],
+      "status": 200,
+      "url": "https://thedfirreport.com/2020/11/12/cryptominers-exploiting-weblogic-rce-cve-2020-14882/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:33.437328+00:00",
+      "final_url": "https://thedfirreport.com/2022/02/07/qbot-likes-to-move-it-move-it/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "dfirreport-posts-v1"
+      ],
+      "status": 200,
+      "url": "https://thedfirreport.com/2022/02/07/qbot-likes-to-move-it-move-it/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:33.884040+00:00",
+      "final_url": "https://thedfirreport.com/2022/02/21/qbot-and-zerologon-lead-to-full-domain-compromise/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "dfirreport-posts-v1"
+      ],
+      "status": 200,
+      "url": "https://thedfirreport.com/2022/02/21/qbot-and-zerologon-lead-to-full-domain-compromise/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:33.895869+00:00",
+      "final_url": "https://unit42.paloaltonetworks.com/kubernetes-spiffe-spire-identity-spoofing/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "unit42-v1"
+      ],
+      "status": 200,
+      "url": "https://unit42.paloaltonetworks.com/kubernetes-spiffe-spire-identity-spoofing/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:35.367715+00:00",
+      "final_url": "https://unit42.paloaltonetworks.com/perturbation-probing-llm-safety/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "unit42-v1"
+      ],
+      "status": 200,
+      "url": "https://unit42.paloaltonetworks.com/perturbation-probing-llm-safety/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:39.562582+00:00",
+      "final_url": "https://unit42.paloaltonetworks.com/spring-ring-voice-phishing-campaigns/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "unit42-v1"
+      ],
+      "status": 200,
+      "url": "https://unit42.paloaltonetworks.com/spring-ring-voice-phishing-campaigns/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:39.576890+00:00",
+      "final_url": "https://urlhaus.abuse.ch/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "abusech-v1"
+      ],
+      "status": 200,
+      "url": "https://urlhaus.abuse.ch/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:39.595292+00:00",
+      "final_url": "https://www.bellingcat.com/resources/2025/08/14/llms-vs-geolocation-gpt-5-performs-worse-than-other-ai-models/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "bellingcat-v1"
+      ],
+      "status": 200,
+      "url": "https://www.bellingcat.com/resources/2025/08/14/llms-vs-geolocation-gpt-5-performs-worse-than-other-ai-models/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:41.405388+00:00",
+      "final_url": "https://www.bellingcat.com/resources/2026/04/20/xiaohongshu-rednote-open-source-guide/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "bellingcat-v1"
+      ],
+      "status": 200,
+      "url": "https://www.bellingcat.com/resources/2026/04/20/xiaohongshu-rednote-open-source-guide/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:41.555987+00:00",
+      "final_url": "https://www.bellingcat.com/resources/how-tos/2025/09/01/a-guide-to-monitoring-conflict-amidst-a-sea-of-misinformation/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "bellingcat-v1"
+      ],
+      "status": 200,
+      "url": "https://www.bellingcat.com/resources/how-tos/2025/09/01/a-guide-to-monitoring-conflict-amidst-a-sea-of-misinformation/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:41.860224+00:00",
+      "final_url": "https://www.elastic.co/security-labs/blog/gtr-multipart-series-overview",
+      "observation": "reachable_at_check",
+      "sources": [
+        "elastic-v1"
+      ],
+      "status": 200,
+      "url": "https://www.elastic.co/security-labs/blog/gtr-multipart-series-overview"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:44.002347+00:00",
+      "final_url": "https://www.elastic.co/security-labs/threat-command/500ms-to-midnight",
+      "observation": "reachable_at_check",
+      "sources": [
+        "elastic-v1"
+      ],
+      "status": 200,
+      "url": "https://www.elastic.co/security-labs/threat-command/500ms-to-midnight"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:44.110175+00:00",
+      "final_url": "https://www.elastic.co/security-labs/threat-command/dancing-the-night-away-with-named-pipes",
+      "observation": "reachable_at_check",
+      "sources": [
+        "elastic-v1"
+      ],
+      "status": 200,
+      "url": "https://www.elastic.co/security-labs/threat-command/dancing-the-night-away-with-named-pipes"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:44.128552+00:00",
+      "final_url": "https://www.hexacorn.com/blog/2026/06/07/little-secret-of-msconfig-exe/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "hexacorn-v1"
+      ],
+      "status": 200,
+      "url": "https://www.hexacorn.com/blog/2026/06/07/little-secret-of-msconfig-exe/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:46.404098+00:00",
+      "final_url": "https://www.hexacorn.com/blog/2026/09/14/win11_26h2-build-xta-phantom-libraries/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "hexacorn-v1"
+      ],
+      "status": 200,
+      "url": "https://www.hexacorn.com/blog/2026/09/14/win11_26h2-build-xta-phantom-libraries/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:46.537978+00:00",
+      "final_url": "https://www.hexacorn.com/blog/2026/09/26/1-little-known-secret-of-uieorchestratorstub-exe/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "hexacorn-v1"
+      ],
+      "status": 200,
+      "url": "https://www.hexacorn.com/blog/2026/09/26/1-little-known-secret-of-uieorchestratorstub-exe/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:46.815625+00:00",
+      "final_url": "https://www.malware-traffic-analysis.net/2024/03/26/index.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "mta2024-v1"
+      ],
+      "status": 200,
+      "url": "https://www.malware-traffic-analysis.net/2024/03/26/index.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:49.035384+00:00",
+      "final_url": "https://www.malware-traffic-analysis.net/2024/05/14/index.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "mta2024-v1"
+      ],
+      "status": 200,
+      "url": "https://www.malware-traffic-analysis.net/2024/05/14/index.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:49.117767+00:00",
+      "final_url": "https://www.malware-traffic-analysis.net/2024/06/08/index.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "mta2024-v1"
+      ],
+      "status": 200,
+      "url": "https://www.malware-traffic-analysis.net/2024/06/08/index.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:49.163693+00:00",
+      "final_url": "https://www.malware-traffic-analysis.net/2025/01/04/index.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "mta2025-v1"
+      ],
+      "status": 200,
+      "url": "https://www.malware-traffic-analysis.net/2025/01/04/index.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:50.697793+00:00",
+      "final_url": "https://www.malware-traffic-analysis.net/2025/01/28/index.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "mta2025-v1"
+      ],
+      "status": 200,
+      "url": "https://www.malware-traffic-analysis.net/2025/01/28/index.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:50.807472+00:00",
+      "final_url": "https://www.malware-traffic-analysis.net/2025/08/20/index.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "mta2025-v1"
+      ],
+      "status": 200,
+      "url": "https://www.malware-traffic-analysis.net/2025/08/20/index.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:51.696993+00:00",
+      "final_url": "https://www.malware-traffic-analysis.net/2026/05/11/index.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "malwaretraffic-v1"
+      ],
+      "status": 200,
+      "url": "https://www.malware-traffic-analysis.net/2026/05/11/index.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:52.840562+00:00",
+      "final_url": "https://www.malware-traffic-analysis.net/2026/07/31/index2.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "malwaretraffic-v1"
+      ],
+      "status": 200,
+      "url": "https://www.malware-traffic-analysis.net/2026/07/31/index2.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:52.852814+00:00",
+      "final_url": "https://www.malware-traffic-analysis.net/2026/08/07/index.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "malwaretraffic-v1"
+      ],
+      "status": 200,
+      "url": "https://www.malware-traffic-analysis.net/2026/08/07/index.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:52.853337+00:00",
+      "final_url": "https://www.sentinelone.com/labs/agents-at-large-tracing-illicit-openai-agent-activity-on-hugging-face/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "sentinelone-v1"
+      ],
+      "status": 200,
+      "url": "https://www.sentinelone.com/labs/agents-at-large-tracing-illicit-openai-agent-activity-on-hugging-face/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:52.853628+00:00",
+      "final_url": "https://www.sentinelone.com/labs/frontier-models-tackle-autonomous-long-horizon-malware-analysis/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "sentinelone-v1"
+      ],
+      "status": 200,
+      "url": "https://www.sentinelone.com/labs/frontier-models-tackle-autonomous-long-horizon-malware-analysis/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:52.917717+00:00",
+      "final_url": "https://www.sentinelone.com/labs/labscon25-replay-keynote-steps-to-an-ecology-of-cyber/",
+      "observation": "reachable_at_check",
+      "sources": [
+        "sentinelone-v1"
+      ],
+      "status": 200,
+      "url": "https://www.sentinelone.com/labs/labscon25-replay-keynote-steps-to-an-ecology-of-cyber/"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:52.918392+00:00",
+      "final_url": "https://www.stark4n6.com/2022/12/forensics-startme-updates-1212022.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "stark4n6-v1"
+      ],
+      "status": 200,
+      "url": "https://www.stark4n6.com/2022/12/forensics-startme-updates-1212022.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:52.933196+00:00",
+      "final_url": "https://www.stark4n6.com/2025/03/magnet-virtual-summit-2025-ctf-windows.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "stark4n6-v1"
+      ],
+      "status": 200,
+      "url": "https://www.stark4n6.com/2025/03/magnet-virtual-summit-2025-ctf-windows.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:53.120743+00:00",
+      "final_url": "https://www.stark4n6.com/2026/04/magnet-user-summit-2026-recap.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "stark4n6-v1"
+      ],
+      "status": 200,
+      "url": "https://www.stark4n6.com/2026/04/magnet-user-summit-2026-recap.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:57.366881+00:00",
+      "final_url": "https://www.synacktiv.com/publications/automated-network-security-with-rust-detecting-and-blocking-port-scanners.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "synacktiv-v1"
+      ],
+      "status": 200,
+      "url": "https://www.synacktiv.com/publications/automated-network-security-with-rust-detecting-and-blocking-port-scanners.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:57.462067+00:00",
+      "final_url": "https://www.synacktiv.com/publications/exploiting-cve-2021-25770-a-server-side-template-injection-in-youtrack.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "synacktiv-v1"
+      ],
+      "status": 200,
+      "url": "https://www.synacktiv.com/publications/exploiting-cve-2021-25770-a-server-side-template-injection-in-youtrack.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:58.648366+00:00",
+      "final_url": "https://www.synacktiv.com/publications/pull-up-your-bootloader.html",
+      "observation": "reachable_at_check",
+      "sources": [
+        "synacktiv-v1"
+      ],
+      "status": 200,
+      "url": "https://www.synacktiv.com/publications/pull-up-your-bootloader.html"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:58.673853+00:00",
+      "final_url": "https://www.usenix.org/conference/usenixsecurity24/presentation/calderonio",
+      "observation": "reachable_at_check",
+      "sources": [
+        "usenix-security24-v1"
+      ],
+      "status": 200,
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/calderonio"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:58.719904+00:00",
+      "final_url": "https://www.usenix.org/conference/usenixsecurity24/presentation/choudhuri",
+      "observation": "reachable_at_check",
+      "sources": [
+        "usenix-security24-v1"
+      ],
+      "status": 200,
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/choudhuri"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:59.745352+00:00",
+      "final_url": "https://www.usenix.org/conference/usenixsecurity24/presentation/he-yi",
+      "observation": "reachable_at_check",
+      "sources": [
+        "usenix-security24-v1"
+      ],
+      "status": 200,
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/he-yi"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:59.871252+00:00",
+      "final_url": "https://www.usenix.org/conference/usenixsecurity25/presentation/agarwal-sharad",
+      "observation": "reachable_at_check",
+      "sources": [
+        "usenix-security25-v1"
+      ],
+      "status": 200,
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/agarwal-sharad"
+    },
+    {
+      "checked_at": "2026-10-01T15:12:59.947769+00:00",
+      "final_url": "https://www.usenix.org/conference/usenixsecurity25/presentation/shen",
+      "observation": "reachable_at_check",
+      "sources": [
+        "usenix-security25-v1"
+      ],
+      "status": 200,
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/shen"
+    },
+    {
+      "checked_at": "2026-10-01T15:13:04.463710+00:00",
+      "final_url": "https://www.usenix.org/conference/usenixsecurity25/presentation/wang-longxiang",
+      "observation": "reachable_at_check",
+      "sources": [
+        "usenix-security25-v1"
+      ],
+      "status": 200,
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/wang-longxiang"
+    },
+    {
+      "checked_at": "2026-10-01T15:13:04.464113+00:00",
+      "final_url": "https://www.usenix.org/conference/woot24/presentation/becker",
+      "observation": "reachable_at_check",
+      "sources": [
+        "usenix-woot24-v1"
+      ],
+      "status": 200,
+      "url": "https://www.usenix.org/conference/woot24/presentation/becker"
+    },
+    {
+      "checked_at": "2026-10-01T15:13:04.467455+00:00",
+      "final_url": "https://www.usenix.org/conference/woot24/presentation/goeman",
+      "observation": "reachable_at_check",
+      "sources": [
+        "usenix-woot24-v1"
+      ],
+      "status": 200,
+      "url": "https://www.usenix.org/conference/woot24/presentation/goeman"
+    },
+    {
+      "checked_at": "2026-10-01T15:13:04.467867+00:00",
+      "final_url": "https://www.usenix.org/conference/woot24/presentation/liguori",
+      "observation": "reachable_at_check",
+      "sources": [
+        "usenix-woot24-v1"
+      ],
+      "status": 200,
+      "url": "https://www.usenix.org/conference/woot24/presentation/liguori"
+    }
+  ],
+  "registry_digest": "sha256:4484eb283b906d8047b17ab2ea587f4d83d3cb14bb9655d406ca35d45acd0645",
+  "release_id": "diverse-candidate-v0.2",
+  "sample_method": "For each new review source, the first three admissions by SHA-256(URL UTF-8), deduplicated across sources. GET reads at most 16 KiB, timeout 15s. Not a random sample or full-pool census.",
+  "schema": "r4b1t-candidate-reachability-sample-v1",
+  "selection_authority": false,
+  "started_at": "2026-10-01T15:11:34.733846+00:00",
+  "summary": {
+    "indeterminate": 3,
+    "reachable_at_check": 102
+  }
+}

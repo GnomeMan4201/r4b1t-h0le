@@ -1,0 +1,15 @@
+{
+  "extractor": "feed-entries-v1",
+  "final_url": "https://www.hexacorn.com/blog/feed/",
+  "response_digest": "sha256:5d5c4929857275f4b2f323e5ba12be095608c24d95c2612a8c419b71e05feaaa",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://www.hexacorn.com/blog/feed/",
+  "urls": [
+    "https://www.hexacorn.com/blog/2026/06/07/little-secret-of-msconfig-exe/",
+    "https://www.hexacorn.com/blog/2026/09/14/win11_26h2-build-xta-phantom-libraries/",
+    "https://www.hexacorn.com/blog/2026/09/26/1-little-known-secret-of-aidd-dll/",
+    "https://www.hexacorn.com/blog/2026/09/26/1-little-known-secret-of-uieorchestratorstub-exe/",
+    "https://www.hexacorn.com/blog/2026/09/26/1-little-known-secret-of-wincsflags-exe/"
+  ]
+}

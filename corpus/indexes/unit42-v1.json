@@ -1,0 +1,25 @@
+{
+  "extractor": "feed-entries-v1",
+  "final_url": "https://unit42.paloaltonetworks.com/feed/",
+  "response_digest": "sha256:01d7b69024d0a579c15b0668b1bd32e1c3ba0c8b745569cac23c2058b110c315",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://unit42.paloaltonetworks.com/feed/",
+  "urls": [
+    "https://unit42.paloaltonetworks.com/3-consulting-myths-debunked-by-unit-42-experts/",
+    "https://unit42.paloaltonetworks.com/agentic-ai-kubernetes-operator-risks/",
+    "https://unit42.paloaltonetworks.com/ai-assisted-cyber-attack-inside-a-unit-42-investigation/",
+    "https://unit42.paloaltonetworks.com/ai-enabled-malware-analysis/",
+    "https://unit42.paloaltonetworks.com/ai-tool-use-targeting-latam-orgs/",
+    "https://unit42.paloaltonetworks.com/atomic-macos-amos-stealer-activity/",
+    "https://unit42.paloaltonetworks.com/behavioral-clustering-map-to-cloud-identities/",
+    "https://unit42.paloaltonetworks.com/detecting-exposed-aws-iam-credentials/",
+    "https://unit42.paloaltonetworks.com/kubernetes-spiffe-spire-identity-spoofing/",
+    "https://unit42.paloaltonetworks.com/netscaler-zero-days-exploited/",
+    "https://unit42.paloaltonetworks.com/perturbation-probing-llm-safety/",
+    "https://unit42.paloaltonetworks.com/ppi-network-malware-campaign-analysis/",
+    "https://unit42.paloaltonetworks.com/securing-aws-agentcore-harness-credentials/",
+    "https://unit42.paloaltonetworks.com/soc-cross-environment-pivot/",
+    "https://unit42.paloaltonetworks.com/spring-ring-voice-phishing-campaigns/"
+  ]
+}

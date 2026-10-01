@@ -1,0 +1,572 @@
+{
+  "admissions": [
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/API%20Key%20Leaks/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/API%20Key%20Leaks/IIS-Machine-Keys/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Account%20Takeover/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Account%20Takeover/mfa-bypass/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Brute%20Force%20Rate%20Limit/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Business%20Logic%20Errors/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/CORS%20Misconfiguration/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/CRLF%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/CSS%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/CSV%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/CVE%20Exploits/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/CVE%20Exploits/Log4Shell/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Clickjacking/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Client%20Side%20Path%20Traversal/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Command%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Cross-Site%20Request%20Forgery/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/DISCLAIMER/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/DNS%20Rebinding/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/DOM%20Clobbering/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Denial%20of%20Service/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Dependency%20Confusion/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Directory%20Traversal/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Encoding%20Transformations/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/External%20Variable%20Modification/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/File%20Inclusion/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/File%20Inclusion/LFI-to-RCE/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/File%20Inclusion/Wrappers/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Google%20Web%20Toolkit/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/GraphQL%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/HTTP%20Parameter%20Pollution/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Headless%20Browser/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Hidden%20Parameters/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Deserialization/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Deserialization/DotNET/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Deserialization/Java/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Deserialization/Node/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Deserialization/PHP/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Deserialization/Python/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Deserialization/Ruby/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Direct%20Object%20References/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Management%20Interface/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Randomness/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Source%20Code%20Management/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Source%20Code%20Management/Bazaar/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Source%20Code%20Management/Git/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Source%20Code%20Management/Mercurial/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Insecure%20Source%20Code%20Management/Subversion/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/JSON%20Web%20Token/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Java%20RMI/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/LDAP%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/LaTeX%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Mass%20Assignment/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Active%20Directory%20Attack/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Bind%20Shell%20Cheatsheet/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Cloud%20-%20AWS%20Pentest/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Cloud%20-%20Azure%20Pentest/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Cobalt%20Strike%20-%20Cheatsheet/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Container%20-%20Docker%20Pentest/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Container%20-%20Kubernetes%20Pentest/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Escape%20Breakout/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/HTML%20Smuggling/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Hash%20Cracking/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Initial%20Access/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Linux%20-%20Evasion/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Linux%20-%20Persistence/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Linux%20-%20Privilege%20Escalation/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/MSSQL%20Server%20-%20Cheatsheet/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Metasploit%20-%20Cheatsheet/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Methodology%20and%20enumeration/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Network%20Discovery/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Network%20Pivoting%20Techniques/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Office%20-%20Attacks/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Powershell%20-%20Cheatsheet/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Source%20Code%20Management/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Vulnerability%20Reports/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Web%20Attack%20Surface/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Windows%20-%20AMSI%20Bypass/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Windows%20-%20DPAPI/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Windows%20-%20Defenses/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Windows%20-%20Download%20and%20Execute/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Windows%20-%20Mimikatz/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Windows%20-%20Persistence/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Methodology%20and%20Resources/Windows%20-%20Using%20credentials/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/NoSQL%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/OAuth%20Misconfiguration/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/ORM%20Leak/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Open%20Redirect/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Prompt%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Prototype%20Pollution/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Race%20Condition/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Regular%20Expression/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Request%20Smuggling/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Reverse%20Proxy%20Misconfigurations/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/SAML%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/BigQuery%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/Cassandra%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/DB2%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/MSSQL%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/MySQL%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/OracleSQL%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/PostgreSQL%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/SQLite%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/SQLmap/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Include%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Request%20Forgery/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Request%20Forgery/SSRF-Advanced-Exploitation/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Request%20Forgery/SSRF-Cloud-Instances/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Template%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Template%20Injection/ASP/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Template%20Injection/Elixir/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Template%20Injection/Java/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Template%20Injection/JavaScript/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Template%20Injection/PHP/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Template%20Injection/Python/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Template%20Injection/Ruby/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Tabnabbing/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Type%20Juggling/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Upload%20Insecure%20Files/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Upload%20Insecure%20Files/Configuration%20Apache%20.htaccess/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Virtual%20Hosts/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Web%20Cache%20Deception/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Web%20Sockets/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/XPATH%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/XS-Leak/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/XSLT%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/XSS%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/XSS%20Injection/1%20-%20XSS%20Filter%20Bypass/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/XSS%20Injection/2%20-%20XSS%20Polyglot/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/XSS%20Injection/3%20-%20XSS%20Common%20WAF%20Bypass/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/XSS%20Injection/4%20-%20CSP%20Bypass/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/XSS%20Injection/5%20-%20XSS%20in%20Angular/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/XXE%20Injection/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Zip%20Slip/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/_LEARNING_AND_SOCIALS/BOOKS/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/_LEARNING_AND_SOCIALS/TWITTER/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/_LEARNING_AND_SOCIALS/YOUTUBE/"
+    },
+    {
+      "resource_type": "documentation",
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/_template_vuln/"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "tools_and_documentation",
+  "rationale": "Proposed review: concrete PayloadsAllTheThings technique and methodology documents. Landing, contribution, licensing and sponsorship surfaces are omitted.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:94871dbd4065d912ac265b0452a6212f05041198e75f9ef8dc67f2cdce351c60",
+  "snapshot_path": "corpus/indexes/payloadsallthethings-v1.json",
+  "source_id": "payloadsallthethings-v1"
+}

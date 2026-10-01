@@ -1,6 +1,7 @@
 # r4b1t Documentation
 
 - [Corpus governance and removal policy](CORPUS_GOVERNANCE.md)
+- [Corpus expansion candidate and offline rebuild](CORPUS_EXPANSION_V1.md)
 - [Pool sweep operations](POOL_SWEEP_OPERATIONS.md)
 - [Closeout quality gate](QUALITY_GATE.md)
 - [Closeout audit — 2026-08-05](CLOSEOUT_AUDIT_2026-08-05.md)

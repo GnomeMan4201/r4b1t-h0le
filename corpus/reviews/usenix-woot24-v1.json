@@ -1,0 +1,100 @@
+{
+  "admissions": [
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/becker"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/beery"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/bitsikas"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/brossard"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/delvaux"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/doupe-lt"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/gibbs-lt"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/goeman"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/gruza"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/jacobs"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/janzen"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/keynote"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/liguori"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/loughry"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/ma-lt"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/mao"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/motallebighomi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/rais"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/ravi"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/sah"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/scott"
+    },
+    {
+      "resource_type": "paper",
+      "url": "https://www.usenix.org/conference/woot24/presentation/tan"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "academic_research",
+  "rationale": "Proposed review: individual accepted-paper presentation pages from woot24 security proceedings. These pages carry abstracts and paper/presentation material. Sponsors, schedules, social links and external artifacts are not admitted by this review.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:d45de72f0c062493e50c98a17f99a3582fa1732b7dc9ab15d6f4bfc84cb02feb",
+  "snapshot_path": "corpus/indexes/usenix-woot24-v1.json",
+  "source_id": "usenix-woot24-v1"
+}

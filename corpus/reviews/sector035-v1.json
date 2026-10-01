@@ -1,0 +1,36 @@
+{
+  "admissions": [
+    {
+      "resource_type": "article",
+      "url": "https://sector035.nl/articles/2024-25"
+    },
+    {
+      "resource_type": "article",
+      "url": "https://sector035.nl/articles/2024-26"
+    },
+    {
+      "resource_type": "article",
+      "url": "https://sector035.nl/articles/2024-27"
+    },
+    {
+      "resource_type": "article",
+      "url": "https://sector035.nl/articles/2024-29"
+    },
+    {
+      "resource_type": "article",
+      "url": "https://sector035.nl/articles/2024-30"
+    },
+    {
+      "resource_type": "article",
+      "url": "https://sector035.nl/articles/2024-31"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "osint",
+  "rationale": "Proposed review: individually dated Week in OSINT issues, which are concrete methodology/resource articles. Month archives, social links and navigation remain unreviewed.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:242092cdc8e53cb664351ee7fb7fb9712caa2aec731e662f5eaa53ccc52e54d7",
+  "snapshot_path": "corpus/indexes/sector035-v1.json",
+  "source_id": "sector035-v1"
+}

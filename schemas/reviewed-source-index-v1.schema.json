@@ -1,0 +1,101 @@
+{
+  "$id": "reviewed-source-index-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "admissions": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "resource_type": {
+            "enum": [
+              "advisory",
+              "article",
+              "challenge",
+              "corpus",
+              "dataset",
+              "documentation",
+              "lab",
+              "other_explicit",
+              "paper",
+              "reference",
+              "repository",
+              "research",
+              "rule_collection",
+              "security_tool",
+              "software_release",
+              "source_file",
+              "threat_feed",
+              "training_resource",
+              "vulnerability_record",
+              "writeup"
+            ]
+          },
+          "url": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "resource_type"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "corpus": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "family": {
+      "enum": [
+        "academic_research",
+        "datasets_and_feeds",
+        "defensive_resources",
+        "hacker_publications",
+        "independent_research",
+        "osint",
+        "practical_learning",
+        "publisher_research",
+        "tools_and_documentation"
+      ]
+    },
+    "rationale": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema": {
+      "const": "r4b1t-reviewed-source-index-v1"
+    },
+    "scope": {
+      "const": "cybersecurity"
+    },
+    "snapshot_digest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "snapshot_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_id": {
+      "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "source_id",
+    "corpus",
+    "snapshot_path",
+    "snapshot_digest",
+    "scope",
+    "family",
+    "rationale",
+    "admissions"
+  ],
+  "title": "R4B1T Reviewed Source Index v1",
+  "type": "object"
+}
