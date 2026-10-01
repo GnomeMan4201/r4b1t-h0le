@@ -26,6 +26,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- Local ROLL sampler continuity now survives page reloads: the draft restores the consumed draw cursor and transaction sequence from its latest v2 transaction.
+- Every committed ROLL is persisted even when a one-route or max-draw result repeats the previous URL.
+- The immediate-repeat guard is trail-scoped. RESET and FORK begin with a null guard reference instead of inheriting page-session state.
+
 - The last row of mobile bottom sheets was covered by the fixed bottom navigation and could not be tapped. On `main`, this affected the TOR filter.
 
 ---

@@ -6,7 +6,7 @@ const baseURL = process.env.BASE_URL || 'http://127.0.0.1:8080/';
 
 module.exports = defineConfig({
   testDir: './tests',
-  testMatch: ['e2e.spec.js', 'dual-shell.spec.js', 'hero-copy.spec.js', 'trail-runtime.spec.js', 'blind-runtime.spec.js', 'topology-runtime.spec.js', 'cf1-mobile-roll-provenance.spec.js', 'resource-metadata.spec.js', 'production-mark-authority.spec.js', 'typed-candidate-production-shadow.spec.js', 'corpus-authority-loader.spec.js', 'corpus-authority.spec.js', 'terrain-eligibility.spec.js'],
+  testMatch: ['e2e.spec.js', 'dual-shell.spec.js', 'hero-copy.spec.js', 'trail-runtime.spec.js', 'blind-runtime.spec.js', 'topology-runtime.spec.js', 'cf1-mobile-roll-provenance.spec.js', 'resource-metadata.spec.js', 'production-mark-authority.spec.js', 'typed-candidate-production-shadow.spec.js', 'corpus-authority-loader.spec.js', 'corpus-authority.spec.js', 'terrain-eligibility.spec.js', 'sampler-continuity.spec.js'],
   fullyParallel: false,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,

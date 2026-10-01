@@ -24,12 +24,22 @@ test('RA-2C: canonical ROLL selector does not read session domain history', () =
   );
 });
 
-test('RA-2C: mechanical immediate-repeat guard remains explicit', () => {
+test('RA-2C: mechanical immediate-repeat guard is explicit and supplied by trail authority', () => {
   const body = selectorBody();
   assert.match(
     body,
+    /function ee\(e,rng,reference\)/,
+    'the selector must receive its immediate-repeat reference explicitly',
+  );
+  assert.match(
+    body,
+    /t!==reference/,
+    'ADR 0001 permits the documented mechanical immediate-repeat constraint',
+  );
+  assert.doesNotMatch(
+    body,
     /s\.last/,
-    'ADR 0001 explicitly permits a documented mechanical constraint preventing an immediate repeat',
+    'page/session bookkeeping must not supply the sampler repeat guard',
   );
 });
 
