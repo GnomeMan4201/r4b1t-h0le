@@ -7,8 +7,8 @@
 - [Collection/admission contract and rebuild instructions](../../docs/CORPUS_EXPANSION_V1.md).
 
 `../indexes/` contains non-authoritative URL-only collected indexes.
-`../reviews/` contains exact proposed scope/type admission declarations.
-These declarations require maintainer review before runtime promotion.
+`../reviews/` contains exact scope/type admission declarations accepted for this cutover.
+See [runtime promotion](../../docs/CORPUS_EXPANSION_PROMOTION_V1.md) for the
+decision and evidence limits.
 
-The active runtime corpus remains unchanged. Rebuilds and CI use pinned local
-evidence and never contact the publishers.
+Rebuilds and CI use pinned local evidence and never contact the publishers.

@@ -42,7 +42,7 @@ test('production consumers do not perform their own active corpus fetch', () => 
 
 
 test('typed candidate path is defined only by the authority registry', () => {
-  const candidatePath = 'corpus/releases/typed-candidate-v0.1/urls.txt';
+  const candidatePath = 'corpus/releases/diverse-candidate-v0.2/urls.txt';
   assert.equal(INDEX.includes(candidatePath), false);
   assert.equal(BLIND.includes(candidatePath), false);
   assert.equal(TRAIL.includes(candidatePath), false);

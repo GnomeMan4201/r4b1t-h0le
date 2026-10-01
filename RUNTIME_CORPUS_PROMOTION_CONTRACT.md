@@ -1,6 +1,9 @@
 # R4B1T H0L3 Typed Corpus Promotion Contract v1
 
-Status: DRAFT FOR IMPLEMENTATION  
+Historical contract for the initial 841-resource promotion. The current cutover
+is documented in [CORPUS_EXPANSION_PROMOTION_V1.md](docs/CORPUS_EXPANSION_PROMOTION_V1.md).
+
+Status: IMPLEMENTED FOR INITIAL TYPED PROMOTION
 Promotion schema: `r4b1t-runtime-corpus-promotion-v1`
 
 ## Decision

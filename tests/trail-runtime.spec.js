@@ -176,12 +176,12 @@ test('unstamped historical Trail drafts reset when typed corpus becomes active',
     };
   });
 
-  expect(result.active.id).toBe('typed-candidate-v0.1');
+  expect(result.active.id).toBe('diverse-candidate-v0.2');
   expect(result.exportedRoutes).not.toContain(legacyRoute);
   expect(result.exportedRoutes.every(url => result.activeUrls.includes(url))).toBe(true);
-  expect(result.activeUrls).toHaveLength(841);
+  expect(result.activeUrls).toHaveLength(6859);
   expect(result.savedRevision).toBe(result.exportedRevision);
-  expect(result.savedSourceId).toBe('typed-candidate-v0.1');
+  expect(result.savedSourceId).toBe('diverse-candidate-v0.2');
   expect(result.seed).not.toBe('legacy-seed');
 });
 

@@ -1,6 +1,7 @@
 # Corpus expansion v1
 
-Status: proposed candidate; maintainer admission review and runtime promotion pending.
+Status: source-boundary admissions accepted for runtime cutover; see
+[CORPUS_EXPANSION_PROMOTION_V1.md](CORPUS_EXPANSION_PROMOTION_V1.md).
 
 ## Result
 
@@ -56,7 +57,8 @@ archive structure, with explicit route-level exclusions. They are **proposed
 maintainer trust decisions**, not a claim that a human reviewed every page or
 that every destination received a body-content audit. Resource types and
 scope assertions should be corrected in the review files when necessary.
-The release stays a candidate until these trust decisions are accepted.
+The release artifact remains a candidate; acceptance and runtime authority are
+recorded separately in the promotion document.
 
 ## Offline compilation
 
@@ -110,9 +112,10 @@ explicit new revision; never replace a live pool from a successful fetch alone.
 
 ## Promotion boundary
 
-This change does not edit `corpus/runtime/active-v1.json`, the active release,
-legacy `urls.txt`, or runtime code. Production therefore continues selecting
-the existing 841-resource release.
+The collection/build artifacts do not grant runtime authority. The subsequent
+cutover updates `corpus/runtime/active-v1.json` and the runtime descriptors as
+recorded in `CORPUS_EXPANSION_PROMOTION_V1.md`. Historical release bytes and
+legacy `urls.txt` remain unchanged.
 
 Before promotion, accept/correct source scope and type declarations, review
 concentration and duplicates, run broader time-bounded reachability checks,

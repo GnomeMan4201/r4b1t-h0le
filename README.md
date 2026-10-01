@@ -30,7 +30,7 @@ On a phone, each roll replaces the landing screen with its result. Open **MENU**
 
 ## Inside a roll
 
-The active population is the promoted `typed-candidate-v0.1` release: **841 resources across 284 hosts**, with **7 resource types**. The [promotion record](./corpus/runtime/active-v1.json) grants runtime authority to its digest-bound URL bytes; the [release manifest](./corpus/releases/typed-candidate-v0.1/manifest.json) records the release evidence. A digest mismatch rejects the load rather than silently falling back to the legacy pool.
+The active population is the promoted `diverse-candidate-v0.2` release: **6,859 resources across 318 hosts**, with **13 resource types**. The [promotion record](./corpus/runtime/active-v1.json) grants runtime authority to its digest-bound URL bytes; the [release manifest](./corpus/releases/diverse-candidate-v0.2/manifest.json) records the release evidence. A digest mismatch rejects the load rather than silently falling back to the legacy pool.
 
 | Layer | Authority |
 | --- | --- |
