@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
+import re
 from pathlib import Path
 import sys
 from urllib.parse import urljoin, urlsplit
@@ -22,6 +23,7 @@ SCHEMA = 'r4b1t-maintenance-state-v1'
 HEAD_FALLBACK = {400, 403, 404, 405, 406, 410, 501}
 MAX_SOURCE_BYTES = 5_000_000
 MAX_PENDING = 10000
+DISCOVERY_POLICY = 'reviewed-host-and-navigation-v1'
 UA = 'R4B1T-corpus-maintenance/1.0 (+https://github.com/GnomeMan4201/r4b1t-h0le)'
 
 
@@ -119,6 +121,17 @@ def proposals(health, today, now):
     return retire, quarantine, sorted(blocked)
 
 
+def discovery_rejection_reason(url, allowed_hosts):
+    parts = urlsplit(url)
+    if (parts.hostname or '').lower() not in allowed_hosts:
+        return 'DESTINATION_HOST_UNREVIEWED'
+    if not parts.path.strip('/') and not parts.query:
+        return 'GENERIC_HOST_ROOT'
+    if re.search(r'/(?:feeds?|sitemap|tags?|categories|category|search|login|logout|signin|signout|signup|account|comments?)(?:/|[.?]|$)', parts.path, re.I):
+        return 'NAVIGATION_ENDPOINT'
+    return None
+
+
 def sources(root, registry):
     """Discovery supports reviewed HTML/feed/sitemap indexes; legacy Markdown is excluded."""
     output = {}
@@ -128,8 +141,10 @@ def sources(root, registry):
         if digest(raw) != review['snapshot_digest']:
             raise ValueError('reviewed index digest mismatch')
         index = json.loads(raw)
-        output[review['source_id']] = {'index': index, 'identity': digest(index_bytes({
-            'source_url': index['source_url'], 'extractor': index['extractor']}))}
+        hosts = sorted({(urlsplit(row['url']).hostname or '').lower() for row in review['admissions']})
+        output[review['source_id']] = {'index': index, 'allowed_hosts': hosts,
+            'identity': digest(index_bytes({'source_url': index['source_url'],
+                'extractor': index['extractor'], 'allowed_hosts': hosts, 'discovery_policy': DISCOVERY_POLICY}))}
     return output
 
 
@@ -165,6 +180,10 @@ def discover(source, previous, active, pending, now, guard, limiter):
             except EligibilityError as exc:
                 rejected.append({'url': url, 'reason': exc.reason})
                 continue
+            reason = discovery_rejection_reason(canonical, source['allowed_hosts'])
+            if reason:
+                rejected.append({'url': canonical, 'reason': reason})
+                continue
             if canonical not in active and canonical not in pending:
                 additions.append({'url': canonical, 'collected_url': url, 'discovered_at': now.isoformat(),
                                   'source_url': index['source_url'], 'response_digest': fresh['response_digest'],
@@ -196,6 +215,14 @@ def run(root, registry_path, state_path, out_dir, limit=1000, workers=12, now=No
     pending = {url: row for url, row in state['pending'].items() if url not in health}
     registry_raw = registry_path.read_bytes()
     approved = sources(root, json.loads(registry_raw))
+    # Apply the same policy to previously queued, unreviewed links on upgrade.
+    rejected_pending = []
+    for url, row in list(pending.items()):
+        source = approved.get(row['source_id'])
+        reason = discovery_rejection_reason(url, source['allowed_hosts']) if source else 'SOURCE_UNREGISTERED'
+        if reason:
+            rejected_pending.append({**row, 'reason': reason})
+            del pending[url]
     guard, limiter = PublicTargetGuard(), RateLimiter(min_gap=.5)
     source_status, caches = {}, {}
     for sid, source in approved.items():
@@ -212,6 +239,7 @@ def run(root, registry_path, state_path, out_dir, limit=1000, workers=12, now=No
         health[row['url']] = record(health[row['url']], row, now)
     retire, quarantine, blocked = proposals(health, today, now)
     report = {'schema': 'r4b1t-maintenance-proposals-v1', 'selection_authority': False,
+              'discovery_policy': DISCOVERY_POLICY, 'rejected_pending': rejected_pending,
               'generated_at': now.isoformat(), 'active_urls_digest': digest(raw),
               'registry_digest': digest(registry_raw), 'checked': len(today), 'active_urls': len(urls),
               'new_unreviewed': list(pending.values()), 'retirement_candidates': retire,
@@ -229,6 +257,8 @@ Generated: {now.isoformat()}
 Checked {len(today)} of {len(urls)} active URLs: {counts['reachable']} reachable, {counts['missing']} missing, {counts['indeterminate']} indeterminate.
 
 {len(pending)} unreviewed discoveries; {len(retire)} retirement candidates; {len(quarantine)} quarantined candidates.
+
+{len(rejected_pending)} previously queued links excluded by discovery policy {DISCOVERY_POLICY}. New discovery is restricted to each source's reviewed destination hosts and excludes obvious roots, navigation and account/comment controls. New hosts and ambiguous routes require explicit source review.
 
 Review `corpus/maintenance/proposals.json` and its bound history in `state.json`. This PR changes evidence only. New admissions, retirement, rebuild and runtime promotion require a separate reviewed corpus change. HTTP 200 does not establish relevance or safety. Publication age is not a removal reason.
 
