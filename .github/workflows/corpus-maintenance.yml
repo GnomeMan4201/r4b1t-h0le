@@ -4,6 +4,13 @@ on:
   schedule:
     - cron: '17 11 * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/maintain_corpus.py'
+      - 'tests/test_maintain_corpus.py'
+      - '.github/workflows/corpus-maintenance.yml'
+      - 'requirements-pool-sweep.txt'
   pull_request:
     paths:
       - 'tools/maintain_corpus.py'
@@ -36,6 +43,9 @@ jobs:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 75
+    concurrency:
+      group: daily-corpus-maintenance-evidence
+      cancel-in-progress: false
     permissions:
       contents: write
       pull-requests: write
