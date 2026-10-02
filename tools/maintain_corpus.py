@@ -201,6 +201,78 @@ def discover(source, previous, active, pending, now, guard, limiter):
             response.close()
 
 
+def health_summary(health, now):
+    """Latest persisted evidence for active URLs, distinct from this run's sample."""
+    counts = {kind: 0 for kind in ['reachable', 'missing', 'indeterminate', 'unchecked']}
+    issues = []
+    for url, history in sorted(health.items()):
+        if not history:
+            counts['unchecked'] += 1
+            continue
+        last = history[-1]
+        counts[last['outcome']] += 1
+        if last['outcome'] == 'reachable':
+            continue
+        streak = []
+        for row in reversed(history):
+            if row['outcome'] != 'missing' or row.get('method') != 'GET' or row.get('status') not in {404, 410}:
+                break
+            streak.append(row)
+        issues.append({**last, 'url': url,
+                       'missing_days': len({row['at'][:10] for row in streak}),
+                       'retirement_ready': retirement_ready(history, now)})
+    return {'checked': len(health) - counts['unchecked'], 'counts': counts,
+            'due': len(due_urls(list(health), health, now, len(health))),
+            'issues': issues}
+
+
+def table_cell(value):
+    # Index URLs and server-provided redirects are untrusted Markdown input.
+    from html import escape
+    return escape(str(value), quote=True).replace('|', '&#124;').replace('\n', ' ').replace('\r', ' ').replace('`', '&#96;').replace('[', '&#91;').replace(']', '&#93;').replace('*', '&#42;').replace('_', '&#95;')
+
+
+def review_tables(report):
+    sections = []
+    health = report['health_summary']
+    sections.append(f"Cumulative latest observations: {health['checked']} of {report['active_urls']} active URLs checked; "
+                    f"{health['counts']['reachable']} reachable, {health['counts']['missing']} missing, "
+                    f"{health['counts']['indeterminate']} indeterminate, {health['counts']['unchecked']} unchecked. "
+                    f"{health['due']} URLs are due now. These are persisted observations, not a current full sweep.")
+    issues = health['issues']
+    sections.append('## URLs needing review')
+    if issues:
+        sections.append(f"Showing {min(100, len(issues))} of {len(issues)} latest missing or indeterminate results. "
+                        "Full records are in `proposals.json` under `health_summary.issues`. Missing days count the latest consecutive GET-confirmed streak; readiness still requires the full timing policy.")
+        sections.append('| URL | Latest UTC observation | Result | Final URL | Missing days | Proposal |\n'
+                        '| --- | --- | --- | --- | --- | --- |')
+        for row in issues[:100]:
+            proposal = 'quarantined' if row['url'] in report['quarantined_candidates'] else 'retirement candidate' if row['url'] in report['retirement_candidates'] else 'await evidence'
+            cells = [row['url'], row['at'], f"{row['outcome']} / {row.get('status') or row.get('error') or 'unknown'}",
+                     row.get('final_url', ''), row['missing_days'], proposal]
+            sections[-1] += '\n| ' + ' | '.join(table_cell(v) for v in cells) + ' |'
+    else:
+        sections.append('No latest missing or indeterminate observations.')
+    sections.append('## Discovery queue')
+    pending = report['new_unreviewed']
+    if pending:
+        sections.append(f"Showing {min(100, len(pending))} of {len(pending)} unreviewed discoveries. Full records are in `proposals.json` under `new_unreviewed`.")
+        sections.append('| URL | Source | Discovered UTC |\n| --- | --- | --- |')
+        for row in sorted(pending, key=lambda row: row['url'])[:100]:
+            sections[-1] += '\n| ' + ' | '.join(table_cell(row[k]) for k in ['url', 'source_id', 'discovered_at']) + ' |'
+    else:
+        sections.append('No unreviewed discoveries queued.')
+    failures = [(sid, row) for sid, row in sorted(report['source_observations'].items()) if row['outcome'] == 'indeterminate']
+    sections.append('## Source collection issues')
+    if failures:
+        sections.append('| Source | Result |\n| --- | --- |')
+        for sid, row in failures:
+            sections[-1] += '\n| ' + table_cell(sid) + ' | ' + table_cell(row.get('status') or row.get('error') or 'unknown') + ' |'
+    else:
+        sections.append('No source collection failures in this run.')
+    return '\n\n'.join(sections)
+
+
 def run(root, registry_path, state_path, out_dir, limit=1000, workers=12, now=None):
     now = now or datetime.now(timezone.utc)
     state = json.loads(state_path.read_text()) if state_path.exists() else {'schema': SCHEMA, 'health': {}, 'sources': {}, 'pending': {}}
@@ -244,7 +316,8 @@ def run(root, registry_path, state_path, out_dir, limit=1000, workers=12, now=No
               'registry_digest': digest(registry_raw), 'checked': len(today), 'active_urls': len(urls),
               'new_unreviewed': list(pending.values()), 'retirement_candidates': retire,
               'quarantined_candidates': quarantine, 'missing_burst_hosts': blocked,
-              'source_observations': source_status, 'health_observations': today}
+              'source_observations': source_status, 'health_observations': today,
+              'health_summary': health_summary(health, now)}
     state = {'schema': SCHEMA, 'health': health, 'sources': caches, 'pending': pending}
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / 'state.json').write_bytes(index_bytes(state))
@@ -264,7 +337,7 @@ Review `corpus/maintenance/proposals.json` and its bound history in `state.json`
 
 Retirement needs GET-confirmed 404/410 on at least three distinct UTC days spanning 48 hours, with the newest observation within 36 hours. Authentication, throttling, network errors and server errors break the missing streak. Missing bursts quarantine affected host proposals.
 '''
-    (out_dir / 'report.md').write_text(summary)
+    (out_dir / 'report.md').write_text(summary + '\n' + review_tables(report) + '\n')
     return report
 
 

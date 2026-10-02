@@ -139,5 +139,43 @@ class DiscoveryQualityTests(unittest.TestCase):
         self.assertEqual(len(cache['urls']), 6)
 
 
+class ReviewReportTests(unittest.TestCase):
+    def test_persisted_issues_survive_empty_batch_and_recovery_clears_them(self):
+        old = NOW - timedelta(days=4)
+        health = {'https://example.com/missing': [missing(old, 'https://example.com/missing')],
+                  'https://example.com/uncertain': [dict(at=old.isoformat(), outcome='indeterminate', status=429)],
+                  'https://example.com/healthy': [dict(at=NOW.isoformat(), outcome='reachable', status=200)],
+                  'https://example.com/unchecked': []}
+        summary = m.health_summary(health, NOW)
+        self.assertEqual(summary['checked'], 3)
+        self.assertEqual(summary['counts'], dict(reachable=1, missing=1, indeterminate=1, unchecked=1))
+        self.assertEqual(summary['due'], 3)
+        self.assertEqual(len(summary['issues']), 2)
+        self.assertFalse(summary['issues'][0]['retirement_ready'])
+        health['https://example.com/missing'].append(dict(at=NOW.isoformat(), outcome='reachable', status=200))
+        self.assertEqual([r['url'] for r in m.health_summary(health, NOW)['issues']], ['https://example.com/uncertain'])
+
+    def test_report_limits_rows_and_distinguishes_quarantine(self):
+        health = {f'https://example.com/{n:03}': [missing(NOW-timedelta(days=d), f'https://example.com/{n:03}') for d in [2,1,0]] for n in range(101)}
+        retire, quarantine, blocked = m.proposals(health, [], NOW)
+        report = dict(active_urls=101, health_summary=m.health_summary(health, NOW),
+                      retirement_candidates=retire, quarantined_candidates=quarantine,
+                      new_unreviewed=[], source_observations={'source': dict(outcome='indeterminate', status=429)})
+        text = m.review_tables(report)
+        self.assertIn('Showing 100 of 101', text)
+        self.assertIn('quarantined', text)
+        self.assertNotIn('https://example.com/100', text)
+        self.assertEqual(len(report['health_summary']['issues']), 101)
+        self.assertIn('| source | 429 |', text)
+
+    def test_untrusted_url_cannot_inject_markdown_or_html(self):
+        cell = m.table_cell('https://example.com/[x](y)|<img>\n`*_')
+        self.assertNotIn('|', cell)
+        self.assertNotIn('<img>', cell)
+        self.assertNotIn('[x]', cell)
+        self.assertNotIn('\n', cell)
+        self.assertNotIn('`', cell)
+
+
 if __name__ == '__main__':
     unittest.main()
