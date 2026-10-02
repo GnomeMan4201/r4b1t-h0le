@@ -183,5 +183,56 @@ class ReviewReportTests(unittest.TestCase):
         self.assertNotIn('`', cell)
 
 
+class HealthStateTests(unittest.TestCase):
+    def test_failure_classes_preserve_indeterminate_cause(self):
+        cases = [
+            (dict(outcome='missing', status=404, method='GET'), 'http_missing'),
+            (dict(outcome='indeterminate', status=403), 'access_control'),
+            (dict(outcome='indeterminate', status=429), 'rate_limited'),
+            (dict(outcome='indeterminate', status=503), 'server_error'),
+            (dict(outcome='indeterminate', error='SSLError'), 'tls_error'),
+            (dict(outcome='indeterminate', error='ConnectTimeout'), 'timeout'),
+            (dict(outcome='indeterminate', error='ReadTimeout'), 'timeout'),
+            (dict(outcome='indeterminate', error='ConnectionError'), 'connection_error'),
+            (dict(outcome='indeterminate', error='TooManyRedirects'), 'redirect_error'),
+            (dict(outcome='indeterminate', error='TargetGuardError'), 'target_guard_or_dns'),
+        ]
+        for observation, expected in cases:
+            with self.subTest(observation=observation):
+                self.assertEqual(m.failure_class(observation), expected)
+        self.assertIsNone(m.failure_class(dict(outcome='reachable', status=200)))
+
+    def test_health_state_escalates_without_turning_indeterminate_into_retirement(self):
+        reachable = dict(at=(NOW - timedelta(days=4)).isoformat(), outcome='reachable', status=200)
+        timeout = dict(at=(NOW - timedelta(days=1)).isoformat(), outcome='indeterminate', error='ConnectTimeout')
+        server = dict(at=NOW.isoformat(), outcome='indeterminate', status=503)
+        self.assertEqual(m.health_state([reachable], NOW), 'ACTIVE')
+        self.assertEqual(m.health_state([timeout], NOW), 'RETRY')
+        self.assertEqual(m.health_state([timeout, server], NOW), 'SUSPECT')
+        self.assertNotEqual(m.health_state([timeout, server], NOW), 'RETIRE_CANDIDATE')
+
+        missing_rows = [missing(NOW - timedelta(days=2)), missing(NOW - timedelta(days=1)), missing(NOW)]
+        self.assertEqual(m.health_state(missing_rows[:1], NOW), 'RETRY')
+        self.assertEqual(m.health_state(missing_rows[:2], NOW), 'SUSPECT')
+        self.assertEqual(m.health_state(missing_rows, NOW), 'RETIRE_CANDIDATE')
+
+    def test_health_summary_exposes_last_ok_failure_streak_state_and_class(self):
+        url = 'https://example.com/a'
+        history = [
+            dict(at=(NOW - timedelta(days=3)).isoformat(), url=url, outcome='reachable', status=200),
+            dict(at=(NOW - timedelta(days=1)).isoformat(), url=url, outcome='indeterminate', error='ConnectTimeout'),
+            dict(at=NOW.isoformat(), url=url, outcome='indeterminate', status=503),
+        ]
+        summary = m.health_summary({url: history, 'https://example.com/unchecked': []}, NOW)
+        self.assertEqual(summary['states'], {
+            'ACTIVE': 0, 'RETRY': 0, 'SUSPECT': 1, 'RETIRE_CANDIDATE': 0, 'UNCHECKED': 1
+        })
+        issue = summary['issues'][0]
+        self.assertEqual(issue['state'], 'SUSPECT')
+        self.assertEqual(issue['failure_class'], 'server_error')
+        self.assertEqual(issue['consecutive_failures'], 2)
+        self.assertEqual(issue['last_ok'], history[0]['at'])
+
+
 if __name__ == '__main__':
     unittest.main()
