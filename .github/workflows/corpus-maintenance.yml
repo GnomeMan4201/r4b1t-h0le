@@ -68,7 +68,12 @@ jobs:
             cp corpus/maintenance/state.json /tmp/corpus-maintenance-state.json
           fi
       - name: Collect approved indexes and check due active URLs
-        run: python tools/maintain_corpus.py --state /tmp/corpus-maintenance-state.json
+        env:
+          MAINTENANCE_EVENT: ${{ github.event_name }}
+        run: |
+          check_limit=1000
+          if [ "$MAINTENANCE_EVENT" = push ]; then check_limit=100; fi
+          python tools/maintain_corpus.py --state /tmp/corpus-maintenance-state.json --limit "$check_limit"
       - name: Publish daily summary
         run: cat corpus/maintenance/report.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
