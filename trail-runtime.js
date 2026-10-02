@@ -8,6 +8,9 @@
   if (!corpusAuthority) throw new Error('Corpus authority unavailable');
 
   var STORAGE_KEY = 'r4b1t_trail_draft_v1';
+  // A saved draft that cannot be continued is kept here verbatim, never silently discarded.
+  var QUARANTINE_KEY = 'r4b1t_trail_draft_quarantine_v1';
+  var MAX_DRAWS_PER_ROLL = 30;
   var state = {
     seed: randomSeed(),
     createdAt: new Date().toISOString(),
@@ -25,7 +28,8 @@
     samplerCursor: 0,
     transactionSequence: 0,
     selectionTerrain: null,
-    repeatGuardReference: null
+    repeatGuardReference: null,
+    restoreNotice: null
   };
 
   function randomSeed() {
@@ -34,53 +38,72 @@
     return Array.from(bytes, function (byte) { return byte.toString(16).padStart(2, '0'); }).join('');
   }
 
-  function restoreSamplerContinuity() {
+  function advanceSamplerTo(cursor) {
     state.sampler = api.createSampler(state.seed);
-    state.samplerCursor = 0;
-    state.transactionSequence = 0;
-    state.repeatGuardReference = null;
+    for (var consumed = 0; consumed < cursor; consumed += 1) state.sampler();
+    state.samplerCursor = cursor;
+  }
 
-    for (var index = state.routes.length - 1; index >= 0; index -= 1) {
+  // Validates every persisted v2 ROLL as one chain (the rule export enforces in trail-v03.js):
+  // sequence 1..n, draw_start equal to the running cursor, 1..30 draws each, one seed, and the
+  // previous ROLL as repeat-guard reference. The cursor is therefore at most 30 x ROLL count.
+  // Returns null when the draft can be continued, otherwise the reason it cannot.
+  function restoreSamplerContinuity() {
+    var cursor = 0;
+    var sequence = 0;
+    var previousRollUrl = null;
+
+    for (var index = 0; index < state.routes.length; index += 1) {
       var route = state.routes[index];
       var transaction = route && route.selection_transaction;
       if (!transaction || transaction.transaction_version !== 'r4b1t-selection-transaction/v2' || transaction.action !== 'ROLL') {
         continue;
       }
-
       var sampler = transaction.sampler;
-      var drawStart = sampler && sampler.draw_start;
-      var drawCount = sampler && sampler.draw_count;
-      var sequence = transaction.sequence;
+      var guard = sampler && sampler.repeat_guard;
       var routeUrl = transaction.route && transaction.route.url;
-      var cursor = Number.isSafeInteger(drawStart) && Number.isSafeInteger(drawCount)
-        ? drawStart + drawCount
-        : -1;
-
+      sequence += 1;
       if (
         !sampler ||
         sampler.seed !== state.seed ||
-        !Number.isSafeInteger(drawStart) || drawStart < 0 ||
-        !Number.isSafeInteger(drawCount) || drawCount < 1 ||
-        !Number.isSafeInteger(cursor) || cursor < 1 ||
-        !Number.isSafeInteger(sequence) || sequence < 1 ||
+        transaction.sequence !== sequence ||
+        sampler.draw_start !== cursor ||
+        !Number.isSafeInteger(sampler.draw_count) || sampler.draw_count < 1 || sampler.draw_count > MAX_DRAWS_PER_ROLL ||
+        !guard || guard.reference !== previousRollUrl ||
         routeUrl !== route.url
       ) {
-        return false;
+        return 'ROLL continuity mismatch at step ' + (index + 1);
       }
-
-      for (var consumed = 0; consumed < cursor; consumed += 1) state.sampler();
-      state.samplerCursor = cursor;
-      state.transactionSequence = sequence;
-      state.repeatGuardReference = route.url;
-      return true;
+      cursor += sampler.draw_count;
+      previousRollUrl = route.url;
     }
 
-    return true;
+    advanceSamplerTo(cursor);
+    state.transactionSequence = sequence;
+    state.repeatGuardReference = previousRollUrl;
+    return null;
+  }
+
+  function quarantineDraft(raw, reason) {
+    try {
+      localStorage.setItem(QUARANTINE_KEY, JSON.stringify({
+        quarantined_at: new Date().toISOString(),
+        reason: reason,
+        raw: raw
+      }));
+    } catch (_) {}
+    state.restoreNotice = 'PREVIOUS DRAFT NOT CONTINUED / ' + reason.toUpperCase() + ' / PRESERVED';
+  }
+
+  function quarantinedDraft() {
+    try { return JSON.parse(localStorage.getItem(QUARANTINE_KEY) || 'null'); } catch (_) { return null; }
   }
 
   function restore() {
+    var raw = null;
     try {
-      var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      raw = localStorage.getItem(STORAGE_KEY);
+      var saved = JSON.parse(raw || 'null');
       if (saved && typeof saved.seed === 'string' && Array.isArray(saved.routes)) {
         state.restoredFromStorage = true;
         state.restoredCorpusRevision = typeof saved.corpusRevision === 'string' ? saved.corpusRevision : null;
@@ -93,7 +116,11 @@
         state.parent = saved.parent || null;
       }
     } catch (_) {}
-    if (!restoreSamplerContinuity()) clearDraftState();
+    var failure = restoreSamplerContinuity();
+    if (failure) {
+      quarantineDraft(raw, failure);
+      clearDraftState();
+    }
   }
 
   function persist() {
@@ -151,8 +178,10 @@
       : 'ALL';
   }
 
+  // Replay suppresses only the replayed route's own SELECT. A ROLL is always a user commit
+  // (replay never samples), so it is recorded even inside the replay window.
   function record(url, action, transaction, evidence) {
-    if (state.suppressRecord || !/^https?:\/\//i.test(url || '')) return false;
+    if ((state.suppressRecord && action !== 'ROLL') || !/^https?:\/\//i.test(url || '')) return false;
     var route = { url: url, action: action || 'SELECT' };
     if (transaction) route.selection_transaction = transaction;
     if (evidence && evidence.navigation) route.navigation = evidence.navigation;
@@ -218,11 +247,14 @@
       };
       var repeatGuardReference = state.repeatGuardReference;
       var result = originalCommit(nextFloat, selectionConstraint, repeatGuardReference);
-      if (!result || !result.url) return result;
+      if (!result || !result.url) {
+        if (drawCount) advanceSamplerTo(drawStart);
+        return result;
+      }
 
       var transaction = deepFreeze({
         transaction_version: 'r4b1t-selection-transaction/v2',
-        sequence: ++state.transactionSequence,
+        sequence: state.transactionSequence + 1,
         action: 'ROLL',
         constraint: selectionConstraint,
         corpus_revision: state.corpusRevision,
@@ -239,9 +271,15 @@
         route: { url: result.url }
       });
 
+      // Sampler state advances only together with the recorded step, so the draft can never
+      // hold a gap in the ROLL chain.
+      if (!record(result.url, 'ROLL', transaction)) {
+        advanceSamplerTo(drawStart);
+        return null;
+      }
+      state.transactionSequence = transaction.sequence;
       state.selectionTerrain = selectionTerrain;
       state.repeatGuardReference = result.url;
-      record(result.url, 'ROLL', transaction);
       return Object.freeze({ url: result.url, transaction: transaction });
     };
     wrappedCommit.__r4b1tAuthority = true;
@@ -451,6 +489,7 @@
 
   function resetTrail() {
     clearDraftState();
+    state.restoreNotice = null;
     state.restoredFromStorage = false;
     state.restoredCorpusRevision = null;
     state.restoredCorpusSourceId = null;
@@ -555,6 +594,7 @@
     if (hint) hint.textContent = available
       ? 'Verified trail loaded. Replay and fork are available.'
       : 'Import or export a trail to enable replay and fork.';
+    status = status || state.restoreNotice;
     if (status) document.getElementById('trailLedgerStatus').textContent = status;
   }
 
@@ -676,6 +716,7 @@
   window.getTrailManifest = currentEnvelope;
   window.getLegacyTrailManifest = currentLegacyEnvelope;
   window.resetReproducibleTrail = resetTrail;
+  window.getQuarantinedTrailDraft = quarantinedDraft;
 
   document.addEventListener('DOMContentLoaded', function () {
     ensurePanel();
