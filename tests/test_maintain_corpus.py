@@ -139,6 +139,12 @@ class DiscoveryQualityTests(unittest.TestCase):
         self.assertEqual(len(cache['urls']), 6)
 
 
+    def test_edge_infrastructure_controls_are_not_resources(self):
+        self.assertEqual(m.discovery_rejection_reason('https://example.com/cdn-cgi/l/email-protection', ['example.com']), 'INFRASTRUCTURE_ENDPOINT')
+        self.assertEqual(m.discovery_rejection_reason('https://example.com/CDN-CGI/challenge-platform', ['example.com']), 'INFRASTRUCTURE_ENDPOINT')
+        self.assertIsNone(m.discovery_rejection_reason('https://example.com/research/cdn-cgi-bypass', ['example.com']))
+
+
 class ReviewReportTests(unittest.TestCase):
     def test_persisted_issues_survive_empty_batch_and_recovery_clears_them(self):
         old = NOW - timedelta(days=4)

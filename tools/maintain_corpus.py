@@ -23,7 +23,7 @@ SCHEMA = 'r4b1t-maintenance-state-v1'
 HEAD_FALLBACK = {400, 403, 404, 405, 406, 410, 501}
 MAX_SOURCE_BYTES = 5_000_000
 MAX_PENDING = 10000
-DISCOVERY_POLICY = 'reviewed-host-and-navigation-v1'
+DISCOVERY_POLICY = 'reviewed-host-and-navigation-v2'
 UA = 'R4B1T-corpus-maintenance/1.0 (+https://github.com/GnomeMan4201/r4b1t-h0le)'
 
 
@@ -127,6 +127,8 @@ def discovery_rejection_reason(url, allowed_hosts):
         return 'DESTINATION_HOST_UNREVIEWED'
     if not parts.path.strip('/') and not parts.query:
         return 'GENERIC_HOST_ROOT'
+    if re.match(r'^/cdn-cgi(?:/|$)', parts.path, re.I):
+        return 'INFRASTRUCTURE_ENDPOINT'
     if re.search(r'/(?:feeds?|sitemap|tags?|categories|category|search|login|logout|signin|signout|signup|account|comments?)(?:/|[.?]|$)', parts.path, re.I):
         return 'NAVIGATION_ENDPOINT'
     return None
