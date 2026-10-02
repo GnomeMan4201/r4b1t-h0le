@@ -5,7 +5,7 @@ const path = require('node:path');
 const { test, expect } = require('@playwright/test');
 
 const RELEASE = path.resolve(
-  __dirname, '..', 'corpus', 'releases', 'strange-candidate-v0.3', 'urls.txt',
+  __dirname, '..', 'corpus', 'releases', 'experience-candidate-v0.4', 'urls.txt',
 );
 const ACTIVE_URLS = new Set(
   fs.readFileSync(RELEASE, 'utf8').split(/\r?\n/).map(value => value.trim()).filter(Boolean),
@@ -34,11 +34,11 @@ test('production ROLL selects from explicitly promoted typed corpus', async ({ p
     };
   });
 
-  expect(authority.active.id).toBe('strange-candidate-v0.3');
+  expect(authority.active.id).toBe('experience-candidate-v0.4');
   expect(authority.active.selectionAuthority).toBe(true);
   expect(authority.candidate.selectionAuthority).toBe(false);
-  expect(authority.promotion.id).toBe('strange-candidate-v0.3-active-v1');
-  expect(authority.count).toBe(6975);
+  expect(authority.promotion.id).toBe('experience-candidate-v0.4-active-v1');
+  expect(authority.count).toBe(7033);
 
   await page.waitForTimeout(50);
   await page.evaluate(() => window.roll());
@@ -46,7 +46,7 @@ test('production ROLL selects from explicitly promoted typed corpus', async ({ p
 
   expect(ACTIVE_URLS.has(selected)).toBe(true);
   expect(
-    requests.some(url => url.includes('/corpus/releases/strange-candidate-v0.3/urls.txt?')),
+    requests.some(url => url.includes('/corpus/releases/experience-candidate-v0.4/urls.txt?')),
   ).toBe(true);
   expect(
     requests.some(url => url.includes('/urls.txt?') && !url.includes('/corpus/releases/')),

@@ -1,0 +1,52 @@
+{
+  "admissions": [
+    {
+      "resource_type": "challenge",
+      "url": "https://overthewire.org/wargames/bandit"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://overthewire.org/wargames/behemoth"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://overthewire.org/wargames/krypton"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://overthewire.org/wargames/leviathan"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://overthewire.org/wargames/manpage"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://overthewire.org/wargames/maze"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://overthewire.org/wargames/narnia"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://overthewire.org/wargames/natas"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://overthewire.org/wargames/utumno"
+    },
+    {
+      "resource_type": "challenge",
+      "url": "https://overthewire.org/wargames/vortex"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "practical_learning",
+  "rationale": "Ten named wargames teaching web security, reverse engineering, cryptography and binary exploitation. Excludes offline/released games and generic index; SSH games require a terminal. Reachable instructions do not certify game-server availability.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:cf7c20378f85a5405b902088f9fb9ad4ad922d98723430e7e6c016a08b723b9c",
+  "snapshot_path": "corpus/indexes/experience-overthewire-v1.json",
+  "source_id": "experience-overthewire-v1"
+}

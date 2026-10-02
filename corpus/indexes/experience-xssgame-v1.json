@@ -1,0 +1,12 @@
+{
+  "extractor": "html-anchors-v1",
+  "final_url": "https://xss-game.appspot.com/level1",
+  "response_digest": "sha256:4ec68b02abbde6b8e49ca8a5886db67f3182cf0621dfbdb88cdeb3732f23cef4",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://xss-game.appspot.com/level1",
+  "urls": [
+    "https://xss-game.appspot.com/level1",
+    "https://xss-game.appspot.com/level2"
+  ]
+}

@@ -1,0 +1,1508 @@
+{
+  "source": "trail-manifest.js sampler + experience-candidate-v0.4 active release",
+  "seed": "5eed0000000000000000000000000001",
+  "corpus_revision": "sha256:824e98baa6d7e364c2c1a4981b45c8b190860f50b550dcd4342292053691bb4d",
+  "constraint": "ALL, excludeOnion false, fresh trail",
+  "rolls": [
+    {
+      "url": "https://portswigger.net/web-security/os-command-injection/lab-blind-out-of-band",
+      "draw_start": 0,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Dnx",
+      "draw_start": 1,
+      "draw_count": 1
+    },
+    {
+      "url": "https://code.google.com/archive/p/reaver-wps",
+      "draw_start": 2,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/cai-yifeng",
+      "draw_start": 3,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-june-2026",
+      "draw_start": 4,
+      "draw_count": 1
+    },
+    {
+      "url": "http://www.phrack.org/",
+      "draw_start": 5,
+      "draw_count": 1
+    },
+    {
+      "url": "https://distrowatch.com/search.php?category=Security",
+      "draw_start": 6,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/systemd-run",
+      "draw_start": 7,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-detection/surveyor-part-one",
+      "draw_start": 8,
+      "draw_count": 1
+    },
+    {
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/XSS%20Injection/5%20-%20XSS%20in%20Angular",
+      "draw_start": 9,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/CustomShellHost",
+      "draw_start": 10,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2019/09/27/tethered-jailbreaks-are-back",
+      "draw_start": 11,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/wang-canran",
+      "draw_start": 12,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/publications/writing-a-toy-symbolic-interpreter-and-solving-challenges-part-4.html",
+      "draw_start": 13,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-detection/ai-agents",
+      "draw_start": 14,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/privacy/covert-physical-wireless-access.html",
+      "draw_start": 15,
+      "draw_count": 1
+    },
+    {
+      "url": "https://thedfirreport.com/2023/12/18/lets-opendir-some-presents-an-analysis-of-a-persistent-actors-activity",
+      "draw_start": 16,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-ping-lun",
+      "draw_start": 17,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/testing-for-clickjacking",
+      "draw_start": 18,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/publications/hunting-mobile-devices-endpoints-the-rf-and-the-hard-way.html",
+      "draw_start": 19,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.malware-traffic-analysis.net/2024/04/18/index.html",
+      "draw_start": 20,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/target/site-map/getting-started",
+      "draw_start": 21,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/scarlata",
+      "draw_start": 22,
+      "draw_count": 1
+    },
+    {
+      "url": "https://sector035.nl/articles/2024-26",
+      "draw_start": 23,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/badsuccessor-dmsa-migration-abuse.html",
+      "draw_start": 24,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/falzon",
+      "draw_start": 25,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-songlei",
+      "draw_start": 26,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/zhang-xin",
+      "draw_start": 27,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2024/01/12/how-to-introduce-semgrep-to-your-organization",
+      "draw_start": 28,
+      "draw_count": 1
+    },
+    {
+      "url": "https://dfir.ch/posts/microsocks_sonicwall",
+      "draw_start": 29,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-detection/gatekeeper-bypass-vulnerabilities",
+      "draw_start": 30,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-intelligence/phishing-rmm-tools",
+      "draw_start": 31,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/psftp",
+      "draw_start": 32,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/external-forest-domain-one-way-outbound.html",
+      "draw_start": 33,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/web-security/prototype-pollution/server-side/lab-detecting-server-side-prototype-pollution-without-polluted-property-reflection",
+      "draw_start": 34,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2018/06/03/htb-crimestoppers.html",
+      "draw_start": 35,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2025/08/09/htb-university.html",
+      "draw_start": 36,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/AI/KYC-Bypass-Using-AI.html",
+      "draw_start": 37,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/projects/manage-project-files",
+      "draw_start": 38,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2022/02/23/maat-symbolic-execution-made-easy",
+      "draw_start": 39,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2025/11/15/level-up-your-solidity-llm-tooling-with-slither-mcp",
+      "draw_start": 40,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2025/06/17/htb-down.html",
+      "draw_start": 41,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/cargo",
+      "draw_start": 42,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/sub-ghz-rf.html",
+      "draw_start": 43,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2023/01/13/sigstore-python",
+      "draw_start": 44,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2019/05/27/slither-the-leading-static-analyzer-for-smart-contracts",
+      "draw_start": 45,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/publications/relaying-kerberos-over-smb-using-krbrelayx.html",
+      "draw_start": 46,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/jattke",
+      "draw_start": 47,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.elastic.co/security-labs/blog/patch-diff-to-system",
+      "draw_start": 48,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.stark4n6.com/2024/12/forensics-startme-updates-1212024.html",
+      "draw_start": 49,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/research/top-10-web-hacking-techniques",
+      "draw_start": 50,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/privacy/offensive-infrastructure-and-attribution-evasion.html",
+      "draw_start": 51,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.elastic.co/security-labs/threat-command/katz-and-mouse-game",
+      "draw_start": 52,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/rake",
+      "draw_start": 53,
+      "draw_count": 1
+    },
+    {
+      "url": "https://thedfirreport.com/2023/09/25/from-screenconnect-to-hive-ransomware-in-61-hours",
+      "draw_start": 54,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.spammimic.com/explain.shtml",
+      "draw_start": 55,
+      "draw_count": 1
+    },
+    {
+      "url": "https://thedfirreport.com/2022/09/26/bumblebee-round-two",
+      "draw_start": 56,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2018/07/31/malware-analysis-muddoc.html",
+      "draw_start": 57,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-yupei",
+      "draw_start": 58,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2018/10/04/ethereum-security-guidance-for-all",
+      "draw_start": 59,
+      "draw_count": 1
+    },
+    {
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Type%20Juggling",
+      "draw_start": 60,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Bginfo",
+      "draw_start": 61,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.malware-traffic-analysis.net/2024/09/19/index.html",
+      "draw_start": 62,
+      "draw_count": 1
+    },
+    {
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/CSV%20Injection",
+      "draw_start": 63,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/publications/old-bug-shallow-bug-exploiting-ubuntu-at-pwn2own-vancouver-2023.html",
+      "draw_start": 64,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2014/06/03/dear-darpa-challenge-accepted",
+      "draw_start": 65,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.elastic.co/security-labs/threat-command/beyond-the-wail",
+      "draw_start": 66,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2023/06/17/htb-escape.html",
+      "draw_start": 67,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.malware-traffic-analysis.net/2024/02/08/index.html",
+      "draw_start": 68,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/publications/quantum-readiness-lattice-based-pqc.html",
+      "draw_start": 69,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/dom-invader/settings",
+      "draw_start": 70,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/joelpx/plasma",
+      "draw_start": 71,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/virkud",
+      "draw_start": 72,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Rasautou",
+      "draw_start": 73,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/aleff-github/wayparam",
+      "draw_start": 74,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/yum",
+      "draw_start": 75,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/Nhoya/gOSINT",
+      "draw_start": 76,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/python/web-requests.html",
+      "draw_start": 77,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/php-tricks-esp/php-useful-functions-disable_functions-open_basedir-bypass/disable_functions-bypass-php-safe_mode-bypass-via-proc_open-and-custom-environment-exploit.html",
+      "draw_start": 78,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/research/saml-roulette-the-hacker-always-wins",
+      "draw_start": 79,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Pktmon",
+      "draw_start": 80,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2019/08/17/htb-helpline-kali.html",
+      "draw_start": 81,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights/intelligence-insights-november-2022",
+      "draw_start": 82,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2018/06/18/htb-chatterbox.html",
+      "draw_start": 83,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/tools",
+      "draw_start": 84,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.elastic.co/security-labs/threat-command/shai-hulud-chaindrop-npm-supply-chain",
+      "draw_start": 85,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-fs-tricks/macos-xattr-acls-extra-stuff.html",
+      "draw_start": 86,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2025/04/23/how-mcp-servers-can-steal-your-conversation-history",
+      "draw_start": 87,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/kim-john",
+      "draw_start": 88,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/3632-pentesting-distcc.html",
+      "draw_start": 89,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities",
+      "draw_start": 90,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2019/01/25/symbolic-path-merging-in-manticore",
+      "draw_start": 91,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.stark4n6.com/2025/07/ios-app-storage-usage-via-amdsqlite-db.html",
+      "draw_start": 92,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/advisories/remote-code-execution-on-pyres-termod-before-1004w.html",
+      "draw_start": 93,
+      "draw_count": 1
+    },
+    {
+      "url": "https://binary.golf/3",
+      "draw_start": 94,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/phishing-methodology/discord-invite-hijacking.html",
+      "draw_start": 95,
+      "draw_count": 1
+    },
+    {
+      "url": "https://securelist.com/tr/payload-ransomware-via-group-policy/121335",
+      "draw_start": 96,
+      "draw_count": 1
+    },
+    {
+      "url": "https://pocorgtfo.hacke.rs/pocorgtfo18.pdf",
+      "draw_start": 97,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/redshiftzero/awesome-threat-modeling",
+      "draw_start": 98,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bisping",
+      "draw_start": 99,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/snare/voltron",
+      "draw_start": 100,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/web-security/clickjacking/lab-basic-csrf-protected",
+      "draw_start": 101,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Desktopimgdownldr",
+      "draw_start": 102,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.malware-traffic-analysis.net/2024/10/03/index.html",
+      "draw_start": 103,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/mach-o-entitlements-and-ipsw-indexing.html",
+      "draw_start": 104,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.malware-traffic-analysis.net/2025/01/21/index.html",
+      "draw_start": 105,
+      "draw_count": 1
+    },
+    {
+      "url": "https://aibuilds.net/",
+      "draw_start": 106,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/bambdas/creating/writing-custom-actions/worked-example",
+      "draw_start": 107,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/pentesting-web/file-inclusion/phar-deserialization.html",
+      "draw_start": 108,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2025/08/25/speedrunning-the-new-york-subway",
+      "draw_start": 109,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/pax",
+      "draw_start": 110,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/tiwari",
+      "draw_start": 111,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/liu-changming",
+      "draw_start": 112,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/house-of-rabbit.html",
+      "draw_start": 113,
+      "draw_count": 1
+    },
+    {
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/XXE%20Injection",
+      "draw_start": 114,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/web-security/sql-injection/blind/lab-out-of-band",
+      "draw_start": 115,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hub.docker.com/r/webgoat/webgoat-8.0",
+      "draw_start": 116,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/hping3",
+      "draw_start": 117,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/c-sto/recursebuster",
+      "draw_start": 118,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/macos-hardening/macos-security-and-privilege-escalation/macos-security-protections/macos-gatekeeper.html",
+      "draw_start": 119,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.misp-project.org/",
+      "draw_start": 120,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/WestpointLtd/tls_prober",
+      "draw_start": 121,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-detection/detecting-and-mitigating-ransomware",
+      "draw_start": 122,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/yang-yupeng",
+      "draw_start": 123,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/pentesting-web/idor.html",
+      "draw_start": 124,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2025/08/04/uncovering-memory-corruption-in-nvidia-triton-as-a-new-hire",
+      "draw_start": 125,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Cdb",
+      "draw_start": 126,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2024/06/24/htb-sherlock-campfire-1.html",
+      "draw_start": 127,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.elastic.co/security-labs/threat-command/dissecting-remcos-rat-part-two",
+      "draw_start": 128,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/tot-award",
+      "draw_start": 129,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2025/10/31/the-cryptography-behind-electronic-passports",
+      "draw_start": 130,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2023/11/15/assessing-the-security-posture-of-a-widely-used-vision-model-yolov7",
+      "draw_start": 131,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Bginfo",
+      "draw_start": 132,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/mankali",
+      "draw_start": 133,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2026/05/12/go-fuzzing-was-missing-half-the-toolkit.-we-forked-the-toolchain-to-fix-it.",
+      "draw_start": 134,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/web-security/file-path-traversal/lab-absolute-path-bypass",
+      "draw_start": 135,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/publications/github-actions-exploitation-untrusted-input.html",
+      "draw_start": 136,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/web-security/csrf/bypassing-samesite-restrictions/lab-samesite-strict-bypass-via-sibling-domain",
+      "draw_start": 137,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/pentesting-web/http-connection-contamination.html",
+      "draw_start": 138,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/creating-ai-extensions/best-practices",
+      "draw_start": 139,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.sentinelone.com/labs/labscon25-replay-breach-alpha-trading-on-cyber-fallout",
+      "draw_start": 140,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/puppet",
+      "draw_start": 141,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/extend-burp/extensions/creating/bapp-store-acceptance-criteria",
+      "draw_start": 142,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.manning.com/books/azure-security-2",
+      "draw_start": 143,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/marcinguy/scanmycode-ce",
+      "draw_start": 144,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/generic-hacking/archive-extraction-path-traversal.html",
+      "draw_start": 145,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/external-browser-config/certificate/ca-cert-firefox",
+      "draw_start": 146,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/xing-jiarong",
+      "draw_start": 147,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/mohamed",
+      "draw_start": 148,
+      "draw_count": 1
+    },
+    {
+      "url": "https://projectzero.google/2025/08/from-chrome-renderer-code-exec-to-kernel.html",
+      "draw_start": 149,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2024/06/21/eurollvm-2024-trip-report",
+      "draw_start": 150,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/pang-xiaoyi",
+      "draw_start": 151,
+      "draw_count": 1
+    },
+    {
+      "url": "http://ridiculousfish.com/hexfiend",
+      "draw_start": 152,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/trustedsec/unicorn",
+      "draw_start": 153,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/AI/AI-Deep-Learning.html",
+      "draw_start": 154,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.sigidwiki.com/wiki/Automatic_Dependent_Surveillance-Broadcast_(ADS-B)",
+      "draw_start": 155,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/pentesting-web/file-inclusion/lfi2rce-via-eternal-waiting.html",
+      "draw_start": 156,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/todo/radio-hacking/fissure-the-rf-framework.html",
+      "draw_start": 157,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/settings/ui/side-panel",
+      "draw_start": 158,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/nano",
+      "draw_start": 159,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/getting-started/activating-burp-license",
+      "draw_start": 160,
+      "draw_count": 1
+    },
+    {
+      "url": "https://thedfirreport.com/2025/05/19/another-confluence-bites-the-dust-falling-to-elpaco-team-ransomware",
+      "draw_start": 161,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/panahi",
+      "draw_start": 162,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/apt",
+      "draw_start": 163,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2024/02/23/continuously-fuzzing-python-c-extensions",
+      "draw_start": 164,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Vshadow",
+      "draw_start": 165,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-intelligence/intelligence-insights-may-2024",
+      "draw_start": 166,
+      "draw_count": 1
+    },
+    {
+      "url": "https://thedfirreport.com/2025/12/17/cats-got-your-files-lynx-ransomware",
+      "draw_start": 167,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/cherubin",
+      "draw_start": 168,
+      "draw_count": 1
+    },
+    {
+      "url": "http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118662091.html",
+      "draw_start": 169,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2021/02/09/htb-apocalyst.html",
+      "draw_start": 170,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2023/02/11/htb-photobomb.html",
+      "draw_start": 171,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-detection/operation-cleaver-blade-dulled",
+      "draw_start": 172,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Remote",
+      "draw_start": 173,
+      "draw_count": 1
+    },
+    {
+      "url": "https://arxiv.org/abs/1606.05915",
+      "draw_start": 174,
+      "draw_count": 1
+    },
+    {
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/DOM%20Clobbering",
+      "draw_start": 175,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/fping",
+      "draw_start": 176,
+      "draw_count": 1
+    },
+    {
+      "url": "https://overthewire.org/wargames/vortex",
+      "draw_start": 177,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-detection/using-alternate-data-streams-bypass-user-account-controls",
+      "draw_start": 178,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.windytan.com/2017/09/descrambling-split-band-voice-inversion.html",
+      "draw_start": 179,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/publications/azure-ad-introduction-for-red-teamers.html",
+      "draw_start": 180,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yoo",
+      "draw_start": 181,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/huang-xuanbo",
+      "draw_start": 182,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2023/09/11/holy-macroni-a-recipe-for-progressive-language-enhancement",
+      "draw_start": 183,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/lycklama",
+      "draw_start": 184,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2021/07/31/htb-thenotebook.html",
+      "draw_start": 185,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/vekaria",
+      "draw_start": 186,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/research/the-seventh-way-to-call-a-javascript-function-without-parentheses",
+      "draw_start": 187,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/web-security/cross-site-scripting/contexts/lab-onclick-event-angle-brackets-double-quotes-html-encoded-single-quotes-backslash-escaped",
+      "draw_start": 188,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/web-security/prototype-pollution/client-side/lab-prototype-pollution-client-side-prototype-pollution-via-flawed-sanitization",
+      "draw_start": 189,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/proxy/http-history/scripts",
+      "draw_start": 190,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/pentesting-web/grpc-web-pentest.html",
+      "draw_start": 191,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/zohaib",
+      "draw_start": 192,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2022/10/12/solana-jit-compiler-ebpf-arm64",
+      "draw_start": 193,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/Khadinxc/TerraSigma",
+      "draw_start": 194,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/needrestart",
+      "draw_start": 195,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/generic-methodologies-and-resources/basic-forensic-methodology/specific-software-file-type-tricks/office-file-analysis.html",
+      "draw_start": 196,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/wang-ping-lun",
+      "draw_start": 197,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/tools/context-menu",
+      "draw_start": 198,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2025/04/21/jumping-the-line-how-mcp-servers-can-attack-you-before-you-ever-use-them",
+      "draw_start": 199,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/ld",
+      "draw_start": 200,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/web-security/web-cache-poisoning/exploiting-design-flaws/lab-web-cache-poisoning-to-exploit-a-dom-vulnerability-via-a-cache-with-strict-cacheability-criteria",
+      "draw_start": 201,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2023/03/22/codex-and-gpt4-cant-beat-humans-on-smart-contract-audits",
+      "draw_start": 202,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lcamtuf.coredump.cx/tmp_paper.txt",
+      "draw_start": 203,
+      "draw_count": 1
+    },
+    {
+      "url": "https://packettotal.com/",
+      "draw_start": 204,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/1414-pentesting-ibmmq.html",
+      "draw_start": 205,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2021/10/23/htb-spider.html",
+      "draw_start": 206,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-rsh.html",
+      "draw_start": 207,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/publications/how-to-exploit-liferay-cve-2020-7961-quick-journey-to-poc.html",
+      "draw_start": 208,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-detection/process-masquerading",
+      "draw_start": 209,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/choudhuri",
+      "draw_start": 210,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/mv",
+      "draw_start": 211,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/pentesting-web/xss-cross-site-scripting/integer-overflow.html",
+      "draw_start": 212,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/sensepost/ruler",
+      "draw_start": 213,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.elastic.co/security-labs/threat-command/emulating-aws-s3-sse-c",
+      "draw_start": 214,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Sc",
+      "draw_start": 215,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/akanda",
+      "draw_start": 216,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/web-security/cors/lab-basic-origin-reflection-attack",
+      "draw_start": 217,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.elastic.co/security-labs/threat-command/advanced-techniques-used-in-malaysian-focused-apt-campaign",
+      "draw_start": 218,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2014/11/25/close-encounters-with-symbolic-execution",
+      "draw_start": 219,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.malware-traffic-analysis.net/2024/04/05/index.html",
+      "draw_start": 220,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2024/10/10/auditing-gradio-5-hugging-faces-ml-gui-framework",
+      "draw_start": 221,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.malware-traffic-analysis.net/2026/04/23/index.html",
+      "draw_start": 222,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities/session-management/jwts",
+      "draw_start": 223,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2021/05/31/htb-cereal-unintended.html",
+      "draw_start": 224,
+      "draw_count": 1
+    },
+    {
+      "url": "https://spritesmods.com/?art=biostick",
+      "draw_start": 225,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/infoslack/awesome-web-hacking",
+      "draw_start": 226,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/uuencode",
+      "draw_start": 227,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/service-triggers.html",
+      "draw_start": 228,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/privacy/reproducible-privacy-testing.html",
+      "draw_start": 229,
+      "draw_count": 1
+    },
+    {
+      "url": "https://thedfirreport.com/2026/04/22/bissa-scanner-exposed-ai-assisted-mass-exploitation-and-credential-harvesting",
+      "draw_start": 230,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/ablove",
+      "draw_start": 231,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/han-seunghun",
+      "draw_start": 232,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/pentesting-web/crlf-0d-0a.html",
+      "draw_start": 233,
+      "draw_count": 1
+    },
+    {
+      "url": "https://vulmon.com/",
+      "draw_start": 234,
+      "draw_count": 1
+    },
+    {
+      "url": "https://cryptohack.org/courses/elliptic",
+      "draw_start": 235,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/belane/CloudHunter",
+      "draw_start": 236,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/dvips",
+      "draw_start": 237,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/troubleshooting/launch-from-command-line",
+      "draw_start": 238,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/nodejs-proto-prototype-pollution/express-prototype-pollution-gadgets.html",
+      "draw_start": 239,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.elastic.co/security-labs/threat-command/llm-benchmarking-agentic-soc",
+      "draw_start": 240,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/Cisco-Talos/pyrebox",
+      "draw_start": 241,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/privacy/advanced-network-privacy-architectures.html",
+      "draw_start": 242,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/varnishncsa",
+      "draw_start": 243,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/wish",
+      "draw_start": 244,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2025/04/09/introducing-a-new-section-on-snapshot-fuzzing-for-kernel-level-testing-in-the-testing-handbook",
+      "draw_start": 245,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2021/11/06/htb-pivotapi.html",
+      "draw_start": 246,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-detection/openclaw-ai",
+      "draw_start": 247,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2024/10/10/auditing-gradio-5-hugging-faces-ml-gui-framework",
+      "draw_start": 248,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/chakraborty",
+      "draw_start": 249,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/sun-hao",
+      "draw_start": 250,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/wt",
+      "draw_start": 251,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2013/05/20/writing-exploits-with-the-elderwood-kit-part-2",
+      "draw_start": 252,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/Binaries/Msiexec",
+      "draw_start": 253,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/research/can-ai-do-novel-security-research",
+      "draw_start": 254,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/traefik.html",
+      "draw_start": 255,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/publications/le-probleme-unicode-de-sql-server-pourquoi-vos-donnees-ne-sont-peut-etre-pas-ce-que.html",
+      "draw_start": 256,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/advisories/local-privilege-escalation-in-windows-velociraptor-service.html",
+      "draw_start": 257,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/pentesting-web/deserialization/exploiting-__viewstate-knowing-the-secret.html",
+      "draw_start": 258,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2024/07/05/auditing-the-ask-astro-llm-qa-app",
+      "draw_start": 259,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/todo/hardware-hacking/i2c.html",
+      "draw_start": 260,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/web-security/web-cache-deception/lab-wcd-exploiting-cache-server-normalization",
+      "draw_start": 261,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/publications/magento-template-engine-a-story-of-cve-2022-24086.html",
+      "draw_start": 262,
+      "draw_count": 1
+    },
+    {
+      "url": "https://research.checkpoint.com/2026/31th-august-threat-intelligence-report",
+      "draw_start": 263,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/privacy/private-digital-payments.html",
+      "draw_start": 264,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.synacktiv.com/publications/introducing-ntdissector-a-swiss-army-knife-for-your-ntdsdit-files.html",
+      "draw_start": 265,
+      "draw_count": 1
+    },
+    {
+      "url": "https://immunityinc.com/products/debugger",
+      "draw_start": 266,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/troubleshooting/launch-from-command-line",
+      "draw_start": 267,
+      "draw_count": 1
+    },
+    {
+      "url": "https://gtfobins.org/gtfobins/egrep",
+      "draw_start": 268,
+      "draw_count": 1
+    },
+    {
+      "url": "https://swisskyrepo.github.io/PayloadsAllTheThings/Server%20Side%20Template%20Injection/Python",
+      "draw_start": 269,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/seymour",
+      "draw_start": 270,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/AppLauncher",
+      "draw_start": 271,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2020/06/20/htb-servmon.html",
+      "draw_start": 272,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2026/05/16/htb-pterodactyl.html",
+      "draw_start": 273,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/privacy/government-and-apt-case-studies.html",
+      "draw_start": 274,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.trailofbits.com/2020/06/12/upgradeable-contracts-made-safer-with-crytic",
+      "draw_start": 275,
+      "draw_count": 1
+    },
+    {
+      "url": "https://dfir.ch/posts/field_notes_nssm",
+      "draw_start": 276,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity25/presentation/zhang-bosi",
+      "draw_start": 277,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/house-of-einherjar.html",
+      "draw_start": 278,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/curiefense/curiefense",
+      "draw_start": 279,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2022/03/12/htb-devzat.html",
+      "draw_start": 280,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2019/11/26/htb-chainsaw-rootkit.html",
+      "draw_start": 281,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/bulekov",
+      "draw_start": 282,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/Scripts/pester",
+      "draw_start": 283,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/lolbas/OtherMSBinaries/Pixtool",
+      "draw_start": 284,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hub.docker.com/r/webgoat/webgoat-8.0",
+      "draw_start": 285,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/duan",
+      "draw_start": 286,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/undeadlist/trust-scan",
+      "draw_start": 287,
+      "draw_count": 1
+    },
+    {
+      "url": "https://github.com/rapid7/metasploit-framework",
+      "draw_start": 288,
+      "draw_count": 1
+    },
+    {
+      "url": "https://lolbas-project.github.io/",
+      "draw_start": 289,
+      "draw_count": 1
+    },
+    {
+      "url": "https://redcanary.com/blog/threat-detection/detect-repeat-infections",
+      "draw_start": 290,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/research/concealing-payloads-in-url-credentials",
+      "draw_start": 291,
+      "draw_count": 1
+    },
+    {
+      "url": "https://www.usenix.org/conference/usenixsecurity24/presentation/yang-tianchang",
+      "draw_start": 292,
+      "draw_count": 1
+    },
+    {
+      "url": "https://blog.nviso.eu/2026/04/10/securitys-blind-spot-physical-keyloggers-that-bypass-antivirus-entirely",
+      "draw_start": 293,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/blockchain/smart-contract-security/mutation-testing-with-slither.html",
+      "draw_start": 294,
+      "draw_count": 1
+    },
+    {
+      "url": "https://portswigger.net/burp/documentation/desktop/testing-workflow/vulnerabilities",
+      "draw_start": 295,
+      "draw_count": 1
+    },
+    {
+      "url": "https://0xdf.gitlab.io/2020/11/07/htb-tabby.html",
+      "draw_start": 296,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/pentesting-web/regular-expression-denial-of-service-redos.html",
+      "draw_start": 297,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/linux-hardening/software-information/electron-cef-chromium-debugger-abuse.html",
+      "draw_start": 298,
+      "draw_count": 1
+    },
+    {
+      "url": "https://hacktricks.wiki/en/binary-exploitation/libc-heap/house-of-roman.html",
+      "draw_start": 299,
+      "draw_count": 1
+    }
+  ]
+}

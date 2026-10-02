@@ -1,0 +1,60 @@
+{
+  "admissions": [
+    {
+      "resource_type": "lab",
+      "url": "https://pwn.college/dojo/cryptomania"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://pwn.college/dojo/dos-dojo~c41cb03a"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://pwn.college/dojo/fuzz~c7f7b8c2"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://pwn.college/dojo/hacker-history~43f7181b"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://pwn.college/dojo/intro-to-cybersecurity"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://pwn.college/dojo/lord-of-osint~9e1a1da1"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://pwn.college/dojo/program-security"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://pwn.college/dojo/rehosting~fbf8a0a3"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://pwn.college/dojo/software-exploitation"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://pwn.college/dojo/system-security"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://pwn.college/dojo/windows-warzone"
+    },
+    {
+      "resource_type": "lab",
+      "url": "https://pwn.college/dojo/xnu"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "practical_learning",
+  "rationale": "Named hands-on security dojos spanning exploitation, operating systems, firmware rehosting, fuzzing, OSINT and hacker history. Excludes rankings, join/account/workspace controls and semester duplicates. Challenge execution generally requires an account; publisher describes concrete modules and exercises.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:6f2c9044af07d04e4c93bdaf5fc7d72848b8694f3bbb2cbefad73a75ce665fb1",
+  "snapshot_path": "corpus/indexes/experience-pwndojos-v1.json",
+  "source_id": "experience-pwndojos-v1"
+}

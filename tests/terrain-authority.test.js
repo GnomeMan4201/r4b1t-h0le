@@ -10,17 +10,17 @@ const path = require('node:path');
 const ROOT = path.resolve(__dirname, '..');
 const read = rel => fs.readFileSync(path.join(ROOT, rel));
 const sha = bytes => 'sha256:' + crypto.createHash('sha256').update(bytes).digest('hex');
-const INDEX_PATH = 'corpus/terrains/strange-candidate-v0.3/terrain-index-v1.json';
+const INDEX_PATH = 'corpus/terrains/experience-candidate-v0.4/terrain-index-v1.json';
 const REGISTRY_PATH = 'corpus/runtime/eligibility-profiles-v1.json';
-const INDEX_DIGEST = 'sha256:8282156e330ef423acfba8304e4f7419e6d978d7441ef7e5f146a76b9f6b5a00';
+const INDEX_DIGEST = 'sha256:91923ece72094e0032c7ffab0952a1b536950384b6ac6b7681e9da7246b324fd';
 
 function loadAuthority() {
   return require(path.join(ROOT, 'terrain-authority.js'));
 }
 
 test('T1-02: an independent recompute from resources.json equals the committed index', () => {
-  const urls = read('corpus/releases/strange-candidate-v0.3/urls.txt').toString('utf8').slice(0, -1).split('\n');
-  const resources = JSON.parse(read('corpus/releases/strange-candidate-v0.3/resources.json')).resources;
+  const urls = read('corpus/releases/experience-candidate-v0.4/urls.txt').toString('utf8').slice(0, -1).split('\n');
+  const resources = JSON.parse(read('corpus/releases/experience-candidate-v0.4/resources.json')).resources;
   assert.deepEqual(resources.map(r => r.url), urls, 'resource order must equal urls.txt order');
   const types = [...new Set(resources.map(r => r.resource_type))].sort();
   const expected = types.map(id => {
@@ -99,11 +99,11 @@ test('validateIndexDocument rejects structural violations', () => {
   const { validateIndexDocument } = loadAuthority();
   const good = JSON.parse(read(INDEX_PATH));
   const binding = good.release;
-  assert.doesNotThrow(() => validateIndexDocument(good, { activeCount: 6975, release: binding }));
+  assert.doesNotThrow(() => validateIndexDocument(good, { activeCount: 7033, release: binding }));
   const mutations = {
     unsorted: d => d.terrains.reverse(),
     dry: d => { d.terrains[0].members = []; d.terrains[0].count = 0; },
-    outOfRange: d => { d.terrains[0].members.push(6975); d.terrains[0].count += 1; },
+    outOfRange: d => { d.terrains[0].members.push(7033); d.terrains[0].count += 1; },
     duplicate: d => { d.terrains[0].members.push(d.terrains[0].members[0]); d.terrains[0].count += 1; },
     wrongLabel: d => { d.terrains[0].label = 'DATA'; },
     extraKey: d => { d.terrains[0].weight = 1; },
@@ -113,7 +113,7 @@ test('validateIndexDocument rejects structural violations', () => {
   for (const [name, mutate] of Object.entries(mutations)) {
     const doc = JSON.parse(JSON.stringify(good));
     mutate(doc);
-    assert.throws(() => validateIndexDocument(doc, { activeCount: 6975, release: binding }), e => e.code === 'TERRAIN_INDEX_INVALID', name);
+    assert.throws(() => validateIndexDocument(doc, { activeCount: 7033, release: binding }), e => e.code === 'TERRAIN_INDEX_INVALID', name);
   }
 });
 
@@ -121,7 +121,7 @@ test('loadIndex fails closed: digest, canonical form, and release binding', asyn
   const authority = loadAuthority();
   const bytes = read(INDEX_PATH);
   const fetchBytes = body => async () => ({ ok: true, arrayBuffer: async () => body.buffer.slice(body.byteOffset, body.byteOffset + body.byteLength) });
-  const corpusStub = { active: () => ({ releaseId: 'strange-candidate-v0.3', expectedDigest: authority.profile().urlsDigest, expectedResourcesDigest: authority.profile().resourcesDigest }), loadActive: async () => ({ urls: new Array(6975).fill('https://example.org/') }) };
+  const corpusStub = { active: () => ({ releaseId: 'experience-candidate-v0.4', expectedDigest: authority.profile().urlsDigest, expectedResourcesDigest: authority.profile().resourcesDigest }), loadActive: async () => ({ urls: new Array(7033).fill('https://example.org/') }) };
   const base = { crypto: globalThis.crypto, corpusAuthority: corpusStub };
 
   const ok = await authority.loadIndex({ ...base, fetch: fetchBytes(bytes), fresh: true });

@@ -114,7 +114,7 @@ test('mobile terrain filter can select and return to all signals', async ({ page
   await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
   await page.locator('#r4mFilterOptions .r4m-filter-proxy', { hasText: 'ALL SIGNALS' }).click();
   await expect(page.locator('#r4mFilterLabel')).toHaveText('ALL SIGNALS');
-  await expect(page.locator('#r4mRollScope')).toHaveText('FULL CORPUS · 6975 ROUTES');
+  await expect(page.locator('#r4mRollScope')).toHaveText('FULL CORPUS · 7033 ROUTES');
 });
 
 test('mobile navigation opens filter and inspect sheets without horizontal overflow', async ({ page }, testInfo) => {

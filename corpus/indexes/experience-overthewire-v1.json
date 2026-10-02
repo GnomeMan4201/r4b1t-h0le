@@ -1,0 +1,32 @@
+{
+  "extractor": "html-anchors-v1",
+  "final_url": "https://overthewire.org/wargames/",
+  "response_digest": "sha256:a2b1287728f9006c245d7e82f0eed262b80b47678ad9e78f303d32d234162c6a",
+  "schema": "r4b1t-source-link-index-v1",
+  "selection_authority": false,
+  "source_url": "https://overthewire.org/wargames/",
+  "urls": [
+    "https://overthewire.org/",
+    "https://overthewire.org/information/chat.html",
+    "https://overthewire.org/information/donate.html",
+    "https://overthewire.org/rules/",
+    "https://overthewire.org/wargames/",
+    "https://overthewire.org/wargames/abraxas",
+    "https://overthewire.org/wargames/bandit",
+    "https://overthewire.org/wargames/behemoth",
+    "https://overthewire.org/wargames/drifter",
+    "https://overthewire.org/wargames/formulaone",
+    "https://overthewire.org/wargames/hes2010",
+    "https://overthewire.org/wargames/kishi",
+    "https://overthewire.org/wargames/krypton",
+    "https://overthewire.org/wargames/leviathan",
+    "https://overthewire.org/wargames/manpage",
+    "https://overthewire.org/wargames/maze",
+    "https://overthewire.org/wargames/monxla",
+    "https://overthewire.org/wargames/narnia",
+    "https://overthewire.org/wargames/natas",
+    "https://overthewire.org/wargames/semtex",
+    "https://overthewire.org/wargames/utumno",
+    "https://overthewire.org/wargames/vortex"
+  ]
+}

@@ -14,27 +14,27 @@
   'use strict';
 
   var activeSource = Object.freeze({
-    id: 'strange-candidate-v0.3',
-    releaseId: 'strange-candidate-v0.3',
-    url: 'corpus/releases/strange-candidate-v0.3/urls.txt',
-    resourcesUrl: 'corpus/releases/strange-candidate-v0.3/resources.json',
-    manifestUrl: 'corpus/releases/strange-candidate-v0.3/manifest.json',
-    expectedDigest: 'sha256:f85a1c710977814c920ff13eb95cf0b86805486668c99dba2d5024d6b1bda3a7',
-    expectedResourcesDigest: 'sha256:347bf83b013e3eec3aff9301863c6cd3acb62d62db6d39e5fa8c27f4c814dee1',
-    expectedResourceCount: 6975,
-    promotionId: 'strange-candidate-v0.3-active-v1',
+    id: 'experience-candidate-v0.4',
+    releaseId: 'experience-candidate-v0.4',
+    url: 'corpus/releases/experience-candidate-v0.4/urls.txt',
+    resourcesUrl: 'corpus/releases/experience-candidate-v0.4/resources.json',
+    manifestUrl: 'corpus/releases/experience-candidate-v0.4/manifest.json',
+    expectedDigest: 'sha256:824e98baa6d7e364c2c1a4981b45c8b190860f50b550dcd4342292053691bb4d',
+    expectedResourcesDigest: 'sha256:0f3679d2465ad8ecfbcbabed0f9e4b9312750ac725240ea9c9a9156ebeacdfac',
+    expectedResourceCount: 7033,
+    promotionId: 'experience-candidate-v0.4-active-v1',
     status: 'active',
     selectionAuthority: true
   });
 
   var candidateSource = Object.freeze({
-    id: 'strange-candidate-v0.3',
-    url: 'corpus/releases/strange-candidate-v0.3/urls.txt',
-    resourcesUrl: 'corpus/releases/strange-candidate-v0.3/resources.json',
-    manifestUrl: 'corpus/releases/strange-candidate-v0.3/manifest.json',
-    expectedDigest: 'sha256:f85a1c710977814c920ff13eb95cf0b86805486668c99dba2d5024d6b1bda3a7',
-    expectedResourcesDigest: 'sha256:347bf83b013e3eec3aff9301863c6cd3acb62d62db6d39e5fa8c27f4c814dee1',
-    expectedResourceCount: 6975,
+    id: 'experience-candidate-v0.4',
+    url: 'corpus/releases/experience-candidate-v0.4/urls.txt',
+    resourcesUrl: 'corpus/releases/experience-candidate-v0.4/resources.json',
+    manifestUrl: 'corpus/releases/experience-candidate-v0.4/manifest.json',
+    expectedDigest: 'sha256:824e98baa6d7e364c2c1a4981b45c8b190860f50b550dcd4342292053691bb4d',
+    expectedResourcesDigest: 'sha256:0f3679d2465ad8ecfbcbabed0f9e4b9312750ac725240ea9c9a9156ebeacdfac',
+    expectedResourceCount: 7033,
     status: 'candidate',
     selectionAuthority: false
   });
@@ -48,10 +48,10 @@
   });
 
   var promotionDescriptor = Object.freeze({
-    id: 'strange-candidate-v0.3-active-v1',
+    id: 'experience-candidate-v0.4-active-v1',
     schema: 'r4b1t-runtime-corpus-promotion-v1',
-    sourceId: 'strange-candidate-v0.3',
-    releaseId: 'strange-candidate-v0.3',
+    sourceId: 'experience-candidate-v0.4',
+    releaseId: 'experience-candidate-v0.4',
     expectedDigest: activeSource.expectedDigest,
     releaseSelectionAuthority: false,
     runtimeSelectionAuthority: true,

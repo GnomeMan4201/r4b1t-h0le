@@ -6,16 +6,16 @@ const path = require('node:path');
 const { test, expect } = require('@playwright/test');
 
 const ROOT = path.resolve(__dirname, '..');
-const URLS = fs.readFileSync(path.join(ROOT, 'corpus/releases/strange-candidate-v0.3/urls.txt'), 'utf8').slice(0, -1).split('\n');
-const INDEX_PATH = path.join(ROOT, 'corpus/terrains/strange-candidate-v0.3/terrain-index-v1.json');
-const INDEX_DIGEST = 'sha256:8282156e330ef423acfba8304e4f7419e6d978d7441ef7e5f146a76b9f6b5a00';
-const ACTIVE_DIGEST = 'sha256:f85a1c710977814c920ff13eb95cf0b86805486668c99dba2d5024d6b1bda3a7';
-const BASELINE = require('./fixtures/selection/all-roll-baseline-strange-v0.3.json');
+const URLS = fs.readFileSync(path.join(ROOT, 'corpus/releases/experience-candidate-v0.4/urls.txt'), 'utf8').slice(0, -1).split('\n');
+const INDEX_PATH = path.join(ROOT, 'corpus/terrains/experience-candidate-v0.4/terrain-index-v1.json');
+const INDEX_DIGEST = 'sha256:91923ece72094e0032c7ffab0952a1b536950384b6ac6b7681e9da7246b324fd';
+const ACTIVE_DIGEST = 'sha256:824e98baa6d7e364c2c1a4981b45c8b190860f50b550dcd4342292053691bb4d';
+const BASELINE = require('./fixtures/selection/all-roll-baseline-experience-v0.4.json');
 const COUNTS = {
-  advisory: 43, article: 24, challenge: 8, dataset: 22, documentation: 1408, lab: 283, paper: 913, reference: 897,
-  repository: 470, research: 1605, security_tool: 212, threat_feed: 6, training_resource: 12, writeup: 1072,
+  advisory: 43, article: 24, challenge: 19, dataset: 22, documentation: 1408, lab: 295, paper: 913, reference: 897,
+  repository: 470, research: 1605, security_tool: 212, threat_feed: 6, training_resource: 47, writeup: 1072,
 };
-const ACTIVE_COUNT = 6975;
+const ACTIVE_COUNT = 7033;
 
 async function blockExternalNetwork(page) {
   await page.route('**/*', async (route) => {
@@ -33,7 +33,7 @@ async function seedDraft(page, seed) {
     sessionStorage.setItem('__t1Seeded', '1');
     localStorage.setItem('r4b1t_trail_draft_v1', JSON.stringify({
       seed, createdAt: '2026-10-01T12:00:00.000Z', corpusRevision: revision,
-      corpusSourceId: 'strange-candidate-v0.3', routes: [], parent: null,
+      corpusSourceId: 'experience-candidate-v0.4', routes: [], parent: null,
     }));
   }, { seed, revision: ACTIVE_DIGEST });
 }
@@ -299,7 +299,7 @@ test('T1-11: without the trail selection authority, ROLL selects nothing and say
   expect(await page.locator('#previewUrl').textContent()).toBe(before);
 });
 
-test('T1-12: ALL ROLL outcomes match the strange-candidate-v0.3 fixed-seed baseline (300 rolls)', async ({ page }, testInfo) => {
+test('T1-12: ALL ROLL outcomes match the experience-candidate-v0.4 fixed-seed baseline (300 rolls)', async ({ page }, testInfo) => {
   if (testInfo.project.name === 'mobile-chromium') test.skip();
   await seedDraft(page, BASELINE.seed);
   await page.goto('./', { waitUntil: 'domcontentloaded' });
