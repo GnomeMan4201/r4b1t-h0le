@@ -30,21 +30,21 @@ Terrains are the active release's own resource types. Each control shows its eli
 | --- | --- | --- |
 | `advisory` | ADVISORY | 43 |
 | `article` | ARTICLE | 24 |
-| `challenge` | CHALLENGE | 8 |
+| `challenge` | CHALLENGE | 19 |
 | `dataset` | DATASET | 22 |
 | `documentation` | DOCUMENTATION | 1408 |
-| `lab` | LAB | 283 |
+| `lab` | LAB | 295 |
 | `paper` | PAPER | 913 |
 | `reference` | REFERENCE | 897 |
 | `repository` | REPOSITORY | 470 |
 | `research` | RESEARCH | 1605 |
 | `security_tool` | SECURITY TOOL | 212 |
 | `threat_feed` | THREAT FEED | 6 |
-| `training_resource` | TRAINING RESOURCE | 12 |
+| `training_resource` | TRAINING RESOURCE | 47 |
 | `writeup` | WRITEUP | 1072 |
 
 
-Membership comes from a [terrain index](./corpus/terrains/strange-candidate-v0.3/terrain-index-v1.json) compiled from the release's `urls.txt` and `resources.json`. The index is authoritative only because the [eligibility profile registry](./corpus/runtime/eligibility-profiles-v1.json) names its digest for the active release. A digest recorded in a trail shows which map was used. It does not make that map authoritative. See the [terrain authority contract](./TERRAIN_AUTHORITY_CONTRACT.md) and [ADR 0006](./docs/adr/0006-release-bound-terrain-authority.md). The `SITE HINT` badge on a result is a display-only hostname hint, not a terrain.
+Membership comes from a [terrain index](./corpus/terrains/experience-candidate-v0.4/terrain-index-v1.json) compiled from the release's `urls.txt` and `resources.json`. The index is authoritative only because the [eligibility profile registry](./corpus/runtime/eligibility-profiles-v1.json) names its digest for the active release. A digest recorded in a trail shows which map was used. It does not make that map authoritative. See the [terrain authority contract](./TERRAIN_AUTHORITY_CONTRACT.md) and [ADR 0006](./docs/adr/0006-release-bound-terrain-authority.md). The `SITE HINT` badge on a result is a display-only hostname hint, not a terrain.
 
 **BRANCH is a separate navigation action.** DEEPER, SIDEWAYS, OPPOSITE, and WEIRD offer directions from the current resource. Branch construction uses available metadata and keyword matching; it is not the ROLL sampler. These labels are navigational hints, not factual or security classifications.
 
@@ -52,7 +52,7 @@ Membership comes from a [terrain index](./corpus/terrains/strange-candidate-v0.3
 
 ## Inside a roll
 
-The active population is the promoted `strange-candidate-v0.3` release: **6,975 resources across 345 hosts**, with **14 resource types**. The [promotion record](./corpus/runtime/active-v1.json) grants runtime authority to its digest-bound URL bytes; the [release manifest](./corpus/releases/strange-candidate-v0.3/manifest.json) records the release evidence. A digest mismatch rejects the load rather than silently falling back to the legacy pool.
+The active population is the promoted `experience-candidate-v0.4` release: **7,033 resources across 350 hosts**, with **14 resource types**. The [promotion record](./corpus/runtime/active-v1.json) grants runtime authority to its digest-bound URL bytes; the [release manifest](./corpus/releases/experience-candidate-v0.4/manifest.json) records the release evidence. A digest mismatch rejects the load rather than silently falling back to the legacy pool.
 
 | Layer | Authority |
 | --- | --- |

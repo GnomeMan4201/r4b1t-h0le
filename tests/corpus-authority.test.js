@@ -11,8 +11,8 @@ const PROMOTION = JSON.parse(
   fs.readFileSync(path.join(ROOT, 'corpus', 'runtime', 'active-v1.json'), 'utf8'),
 );
 const LEGACY_DIGEST = 'sha256:5d7339b8cbfe7bd35bb8502ca753e5b4663bc2fc4ba3721b23b791dbace01c41';
-const ACTIVE_DIGEST = 'sha256:f85a1c710977814c920ff13eb95cf0b86805486668c99dba2d5024d6b1bda3a7';
-const RESOURCES_DIGEST = 'sha256:347bf83b013e3eec3aff9301863c6cd3acb62d62db6d39e5fa8c27f4c814dee1';
+const ACTIVE_DIGEST = 'sha256:824e98baa6d7e364c2c1a4981b45c8b190860f50b550dcd4342292053691bb4d';
+const RESOURCES_DIGEST = 'sha256:0f3679d2465ad8ecfbcbabed0f9e4b9312750ac725240ea9c9a9156ebeacdfac';
 
 function freshAuthority() {
   delete require.cache[require.resolve(MODULE)];
@@ -34,15 +34,15 @@ test('runtime corpus authority promotes the typed release explicitly', () => {
   const authority = freshAuthority();
   assert.equal(authority.schema, 'r4b1t-runtime-corpus-authority-v3');
   assert.deepEqual(authority.active(), {
-    id: 'strange-candidate-v0.3',
-    releaseId: 'strange-candidate-v0.3',
-    url: 'corpus/releases/strange-candidate-v0.3/urls.txt',
-    resourcesUrl: 'corpus/releases/strange-candidate-v0.3/resources.json',
-    manifestUrl: 'corpus/releases/strange-candidate-v0.3/manifest.json',
+    id: 'experience-candidate-v0.4',
+    releaseId: 'experience-candidate-v0.4',
+    url: 'corpus/releases/experience-candidate-v0.4/urls.txt',
+    resourcesUrl: 'corpus/releases/experience-candidate-v0.4/resources.json',
+    manifestUrl: 'corpus/releases/experience-candidate-v0.4/manifest.json',
     expectedDigest: ACTIVE_DIGEST,
     expectedResourcesDigest: RESOURCES_DIGEST,
-    expectedResourceCount: 6975,
-    promotionId: 'strange-candidate-v0.3-active-v1',
+    expectedResourceCount: 7033,
+    promotionId: 'experience-candidate-v0.4-active-v1',
     status: 'active',
     selectionAuthority: true,
   });
@@ -52,13 +52,13 @@ test('runtime corpus authority promotes the typed release explicitly', () => {
 test('release assertion remains historically non-authoritative', () => {
   const authority = freshAuthority();
   assert.deepEqual(authority.candidate(), {
-    id: 'strange-candidate-v0.3',
-    url: 'corpus/releases/strange-candidate-v0.3/urls.txt',
-    resourcesUrl: 'corpus/releases/strange-candidate-v0.3/resources.json',
-    manifestUrl: 'corpus/releases/strange-candidate-v0.3/manifest.json',
+    id: 'experience-candidate-v0.4',
+    url: 'corpus/releases/experience-candidate-v0.4/urls.txt',
+    resourcesUrl: 'corpus/releases/experience-candidate-v0.4/resources.json',
+    manifestUrl: 'corpus/releases/experience-candidate-v0.4/manifest.json',
     expectedDigest: ACTIVE_DIGEST,
     expectedResourcesDigest: RESOURCES_DIGEST,
-    expectedResourceCount: 6975,
+    expectedResourceCount: 7033,
     status: 'candidate',
     selectionAuthority: false,
   });
@@ -81,14 +81,14 @@ test('legacy corpus remains immutable rollback material only', () => {
 test('shared active loader verifies exact promoted bytes and caches one page-session load', async () => {
   const authority = freshAuthority();
   const bytes = fs.readFileSync(
-    path.join(ROOT, 'corpus', 'releases', 'strange-candidate-v0.3', 'urls.txt'),
+    path.join(ROOT, 'corpus', 'releases', 'experience-candidate-v0.4', 'urls.txt'),
   );
   let calls = 0;
 
   const first = await authority.loadActive({
     fetch: async url => {
       calls += 1;
-      assert.match(String(url), /corpus\/releases\/strange-candidate-v0\.3\/urls\.txt\?v=/);
+      assert.match(String(url), /corpus\/releases\/experience-candidate-v0\.4\/urls\.txt\?v=/);
       return responseFor(bytes);
     },
   });
@@ -101,8 +101,8 @@ test('shared active loader verifies exact promoted bytes and caches one page-ses
   assert.strictEqual(second, first);
   assert.equal(calls, 1);
   assert.equal(first.revision, ACTIVE_DIGEST);
-  assert.equal(first.source.id, 'strange-candidate-v0.3');
-  assert.equal(first.urls.length, 6975);
+  assert.equal(first.source.id, 'experience-candidate-v0.4');
+  assert.equal(first.urls.length, 7033);
   assert.equal(Object.isFrozen(first), true);
   assert.equal(Object.isFrozen(first.urls), true);
 });
@@ -132,7 +132,7 @@ test('shared active loader fails closed on digest mismatch and never falls back'
   );
 
   assert.equal(calls, 2);
-  assert.equal(authority.active().id, 'strange-candidate-v0.3');
+  assert.equal(authority.active().id, 'experience-candidate-v0.4');
   assert.equal(authority.legacy().selectionAuthority, false);
 });
 
@@ -157,10 +157,10 @@ test('authority and promotion descriptors are deeply immutable', () => {
 test('resource metadata stays lazy until explicitly requested after selection', async () => {
   const authority = freshAuthority();
   const urlBytes = fs.readFileSync(
-    path.join(ROOT, 'corpus', 'releases', 'strange-candidate-v0.3', 'urls.txt'),
+    path.join(ROOT, 'corpus', 'releases', 'experience-candidate-v0.4', 'urls.txt'),
   );
   const resourceBytes = fs.readFileSync(
-    path.join(ROOT, 'corpus', 'releases', 'strange-candidate-v0.3', 'resources.json'),
+    path.join(ROOT, 'corpus', 'releases', 'experience-candidate-v0.4', 'resources.json'),
   );
   const requests = [];
 
@@ -171,7 +171,7 @@ test('resource metadata stays lazy until explicitly requested after selection', 
     },
   });
 
-  assert.equal(active.urls.length, 6975);
+  assert.equal(active.urls.length, 7033);
   assert.equal(requests.length, 1);
   assert.match(requests[0], /\/urls\.txt\?v=/);
   assert.equal(requests.some(url => url.includes('resources.json')), false);
@@ -203,7 +203,7 @@ test('resource metadata stays lazy until explicitly requested after selection', 
 test('resource metadata is digest-bound and cannot invalidate selected URLs', async () => {
   const authority = freshAuthority();
   const urlBytes = fs.readFileSync(
-    path.join(ROOT, 'corpus', 'releases', 'strange-candidate-v0.3', 'urls.txt'),
+    path.join(ROOT, 'corpus', 'releases', 'experience-candidate-v0.4', 'urls.txt'),
   );
 
   const active = await authority.loadActive({
@@ -224,16 +224,16 @@ test('resource metadata is digest-bound and cannot invalidate selected URLs', as
   });
 
   assert.strictEqual(stillActive, active);
-  assert.equal(stillActive.urls.length, 6975);
+  assert.equal(stillActive.urls.length, 7033);
 });
 
 test('verified metadata requires one unique record for every active URL', async () => {
   const authority = freshAuthority();
   const urlBytes = fs.readFileSync(
-    path.join(ROOT, 'corpus', 'releases', 'strange-candidate-v0.3', 'urls.txt'),
+    path.join(ROOT, 'corpus', 'releases', 'experience-candidate-v0.4', 'urls.txt'),
   );
   const resourceBytes = fs.readFileSync(
-    path.join(ROOT, 'corpus', 'releases', 'strange-candidate-v0.3', 'resources.json'),
+    path.join(ROOT, 'corpus', 'releases', 'experience-candidate-v0.4', 'resources.json'),
   );
 
   await authority.loadActive({ fetch: async () => responseFor(urlBytes) });
@@ -241,10 +241,10 @@ test('verified metadata requires one unique record for every active URL', async 
     fetch: async () => responseFor(resourceBytes),
   });
 
-  assert.equal(metadata.count, 6975);
-  assert.equal(metadata.releaseId, 'strange-candidate-v0.3');
+  assert.equal(metadata.count, 7033);
+  assert.equal(metadata.releaseId, 'experience-candidate-v0.4');
   assert.equal(metadata.digest, RESOURCES_DIGEST);
-  assert.equal(Object.keys(metadata.byUrl).length, 6975);
+  assert.equal(Object.keys(metadata.byUrl).length, 7033);
   assert.equal(Object.isFrozen(metadata), true);
   assert.equal(Object.isFrozen(metadata.byUrl), true);
 });

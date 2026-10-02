@@ -343,7 +343,7 @@ Retirement needs GET-confirmed 404/410 on at least three distinct UTC days spann
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--registry', type=Path, default=ROOT / 'corpus/expansion/registry-v2.json')
+    parser.add_argument('--registry', type=Path, default=ROOT / 'corpus/expansion/registry-v3.json')
     parser.add_argument('--state', type=Path, default=ROOT / 'corpus/maintenance/state.json')
     parser.add_argument('--out-dir', type=Path, default=ROOT / 'corpus/maintenance')
     parser.add_argument('--limit', type=int, default=1000)

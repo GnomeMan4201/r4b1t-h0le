@@ -10,14 +10,14 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TOOL = ROOT / 'tools' / 'terrain_index.py'
-RELEASE = ROOT / 'corpus' / 'releases' / 'strange-candidate-v0.3'
-INDEX = ROOT / 'corpus' / 'terrains' / 'strange-candidate-v0.3' / 'terrain-index-v1.json'
+RELEASE = ROOT / 'corpus' / 'releases' / 'experience-candidate-v0.4'
+INDEX = ROOT / 'corpus' / 'terrains' / 'experience-candidate-v0.4' / 'terrain-index-v1.json'
 REGISTRY = ROOT / 'corpus' / 'runtime' / 'eligibility-profiles-v1.json'
-URLS_DIGEST = 'sha256:f85a1c710977814c920ff13eb95cf0b86805486668c99dba2d5024d6b1bda3a7'
-INDEX_DIGEST = 'sha256:8282156e330ef423acfba8304e4f7419e6d978d7441ef7e5f146a76b9f6b5a00'
-COUNTS = {'advisory': 43, 'article': 24, 'challenge': 8, 'dataset': 22, 'documentation': 1408, 'lab': 283,
+URLS_DIGEST = 'sha256:824e98baa6d7e364c2c1a4981b45c8b190860f50b550dcd4342292053691bb4d'
+INDEX_DIGEST = 'sha256:91923ece72094e0032c7ffab0952a1b536950384b6ac6b7681e9da7246b324fd'
+COUNTS = {'advisory': 43, 'article': 24, 'challenge': 19, 'dataset': 22, 'documentation': 1408, 'lab': 295,
           'paper': 913, 'reference': 897, 'repository': 470, 'research': 1605, 'security_tool': 212,
-          'threat_feed': 6, 'training_resource': 12, 'writeup': 1072}
+          'threat_feed': 6, 'training_resource': 47, 'writeup': 1072}
 
 
 def run(*args):
@@ -39,7 +39,7 @@ class TerrainIndexBuild(unittest.TestCase):
         doc = json.loads(INDEX.read_text('utf-8'))
         self.assertEqual({t['id']: t['count'] for t in doc['terrains']}, COUNTS)
         self.assertEqual([t['id'] for t in doc['terrains']], sorted(COUNTS))
-        self.assertEqual(sum(t['count'] for t in doc['terrains']), 6975)
+        self.assertEqual(sum(t['count'] for t in doc['terrains']), 7033)
 
     def test_t1_01_counts_equal_release_manifest_and_no_route_is_all_only(self):
         doc = json.loads(INDEX.read_text('utf-8'))
@@ -114,8 +114,8 @@ class RegistryClassification(unittest.TestCase):
     """T1-14: a digest declared in a trail is evidence of use; only the registry establishes authority.
     Classification binds the complete release: release_id + urls_digest + resources_digest."""
 
-    RELEASE_ID = 'strange-candidate-v0.3'
-    RESOURCES_DIGEST = 'sha256:347bf83b013e3eec3aff9301863c6cd3acb62d62db6d39e5fa8c27f4c814dee1'
+    RELEASE_ID = 'experience-candidate-v0.4'
+    RESOURCES_DIGEST = 'sha256:0f3679d2465ad8ecfbcbabed0f9e4b9312750ac725240ea9c9a9156ebeacdfac'
 
     def classify(self, index_digest, registry=REGISTRY, release_id=None, urls_digest=URLS_DIGEST, resources_digest=None):
         result = run('classify', '--registry', str(registry),

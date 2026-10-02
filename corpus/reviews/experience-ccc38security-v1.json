@@ -1,0 +1,132 @@
+{
+  "admissions": [
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-ace-up-the-sleeve-hacking-into-apple-s-new-usb-c-controller"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-ai-meets-git-unmasking-security-flaws-in-qodo-merge"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-attack-mining-how-to-use-distributed-sensors-to-identify-and-take-down-adversaries"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-auracast-breaking-broadcast-le-audio-before-it-hits-the-shelves"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-blinkencity-radio-controlling-street-lamps-and-power-plants"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-breaking-nato-radio-encryption"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-dialing-into-the-past-rce-via-the-fax-machine-because-why-not"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-dude-where-s-my-crypto-real-world-impact-of-weak-cryptocurrency-keys"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-eu-s-digital-identity-systems-reality-check-and-techniques-for-better-privacy"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-fake-shops-von-der-stange-bogusbazaar"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-fearsome-file-formats"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-find-my-101"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-from-convenience-to-contagion-the-libarchive-vulnerabilities-lurking-in-windows-11"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-from-fault-injection-to-rce-analyzing-a-bluetooth-tracker"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-from-pegasus-to-predator-the-evolution-of-commercial-spyware-on-ios"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-from-simulation-to-tenant-takeover"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-guardians-of-the-onion-ensuring-the-health-and-resilience-of-the-tor-network"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-hacking-the-rp2350"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-how-election-software-can-fail"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-iouring-ebpf-xdp-and-afxdp"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-konnte-bisher-noch-nie-gehackt-werden-die-elektronische-patientenakte-kommt-jetzt-fr-alle"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-macos-location-privacy-red-pill-a-rabbit-hole-resulting-in-24-cves"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-projekt-bucketchallenge"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-state-of-surveillance-a-year-of-digital-threats-to-civil-society"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-ten-years-of-rowhammer-a-retrospect-and-path-to-the-future"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-tetra-algorithm-set-b-can-glue-mend-the-burst"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-the-master-key"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-ultrawide-archaeology-on-android-native-libraries"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-what-the-phuzz-finding-0-days-in-web-applications-with-coverage-guided-fuzzing"
+    },
+    {
+      "resource_type": "training_resource",
+      "url": "https://media.ccc.de/v/38c3-wir-wissen-wo-dein-auto-steht-volksdaten-von-volkswagen"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "practical_learning",
+  "rationale": "Recorded security talks with video/audio and technical demonstrations; includes file-format oddities, radio systems, hardware faults and printer exploitation. Playback pages are admitted once; alternate encodings, playlist routes and downloads are excluded.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:55a6fc139c9309e6d57f1c87da5642dcac390667aa3960df4274c87eb0e50b22",
+  "snapshot_path": "corpus/indexes/experience-ccc38security-v1.json",
+  "source_id": "experience-ccc38security-v1"
+}

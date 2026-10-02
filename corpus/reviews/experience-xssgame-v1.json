@@ -1,0 +1,16 @@
+{
+  "admissions": [
+    {
+      "resource_type": "challenge",
+      "url": "https://xss-game.appspot.com/level1"
+    }
+  ],
+  "corpus": "r4b1t-cybersecurity-v1",
+  "family": "practical_learning",
+  "rationale": "Google browser-based XSS training levels with a vulnerable application, source and hints. These are intentional isolated learning challenges; excludes generic landing and account controls.",
+  "schema": "r4b1t-reviewed-source-index-v1",
+  "scope": "cybersecurity",
+  "snapshot_digest": "sha256:e294e13caaf63775d3168f816d5e3e4133a10e5de958b146bad95f81273bedc5",
+  "snapshot_path": "corpus/indexes/experience-xssgame-v1.json",
+  "source_id": "experience-xssgame-v1"
+}
