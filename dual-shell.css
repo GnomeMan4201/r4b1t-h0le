@@ -1328,3 +1328,25 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-production-mark{height:120px}
   .r4m-roll.r4m-roll-aperture{height:92px!important;min-height:92px!important}
 }
+
+/* ── Mark dock ──────────────────────────────────────────────────────────────
+   While any sheet or overlay is open the rabbit stays on stage: dual-shell.js pins
+   the mounted mark where it already sits (custom properties measured at dock time)
+   and every panel starts below it, so the mark's reactions to MENU, BRANCH, TRAIL,
+   TOPOLOGY, HISTORY, REPLAY, COPY TRAIL and BLIND DESCENT are seen, not hidden.
+   Layout only: nothing here touches the mark's own markup or motion. */
+html.r4m-mark-docked #r4mProductionMark{height:var(--r4m-dock-h);min-height:var(--r4m-dock-h)}
+html.r4m-mark-docked #r4mProductionMark>svg{position:fixed;z-index:10100;top:var(--r4m-dock-top);left:var(--r4m-dock-left);width:var(--r4m-dock-w);height:var(--r4m-dock-h);max-height:none;margin:0;background:#000}
+/* full-height panels and the sheet backdrop start under the mark */
+html.r4m-mark-docked :is(#r4mBackdrop,#r4mMenuSheet,#historyOverlay,#trailTopologyOverlay,#replayInspectionOverlay,#trailComparisonOverlay,#proofSessionOverlay,#trailLedgerOverlay,#blindDescentOverlay){top:var(--r4m-dock-bottom)!important}
+html.r4m-mark-docked #r4mMenuSheet{overflow-y:auto;overscroll-behavior:contain}
+/* bottom sheets keep their own height but never reach over the mark */
+html.r4m-mark-docked :is(#r4mFilterSheet,#r4mBranchSheet,#r4mHelpSheet,#r4mInspectSheet){max-height:min(76vh,calc(100vh - var(--r4m-dock-bottom)))!important}
+/* centred overlay panels size to the space left instead of the whole viewport */
+html.r4m-mark-docked :is(#historyOverlay,#replayInspectionOverlay,#trailComparisonOverlay,#proofSessionOverlay,#trailLedgerOverlay)>*{max-height:100%!important}
+html.r4m-mark-docked #trailTopologyOverlay>.topology-shell{min-height:100%;height:auto}
+/* if the mark had scrolled away it drops in at the top */
+@media (prefers-reduced-motion:no-preference){
+  html.r4m-mark-dock-drop #r4mProductionMark>svg{animation:r4m-mark-dock-drop 240ms cubic-bezier(.2,.7,.3,1) both}
+}
+@keyframes r4m-mark-dock-drop{from{transform:translateY(-100%)}to{transform:none}}

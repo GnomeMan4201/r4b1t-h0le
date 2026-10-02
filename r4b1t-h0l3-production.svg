@@ -26,7 +26,7 @@
    Every animation and transition lives inside prefers-reduced-motion:
    no-preference. Outside it are only geometry origins and the held poses
    that represent a state, so reduced motion shows each state instantly.   */
-#r4h-root{--glance-x:5px;--glance-y:3px;--ear-rot:3.5deg}
+#r4h-root{--glance-x:8px;--glance-y:5px;--ear-rot:12deg}
 
 /* origins (view-box units) */
 #r4h-root .r4h-entrance-hole,#r4h-root .r4h-entrance-lip,#r4h-root #r4h-entrance-rise,
@@ -68,6 +68,7 @@
 #r4h-root #r4h-act-paw-right,#r4h-root #r4h-copy-paw-right{transform-origin:830px 640px}
 #r4h-root #r4h-act-card,#r4h-root #r4h-copy-card{transform-origin:772px 712px}
 #r4h-root #r4h-act-eye-left-socket{visibility:hidden}
+#r4h-root .r4h-act-paw-socket{visibility:hidden}
 /* /r4h-secondary:origins */
 
 /* held poses that represent a state (apply with or without motion) */
@@ -87,36 +88,37 @@
 #r4h-root:is(.blind-descending, .blind-descending *) #r4h-blind-eye-left-socket{visibility:visible}
 /* r4h-secondary:holds */
 /* secondary interaction: held poses */
-#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glint-left{transform:translate(5px,0)}
-#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glint-right{transform:translate(5px,0)}
-#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-right{transform:translate(7.44px,1.92px) rotate(-2.0deg)}
-#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-left{transform:translate(7.42px,-1.22px) rotate(1.5deg)}
-#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-head{transform:translate(5px,0px) rotate(1.5deg)}
-#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transform:translate(18px,-9px) rotate(-5deg)}
-#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-left{transform:translate(4.72px,-2.67px) rotate(1.5deg)}
-#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glance-left{transform:translate(-5px,-1px)}
-#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glance-right{transform:translate(-5px,-1px)}
-#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-head{transform:translate(-4px,0px) rotate(-1.5deg)}
-#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-left{transform:translate(-6.39px,1.29px) rotate(-1.5deg)}
-#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-right{transform:translate(-6.49px,-1.85px) rotate(-1.5deg)}
-#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-left{transform:translate(-20px,9px) rotate(-3deg)}
-#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transform:translate(-2.99px,-2.89px) rotate(-1.5deg)}
-#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-left{transform:rotate(-7deg)}
-#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-right{transform:rotate(-5deg)}
-#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-rabbit{transform:translate(0,-10px)}
-#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-left{transform:translate(-16px,12px) rotate(-4deg)}
-#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transform:translate(14px,4px) rotate(4deg)}
+#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glint-left{transform:translate(8px,0px)}
+#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glint-right{transform:translate(8px,0px)}
+#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-right{transform:translate(37.92px,0.63px) rotate(-9deg)}
+#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-left{transform:translate(38.2px,-9.83px) rotate(9deg)}
+#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-head{transform:translate(30px,-6px) rotate(5deg)}
+#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transform:translate(24.1px,-22.57px) rotate(-7deg)}
+#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-left{transform:translate(29.34px,-14.94px) rotate(5deg)}
+#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glance-left{transform:translate(-6px,-1px)}
+#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glance-right{transform:translate(-6px,-1px)}
+#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-head{transform:translate(-26px,4px) rotate(-6deg)}
+#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-left{transform:translate(-35.35px,9.52px) rotate(-9deg)}
+#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-right{transform:translate(-36.22px,-3.01px) rotate(-9deg)}
+#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-left{transform:translate(-64.19px,28.6px) rotate(-14deg)}
+#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transform:translate(-22.42px,-7.72px) rotate(-6deg)}
+#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-left{transform:rotate(-16deg)}
+#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-right{transform:rotate(-14deg)}
+#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-rabbit{transform:translate(0px,-48px)}
+#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-left{transform:translate(-40px,52px) rotate(-6deg)}
+#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transform:translate(24px,46px) rotate(6deg)}
 #r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-eyes{transform:scale(1,.9)}
 #r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glint-left{transform:translate(2px,5px)}
 #r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glint-right{transform:translate(1px,6px)}
-#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-head{transform:translate(2px,3px) rotate(1.5deg)}
-#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-left{transform:translate(4.42px,1.78px) rotate(1.5deg)}
-#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-right{transform:translate(4.44px,4.92px) rotate(1.5deg)}
-#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transform:translate(-22px,-12px) rotate(-8deg)}
-#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-left{transform:translate(1.72px,0.33px) rotate(1.5deg)}
+#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-head{transform:translate(14px,22px) rotate(6deg)}
+#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-left{transform:translate(23.88px,17.49px) rotate(6deg)}
+#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-right{transform:translate(23.43px,30.04px) rotate(6deg)}
+#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transform:translate(-40px,-40px) rotate(-10deg)}
+#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-left{transform:translate(13.3px,11.27px) rotate(6deg)}
 #r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *) #r4h-act-card{transform:translate(-166px,-116px) rotate(-8deg)}
-#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *) #r4h-act-card{transform:translate(0,-130px) rotate(-4deg)}
+#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *) #r4h-act-card{transform:translate(0,-130px) rotate(-6deg)}
 #r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-backing,#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-backing,#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-backing,#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-backing{visibility:hidden}
+#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-act-paw-socket,#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-act-paw-socket,#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-act-paw-socket,#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-act-paw-socket{visibility:visible}
 #r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-eye-left-socket,#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-eye-left-socket,#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-eye-left-socket{visibility:visible}
 /* /r4h-secondary:holds */
 
@@ -221,6 +223,7 @@
 #r4h-root #r4h-act-ear-left{transition:transform 300ms cubic-bezier(.3,0,.2,1) 80ms}
 #r4h-root #r4h-act-ear-right{transition:transform 300ms cubic-bezier(.3,0,.2,1) 80ms}
 #r4h-root #r4h-act-backing{transition:visibility 0s linear 300ms}
+#r4h-root .r4h-act-paw-socket{transition:visibility 0s linear 300ms}
 #r4h-root #r4h-act-eye-left-socket{transition:visibility 0s linear 140ms}
 #r4h-root #r4h-copy-paw-left{transition:transform 120ms cubic-bezier(.3,0,.2,1) 0ms}
 #r4h-root #r4h-copy-paw-right{transition:transform 120ms cubic-bezier(.3,0,.2,1) 0ms}
@@ -228,6 +231,7 @@
 /* a higher state takes the character: the secondary layer lets go within the lock (90ms) */
 #r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-card,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-paw-left,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-paw-right,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-rabbit,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-head,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-glint-left,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-glint-right,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-glance-left,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-glance-right,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-eyes,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-ear-left,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-ear-right,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-backing,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-eye-left-socket,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-copy-paw-left,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-copy-paw-right,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-copy-card{transition:transform 90ms cubic-bezier(.3,0,.2,1) 0ms,visibility 0s linear 90ms}
 #r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-eye-left-socket,#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) #r4h-act-backing{transition:visibility 0s linear 90ms}
+#r4h-root:is(.rolling, .rolling *, .blind-descending, .blind-descending *) .r4h-act-paw-socket{transition:visibility 0s linear 90ms}
 /* BRANCH: eyes snap forward, then ear, head and right paw together; the hole gives once */
 #r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glint-left{transition:transform 90ms cubic-bezier(.1,.8,.2,1) 0ms}
 #r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glint-right{transition:transform 90ms cubic-bezier(.1,.8,.2,1) 0ms}
@@ -238,6 +242,7 @@
 #r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-left{transition:transform 210ms cubic-bezier(.2,.7,.3,1) 90ms}
 #r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-hole,#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-hole-front{animation:r4h-act-branch-hole 300ms linear 0ms 1 none}
 #r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-backing{transition:visibility 0s linear 90ms}
+#r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-act-paw-socket{transition:visibility 0s linear 90ms}
 #r4h-root:is(.branch-open, .branch-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-eye-left-socket{transition:visibility 0s linear 0ms}
 /* TRAIL: eyes back, head follows, left paw slides back along the rim, the record edges up */
 #r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glance-left{transition:transform 100ms cubic-bezier(.1,.8,.2,1) 0ms}
@@ -249,6 +254,7 @@
 #r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-right{transition:transform 160ms cubic-bezier(.3,.6,.3,1) 100ms}
 #r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *) #r4h-act-card{transition:transform 240ms cubic-bezier(.2,.7,.3,1) 280ms}
 #r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-backing{transition:visibility 0s linear 260ms}
+#r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-act-paw-socket{transition:visibility 0s linear 260ms}
 #r4h-root:is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-eye-left-socket{transition:visibility 0s linear 0ms}
 /* TOPOLOGY: ears split, eyes scan one side then the other, body rises, paws spread on the rim */
 #r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-left{transition:transform 140ms cubic-bezier(.1,.8,.2,1) 0ms}
@@ -256,10 +262,11 @@
 #r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glint-left{transition:none;animation:r4h-act-topology-glint 480ms linear 0ms 1 none}
 #r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glint-right{transition:none;animation:r4h-act-topology-glint 480ms linear 0ms 1 none}
 #r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-eye-left-socket{animation:r4h-act-topology-socket 480ms linear 0ms 1 none}
-#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-rabbit{transition:transform 180ms cubic-bezier(.2,.8,.3,1.6) 300ms}
+#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-rabbit{transition:none;animation:r4h-act-topology-rabbit 520ms linear 0ms 1 none}
 #r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-left{transition:transform 180ms cubic-bezier(.25,.7,.3,1) 300ms}
 #r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transition:transform 180ms cubic-bezier(.25,.7,.3,1) 300ms}
 #r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-backing{transition:visibility 0s linear 300ms}
+#r4h-root:is(.topology-open, .topology-open *):not(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-act-paw-socket{transition:visibility 0s linear 300ms}
 /* HISTORY: one look back, eyes first, head, long ear late; returns while the sheet stays open */
 #r4h-root:is(.history-open, .history-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *, .trail-open, .trail-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glint-left{transition:none;animation:r4h-act-history-glint 900ms linear 0ms 1 none}
 #r4h-root:is(.history-open, .history-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *, .trail-open, .trail-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-glint-right{transition:none;animation:r4h-act-history-glint 900ms linear 0ms 1 none}
@@ -280,7 +287,14 @@
 #r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transition:none;animation:r4h-act-replay-paw 900ms linear 0ms 1 none}
 #r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *) #r4h-act-card{transition:none;animation:r4h-act-replay-card 900ms linear 0ms 1 none}
 #r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-backing{transition:visibility 0s linear 0ms}
+#r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-act-paw-socket{transition:visibility 0s linear 0ms}
 #r4h-root:is(.replay-open, .replay-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-eye-left-socket{transition:visibility 0s linear 0ms}
+/* MENU (act tier, under every secondary peer): head turns down toward MENU; ears and paws ride it */
+#r4h-root:is(.menu-open, .menu-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *, .trail-open, .trail-open *, .history-open, .history-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-head{transform:translate(8px,10px) rotate(4deg);transition:transform 240ms cubic-bezier(.2,.7,.3,1) 40ms}
+#r4h-root:is(.menu-open, .menu-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *, .trail-open, .trail-open *, .history-open, .history-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-left{transform:translate(14.53px,6.88px) rotate(4deg);transition:transform 300ms cubic-bezier(.2,.7,.3,1) 60ms}
+#r4h-root:is(.menu-open, .menu-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *, .trail-open, .trail-open *, .history-open, .history-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-ear-right{transform:translate(14.38px,15.25px) rotate(4deg);transition:transform 260ms cubic-bezier(.2,.7,.3,1) 40ms}
+#r4h-root:is(.menu-open, .menu-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *, .trail-open, .trail-open *, .history-open, .history-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-left{transform:translate(7.41px,2.86px) rotate(4deg);transition:transform 240ms cubic-bezier(.2,.7,.3,1) 40ms}
+#r4h-root:is(.menu-open, .menu-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *, .trail-open, .trail-open *, .history-open, .history-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-paw-right{transform:translate(4.94px,17.58px) rotate(4deg);transition:transform 240ms cubic-bezier(.2,.7,.3,1) 40ms}
 /* COPY TRAIL (on top of any secondary pose): grip, second paw, one short separation, home */
 #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):is(.result-ready, .result-ready *) #r4h-copy-paw-right,#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):is(.replay-open, .replay-open *) #r4h-copy-paw-right,#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *):not(.replay-open, .replay-open *):not(.trail-open, .trail-open *) #r4h-copy-paw-right,#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *):not(.replay-open, .replay-open *):is(.topology-open, .topology-open *, .branch-open, .branch-open *) #r4h-copy-paw-right{transition:none;animation:r4h-copy-grip-right 420ms linear 0ms 1 none}
 #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):is(.result-ready, .result-ready *) #r4h-copy-paw-left,#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):is(.replay-open, .replay-open *) #r4h-copy-paw-left,#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *):not(.replay-open, .replay-open *):not(.trail-open, .trail-open *) #r4h-copy-paw-left,#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *):not(.replay-open, .replay-open *):is(.topology-open, .topology-open *, .branch-open, .branch-open *) #r4h-copy-paw-left{transition:none;animation:r4h-copy-reach-left 420ms linear 0ms 1 none}
@@ -289,6 +303,7 @@
 #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *):is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *) #r4h-copy-paw-left{transition:none;animation:r4h-copy-grip-left 420ms linear 0ms 1 none}
 #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *):not(.result-ready, .result-ready *):is(.trail-open, .trail-open *):not(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *) #r4h-copy-card{transition:none;animation:r4h-copy-snap-left 420ms linear 0ms 1 none}
 #r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-act-backing{animation:r4h-act-copy-backing 420ms linear 0ms 1 none}
+#r4h-root:is(.copy-trail, .copy-trail *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) .r4h-act-paw-socket{animation:r4h-act-copy-socket 420ms linear 0ms 1 none}
 /* lower tiers yield: MENU lets go of its glance under a secondary sheet; idle stops looping while any sheet (MENU included) is open */
 #r4h-root:is(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *, .trail-open, .trail-open *, .history-open, .history-open *):is(.menu-open, .menu-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-menu-glint{transform:none;animation:none;transition:transform 130ms cubic-bezier(.4,-.35,.3,1.3) 0ms}
 #r4h-root:is(.replay-open, .replay-open *, .topology-open, .topology-open *, .branch-open, .branch-open *, .trail-open, .trail-open *, .history-open, .history-open *):is(.menu-open, .menu-open *):not(.rolling, .rolling *):not(.blind-descending, .blind-descending *) #r4h-menu-ear{transform:none;animation:none;transition:transform 240ms cubic-bezier(.34,1.3,.5,1) 80ms}
@@ -508,7 +523,7 @@
 /* r4h-secondary:keyframes */
 @keyframes r4h-act-branch-hole{
   0%,30% {transform:none;animation-timing-function:cubic-bezier(.2,.7,.3,1)}
-  62% {transform:scale(1.035,1);animation-timing-function:cubic-bezier(.4,0,.3,1)}
+  62% {transform:scale(1.08,1);animation-timing-function:cubic-bezier(.4,0,.3,1)}
   100% {transform:none}
 }
 @keyframes r4h-act-topology-glint{
@@ -516,6 +531,12 @@
   46%,56% {transform:translate(-5px,0);animation-timing-function:cubic-bezier(.45,0,.3,1)}
   76%,86% {transform:translate(5px,0);animation-timing-function:cubic-bezier(.45,0,.3,1)}
   100% {transform:none}
+}
+@keyframes r4h-act-topology-rabbit{
+  0%,22% {transform:none;animation-timing-function:cubic-bezier(.25,.7,.3,1)}
+  42%,50% {transform:translate(0,-26px) rotate(-4deg);animation-timing-function:cubic-bezier(.45,0,.3,1)}
+  72%,78% {transform:translate(0,-54px) rotate(4deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  100% {transform:translate(0,-48px)}
 }
 @keyframes r4h-act-topology-socket{0%,97%{visibility:visible}97.01%,100%{visibility:hidden}}
 @keyframes r4h-act-history-glint{
@@ -525,28 +546,28 @@
 }
 @keyframes r4h-act-history-head{
   0%,11% {transform:none;animation-timing-function:cubic-bezier(.3,.6,.3,1)}
-  31%,72% {transform:translate(-6px,0px) rotate(-3deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  31%,72% {transform:translate(-30px,-8px) rotate(-8deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
   92%,100% {transform:none}
 }
 @keyframes r4h-act-history-ear-right{
   0%,11% {transform:none;animation-timing-function:cubic-bezier(.3,.6,.3,1)}
-  31%,72% {transform:translate(-11.02px,-3.64px) rotate(-3deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  31%,72% {transform:translate(-43.78px,-17.11px) rotate(-8deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
   92%,100% {transform:none}
 }
 @keyframes r4h-act-history-paw-left{
   0%,11% {transform:none;animation-timing-function:cubic-bezier(.3,.6,.3,1)}
-  31%,72% {transform:translate(-5.23px,5.32px) rotate(-3deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  31%,72% {transform:translate(-27.34px,6.08px) rotate(-8deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
   92%,100% {transform:none}
 }
 @keyframes r4h-act-history-paw-right{
   0%,11% {transform:none;animation-timing-function:cubic-bezier(.3,.6,.3,1)}
-  31%,72% {transform:translate(-4.06px,-5.81px) rotate(-3deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  31%,72% {transform:translate(-25.5px,-23.7px) rotate(-8deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
   92%,100% {transform:none}
 }
 @keyframes r4h-act-history-ear{
   0%,11% {transform:none;animation-timing-function:cubic-bezier(.3,.6,.3,1)}
-  31% {transform:translate(-10.75px,2.64px) rotate(-3deg);animation-timing-function:cubic-bezier(.3,.6,.3,1)}
-  47%,76% {transform:translate(-10.75px,2.64px) rotate(-9deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  31% {transform:translate(-42.34px,-0.42px) rotate(-8deg);animation-timing-function:cubic-bezier(.3,.6,.3,1)}
+  47%,76% {transform:translate(-42.34px,-0.42px) rotate(-22deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
   100% {transform:none}
 }
 @keyframes r4h-act-history-socket{0%,82%{visibility:visible}82.01%,100%{visibility:hidden}}
@@ -565,42 +586,43 @@
 @keyframes r4h-act-replay-paw{
   0%,13% {transform:none;animation-timing-function:cubic-bezier(.6,0,.9,.5)}
   42% {transform:translate(-6px,110px) rotate(6deg);animation-timing-function:cubic-bezier(.2,.65,.3,1)}
-  69%,100% {transform:translate(-22px,-12px) rotate(-8deg)}
+  69%,100% {transform:translate(-40px,-40px) rotate(-10deg)}
 }
 @keyframes r4h-act-replay-card{
   0%,42% {transform:none;animation-timing-function:cubic-bezier(.2,.65,.3,1)}
-  69%,100% {transform:translate(0,-130px) rotate(-4deg)}
+  69%,100% {transform:translate(0,-130px) rotate(-6deg)}
 }
 @keyframes r4h-act-copy-backing{0%,100%{visibility:hidden}}
+@keyframes r4h-act-copy-socket{0%,100%{visibility:visible}}
 @keyframes r4h-copy-grip-right{
   0% {transform:none;animation-timing-function:cubic-bezier(.25,.7,.3,1)}
-  19%,62% {transform:translate(-1px,-3px);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  19%,62% {transform:translate(-2px,-8px);animation-timing-function:cubic-bezier(.3,0,.2,1)}
   100% {transform:none}
 }
 @keyframes r4h-copy-reach-left{
   0%,19% {transform:none;animation-timing-function:cubic-bezier(.3,.6,.3,1)}
-  43%,62% {transform:translate(52px,4px) rotate(8deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  43%,62% {transform:translate(60px,0) rotate(10deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
   100% {transform:none}
 }
 @keyframes r4h-copy-snap{
   0%,43% {transform:none;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
-  50%,62% {transform:translate(7px,-2px) rotate(-3deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  50%,62% {transform:translate(18px,-6px) rotate(-8deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
   100% {transform:none}
 }
 @keyframes r4h-copy-lift-snap{
   0% {transform:translate(0,-60px);animation-timing-function:cubic-bezier(.2,.7,.3,1)}
   19%,43% {transform:translate(0,-130px);animation-timing-function:cubic-bezier(.2,.8,.2,1)}
-  50%,62% {transform:translate(7px,-132px) rotate(-3deg);animation-timing-function:cubic-bezier(.6,0,.9,.4)}
+  50%,62% {transform:translate(18px,-136px) rotate(-8deg);animation-timing-function:cubic-bezier(.6,0,.9,.4)}
   100% {transform:translate(0,-60px)}
 }
 @keyframes r4h-copy-grip-left{
   0% {transform:none;animation-timing-function:cubic-bezier(.25,.7,.3,1)}
-  19%,62% {transform:translate(1px,-3px);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  19%,62% {transform:translate(2px,-8px);animation-timing-function:cubic-bezier(.3,0,.2,1)}
   100% {transform:none}
 }
 @keyframes r4h-copy-snap-left{
   0%,43% {transform:none;animation-timing-function:cubic-bezier(.2,.8,.2,1)}
-  50%,62% {transform:translate(-7px,-1px) rotate(-3deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
+  50%,62% {transform:translate(-18px,-4px) rotate(-8deg);animation-timing-function:cubic-bezier(.3,0,.2,1)}
   100% {transform:none}
 }
 /* /r4h-secondary:keyframes */
@@ -609,6 +631,8 @@
   <!-- every clip/mask below reuses the master geometry through use elements, except
        the four stage clips, which are fixed occlusion regions, not artwork -->
   <clipPath id="r4h-clip-hole" clipPathUnits="userSpaceOnUse"><use href="#r4h-hole-disc" xlink:href="#r4h-hole-disc"/></clipPath>
+  <clipPath id="r4h-clip-paw-left" clipPathUnits="userSpaceOnUse"><use href="#r4h-paw-left-outline" xlink:href="#r4h-paw-left-outline"/></clipPath>
+  <clipPath id="r4h-clip-paw-right" clipPathUnits="userSpaceOnUse"><use href="#r4h-paw-right-outline" xlink:href="#r4h-paw-right-outline"/></clipPath>
   <clipPath id="r4h-clip-eye-right" clipPathUnits="userSpaceOnUse">
     <use href="#r4h-eye-right-iris" xlink:href="#r4h-eye-right-iris"/><use href="#r4h-eye-right-highlight" xlink:href="#r4h-eye-right-highlight"/>
   </clipPath>
@@ -666,6 +690,10 @@
       <g id="r4h-entrance-backing"><g id="r4h-act-backing"><g id="r4h-roll-backing" fill="#000"><use id="r4h-roll-backing-left" href="#r4h-paw-left-outline" xlink:href="#r4h-paw-left-outline"/><use id="r4h-roll-backing-right" href="#r4h-paw-right-outline" xlink:href="#r4h-paw-right-outline"/></g></g></g>
       <g id="r4h-head">
         <path fill="#000" d="M784.6 479.9C782.4 480 780.3 480.2 779.9 480.3C779.5 480.4 777.6 480.6 775.6 480.8C767.6 481.3 753.1 483.8 736.8 487.5C731.7 488.6 730.5 488.9 724.2 490.8C722.8 491.2 721 491.7 720.2 491.9C719.5 492.1 718.4 492.4 717.9 492.6C717.3 492.8 716 493.2 715 493.5C711.4 494.5 698.2 499.1 695.5 500.2C693.1 501.2 692.8 501 692.3 498.5C692.1 497.4 691.9 496.5 691.9 496.3C691.8 496.1 688.2 496 675 496L658.2 496L655.9 497.1L653.5 498.2L652.9 497C651.3 494.3 649.1 490.8 649 490.8C648.9 490.8 647.7 491.9 646.4 493.4L644 496L642.1 496L640.2 496L635.4 498.4L630.5 500.8L631 501.6C631.6 502.6 639.1 517.5 641.8 523.1C644 527.7 644 527.9 642.6 528.8C637.2 532 615 547.3 606.4 553.7C600.7 558 600.6 558 601.5 559.9C601.8 560.6 602.5 562.4 603.1 564C604.7 568 605.4 569.4 606.9 572.6C607.7 574.1 609 577.1 609.9 579.2C610.8 581.4 612.1 584.4 612.9 585.9C613.6 587.5 614.2 588.8 614.2 588.8C614.2 589.1 621.8 604.5 622.7 605.9C623.1 606.8 622.9 607.5 622.1 607.5C621.8 607.5 617.6 608.8 613.1 610.3C604.7 613.1 596.6 617.8 586.2 626.1C576.1 634.1 569.4 640 569.1 641.2C569 641.5 569.2 642.3 569.6 643.2C570 644 570.5 645 570.6 645.4C570.8 645.8 571.9 648.3 573.1 651C574.2 653.7 575.6 656.8 576 657.9C577.9 662.6 580 667.3 580 667C580 666.9 579.5 665.4 578.9 663.6C575.8 654.8 573.2 646.9 572.9 645.1L572.5 643.1L573 640.8C573.7 637.3 574.8 636 581.6 631C588.9 625.5 600.1 618.9 606.6 616.2C615.2 612.8 619.8 611.4 628.7 609.6L633.2 608.7L635.3 610.1C637.5 611.6 638.1 612.2 640.7 615.5C644.9 620.8 652.2 628.7 657.2 633.3C660.2 636 660.6 636.6 661.2 639C661.6 641.2 661.6 644.1 661.1 649C660.9 651 660.6 654.5 660.4 656.8C660.2 659 659.9 661.4 659.9 662L659.7 663.2L660.3 663.2C660.6 663.2 662 663.5 663.4 663.7C667 664.4 670.1 665 672.4 665.2C673.5 665.4 674.8 665.6 675.2 665.7C675.7 665.8 677.9 666.2 680 666.5C682.1 666.8 686.4 667.4 689.4 667.9C692.4 668.3 696.2 668.9 697.9 669.1C701.6 669.6 703.4 669.9 708.1 670.6C712.9 671.4 719.7 672.4 722.6 672.8C723.9 672.9 727 673.4 729.5 673.9C736.3 675.1 742.5 676.1 750.1 677.3C758 678.5 759.3 678.7 764.5 679.7C766.6 680.2 769.3 680.7 770.5 680.9C771.7 681 774.2 681.5 776.1 681.9C778.1 682.2 780.7 682.7 782 682.9C783.3 683.1 785 683.5 785.9 683.6C786.7 683.8 787.7 684 788 684L788.7 684L788.9 680.9C788.9 679.2 789.1 674.9 789.3 671.2C789.6 664.4 790.1 660.6 790.9 659.2C792.2 657.1 795.3 654.5 797.9 653C799.3 652.3 800.6 651.3 802.5 649.6C804.1 648.2 810 643.9 815 640.6L817.6 638.8L820 638.4L822.3 637.9L824.7 638.4C826 638.6 828 639.2 829.1 639.7C830.2 640.1 831.5 640.7 832 640.9C836.6 642.6 844.4 646.4 850.9 650.1C858.2 654.3 859.1 655.1 863.5 662.9C864.9 665.3 866.8 668.6 867.7 670.1C868.6 671.6 869.7 673.5 870.1 674.2C870.7 675.1 871.1 676.4 871.4 677.8L871.8 679.9L871.3 682.1L870.9 684.4L867.7 688.8C866 691.1 862.8 695.8 860.7 699C854.7 707.8 854.2 708.2 850.6 709L848.4 709.5L846.2 709C843.7 708.5 842.2 707.5 840.8 705.5L839.8 704.2L839 705.7C838.1 707.4 838.1 707.1 837.9 718.8C837.6 729.2 837.6 729.4 838.8 728.2C839.5 727.5 843.9 721.9 846 719C846.9 717.8 848.7 715.5 850.1 713.8C851.5 712 853.7 709.3 854.9 707.6C856.1 706 858.3 703.1 859.8 701.4C863.2 697.1 865.6 694 867 692.1C868 690.8 870.5 687.6 874 683.3C875.7 681.2 875.7 681.4 872.9 675.6C871.7 673.1 870.3 670.3 869.9 669.4C869.4 668.4 868.1 666 867 664.1C866 662.1 864.4 659.2 863.5 657.6C860.6 652 860.7 652 854.1 648.5C853.5 648.1 852.6 647.7 852.2 647.5C850.7 646.4 837.6 639.8 837.2 639.8C837.1 639.8 835.8 639.1 834.2 638.4C832.7 637.7 830.6 636.8 829.6 636.4C827.2 635.5 827.2 634.5 829.5 633.9C831.6 633.4 844 622.2 844 620.8C844 620.8 844.6 619.8 845.4 618.6C846.1 617.5 847.1 615.8 847.5 615C848 614.3 848.6 613 849.1 612.4C849.5 611.7 850.2 610.2 850.6 609.1C851.1 608 851.6 606.9 851.7 606.6C852.2 605.5 853 603.7 854 601.4C854.6 600 855.5 597.8 856 596.6C856.5 595.4 857.2 593.6 857.6 592.8C858 591.8 858.4 590.9 858.5 590.6C859.1 589.4 859.6 588 860.4 585.9C860.8 584.6 861.6 582.7 862 581.5C862.4 580.3 863.1 578.3 863.5 577C865.1 572.1 867 566.1 867.1 565.6C867.1 565.3 867.7 563.5 868.2 561.6C869.4 557.7 869.4 557.5 868.9 556.9L868.5 556.5L862.5 556.6L856.6 556.8L856.2 556.2C855.9 555.7 855.2 552.3 854.1 545.5C854 544.3 853.5 541.8 853.1 540C852.6 538.1 852.2 536.1 852.1 535.5C852 534.9 851.6 532.8 851.1 531C849.5 524.3 848.6 520.5 848 517.4C847.8 516.6 847.6 515.6 847.4 515.1C847.1 514.4 839.4 506.7 837.2 504.9L836.1 504.1L832.4 504.3C830.3 504.4 826.2 504.6 823.1 504.7C814.7 505.1 808.7 505.5 808.4 505.8C808.2 505.9 802.8 506 796.2 506L784.2 506L784.2 504.5L784.2 503L783.5 502C783.1 501.5 782.8 500.9 782.8 500.6C782.8 500.4 784 498.9 785.4 497.3C786.8 495.7 788.2 493.8 788.6 493.1C790.1 490.1 790.7 486.2 790.3 481.9L790.1 479.6L789.4 479.6C789 479.6 786.8 479.7 784.6 479.9Z M629.5 661.4C629.4 661.5 628.5 665.8 627.5 670.8C626.5 675.8 625.4 681.3 625 683.1C624.6 684.9 623.9 688.1 623.5 690.2L622.7 694.1L621.8 695.5C620.4 697.6 618.7 698.7 616.1 699.3L613.9 699.7L611.7 699.3C610.2 699 609.2 698.6 608.6 698.1C608.1 697.8 607.7 697.5 607.6 697.5C607.6 697.6 608.3 699.9 609.3 702.8C610.2 705.6 611.2 708.4 611.4 709C611.8 710.1 613.3 714.4 613.8 715.8C614.2 716.9 614.9 716.7 615.2 715.4C615.4 714.9 616 713.1 616.6 711.6C617.2 710.1 618 708 618.4 706.9C618.8 705.8 619.5 703.7 620.1 702.2C620.6 700.8 621.8 697.4 622.8 694.6C623.7 691.9 625.2 687.8 626 685.5C628 680 630.5 672.7 630.5 672.2C630.5 671.1 632.1 671.6 632.4 672.9C632.4 673.1 633.2 674.8 634 676.5C634.9 678.2 635.5 679.4 635.4 679.1C635.3 678.9 634.3 675.9 633.2 672.6C632.2 669.3 630.9 665.4 630.5 663.9C630 662.4 629.5 661.2 629.5 661.4Z M600.3 674.8C600.2 675.5 598.3 677.9 597 678.9C596 679.6 595.2 679.9 593.6 680.2L591.5 680.7L589.4 680.2C587.6 679.9 587 679.6 585.9 678.8C585.1 678.2 584.5 677.8 584.5 677.9C584.5 677.9 584.6 678.4 584.9 678.8C585.1 679.2 585.5 680.2 585.8 681C586.1 681.8 586.5 682.8 586.8 683.4C587 683.9 587.7 685.6 588.4 687.1C589 688.6 589.7 690.2 589.9 690.7C590.3 691.5 591.9 695.5 592.6 697.6C593.3 699.5 594.3 699.4 594.6 697.3C594.7 696.6 595.4 694.3 596 692.1C597 688.7 598.9 681.8 599.4 679.4C599.5 678.9 599.6 678.8 600.1 678.8C600.7 678.8 600.7 678.7 601.6 681.3C602.4 683.4 602.2 682.5 601.2 678.4C600.7 676.2 600.3 674.5 600.3 674.8Z M653.3 693.8C652.5 694.4 651.6 694.7 650.1 695L647.9 695.5L645.7 695C644.5 694.8 643.3 694.4 643.1 694.2L642.7 693.9L643 694.5C643.2 694.9 643.8 695.9 644.3 696.9C644.9 697.8 645.6 699.1 645.9 699.8C647.1 702.1 649.6 707.4 650 708.4C650.4 709.3 650.6 709.5 651.1 709.5L651.7 709.5L651.9 708.3C652.3 704.7 653.2 699.2 654.2 694C654.4 693.5 654.4 693 654.4 693C654.4 693 653.9 693.4 653.3 693.8Z M812.9 698.1C812.5 698.9 811.9 700.3 811.5 701.1L810.8 702.6L811 704.8C811.2 705.9 811.3 707 811.4 707.2C811.4 707.5 811.7 709.1 811.9 711C812.3 714.6 812.5 715.4 812.5 713.2C812.5 710.8 813 703 813.4 699.8C813.6 698.1 813.7 696.6 813.7 696.6C813.6 696.5 813.3 697.2 812.9 698.1Z M791.9 721.4C792 724.5 792.2 727.3 792.3 727.4C792.7 727.9 793.3 727.4 794.1 726C794.5 725.2 795.1 724.4 795.4 724C795.9 723.4 797.1 721.8 799.3 718.7C800.4 717.1 800.3 717 798.5 717.5C797.2 717.8 793.6 717 792.6 716.3L791.8 715.7L791.9 721.4Z M813.5 723.6C813.5 724.2 814.1 729 814.4 730.7C814.6 731.8 814.9 734.1 815 735.7L815.1 738.6L815.6 738.6C816 738.6 816.7 737.9 818 735.9C819 734.4 820.4 732.3 821.1 731.4C824.7 726.6 824.7 726.7 822.4 727.2C820 727.8 816.2 726.5 814.3 724.3C813.9 723.8 813.5 723.5 813.5 723.6Z"/>
+        <use id="r4h-act-paw-left-socket-ring" class="r4h-act-paw-socket" href="#r4h-paw-left-outline" xlink:href="#r4h-paw-left-outline" stroke="#FB0118" stroke-width="20" stroke-linejoin="round"/>
+        <rect id="r4h-act-paw-left-socket" class="r4h-act-paw-socket" clip-path="url(#r4h-clip-paw-left)" x="566" y="602" width="102" height="105" fill="#FB0118"/>
+        <use id="r4h-act-paw-right-socket-ring" class="r4h-act-paw-socket" href="#r4h-paw-right-outline" xlink:href="#r4h-paw-right-outline" stroke="#FB0118" stroke-width="20" stroke-linejoin="round"/>
+        <rect id="r4h-act-paw-right-socket" class="r4h-act-paw-socket" clip-path="url(#r4h-clip-paw-right)" x="782" y="631" width="97" height="103" fill="#FB0118"/>
         <path fill="#FEFEFE" d="M778.4 492C770.5 492.8 763.6 493.8 755.6 495.4C754.5 495.6 753.1 495.9 752.5 496C750.8 496.3 741.7 498.5 736.6 499.9C730.7 501.5 726.9 502.7 719.1 505.2C714.1 506.9 713.2 507.2 712.3 507.6C711.9 507.8 711.5 508 711.4 508C711.2 508 702.6 511.2 701.6 511.6C701.2 511.8 699.9 512.4 698.8 512.8C696.6 513.7 694.2 514.7 687.7 517.5C683.7 519.2 683.2 519.2 683.1 517.8C683 517.5 682.8 515.6 682.5 513.8C682.2 511.9 682 509.7 681.9 508.9C681.8 508 681.5 505.8 681.1 503.9C680.8 501.9 680.4 499.4 680.2 498.2L679.9 496L669 496C662.6 496 658 496.1 658 496.2C658 496.3 658.5 498.7 659.1 501.4C661 509.3 661.2 510.4 660.8 510.6C660.6 510.7 655.3 506.2 646.1 497.9L643.9 496L642.2 496L640.5 496L641.7 498.3C642.4 499.6 643.2 501.1 643.6 501.6C643.9 502.2 645.4 504.8 646.8 507.4C650.4 513.8 652.6 517.8 653.7 519.5C654.1 520.3 655.7 523.4 657.1 526.3C659.8 531.7 660 532.3 659.1 532.9C646.8 540.6 640.9 544.6 632.6 550.5C623.1 557.3 619.2 560.3 619.2 560.8C619.2 561 619.6 561.4 620 561.7C621.2 562.5 628.1 566.9 630.5 568.4C631.8 569.3 632.9 570 632.9 570C633 570 633.9 570.6 635.1 571.4C636.2 572.2 639.3 574.3 642 576.1C644.7 577.9 647.7 580 648.8 580.8C649.8 581.5 652.6 583.5 655 585.1C657.4 586.8 661.2 589.4 663.4 591C668.7 594.9 673.1 598 675 599.4C678.2 601.7 683.2 605.5 688.8 609.9C691.9 612.4 694.8 614.7 695.2 615C700.2 618.9 701.8 620.2 704.6 622.6C708.5 626 711.5 628.8 714.1 631.7C716.3 634 716.3 634.5 714.5 634.9C713.9 635.1 712.4 635.5 711.2 636C704.8 638.2 700.8 639.2 694.6 640.3L691.4 640.9L685.8 640.8L680.1 640.8L676.4 640.2C674.4 639.8 672.5 639.4 672.3 639.2C671.4 638.8 670.5 638.9 670.5 639.6C670.5 639.9 670.7 640.3 670.8 640.5C671 640.6 671.1 641.4 671.1 642.3L671.1 643.9L674.4 644.8C676.2 645.3 679 646.1 680.6 646.7C684.1 648 685.9 648.5 690.5 650C692.4 650.6 694.3 651.2 694.9 651.4C700.2 653.2 715.2 656.5 721.8 657.3C723.4 657.5 724.5 657.8 724.8 658L725.4 658.4L725.1 659.8C724.9 660.5 724.6 662.6 724.4 664.5L723.9 667.8L724.3 668.1C724.8 668.7 728.2 669.2 728.6 668.8C728.8 668.5 729.7 665.8 730.8 661.7C731.2 660.1 731.4 659.8 731.8 659.8C732.4 659.8 732.7 660.3 732.9 662.2C733 663.1 733.1 664.3 733.3 664.8C733.4 665.3 733.6 666.5 733.7 667.5C734.1 670 734.2 670.1 737.3 670.5C740.3 670.9 740.5 670.8 740.1 669C739.3 665.5 738.2 659.5 738.2 659C738.2 658.1 738.1 658.1 744.5 657.5C752.6 656.7 762.5 655 768.9 653.4C778.2 651 785.5 648.6 790.6 646.4C791.1 646.2 792.1 645.8 792.9 645.5C793.7 645.1 794.7 644.6 795.1 644.3C795.4 644 795.9 643.8 796.1 643.7C796.9 643.4 795.9 643.2 794.7 643.5C789.5 644.6 778.6 645 773 644.3C769 643.8 758.6 641.5 755 640.3C749.8 638.6 748.5 638.2 746.6 637.6C744.4 636.8 744 636.6 744 636.3C744 636 749.9 628.9 753.9 624.3C763.9 613.1 778.2 600.2 794.2 588C798.8 584.5 810.3 577.1 814.9 574.6C815.5 574.2 817 573.4 818.2 572.7C822.3 570.3 823.9 569.5 830.1 566.4C836 563.5 840.3 561.5 842.2 561C842.7 560.8 843.1 560.5 843.2 560.2C843.4 559.2 842.1 551.6 839.8 540.8C838.7 535.8 838.6 535.3 838.2 534.7C837 532.9 819.9 516.3 814.4 511.6C813.4 510.8 811.6 509.2 810.4 508.1L808.1 506L796.2 506L784.2 506L784.2 504.4L784.2 502.7L783.8 503C783.6 503.1 782.5 504 781.3 505.1C779.2 507.1 778.8 507.2 777.8 506.2C777.1 505.6 777.1 505.7 778.4 503.2C779.8 500.6 783 494 783 493.8C783 493.6 783.2 493.4 783.4 493.2C783.6 493.1 783.8 492.7 783.8 492.3L783.8 491.8L782.2 491.8C781.3 491.8 779.6 491.9 778.4 492ZM811.2 528.9C813.9 530.8 817.6 533.6 820.7 536.2L823.5 538.5L823.6 539.5C823.7 540.2 824.1 541 824.7 541.6C827.7 545.4 829.1 547.5 828.8 547.8C828.5 548.1 809 528.8 809 528.2C809 527.5 809.3 527.6 811.2 528.9ZM691.9 569.8C692.1 570.1 692.4 570.5 692.5 570.5C692.6 570.5 692.9 570.9 693.1 571.3C693.3 571.8 693.8 572.6 694.2 573.1C694.6 573.7 695.7 575.2 696.5 576.5C697.4 577.8 698.6 579.6 699.2 580.6C699.9 581.6 701 583.2 701.6 584.2C705.4 590.2 709 595.2 710.9 597.2C712.8 599.2 715.2 604 717.4 609.6C719.4 615.1 719.2 615.6 716.7 611.9C715.7 610.6 714.4 609.1 713.6 608.5L712.2 607.3L711.9 606C711.7 605 711 603.6 709.5 601.1C707.4 597.6 703.8 591.2 703.8 591.1C703.8 591.1 702.5 589 701 586.5C699.4 583.9 697.4 580.6 696.5 579.1C695.6 577.6 694.8 576.2 694.6 576C693.8 574.5 691.1 569.8 690.9 569.4C690.7 568.7 691.5 569 691.9 569.8ZM735.6 638.2C739.3 638.4 739.4 638.5 737.1 641.3C736.2 642.4 734.4 644.8 733.1 646.4C729.9 650.3 730.1 650.3 727.2 646.8C723 641.5 721 638.7 721.2 638.4C721.3 638 729.2 637.9 735.6 638.2Z"/>
         <g id="r4h-blind-eyes"><g id="r4h-roll-eyes"><g id="r4h-act-eyes"><g id="r4h-entrance-eyes"><g id="r4h-eyes">
           <g id="r4h-idle-blink-left" class="r4h-idle-blink"><g id="r4h-eye-left" fill="#FB0118">
