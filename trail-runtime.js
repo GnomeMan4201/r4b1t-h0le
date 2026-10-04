@@ -155,9 +155,11 @@
     if (state.restoredFromStorage && restoredHasState) {
       if (state.restoredCorpusRevision) {
         if (state.restoredCorpusRevision !== loaded.revision) {
+          quarantineDraft(localStorage.getItem(STORAGE_KEY), 'Corpus revision mismatch');
           clearDraftState();
         }
       } else if (loaded.source.id !== 'legacy-urls-v1') {
+        quarantineDraft(localStorage.getItem(STORAGE_KEY), 'Corpus revision absent');
         clearDraftState();
       }
     }
