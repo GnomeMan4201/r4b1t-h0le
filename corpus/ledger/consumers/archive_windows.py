@@ -1,5 +1,5 @@
 """Pure explicit archive evidence consumer; never projection or selection authority."""
-from corpus.ledger.projection import resolve
+from corpus.ledger.projection import resolve,replay
 from corpus.ledger.schema.events import keys,url,text,validate_payload
 from corpus.ledger.schema.serialization import serialize,parse,digest,timestamp
 from corpus.ledger.schema.identity import create_seq
@@ -18,15 +18,16 @@ def target_change(record,kind,target):
     record['last_probe']=None
 
 
-def records(projected):
-    result={}
-    for observation in projected['observations']:
+def records(events):
+    projected=replay(events);result={}
+    for observation in events:
         kind=observation['type'];p=observation['payload']
         if kind not in TARGETS+('ARCHIVE_PROBE_SUCCEEDED','ARCHIVE_PROBE_FAILED') and not (kind=='PROBE_HEARTBEAT' and p['policy_version']==POLICY): continue
         rid=observation['resource_id']
         record=result.setdefault(rid,{'resource_id':rid,'canonical_resource_id':resolve(projected,rid),'archive_url':None,'last_probe':None,'boundary':None})
-        if record['boundary'] is not None and observation.get('timestamp','') and observation['timestamp']<record['boundary']: raise ValueError('archive chronology reversed')
-        if kind in TARGETS: target_change(record,kind,p['archive_url'])
+        if record['boundary'] is not None and observation['timestamp']<record['boundary']: raise ValueError('archive chronology reversed')
+        if kind in TARGETS:
+            target_change(record,kind,p['archive_url']);record['boundary']=observation['timestamp']
         elif kind=='PROBE_HEARTBEAT': record['boundary']=max(record['boundary'] or '',p['finished_at'])
         else:
             if record['archive_url'] is None or p['observed_url']!=record['archive_url']: raise ValueError('probe must name current archive target')
