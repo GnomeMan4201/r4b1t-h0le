@@ -33,7 +33,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
-- Local ROLL sampler continuity now survives page reloads: the draft restores the consumed draw cursor and transaction sequence from its latest v2 transaction.
+- A ROLL committed while a replayed route was being displayed advanced the sampler but was not recorded, leaving a permanent gap that made the draft unexportable as v0.3. ROLLs are now always recorded, and sampler state advances only together with the recorded step.
+- A saved draft that failed restore validation was silently erased. Restore now validates the whole ROLL chain with export's rule, which also bounds the restore cursor. A draft that cannot be continued is preserved verbatim (`window.getQuarantinedTrailDraft()`), and the Trail Ledger reports it.
+- Local ROLL sampler continuity now survives page reloads: the draft restores the consumed draw cursor and transaction sequence from its v2 ROLL chain.
 - Every committed ROLL is persisted even when a one-route or max-draw result repeats the previous URL.
 - The immediate-repeat guard is trail-scoped. RESET and FORK begin with a null guard reference instead of inheriting page-session state.
 

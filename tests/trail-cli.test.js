@@ -85,3 +85,16 @@ test('trail:verify checks v0.3 parent lineage', async () => {
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('trail:verify fails closed for an unsupported Trail version', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'r4b1t-unsupported-trail-'));
+  try {
+    const file = path.join(dir, 'trail.json');
+    fs.writeFileSync(file, JSON.stringify({ trail_id: REVISION, manifest: { format: 'r4b1t-trail/v999' } }));
+    const result = runVerifier([file]);
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /unsupported/i);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});

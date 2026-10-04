@@ -153,3 +153,49 @@ test('FNV seed fold stays pinned to the current 32-bit sampler state', () => {
   const b = trail.createSampler(SEED);
   for (let i = 0; i < 8; i += 1) assert.equal(a(), b());
 });
+
+test('independent re-execution rejects changed digest, eligible count, seed, and terrain binding', async () => {
+  const source = await buildArtifact(['security_tool']);
+  for (const mutate of [
+    m => { m.corpus_revision = m.steps[0].transaction.corpus_revision = 'sha256:' + '0'.repeat(64); },
+    m => { m.steps[0].transaction.eligible_count += 1; },
+    m => { m.steps[0].transaction.sampler.seed = 'altered-seed'; },
+    m => { m.steps[0].transaction.constraint.terrainIndex.digest = 'sha256:' + '0'.repeat(64); },
+  ]) {
+    const manifest = structuredClone(source.manifest);
+    mutate(manifest);
+    // These changes remain internally well-formed, so this checks the independent
+    // derivation/authority boundary rather than merely rejecting a stale hash.
+    const changed = await v03.envelope(manifest);
+    await v03.verify(changed);
+    const result = runPython(changed);
+    assert.equal(result.status, 1, result.stdout + result.stderr);
+    assert.equal(JSON.parse(result.stdout).status, 'REEXECUTION_FAILED');
+  }
+});
+
+test('independent re-execution rejects corrupted release bytes and changed registry release binding', async () => {
+  const artifact = await buildArtifact(['security_tool']);
+  for (const target of ['release-bytes', 'registry-binding']) {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'r4b1t-authority-tamper-'));
+    try {
+      fs.cpSync(path.join(ROOT, 'corpus/releases'), path.join(root, 'corpus/releases'), { recursive: true });
+      fs.cpSync(path.join(ROOT, 'corpus/terrains'), path.join(root, 'corpus/terrains'), { recursive: true });
+      fs.cpSync(path.join(ROOT, 'corpus/runtime'), path.join(root, 'corpus/runtime'), { recursive: true });
+      if (target === 'release-bytes') {
+        fs.appendFileSync(path.join(root, 'corpus/releases', RELEASE_ID, 'urls.txt'), 'https://tampered.example/\n');
+      } else {
+        const registry = structuredClone(REGISTRY);
+        registry.profiles.find(p => p.profile_id === PROFILE.profile_id).release.resources_digest = 'sha256:' + '0'.repeat(64);
+        fs.writeFileSync(path.join(root, 'corpus/runtime/eligibility-profiles-v1.json'), JSON.stringify(registry));
+      }
+      const file = path.join(root, 'trail.json');
+      fs.writeFileSync(file, JSON.stringify(artifact));
+      const result = spawnSync('python3', ['tools/reexecute_trail.py', file, '--root', root, '--json'], { cwd: ROOT, encoding: 'utf8' });
+      assert.equal(result.status, 1, target + ': ' + result.stdout + result.stderr);
+      assert.equal(JSON.parse(result.stdout).status, 'REEXECUTION_FAILED');
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  }
+});

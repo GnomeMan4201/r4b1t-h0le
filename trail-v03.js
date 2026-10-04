@@ -311,6 +311,7 @@
     FORMAT: FORMAT,
     TRANSACTION: TRANSACTION,
     validateManifest: validateManifest,
+    validateTransaction: validateTransaction,
     envelope: envelope,
     verify: verify,
     verifyLineage: verifyLineage,

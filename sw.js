@@ -1,4 +1,4 @@
-const CACHE = 'r4b1t-v25-branch-determinism';
+const CACHE = 'r4b1t-v26-trail-record-integrity';
 const PRECACHE = [
   './',
   './index.html',
