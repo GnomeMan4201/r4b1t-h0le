@@ -107,25 +107,35 @@
 
   function restore() {
     var raw = null;
+    var failure = null;
     try {
       raw = localStorage.getItem(STORAGE_KEY);
       var saved = JSON.parse(raw || 'null');
-      if (saved && typeof saved.seed === 'string' && Array.isArray(saved.routes)) {
+      if (saved) {
+        if (typeof saved.seed !== 'string' || !saved.seed || !Array.isArray(saved.routes)) {
+          throw new Error('Invalid draft shape');
+        }
         state.restoredFromStorage = true;
         state.restoredCorpusRevision = typeof saved.corpusRevision === 'string' ? saved.corpusRevision : null;
         state.restoredCorpusSourceId = typeof saved.corpusSourceId === 'string' ? saved.corpusSourceId : null;
         state.seed = saved.seed;
         state.createdAt = typeof saved.createdAt === 'string' ? saved.createdAt : state.createdAt;
-        state.routes = saved.routes.filter(function (route) {
-          try { return Boolean(new URL(route.url)); } catch (_) { return false; }
-        });
+        // Never filter saved steps: even malformed evidence must survive rejection.
+        state.routes = saved.routes;
         state.parent = saved.parent || null;
+        for (var index = 0; index < state.routes.length; index += 1) {
+          var route = state.routes[index];
+          if (!route || !/^https?:\/\//i.test(route.url || '')) {
+            throw new Error('Invalid draft route at step ' + (index + 1));
+          }
+          new URL(route.url);
+        }
       }
-    } catch (_) {}
-    var failure = restoreSamplerContinuity();
-    if (failure) {
-      if (quarantineDraft(raw, failure)) clearDraftState();
+      failure = restoreSamplerContinuity();
+    } catch (error) {
+      failure = 'Draft restore rejected: ' + error.message;
     }
+    if (failure && quarantineDraft(raw, failure)) clearDraftState();
   }
 
   function persist() {
