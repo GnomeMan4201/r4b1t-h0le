@@ -30,3 +30,28 @@ class ScheduleTests(unittest.TestCase):
         bad=copy.deepcopy(window);bad['prior_outcomes']=[]
         from corpus.ledger.consumers.probe_windows import verify_window
         with self.assertRaises(ValueError): verify_window(reference(),bad,[],{})
+
+    def test_cold_sequencer_restore_preserves_exact_order_and_refuses_reset(self):
+        import tempfile
+        from pathlib import Path
+        from corpus.ledger.sequencer import Sequencer
+        original=reference()
+        with tempfile.TemporaryDirectory() as directory:
+            writer=Sequencer(Path(directory)/'corpus/ledger/shadow/restore.sqlite3')
+            writer.restore_committed(original)
+            self.assertEqual(writer.events(),original)
+            with self.assertRaises(ValueError): writer.restore_committed(original)
+            self.assertEqual(writer.events(),original)
+
+    def test_daily_heartbeat_requires_atomic_source_binding(self):
+        import tempfile
+        from pathlib import Path
+        from corpus.ledger.sequencer import Sequencer
+        from tests.test_ledger_engine import genesis,proposal
+        with tempfile.TemporaryDirectory() as directory:
+            writer=Sequencer(Path(directory)/'corpus/ledger/shadow/head.sqlite3')
+            writer.submit(genesis());rid=writer.submit(proposal())['resource_id']
+            proposed={'type':'PROBE_HEARTBEAT','resource_id':rid,'timestamp':'2026-10-04T08:00:00.000Z','payload':{'policy_version':'shadow-daily-window-v1','started_at':'2026-10-04T08:00:00.000Z','finished_at':'2026-10-04T08:00:00.000Z','evidence_digest':'sha256:'+'0'*64,'observation_count':1}}
+            before=writer.events()
+            with self.assertRaises(ValueError): writer.submit_many([proposed])
+            self.assertEqual(writer.events(),before)
