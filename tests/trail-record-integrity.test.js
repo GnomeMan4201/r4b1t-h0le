@@ -14,7 +14,7 @@ const KEY = 'r4b1t_trail_draft_v1';
 
 // Execute the actual runtime and verification modules. Only browser I/O is replaced;
 // assertions use its public commit/import/export APIs and durable draft bytes.
-async function runtime(storage = new Map()) {
+async function runtime(storage = new Map(), allowBlocked = false) {
   const listeners = new Map();
   const overlay = { style: {}, setAttribute() {}, focus() {} };
   const document = {
@@ -51,7 +51,8 @@ async function runtime(storage = new Map()) {
   `, context);
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'trail-runtime.js'), 'utf8'), context, { timeout: 1000 });
   listeners.get('DOMContentLoaded')();
-  await context.getTrailManifest();
+  if (allowBlocked) { await Promise.resolve(); await Promise.resolve(); }
+  else await context.getTrailManifest();
   return { context, storage, draft: () => JSON.parse(storage.get(KEY)) };
 }
 
@@ -110,4 +111,18 @@ test('failed recording exposes no route and consumes no sampler interval', async
   assert.equal(result.transaction.sampler.draw_start, 0);
   assert.equal(r.draft().routes.length, 1);
   assert.equal((await r.context.getTrailManifest()).manifest.steps.length, 1);
+});
+
+test('failed quarantine keeps original bytes and blocks sampling and export', async () => {
+  const r = await runtime();
+  r.context.__r4b1tCommitRoll();
+  const damaged = r.draft();
+  damaged.routes[0].selection_transaction.sequence = 8;
+  const raw = JSON.stringify(damaged);
+  r.storage.set(KEY, raw);
+  r.storage.failKeys = new Set(['r4b1t_trail_draft_quarantine_v1']);
+  const restored = await runtime(r.storage, true);
+  assert.equal(restored.storage.get(KEY), raw);
+  assert.equal(restored.context.__r4b1tCommitRoll(), null);
+  await assert.rejects(restored.context.getTrailManifest(), /preservation unavailable/i);
 });
