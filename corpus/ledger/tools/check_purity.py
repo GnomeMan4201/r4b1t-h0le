@@ -12,10 +12,12 @@ def check_source(source, module):
     tree = ast.parse(source)
     aliases = {}
     approved_symbols = {'__future__':('annotations',),'re':('compile','fullmatch','search'),'json':('loads','dumps'),'hashlib':('sha256',),'typing':('Any',),'ipaddress':('IPv6Address',),'urllib.parse':('urlsplit',)}
+    def immutable_default(value):
+        return isinstance(value,ast.Constant) or isinstance(value,ast.Tuple) and all(immutable_default(item) for item in value.elts)
     for node in ast.walk(tree):
         if isinstance(node,ast.Name) and isinstance(node.ctx,ast.Load) and node.id in FORBIDDEN_CALLS: raise ValueError('forbidden replay builtin reference')
         if isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef)):
-            if any(not isinstance(value,ast.Constant) for value in node.args.defaults + [v for v in node.args.kw_defaults if v is not None]): raise ValueError('nonconstant replay default forbidden')
+            if any(not immutable_default(value) for value in node.args.defaults + [v for v in node.args.kw_defaults if v is not None]): raise ValueError('nonconstant replay default forbidden')
         if isinstance(node,(ast.Global,ast.Nonlocal)): raise ValueError('mutable global authority forbidden')
         if isinstance(node,ast.Import):
             for item in node.names:
