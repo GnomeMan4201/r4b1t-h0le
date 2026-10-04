@@ -145,3 +145,23 @@ test('malformed route URLs are quarantined without silently dropping the step', 
   assert.equal(restored.context.getQuarantinedTrailDraft().raw, raw);
   assert.equal(restored.draft().routes.length, 0);
 });
+
+test('restore rejects unsupported or altered sampler transaction declarations', async () => {
+  for (const mutate of [
+    t => { t.transaction_version = 'r4b1t-selection-transaction/v999'; },
+    t => { t.sampler.algorithm = 'another-sampler'; },
+    t => { t.sampler.repeat_guard.max_draws = 31; },
+    t => { t.eligible_count = 0; },
+    t => { t.constraint.protocolPolicy.version = 2; },
+  ]) {
+    const r = await runtime();
+    r.context.__r4b1tCommitRoll();
+    const draft = r.draft();
+    mutate(draft.routes[0].selection_transaction);
+    const raw = JSON.stringify(draft);
+    r.storage.set(KEY, raw);
+    const restored = await runtime(r.storage);
+    assert.equal(restored.context.getQuarantinedTrailDraft().raw, raw);
+    assert.equal(restored.context.__r4b1tCommitRoll().transaction.sequence, 1);
+  }
+});
