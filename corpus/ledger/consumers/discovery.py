@@ -10,6 +10,18 @@ MANIFEST='r4b1t-shadow-discovery-producer-v1'
 FILES=('corpus/ledger/consumers/discovery.py','corpus/ledger/consumers/DISCOVERY_WINDOWS_V1.md','corpus/ledger/tools/discovery.py','corpus/ledger/sequencer.py','corpus/ledger/tools/shadow.py')
 
 
+def provenance_source(value):
+    if not isinstance(value,str) or not value.startswith(VERSION+':'): return None
+    parts=value.split(':')
+    if len(parts)!=6: raise ValueError('versioned discovery provenance framing required')
+    source=parts[1]+':'+parts[2];commitment=parts[3]+':'+parts[4]
+    sha(source);sha(commitment)
+    try: index=int(parts[5])
+    except ValueError as error: raise ValueError('canonical discovery index required') from error
+    if str(index)!=parts[5] or not 0<=index<100: raise ValueError('bounded canonical discovery index required')
+    return source
+
+
 def manifest(value):
     keys(value,('schema','version','files'))
     if value['schema']!=MANIFEST or value['version']!=VERSION or not isinstance(value['files'],list) or value['files']!=sorted_collection(value['files']): raise ValueError('unsupported discovery producer manifest')
@@ -40,7 +52,7 @@ def proposals(events,window):
     if window['schema']!=SCHEMA or window['adapter_version']!=VERSION or build_window(events,window['submissions'],window['producer_manifest'])!=window: raise ValueError('unsupported or stale discovery window')
     commitment=digest('manifest',window);result=[]
     for index,row in enumerate(window['submissions']):
-        metadata=dict(row['metadata'],provenance=VERSION+':'+commitment+':'+str(index))
+        metadata=dict(row['metadata'],provenance=VERSION+':'+window['source_head']+':'+commitment+':'+str(index))
         payload={'url':row['url'],'metadata':metadata};validate_payload('RESOURCE_CREATED',payload)
         result.append({'type':'RESOURCE_CREATED','timestamp':row['timestamp'],'payload':payload})
     return result

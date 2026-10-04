@@ -6,6 +6,7 @@ from .schema.events import EVENT_SCHEMA, CREATES, GLOBALS, keys, event_hash, sha
 from .schema.identity import MAX_CREATE_SEQ
 from .schema.serialization import parse, serialize, GENESIS_PREV
 from .projection import empty_state, apply_event, projection
+from .consumers.discovery import provenance_source
 
 
 def shadow_path(path):
@@ -48,9 +49,15 @@ class Sequencer:
     def _write(self,proposals,expected_head=None,expected_events=None):
         # Producers cannot supply/reserve final identities or order/hash fields.
         proposals=list(proposals)
-        discovery_head=any(isinstance(p,dict) and p.get('type')=='RESOURCE_CREATED' and isinstance(p.get('payload'),dict) and isinstance(p['payload'].get('metadata'),dict) and isinstance(p['payload']['metadata'].get('provenance'),str) and p['payload']['metadata']['provenance'].startswith('r4b1t-shadow-recorded-discovery-v1:') for p in proposals)
+        discovery_heads=[]
+        if expected_events is None:
+            for p in proposals:
+                if isinstance(p,dict) and p.get('type')=='RESOURCE_CREATED' and isinstance(p.get('payload'),dict) and isinstance(p['payload'].get('metadata'),dict):
+                    source=provenance_source(p['payload']['metadata'].get('provenance'))
+                    if source is not None: discovery_heads.append(source)
         requires_head=any(isinstance(p,dict) and (p.get('type') in ('ARCHIVE_RESOLVED','ARCHIVE_TARGET_REPLACED','ARCHIVE_TARGET_GONE','ARCHIVE_PROBE_SUCCEEDED','ARCHIVE_PROBE_FAILED') or isinstance(p.get('payload'),dict) and (p['payload'].get('probe_version')=='r4b1t-shadow-head-v1' or p['payload'].get('policy_version') in ('shadow-explicit-window-v1','shadow-daily-window-v1','shadow-archive-explicit-window-v1'))) for p in proposals)
-        if (requires_head or discovery_head) and expected_head is None: raise ValueError('versioned evidence windows require expected source head')
+        if (requires_head or discovery_heads) and expected_head is None: raise ValueError('versioned evidence windows require expected source head')
+        if any(source!=expected_head for source in discovery_heads): raise ValueError('discovery provenance source differs from append head')
         with closing(sqlite3.connect(self.path, timeout=30)) as db:
             db.execute('BEGIN IMMEDIATE')
             try:

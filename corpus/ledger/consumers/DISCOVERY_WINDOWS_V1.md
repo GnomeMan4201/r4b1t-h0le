@@ -22,7 +22,7 @@ ingestion guard, not URL normalization or an alias/merge decision. URL string
 variants are not inferred to represent distinct or identical resources.
 
 Each declaration emits only RESOURCE_CREATED with the supplied URL/timestamp
-and optional label. Metadata provenance binds adapter version, complete window
+and optional label. Metadata provenance binds adapter version, source head, complete window
 digest and zero-based declaration index. The basis remains in the committed
 window; it is never expanded into fabricated observations or lineage. New
 resources are CANDIDATE with unknown availability. No activation, legacy ACTIVE
@@ -30,6 +30,10 @@ exception, alias confirmation, merge, probes, retirement or archive operation
 is emitted. Producer submissions cannot contain IDs or event authority fields.
 New appends carrying this adapter's provenance require the window's source head
 through the sequencer's atomic expected_head guard. Stale batches append nothing.
+The provenance framing is adapter:source_head:window_hash:index, with both hash
+values retaining their sha256: prefix. The sequencer parses that source head and
+rejects a substituted expected_head before any append; it does not prove the
+declared source/window binding without the independent consumer verifier.
 Historical committed-log restoration retains its existing verification semantics.
 
 Offline verification re-executes emission against the verified prefix, hashes
@@ -43,6 +47,8 @@ provider fetching, changes to durable daily/archive history or public cutover.
 
 Preparation reads a verified supplied export and publishes canonical window,
 proposal array and frozen producer files to a fresh isolated shadow directory.
+Producer files are read once; commitments derive from those captured bytes and
+staged files are checked before publication.
 It does not append. The existing shadow append command takes these proposals
 with --expected-head equal to the window source_head; the existing sequencer
 mints each ID. The offline consumer verifier accepts verified before/after

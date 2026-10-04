@@ -17,15 +17,16 @@ ROOT=Path(__file__).resolve().parents[3]
 def producer_files(): return {path:contained(ROOT,path).read_bytes() for path in FILES}
 
 
-def producer_manifest():
-    return {'schema':MANIFEST,'version':VERSION,'files':sorted_collection([{'path':path,'digest':'sha256:'+hashlib.sha256(raw).hexdigest()} for path,raw in producer_files().items()])}
+def producer_manifest(inputs=None):
+    if inputs is None: inputs=producer_files()
+    return {'schema':MANIFEST,'version':VERSION,'files':sorted_collection([{'path':path,'digest':'sha256:'+hashlib.sha256(raw).hexdigest()} for path,raw in inputs.items()])}
 
 
 def prepare(boundary,submissions,output):
     output=shadow_path(output)
     if output.exists(): raise ValueError('fresh immutable discovery destination required')
     before,artifacts=load_export(boundary);verify_bundle(before,artifacts)
-    inputs=producer_files();window=build_window(before['events'],submissions,producer_manifest())
+    inputs=producer_files();window=build_window(before['events'],submissions,producer_manifest(inputs))
     submitted=proposals(before['events'],window)
     output.parent.mkdir(parents=True,exist_ok=True)
     reservation=output.parent/('.'+output.name+'.publish-lock')
@@ -36,6 +37,8 @@ def prepare(boundary,submissions,output):
             for path,raw in inputs.items():
                 destination=contained(stage/'producer_files',path);destination.parent.mkdir(parents=True,exist_ok=True);destination.write_bytes(raw)
             write_canonical(stage/'window.json',window);write_canonical(stage/'proposals.json',submitted)
+            for item in window['producer_manifest']['files']:
+                if 'sha256:'+hashlib.sha256(contained(stage,'producer_files/'+item['path']).read_bytes()).hexdigest()!=item['digest']: raise ValueError('staged discovery producer bytes differ')
             if output.exists(): raise ValueError('immutable discovery destination appeared')
             os.rename(stage,output)
     finally: reservation.unlink()
