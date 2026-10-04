@@ -145,3 +145,30 @@ class ProbeWindowTests(unittest.TestCase):
         projected=copy.deepcopy(self.projected)
         projected['observations'].append({'type':'PROBE_HEARTBEAT','resource_id':RID,'payload':{'policy_version':'shadow-explicit-window-v1','finished_at':'2026-10-04T06:10:10.000Z'}})
         with self.assertRaises(ValueError): build_window(projected,[observation()],MANIFEST)
+
+    def test_frozen_live_window_reproduces_exact_committed_events(self):
+        import tempfile
+        from pathlib import Path
+        from corpus.ledger.tools.shadow import read_canonical
+        from corpus.ledger.genesis import snapshot,import_proposals
+        from corpus.ledger.sequencer import Sequencer
+        from corpus.ledger.schema.serialization import digest
+        from tests.test_ledger_genesis import ROOT
+        fixture=ROOT/'corpus/ledger/fixtures/live-head-window-v1'
+        window=read_canonical(fixture/'window.json')
+        submitted=read_canonical(fixture/'proposals.json')
+        recorded=read_canonical(fixture/'committed-events.json')
+        commitments=read_canonical(fixture/'commitments.json')
+        baseline=read_canonical(ROOT/'corpus/ledger/shadow/bootstrap-v1.json')
+        payload,artifacts=snapshot(ROOT,baseline['source_commit'])
+        with tempfile.TemporaryDirectory() as directory:
+            writer=Sequencer(Path(directory)/'corpus/ledger/shadow/live-fixture.sqlite3')
+            writer.submit_many(import_proposals(payload,artifacts,baseline['timestamp']))
+            before=writer.events();resources=writer.snapshot()['resources']
+            actual=writer.submit_many(submitted,expected_head=window['source_head'])
+            self.assertEqual(actual,recorded)
+            inputs={path:(fixture/'producer_files'/path).read_bytes() for path in FILES}
+            self.assertEqual(verify_window(before,window,actual,inputs)['event_head'],commitments['event_head'])
+            projected=writer.snapshot()
+            self.assertEqual(projected['resources'],resources)
+            self.assertEqual(digest('projection',projected),commitments['projection_hash'])
