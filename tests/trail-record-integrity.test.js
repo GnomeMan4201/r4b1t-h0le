@@ -165,3 +165,14 @@ test('restore rejects unsupported or altered sampler transaction declarations', 
     assert.equal(restored.context.__r4b1tCommitRoll().transaction.sequence, 1);
   }
 });
+
+test('a later rejected draft retains previously quarantined evidence', async () => {
+  const storage = new Map([[KEY, '{first-broken-json']]);
+  const first = await runtime(storage);
+  assert.equal(first.context.getQuarantinedTrailDraft().raw, '{first-broken-json');
+  storage.set(KEY, '{second-broken-json');
+  const second = await runtime(storage);
+  const quarantine = second.context.getQuarantinedTrailDraft();
+  assert.equal(quarantine.raw, '{second-broken-json');
+  assert.ok(JSON.stringify(quarantine).includes('{first-broken-json'));
+});
