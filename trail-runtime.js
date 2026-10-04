@@ -29,7 +29,8 @@
     transactionSequence: 0,
     selectionTerrain: null,
     repeatGuardReference: null,
-    restoreNotice: null
+    restoreNotice: null,
+    preservationBlocked: false
   };
 
   function randomSeed() {
@@ -91,8 +92,13 @@
         reason: reason,
         raw: raw
       }));
-    } catch (_) {}
+    } catch (_) {
+      state.preservationBlocked = true;
+      state.restoreNotice = 'DRAFT PRESERVATION UNAVAILABLE / ORIGINAL DRAFT RETAINED / ROLL BLOCKED';
+      return false;
+    }
     state.restoreNotice = 'PREVIOUS DRAFT NOT CONTINUED / ' + reason.toUpperCase() + ' / PRESERVED';
+    return true;
   }
 
   function quarantinedDraft() {
@@ -118,12 +124,12 @@
     } catch (_) {}
     var failure = restoreSamplerContinuity();
     if (failure) {
-      quarantineDraft(raw, failure);
-      clearDraftState();
+      if (quarantineDraft(raw, failure)) clearDraftState();
     }
   }
 
   function persist() {
+    if (state.preservationBlocked) throw new Error('Draft preservation unavailable');
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       seed: state.seed,
       createdAt: state.createdAt,
@@ -149,17 +155,22 @@
   }
 
   async function loadCorpusRevision() {
+    if (state.preservationBlocked) throw new Error('Draft preservation unavailable');
     var loaded = await corpusAuthority.loadActive();
     var restoredHasState = state.routes.length > 0 || Boolean(state.parent);
 
     if (state.restoredFromStorage && restoredHasState) {
       if (state.restoredCorpusRevision) {
         if (state.restoredCorpusRevision !== loaded.revision) {
-          quarantineDraft(localStorage.getItem(STORAGE_KEY), 'Corpus revision mismatch');
+          if (!quarantineDraft(localStorage.getItem(STORAGE_KEY), 'Corpus revision mismatch')) {
+            throw new Error('Draft preservation unavailable');
+          }
           clearDraftState();
         }
       } else if (loaded.source.id !== 'legacy-urls-v1') {
-        quarantineDraft(localStorage.getItem(STORAGE_KEY), 'Corpus revision absent');
+        if (!quarantineDraft(localStorage.getItem(STORAGE_KEY), 'Corpus revision absent')) {
+          throw new Error('Draft preservation unavailable');
+        }
         clearDraftState();
       }
     }
@@ -243,7 +254,7 @@
     var originalCommit = window.__r4b1tCommitRoll;
     var wrappedCommit = function () {
       // Fail closed: without the explicit constraint capture there is no selection.
-      if (typeof window.__r4b1tCaptureSelectionConstraint !== 'function') return null;
+      if (state.preservationBlocked || typeof window.__r4b1tCaptureSelectionConstraint !== 'function') return null;
       var selectionConstraint = window.__r4b1tCaptureSelectionConstraint();
       var selectionTerrain = selectionConstraint.terrain;
       var drawStart = state.samplerCursor;
@@ -347,6 +358,7 @@
   }
 
   async function currentEnvelope() {
+    if (state.preservationBlocked) throw new Error('Draft preservation unavailable');
     if (!state.corpusRevision) await loadCorpusRevision();
     return v03.envelope({
       format: v03.FORMAT,
@@ -358,6 +370,7 @@
   }
 
   async function currentLegacyEnvelope() {
+    if (state.preservationBlocked) throw new Error('Draft preservation unavailable');
     if (!state.corpusRevision) await loadCorpusRevision();
     var manifest = await api.createManifest({
       created_at: state.createdAt,
@@ -451,6 +464,7 @@
   }
 
   async function forkTrail(index) {
+    if (state.preservationBlocked) throw new Error('Draft preservation unavailable');
     if (!state.imported) throw new Error('Import or export a trail first');
     var parent = await verifyArtifact(state.imported);
     var parentFormat = parent.manifest.format;
@@ -496,6 +510,10 @@
   }
 
   function resetTrail() {
+    if (state.preservationBlocked) {
+      renderPanel();
+      return false;
+    }
     clearDraftState();
     state.restoreNotice = null;
     state.restoredFromStorage = false;
