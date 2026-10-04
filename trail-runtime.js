@@ -91,7 +91,13 @@
 
   function quarantineDraft(raw, reason) {
     try {
+      var previous = quarantinedDraft();
+      var history = previous && Array.isArray(previous.history) ? previous.history.slice() : [];
+      if (previous && previous.raw !== raw) {
+        history.push({ quarantined_at: previous.quarantined_at, reason: previous.reason, raw: previous.raw });
+      }
       localStorage.setItem(QUARANTINE_KEY, JSON.stringify({
+        history: history,
         quarantined_at: new Date().toISOString(),
         reason: reason,
         raw: raw
