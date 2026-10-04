@@ -47,9 +47,23 @@ jobs:
           sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=17 python3 -m corpus.ledger.tools.replay_isolated --require-isolation < /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline/events.jsonl > /tmp/shadow-bootstrap-replay-17.json
           sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=29 python3 -m corpus.ledger.tools.replay_isolated --require-isolation < /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline/events.jsonl > /tmp/shadow-bootstrap-replay-29.json
           cmp /tmp/shadow-bootstrap-replay-17.json /tmp/shadow-bootstrap-replay-29.json
+      - name: Explicit bounded live HEAD acceptance window (shadow test chain only)
+        run: |
+          printf '["r4b1t:r:000000000000125","r4b1t:r:000000000000126"]\n' > /tmp/shadow-probe-resources.json
+          python3 -m corpus.ledger.tools.probe collect --boundary-export /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline --resources /tmp/shadow-probe-resources.json --samples 2 --out /tmp/shadow-bootstrap/corpus/ledger/shadow/window
+          python3 -m corpus.ledger.tools.shadow append --store /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline.sqlite3 --boundary-export /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline --proposals /tmp/shadow-bootstrap/corpus/ledger/shadow/window/proposals.json --expected-head sha256:d479964f875fd6edf9da5d7c2ace15b32174e36217420f1517ddfe9914eb4dbe --out /tmp/shadow-bootstrap/corpus/ledger/shadow/after
+          python3 -m corpus.ledger.tools.probe verify --before /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline --after /tmp/shadow-bootstrap/corpus/ledger/shadow/after --window /tmp/shadow-bootstrap/corpus/ledger/shadow/window
+          python3 - <<'PY'
+          import json
+          rows=json.load(open('/tmp/shadow-bootstrap/corpus/ledger/shadow/window/window.json'))['observations']
+          print('Live HEAD observations:',len(rows),'HTTP responses:',sum('status' in row['payload'] for row in rows),'errors:',[row['payload'].get('reason') for row in rows if 'reason' in row['payload']])
+          PY
       - name: Preserve complete frozen shadow inputs and verified export
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: corpus-ledger-shadow-bootstrap
-          path: /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline
+          path: |
+            /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline
+            /tmp/shadow-bootstrap/corpus/ledger/shadow/window
+            /tmp/shadow-bootstrap/corpus/ledger/shadow/after
           if-no-files-found: error
