@@ -32,12 +32,17 @@ class LedgerSerializationTests(unittest.TestCase):
 
     def test_schema_review_negatives(self):
         from corpus.ledger.schema.events import validate_payload
-        with self.assertRaises(ValueError): timestamp('٢٠٢٦-١٠-٠٤T٠٠:٠٠:٠٠.٠٠٠Z')
+        cases = [('unicode_timestamp',lambda: timestamp('٢٠٢٦-١٠-٠٤T٠٠:٠٠:٠٠.٠٠٠Z'))]
         for target in ['https://[/', 'https://example.org:99999/', 'https://user:pass@example.org/']:
-            with self.assertRaises(ValueError): validate_payload('RESOURCE_CREATED', {'url':target,'metadata':{}})
-        validate_payload('RESOURCE_CREATED', {'url':'https://[2001:db8::1]:443/','metadata':{}})
+            cases.append((target,lambda target=target:validate_payload('RESOURCE_CREATED', {'url':target,'metadata':{}})))
         for kind in ['POLICY_BOUND','RELEASE_BOUND']:
             for artifact in [{},[]]:
-                with self.assertRaises(ValueError): validate_payload(kind,{'artifact':artifact,'artifact_hash':digest('policy' if kind=='POLICY_BOUND' else 'manifest',artifact)})
+                cases.append((kind+str(artifact),lambda kind=kind,artifact=artifact:validate_payload(kind,{'artifact':artifact,'artifact_hash':digest('policy' if kind=='POLICY_BOUND' else 'manifest',artifact)})))
         for first,second,declared in [(1,2,3),(1,1,1),(1,2,2)]:
-            with self.assertRaises(ValueError): validate_payload('RESOURCE_MERGED',dict(first=f'r4b1t:r:{first:015d}',second=f'r4b1t:r:{second:015d}',survivor=f'r4b1t:r:{declared:015d}',evidence_digest=GENESIS_PREV))
+            cases.append(('merge'+str((first,second,declared)),lambda first=first,second=second,declared=declared:validate_payload('RESOURCE_MERGED',dict(first=f'r4b1t:r:{first:015d}',second=f'r4b1t:r:{second:015d}',survivor=f'r4b1t:r:{declared:015d}',evidence_digest=GENESIS_PREV))))
+        for name,call in cases:
+            with self.subTest(name=name),self.assertRaises(ValueError): call()
+
+    def test_valid_ipv6_observation(self):
+        from corpus.ledger.schema.events import validate_payload
+        validate_payload('RESOURCE_CREATED', {'url':'https://[2001:db8::1]:443/','metadata':{}})
