@@ -22,8 +22,14 @@ def manifest(value):
 def build_window(events,submissions,producer_manifest):
     projected=replay(events);manifest(producer_manifest)
     if not isinstance(submissions,list) or not 1<=len(submissions)<=100: raise ValueError('bounded ordered discovery submissions required')
+    known={value for resource in projected['resources'] for value in resource['urls']+resource['observed_urls']}
+    for observation in projected['observations']:
+        if observation['type'] in ('REDIRECT_OBSERVED','ALIAS_CANDIDATE','ALIAS_CONFIRMED'):
+            known.update((observation['payload']['from_url'],observation['payload']['to_url']))
     for row in submissions:
         keys(row,('url','timestamp','basis','metadata'));url(row['url']);timestamp(row['timestamp']);text(row['basis'])
+        if row['url'] in known: raise ValueError('duplicate or already recorded discovery URL; explicit identity review required')
+        known.add(row['url'])
         keys(row['metadata'],(),('resource_type',))
         for value in row['metadata'].values(): text(value)
     return parse(serialize({'schema':SCHEMA,'adapter_version':VERSION,'source_head':projected['event_head'],'producer_manifest':producer_manifest,'submissions':submissions}))

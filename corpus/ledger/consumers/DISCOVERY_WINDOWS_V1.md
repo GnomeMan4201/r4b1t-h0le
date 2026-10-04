@@ -16,6 +16,11 @@ The window binds its schema, adapter version, verified source ledger head,
 declarations and exact five-file producer inventory. Its CJ-1 bytes are committed
 in the existing manifest hash domain. No competing serializer is introduced.
 
+Exact duplicate URLs, known resource URLs and recorded URL/redirect/alias
+lineage are rejected for explicit identity review. This is a conservative
+ingestion guard, not URL normalization or an alias/merge decision. URL string
+variants are not inferred to represent distinct or identical resources.
+
 Each declaration emits only RESOURCE_CREATED with the supplied URL/timestamp
 and optional label. Metadata provenance binds adapter version, complete window
 digest and zero-based declaration index. The basis remains in the committed
