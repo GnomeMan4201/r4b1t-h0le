@@ -34,3 +34,11 @@ class ArchiveTests(unittest.TestCase):
         self.assertEqual(verify_window(before,window,committed,producer_files())['status'],'VERIFIED_SHADOW_ARCHIVE_WINDOW')
         next_window=build_window(self.writer.events(),[rows[-1]],producer_manifest())
         self.assertEqual([p['type'] for p in proposals(self.writer.events(),next_window)],['PROBE_HEARTBEAT'])
+
+    def test_archive_only_batch_requires_atomic_source_head(self):
+        p=proposal('ARCHIVE_RESOLVED',self.rid,{'archive_url':'https://archive.example/a','evidence_digest':D})
+        before=self.writer.events()
+        with self.assertRaises(ValueError): self.writer.submit_many([p])
+        self.assertEqual(self.writer.events(),before)
+        with self.assertRaises(ValueError): self.writer.submit_many([p],expected_head=D)
+        self.assertEqual(self.writer.events(),before)
