@@ -21,7 +21,7 @@ def observe(resource_id,target,guard,limiter,clock=now):
     try:
         response,final=request('HEAD',target,{},guard,limiter,timeout=8)
         try:
-            headers={k.lower():str(v) for k,v in response.headers.items() if k.lower() in HEADERS}
+            headers=sorted([{'name':k.lower(),'value':str(v)} for k,v in response.headers.items() if k.lower() in HEADERS],key=lambda item:item['name'])
             payload.update(status=response.status_code,final_url=final,headers_digest='sha256:'+hashlib.sha256(serialize(headers).encode('utf-8')).hexdigest())
         finally: response.close()
     except (requests.exceptions.RequestException,TargetGuardError,ValueError,OSError) as error:
