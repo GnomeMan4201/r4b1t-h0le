@@ -77,3 +77,20 @@ test('a broken earlier ROLL is preserved and never extended on reload', async ()
   assert.equal(restored.context.getQuarantinedTrailDraft().raw, raw);
   assert.equal(restored.context.__r4b1tCommitRoll().transaction.sequence, 1);
 });
+
+test('a draft from an older corpus is preserved before a fresh scope starts', async () => {
+  const r = await runtime();
+  r.context.__r4b1tCommitRoll();
+  const draft = r.draft();
+  draft.corpusRevision = 'sha256:' + '0'.repeat(64);
+  draft.routes[0].selection_transaction.corpus_revision = draft.corpusRevision;
+  const raw = JSON.stringify(draft);
+  r.storage.set(KEY, raw);
+  const restored = await runtime(r.storage);
+  assert.equal(restored.draft().routes.length, 0);
+  const quarantine = restored.context.getQuarantinedTrailDraft();
+  assert.ok(quarantine, 'stale draft evidence must survive the corpus boundary');
+  assert.equal(quarantine.raw, raw);
+  assert.match(quarantine.reason, /corpus revision/i);
+  assert.equal(restored.context.__r4b1tCommitRoll().transaction.sequence, 1);
+});
