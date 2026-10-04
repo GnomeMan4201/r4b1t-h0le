@@ -57,8 +57,12 @@
     for (var index = 0; index < state.routes.length; index += 1) {
       var route = state.routes[index];
       var transaction = route && route.selection_transaction;
-      if (!transaction || transaction.transaction_version !== 'r4b1t-selection-transaction/v2' || transaction.action !== 'ROLL') {
-        continue;
+      // Historical v1 draft evidence remains available through legacy export.
+      if (!transaction || transaction.transaction_version === 'r4b1t-selection-transaction/v1') continue;
+      try {
+        v03.validateTransaction(transaction, route, state.restoredCorpusRevision);
+      } catch (error) {
+        return 'ROLL continuity/declaration mismatch at step ' + (index + 1) + ': ' + error.message;
       }
       var sampler = transaction.sampler;
       var guard = sampler && sampler.repeat_guard;
