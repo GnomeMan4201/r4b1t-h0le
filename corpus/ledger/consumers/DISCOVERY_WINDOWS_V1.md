@@ -28,6 +28,9 @@ window; it is never expanded into fabricated observations or lineage. New
 resources are CANDIDATE with unknown availability. No activation, legacy ACTIVE
 exception, alias confirmation, merge, probes, retirement or archive operation
 is emitted. Producer submissions cannot contain IDs or event authority fields.
+New appends carrying this adapter's provenance require the window's source head
+through the sequencer's atomic expected_head guard. Stale batches append nothing.
+Historical committed-log restoration retains its existing verification semantics.
 
 Offline verification re-executes emission against the verified prefix, hashes
 the exact supplied producer files, compares every committed creation and replays
