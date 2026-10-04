@@ -116,3 +116,28 @@ class ProbeWindowTests(unittest.TestCase):
             with self.assertRaises(ValueError): writer.submit_many([proposal()],expected_head=head)
             self.assertEqual(writer.events(),before)
             self.assertEqual(len(writer.submit_many([proposal()],expected_head=before[-1]['hash'])),1)
+
+    def test_probe_profile_cannot_omit_atomic_source_head(self):
+        import tempfile
+        from pathlib import Path
+        from corpus.ledger.sequencer import Sequencer
+        from tests.test_ledger_engine import genesis,proposal
+        with tempfile.TemporaryDirectory() as directory:
+            writer=Sequencer(Path(directory)/'corpus/ledger/shadow/head.sqlite3')
+            writer.submit(genesis());rid=writer.submit(proposal())['resource_id']
+            row=observation();row['resource_id']=rid
+            event={'type':'PROBE_SUCCEEDED','resource_id':rid,'timestamp':T,'payload':row['payload']}
+            before=writer.events()
+            with self.assertRaises(ValueError): writer.submit_many([event])
+            self.assertEqual(writer.events(),before)
+
+    def test_producer_inventory_cannot_omit_guarded_transport(self):
+        bad=copy.deepcopy(MANIFEST);bad['files']=[]
+        with self.assertRaises(ValueError): build_window(self.projected,[observation()],bad)
+        bad['files']=[{'path':'fixture.py','digest':'sha256:'+'0'*64}]
+        with self.assertRaises(ValueError): build_window(self.projected,[observation()],bad)
+
+    def test_resource_window_cannot_move_backwards_across_committed_head(self):
+        projected=copy.deepcopy(self.projected)
+        projected['observations'].append({'type':'PROBE_HEARTBEAT','resource_id':RID,'payload':{'policy_version':'shadow-explicit-window-v1','finished_at':'2026-10-04T06:10:10.000Z'}})
+        with self.assertRaises(ValueError): build_window(projected,[observation()],MANIFEST)
