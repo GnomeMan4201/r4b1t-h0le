@@ -1273,6 +1273,8 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     --r4m-v5-black:#000;
     --r4m-v5-dim:#858585;
     --r4m-v5-rule:#2a2a2a;
+    --r4m-action-inset:max(20px,calc((100vw - 560px)/2 + 20px),env(safe-area-inset-left),env(safe-area-inset-right));
+    --r4m-action-width:calc(100vw - 2 * var(--r4m-action-inset));
   }
   html.r4-mobile-active,html.r4-mobile-active body{background:var(--r4m-v5-black)!important;color:var(--r4m-v5-white)}
   .r4m-shell{background:var(--r4m-v5-black)}
@@ -1290,21 +1292,29 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-ap-label{left:18px;bottom:18px;color:var(--r4m-v5-white);font-size:2rem}
   .r4m-ap-scope{right:18px;bottom:20px;color:var(--r4m-v5-dim)}
   .r4m-roll.r4m-roll-aperture:active{background:var(--r4m-v5-red)!important}
-  .r4m-route{min-height:0;margin:0;padding:12px 0 18px}
+  .r4m-route{grid-template-columns:minmax(0,1fr);min-height:0;margin:0;padding:12px 0 calc(180px + env(safe-area-inset-bottom))}
   .r4m-route-top{padding:0 0 12px;border-bottom:1px solid var(--r4m-v5-rule);color:var(--r4m-v5-dim)}
-  .r4m-route>small{margin:24px 0 7px;color:var(--r4m-v5-dim)}
-  .r4m-route-domain{font-size:clamp(2.7rem,13vw,4rem);line-height:.9;color:var(--r4m-v5-white)}
+  .r4m-route>small{margin:16px 0 8px;color:var(--r4m-v5-dim);font-size:.72rem}
+  .r4m-route-domain{font-size:clamp(2.2rem,10.5vw,3.5rem);line-height:.98;color:var(--r4m-v5-white);white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
   .r4m-route-mouth{width:58px;height:5px;margin:12px 0 16px;border:0;border-radius:0;background:var(--r4m-v5-red);transform:none}
-  #r4mRouteMount #r4mTitle{color:var(--r4m-v5-white)!important}
-  .r4m-route>p{color:#aaa}
-  .r4m-route>code{color:var(--r4m-v5-dim)}
-  .r4m-route-actions{border-top:1px solid var(--r4m-v5-rule)}
+  #r4mRouteMount #r4mTitle{color:var(--r4m-v5-white)!important;font-size:1.4rem!important;overflow-wrap:anywhere}
+  .r4m-route>p{color:#bdbdbd;font-size:.82rem;line-height:1.55}
+  #r4mDescription[hidden]{display:none!important}
+  .r4m-route>code{color:#a6a6a6;font-size:.75rem;line-height:1.5;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+  /* Keep continuation controls in the same place across destination lengths.
+     The existing #r4mRollAgain delegates to the unchanged production authority. */
+  .r4m-route-actions{position:fixed;z-index:9000;left:var(--r4m-action-inset);right:var(--r4m-action-inset);bottom:calc(128px + env(safe-area-inset-bottom));width:auto;min-height:48px;background:#000;border-top:1px solid var(--r4m-v5-rule)}
+  .r4m-route-actions button{min-height:48px;padding:0 12px;font-size:.75rem}
   .r4m-route-actions button:last-child{border-left:1px solid var(--r4m-v5-rule)}
-  .r4m-enter{min-height:58px!important;padding:0 16px!important;background:var(--r4m-v5-red)!important;color:var(--r4m-v5-white)!important;font-weight:800}
+  .r4m-enter{position:fixed;z-index:9000;left:var(--r4m-action-inset);bottom:calc(64px + env(safe-area-inset-bottom));width:calc(var(--r4m-action-width) * .57);height:64px;min-height:64px!important;padding:0 12px!important;background:var(--r4m-v5-red)!important;color:var(--r4m-v5-white)!important;font-size:.72rem;letter-spacing:.01em;font-weight:800}
   #r4mRouteMount #r4mRoute > button.r4m-enter[data-mobile-action="visit"]{background:var(--r4m-v5-red)!important;color:var(--r4m-v5-white)!important}
-  .r4m-next{min-height:58px;color:var(--r4m-v5-white)}
+  .r4m-next{display:none!important}
+  html.r4m-stage-result #r4mRollAgain{right:var(--r4m-action-inset);bottom:calc(64px + env(safe-area-inset-bottom));width:calc(var(--r4m-action-width) * .43);height:64px;min-height:64px;margin:0;padding:0 8px;display:flex!important;align-items:center;justify-content:center;gap:8px;border:1px solid var(--r4m-v5-red);background:#000;color:var(--r4m-v5-white);font:700 .78rem var(--font-mono,"DM Mono",monospace);letter-spacing:.02em;opacity:1}
+  #r4mRollAgain .r4m-next-aperture{position:relative;left:auto;top:auto;width:20px;height:14px;transform:none;flex:none}
+  #r4mRollAgain>span:last-child{white-space:nowrap}
   .r4m-next-aperture,.r4m-nav-aperture{border-color:var(--r4m-v5-red);border-radius:0}
   .r4m-next-aperture .r4m-ap-depth-ring{display:none}
+  .r4m-enter:focus-visible,#r4mRollAgain:focus-visible,.r4m-route-actions button:focus-visible,.r4m-menu-body button:focus-visible,.r4m-menu-body a:focus-visible{outline:2px solid var(--r4m-v5-white);outline-offset:-4px}
   .r4m-nav-minimal{background:#000;border-top:1px solid var(--r4m-v5-rule)}
   .r4m-nav-minimal button{color:var(--r4m-v5-white)}
   #r4mNavRoll:before,#r4mNavMenu.active:before{background:var(--r4m-v5-red)}
@@ -1312,9 +1322,15 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-menu-sheet{background:#000;color:var(--r4m-v5-white)}
   .r4m-menu-sheet .r4m-menu-body{padding-top:28px}
   .r4m-menu-group{color:var(--r4m-v5-white)}
+  .r4m-menu-group h3{font-size:.67rem}
+  .r4m-menu-primary-actions{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--r4m-v5-red);border-bottom:1px solid var(--r4m-v5-rule)}
+  .r4m-menu-primary-actions button{min-height:64px;padding:0 12px;border:0;background:transparent;color:var(--r4m-v5-white);font:700 1.65rem var(--font-head,"Bebas Neue",sans-serif);text-align:left}
+  .r4m-menu-primary-actions button+button{border-left:1px solid var(--r4m-v5-rule)}
+  .r4m-menu-from-here{margin-bottom:18px}
+  .r4m-menu-group-context{position:static;display:block;max-width:none;margin:-2px 0 8px;text-align:left;font-size:.6rem}
   .r4m-menu-group h3,.r4m-menu-group-count,.r4m-menu-group-context{color:var(--r4m-v5-dim)}
   .r4m-menu-app-actions,.r4m-menu-proof-grid,.r4m-menu-trail .r4m-trail-scroll{border-color:var(--r4m-v5-rule)}
-  .r4m-menu-app-actions button,.r4m-menu-app-actions a,.r4m-menu-proof-grid button{color:var(--r4m-v5-white)}
+  .r4m-menu-app-actions button,.r4m-menu-app-actions a,.r4m-menu-proof-grid button{color:var(--r4m-v5-white);font-size:.7rem}
   .r4m-menu-proof-grid button{border-bottom-color:var(--r4m-v5-rule)}
   .r4m-menu-proof-grid button:nth-child(even){border-left-color:var(--r4m-v5-rule)}
   .r4m-menu-trail .r4m-trail-chip,.r4m-menu-trail .r4m-trail-chip b,.r4m-menu-trail .r4m-empty{color:var(--r4m-v5-dim)}
@@ -1323,6 +1339,16 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-menu-from-here>button{border-top-color:var(--r4m-v5-rule);color:var(--r4m-v5-white)}
   .r4m-menu-from-here>button:first-of-type{border-top:2px solid var(--r4m-v5-red)}
   #historyOverlay>div{background:#000!important;border-top:2px solid var(--r4m-v5-red)!important}
+}
+@media (max-width:900px) and (orientation:landscape) and (max-height:560px){
+  :root{--r4m-action-inset:max(20px,env(safe-area-inset-left),env(safe-area-inset-right))}
+  html.r4m-stage-result #r4mPrimaryStage{display:grid;grid-template-columns:minmax(0,.3fr) minmax(0,.7fr);gap:20px;align-items:start}
+  html.r4m-stage-result #r4mProductionMark{grid-column:1;min-height:0;max-height:170px}
+  html.r4m-stage-result #r4mRouteMount{grid-column:2;min-width:0}
+  .r4m-route{padding-top:8px}
+  .r4m-route>small{margin:8px 0 4px;font-size:.65rem}
+  .r4m-route-domain{font-size:clamp(1.8rem,4.5vw,2.4rem)}
+  .r4m-route-mouth{height:3px;margin:8px 0 10px}
 }
 @media (max-width:430px) and (orientation:portrait){
   .r4m-production-mark{height:120px}
