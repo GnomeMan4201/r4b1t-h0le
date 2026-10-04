@@ -103,3 +103,16 @@ class ProbeWindowTests(unittest.TestCase):
             writer.submit_many(read_canonical(root/'window/proposals.json'));export(writer,artifacts,root/'after')
             self.assertEqual(verify_exports(root/'before',root/'after',root/'window')['status'],'VERIFIED_SHADOW_PROBE_WINDOW')
             with self.assertRaises(ValueError): collect(root/'before',[RID],1,root/'window')
+
+    def test_sequencer_rejects_stale_window_head_without_append(self):
+        import tempfile
+        from pathlib import Path
+        from corpus.ledger.sequencer import Sequencer
+        from tests.test_ledger_engine import genesis,proposal
+        with tempfile.TemporaryDirectory() as directory:
+            writer=Sequencer(Path(directory)/'corpus/ledger/shadow/cas.sqlite3')
+            head=writer.submit(genesis())['hash'];writer.submit(proposal())
+            before=writer.events()
+            with self.assertRaises(ValueError): writer.submit_many([proposal()],expected_head=head)
+            self.assertEqual(writer.events(),before)
+            self.assertEqual(len(writer.submit_many([proposal()],expected_head=before[-1]['hash'])),1)
