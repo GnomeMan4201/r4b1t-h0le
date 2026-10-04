@@ -25,7 +25,10 @@ async function runtime(storage = new Map(), allowBlocked = false) {
   const context = vm.createContext({
     document, URL, TextEncoder, TextDecoder, crypto: webcrypto, console,
     localStorage: {
-      getItem(key) { return storage.get(key) ?? null; },
+      getItem(key) {
+        if (storage.failReadKeys && storage.failReadKeys.has(key)) throw new Error('Draft read unavailable');
+        return storage.get(key) ?? null;
+      },
       setItem(key, value) {
         if (storage.failKeys && storage.failKeys.has(key)) throw new Error('Storage unavailable');
         storage.set(key, String(value));
@@ -197,4 +200,17 @@ test('failed NEW TRAIL and FORK writes retain the current sampling scope', async
     assert.equal(r.context.__r4b1tCommitRoll().transaction.sequence, 3);
     assert.equal(r.draft().routes.length, 3);
   }
+});
+
+
+test('failed draft read preserves original storage and blocks a fresh scope', async () => {
+  const r = await runtime();
+  r.context.__r4b1tCommitRoll();
+  const original = r.storage.get(KEY);
+  r.storage.failReadKeys = new Set([KEY]);
+  const restored = await runtime(r.storage, true);
+  assert.equal(restored.storage.get(KEY), original);
+  assert.equal(restored.context.__r4b1tCommitRoll(), null);
+  await assert.rejects(restored.context.getTrailManifest(), /preservation unavailable/i);
+  assert.equal(restored.context.resetReproducibleTrail(), false);
 });
