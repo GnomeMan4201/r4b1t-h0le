@@ -176,3 +176,25 @@ test('a later rejected draft retains previously quarantined evidence', async () 
   assert.equal(quarantine.raw, '{second-broken-json');
   assert.ok(JSON.stringify(quarantine).includes('{first-broken-json'));
 });
+
+test('failed NEW TRAIL and FORK writes retain the current sampling scope', async () => {
+  for (const action of ['reset', 'fork']) {
+    const r = await runtime();
+    r.context.__r4b1tCommitRoll();
+    r.context.__r4b1tCommitRoll();
+    const before = await r.context.getTrailManifest();
+    await r.context.importTrailManifest(before);
+    const raw = r.storage.get(KEY);
+    r.storage.failKeys = new Set([KEY]);
+    if (action === 'reset') {
+      assert.equal(r.context.resetReproducibleTrail(), false);
+    } else {
+      await assert.rejects(r.context.forkTrailManifest(1), /storage unavailable/i);
+    }
+    assert.equal(r.storage.get(KEY), raw);
+    assert.equal((await r.context.getTrailManifest()).trail_id, before.trail_id);
+    r.storage.failKeys.clear();
+    assert.equal(r.context.__r4b1tCommitRoll().transaction.sequence, 3);
+    assert.equal(r.draft().routes.length, 3);
+  }
+});
