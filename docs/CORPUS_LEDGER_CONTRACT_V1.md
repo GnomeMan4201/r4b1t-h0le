@@ -1,6 +1,6 @@
 # Corpus Ledger Contract v1
 
-> **STATUS: FROZEN — PENDING PR1–PR4**
+> **STATUS: FROZEN — PR1–PR4 SHIPPED; SHADOW IMPLEMENTATION RATIFIED**
 >
 > **IMPLEMENTATION MODE: SHADOW MODE FIRST**
 >
@@ -8,7 +8,7 @@
 >
 > This document is normative for the future corpus-ledger implementation. It does not alter the scope, runtime behavior, selection authority, trail semantics, terrain authority, sampler, or public corpus model of PR1–PR4.
 >
-> Implementation work MUST NOT begin until PR1–PR4 have shipped. The ledger may then land internally on `main` in shadow mode while the existing public authority remains unchanged. Public cutover is a separate, explicit release event.
+> PR1–PR4 shipped with #245 (`947fb828`), whose tree matches tested head `18700a97`. The ledger may now land internally on `main` in shadow mode while the existing public authority remains unchanged. Public cutover is a separate, explicit release event.
 
 ## 1. Scope
 
@@ -589,11 +589,11 @@ The genesis boundary event MUST commit to all applicable pre-ledger authorities,
 - the then-current runtime corpus promotion record;
 - its corpus/release digests;
 - the active resource metadata digest;
-- the PR1 terrain artifact digest and registry/profile binding once PR1 is final;
+- the shipped PR1 terrain artifact digest and registry/profile binding;
 - any existing corpus commitment required to verify pre-ledger Trail v0.1/v0.2/v0.3 artifacts;
 - the importer version and deterministic import input digest.
 
-The concrete values MUST be taken from shipped PR1–PR4 artifacts at implementation time. This frozen contract intentionally does not pre-fill hashes that can still change before PR1–PR4 ship.
+The concrete values MUST be taken from shipped PR1–PR4 artifacts at implementation time. This frozen contract intentionally does not pre-fill hashes; the genesis records the exact shipped artifacts at its boundary.
 
 ### 11.2 Verification continuity
 
