@@ -20,8 +20,14 @@ class ScheduleTests(unittest.TestCase):
         from corpus.ledger.schema.serialization import sorted_collection
         from tests.test_ledger_probe_windows import MANIFEST,observation,RID
         import copy
-        projected=replay(reference());row=observation()
-        projected['observations'].append({'type':'PROBE_SUCCEEDED','resource_id':RID,'payload':row['payload']})
+        import tempfile
+        from pathlib import Path
+        from corpus.ledger.sequencer import Sequencer
+        temp=tempfile.TemporaryDirectory();self.addCleanup(temp.cleanup)
+        writer=Sequencer(Path(temp.name)/'corpus/ledger/shadow/emission.sqlite3');writer.restore_committed(reference())
+        row=observation()
+        writer.submit_many([{'type':'PROBE_SUCCEEDED','resource_id':RID,'timestamp':row['payload']['finished_at'],'payload':row['payload']}],expected_head=writer.events()[-1]['hash'])
+        before=writer.events();projected=writer.snapshot()
         manifest=copy.deepcopy(MANIFEST);manifest['files']=sorted_collection([{'path':path,'digest':'sha256:'+'0'*64} for path in DAILY_FILES])
         window=build_window(projected,[row],manifest,policy_version=DAILY,emission_policy=policy())
         self.assertEqual([p['type'] for p in proposals(window)],['PROBE_HEARTBEAT'])
@@ -29,7 +35,7 @@ class ScheduleTests(unittest.TestCase):
         self.assertEqual([p['type'] for p in proposals(changed)],['PROBE_FAILED','PROBE_HEARTBEAT'])
         bad=copy.deepcopy(window);bad['prior_outcomes']=[]
         from corpus.ledger.consumers.probe_windows import verify_window
-        with self.assertRaises(ValueError): verify_window(reference(),bad,[],{})
+        with self.assertRaises(ValueError): verify_window(before,bad,[],{})
 
     def test_cold_sequencer_restore_preserves_exact_order_and_refuses_reset(self):
         import tempfile
@@ -55,3 +61,31 @@ class ScheduleTests(unittest.TestCase):
             before=writer.events()
             with self.assertRaises(ValueError): writer.submit_many([proposed])
             self.assertEqual(writer.events(),before)
+
+class HistoryTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import tempfile
+        from pathlib import Path
+        from tests.test_ledger_genesis import ROOT
+        from corpus.ledger.tools.history import initialize
+        cls.temp=tempfile.TemporaryDirectory();cls.addClassCleanup(cls.temp.cleanup)
+        cls.base=Path(cls.temp.name)/'corpus/ledger/shadow/history'
+        initialize(cls.base,ROOT)
+
+    def test_durable_history_restores_runs_and_skips_duplicate_day_without_network(self):
+        import tempfile
+        from pathlib import Path
+        from corpus.ledger.tools.history import run,verify_history
+        def observer(rid,target,guard,limiter):
+            return {'resource_id':rid,'payload':{'probe_version':'r4b1t-shadow-head-v1','observed_url':target,'final_url':target,'status':200,'headers_digest':'sha256:'+'0'*64,'started_at':'2026-10-04T08:00:00.000Z','finished_at':'2026-10-04T08:00:01.000Z'}}
+        with tempfile.TemporaryDirectory() as directory:
+            out=Path(directory)/'corpus/ledger/shadow/day1'
+            result=run(self.base,'2026-10-04',2,out,observer=observer)
+            self.assertEqual(result['status'],'STAGED_SHADOW_RUN')
+            history=verify_history(out)
+            self.assertEqual(history['state']['event_count'],7038)
+            self.assertEqual(history['state']['cursor_create_seq'],3)
+            self.assertEqual(history['projected']['resources'],verify_history(self.base)['projected']['resources'])
+            def forbidden(*args): raise AssertionError('completed date must not probe')
+            self.assertEqual(run(out,'2026-10-04',2,Path(directory)/'corpus/ledger/shadow/duplicate',observer=forbidden)['status'],'SKIPPED_COMPLETED_DATE')
