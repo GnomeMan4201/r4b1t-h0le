@@ -10,7 +10,7 @@ DOMAINS = ('event', 'projection', 'policy', 'manifest', 'heartbeat')
 
 
 def timestamp(value):
-    if not isinstance(value, str) or not re.fullmatch(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z', value):
+    if not isinstance(value, str) or not re.fullmatch(r'[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z', value):
         raise ValueError('fixed UTC millisecond timestamp required')
     year, month, day, hour, minute, second = (int(value[a:b]) for a, b in ((0,4),(5,7),(8,10),(11,13),(14,16),(17,19)))
     days = (31, 29 if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0) else 28, 31,30,31,30,31,31,30,31,30,31)
