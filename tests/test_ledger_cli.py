@@ -64,8 +64,12 @@ class ShadowFilesTests(unittest.TestCase):
         with self.assertRaises(ValueError): export(self.writer,self.artifacts,self.root/'bundle-v1')
 
     def test_post_commit_publication_conflict_is_reported_as_committed(self):
-        from corpus.ledger.tools.shadow import ExportError, publish_committed
+        from corpus.ledger.tools.shadow import ExportError, main
+        from tests.test_ledger_engine import proposal
+        boundary=self.root/'boundary';export(self.writer,self.artifacts,boundary)
+        proposals=self.root/'proposals.json';write_canonical(proposals,[proposal()])
         target=self.root/'bundle-v1'
         (self.root/'.bundle-v1.publish-lock').touch()
-        with self.assertRaises(ExportError): publish_committed(self.writer,self.artifacts,target)
-        self.assertEqual(len(self.writer.events()),2)
+        with self.assertRaises(ExportError):
+            main(['append','--store',str(self.writer.path),'--boundary-export',str(boundary),'--proposals',str(proposals),'--out',str(target)])
+        self.assertEqual(len(self.writer.events()),3)
