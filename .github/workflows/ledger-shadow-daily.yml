@@ -9,6 +9,18 @@ on:
         type: choice
         default: '100'
         options: ['2', '100']
+      archive_name:
+        description: Optional immutable archive window name (explicit operations only)
+        type: string
+        default: ''
+      archive_resources:
+        description: Optional canonical array of identities with declared archive targets for live HEAD collection
+        type: string
+        default: ''
+      archive_operations:
+        description: Canonical CJ-1 ordered archive operations; recorded evidence only
+        type: string
+        default: ''
   push:
     branches: [main]
     paths:
@@ -33,7 +45,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install -r requirements-pool-sweep.txt
-      - run: python3 -m unittest tests.test_ledger_schedule -v
+      - run: python3 -m unittest tests.test_ledger_schedule tests.test_ledger_archive -v
   ordered-writer:
     needs: consumer-tests
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
@@ -72,30 +84,57 @@ jobs:
         env:
           SHADOW_EVENT: ${{ github.event_name }}
           SHADOW_REQUESTED_BUDGET: ${{ inputs.budget || '100' }}
+          SHADOW_ARCHIVE_NAME: ${{ inputs.archive_name || '' }}
+          SHADOW_ARCHIVE_OPERATIONS: ${{ inputs.archive_operations || '' }}
+          SHADOW_ARCHIVE_RESOURCES: ${{ inputs.archive_resources || '' }}
         run: |
           set -euo pipefail
           budget="$SHADOW_REQUESTED_BUDGET"
           if [ "$SHADOW_EVENT" = push ]; then budget=2; fi
           day=$(date -u +%F)
-          echo "SHADOW_RUN_DAY=$day" >> "$GITHUB_ENV"
-          python3 -m corpus.ledger.tools.history run --history /tmp/shadow-previous/corpus/ledger/shadow/history --day "$day" --budget "$budget" --out /tmp/shadow-next/corpus/ledger/shadow/history > /tmp/shadow-result.json
+          if [ -z "$SHADOW_ARCHIVE_NAME" ] && { [ -n "$SHADOW_ARCHIVE_OPERATIONS" ] || [ -n "$SHADOW_ARCHIVE_RESOURCES" ]; }; then
+            echo 'Archive inputs require an explicit immutable name' >&2; exit 1
+          fi
+          if [ -n "$SHADOW_ARCHIVE_NAME" ]; then
+            if [ -n "$SHADOW_ARCHIVE_RESOURCES" ] && [ -n "$SHADOW_ARCHIVE_OPERATIONS" ]; then
+              echo 'Choose live collection or recorded operations' >&2; exit 1
+            fi
+            python3 - <<'PYINPUT'
+          import os
+          from corpus.ledger.schema.serialization import parse
+          from corpus.ledger.tools.shadow import write_canonical
+          from corpus.ledger.tools.history import archive_name
+          archive_name(os.environ['SHADOW_ARCHIVE_NAME'])
+          raw=os.environ['SHADOW_ARCHIVE_RESOURCES'] or os.environ['SHADOW_ARCHIVE_OPERATIONS']
+          write_canonical('/tmp/archive-input.json',parse(raw))
+          PYINPUT
+            echo "SHADOW_RUN_LABEL=archive-$SHADOW_ARCHIVE_NAME" >> "$GITHUB_ENV"
+            if [ -n "$SHADOW_ARCHIVE_RESOURCES" ]; then
+              python3 -m corpus.ledger.tools.archive collect --history /tmp/shadow-previous/corpus/ledger/shadow/history --name "$SHADOW_ARCHIVE_NAME" --resources /tmp/archive-input.json --out /tmp/shadow-next/corpus/ledger/shadow/history > /tmp/shadow-result.json
+            else
+              python3 -m corpus.ledger.tools.history archive --history /tmp/shadow-previous/corpus/ledger/shadow/history --name "$SHADOW_ARCHIVE_NAME" --operations /tmp/archive-input.json --out /tmp/shadow-next/corpus/ledger/shadow/history > /tmp/shadow-result.json
+            fi
+          else
+            echo "SHADOW_RUN_LABEL=$day" >> "$GITHUB_ENV"
+            python3 -m corpus.ledger.tools.history run --history /tmp/shadow-previous/corpus/ledger/shadow/history --day "$day" --budget "$budget" --out /tmp/shadow-next/corpus/ledger/shadow/history > /tmp/shadow-result.json
+          fi
           cat /tmp/shadow-result.json >> "$GITHUB_STEP_SUMMARY"
           python3 - <<'PY' >> "$GITHUB_OUTPUT"
           import json
           print('status='+json.load(open('/tmp/shadow-result.json'))['status'])
           PY
       - name: Verify staged history independently
-        if: steps.stage.outputs.status == 'STAGED_SHADOW_RUN'
+        if: startsWith(steps.stage.outputs.status, 'STAGED_SHADOW_')
         run: python3 -m corpus.ledger.tools.history verify --history /tmp/shadow-next/corpus/ledger/shadow/history
       - name: Preserve diagnostic evidence
-        if: steps.stage.outputs.status == 'STAGED_SHADOW_RUN'
+        if: startsWith(steps.stage.outputs.status, 'STAGED_SHADOW_')
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: staged-shadow-history-${{ github.run_id }}
           path: /tmp/shadow-next/corpus/ledger/shadow/history
           if-no-files-found: error
       - name: Fast-forward publish to isolated evidence branch
-        if: steps.stage.outputs.status == 'STAGED_SHADOW_RUN'
+        if: startsWith(steps.stage.outputs.status, 'STAGED_SHADOW_')
         run: |
           set -euo pipefail
           base="$SHADOW_PREVIOUS_SHA"
@@ -107,6 +146,6 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- corpus/ledger/shadow/history
-          git commit -m "Publish shadow HEAD window $SHADOW_RUN_DAY"
+          git commit -m "Publish shadow evidence $SHADOW_RUN_LABEL"
           git push origin HEAD:refs/heads/automation/corpus-ledger-shadow
           echo "Published shadow commit $(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"

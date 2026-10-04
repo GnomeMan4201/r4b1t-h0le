@@ -120,3 +120,29 @@ merge this branch into main. A completed-date rerun performs no network work.
 Failed staging/publication cannot advance the published cursor or date. Public
 ROLL cannot consume this history; archive lifecycle and discovery adapters
 remain future work.
+
+Explicit archive evidence is specified separately in
+`consumers/ARCHIVE_WINDOWS_V1.md`. Recorded declarations/probe observations may
+be staged with `history archive`. Each target change is explicit; HEAD failure
+never infers loss, eligibility or availability. Original identity target records
+survive merges independently; the canonical identity is also reported.
+History v2 adds immutable archive windows while retaining v1 verification and
+all prior bytes. Archive windows never advance the daily cursor or date.
+
+```sh
+# operations.json is a canonical ordered array + LF. See the consumer spec.
+python3 -m corpus.ledger.tools.history archive --history /path/corpus/ledger/shadow/history --name explicit-archive-1 --operations operations.json --out /path/corpus/ledger/shadow/archive-staged
+```
+
+The daily workflow's optional manual archive inputs use the same writer group
+and evidence branch. Scheduled/push runs perform no archive discovery or lookup.
+Producer commitments and verification prove declared inputs and deterministic
+emission, not that an archive snapshot belongs to a resource or remains live.
+
+To collect actual HEAD evidence, `corpus.ledger.tools.archive collect` accepts
+a canonical explicit ID array and probes only their already-declared targets.
+It uses the existing public-target guard/redirect transport, binds the original
+source head and stages a verified window through the same sequencer. No target
+lookup, association inference or automatic lifecycle transition is performed.
+A manual workflow invocation chooses recorded operations or live collection,
+never both; scheduled invocations remain limited to the live-resource policy.

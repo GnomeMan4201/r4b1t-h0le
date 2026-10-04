@@ -47,6 +47,18 @@ jobs:
           sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=17 python3 -m corpus.ledger.tools.replay_isolated --require-isolation < /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline/events.jsonl > /tmp/shadow-bootstrap-replay-17.json
           sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=29 python3 -m corpus.ledger.tools.replay_isolated --require-isolation < /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline/events.jsonl > /tmp/shadow-bootstrap-replay-29.json
           cmp /tmp/shadow-bootstrap-replay-17.json /tmp/shadow-bootstrap-replay-29.json
+      - name: Synthetic archive lifecycle and offline network-isolated history verification
+        run: |
+          python3 -m corpus.ledger.tools.history initialize --authority-root . --out /tmp/archive-acceptance/corpus/ledger/shadow/before
+          python3 - <<'PYARCHIVE'
+          from corpus.ledger.tools.shadow import write_canonical
+          write_canonical('/tmp/synthetic-archive-operations.json',[{'type':'ARCHIVE_RESOLVED','resource_id':'r4b1t:r:000000000000002','timestamp':'2026-10-04T08:00:00.000Z','archive_url':'https://archive.example/synthetic','basis':'Synthetic offline acceptance fixture; no real archive association is asserted'}])
+          PYARCHIVE
+          python3 -m corpus.ledger.tools.history archive --history /tmp/archive-acceptance/corpus/ledger/shadow/before --name synthetic-acceptance --operations /tmp/synthetic-archive-operations.json --out /tmp/archive-acceptance/corpus/ledger/shadow/after
+          sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=17 python3 -m corpus.ledger.tools.history verify --history /tmp/archive-acceptance/corpus/ledger/shadow/after > /tmp/archive-history-17.json
+          sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=29 python3 -m corpus.ledger.tools.history verify --history /tmp/archive-acceptance/corpus/ledger/shadow/after > /tmp/archive-history-29.json
+          cmp /tmp/archive-history-17.json /tmp/archive-history-29.json
+          cat /tmp/archive-history-17.json
       - name: Explicit bounded live HEAD acceptance window (shadow test chain only)
         run: |
           printf '["r4b1t:r:000000000000125","r4b1t:r:000000000000126"]\n' > /tmp/shadow-probe-resources.json
@@ -66,4 +78,5 @@ jobs:
             /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline
             /tmp/shadow-bootstrap/corpus/ledger/shadow/window
             /tmp/shadow-bootstrap/corpus/ledger/shadow/after
+            /tmp/archive-acceptance/corpus/ledger/shadow/after
           if-no-files-found: error

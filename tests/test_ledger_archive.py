@@ -106,11 +106,59 @@ class ArchiveHistoryTests(unittest.TestCase):
             for old in base.rglob('*'):
                 if old.is_file() and old.name!='HEAD.json': self.assertEqual(old.read_bytes(),(out/old.relative_to(base)).read_bytes())
             with self.assertRaises(ValueError): archive_run(out,'synthetic-1',operations,Path(directory)/'corpus/ledger/shadow/duplicate')
+            from corpus.ledger.tools.archive import collect_and_stage
+            def forbidden(*args): raise AssertionError('invalid publication inputs must not probe')
+            for name,destination in [('synthetic-1',Path(directory)/'corpus/ledger/shadow/duplicate-collect'),('../invalid',Path(directory)/'corpus/ledger/shadow/invalid-collect'),('new-name',out),('new-name',Path(directory)/'outside-shadow')]:
+                with self.subTest(name=name,destination=destination),self.assertRaises(ValueError): collect_and_stage(out,name,[rid],destination,observer=forbidden)
+            with self.assertRaises(ValueError): archive_run(out,'stale',operations,Path(directory)/'corpus/ledger/shadow/stale',expected_head=D)
+            seen=[]
+            def archive_observer(rid,target,guard,limiter):
+                seen.append((rid,target))
+                return {'resource_id':rid,'payload':{'probe_version':'r4b1t-shadow-head-v1','observed_url':target,'final_url':target,'status':200,'headers_digest':D,'started_at':'2026-10-04T08:00:00.000Z','finished_at':'2026-10-04T08:00:01.000Z'}}
+            collected=Path(directory)/'corpus/ledger/shadow/collected'
+            collect_and_stage(out,'synthetic-head',[rid],collected,observer=archive_observer)
+            self.assertEqual(seen,[(rid,'https://archive.example/test')])
+            self.assertEqual(verify_history(collected)['state']['event_count'],7037)
             # A daily run following the new consumer must retain and verify it.
             def observer(rid,target,guard,limiter):
                 return {'resource_id':rid,'payload':{'probe_version':'r4b1t-shadow-head-v1','observed_url':target,'final_url':target,'status':200,'headers_digest':D,'started_at':'2026-10-04T08:00:00.000Z','finished_at':'2026-10-04T08:00:01.000Z'}}
             daily=Path(directory)/'corpus/ledger/shadow/daily'
-            run(out,'2026-10-04',1,daily,observer=observer)
+            run(collected,'2026-10-04',1,daily,observer=observer)
             checked=verify_history(daily)
             self.assertEqual(checked['events'][:7035],after['events'])
-            self.assertEqual(len(checked['state']['archives']),1)
+            self.assertEqual(len(checked['state']['archives']),2)
+
+class ArchivePurityTests(unittest.TestCase):
+    def test_archive_consumer_is_structurally_audited(self):
+        from corpus.ledger.tools.check_purity import check_package,check_source
+        from tests.test_ledger_genesis import ROOT
+        path=ROOT/'corpus/ledger/consumers/archive_windows.py'
+        self.assertIn(str(path),check_package(ROOT))
+        source=path.read_text()
+        for forbidden in ['import socket','import time','import os','import random','import requests']:
+            with self.subTest(forbidden=forbidden),self.assertRaises(ValueError): check_source(source+'\n'+forbidden,'corpus.ledger.consumers.archive_windows')
+
+    def test_known_archive_probe_label_cannot_overstate_head_evidence(self):
+        from corpus.ledger.consumers.archive_windows import records,PROBE
+        from corpus.ledger.schema.events import event_hash
+        # Core v1 preserves opaque historical observation semantics. This
+        # consumer additionally validates its declared HEAD profile.
+        with tempfile.TemporaryDirectory() as directory:
+            writer=Sequencer(Path(directory)/'corpus/ledger/shadow/label.sqlite3')
+            writer.submit(genesis());rid=writer.submit(proposal())['resource_id']
+            writer.submit_many([proposal('ARCHIVE_RESOLVED',rid,{'archive_url':'https://archive.example/a','evidence_digest':D})],expected_head=writer.events()[-1]['hash'])
+            payload={'probe_version':PROBE,'observed_url':'https://archive.example/a','final_url':'https://archive.example/a','status':500,'headers_digest':D,'started_at':T,'finished_at':T}
+            writer.submit_many([proposal('ARCHIVE_PROBE_SUCCEEDED',rid,payload)],expected_head=writer.events()[-1]['hash'])
+            replay(writer.events())
+            with self.assertRaises(ValueError): records(writer.events())
+
+    def test_literal_archive_fixture_preserves_explicit_loss_after_probe(self):
+        from tests.test_ledger_genesis import ROOT
+        from corpus.ledger.schema.serialization import parse,serialize
+        from corpus.ledger.consumers.archive_windows import records
+        root=ROOT/'corpus/ledger/fixtures/archive-records-v1'
+        events=[parse(line) for line in (root/'events.jsonl').read_text().splitlines()]
+        self.assertEqual(serialize(records(events))+'\n',(root/'records.json').read_text())
+        projected=replay(events)
+        self.assertEqual(projected['resources'][0]['eligibility'],'CANDIDATE')
+        self.assertIsNone(projected['resources'][0]['availability'])

@@ -30,6 +30,7 @@ def records(events):
             target_change(record,kind,p['archive_url']);record['boundary']=observation['timestamp']
         elif kind=='PROBE_HEARTBEAT': record['boundary']=max(record['boundary'] or '',p['finished_at'])
         else:
+            if p['probe_version']==PROBE and kind!=probe_kind(p): raise ValueError('archive probe label differs from HEAD evidence')
             if record['archive_url'] is None or p['observed_url']!=record['archive_url']: raise ValueError('probe must name current archive target')
             if record['boundary'] is not None and p['started_at']<record['boundary']: raise ValueError('archive probe precedes boundary')
             record['last_probe']=parse(serialize(p));record['boundary']=p['finished_at']

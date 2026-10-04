@@ -1,6 +1,7 @@
 """Durable shadow history artifacts. Git fast-forward publication is the commit point."""
 import argparse
 import hashlib
+import re
 import os
 import shutil
 import tempfile
@@ -20,6 +21,7 @@ from corpus.ledger.verifier import verify_bundle,BUNDLE_SCHEMA
 
 ROOT=Path(__file__).resolve().parents[3]
 SCHEMA='r4b1t-shadow-history-v1'
+ARCHIVE_SCHEMA='r4b1t-shadow-history-v2'
 
 
 def raw_hash(raw): return 'sha256:'+hashlib.sha256(raw).hexdigest()
@@ -43,41 +45,67 @@ def read_chunk(root,item):
     return [parse(line) for line in raw.decode('utf-8')[:-1].split('\n')]
 
 
-def checkpoint(projected,chunks,runs,cursor,day):
-    return {'schema':SCHEMA,'genesis_hash':projected['genesis']['hash'],'event_head':projected['event_head'],'event_count':projected['event_count'],'projection_hash':digest('projection',projected),'chunks':chunks,'runs':runs,'cursor_create_seq':cursor,'last_run_day':day,'policy':policy(),'policy_hash':digest('policy',policy())}
+def checkpoint(projected,chunks,runs,cursor,day,archives=None):
+    value={'schema':SCHEMA,'genesis_hash':projected['genesis']['hash'],'event_head':projected['event_head'],'event_count':projected['event_count'],'projection_hash':digest('projection',projected),'chunks':chunks,'runs':runs,'cursor_create_seq':cursor,'last_run_day':day,'policy':policy(),'policy_hash':digest('policy',policy())}
+    if archives is not None: value.update(schema=ARCHIVE_SCHEMA,archives=archives)
+    return value
+
+
+def archive_name(name):
+    if not isinstance(name,str) or not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,63}',name): raise ValueError('bounded immutable archive window name required')
 
 
 def verify_history(root,expected_head=None):
     root=shadow_path(root);state=read_canonical(contained(root,'HEAD.json'))
-    keys(state,('schema','genesis_hash','event_head','event_count','projection_hash','chunks','runs','cursor_create_seq','last_run_day','policy','policy_hash'))
-    if state['schema']!=SCHEMA or not isinstance(state['chunks'],list) or not isinstance(state['runs'],list) or len(state['chunks'])!=len(state['runs'])+1: raise ValueError('invalid history checkpoint')
+    archives=state.get('archives') if state['schema']==ARCHIVE_SCHEMA else None
+    keys(state,('schema','genesis_hash','event_head','event_count','projection_hash','chunks','runs','cursor_create_seq','last_run_day','policy','policy_hash')+(('archives',) if archives is not None else ()))
+    if state['schema'] not in (SCHEMA,ARCHIVE_SCHEMA) or (state['schema']==ARCHIVE_SCHEMA and not isinstance(archives,list)) or not isinstance(state['chunks'],list) or not isinstance(state['runs'],list) or len(state['chunks'])!=len(state['runs'])+len(archives or [])+1: raise ValueError('invalid history checkpoint')
     validate_policy(state['policy'])
     if not state['chunks'] or state['chunks'][0]['path']!='chunks/genesis.jsonl': raise ValueError('fixed genesis chunk required')
     events=read_chunk(root,state['chunks'][0]);working=empty_state()
     for event in events: apply_event(working,event)
-    declared={'HEAD.json',state['chunks'][0]['path']};cursor=0;last=None
-    for recorded,chunk in zip(state['runs'],state['chunks'][1:]):
-        keys(recorded,('day','path','digest'));day=recorded['day'];timestamp(day+'T00:00:00.000Z')
-        if last is not None and day<=last: raise ValueError('run dates must advance without backfill')
-        base='runs/'+day
-        if recorded['path']!=base+'/run.json' or chunk['path']!=base+'/events.jsonl': raise ValueError('run path/order mismatch')
+    declared={'HEAD.json',state['chunks'][0]['path']};cursor=0;last=None;daily_index=0;archive_index=0;names=set()
+    for chunk in state['chunks'][1:]:
+        is_archive=chunk['path'].startswith('archive_windows/')
+        before=projection(working)
+        if is_archive:
+            if archives is None or archive_index>=len(archives): raise ValueError('archive record missing')
+            recorded=archives[archive_index];archive_index+=1
+            keys(recorded,('name','path','digest'));name=recorded['name'];archive_name(name)
+            if name in names: raise ValueError('archive name reused')
+            names.add(name);base='archive_windows/'+name
+            if recorded['path']!=base+'/window.json' or chunk['path']!=base+'/events.jsonl': raise ValueError('archive path/order mismatch')
+        else:
+            if daily_index>=len(state['runs']): raise ValueError('daily record missing')
+            recorded=state['runs'][daily_index];daily_index+=1
+            keys(recorded,('day','path','digest'));day=recorded['day'];timestamp(day+'T00:00:00.000Z')
+            if last is not None and day<=last: raise ValueError('run dates must advance without backfill')
+            base='runs/'+day
+            if recorded['path']!=base+'/run.json' or chunk['path']!=base+'/events.jsonl': raise ValueError('run path/order mismatch')
         raw=contained(root,recorded['path']).read_bytes()
         if raw_hash(raw)!=recorded['digest']: raise ValueError('run commitment mismatch')
-        recorded_plan=read_canonical(contained(root,recorded['path']));before=projection(working)
-        if recorded_plan!=plan(before,cursor,recorded_plan['budget'],day): raise ValueError('schedule plan/cursor mismatch')
         window=read_canonical(contained(root,base+'/window.json'))
-        if window['policy_version']!=DAILY or {r['resource_id'] for r in window['observations']}!=set(recorded_plan['resource_ids']) or len(window['observations'])!=len(recorded_plan['resource_ids']) or any(r['payload']['started_at'][:10]!=day for r in window['observations']): raise ValueError('daily window coverage/date mismatch')
+        if not is_archive:
+            recorded_plan=read_canonical(contained(root,recorded['path']))
+            if recorded_plan!=plan(before,cursor,recorded_plan['budget'],day): raise ValueError('schedule plan/cursor mismatch')
+            if window['policy_version']!=DAILY or {r['resource_id'] for r in window['observations']}!=set(recorded_plan['resource_ids']) or len(window['observations'])!=len(recorded_plan['resource_ids']) or any(r['payload']['started_at'][:10]!=day for r in window['observations']): raise ValueError('daily window coverage/date mismatch')
         manifest_hash=digest('manifest',window['producer_manifest']).split(':')[1]
         inputs={}
         for item in window['producer_manifest']['files']:
             path='producer_files/'+manifest_hash+'/'+item['path'];declared.add(path);inputs[item['path']]=contained(root,path).read_bytes()
         next_events=read_chunk(root,chunk)
-        check_emission(before,window,next_events,inputs)
+        if is_archive:
+            from corpus.ledger.consumers.archive_windows import verify_window
+            verify_window(events,window,next_events,inputs)
+        else:
+            check_emission(before,window,next_events,inputs)
+            cursor=recorded_plan['cursor_create_seq'];last=day
         for event in next_events: apply_event(working,event)
-        events.extend(next_events);cursor=recorded_plan['cursor_create_seq'];last=day
+        events.extend(next_events)
         declared.update((recorded['path'],chunk['path'],base+'/window.json'))
+    if daily_index!=len(state['runs']) or archive_index!=len(archives or []): raise ValueError('unmatched history records')
     projected=projection(working)
-    if serialize(state)!=serialize(checkpoint(projected,state['chunks'],state['runs'],cursor,last)): raise ValueError('checkpoint derivation mismatch')
+    if serialize(state)!=serialize(checkpoint(projected,state['chunks'],state['runs'],cursor,last,archives)): raise ValueError('checkpoint derivation mismatch')
     artifacts={}
     for item in projected['genesis']['payload']['artifacts']:
         path='genesis_artifacts/'+item['path'];declared.add(path);artifacts[item['path']]=contained(root,path).read_bytes()
@@ -132,7 +160,7 @@ def run(history,day,budget,output,observer=observe):
         record=put_json(stage,base+'/run.json',planned);record['day']=day
         put_json(stage,base+'/window.json',window)
         chunk=put(stage,base+'/events.jsonl',''.join(serialize(e)+'\n' for e in committed).encode('utf-8'))
-        write_canonical(stage/'HEAD.json',checkpoint(writer.snapshot(),state['chunks']+[chunk],state['runs']+[record],planned['cursor_create_seq'],day))
+        write_canonical(stage/'HEAD.json',checkpoint(writer.snapshot(),state['chunks']+[chunk],state['runs']+[record],planned['cursor_create_seq'],day,state.get('archives')))
         after=verify_history(stage)
         if after['events'][:len(before['events'])]!=before['events']: raise ValueError('published prefix differs')
         for old in Path(history).rglob('*'):
@@ -142,14 +170,50 @@ def run(history,day,budget,output,observer=observe):
     return {'status':'STAGED_SHADOW_RUN','day':day,'observations':len(rows),'appended_events':len(committed),'event_head':after['state']['event_head'],'projection_hash':after['state']['projection_hash']}
 
 
+def archive_preflight(state,name,output):
+    archive_name(name)
+    if any(item['name']==name for item in state.get('archives',[])): raise ValueError('archive name already committed')
+    output=shadow_path(output)
+    if output.exists(): raise ValueError('fresh archive staging destination required')
+    return output
+
+
+def archive_run(history,name,operations,output,expected_head=None):
+    from corpus.ledger.consumers.archive_windows import build_window as archive_window,proposals as archive_proposals
+    from corpus.ledger.tools.archive import producer_files as archive_files,producer_manifest
+    before=verify_history(history);state=before['state'];output=archive_preflight(state,name,output)
+    if expected_head is not None and state['event_head']!=expected_head: raise ValueError('archive observation source changed')
+    inputs=archive_files();window=archive_window(before['events'],operations,producer_manifest())
+    submitted=archive_proposals(before['events'],window)
+    output.parent.mkdir(parents=True,exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=output.parent) as temp:
+        stage=Path(temp)/'corpus/ledger/shadow/history';shutil.copytree(history,stage)
+        writer=Sequencer(Path(temp)/'corpus/ledger/shadow/store.sqlite3');writer.restore_committed(before['events'])
+        committed=writer.submit_many(submitted,expected_head=state['event_head'])
+        manifest_hash=digest('manifest',window['producer_manifest']).split(':')[1]
+        for path,raw in inputs.items(): put(stage,'producer_files/'+manifest_hash+'/'+path,raw)
+        base='archive_windows/'+name;record=put_json(stage,base+'/window.json',window);record['name']=name
+        chunk=put(stage,base+'/events.jsonl',''.join(serialize(e)+'\n' for e in committed).encode('utf-8'))
+        write_canonical(stage/'HEAD.json',checkpoint(writer.snapshot(),state['chunks']+[chunk],state['runs'],state['cursor_create_seq'],state['last_run_day'],state.get('archives',[])+[record]))
+        after=verify_history(stage)
+        if after['events'][:len(before['events'])]!=before['events']: raise ValueError('archive prefix differs')
+        for old in Path(history).rglob('*'):
+            if old.is_file() and old.name!='HEAD.json' and old.read_bytes()!=contained(stage,str(old.relative_to(history))).read_bytes(): raise ValueError('old archive evidence rewritten')
+        if output.exists(): raise ValueError('archive staging destination appeared')
+        os.rename(stage,output)
+    return {'status':'STAGED_SHADOW_ARCHIVE_WINDOW','name':name,'appended_events':len(committed),'event_head':after['state']['event_head'],'projection_hash':after['state']['projection_hash']}
+
+
 def main():
     parser=argparse.ArgumentParser(description='Isolated durable shadow artifacts; publication requires Git CAS')
     commands=parser.add_subparsers(dest='command',required=True)
     init=commands.add_parser('initialize');init.add_argument('--out',required=True);init.add_argument('--authority-root',required=True)
     check=commands.add_parser('verify');check.add_argument('--history',required=True);check.add_argument('--expected-head')
     append=commands.add_parser('run');append.add_argument('--history',required=True);append.add_argument('--day',required=True);append.add_argument('--budget',type=int,default=100);append.add_argument('--out',required=True)
+    archive=commands.add_parser('archive');archive.add_argument('--history',required=True);archive.add_argument('--name',required=True);archive.add_argument('--operations',required=True);archive.add_argument('--out',required=True)
     args=parser.parse_args()
     if args.command=='initialize': result=initialize(args.out,args.authority_root)
+    elif args.command=='archive': result=archive_run(args.history,args.name,read_canonical(args.operations),args.out)
     elif args.command=='run': result=run(args.history,args.day,args.budget,args.out)
     else:
         checked=verify_history(args.history,args.expected_head);result={'status':'VERIFIED_SHADOW_HISTORY','event_head':checked['state']['event_head'],'event_count':checked['state']['event_count'],'projection_hash':checked['state']['projection_hash']}
