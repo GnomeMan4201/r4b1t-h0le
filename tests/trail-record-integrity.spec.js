@@ -221,3 +221,26 @@ test('TR-5: valid drafts — with SELECT steps and after a fork — resume witho
   expect(child.sequence).toBe(2);
   expectContinuousChain(rollSteps(await page.evaluate(() => window.getTrailManifest())));
 });
+
+test('TR-6: desktop/mobile shell transitions keep one recorded ROLL chain', async ({ page }, testInfo) => {
+  await seedDraft(page);
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+  const first = await commit(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator('html')).toHaveClass(/r4-mobile-active/);
+  const second = await commit(page);
+  await page.setViewportSize({ width: 1280, height: 900 });
+  const third = await commit(page);
+  expect(second.sequence).toBe(first.sequence + 1);
+  expect(third.sequence).toBe(second.sequence + 1);
+  expect(second.sampler.repeat_guard.reference).toBe(first.route.url);
+  expect(third.sampler.repeat_guard.reference).toBe(second.route.url);
+  const manifest = await page.evaluate(() => window.getTrailManifest());
+  expect(manifest.manifest.steps).toHaveLength(3);
+  expectContinuousChain(rollSteps(manifest));
+  const file = testInfo.outputPath('cross-shell-trail.json');
+  fs.writeFileSync(file, JSON.stringify(manifest));
+  const run = spawnSync('python3', [path.join(ROOT, 'tools/reexecute_trail.py'), file, '--root', ROOT], { encoding: 'utf8' });
+  expect(run.status, run.stdout + run.stderr).toBe(0);
+});

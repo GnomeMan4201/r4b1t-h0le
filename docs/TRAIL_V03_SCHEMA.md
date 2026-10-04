@@ -203,4 +203,4 @@ Those are separate, bounded verification layers.
 - v0.1 remains byte-for-byte and ID-for-ID unchanged.
 - v0.2 Blind Descent remains unchanged.
 - v0.1 import creates a new v0.3 artifact made only of IMPORTED steps.
-- Production export remains v0.1 until the separate runtime migration PR.
+- Production export is v0.3 since PR #234. The labeled legacy v0.1 export remains available.
