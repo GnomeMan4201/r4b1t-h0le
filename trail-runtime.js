@@ -502,6 +502,7 @@
       throw new Error('Fork position is invalid');
     }
 
+    var previousScope = Object.assign({}, state);
     state.corpusRevision = loaded.revision;
     state.corpusSourceId = loaded.source.id;
     state.seed = randomSeed();
@@ -525,9 +526,21 @@
     state.parent = { trail_id: parent.trail_id, fork_at: forkAt };
     state.imported = null;
     state.replayIndex = 0;
-    persist();
+    if (!persistScopeChange(previousScope)) throw new Error('Draft storage unavailable; fork not committed');
     renderPanel('FORKED V0.3 / STEP ' + String(forkAt).padStart(3, '0'));
     return currentEnvelope();
+  }
+
+  // Scope replacement is reversible until the new draft bytes have persisted.
+  function persistScopeChange(previousScope) {
+    try {
+      persist();
+      return true;
+    } catch (_) {
+      Object.assign(state, previousScope);
+      renderPanel('DRAFT STORAGE UNAVAILABLE / SCOPE UNCHANGED');
+      return false;
+    }
   }
 
   function resetTrail() {
@@ -535,6 +548,7 @@
       renderPanel();
       return false;
     }
+    var previousScope = Object.assign({}, state);
     clearDraftState();
     state.restoreNotice = null;
     state.restoredFromStorage = false;
