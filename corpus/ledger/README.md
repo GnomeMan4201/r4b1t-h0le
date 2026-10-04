@@ -146,3 +146,21 @@ source head and stages a verified window through the same sequencer. No target
 lookup, association inference or automatic lifecycle transition is performed.
 A manual workflow invocation chooses recorded operations or live collection,
 never both; scheduled invocations remain limited to the live-resource policy.
+
+Recorded discovery is a separate offline consumer specified in
+`consumers/DISCOVERY_WINDOWS_V1.md`. It accepts canonical ordered declarations,
+creates proposals only, rejects exact duplicates/recorded lineage for review,
+and never infers activation, availability, aliases or public eligibility.
+
+```sh
+python3 -m corpus.ledger.tools.discovery prepare --boundary-export /path/corpus/ledger/shadow/before --submissions declarations.json --out /path/corpus/ledger/shadow/discovery-window
+# Use the existing shadow append command with this window's source_head.
+python3 -m corpus.ledger.tools.discovery verify --before /path/corpus/ledger/shadow/before --after /path/corpus/ledger/shadow/after --window /path/corpus/ledger/shadow/discovery-window
+```
+
+The sequencer alone appends and mints IDs. Offline verification binds every
+creation to the complete window and frozen producer bytes; claims stop at
+recorded declarations and deterministic emission. No provider fetching,
+security discovery, daily/archive history ingestion or scheduled publication
+is introduced. Synthetic CI acceptance data never reaches the operational
+evidence branch. Future provider adapters require separate versioned specs.

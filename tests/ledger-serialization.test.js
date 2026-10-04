@@ -16,3 +16,10 @@ test('ledger collections have independent UTF-8 byte ordering', () => {
   assert.deepEqual(profile.sortedCollection(['😀','\ue000','a']), ['a','\ue000','😀']);
   assert.throws(() => profile.sortedCollection(['a','a']));
 });
+test('recorded discovery reference has independently reproducible canonical window bytes', () => {
+  const root='corpus/ledger/fixtures/discovery-recorded-v1/';
+  const raw=fs.readFileSync(root+'window.json','utf8');
+  const value=JSON.parse(raw);
+  assert.equal(profile.serialize(value)+'\n',raw);
+  assert.equal(profile.digest('manifest',value),JSON.parse(fs.readFileSync(root+'commitments.json','utf8')).window_hash);
+});
