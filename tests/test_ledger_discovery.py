@@ -91,6 +91,17 @@ class DiscoveryTests(unittest.TestCase):
         for forbidden in ['import time','import socket','import os','import random','import requests']:
             with self.subTest(forbidden=forbidden),self.assertRaises(ValueError): check_source(path.read_text()+'\n'+forbidden,'corpus.ledger.consumers.discovery')
 
+    def test_literal_discovery_vector_agrees_with_independent_node_bytes(self):
+        from corpus.ledger.consumers.discovery import build_window,proposals
+        from corpus.ledger.tools.shadow import read_canonical
+        from corpus.ledger.schema.serialization import serialize,digest
+        from tests.test_ledger_genesis import ROOT
+        root=ROOT/'corpus/ledger/fixtures/discovery-recorded-v1'
+        window=read_canonical(root/'window.json')
+        self.assertEqual(build_window(self.writer.events(),window['submissions'],window['producer_manifest']),window)
+        self.assertEqual(serialize(proposals(self.writer.events(),window))+'\n',(root/'proposals.json').read_text())
+        self.assertEqual(digest('manifest',window),read_canonical(root/'commitments.json')['window_hash'])
+
 
 class DiscoveryFilesTests(unittest.TestCase):
     def test_prepare_is_inert_and_offline_verification_binds_immutable_export(self):
