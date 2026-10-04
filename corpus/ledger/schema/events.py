@@ -52,7 +52,10 @@ def validate_payload(kind, p):
     if kind not in TYPES:
         raise ValueError('unknown event type')
     if kind == 'GENESIS_BOUNDARY':
-        keys(p, ('serialization','importer_version','import_input_digest','artifacts','authority','legacy_corpora','source_commit'))
+        keys(p, ('serialization','importer_version','import_input_digest','artifacts','authority','legacy_corpora','source_commit'), ('import_record_hashes',))
+        if 'import_record_hashes' in p:
+            if not isinstance(p['import_record_hashes'],list): raise ValueError('ordered import proof array required')
+            for proof in p['import_record_hashes']: sha(proof)
         if p['serialization'] != VERSION or not re.fullmatch(r'[0-9a-f]{40}', p['source_commit']):
             raise ValueError('genesis version/commit invalid')
         text(p['importer_version']); sha(p['import_input_digest'])
