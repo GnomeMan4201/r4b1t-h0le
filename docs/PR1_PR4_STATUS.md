@@ -2,8 +2,8 @@
 
 Baseline: main `2fab77df4883141ac66e6ee340696c03c39c7df5` (2026-10-04 UTC).
 Repair: PR #245, refreshed with main; no separate numbered replacement PRs.
-Status: original requirements reconstructed; runtime repairs in #245 have passed the
-relevant gates; shipment remains the PR merge boundary. This document records the requirements and
+Status: original requirements reconstructed; runtime repairs in #245 are subject to the
+verification and shipment records below. This document records the requirements and
 verification boundary; the PR's merged state is the shipment record.
 
 The original sequence was recovered from the prior design conversation
@@ -30,13 +30,13 @@ behavior, rather than the draft public-chance design, govern implementation.
 | Independent sampler derivation, distinct from base integrity | Existing Python re-executor reconstructs release bytes, registry authority, pool, FNV-1a/Mulberry32 interval and selected route; no JS/DOM dependency | `test_reexecute_trail.py`, `reexecutor-parity.test.js`; rehashed route/count/seed/digest tamper and corrupt release/registry tests | #238 `c36fa4d`; added negative coverage in #245 | SATISFIED implementation; experimental verifier designation retained |
 | S1/S2 cursor/sequence restore; S3 repeated committed ROLL; S4 fresh guard on reset/fork | Trail-scoped sampler authority | `sampler-continuity.spec.js`, runtime v0.3 tests | #231 `9fc735c`; #239/#240/#242/#243 closed duplicates | Original repairs SATISFIED; duplicate branches SUPERSEDED |
 | No dropped committed ROLL during replay; no invalid chain extension | Record before returning/revealing; rewind on recording failure; whole-chain bounded restore; shared pure transaction shape validator | `trail-record-integrity.test.js`, TR-1…TR-5 on both shell projects | Existing #245 repair integrated, then storage/restore fixes in same PR | REPAIRED IN #245; pending merge/shipment |
-| No silent destruction on malformed/stale draft restoration | Exact rejected bytes quarantined, prior quarantine retained; preservation failure keeps original and blocks ROLL/export/reset/fork | Node regressions for stale revision, invalid JSON/URL, unknown declaration, storage failure, reset/fork rollback and prior evidence retention | #245 refresh | REPAIRED IN #245; pending merge/shipment |
+| No silent destruction on malformed/stale draft restoration | Exact rejected bytes quarantined, prior quarantine retained; preservation failure keeps original and blocks ROLL/export/reset/fork | Node regressions for stale revision, invalid JSON/URL, unknown declaration, storage read/write failure, reset/fork rollback and prior evidence retention | #245 refresh | REPAIRED IN #245; pending merge/shipment |
 | Desktop/mobile share authority and maintain continuity | Both shells retain the same commit API and trail state across viewport transitions | TR-6 records, exports and independently re-executes the cross-shell chain | #245 refresh; default Playwright desktop/mobile projects | IMPLEMENTED; final browser gate recorded below |
 | Deterministic presentation-blind BRANCH; ADR 0007 | Existing pure `branch-core.js`; no metadata/history/enrichment/random input or file-order tie authority | `branch-core.test.js`, `branch-determinism.spec.js` | #237 `ac20904` | SATISFIED on main; no wider branch-semantic proof claim |
 | Historical verification / bounded claims | v0.1/v0.2 verification and IDs unchanged; labeled legacy projection; no transitive evidence claims | 32 focused historical/v0.3/provenance tests; CLI lineage; frozen proof/replay audits; README claims inspection | Existing verifiers; #245 does not change historical formats | PRESERVED |
 | Receipt / public chance promotion | Isolated versioned experiment, CJ-1 identities, offline vector, independent JS/Python derivation and Python BLS; no production integration or pre-round witness | `verifiable-chance.test.js`, `test_verifiable_chance.py`; tamper and bounded-claim checks | #241 `3eb8562` | EXPERIMENTAL; subsequent work, outside PR1–PR4 |
 
-Local verification after repairs: Node **451 passed, 0 failed, 0 skipped**;
+Local verification after repairs: Node **452 passed, 0 failed, 0 skipped**;
 Python **140 passed** (with `requests`, `tqdm`, and experiment-only `py_ecc`
 installed); static public claims **passed**; all three registered terrain indexes
 **VERIFIED**. Independent negative cases recompute valid envelope identities,
@@ -50,8 +50,10 @@ execution used GitHub Actions on runtime head `08f234ea1f259ab879b1c7bf8a07960e7
 - Proof Sessions, Trail Cards, Trail Comparison and Verifiable Chance workflows: **success** on that same head.
 - Historical CLI parent/child fixture: **LINEAGE VERIFIED**.
 
-The closeout documentation commit changes no executable or test inputs relative
-to that tested runtime head. No scheduled job is counted as verification.
+A final RED/GREEN regression additionally blocks draft replacement when the
+original storage read fails; the raw bytes cannot then be quarantined safely.
+The final head's rerun and shipment are recorded in PR #245. No scheduled job
+is counted as verification.
 
 No corpus releases, promotion/registry, health/maintenance state, product/motion
 contracts, SVG/UI layout, Blind Descent, or corpus ledger implementation changed.
