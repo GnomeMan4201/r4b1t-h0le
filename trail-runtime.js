@@ -189,8 +189,14 @@
     if (evidence && evidence.navigation) route.navigation = evidence.navigation;
     if (evidence && evidence.imported_source) route.imported_source = evidence.imported_source;
     state.routes.push(route);
+    try {
+      persist();
+    } catch (_) {
+      state.routes.pop();
+      renderPanel('RECORDING UNAVAILABLE / NO SELECTION COMMITTED');
+      return false;
+    }
     state.imported = null;
-    persist();
     renderPanel();
     return true;
   }
