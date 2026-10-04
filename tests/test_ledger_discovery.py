@@ -39,3 +39,19 @@ class DiscoveryTests(unittest.TestCase):
         self.writer.submit(proposal('REDIRECT_OBSERVED',original,{'from_url':'https://example.org/','to_url':row['url'],'evidence_digest':D}))
         with self.assertRaises(ValueError): build_window(self.writer.events(),[row],producer_manifest())
         with self.assertRaises(ValueError): build_window(self.writer.events(),[dict(row,url='https://example.org/')],producer_manifest())
+
+    def test_discovery_append_requires_atomic_source_head_and_preserves_restore(self):
+        from corpus.ledger.consumers.discovery import build_window,proposals
+        from corpus.ledger.tools.discovery import producer_manifest
+        from tests.test_ledger_engine import proposal
+        before=self.writer.events();rows=[{'url':'https://example.org/new','timestamp':T,'basis':'Synthetic','metadata':{}}]
+        submitted=proposals(before,build_window(before,rows,producer_manifest()))
+        with self.assertRaises(ValueError): self.writer.submit_many(submitted)
+        self.assertEqual(self.writer.events(),before)
+        self.writer.submit(proposal())
+        with self.assertRaises(ValueError): self.writer.submit_many(submitted,expected_head=before[-1]['hash'])
+        current=self.writer.events()
+        self.writer.submit_many(submitted,expected_head=current[-1]['hash'])
+        restored=Sequencer(Path(self.temp.name)/'corpus/ledger/shadow/restored.sqlite3')
+        restored.restore_committed(self.writer.events())
+        self.assertEqual(restored.events(),self.writer.events())
