@@ -232,6 +232,87 @@
     root.classList.toggle('result-ready', resultReady);
   }
 
+  // ── Mark dock ───────────────────────────────────────────────────────────
+  // Every sheet and overlay is a fixed full-screen (or bottom) panel, so without this
+  // the rabbit's reactions to MENU, BRANCH, TRAIL, TOPOLOGY, HISTORY, REPLAY and BLIND
+  // DESCENT all play behind them. While any of these surfaces is visible the shell
+  // pins the mounted mark where it already sits (or at the top, dropping in, if it
+  // had scrolled away) and dual-shell.css starts every panel below it. Layout only:
+  // this reads surface visibility, writes four custom properties and two classes on
+  // <html>, and never touches the mark's markup, motion or state classes.
+  var MARK_DOCK_SURFACES = [
+    'r4mMenuSheet', 'r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet',
+    'historyOverlay', 'trailTopologyOverlay', 'replayInspectionOverlay', 'trailComparisonOverlay',
+    'proofSessionOverlay', 'trailLedgerOverlay', 'blindDescentOverlay'
+  ];
+  var markDockObserver = null;
+  var markDockWatched = {};
+  var markDockUndockFrame = 0;
+
+  function markDockSurfaceOpen(id) {
+    var el = byId(id);
+    if (!el || el.hidden || el.getAttribute('aria-hidden') === 'true') return false;
+    // shell sheets stay display:block off-screen; .open is their visible state
+    if (el.classList.contains('r4m-sheet')) return el.classList.contains('open');
+    var cs = window.getComputedStyle(el);
+    return cs.display !== 'none' && cs.visibility !== 'hidden';
+  }
+
+  function syncMarkDock() {
+    var root = document.documentElement;
+    var host = byId('r4mProductionMark');
+    var svg = host && host.querySelector('svg');
+    var open = !!svg && MARK_DOCK_SURFACES.some(markDockSurfaceOpen);
+    var docked = root.classList.contains('r4m-mark-docked');
+    if (open === docked) return;
+    if (!open) {
+      // a sheet-to-sheet switch closes one panel a frame before opening the next:
+      // undock only if nothing has reopened by then
+      if (markDockUndockFrame) return;
+      markDockUndockFrame = window.requestAnimationFrame(function () {
+        markDockUndockFrame = 0;
+        var host = byId('r4mProductionMark');
+        if (host && host.querySelector('svg') && MARK_DOCK_SURFACES.some(markDockSurfaceOpen)) return;
+        root.classList.remove('r4m-mark-docked', 'r4m-mark-dock-drop');
+      });
+      return;
+    }
+    if (markDockUndockFrame) {
+      window.cancelAnimationFrame(markDockUndockFrame);
+      markDockUndockFrame = 0;
+    }
+    var rect = svg.getBoundingClientRect();
+    var height = rect.height || host.getBoundingClientRect().height;
+    var top = rect.top;
+    // only keep it in place if the whole mark is on screen; otherwise it drops in at the top
+    var drop = top < 0 || top + height > window.innerHeight * 0.5;
+    if (drop) top = 0;
+    root.style.setProperty('--r4m-dock-top', top + 'px');
+    root.style.setProperty('--r4m-dock-left', rect.left + 'px');
+    root.style.setProperty('--r4m-dock-w', rect.width + 'px');
+    root.style.setProperty('--r4m-dock-h', height + 'px');
+    root.style.setProperty('--r4m-dock-bottom', (top + height) + 'px');
+    root.classList.toggle('r4m-mark-dock-drop', drop);
+    root.classList.add('r4m-mark-docked');
+  }
+
+  function watchMarkDock() {
+    if (!markDockObserver) markDockObserver = new MutationObserver(syncMarkDock);
+    MARK_DOCK_SURFACES.forEach(function (id) {
+      var el = byId(id);
+      if (!el || markDockWatched[id] === el) return;
+      markDockWatched[id] = el;
+      markDockObserver.observe(el, { attributes: true, attributeFilter: ['class', 'aria-hidden', 'hidden', 'style'] });
+    });
+    syncMarkDock();
+  }
+
+  function initMarkDock() {
+    watchMarkDock();
+    // overlays mount on first open (and some at the end of <body> later)
+    new MutationObserver(watchMarkDock).observe(document.body, { childList: true });
+  }
+
   // ── Secondary mark states ───────────────────────────────────────────────
   // Presentation only. The production mark reacts to which secondary surface is
   // open (.branch-open, .trail-open, .topology-open, .history-open, .replay-open)
@@ -1167,6 +1248,7 @@ MOTION: waiting for target…';
   function init() {
     buildShell();
     initMarkSecondary();
+    initMarkDock();
     // the desktop shell's copy control drives the same mark event
     document.addEventListener('click', function (event) {
       if (event.target && event.target.closest && event.target.closest('#shareTrailBtn')) pulseMarkCopy();

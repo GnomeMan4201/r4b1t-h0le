@@ -228,3 +228,65 @@ test('ROLL and BLIND entries close shell sheets before the mark takes the stage'
   assert.match(source, /function runRollTransition\(kind\) \{\s*\/\/[^\n]*\n\s*closeSheets\(\);/);
   assert.match(source, /action === 'blind-descent'[\s\S]*?closeSheets\(\);\s*document\.documentElement\.classList\.add\('blind-descending'\)/);
 });
+
+test('mark dock: every sheet and overlay is listed, and the dock is layout only', () => {
+  const block = source.slice(source.indexOf('// ── Mark dock'), source.indexOf('// ── Secondary mark states'));
+  assert.ok(block.length > 200, 'dock block present and outside the secondary-state section');
+  const ids = [...block.match(/var MARK_DOCK_SURFACES = \[([\s\S]*?)\];/)[1].matchAll(/'([A-Za-z0-9]+)'/g)].map((m) => m[1]);
+  assert.deepEqual(ids.sort(), ['blindDescentOverlay', 'historyOverlay', 'proofSessionOverlay', 'r4mBranchSheet', 'r4mFilterSheet',
+    'r4mHelpSheet', 'r4mInspectSheet', 'r4mMenuSheet', 'replayInspectionOverlay', 'trailComparisonOverlay', 'trailLedgerOverlay',
+    'trailTopologyOverlay'].sort());
+  const code = block.replace(/\/\/[^\n]*/g, '');
+  // only layout custom properties and the two dock classes on <html>; nothing inside the mark
+  for (const [, prop] of code.matchAll(/setProperty\('([^']+)'/g)) assert.match(prop, /^--r4m-dock-(top|left|w|h|bottom)$/, prop);
+  for (const [, cls] of code.matchAll(/classList\.(?:add|remove|toggle)\(([^)]*)\)/g)) assert.match(cls, /^'r4m-mark-dock(?:ed|-drop)'(?:, (?:'r4m-mark-dock-drop'|drop))?$/, cls);
+  assert.doesNotMatch(code, /setAttribute|\.style\.(?!setProperty)[a-zA-Z]+\s*=|r4h-|animate\(/);
+  assert.match(source, /initMarkSecondary\(\);\s*initMarkDock\(\);/);
+});
+
+test('mark dock CSS pins the mark above every panel and starts every full-height panel below it', () => {
+  const dock = css.slice(css.indexOf('/* ── Mark dock'));
+  assert.match(dock, /html\.r4m-mark-docked #r4mProductionMark>svg\{position:fixed;z-index:(\d+);top:var\(--r4m-dock-top\)/);
+  const z = Number(dock.match(/#r4mProductionMark>svg\{position:fixed;z-index:(\d+)/)[1]);
+  // above the highest overlay (topology 10060) and every sheet
+  assert.ok(z > 10060, `dock z-index ${z}`);
+  for (const id of ['r4mBackdrop', 'r4mMenuSheet', 'historyOverlay', 'trailTopologyOverlay', 'replayInspectionOverlay',
+    'trailComparisonOverlay', 'proofSessionOverlay', 'trailLedgerOverlay', 'blindDescentOverlay']) {
+    assert.match(dock, new RegExp(`html\\.r4m-mark-docked :is\\([^)]*#${id}[^)]*\\)\\{top:var\\(--r4m-dock-bottom\\)!important\\}`), id);
+  }
+  assert.match(dock, /:is\(#r4mFilterSheet,#r4mBranchSheet,#r4mHelpSheet,#r4mInspectSheet\)\{max-height:min\(76vh,calc\(100vh - var\(--r4m-dock-bottom\)\)\)!important\}/);
+  // the drop-in is motion, so it only plays without a reduced-motion preference
+  assert.match(dock, /@media \(prefers-reduced-motion:no-preference\)\{\s*html\.r4m-mark-dock-drop/);
+});
+
+test('displaced paws never expose the head outline: red sockets mirror the paw backing', () => {
+  // geometry is reused, never redrawn: clips use the paw outlines, rings use them by reference
+  for (const side of ['left', 'right']) {
+    assert.match(svg, new RegExp(`<clipPath id="r4h-clip-paw-${side}" clipPathUnits="userSpaceOnUse"><use href="#r4h-paw-${side}-outline"`));
+    assert.match(svg, new RegExp(`<use id="r4h-act-paw-${side}-socket-ring" class="r4h-act-paw-socket" href="#r4h-paw-${side}-outline"`));
+    assert.match(svg, new RegExp(`<rect id="r4h-act-paw-${side}-socket" class="r4h-act-paw-socket" clip-path="url\\(#r4h-clip-paw-${side}\\)"`));
+  }
+  // inside the head, above its black base and under its white face
+  assert.match(svg, /<g id="r4h-head">\s*<path fill="#000" d="[^"]*"\/>\s*<use id="r4h-act-paw-left-socket-ring"[\s\S]*?<rect id="r4h-act-paw-right-socket"[^>]*\/>\s*<path fill="#FEFEFE"/);
+  // hidden at rest (canonical unchanged), shown exactly when the backing is hidden
+  assert.match(svg, /#r4h-root \.r4h-act-paw-socket\{visibility:hidden\}/);
+  const backingHidden = svg.match(/^([^\n]*)#r4h-act-backing\{visibility:hidden\}$/m)[0];
+  const socketVisible = backingHidden.replace(/#r4h-act-backing(?=[,{])/g, '.r4h-act-paw-socket').replace('visibility:hidden', 'visibility:visible');
+  assert.ok(svg.includes(socketVisible), 'socket visibility mirrors the backing');
+  assert.match(svg, /\.r4h-act-paw-socket\{animation:r4h-act-copy-socket 420ms linear 0ms 1 none\}/);
+});
+
+test('MENU reacts on the act tier under every peer, with motion only (reduced motion: no reaction)', () => {
+  const media = svg.indexOf('@media (prefers-reduced-motion:no-preference){');
+  const close = svg.indexOf('/* keyframes (bodies copied verbatim');
+  const menuRules = svg.match(/^#r4h-root:is\(\.menu-open, \.menu-open \*\):not\(\.replay-open[^{]*#r4h-act-[a-z-]+\{[^}]*\}$/gm) || [];
+  assert.equal(menuRules.length, 5);
+  for (const r of menuRules) {
+    const at = svg.indexOf(r);
+    assert.ok(at > media && at < close, 'MENU act rule lives inside the no-preference block');
+    assert.match(r, /:not\(\.replay-open, \.replay-open \*, \.topology-open, \.topology-open \*, \.branch-open, \.branch-open \*, \.trail-open, \.trail-open \*, \.history-open, \.history-open \*\):not\(\.rolling, \.rolling \*\):not\(\.blind-descending, \.blind-descending \*\)/);
+  }
+  // the approved r4h-menu-* rules are untouched; their amplitude is the custom properties
+  assert.match(svg, /#r4h-root\{--glance-x:8px;--glance-y:5px;--ear-rot:12deg\}/);
+  assert.match(svg, /#r4h-menu-ear\{transform:rotate\(var\(--ear-rot\)\);/);
+});
