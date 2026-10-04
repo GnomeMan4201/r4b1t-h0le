@@ -71,3 +71,35 @@ class ProbeWindowTests(unittest.TestCase):
         self.assertEqual(result['payload']['finished_at'],'2026-10-04T06:10:01.000Z')
         response.close.assert_called_once();transport.assert_called_once()
         self.assertEqual(transport.call_args.args[0],'HEAD')
+
+    def test_transport_error_is_evidence_not_retirement(self):
+        from corpus.ledger.consumers.head_probe import observe
+        from unittest.mock import Mock,patch
+        from pool_sweep import TargetGuardError
+        with patch('corpus.ledger.consumers.head_probe.request',side_effect=TargetGuardError('private target')):
+            row=observe(RID,'https://example.org/',Mock(),Mock(),clock=lambda:T)
+        self.assertEqual(row['payload']['reason'],'TargetGuardError')
+        result=proposals(build_window(self.projected,[row],MANIFEST))
+        self.assertEqual([p['type'] for p in result],['PROBE_FAILED','PROBE_HEARTBEAT'])
+        self.assertNotIn('status',row['payload'])
+
+    def test_operator_tool_produces_immutable_offline_evidence(self):
+        from corpus.ledger.tools.probe import collect, verify_exports
+        import tempfile
+        from pathlib import Path
+        from unittest.mock import patch
+        from tests.test_ledger_genesis import ROOT,COMMIT
+        from corpus.ledger.genesis import snapshot,import_proposals
+        from corpus.ledger.sequencer import Sequencer
+        from corpus.ledger.tools.shadow import export
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)/'corpus/ledger/shadow'
+            payload,artifacts=snapshot(ROOT,COMMIT);writer=Sequencer(root/'store.sqlite3')
+            writer.submit_many(import_proposals(payload,artifacts,T)[:2]);export(writer,artifacts,root/'before')
+            target=writer.snapshot()['resources'][0]['url']
+            row=observation();row['payload']['observed_url']=target;row['payload']['final_url']=target
+            with patch('corpus.ledger.tools.probe.observe',return_value=row): collect(root/'before',[RID],1,root/'window')
+            from corpus.ledger.tools.shadow import read_canonical
+            writer.submit_many(read_canonical(root/'window/proposals.json'));export(writer,artifacts,root/'after')
+            self.assertEqual(verify_exports(root/'before',root/'after',root/'window')['status'],'VERIFIED_SHADOW_PROBE_WINDOW')
+            with self.assertRaises(ValueError): collect(root/'before',[RID],1,root/'window')
