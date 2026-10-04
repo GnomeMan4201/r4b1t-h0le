@@ -62,3 +62,10 @@ class ShadowFilesTests(unittest.TestCase):
         self.root.mkdir(parents=True,exist_ok=True)
         (self.root/'.bundle-v1.publish-lock').touch()
         with self.assertRaises(ValueError): export(self.writer,self.artifacts,self.root/'bundle-v1')
+
+    def test_post_commit_publication_conflict_is_reported_as_committed(self):
+        from corpus.ledger.tools.shadow import ExportError, publish_committed
+        target=self.root/'bundle-v1'
+        (self.root/'.bundle-v1.publish-lock').touch()
+        with self.assertRaises(ExportError): publish_committed(self.writer,self.artifacts,target)
+        self.assertEqual(len(self.writer.events()),2)

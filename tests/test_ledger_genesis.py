@@ -81,3 +81,9 @@ class GenesisTests(unittest.TestCase):
         bad['import_input_digest']=digest('manifest',identity)
         artifacts={k:v for k,v in self.artifacts.items() if k in keep}
         with self.assertRaises(ValueError): verify_boundary(bad,artifacts)
+
+    def test_bundle_count_requires_safe_integer_not_bool_or_float(self):
+        bundle=self.make_bundle(import_proposals(self.payload,self.artifacts,T)[:1])
+        for value in (True,1.0):
+            with self.subTest(value=value),self.assertRaises(ValueError):
+                verify_bundle(dict(bundle,event_count=value),self.artifacts)
