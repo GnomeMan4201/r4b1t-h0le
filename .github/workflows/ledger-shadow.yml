@@ -24,6 +24,8 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
+      - name: Install existing guarded transport dependencies
+        run: python3 -m pip install -r requirements-pool-sweep.txt
       - name: Enforce structural replay purity
         run: python3 -m corpus.ledger.tools.check_purity
       - name: Ledger rules and independent serialization vectors
