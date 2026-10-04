@@ -4,7 +4,7 @@ from pathlib import Path
 from contextlib import closing
 from .schema.events import EVENT_SCHEMA, CREATES, GLOBALS, keys, event_hash, sha
 from .schema.identity import MAX_CREATE_SEQ
-from .schema.serialization import parse, serialize
+from .schema.serialization import parse, serialize, GENESIS_PREV
 from .projection import empty_state, apply_event, projection
 
 
@@ -37,9 +37,18 @@ class Sequencer:
         return self.submit_many([proposal])[0]
 
     def submit_many(self, proposals, expected_head=None):
+        return self._write(proposals,expected_head)
+
+    def restore_committed(self,events):
+        from .projection import replay
+        replay(events)
+        submissions=[{k:v for k,v in event.items() if k not in ('schema','seq','prev','hash') and not (event['type'] in CREATES and k=='resource_id')} for event in events]
+        return self._write(submissions,GENESIS_PREV,events)
+
+    def _write(self,proposals,expected_head=None,expected_events=None):
         # Producers cannot supply/reserve final identities or order/hash fields.
         proposals=list(proposals)
-        requires_head=any(isinstance(p,dict) and isinstance(p.get('payload'),dict) and (p['payload'].get('probe_version')=='r4b1t-shadow-head-v1' or p['payload'].get('policy_version')=='shadow-explicit-window-v1') for p in proposals)
+        requires_head=any(isinstance(p,dict) and isinstance(p.get('payload'),dict) and (p['payload'].get('probe_version')=='r4b1t-shadow-head-v1' or p['payload'].get('policy_version') in ('shadow-explicit-window-v1','shadow-daily-window-v1')) for p in proposals)
         if requires_head and expected_head is None: raise ValueError('versioned probe windows require expected source head')
         with closing(sqlite3.connect(self.path, timeout=30)) as db:
             db.execute('BEGIN IMMEDIATE')
@@ -62,6 +71,7 @@ class Sequencer:
                     apply_event(state,event)
                     db.execute('INSERT INTO events VALUES (?,?)',(event['seq'],serialize(event)))
                     assigned.append(parse(serialize(event)))
+                if expected_events is not None and assigned!=expected_events: raise ValueError('restored derivation differs from committed history')
                 db.commit()
                 return assigned
             except BaseException:

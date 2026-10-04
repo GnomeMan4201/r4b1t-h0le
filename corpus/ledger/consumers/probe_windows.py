@@ -121,15 +121,20 @@ def proposals(window):
     return result
 
 
-def verify_window(before_events,window,committed,producer_files):
-    before=replay(before_events)
+def check_emission(before,window,committed,producer_files):
+    """Emission only: callers must independently derive/authenticate the prefix."""
     if build_window(before,window['observations'],window['producer_manifest'],policy_version=window['policy_version'],emission_policy=window.get('emission_policy'))!=window: raise ValueError('window source binding mismatch')
     import hashlib
     for item in window['producer_manifest']['files']:
         if 'sha256:'+hashlib.sha256(producer_files[item['path']]).hexdigest()!=item['digest']: raise ValueError('producer code commitment mismatch')
     expected=proposals(window)
     if len(expected)!=len(committed): raise ValueError('probe recording count mismatch')
-    after=replay(before_events+committed)
     for actual,proposal in zip(committed,expected):
         if {key:actual[key] for key in proposal}!=proposal: raise ValueError('probe proposal differs from committed transaction')
+
+
+def verify_window(before_events,window,committed,producer_files):
+    before=replay(before_events)
+    check_emission(before,window,committed,producer_files)
+    after=replay(before_events+committed)
     return {'status':'VERIFIED_SHADOW_PROBE_WINDOW','event_count':len(committed),'source_head':before['event_head'],'event_head':after['event_head'],'evidence_boundary':'Window inclusion, code commitments and deterministic emission only; no remote truth, GET reachability, public authority or inferred state transitions.'}
