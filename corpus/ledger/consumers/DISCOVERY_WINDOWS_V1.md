@@ -40,3 +40,12 @@ classification correctness, external chronology, safety or public eligibility.
 
 This slice introduces no scheduled ingestion, security discovery adapter,
 provider fetching, changes to durable daily/archive history or public cutover.
+
+Preparation reads a verified supplied export and publishes canonical window,
+proposal array and frozen producer files to a fresh isolated shadow directory.
+It does not append. The existing shadow append command takes these proposals
+with --expected-head equal to the window source_head; the existing sequencer
+mints each ID. The offline consumer verifier accepts verified before/after
+exports and exactly the declared evidence files. Failed preparation publishes
+no partial artifact and never changes a ledger. Operational evidence publication
+and scheduling integration require a subsequent consumer/storage slice.
