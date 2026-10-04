@@ -83,7 +83,7 @@ def main(argv=None):
     parser=argparse.ArgumentParser(description='Offline shadow ledger infrastructure; public selection unchanged')
     commands=parser.add_subparsers(dest='command',required=True)
     boot=commands.add_parser('bootstrap');boot.add_argument('--root',default='.');boot.add_argument('--source-commit',required=True);boot.add_argument('--timestamp',required=True);boot.add_argument('--store',required=True);boot.add_argument('--out',required=True)
-    append=commands.add_parser('append');append.add_argument('--store',required=True);append.add_argument('--proposals',required=True);append.add_argument('--boundary-export',required=True);append.add_argument('--out',required=True)
+    append=commands.add_parser('append');append.add_argument('--store',required=True);append.add_argument('--proposals',required=True);append.add_argument('--boundary-export',required=True);append.add_argument('--out',required=True);append.add_argument('--expected-head')
     verify=commands.add_parser('verify');verify.add_argument('--bundle-dir',required=True);verify.add_argument('--expected-head');verify.add_argument('--expected-genesis')
     args=parser.parse_args(argv)
     if args.command=='bootstrap':
@@ -103,7 +103,7 @@ def main(argv=None):
         if not before or before[0]['hash']!=boundary['genesis_hash']: raise ValueError('append store/boundary mismatch')
         proposals=read_canonical(args.proposals)
         if not isinstance(proposals,list): raise ValueError('ordered proposal array required')
-        writer.submit_many(proposals)
+        writer.submit_many(proposals,expected_head=args.expected_head)
         result=publish_committed(writer,artifacts,args.out)
     else:
         bundle,artifacts=load_export(args.bundle_dir)

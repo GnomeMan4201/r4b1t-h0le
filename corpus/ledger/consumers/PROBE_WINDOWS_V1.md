@@ -11,7 +11,9 @@ not a complete DNS-rebinding defense. No private-target requests are authorized.
 HEAD 2xx is recorded as probe success; other HTTP statuses and transport errors
 as probe failure. Neither label claims GET/body reachability or current safety.
 No response bodies are fetched or fabricated. Available status, final URL,
-normalized headers digest, probe version and actual start/finish times are data.
+normalized headers digest (CJ-1 array of name/value objects, lowercase names
+in ASCII order, limited to content-type/content-length/cache-control/etag/
+last-modified/location), probe version and actual start/finish times are data.
 
 `shadow-explicit-window-v1` is a manual closure policy: no timer, daily schedule
 or automatic heartbeat cadence. A window contains 1–100 observations, ordered
@@ -33,6 +35,9 @@ and evidence only; append occurs through the existing single sequencer API.
 An offline consumer verifier recomputes proposals from the evidence and compares
 the actual appended events, beginning at the declared source head. It checks
 window inclusion, manifest digests and bounded claims, not remote truth.
+
+Append MUST pass the window's source head to the sequencer's atomic
+`expected_head` check. A stale window appends nothing.
 
 Caller-supplied source projections must be rederived from verified exports.
 Unknown or absorbed identities, unconfirmed URLs, duplicate observations,
