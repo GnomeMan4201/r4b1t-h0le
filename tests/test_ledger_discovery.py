@@ -52,7 +52,10 @@ class DiscoveryTests(unittest.TestCase):
         self.writer.submit(proposal())
         with self.assertRaises(ValueError): self.writer.submit_many(submitted,expected_head=before[-1]['hash'])
         current=self.writer.events()
-        self.writer.submit_many(submitted,expected_head=current[-1]['hash'])
+        with self.assertRaises(ValueError): self.writer.submit_many(submitted,expected_head=current[-1]['hash'])
+        self.assertEqual(self.writer.events(),current)
+        refreshed=proposals(current,build_window(current,rows,producer_manifest()))
+        self.writer.submit_many(refreshed,expected_head=current[-1]['hash'])
         restored=Sequencer(Path(self.temp.name)/'corpus/ledger/shadow/restored.sqlite3')
         restored.restore_committed(self.writer.events())
         self.assertEqual(restored.events(),self.writer.events())
@@ -128,3 +131,24 @@ class DiscoveryFilesTests(unittest.TestCase):
             self.assertEqual(writer.snapshot()['resources'][-1]['eligibility'],'CANDIDATE')
             (out/'undeclared').write_text('not committed')
             with self.assertRaises(ValueError): verify_exports(before,after,out)
+
+    def test_preparation_freezes_one_producer_read(self):
+        from unittest.mock import patch
+        from corpus.ledger.tools.discovery import prepare,producer_files
+        from corpus.ledger.tools.shadow import export,read_canonical
+        from corpus.ledger.genesis import snapshot,import_proposals
+        from tests.test_ledger_genesis import ROOT,COMMIT
+        import hashlib
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)/'corpus/ledger/shadow'
+            payload,artifacts=snapshot(ROOT,COMMIT);writer=Sequencer(root/'ledger.sqlite3')
+            writer.submit_many(import_proposals(payload,artifacts,T)[:2])
+            before=root/'before';export(writer,artifacts,before)
+            captured=producer_files();changed=dict(captured)
+            first=next(iter(changed));changed[first]+=b'changed between reads'
+            out=root/'window';rows=[{'url':'https://recorded.example/synthetic','timestamp':T,'basis':'Synthetic','metadata':{}}]
+            with patch('corpus.ledger.tools.discovery.producer_files',side_effect=[captured,changed]) as reader:
+                prepare(before,rows,out)
+            self.assertEqual(reader.call_count,1)
+            for item in read_canonical(out/'window.json')['producer_manifest']['files']:
+                self.assertEqual(item['digest'],'sha256:'+hashlib.sha256((out/'producer_files'/item['path']).read_bytes()).hexdigest())
