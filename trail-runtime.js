@@ -554,7 +554,7 @@
     state.restoredFromStorage = false;
     state.restoredCorpusRevision = null;
     state.restoredCorpusSourceId = null;
-    persist();
+    if (!persistScopeChange(previousScope)) return false;
     renderPanel('NEW SEED / TRAIL EMPTY');
   }
 
