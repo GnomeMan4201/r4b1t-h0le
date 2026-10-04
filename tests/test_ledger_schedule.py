@@ -13,6 +13,9 @@ class ScheduleTests(unittest.TestCase):
         projected['resources'][0]['availability']='GONE'
         self.assertEqual(plan(projected,0,2,'2026-10-04'),result)
         with self.assertRaises(ValueError): plan(projected,0,101,'2026-10-04')
+        projected['resources']=[{'resource_id':f'r4b1t:r:{n:015d}','absorbed_into':None} for n in (30,2,10)]
+        self.assertEqual(plan(projected,2,2,'2026-10-04')['resource_ids'],[f'r4b1t:r:{n:015d}' for n in (10,30)])
+        self.assertEqual(plan(projected,30,2,'2026-10-04')['resource_ids'],[f'r4b1t:r:{n:015d}' for n in (2,10)])
 
     def test_daily_unchanged_outcome_suppresses_full_probe_across_windows(self):
         from corpus.ledger.consumers.probe_windows import build_window,proposals,DAILY_FILES
@@ -89,3 +92,49 @@ class HistoryTests(unittest.TestCase):
             self.assertEqual(history['projected']['resources'],verify_history(self.base)['projected']['resources'])
             def forbidden(*args): raise AssertionError('completed date must not probe')
             self.assertEqual(run(out,'2026-10-04',2,Path(directory)/'corpus/ledger/shadow/duplicate',observer=forbidden)['status'],'SKIPPED_COMPLETED_DATE')
+            with self.assertRaises(ValueError): run(out,'2026-10-03',2,Path(directory)/'corpus/ledger/shadow/backfill',observer=forbidden)
+            self.assertEqual(verify_history(out)['state'],history['state'])
+
+    def test_checkpoint_and_chunk_tampering_fail_closed(self):
+        import tempfile,shutil
+        from pathlib import Path
+        from corpus.ledger.tools.history import verify_history
+        from corpus.ledger.tools.shadow import read_canonical,write_canonical
+        for field,value in [('cursor_create_seq',9),('event_count',1),('projection_hash','sha256:'+'0'*64),('last_run_day','2026-10-04')]:
+            with self.subTest(field=field),tempfile.TemporaryDirectory() as directory:
+                changed=Path(directory)/'corpus/ledger/shadow/history';shutil.copytree(self.base,changed)
+                state=read_canonical(changed/'HEAD.json');state[field]=value;write_canonical(changed/'HEAD.json',state)
+                with self.assertRaises(ValueError): verify_history(changed)
+        with tempfile.TemporaryDirectory() as directory:
+            changed=Path(directory)/'corpus/ledger/shadow/history';shutil.copytree(self.base,changed)
+            with (changed/'chunks/genesis.jsonl').open('a') as stream: stream.write('{}\n')
+            with self.assertRaises(ValueError): verify_history(changed)
+
+    def test_failed_observer_does_not_advance_history(self):
+        import tempfile
+        from pathlib import Path
+        from corpus.ledger.tools.history import run,verify_history
+        before=verify_history(self.base)['state']
+        def broken(*args): raise RuntimeError('injected worker failure')
+        with tempfile.TemporaryDirectory() as directory:
+            out=Path(directory)/'corpus/ledger/shadow/failed'
+            with self.assertRaises(RuntimeError): run(self.base,'2026-10-04',2,out,observer=broken)
+            self.assertFalse(out.exists())
+        self.assertEqual(verify_history(self.base)['state'],before)
+
+    def test_fast_forward_publication_rejects_competing_commit(self):
+        import tempfile,subprocess
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);remote=root/'remote.git';work=root/'publisher'
+            def git(*args,check=True): return subprocess.run(['git',*args],cwd=work if work.exists() else root,check=check,capture_output=True,text=True)
+            git('init','--bare',str(remote));git('clone',str(remote),str(work))
+            git('config','user.name','shadow-test');git('config','user.email','shadow@example.invalid')
+            (work/'evidence').write_text('genesis');git('add','evidence');git('commit','-m','genesis')
+            base=git('rev-parse','HEAD').stdout.strip();git('push','origin','HEAD:refs/heads/automation/corpus-ledger-shadow')
+            (work/'evidence').write_text('first run');git('commit','-am','first run');git('push','origin','HEAD:refs/heads/automation/corpus-ledger-shadow')
+            accepted=git('rev-parse','HEAD').stdout.strip();git('checkout','--detach',base)
+            (work/'evidence').write_text('competing run');git('commit','-am','competing run')
+            result=git('push','origin','HEAD:refs/heads/automation/corpus-ledger-shadow',check=False)
+            self.assertNotEqual(result.returncode,0)
+            self.assertIn(accepted,git('ls-remote','origin','refs/heads/automation/corpus-ledger-shadow').stdout)

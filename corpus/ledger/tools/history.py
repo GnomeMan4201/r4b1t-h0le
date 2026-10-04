@@ -11,7 +11,7 @@ from corpus.ledger.consumers.head_probe import observe,PublicTargetGuard,RateLim
 from corpus.ledger.tools.probe import producer_files
 from corpus.ledger.tools.shadow import read_canonical,write_canonical
 from corpus.ledger.tools.files import contained
-from corpus.ledger.schema.serialization import serialize,parse,digest,timestamp
+from corpus.ledger.schema.serialization import serialize,parse,digest,timestamp,sorted_collection
 from corpus.ledger.schema.events import keys
 from corpus.ledger.genesis import snapshot,import_proposals
 from corpus.ledger.projection import replay,empty_state,apply_event,projection
@@ -116,7 +116,7 @@ def run(history,day,budget,output,observer=observe):
     output=shadow_path(output)
     if output.exists(): raise ValueError('fresh staging destination required')
     inputs=producer_files(policy_version=DAILY)
-    manifest={'schema':'r4b1t-shadow-producer-manifest-v1','name':'shadow-head','version':'r4b1t-shadow-head-v1','files':__import__('corpus.ledger.schema.serialization',fromlist=['sorted_collection']).sorted_collection([{'path':path,'digest':raw_hash(raw)} for path,raw in inputs.items()])}
+    manifest={'schema':'r4b1t-shadow-producer-manifest-v1','name':'shadow-head','version':'r4b1t-shadow-head-v1','files':sorted_collection([{'path':path,'digest':raw_hash(raw)} for path,raw in inputs.items()])}
     output.parent.mkdir(parents=True,exist_ok=True)
     with tempfile.TemporaryDirectory(dir=output.parent) as temp:
         stage=Path(temp)/'corpus/ledger/shadow/history';shutil.copytree(history,stage)
