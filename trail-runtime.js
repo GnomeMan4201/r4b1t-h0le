@@ -117,9 +117,11 @@
 
   function restore() {
     var raw = null;
+    var draftRead = false;
     var failure = null;
     try {
       raw = localStorage.getItem(STORAGE_KEY);
+      draftRead = true;
       var saved = JSON.parse(raw || 'null');
       if (saved) {
         if (typeof saved.seed !== 'string' || !saved.seed || !Array.isArray(saved.routes)) {
@@ -143,6 +145,12 @@
       }
       failure = restoreSamplerContinuity();
     } catch (error) {
+      // Without the original bytes, no quarantine or replacement can preserve evidence.
+      if (!draftRead) {
+        state.preservationBlocked = true;
+        state.restoreNotice = 'DRAFT READ UNAVAILABLE / ORIGINAL DRAFT RETAINED / ROLL BLOCKED';
+        return;
+      }
       failure = 'Draft restore rejected: ' + error.message;
     }
     if (failure && quarantineDraft(raw, failure)) clearDraftState();
