@@ -2,7 +2,7 @@
 import sqlite3
 from pathlib import Path
 from contextlib import closing
-from .schema.events import EVENT_SCHEMA, CREATES, GLOBALS, keys, event_hash
+from .schema.events import EVENT_SCHEMA, CREATES, GLOBALS, keys, event_hash, sha
 from .schema.identity import MAX_CREATE_SEQ
 from .schema.serialization import parse, serialize
 from .projection import empty_state, apply_event, projection
@@ -36,8 +36,11 @@ class Sequencer:
     def submit(self, proposal):
         return self.submit_many([proposal])[0]
 
-    def submit_many(self, proposals):
+    def submit_many(self, proposals, expected_head=None):
         # Producers cannot supply/reserve final identities or order/hash fields.
+        proposals=list(proposals)
+        requires_head=any(isinstance(p,dict) and isinstance(p.get('payload'),dict) and (p['payload'].get('probe_version')=='r4b1t-shadow-head-v1' or p['payload'].get('policy_version')=='shadow-explicit-window-v1') for p in proposals)
+        if requires_head and expected_head is None: raise ValueError('versioned probe windows require expected source head')
         with closing(sqlite3.connect(self.path, timeout=30)) as db:
             db.execute('BEGIN IMMEDIATE')
             try:
@@ -46,6 +49,9 @@ class Sequencer:
                     event = parse(raw)
                     if event['seq'] != seq: raise ValueError('SQL order column disagrees with event')
                     apply_event(state,event)
+                if expected_head is not None:
+                    sha(expected_head)
+                    if state['head'] != expected_head: raise ValueError('stale source head; no proposals appended')
                 assigned = []
                 for proposal in proposals:
                     kind = proposal.get('type') if isinstance(proposal,dict) else None

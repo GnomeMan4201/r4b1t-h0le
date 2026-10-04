@@ -71,3 +71,23 @@ pins projection hash
 It exercises explicit activation and permanent merge resolution; it is not a
 real corpus bootstrap. Heartbeat cadence, actual probe producers, archive
 lifecycle and discovery adapters remain outside Phase 1.
+
+Phase 2's first consumer is specified in `consumers/PROBE_WINDOWS_V1.md`.
+It performs explicitly selected HEAD windows, retains outcome changes and binds
+all observations in a heartbeat. It has no scheduled cadence and changes no
+eligibility or availability state. Header/body and reachability claims are
+bounded to actual HEAD evidence. Network execution is separate from pure replay.
+
+```sh
+# resources.json is a canonical ordered array of existing, unabsorbed IDs + LF.
+python3 -m corpus.ledger.tools.probe collect --boundary-export /path/corpus/ledger/shadow/before --resources resources.json --samples 2 --out /path/corpus/ledger/shadow/window-1
+# Read source_head from window-1/window.json and pass it as expected-head.
+python3 -m corpus.ledger.tools.shadow append --store /path/corpus/ledger/shadow/store.sqlite3 --boundary-export /path/corpus/ledger/shadow/before --proposals /path/corpus/ledger/shadow/window-1/proposals.json --expected-head sha256:SOURCE_HEAD --out /path/corpus/ledger/shadow/after
+python3 -m corpus.ledger.tools.probe verify --before /path/corpus/ledger/shadow/before --after /path/corpus/ledger/shadow/after --window /path/corpus/ledger/shadow/window-1
+```
+
+Producer files are frozen alongside each window for offline code-commitment
+checks. The sequencer rejects a stale source head within its write transaction.
+No adapter may reserve identities or append directly. Archive lifecycle,
+discovery admissions and scheduled heartbeat policy still require their own
+consumer slices; no external maintenance classification is ledger authority.
