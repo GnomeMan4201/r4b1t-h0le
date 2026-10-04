@@ -90,3 +90,30 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIn(str(path),check_package(ROOT))
         for forbidden in ['import time','import socket','import os','import random','import requests']:
             with self.subTest(forbidden=forbidden),self.assertRaises(ValueError): check_source(path.read_text()+'\n'+forbidden,'corpus.ledger.consumers.discovery')
+
+
+class DiscoveryFilesTests(unittest.TestCase):
+    def test_prepare_is_inert_and_offline_verification_binds_immutable_export(self):
+        from corpus.ledger.tools.discovery import prepare,verify_exports
+        from corpus.ledger.tools.shadow import export,read_canonical
+        from corpus.ledger.genesis import snapshot,import_proposals
+        from tests.test_ledger_genesis import ROOT,COMMIT
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)/'corpus/ledger/shadow'
+            payload,artifacts=snapshot(ROOT,COMMIT);writer=Sequencer(root/'ledger.sqlite3')
+            writer.submit_many(import_proposals(payload,artifacts,T)[:2])
+            before=root/'before';export(writer,artifacts,before)
+            original=writer.events();out=root/'recorded-window'
+            rows=[{'url':'https://example.org/new-recorded-discovery','timestamp':T,'basis':'Synthetic test declaration; no external observation asserted','metadata':{}}]
+            result=prepare(before,rows,out)
+            self.assertEqual(result['status'],'SHADOW_DISCOVERY_PROPOSALS_ONLY')
+            self.assertEqual(writer.events(),original)
+            with self.assertRaises(ValueError): prepare(before,rows,out)
+            with self.assertRaises(ValueError): prepare(before,rows,Path(directory)/'outside-shadow')
+            submitted=read_canonical(out/'proposals.json')
+            writer.submit_many(submitted,expected_head=result['source_head'])
+            after=root/'after';export(writer,artifacts,after)
+            self.assertEqual(verify_exports(before,after,out)['event_count'],1)
+            self.assertEqual(writer.snapshot()['resources'][-1]['eligibility'],'CANDIDATE')
+            (out/'undeclared').write_text('not committed')
+            with self.assertRaises(ValueError): verify_exports(before,after,out)
