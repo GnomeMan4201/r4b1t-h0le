@@ -1,7 +1,7 @@
 """Pure observation-window producer. Never selection or projection authority."""
 from corpus.ledger.schema.events import keys,sha,text,integer,validate_payload
 from corpus.ledger.schema.identity import create_seq
-from corpus.ledger.schema.serialization import serialize,digest,sorted_collection
+from corpus.ledger.schema.serialization import serialize,digest,sorted_collection,parse
 from corpus.ledger.projection import replay
 from .schedule import DAILY,validate_policy
 
@@ -73,7 +73,7 @@ def build_window(projected,rows,producer_manifest,policy_version=POLICY,emission
         validate_policy(emission_policy)
         window.update(schema='r4b1t-shadow-probe-window-v2',emission_policy=emission_policy,prior_outcomes=previous_outcomes(projected,{r['resource_id'] for r in result}))
     elif emission_policy is not None: raise ValueError('manual policy takes no scheduling artifact')
-    return window
+    return parse(serialize(window))
 
 
 def signature(payload):
@@ -127,6 +127,9 @@ def check_emission(before,window,committed,producer_files):
     import hashlib
     for item in window['producer_manifest']['files']:
         if 'sha256:'+hashlib.sha256(producer_files[item['path']]).hexdigest()!=item['digest']: raise ValueError('producer code commitment mismatch')
+    if window['policy_version']==DAILY:
+        raw=producer_files['corpus/ledger/consumers/shadow-daily-v1.json']
+        if not raw.endswith(b'\n') or parse(raw.decode('utf-8')[:-1])!=window['emission_policy']: raise ValueError('bound policy bytes mismatch')
     expected=proposals(window)
     if len(expected)!=len(committed): raise ValueError('probe recording count mismatch')
     for actual,proposal in zip(committed,expected):

@@ -5,7 +5,7 @@ import os
 import tempfile
 import time
 from pathlib import Path
-from corpus.ledger.consumers.probe_windows import build_window,proposals,verify_window,PROBE,FILES
+from corpus.ledger.consumers.probe_windows import build_window,proposals,verify_window,PROBE,FILES,DAILY_FILES,POLICY,DAILY
 from corpus.ledger.consumers.head_probe import observe,PublicTargetGuard,RateLimiter
 from corpus.ledger.tools.shadow import load_export,read_canonical,write_canonical
 from corpus.ledger.tools.files import contained
@@ -16,8 +16,9 @@ from corpus.ledger.schema.serialization import serialize,sorted_collection
 ROOT=Path(__file__).resolve().parents[3]
 
 
-def producer_files():
-    return {path:contained(ROOT,path).read_bytes() for path in FILES}
+def producer_files(policy_version=POLICY):
+    if policy_version not in (POLICY,DAILY): raise ValueError('unsupported producer profile')
+    return {path:contained(ROOT,path).read_bytes() for path in (FILES if policy_version==POLICY else DAILY_FILES)}
 
 
 def collect(boundary,resource_ids,samples,output):
