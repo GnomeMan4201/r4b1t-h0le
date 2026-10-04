@@ -26,7 +26,10 @@ async function runtime(storage = new Map()) {
     document, URL, TextEncoder, TextDecoder, crypto: webcrypto, console,
     localStorage: {
       getItem(key) { return storage.get(key) ?? null; },
-      setItem(key, value) { storage.set(key, String(value)); },
+      setItem(key, value) {
+        if (storage.failKeys && storage.failKeys.has(key)) throw new Error('Storage unavailable');
+        storage.set(key, String(value));
+      },
     },
     setTimeout() {}, clearInterval() {},
     setInterval(callback) { callback(); return 1; },
@@ -93,4 +96,18 @@ test('a draft from an older corpus is preserved before a fresh scope starts', as
   assert.equal(quarantine.raw, raw);
   assert.match(quarantine.reason, /corpus revision/i);
   assert.equal(restored.context.__r4b1tCommitRoll().transaction.sequence, 1);
+});
+
+test('failed recording exposes no route and consumes no sampler interval', async () => {
+  const r = await runtime();
+  const before = r.storage.get(KEY);
+  r.storage.failKeys = new Set([KEY]);
+  assert.equal(r.context.__r4b1tCommitRoll(), null);
+  assert.equal(r.storage.get(KEY), before);
+  r.storage.failKeys.clear();
+  const result = r.context.__r4b1tCommitRoll();
+  assert.equal(result.transaction.sequence, 1);
+  assert.equal(result.transaction.sampler.draw_start, 0);
+  assert.equal(r.draft().routes.length, 1);
+  assert.equal((await r.context.getTrailManifest()).manifest.steps.length, 1);
 });
