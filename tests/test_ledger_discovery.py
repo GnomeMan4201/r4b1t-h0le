@@ -1,4 +1,5 @@
 import tempfile
+import copy
 import unittest
 from pathlib import Path
 from tests.test_ledger_engine import genesis, T
@@ -55,3 +56,37 @@ class DiscoveryTests(unittest.TestCase):
         restored=Sequencer(Path(self.temp.name)/'corpus/ledger/shadow/restored.sqlite3')
         restored.restore_committed(self.writer.events())
         self.assertEqual(restored.events(),self.writer.events())
+
+    def test_discovery_verifier_rejects_tampering_dropped_duplicate_and_authority_inputs(self):
+        from corpus.ledger.consumers.discovery import build_window,proposals,verify_window
+        from corpus.ledger.tools.discovery import producer_files,producer_manifest
+        before=self.writer.events();rows=[{'url':'https://example.org/new','timestamp':T,'basis':'Synthetic','metadata':{}}]
+        window=build_window(before,rows,producer_manifest())
+        submitted=proposals(before,window)
+        committed=self.writer.submit_many(submitted,expected_head=before[-1]['hash'])
+        for field,value in [('source_head','sha256:'+'0'*64),('adapter_version','unknown'),('schema','unknown')]:
+            bad=dict(window,**{field:value})
+            with self.subTest(field=field),self.assertRaises(ValueError): verify_window(before,bad,committed,producer_files())
+        for field,value in [('url','https://other.example/'),('basis','changed'),('timestamp','2026-10-04T00:00:01.000Z')]:
+            bad=copy.deepcopy(window);bad['submissions'][0][field]=value
+            with self.subTest(field=field),self.assertRaises(ValueError): verify_window(before,bad,committed,producer_files())
+        for altered in [[],committed+committed]:
+            with self.assertRaises(ValueError): verify_window(before,window,altered,producer_files())
+        inputs=producer_files();first=next(iter(inputs));inputs[first]+=b'changed'
+        with self.assertRaises(ValueError): verify_window(before,window,committed,inputs)
+        inputs=producer_files();inputs['undeclared']=b''
+        with self.assertRaises(ValueError): verify_window(before,window,committed,inputs)
+        for extra in [{'resource_id':'r4b1t:r:000000000000999'},{'seq':99},{'hash':'sha256:'+'0'*64},{'initial_eligibility':'ACTIVE'}]:
+            with self.subTest(extra=extra),self.assertRaises(ValueError): build_window(before,[dict(rows[0],**extra)],producer_manifest())
+        for metadata in [{'provenance':'invented'},{'eligibility':'ACTIVE'},{'availability':'LIVE'}]:
+            with self.assertRaises(ValueError): build_window(before,[dict(rows[0],metadata=metadata)],producer_manifest())
+        for value in ['2026-10-04T00:00:00Z',1.5]:
+            with self.assertRaises(ValueError): build_window(before,[dict(rows[0],timestamp=value)],producer_manifest())
+
+    def test_discovery_is_structurally_pure_and_forbidden_dependencies_fail(self):
+        from corpus.ledger.tools.check_purity import check_package,check_source
+        from tests.test_ledger_genesis import ROOT
+        path=ROOT/'corpus/ledger/consumers/discovery.py'
+        self.assertIn(str(path),check_package(ROOT))
+        for forbidden in ['import time','import socket','import os','import random','import requests']:
+            with self.subTest(forbidden=forbidden),self.assertRaises(ValueError): check_source(path.read_text()+'\n'+forbidden,'corpus.ledger.consumers.discovery')
