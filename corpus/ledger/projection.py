@@ -40,7 +40,7 @@ def apply_event(state, event):
             proof = digest('manifest',{'url':p['url'],'metadata':p['metadata']})
             if p['genesis_hash'] != state['genesis']['hash'] or ordinal >= len(proofs) or proofs[ordinal] != proof or ordinal in state['imports']: raise ValueError('legacy ACTIVE import not proven by genesis')
             state['imports'].append(ordinal)
-        state['resources'][rid] = {'resource_id':rid,'create_seq':create_seq(rid),'url':p['url'],'urls':[p['url']],'observed_urls':[p['url']],'metadata':dict(p['metadata']),'eligibility':'ACTIVE' if kind == 'LEGACY_RESOURCE_IMPORTED' else 'CANDIDATE','availability':None,'archive_targets':[], 'absorbed_into':None}
+        state['resources'][rid] = {'resource_id':rid,'create_seq':create_seq(rid),'url':p['url'],'urls':[p['url']],'observed_urls':[p['url']],'metadata':dict(p['metadata']),'eligibility':'ACTIVE' if kind == 'LEGACY_RESOURCE_IMPORTED' else 'CANDIDATE','availability':None, 'absorbed_into':None}
     elif kind == 'RESOURCE_MERGED':
         first, second = p['first'],p['second']
         if canonical_id(state,first) != first or canonical_id(state,second) != second: raise ValueError('merge must name current canonical identities')
@@ -51,7 +51,7 @@ def apply_event(state, event):
         for old in tuple(state['resolution']):
             state['resolution'][old] = canonical_id(state,old)
             state['resources'][old]['absorbed_into'] = state['resolution'][old]
-        for collection in ('urls','observed_urls','archive_targets'):
+        for collection in ('urls','observed_urls'):
             state['resources'][keep][collection] = sorted_collection(list(set(state['resources'][keep][collection] + state['resources'][absorbed][collection])))
         # State axes and original metadata are never inferred or overwritten by a merge.
     elif 'resource_id' in event:
@@ -63,11 +63,6 @@ def apply_event(state, event):
         elif kind == 'ALIAS_CONFIRMED':
             if p['from_url'] not in resource['urls']: raise ValueError('alias source is not confirmed for identity')
             resource['urls'] = sorted_collection(list(set(resource['urls'] + [p['to_url']])))
-        elif kind in ('ARCHIVE_RESOLVED','ARCHIVE_TARGET_REPLACED'):
-            resource['archive_targets'] = sorted_collection(list(set(resource['archive_targets'] + [p['archive_url']])))
-        elif kind == 'ARCHIVE_TARGET_GONE':
-            if p['archive_url'] not in resource['archive_targets']: raise ValueError('unknown archive target')
-            resource['archive_targets'].remove(p['archive_url'])
     elif kind == 'BATCH_REVOKED':
         for rid in p['resource_ids']: canonical_id(state,rid)
     if kind not in CREATES and kind != 'GENESIS_BOUNDARY':

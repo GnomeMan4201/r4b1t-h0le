@@ -13,6 +13,9 @@ def check_source(source, module):
     aliases = {}
     approved_symbols = {'__future__':('annotations',),'re':('compile','fullmatch','search'),'json':('loads','dumps'),'hashlib':('sha256',),'typing':('Any',),'ipaddress':('IPv6Address',),'urllib.parse':('urlsplit',)}
     for node in ast.walk(tree):
+        if isinstance(node,ast.Name) and isinstance(node.ctx,ast.Load) and node.id in FORBIDDEN_CALLS: raise ValueError('forbidden replay builtin reference')
+        if isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef)):
+            if any(not isinstance(value,ast.Constant) for value in node.args.defaults + [v for v in node.args.kw_defaults if v is not None]): raise ValueError('nonconstant replay default forbidden')
         if isinstance(node,(ast.Global,ast.Nonlocal)): raise ValueError('mutable global authority forbidden')
         if isinstance(node,ast.Import):
             for item in node.names:
@@ -40,7 +43,7 @@ def check_source(source, module):
             value=node.value
             if isinstance(value,ast.Call) and not (isinstance(value.func,ast.Attribute) and isinstance(value.func.value,ast.Name) and value.func.value.id=='re' and value.func.attr=='compile'):
                 raise ValueError('computed module-level authority forbidden')
-            if isinstance(value,(ast.Dict,ast.List,ast.Set,ast.DictComp,ast.ListComp,ast.SetComp)) or isinstance(value,ast.Call) and isinstance(value.func,ast.Name) and value.func.id in ('dict','list','set'):
+            if any(isinstance(n,(ast.Dict,ast.List,ast.Set,ast.DictComp,ast.ListComp,ast.SetComp)) for n in ast.walk(value)) or isinstance(value,ast.Call) and isinstance(value.func,ast.Name) and value.func.id in ('dict','list','set'):
                 raise ValueError('mutable module-level state forbidden')
     return tree
 
