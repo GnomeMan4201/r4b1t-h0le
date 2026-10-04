@@ -48,7 +48,7 @@ class Sequencer:
     def _write(self,proposals,expected_head=None,expected_events=None):
         # Producers cannot supply/reserve final identities or order/hash fields.
         proposals=list(proposals)
-        requires_head=any(isinstance(p,dict) and isinstance(p.get('payload'),dict) and (p['payload'].get('probe_version')=='r4b1t-shadow-head-v1' or p['payload'].get('policy_version') in ('shadow-explicit-window-v1','shadow-daily-window-v1')) for p in proposals)
+        requires_head=any(isinstance(p,dict) and (p.get('type') in ('ARCHIVE_RESOLVED','ARCHIVE_TARGET_REPLACED','ARCHIVE_TARGET_GONE','ARCHIVE_PROBE_SUCCEEDED','ARCHIVE_PROBE_FAILED') or isinstance(p.get('payload'),dict) and (p['payload'].get('probe_version')=='r4b1t-shadow-head-v1' or p['payload'].get('policy_version') in ('shadow-explicit-window-v1','shadow-daily-window-v1','shadow-archive-explicit-window-v1'))) for p in proposals)
         if requires_head and expected_head is None: raise ValueError('versioned probe windows require expected source head')
         with closing(sqlite3.connect(self.path, timeout=30)) as db:
             db.execute('BEGIN IMMEDIATE')

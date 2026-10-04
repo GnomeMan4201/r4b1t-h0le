@@ -13,10 +13,10 @@ class ArchiveTests(unittest.TestCase):
 
     def test_explicit_target_lifecycle_never_changes_state_axes(self):
         from corpus.ledger.consumers.archive_windows import records
-        self.writer.submit(proposal('ARCHIVE_RESOLVED',self.rid,{'archive_url':'https://archive.example/a','evidence_digest':D}))
+        self.writer.submit_many([proposal('ARCHIVE_RESOLVED',self.rid,{'archive_url':'https://archive.example/a','evidence_digest':D})],expected_head=self.writer.events()[-1]['hash'])
         self.assertEqual(records(self.writer.events())[0]['archive_url'],'https://archive.example/a')
-        self.writer.submit(proposal('ARCHIVE_TARGET_REPLACED',self.rid,{'archive_url':'https://archive.example/b','evidence_digest':D}))
-        self.writer.submit(proposal('ARCHIVE_TARGET_GONE',self.rid,{'archive_url':'https://archive.example/b','evidence_digest':D}))
+        self.writer.submit_many([proposal('ARCHIVE_TARGET_REPLACED',self.rid,{'archive_url':'https://archive.example/b','evidence_digest':D})],expected_head=self.writer.events()[-1]['hash'])
+        self.writer.submit_many([proposal('ARCHIVE_TARGET_GONE',self.rid,{'archive_url':'https://archive.example/b','evidence_digest':D})],expected_head=self.writer.events()[-1]['hash'])
         self.assertIsNone(records(self.writer.events())[0]['archive_url'])
         self.assertEqual(self.writer.snapshot()['resources'][0]['eligibility'],'CANDIDATE')
         self.assertIsNone(self.writer.snapshot()['resources'][0]['availability'])
