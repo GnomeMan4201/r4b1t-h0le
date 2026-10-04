@@ -38,6 +38,9 @@ class Sequencer:
 
     def submit_many(self, proposals, expected_head=None):
         # Producers cannot supply/reserve final identities or order/hash fields.
+        proposals=list(proposals)
+        requires_head=any(isinstance(p,dict) and isinstance(p.get('payload'),dict) and (p['payload'].get('probe_version')=='r4b1t-shadow-head-v1' or p['payload'].get('policy_version')=='shadow-explicit-window-v1') for p in proposals)
+        if requires_head and expected_head is None: raise ValueError('versioned probe windows require expected source head')
         with closing(sqlite3.connect(self.path, timeout=30)) as db:
             db.execute('BEGIN IMMEDIATE')
             try:

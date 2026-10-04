@@ -7,6 +7,7 @@ from corpus.ledger.projection import replay
 POLICY='shadow-explicit-window-v1'
 PROBE='r4b1t-shadow-head-v1'
 SCHEMA='r4b1t-shadow-probe-window-v1'
+FILES=('corpus/ledger/consumers/probe_windows.py','corpus/ledger/consumers/head_probe.py','corpus/ledger/consumers/PROBE_WINDOWS_V1.md','corpus/ledger/tools/probe.py','tools/maintain_corpus.py','pool_sweep.py','requirements-pool-sweep.txt')
 
 
 def manifest(value):
@@ -19,7 +20,7 @@ def manifest(value):
         keys(item,('path','digest'));text(item['path']);sha(item['digest'])
         if item['path'].startswith('/') or '..' in item['path'].split('/') or '\\' in item['path']: raise ValueError('relative producer file path required')
         paths.append(item['path'])
-    if len(set(paths))!=len(paths): raise ValueError('duplicate producer path')
+    if len(set(paths))!=len(paths) or set(paths)!=set(FILES): raise ValueError('complete versioned producer file inventory required')
 
 
 def kind(payload):
@@ -53,7 +54,14 @@ def build_window(projected,rows,producer_manifest):
     manifest(producer_manifest);sha(projected['event_head'])
     resources={r['resource_id']:r for r in projected['resources']}
     result=ordered(rows)
+    resolution={r['absorbed_id']:r['survivor_id'] for r in projected['resolutions']}
+    prior={}
+    for item in projected['observations']:
+        if item['type']=='PROBE_HEARTBEAT' and item['payload'].get('policy_version')==POLICY:
+            rid=resolution.get(item['resource_id'],item['resource_id'])
+            prior[rid]=max(prior.get(rid,''),item['payload']['finished_at'])
     for row in result:
+        if row['payload']['started_at']<prior.get(row['resource_id'],''): raise ValueError('resource window precedes committed boundary')
         resource=resources.get(row['resource_id'])
         if not resource or resource['absorbed_into'] is not None or row['payload']['observed_url'] not in resource['urls']: raise ValueError('canonical resource and confirmed URL required')
     return {'schema':SCHEMA,'policy_version':POLICY,'source_head':projected['event_head'],'producer_manifest':producer_manifest,'observations':result}

@@ -3,8 +3,9 @@ import argparse
 import hashlib
 import os
 import tempfile
+import time
 from pathlib import Path
-from corpus.ledger.consumers.probe_windows import build_window,proposals,verify_window,PROBE
+from corpus.ledger.consumers.probe_windows import build_window,proposals,verify_window,PROBE,FILES
 from corpus.ledger.consumers.head_probe import observe,PublicTargetGuard,RateLimiter
 from corpus.ledger.tools.shadow import load_export,read_canonical,write_canonical
 from corpus.ledger.tools.files import contained
@@ -13,7 +14,6 @@ from corpus.ledger.verifier import verify_bundle
 from corpus.ledger.schema.serialization import serialize,sorted_collection
 
 ROOT=Path(__file__).resolve().parents[3]
-FILES=('corpus/ledger/consumers/probe_windows.py','corpus/ledger/consumers/head_probe.py','corpus/ledger/consumers/PROBE_WINDOWS_V1.md','corpus/ledger/tools/probe.py','tools/maintain_corpus.py','pool_sweep.py','requirements-pool-sweep.txt')
 
 
 def producer_files():
@@ -38,7 +38,11 @@ def collect(boundary,resource_ids,samples,output):
     with reservation.open('x'): pass
     try:
         guard,limiter=PublicTargetGuard(),RateLimiter()
-        rows=[observe(rid,target,guard,limiter) for rid,target in targets for _ in range(samples)]
+        rows=[]
+        for rid,target in targets:
+            for _ in range(samples):
+                if rows: time.sleep(0.002)  # real separation; never fabricate timestamps
+                rows.append(observe(rid,target,guard,limiter))
         window=build_window(bundle['projection'],rows,manifest);submitted=proposals(window)
         with tempfile.TemporaryDirectory(prefix='.'+output.name+'-',dir=output.parent) as temp:
             stage=Path(temp)/'complete';stage.mkdir()

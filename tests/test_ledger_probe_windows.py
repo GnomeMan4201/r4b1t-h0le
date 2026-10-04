@@ -1,12 +1,12 @@
 import copy
 import unittest
-from corpus.ledger.consumers.probe_windows import build_window, proposals, verify_window
+from corpus.ledger.consumers.probe_windows import build_window, proposals, verify_window, FILES
 from corpus.ledger.projection import replay
 from corpus.ledger.tools.reference import reference
 
 T='2026-10-04T06:10:00.000Z'
 RID='r4b1t:r:000000000000002'
-MANIFEST={'schema':'r4b1t-shadow-producer-manifest-v1','name':'shadow-head','version':'r4b1t-shadow-head-v1','files':[{'path':'fixture.py','digest':'sha256:'+'0'*64}]}
+MANIFEST={'schema':'r4b1t-shadow-producer-manifest-v1','name':'shadow-head','version':'r4b1t-shadow-head-v1','files':__import__('corpus.ledger.schema.serialization',fromlist=['sorted_collection']).sorted_collection([{'path':path,'digest':'sha256:'+'0'*64} for path in FILES])}
 
 def observation(status=200,at=T):
     return {'resource_id':RID,'payload':{'probe_version':'r4b1t-shadow-head-v1','observed_url':'https://example.org/','final_url':'https://example.org/','status':status,'started_at':at,'finished_at':at,'headers_digest':'sha256:'+'0'*64}}
@@ -28,17 +28,21 @@ class ProbeWindowTests(unittest.TestCase):
         from pathlib import Path
         from corpus.ledger.sequencer import Sequencer
         witness=copy.deepcopy(MANIFEST);witness['files'][0]['digest']='sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+        for item in witness['files']: item['digest']='sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+        from corpus.ledger.schema.serialization import sorted_collection
+        witness['files']=sorted_collection(witness['files'])
+        inputs={path:b'' for path in FILES}
         window=build_window(self.projected,[observation()],witness)
         with tempfile.TemporaryDirectory() as directory:
             writer=Sequencer(Path(directory)/'corpus/ledger/shadow/test.sqlite3')
             for e in reference(): writer.submit({k:v for k,v in e.items() if k not in ('schema','seq','prev','hash') and not (e['type']=='RESOURCE_CREATED' and k=='resource_id')})
-            committed=writer.submit_many(proposals(window))
-            self.assertEqual(verify_window(reference(),window,committed,{'fixture.py':b''})['status'],'VERIFIED_SHADOW_PROBE_WINDOW')
+            committed=writer.submit_many(proposals(window),expected_head=window['source_head'])
+            self.assertEqual(verify_window(reference(),window,committed,inputs)['status'],'VERIFIED_SHADOW_PROBE_WINDOW')
             for changed in (committed[:-1],list(reversed(committed))):
-                with self.assertRaises(ValueError): verify_window(reference(),window,changed,{'fixture.py':b''})
-            with self.assertRaises(ValueError): verify_window(reference(),window,committed,{'fixture.py':b'changed'})
+                with self.assertRaises(ValueError): verify_window(reference(),window,changed,inputs)
+            with self.assertRaises(ValueError): verify_window(reference(),window,committed,dict(inputs,**{FILES[0]:b'changed'}))
             bad=copy.deepcopy(window);bad['observations'][0]['payload']['status']=500
-            with self.assertRaises(ValueError): verify_window(reference(),bad,committed,{'fixture.py':b''})
+            with self.assertRaises(ValueError): verify_window(reference(),bad,committed,inputs)
 
     def test_invalid_windows_reject_identity_url_policy_duplicates_and_overlap(self):
         for change in ('absorbed','unknown','url','duplicates','overlap','body','version','status'):
@@ -100,7 +104,7 @@ class ProbeWindowTests(unittest.TestCase):
             row=observation();row['payload']['observed_url']=target;row['payload']['final_url']=target
             with patch('corpus.ledger.tools.probe.observe',return_value=row): collect(root/'before',[RID],1,root/'window')
             from corpus.ledger.tools.shadow import read_canonical
-            writer.submit_many(read_canonical(root/'window/proposals.json'));export(writer,artifacts,root/'after')
+            writer.submit_many(read_canonical(root/'window/proposals.json'),expected_head=read_canonical(root/'window/window.json')['source_head']);export(writer,artifacts,root/'after')
             self.assertEqual(verify_exports(root/'before',root/'after',root/'window')['status'],'VERIFIED_SHADOW_PROBE_WINDOW')
             with self.assertRaises(ValueError): collect(root/'before',[RID],1,root/'window')
 
