@@ -547,6 +547,9 @@ test('revealed mobile route prioritizes open keep inspect and roll again', async
   await expect(route.locator('[data-mobile-action="keep"]')).toHaveText('KEEP CARD');
   await expect(route.locator('[data-mobile-action="inspect"]')).toHaveText('INSPECT');
   await expect(route.locator('[data-mobile-action="next"]')).toHaveText('ROLL AGAIN');
+  await expect(route.locator('[data-mobile-action="next"]')).toBeHidden();
+  await expect(page.getByRole('button', { name: 'ROLL AGAIN', exact: true })).toHaveCount(1);
+  await expect(page.locator('#r4mRollAgain')).toBeVisible();
 
   await expect(route.locator('[data-mobile-action="sprout"]')).toHaveCount(0);
   await expect(route.locator('[data-mobile-action="share"]')).toHaveCount(0);
@@ -850,9 +853,20 @@ test('mobile primary stage swaps ROLL for the disclosed result without auto-scro
   await expect(page.locator('#r4mRollAgain')).toBeVisible();
   expect(await page.evaluate(() => window.scrollY)).toBe(before);
 
-  await page.locator('#r4mRollAgain').click();
-  await expect(page.locator('#r4mRoute')).toBeVisible();
-  await expect(page.locator('html')).toHaveClass(/r4m-stage-result/);
+  const button = page.locator('#r4mRollAgain');
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  const position = await button.boundingBox();
+  const beforeTrail = await page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length);
+  for (let index = 0; index < 9; index += 1) {
+    await button.click();
+    await expect(page.locator('#r4mRoute')).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+    const current = await button.boundingBox();
+    expect(current.x).toBeCloseTo(position.x, 0);
+    expect(current.y).toBeCloseTo(position.y, 0);
+    expect(await page.evaluate(() => window.scrollY)).toBe(before);
+    await expect.poll(() => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length)).toBe(beforeTrail + index + 1);
+  }
 });
 
 test('mobile primary mode switch gives exactly one exploration instrument the stage', async ({ page }, testInfo) => {
@@ -991,6 +1005,94 @@ test('fresh mobile landing keeps ROLL above persistent navigation at phone heigh
 });
 
 
+test('mobile continuation stays reachable when destination identity and metadata are long', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  const longUrl = 'https://research.long-destination-name.example.com/' + 'long-path-segment/'.repeat(12);
+  for (const viewport of [{ width: 320, height: 568 }, { width: 390, height: 844 }, { width: 430, height: 932 }, { width: 844, height: 390 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto('./', { waitUntil: 'domcontentloaded' });
+    await waitReady(page);
+    await page.locator('#r4mRoll').click();
+    await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+    const before = await page.locator('#r4mRollAgain').boundingBox();
+
+    await page.evaluate((url) => {
+      // Exercise the existing explicit-selection presentation, then deliver
+      // unusually long post-reveal metadata. Neither changes the next ROLL's pool.
+      window.selectUrl(url);
+      document.getElementById('ogTitle').textContent = 'A detailed research destination with a long descriptive resource title';
+      document.getElementById('ogDesc').textContent = 'Long resource descriptions remain secondary to the destination and its continuation controls. '.repeat(8);
+      window.__r4b1tSyncMobileRoute();
+    }, longUrl);
+    await expect(page.locator('#r4mUrl')).toHaveText(longUrl);
+    const metrics = await page.evaluate(() => {
+      const repeat = document.getElementById('r4mRollAgain');
+      const open = document.querySelector('#r4mRoute [data-mobile-action="visit"]');
+      const nav = document.querySelector('.r4m-nav').getBoundingClientRect();
+      const domain = document.getElementById('r4mDomain');
+      const url = document.getElementById('r4mUrl');
+      const rect = repeat.getBoundingClientRect();
+      return {
+        x: rect.x, y: rect.y, width: rect.width, height: rect.height,
+        opacity: getComputedStyle(repeat).opacity,
+        fontSize: Number.parseFloat(getComputedStyle(repeat).fontSize),
+        repeatBottom: rect.bottom,
+        openBottom: open.getBoundingClientRect().bottom,
+        openWidth: open.getBoundingClientRect().width,
+        openHeight: open.getBoundingClientRect().height,
+        navTop: nav.top,
+        hit: document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2)?.closest('button')?.id,
+        domainFits: domain.scrollWidth <= domain.clientWidth + 1,
+        urlFits: url.scrollWidth <= url.clientWidth + 1,
+        documentWidth: document.documentElement.scrollWidth,
+        viewportWidth: window.innerWidth,
+      };
+    });
+    expect(metrics.x).toBeCloseTo(before.x, 0);
+    expect(metrics.y).toBeCloseTo(before.y, 0);
+    expect(metrics.opacity).toBe('1');
+    expect(metrics.fontSize).toBeGreaterThanOrEqual(12);
+    expect(metrics.width).toBeGreaterThanOrEqual(100);
+    expect(metrics.height).toBeGreaterThanOrEqual(44);
+    expect(metrics.openWidth).toBeGreaterThanOrEqual(100);
+    expect(metrics.openHeight).toBeGreaterThanOrEqual(44);
+    expect(metrics.repeatBottom).toBeLessThanOrEqual(metrics.navTop + 1);
+    expect(metrics.openBottom).toBeLessThanOrEqual(metrics.navTop + 1);
+    expect(metrics.hit).toBe('r4mRollAgain');
+    expect(metrics.domainFits).toBe(true);
+    expect(metrics.urlFits).toBe(true);
+    expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewportWidth + 1);
+  }
+});
+
+test('mobile menu exposes History immediately and returns to the same revealed route', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({ width: 375, height: 667 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  const before = await page.evaluate(async () => ({
+    url: document.getElementById('previewUrl').textContent,
+    steps: (await window.getTrailManifest()).manifest.steps,
+  }));
+  await page.locator('#r4mNavMenu').click();
+  const history = page.locator('#r4mMenuSheet [data-mobile-action="history"]');
+  await expect(history).toBeInViewport();
+  await expect(page.locator('#r4mMenuSheet [data-mobile-action="nav-roll"]')).toBeInViewport();
+  await history.click();
+  await expect(page.locator('#historyOverlay')).toBeVisible();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'true');
+  await page.locator('#historyOverlay > div > button').last().click();
+  await expect(page.locator('#historyOverlay')).toBeHidden();
+  await expect(page.locator('#r4mRollAgain')).toBeInViewport();
+  const after = await page.evaluate(async () => ({
+    url: document.getElementById('previewUrl').textContent,
+    steps: (await window.getTrailManifest()).manifest.steps,
+  }));
+  expect(after).toEqual(before);
+});
+
 test('mobile Blind mode presents one primary descent action while advanced tools stay in MENU', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
 
@@ -1059,6 +1161,9 @@ test('mobile v3 MENU groups the existing capabilities by the object they act on'
 
   await page.locator('#r4mNavMenu').click();
   const menu = page.locator('#r4mMenuSheet');
+  await expect(menu.locator('[data-menu-group="explore"] > h3')).toHaveText('EXPLORE');
+  await expect(menu.locator('[data-menu-group="explore"] [data-mobile-action="nav-roll"]')).toHaveText('ROLL');
+  await expect(menu.locator('[data-menu-group="explore"] [data-mobile-action="history"]')).toHaveText('HISTORY');
   await expect(menu.locator('[data-menu-group="from-here"] > h3')).toHaveText('FROM HERE');
   await expect(menu.locator('[data-menu-group="trail"] > h3')).toHaveText('YOUR TRAIL');
   await expect(menu.locator('[data-menu-group="proof"] > h3')).toHaveText('TRAIL FILES & PROOF');
@@ -1224,7 +1329,7 @@ test('mobile ROLL AGAIN and bottom ROLL use distinct aperture glyphs for action 
   expect(navStyle.fill).toBe('rgba(0, 0, 0, 0)');
 
   await page.locator('#r4mRoll').click();
-  const rollAgain = page.locator('#r4mRoute [data-mobile-action="next"]');
+  const rollAgain = page.locator('#r4mRollAgain');
   await expect(rollAgain).toBeVisible();
   await expect(rollAgain.locator('.r4m-next-aperture')).toHaveAttribute('data-aperture-role', 'selection');
   await expect(rollAgain.locator('.r4m-next-aperture .r4m-ap-depth-ring')).toHaveCount(1);

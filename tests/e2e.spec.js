@@ -309,9 +309,28 @@ test('ordinary mobile controls execute visible timed motion', async ({ page }, t
   await expect(route).toBeVisible({ timeout: 1500 });
   await expect(roll).not.toHaveAttribute('aria-busy', 'true', { timeout: 1500 });
 
-  await page.locator('[data-mobile-action="next"]').click();
-  await expect(route).toHaveClass(/\breject-exit\b/);
-  await expect(route).toHaveClass(/\bforward-enter\b/, { timeout: 1500 });
+  // ROLL AGAIN runs the authoritative ROLL sequence. Capture the short card
+  // entrance animation before clicking so polling cannot miss its 110ms window.
+  await page.locator('#r4mRouteMount').evaluate((mount) => {
+    window.__repeatRouteMotion = null;
+    mount.addEventListener('animationstart', (event) => {
+      if (event.target.id !== 'r4mRoute' || event.animationName !== 'r4mRollCardEnter') return;
+      window.__repeatRouteMotion = {
+        name: event.animationName,
+        duration: Number.parseFloat(getComputedStyle(event.target).animationDuration) * 1000,
+      };
+    });
+  });
+  await page.locator('#r4mRollAgain').click();
+  await expect(roll).toHaveAttribute('aria-busy', 'true');
+  await expect(roll).toHaveClass(/\broll-(release|accelerate|decelerate|seat)\b/);
+  await expect(route).toHaveCount(0);
+  await expect(route).toBeVisible({ timeout: 1500 });
+  await expect.poll(() => page.evaluate(() => window.__repeatRouteMotion)).toEqual({
+    name: 'r4mRollCardEnter',
+    duration: 110,
+  });
+  await expect(roll).not.toHaveAttribute('aria-busy', 'true', { timeout: 1500 });
 
   await page.locator('#r4mNavMenu').click();
   await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
