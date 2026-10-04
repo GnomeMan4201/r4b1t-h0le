@@ -29,3 +29,15 @@ class LedgerSerializationTests(unittest.TestCase):
             bad = dict(event, **{key:value})
             with self.assertRaises(ValueError): validate_event(bad)
         with self.assertRaises(ValueError): validate_event(dict(event, payload={'url':'https://example.org/', 'discovered_at':'1900-01-01'}))
+
+    def test_schema_review_negatives(self):
+        from corpus.ledger.schema.events import validate_payload
+        with self.assertRaises(ValueError): timestamp('٢٠٢٦-١٠-٠٤T٠٠:٠٠:٠٠.٠٠٠Z')
+        for target in ['https://[/', 'https://example.org:99999/', 'https://user:pass@example.org/']:
+            with self.assertRaises(ValueError): validate_payload('RESOURCE_CREATED', {'url':target,'metadata':{}})
+        validate_payload('RESOURCE_CREATED', {'url':'https://[2001:db8::1]:443/','metadata':{}})
+        for kind in ['POLICY_BOUND','RELEASE_BOUND']:
+            for artifact in [{},[]]:
+                with self.assertRaises(ValueError): validate_payload(kind,{'artifact':artifact,'artifact_hash':digest('policy' if kind=='POLICY_BOUND' else 'manifest',artifact)})
+        for first,second,declared in [(1,2,3),(1,1,1),(1,2,2)]:
+            with self.assertRaises(ValueError): validate_payload('RESOURCE_MERGED',dict(first=f'r4b1t:r:{first:015d}',second=f'r4b1t:r:{second:015d}',survivor=f'r4b1t:r:{declared:015d}',evidence_digest=GENESIS_PREV))
