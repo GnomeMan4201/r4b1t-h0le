@@ -46,3 +46,19 @@ class ShadowFilesTests(unittest.TestCase):
                 return json.dumps(promotion).encode()
             return real(path)
         with patch.object(Path,'read_bytes',read),self.assertRaises(ValueError): snapshot(ROOT,COMMIT)
+
+    def test_failed_export_leaves_no_partial_destination_and_can_retry(self):
+        from unittest.mock import patch
+        target=self.root/'bundle-v1'
+        with patch('corpus.ledger.tools.shadow.os.rename',side_effect=OSError('injected publication failure')):
+            from corpus.ledger.tools.shadow import ExportError
+            with self.assertRaises(ExportError): export(self.writer,self.artifacts,target)
+        self.assertFalse(target.exists())
+        self.assertEqual(len(self.writer.events()),2)
+        export(self.writer,self.artifacts,target)
+        self.assertEqual(len(load_export(target)[0]['events']),2)
+
+    def test_reserved_export_is_rejected(self):
+        self.root.mkdir(parents=True,exist_ok=True)
+        (self.root/'.bundle-v1.publish-lock').touch()
+        with self.assertRaises(ValueError): export(self.writer,self.artifacts,self.root/'bundle-v1')

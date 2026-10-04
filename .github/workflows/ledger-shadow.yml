@@ -29,10 +29,25 @@ jobs:
       - name: Ledger rules and independent serialization vectors
         run: |
           python3 -m unittest discover -s tests -p 'test_ledger*.py'
-          node --test tests/ledger-serialization.test.js
+          node --test tests/ledger-serialization.test.js tests/ledger-shadow-boundary.test.js
+          node corpus/ledger/tools/production-boundary.js
       - name: Network-isolated deterministic replay
         run: |
           python3 -m corpus.ledger.tools.reference > /tmp/ledger-reference.jsonl
           sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=17 python3 -m corpus.ledger.tools.replay_isolated --require-isolation < /tmp/ledger-reference.jsonl > /tmp/ledger-projection-17.json
           sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=29 python3 -m corpus.ledger.tools.replay_isolated --require-isolation < /tmp/ledger-reference.jsonl > /tmp/ledger-projection-29.json
           cmp /tmp/ledger-projection-17.json /tmp/ledger-projection-29.json
+          cmp /tmp/ledger-projection-17.json corpus/ledger/fixtures/replay-v1-projection.json
+      - name: Reproduce current-authority bootstrap and independent offline verification
+        run: |
+          python3 -m corpus.ledger.tools.check_baseline --out /tmp/shadow-bootstrap
+          python3 -m corpus.ledger.tools.shadow verify --bundle-dir /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline
+          sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=17 python3 -m corpus.ledger.tools.replay_isolated --require-isolation < /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline/events.jsonl > /tmp/shadow-bootstrap-replay-17.json
+          sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=29 python3 -m corpus.ledger.tools.replay_isolated --require-isolation < /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline/events.jsonl > /tmp/shadow-bootstrap-replay-29.json
+          cmp /tmp/shadow-bootstrap-replay-17.json /tmp/shadow-bootstrap-replay-29.json
+      - name: Preserve complete frozen shadow inputs and verified export
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: corpus-ledger-shadow-bootstrap
+          path: /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline
+          if-no-files-found: error
