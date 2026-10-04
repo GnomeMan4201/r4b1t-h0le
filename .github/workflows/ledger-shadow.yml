@@ -1,0 +1,38 @@
+name: Corpus Ledger Shadow
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - 'corpus/ledger/**'
+      - 'tools/cj1.py'
+      - 'tools/reexecute_trail.py'
+      - 'tests/*ledger*'
+      - '.github/workflows/ledger-shadow.yml'
+permissions:
+  contents: read
+jobs:
+  ledger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Enforce structural replay purity
+        run: python3 -m corpus.ledger.tools.check_purity
+      - name: Ledger rules and independent serialization vectors
+        run: |
+          python3 -m unittest discover -s tests -p 'test_ledger*.py'
+          node --test tests/ledger-serialization.test.js
+      - name: Network-isolated deterministic replay
+        run: |
+          python3 -m corpus.ledger.tools.reference > /tmp/ledger-reference.jsonl
+          sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=17 python3 -m corpus.ledger.tools.replay_isolated --require-isolation < /tmp/ledger-reference.jsonl > /tmp/ledger-projection-17.json
+          sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=29 python3 -m corpus.ledger.tools.replay_isolated --require-isolation < /tmp/ledger-reference.jsonl > /tmp/ledger-projection-29.json
+          cmp /tmp/ledger-projection-17.json /tmp/ledger-projection-29.json
