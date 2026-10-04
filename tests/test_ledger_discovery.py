@@ -28,3 +28,14 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIsNone(resource['availability'])
         self.assertEqual(resource['metadata']['resource_type'],'research')
         self.assertEqual(verify_window(before,window,committed,producer_files())['status'],'VERIFIED_SHADOW_DISCOVERY_WINDOW')
+
+    def test_duplicate_and_recorded_lineage_urls_cannot_mint_new_identities(self):
+        from corpus.ledger.consumers.discovery import build_window
+        from corpus.ledger.tools.discovery import producer_manifest
+        from tests.test_ledger_engine import proposal,D
+        row={'url':'https://example.org/new','timestamp':T,'basis':'Explicit synthetic declaration','metadata':{}}
+        with self.assertRaises(ValueError): build_window(self.writer.events(),[row,row],producer_manifest())
+        original=self.writer.submit(proposal())['resource_id']
+        self.writer.submit(proposal('REDIRECT_OBSERVED',original,{'from_url':'https://example.org/','to_url':row['url'],'evidence_digest':D}))
+        with self.assertRaises(ValueError): build_window(self.writer.events(),[row],producer_manifest())
+        with self.assertRaises(ValueError): build_window(self.writer.events(),[dict(row,url='https://example.org/')],producer_manifest())
