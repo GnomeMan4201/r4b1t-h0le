@@ -1,6 +1,6 @@
 """Offline shadow consistency verifier over declared artifacts; no runtime or network."""
 from .schema.serialization import VERSION, serialize, digest
-from .schema.events import keys
+from .schema.events import keys, integer
 from .projection import replay, resolve
 from .genesis import verify_boundary
 
@@ -11,6 +11,8 @@ EVIDENCE_BOUNDARY = 'Shadow integrity and deterministic derivation only. No publ
 def verify_bundle(bundle, artifacts, expected_head=None, expected_genesis=None):
     keys(bundle,('schema','events','projection','projection_hash','event_head','event_count','genesis_hash','serialization'))
     if bundle['schema']!=BUNDLE_SCHEMA or bundle['serialization']!=VERSION: raise ValueError('unsupported shadow bundle')
+    integer(bundle['event_count'],1)
+    serialize(bundle)
     projected=replay(bundle['events'])
     if bundle['event_head']!=projected['event_head'] or bundle['event_count']!=projected['event_count'] or bundle['genesis_hash']!=projected['genesis']['hash']: raise ValueError('bundle chain commitments mismatch')
     if expected_head is not None and expected_head!=bundle['event_head']: raise ValueError('declared trusted head mismatch')

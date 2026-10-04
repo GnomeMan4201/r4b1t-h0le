@@ -59,6 +59,12 @@ def export(writer, artifacts, output):
         reservation.unlink()
 
 
+def publish_committed(writer,artifacts,output):
+    try: return export(writer,artifacts,output)
+    except (ValueError,OSError,KeyError,TypeError) as error:
+        raise ExportError('ledger remains committed; export failed: '+str(error)) from error
+
+
 def load_export(directory):
     directory=Path(directory)
     raw=(directory/'events.jsonl').read_text('utf-8')
@@ -87,7 +93,7 @@ def main(argv=None):
         writer=Sequencer(store)
         if writer.events(): raise ValueError('bootstrap requires empty shadow store; no reset allowed')
         writer.submit_many(import_proposals(payload,artifacts,args.timestamp))
-        result=export(writer,artifacts,args.out)
+        result=publish_committed(writer,artifacts,args.out)
     elif args.command=='append':
         boundary,artifacts=load_export(args.boundary_export);verify_bundle(boundary,artifacts)
         output=shadow_path(args.out);store=shadow_path(args.store)
@@ -98,7 +104,7 @@ def main(argv=None):
         proposals=read_canonical(args.proposals)
         if not isinstance(proposals,list): raise ValueError('ordered proposal array required')
         writer.submit_many(proposals)
-        result=export(writer,artifacts,args.out)
+        result=publish_committed(writer,artifacts,args.out)
     else:
         bundle,artifacts=load_export(args.bundle_dir)
         result=verify_bundle(bundle,artifacts,args.expected_head,args.expected_genesis)
