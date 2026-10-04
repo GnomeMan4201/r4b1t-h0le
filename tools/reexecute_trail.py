@@ -20,6 +20,11 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+
+try:
+    from tools import cj1 as shared_cj1
+except ModuleNotFoundError:
+    import cj1 as shared_cj1
 from urllib.parse import urlsplit
 
 FORMAT = "r4b1t-trail/v0.3"
@@ -82,51 +87,16 @@ def valid_url(value: Any, label: str) -> str:
     return value
 
 
-def _valid_unicode(value: str) -> bool:
-    try:
-        value.encode("utf-8", "strict")
-        return not any(0xD800 <= ord(ch) <= 0xDFFF for ch in value)
-    except UnicodeEncodeError:
-        return False
-
-
 def cj1_check(value: Any, label: str = "value") -> None:
-    if value is None or isinstance(value, bool):
-        return
-    if isinstance(value, int) and not isinstance(value, bool):
-        if abs(value) > SAFE_INTEGER:
-            fail("CANONICAL_PROFILE_VIOLATION", f"{label}: unsafe integer")
-        return
-    if isinstance(value, float):
-        fail("CANONICAL_PROFILE_VIOLATION", f"{label}: fractions/exponents are not allowed")
-    if isinstance(value, str):
-        if not _valid_unicode(value):
-            fail("CANONICAL_PROFILE_VIOLATION", f"{label}: invalid Unicode")
-        return
-    if isinstance(value, list):
-        for index, item in enumerate(value):
-            cj1_check(item, f"{label}[{index}]")
-        return
-    if isinstance(value, dict):
-        for key in value:
-            if not isinstance(key, str) or not CJ_KEY_RE.fullmatch(key):
-                fail("CANONICAL_PROFILE_VIOLATION", f"{label}: invalid object key")
-        for key, item in value.items():
-            cj1_check(item, f"{label}.{key}")
-        return
-    fail("CANONICAL_PROFILE_VIOLATION", f"{label}: unsupported value")
+    try:
+        shared_cj1.cj1_check(value, label)
+    except shared_cj1.CanonicalProfileError as error:
+        fail("CANONICAL_PROFILE_VIOLATION", str(error))
 
 
 def cj1_serialize(value: Any) -> str:
     cj1_check(value)
-    # CJ-1 restricts keys to ASCII, so Python's sort order equals JS UTF-16.
-    return json.dumps(
-        value,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    )
+    return shared_cj1.cj1_serialize(value)
 
 
 def digest_bytes(data: bytes) -> str:

@@ -1,0 +1,73 @@
+{
+  "schema": "r4b1t-ledger-serialization-vectors-v1",
+  "serialization": "r4b1t-cj1-ledger-v1",
+  "framing": "ASCII domain tag + NUL + CJ-1 UTF-8",
+  "genesis_prev": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "accept": [
+    {
+      "name": "empty",
+      "value": {},
+      "canonical": "{}",
+      "hashes": {
+        "event": "sha256:b8edf02cfbed0ddb2679ffcf8d72141f08080ec07972e14b11dd5879ecd42eac",
+        "projection": "sha256:75729a231ee300feae6ed4f0082199788dd2533fb1b9039da2109fb583cfe69e",
+        "policy": "sha256:6b351d2b43d554ff74c55636a1622e715ab3d7d630cc3ca98d78db8c924cfc5c",
+        "manifest": "sha256:c1d0e1f7297de88c6d851d412829516776a1583f0b7df2e927212a13da25819f",
+        "heartbeat": "sha256:4ed2c4d08124fb5ea39351e4078f3e1befcb84b1fbabdd6c88ac2e1c5833c3fb"
+      }
+    },
+    {
+      "name": "unicode",
+      "value": {
+        "z": "☃😀 \n",
+        "a": [
+          true,
+          null,
+          1
+        ]
+      },
+      "canonical": "{\"a\":[true,null,1],\"z\":\"☃😀 \\n\"}",
+      "hashes": {
+        "event": "sha256:ca64be8e752a6dd9848b26f0c8544411f62be481e1396b1e5cd2afd823a7a315",
+        "projection": "sha256:ed0eaeaba08af1173d259db9cbc2c5c67f7530bedd125eb830d34b11f72538bc",
+        "policy": "sha256:eccd446a3eea5424cea223475b214b5ab827be3ee987e1e27fd936054cd8020d",
+        "manifest": "sha256:13a10fa82be735cccf34b34999a244d0de42e2666206e53a2b87a9bd75f09e2c",
+        "heartbeat": "sha256:8789448395a4b69005d643d4c46a3985b67ebdf574218769b784f870404cd848"
+      }
+    },
+    {
+      "name": "safe_bounds",
+      "value": {
+        "lower": -9007199254740991,
+        "upper": 9007199254740991
+      },
+      "canonical": "{\"lower\":-9007199254740991,\"upper\":9007199254740991}",
+      "hashes": {
+        "event": "sha256:a9f0f4b4be1bcdad63148771ebad5a7ac1328aa37d0da4eb522732d279400e3f",
+        "projection": "sha256:b3da385aab69aaddbe0ab358da99319c2f489bf6520e4f54fd2636d0840f32d9",
+        "policy": "sha256:2bad182d85bd1848587ec612563856a4074a13a28b8db7790b43baa4b5188749",
+        "manifest": "sha256:535427573eb2120ce57276bc45b2f0ae9eb8cdf33aee006e3fcf382c496a7613",
+        "heartbeat": "sha256:8599cde9b663352e179c0377082df36ffb156831becb4221eef98d12d2e8a622"
+      }
+    },
+    {
+      "name": "ordered",
+      "value": {
+        "ordered": [
+          3,
+          1,
+          2
+        ],
+        "timestamp": "2026-10-04T00:00:00.000Z"
+      },
+      "canonical": "{\"ordered\":[3,1,2],\"timestamp\":\"2026-10-04T00:00:00.000Z\"}",
+      "hashes": {
+        "event": "sha256:90531348407b478d0e0b1b059cfdabbe8e3959e499b59d218aae4bdc8703d6dd",
+        "projection": "sha256:4e077721e1af2daf5c6dd14d5b06097e4fa2145e9559748fdb466acf616c4a8c",
+        "policy": "sha256:2b1bd8cefd9bfa61112a7c46f8125e1a2e92be1299e5b91d696f4f5d64db5484",
+        "manifest": "sha256:dab09d9e05868e295e5c620639c861f0f243098aefe4497076e789123eaa521f",
+        "heartbeat": "sha256:c0fec35f24455f28f1ae38c9c530d76b0171760fb86dca286e672a91bf5950e9"
+      }
+    }
+  ]
+}
