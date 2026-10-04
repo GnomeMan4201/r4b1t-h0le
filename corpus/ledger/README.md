@@ -89,5 +89,34 @@ python3 -m corpus.ledger.tools.probe verify --before /path/corpus/ledger/shadow/
 Producer files are frozen alongside each window for offline code-commitment
 checks. The sequencer rejects a stale source head within its write transaction.
 No adapter may reserve identities or append directly. Archive lifecycle,
-discovery admissions and scheduled heartbeat policy still require their own
+discovery admissions still require their own
 consumer slices; no external maintenance classification is ledger authority.
+
+The scheduled consumer is separately versioned in
+`consumers/SCHEDULED_WINDOWS_V1.md` and `consumers/shadow-daily-v1.json`.
+It closes at most one window per UTC date, normally up to 100 observations,
+rotating through numeric IDs regardless of state or prior outcomes. First and
+changed outcomes retain full events; unchanged outcomes retain heartbeats.
+Explicit two-observation pilot runs declare their budget and close that date.
+
+The daily Actions writer publishes only to `automation/corpus-ledger-shadow`,
+under `corpus/ledger/shadow/history/`. Main contains code and policy, not this
+operational history. Git fast-forward publication is the durable commit point;
+SQLite is staging, restored through sequencer re-execution. Immutable chunks,
+genesis artifacts, windows, producer bytes and run plans permit offline replay.
+The derived `HEAD.json` is checked against them. Verification proves artifact
+integrity and declared emission, not remote truth or signed publication.
+
+```sh
+# Use frozen authority artifacts matching shadow/bootstrap-v1.json.
+python3 -m corpus.ledger.tools.history initialize --authority-root /path/frozen-authority --out /path/corpus/ledger/shadow/history
+python3 -m corpus.ledger.tools.history verify --history /path/corpus/ledger/shadow/history
+python3 -m corpus.ledger.tools.history run --history /path/corpus/ledger/shadow/history --day YYYY-MM-DD --budget 100 --out /path/corpus/ledger/shadow/staged-history
+```
+
+`run` only stages evidence. Publish from the previously accepted Git parent
+using a normal fast-forward push. Never force, reset, overwrite old evidence or
+merge this branch into main. A completed-date rerun performs no network work.
+Failed staging/publication cannot advance the published cursor or date. Public
+ROLL cannot consume this history; archive lifecycle and discovery adapters
+remain future work.
