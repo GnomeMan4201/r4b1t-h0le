@@ -576,7 +576,9 @@ The purity boundary MUST be exercised under a runtime with network access denied
 
 ---
 
-## 14. Allowed verifier claims
+## 14. Verifier claims, scope boundary, shadow mode, and cutover
+
+### Allowed verifier claims
 
 A successful Corpus Ledger v1 verification MAY claim:
 
@@ -606,7 +608,7 @@ Verifier output SHOULD state this evidence boundary adjacent to PASS/FAIL result
 
 ---
 
-## 15. Scope boundary, shadow mode, and cutover
+### Scope boundary, shadow mode, and cutover
 
 This frozen document defines only the ledger contract:
 
@@ -635,7 +637,7 @@ The following are consumers and require separate short specs:
 - CLI presentation;
 - web/mobile UI.
 
-### Shadow mode
+#### Shadow mode
 
 After PR1–PR4 ship, ledger internals SHOULD land incrementally on `main` in non-authoritative shadow mode rather than live for months on a divergent release branch.
 
@@ -649,7 +651,7 @@ In shadow mode:
 
 Once a ledger prefix has been published by an `authority_mode = public` release, that published history is immutable relative to that release.
 
-### Public cutover
+#### Public cutover
 
 Public cutover is one externally visible authority change, not one giant implementation merge.
 
@@ -666,13 +668,3 @@ Cutover requires:
 
 Until that switch, this contract changes no public selection authority.
 
----
-
-## Frozen design decisions added during review
-
-Two decisions are intentionally frozen into v1:
-
-1. **CANDIDATE is the starting eligibility for newly discovered resources.** Discovery never implies selection authority; activation is explicit and event-driven.
-2. **Stable resource IDs are sequencer-minted from the identity-creating event's sequence number.** Merge survival compares numeric `create_seq`, not URL, content hash, timestamp, or arbitrary string order.
-
-These rules are part of the contract, not implementation conveniences.
