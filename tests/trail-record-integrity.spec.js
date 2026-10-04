@@ -82,7 +82,6 @@ async function mutateSavedDraft(page, mutate) {
 }
 
 test.beforeEach(async ({ page }, testInfo) => {
-  if (testInfo.project.name === 'mobile-chromium') test.skip();
   await blockExternalNetwork(page);
 });
 

@@ -268,7 +268,8 @@
     var originalCommit = window.__r4b1tCommitRoll;
     var wrappedCommit = function () {
       // Fail closed: without the explicit constraint capture there is no selection.
-      if (state.preservationBlocked || typeof window.__r4b1tCaptureSelectionConstraint !== 'function') return null;
+      if (state.preservationBlocked) return null;
+      if (typeof window.__r4b1tCaptureSelectionConstraint !== 'function') return null;
       var selectionConstraint = window.__r4b1tCaptureSelectionConstraint();
       var selectionTerrain = selectionConstraint.terrain;
       var drawStart = state.samplerCursor;
