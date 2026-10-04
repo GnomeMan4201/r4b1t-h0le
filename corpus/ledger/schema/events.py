@@ -1,7 +1,9 @@
 """Closed v1 event/payload registry. Producers supply observations, never authority fields."""
 import re
+import ipaddress
+from urllib.parse import urlsplit
 from .serialization import VERSION, GENESIS_PREV, serialize, digest, timestamp, sorted_collection
-from .identity import create_seq
+from .identity import create_seq, survivor
 
 EVENT_SCHEMA = 'r4b1t-corpus-ledger-event-v1'
 CREATES = ('RESOURCE_CREATED', 'LEGACY_RESOURCE_IMPORTED')
@@ -26,8 +28,18 @@ def text(value):
 
 def url(value):
     text(value)
-    if not re.fullmatch(r'https?://[^\s/@?#]+(?::[0-9]+)?(?:[/?#][^\s]*)?', value):
-        raise ValueError('HTTP(S) observation URL required')
+    try:
+        parsed = urlsplit(value)
+        port = parsed.port
+        host = parsed.hostname
+        if parsed.scheme not in ('http','https') or not host or parsed.username is not None or parsed.password is not None or value != value.strip() or re.search(r'\s',value):
+            raise ValueError('invalid observation URL')
+        if ':' in host: ipaddress.IPv6Address(host)
+        elif not re.fullmatch(r'[^\s/\[\]@?#:]+',host): raise ValueError('invalid host')
+        if port is not None and not 1 <= port <= 65535: raise ValueError('invalid port')
+    except (ValueError,TypeError) as error:
+        raise ValueError('valid HTTP(S) observation URL required') from error
+
 
 
 def integer(value, minimum=0):
@@ -72,6 +84,7 @@ def validate_payload(kind, p):
         keys(p, ('first','second','survivor','evidence_digest'))
         for field in ('first','second','survivor'): create_seq(p[field])
         sha(p['evidence_digest'])
+        if p['survivor'] != survivor(p['first'],p['second']): raise ValueError('incorrect merge survivor')
     elif kind in ('PROBE_SUCCEEDED','PROBE_FAILED','ARCHIVE_PROBE_SUCCEEDED','ARCHIVE_PROBE_FAILED'):
         keys(p, ('probe_version','observed_url','started_at','finished_at'), ('status','final_url','headers_digest','body_digest','body_bytes','reason'))
         text(p['probe_version']); url(p['observed_url']); timestamp(p['started_at']); timestamp(p['finished_at'])
@@ -96,6 +109,7 @@ def validate_payload(kind, p):
         for value in p['resource_ids']: create_seq(value)
     else:
         keys(p, ('artifact','artifact_hash')); sha(p['artifact_hash'])
+        validate_bound_artifact(kind,p['artifact'])
         if digest('policy' if kind == 'POLICY_BOUND' else 'manifest',p['artifact']) != p['artifact_hash']: raise ValueError('bound artifact hash mismatch')
 
 
@@ -115,3 +129,19 @@ def validate_event(event):
     if kind in CREATES and create_seq(event['resource_id']) != event['seq']: raise ValueError('resource ID minting mismatch')
     if event_hash(event) != event['hash']: raise ValueError('event hash mismatch')
     return event
+
+
+def validate_bound_artifact(kind, artifact):
+    if kind == 'POLICY_BOUND':
+        keys(artifact, ('schema','eligibility','availability','heartbeat_policy','serializer'))
+        if artifact['schema'] != 'r4b1t-corpus-selection-policy-v1': raise ValueError('unsupported policy schema')
+        for field,allowed in [('eligibility',('CANDIDATE','ACTIVE','SUSPECT','RETIRED')),('availability',('LIVE','INTERMITTENT','ARCHIVED_ONLY','GONE'))]:
+            collection = artifact[field]
+            if not isinstance(collection,list) or not collection or sorted_collection(collection) != collection or any(x not in allowed for x in collection): raise ValueError('invalid canonical policy state set')
+    else:
+        keys(artifact,('schema','release_id','event_head','event_count','projection_hash','policy_hash','serializer','heartbeat_policy','adapter_manifest_hash','legacy_boundary_hash'))
+        if artifact['schema'] != 'r4b1t-corpus-ledger-release-v1': raise ValueError('unsupported release schema')
+        text(artifact['release_id']); integer(artifact['event_count'],1)
+        for field in ('event_head','projection_hash','policy_hash','adapter_manifest_hash','legacy_boundary_hash'): sha(artifact[field])
+    text(artifact['heartbeat_policy'])
+    if artifact['serializer'] != VERSION: raise ValueError('unsupported bound serialization')
