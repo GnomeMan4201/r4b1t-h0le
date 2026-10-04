@@ -126,3 +126,22 @@ test('failed quarantine keeps original bytes and blocks sampling and export', as
   assert.equal(restored.context.__r4b1tCommitRoll(), null);
   await assert.rejects(restored.context.getTrailManifest(), /preservation unavailable/i);
 });
+
+test('malformed saved JSON is preserved verbatim rather than overwritten', async () => {
+  const storage = new Map([[KEY, '{broken-json']]);
+  const r = await runtime(storage);
+  assert.equal(r.context.getQuarantinedTrailDraft().raw, '{broken-json');
+  assert.equal(r.draft().routes.length, 0);
+});
+
+test('malformed route URLs are quarantined without silently dropping the step', async () => {
+  const r = await runtime();
+  r.context.__r4b1tCommitRoll();
+  const draft = r.draft();
+  draft.routes[0].url = 'not a URL';
+  const raw = JSON.stringify(draft);
+  r.storage.set(KEY, raw);
+  const restored = await runtime(r.storage);
+  assert.equal(restored.context.getQuarantinedTrailDraft().raw, raw);
+  assert.equal(restored.draft().routes.length, 0);
+});
