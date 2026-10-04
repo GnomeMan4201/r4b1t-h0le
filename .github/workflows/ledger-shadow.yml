@@ -47,6 +47,20 @@ jobs:
           sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=17 python3 -m corpus.ledger.tools.replay_isolated --require-isolation < /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline/events.jsonl > /tmp/shadow-bootstrap-replay-17.json
           sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=29 python3 -m corpus.ledger.tools.replay_isolated --require-isolation < /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline/events.jsonl > /tmp/shadow-bootstrap-replay-29.json
           cmp /tmp/shadow-bootstrap-replay-17.json /tmp/shadow-bootstrap-replay-29.json
+      - name: Synthetic recorded discovery and isolated offline verification
+        run: |
+          mkdir -p /tmp/discovery-acceptance/corpus/ledger/shadow
+          cp /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline.sqlite3 /tmp/discovery-acceptance/corpus/ledger/shadow/ledger.sqlite3
+          python3 - <<'PYDISCOVERY'
+          from corpus.ledger.tools.shadow import write_canonical
+          write_canonical('/tmp/synthetic-discovery-submissions.json',[{'url':'https://recorded.example/ci-candidate','timestamp':'2026-10-04T09:30:00.000Z','basis':'Synthetic offline acceptance declaration; no real discovery asserted','metadata':{}}])
+          PYDISCOVERY
+          python3 -m corpus.ledger.tools.discovery prepare --boundary-export /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline --submissions /tmp/synthetic-discovery-submissions.json --out /tmp/discovery-acceptance/corpus/ledger/shadow/window
+          python3 -m corpus.ledger.tools.shadow append --store /tmp/discovery-acceptance/corpus/ledger/shadow/ledger.sqlite3 --boundary-export /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline --proposals /tmp/discovery-acceptance/corpus/ledger/shadow/window/proposals.json --expected-head sha256:d479964f875fd6edf9da5d7c2ace15b32174e36217420f1517ddfe9914eb4dbe --out /tmp/discovery-acceptance/corpus/ledger/shadow/after
+          sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=17 "$(command -v python3)" -m corpus.ledger.tools.discovery verify --before /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline --after /tmp/discovery-acceptance/corpus/ledger/shadow/after --window /tmp/discovery-acceptance/corpus/ledger/shadow/window > /tmp/discovery-verify-17.json
+          sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=29 "$(command -v python3)" -m corpus.ledger.tools.discovery verify --before /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline --after /tmp/discovery-acceptance/corpus/ledger/shadow/after --window /tmp/discovery-acceptance/corpus/ledger/shadow/window > /tmp/discovery-verify-29.json
+          cmp /tmp/discovery-verify-17.json /tmp/discovery-verify-29.json
+          cat /tmp/discovery-verify-17.json
       - name: Synthetic archive lifecycle and offline network-isolated history verification
         run: |
           python3 -m corpus.ledger.tools.history initialize --authority-root . --out /tmp/archive-acceptance/corpus/ledger/shadow/before
@@ -79,4 +93,6 @@ jobs:
             /tmp/shadow-bootstrap/corpus/ledger/shadow/window
             /tmp/shadow-bootstrap/corpus/ledger/shadow/after
             /tmp/archive-acceptance/corpus/ledger/shadow/after
+            /tmp/discovery-acceptance/corpus/ledger/shadow/window
+            /tmp/discovery-acceptance/corpus/ledger/shadow/after
           if-no-files-found: error
