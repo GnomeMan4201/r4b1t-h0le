@@ -80,3 +80,27 @@ class EngineTests(unittest.TestCase):
             with self.assertRaises(ValueError): replay(log)
         with self.assertRaises(ValueError): resolve(replay(self.writer.events()),'r4b1t:r:000000000009999')
         with self.assertRaises(ValueError): Sequencer(Path(self.temp.name)/'production.sqlite3')
+
+    def test_independent_processes_share_one_order(self):
+        import subprocess
+        import sys
+        script = 'import sys; from corpus.ledger.sequencer import Sequencer; from tests.test_ledger_engine import proposal; print(Sequencer(sys.argv[1]).submit(proposal())["seq"])'
+        processes = [subprocess.Popen([sys.executable,'-c',script,str(self.path)],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True) for _ in range(4)]
+        sequences = []
+        for process in processes:
+            out,err=process.communicate(timeout=15)
+            self.assertEqual(process.returncode,0,err); sequences.append(int(out))
+        self.assertEqual(sorted(sequences),[2,3,4,5])
+        self.assertEqual(replay(self.writer.events())['event_count'],5)
+
+    def test_sql_order_column_cannot_disagree_with_committed_seq(self):
+        import sqlite3
+        self.writer.submit(proposal())
+        with sqlite3.connect(self.path) as db: db.execute('UPDATE events SET seq=99 WHERE seq=2')
+        with self.assertRaises(ValueError): self.writer.submit(proposal())
+
+    def test_absorbed_resolution_cannot_be_removed(self):
+        a,b=[self.writer.submit(proposal())['resource_id'] for _ in range(2)]
+        self.writer.submit(proposal('RESOURCE_MERGED',a,{'first':a,'second':b,'survivor':a,'evidence_digest':D}))
+        projected=replay(self.writer.events()); projected['resolutions']=[]
+        with self.assertRaises(ValueError): resolve(projected,b)
