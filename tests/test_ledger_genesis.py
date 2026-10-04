@@ -71,3 +71,13 @@ class GenesisTests(unittest.TestCase):
         for name in [self.payload['authority']['promotion_path'],'urls.txt']:
             bad=dict(self.artifacts);del bad[name]
             with self.assertRaises(ValueError): verify_bundle(bundle,bad)
+
+    def test_historical_inventory_cannot_be_removed(self):
+        bad=copy.deepcopy(self.payload)
+        keep={bad['authority'][k] for k in ('promotion_path','urls_path','resources_path','manifest_path','registry_path','terrain_index_path')}|{'urls.txt'}
+        bad['artifacts']=[x for x in bad['artifacts'] if x['path'] in keep]
+        bad['legacy_corpora']=[x for x in bad['legacy_corpora'] if x['path'] in keep]
+        identity={k:bad[k] for k in ('importer_version','artifacts','legacy_corpora','authority','source_commit','import_record_hashes')}
+        bad['import_input_digest']=digest('manifest',identity)
+        artifacts={k:v for k,v in self.artifacts.items() if k in keep}
+        with self.assertRaises(ValueError): verify_boundary(bad,artifacts)
