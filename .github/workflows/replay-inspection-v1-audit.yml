@@ -30,6 +30,8 @@ on:
       - 'docs/REPLAY_TRAIL_COMPARISON_BUNDLE_UI_BOUNDARY.md'
       - 'package.json'
       - '.github/workflows/replay-inspection-v1-audit.yml'
+      - 'corpus/ledger/**'
+      - 'tests/*ledger*'
   push:
     branches:
       - main
@@ -61,6 +63,8 @@ on:
       - 'docs/REPLAY_TRAIL_COMPARISON_BUNDLE_UI_BOUNDARY.md'
       - 'package.json'
       - '.github/workflows/replay-inspection-v1-audit.yml'
+      - 'corpus/ledger/**'
+      - 'tests/*ledger*'
 
 permissions:
   contents: read
