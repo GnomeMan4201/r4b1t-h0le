@@ -467,7 +467,6 @@
     var transactionId = terminal.transactionId;
     var existing = authorityRouteFor(transactionId);
     if (existing) {
-      if (context && context.recovered) showAuthorityTerminal(terminal);
       return { projected: true, existing: true };
     }
 
@@ -496,7 +495,6 @@
     advanceSamplerTo(prepared.drawStart + terminal.result.drawCount);
 
     if (context && context.recovered) {
-      showAuthorityTerminal(terminal);
       return { projected: true, recovered: true };
     }
     // The Trail projection is durable, but presentation is not complete until
