@@ -164,12 +164,27 @@
       throw new TypeError('terminal resolution is invalid');
     }
 
+    var compactPrepared = deepFreeze({
+      schema: prepared.schema,
+      state: prepared.state,
+      transactionId: prepared.transactionId,
+      trailId: prepared.trailId,
+      trailSequence: prepared.trailSequence,
+      corpusDigest: prepared.corpusDigest,
+      constraint: clone(prepared.constraint),
+      eligibleCount: Array.isArray(prepared.eligibleSnapshot) ? prepared.eligibleSnapshot.length : null,
+      samplerVersion: prepared.samplerVersion,
+      seedSource: clone(prepared.seedSource),
+      seedMaterial: prepared.seedMaterial,
+      drawStart: prepared.drawStart,
+      repeatGuardReference: prepared.repeatGuardReference
+    });
     var out = {
       schema: TERMINAL_SCHEMA,
       transactionId: prepared.transactionId,
       authoritySequence: authoritySequence,
       state: resolution.state,
-      prepared: prepared
+      prepared: compactPrepared
     };
     if (resolution.state === 'COMMITTED') {
       out.result = { url: resolution.url, drawCount: resolution.drawCount };
