@@ -11,6 +11,7 @@
   // A saved draft that cannot be continued is kept here verbatim, never silently discarded.
   var QUARANTINE_KEY = 'r4b1t_trail_draft_quarantine_v1';
   var MAX_DRAWS_PER_ROLL = 30;
+  var authorityOriginalCommit = null;
   var state = {
     seed: randomSeed(),
     createdAt: new Date().toISOString(),
@@ -227,6 +228,7 @@
     if (transaction) route.selection_transaction = transaction;
     if (evidence && evidence.navigation) route.navigation = evidence.navigation;
     if (evidence && evidence.imported_source) route.imported_source = evidence.imported_source;
+    if (evidence && evidence.authority_transaction_id) route.authority_transaction_id = evidence.authority_transaction_id;
     state.routes.push(route);
     try {
       persist();
@@ -280,6 +282,7 @@
   function wrapRoll() {
     if (typeof window.__r4b1tCommitRoll !== 'function' || window.__r4b1tCommitRoll.__r4b1tAuthority) return false;
     var originalCommit = window.__r4b1tCommitRoll;
+    authorityOriginalCommit = originalCommit;
     var wrappedCommit = function () {
       // Fail closed: without the explicit constraint capture there is no selection.
       if (state.preservationBlocked) return null;
@@ -333,6 +336,168 @@
     wrappedCommit.__r4b1tAuthority = true;
     window.__r4b1tCommitRoll = wrappedCommit;
     return true;
+  }
+
+  function authorityRouteFor(transactionId) {
+    if (!transactionId) return null;
+    for (var index = state.routes.length - 1; index >= 0; index -= 1) {
+      var route = state.routes[index];
+      if (route && route.authority_transaction_id === transactionId) return route;
+    }
+    return null;
+  }
+
+  async function authorityEligibleSnapshot(constraint) {
+    var selectionCore = window.R4b1tSelectionCore;
+    if (!selectionCore || typeof selectionCore.eligiblePool !== 'function') {
+      throw new Error('SELECTION_CORE_UNAVAILABLE');
+    }
+    var loaded = await corpusAuthority.loadActive();
+    if (state.corpusRevision && loaded.revision !== state.corpusRevision) {
+      throw new Error('CORPUS_REVISION_CHANGED');
+    }
+    var terrainIndex = null;
+    if (constraint.terrain !== 'ALL') {
+      var terrainAuthority = window.R4b1tTerrainAuthority;
+      if (!terrainAuthority || typeof terrainAuthority.loadIndex !== 'function') {
+        throw new Error('TERRAIN_AUTHORITY_UNAVAILABLE');
+      }
+      terrainIndex = await terrainAuthority.loadIndex();
+    }
+    return selectionCore.eligiblePool(loaded.urls, terrainIndex, constraint);
+  }
+
+  async function prepareAuthorityRoll(transactionId) {
+    var authorityCore = window.R4B1TRollAuthorityCore;
+    if (!authorityCore || typeof authorityCore.createPrepared !== 'function') {
+      throw new Error('ROLL_AUTHORITY_CORE_UNAVAILABLE');
+    }
+    if (state.preservationBlocked) throw new Error('DRAFT_PRESERVATION_UNAVAILABLE');
+    if (!state.corpusRevision) await loadCorpusRevision();
+    if (typeof window.__r4b1tCaptureSelectionConstraint !== 'function') {
+      throw new Error('SELECTION_CONSTRAINT_UNAVAILABLE');
+    }
+    var constraint = window.__r4b1tCaptureSelectionConstraint();
+    var eligibleSnapshot = await authorityEligibleSnapshot(constraint);
+    var envelope = await currentEnvelope();
+    return authorityCore.createPrepared({
+      transactionId: transactionId,
+      trailId: envelope.trail_id,
+      trailSequence: state.transactionSequence + 1,
+      corpusDigest: state.corpusRevision,
+      constraint: constraint,
+      eligibleSnapshot: eligibleSnapshot,
+      samplerVersion: authorityCore.SAMPLER_VERSION,
+      seedSource: { kind: 'local-csprng' },
+      seedMaterial: state.seed,
+      drawStart: state.samplerCursor,
+      repeatGuardReference: state.repeatGuardReference
+    });
+  }
+
+  function transactionFromAuthority(terminal) {
+    var prepared = terminal.prepared;
+    return deepFreeze({
+      transaction_version: 'r4b1t-selection-transaction/v2',
+      sequence: prepared.trailSequence,
+      action: 'ROLL',
+      constraint: prepared.constraint,
+      corpus_revision: prepared.corpusDigest,
+      eligible_count: prepared.eligibleSnapshot.length,
+      sampler: {
+        algorithm: 'uniform-with-repeat-guard-v1',
+        prng: 'mulberry32-v1',
+        seed: prepared.seedMaterial,
+        draw_start: prepared.drawStart,
+        draw_count: terminal.result.drawCount,
+        repeat_guard: {
+          reference: prepared.repeatGuardReference,
+          max_draws: MAX_DRAWS_PER_ROLL
+        }
+      },
+      route: { url: terminal.result.url }
+    });
+  }
+
+  function adoptAuthoritySelection(terminal) {
+    if (typeof authorityOriginalCommit !== 'function') throw new Error('ROLL_COMMIT_ADAPTER_UNAVAILABLE');
+    var prepared = terminal.prepared;
+    var sampler = api.createSampler(prepared.seedMaterial);
+    for (var consumed = 0; consumed < prepared.drawStart; consumed += 1) sampler();
+    var drawCount = 0;
+    var result = authorityOriginalCommit(function () {
+      drawCount += 1;
+      return sampler();
+    }, prepared.constraint, prepared.repeatGuardReference);
+    if (!result || result.url !== terminal.result.url || drawCount !== terminal.result.drawCount) {
+      throw new Error('AUTHORITY_PROJECTION_MISMATCH');
+    }
+    return result;
+  }
+
+  function showAuthorityTerminal(terminal) {
+    if (!terminal || terminal.state !== 'COMMITTED' || !terminal.result || !terminal.result.url) return false;
+    if (typeof window.selectUrl !== 'function') return false;
+    var previous = state.suppressRecord;
+    state.suppressRecord = true;
+    try {
+      window.selectUrl(terminal.result.url);
+      if (typeof window.__r4b1tRecordHistorySelection === 'function') {
+        window.__r4b1tRecordHistorySelection(terminal.result.url, 'AUTHORITY_HISTORY');
+      }
+    } finally {
+      state.suppressRecord = previous;
+    }
+    if (typeof window.__r4b1tSyncMobileRoute === 'function') {
+      window.requestAnimationFrame(function () { window.__r4b1tSyncMobileRoute(); });
+    }
+    return true;
+  }
+
+  async function projectAuthorityTerminal(terminal, context) {
+    if (!terminal || terminal.state !== 'COMMITTED') return { projected: false };
+    var transactionId = terminal.transactionId;
+    var existing = authorityRouteFor(transactionId);
+    if (existing) {
+      if (context && context.recovered) showAuthorityTerminal(terminal);
+      return { projected: true, existing: true };
+    }
+
+    var prepared = terminal.prepared;
+    if (!prepared || prepared.corpusDigest !== state.corpusRevision) {
+      throw new Error('AUTHORITY_CORPUS_REVISION_MISMATCH');
+    }
+    if (prepared.seedMaterial !== state.seed ||
+        prepared.trailSequence !== state.transactionSequence + 1 ||
+        prepared.drawStart !== state.samplerCursor) {
+      throw new Error('AUTHORITY_TRAIL_CONTINUITY_MISMATCH');
+    }
+
+    if (!(context && context.recovered)) adoptAuthoritySelection(terminal);
+
+    var transaction = transactionFromAuthority(terminal);
+    if (!record(terminal.result.url, 'ROLL', transaction, {
+      authority_transaction_id: transactionId
+    })) {
+      throw new Error('AUTHORITY_TRAIL_RECORD_FAILED');
+    }
+
+    state.transactionSequence = transaction.sequence;
+    state.selectionTerrain = prepared.constraint.terrain;
+    state.repeatGuardReference = terminal.result.url;
+    advanceSamplerTo(prepared.drawStart + terminal.result.drawCount);
+
+    if (context && context.recovered) {
+      showAuthorityTerminal(terminal);
+      return { projected: true, recovered: true };
+    }
+    // The Trail projection is durable, but presentation is not complete until
+    // the existing machine-owned reveal boundary fires.
+    return { projected: true, deferCompletion: true };
+  }
+
+  async function showAuthorityTransaction(terminal) {
+    return showAuthorityTerminal(terminal);
   }
 
   async function buildV03Steps() {
@@ -786,6 +951,9 @@
   window.getLegacyTrailManifest = currentLegacyEnvelope;
   window.resetReproducibleTrail = resetTrail;
   window.getQuarantinedTrailDraft = quarantinedDraft;
+  window.__r4b1tPrepareAuthorityRoll = prepareAuthorityRoll;
+  window.__r4b1tProjectAuthorityTerminal = projectAuthorityTerminal;
+  window.__r4b1tShowAuthorityTransaction = showAuthorityTransaction;
 
   document.addEventListener('DOMContentLoaded', function () {
     ensurePanel();
