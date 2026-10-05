@@ -149,11 +149,28 @@
     return null;
   }
 
+  function validateRawUrl(raw) {
+    var match = String(raw).match(/^https?:\/\/([^\/?#]*)([^?#]*)/i);
+    if (!match) throw fail('SITE_KEY_URL_INVALID');
+
+    var authority = match[1];
+    var rawPath = match[2] || '';
+    if (/[^\x00-\x7f]/.test(authority)) throw fail('SITE_KEY_HOST_NOT_ASCII');
+    if (authority.indexOf('%') !== -1 || authority.indexOf('\\') !== -1 ||
+        rawPath.indexOf('\\') !== -1) {
+      throw fail('SITE_KEY_URL_NOT_CANONICAL');
+    }
+
+    var segments = rawPath.split('/');
+    for (var index = 0; index < segments.length; index += 1) {
+      var dots = segments[index].replace(/%2e/ig, '.');
+      if (dots === '.' || dots === '..') throw fail('SITE_KEY_URL_NOT_CANONICAL');
+    }
+    return raw;
+  }
+
   function siteKey(url, psl, overrides) {
-    var raw = String(url);
-    var authority = raw.match(/^https?:\/\/([^\/?#]*)/i);
-    if (!authority) throw fail('SITE_KEY_URL_INVALID');
-    if (/[^\x00-\x7f]/.test(authority[1])) throw fail('SITE_KEY_HOST_NOT_ASCII');
+    var raw = validateRawUrl(String(url));
     var parsed;
     try {
       parsed = new URL(raw);
@@ -222,6 +239,7 @@
     parseOverrides: parseOverrides,
     registrableDomain: registrableDomain,
     siteKey: siteKey,
+    validateRawUrl: validateRawUrl,
     validOverrideOwner: validOverrideOwner,
     compareUtf8: compareUtf8,
     canonicalGroups: canonicalGroups
