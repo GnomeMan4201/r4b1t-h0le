@@ -424,6 +424,20 @@ sk = json.loads((Q / "skipped.json").read_text())["counts"]
 check(sk.get("source_cap_reached", 0) > 0, "REVIEW_ACCEPTED (even unclassified) consumes quota")
 check(len(w.load_jsonl(Q / "observations.jsonl")) == len(o1), "no new probes once lists.example quota is full")
 
+# ================================================================ source registry v2
+LEADS_V2 = ROOT / "corpus/wild/leads-v2.txt"
+REGISTRY_V2 = ROOT / "corpus/wild/source-registry-v2.json"
+sr = w.SourceRegistry(str(REGISTRY_V2), str(LEADS_V2), 25)
+check((sr.lead_count, sr.source_count, sr.registry_cap) == (43, 34, 25),
+      "source registry v2 validates all 43 leads across 34 bounded sources")
+check(sr.source_for("https://directory.weirdnet.org/c/software/") == ("directory.weirdnet.org", 25),
+      "registry preserves stable discovery-source identity separately from runtime siteKey")
+bad_registry = D / "bad-source-registry.json"
+bad_registry.write_bytes(REGISTRY_V2.read_bytes().replace(
+    b"https://theindex.fyi/", b"https://not-registered.example/"))
+dies(lambda: w.SourceRegistry(str(bad_registry), str(LEADS_V2), 25),
+     "registry/lead mismatch fails closed", "lead(s) missing from registry")
+
 shutil.rmtree(D, ignore_errors=True)
 print("\nALL PASS" if ok else "\nFAILURES")
 sys.exit(0 if ok else 1)
