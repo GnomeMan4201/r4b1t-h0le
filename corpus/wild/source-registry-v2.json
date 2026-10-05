@@ -1,0 +1,324 @@
+{
+  "schema": "r4b1t-wild-source-registry/v2",
+  "verified_on": "2026-10-05",
+  "role": "discovery_only",
+  "authority_invariant": "sources suggest; observations verify; review admits",
+  "source_cap": 25,
+  "sources": [
+    {
+      "source_key": "theindex.fyi",
+      "kind": "meta-index",
+      "canonical_url": "https://theindex.fyi/",
+      "lead_urls": [
+        "https://theindex.fyi/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "dir.highlatencylife.com",
+      "kind": "directory",
+      "canonical_url": "https://dir.highlatencylife.com/",
+      "lead_urls": [
+        "https://dir.highlatencylife.com/",
+        "https://dir.highlatencylife.com/browse/directories/",
+        "https://dir.highlatencylife.com/browse/personal/",
+        "https://dir.highlatencylife.com/browse/tools/",
+        "https://dir.highlatencylife.com/browse/learning/",
+        "https://dir.highlatencylife.com/browse/communities/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "directory.weirdnet.org",
+      "kind": "directory",
+      "canonical_url": "https://directory.weirdnet.org/",
+      "lead_urls": [
+        "https://directory.weirdnet.org/",
+        "https://directory.weirdnet.org/c/directories/",
+        "https://directory.weirdnet.org/c/webrings/",
+        "https://directory.weirdnet.org/t/zine/",
+        "https://directory.weirdnet.org/c/software/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "base31.org",
+      "kind": "directory",
+      "canonical_url": "https://base31.org/",
+      "lead_urls": [
+        "https://base31.org/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "internetintro.com",
+      "kind": "directory",
+      "canonical_url": "https://internetintro.com/",
+      "lead_urls": [
+        "https://internetintro.com/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "personalwebsites.org",
+      "kind": "directory",
+      "canonical_url": "https://personalwebsites.org/",
+      "lead_urls": [
+        "https://personalwebsites.org/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "512kb.club",
+      "kind": "constraint",
+      "canonical_url": "https://512kb.club/",
+      "lead_urls": [
+        "https://512kb.club/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "1mb.club",
+      "kind": "constraint",
+      "canonical_url": "https://1mb.club/",
+      "lead_urls": [
+        "https://1mb.club/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "personalsit.es",
+      "kind": "directory",
+      "canonical_url": "https://personalsit.es/",
+      "lead_urls": [
+        "https://personalsit.es/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "neocities.org",
+      "kind": "community",
+      "canonical_url": "https://neocities.org/browse",
+      "lead_urls": [
+        "https://neocities.org/browse"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "indieweb.org",
+      "kind": "infrastructure",
+      "canonical_url": "https://indieweb.org/webring",
+      "lead_urls": [
+        "https://indieweb.org/webring"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "ring.recurse.com",
+      "kind": "webring",
+      "canonical_url": "https://ring.recurse.com/",
+      "lead_urls": [
+        "https://ring.recurse.com/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "curlie.org",
+      "kind": "directory",
+      "canonical_url": "https://curlie.org/desc/Computers/Internet/Searching/Directories/",
+      "lead_urls": [
+        "https://curlie.org/desc/Computers/Internet/Searching/Directories/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "wackywebs.com",
+      "kind": "weird",
+      "canonical_url": "https://www.wackywebs.com/",
+      "lead_urls": [
+        "https://www.wackywebs.com/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "openweird.com",
+      "kind": "weird",
+      "canonical_url": "https://openweird.com/weird-websites-when-bored/",
+      "lead_urls": [
+        "https://openweird.com/weird-websites-when-bored/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "href.cool",
+      "kind": "weird",
+      "canonical_url": "https://href.cool/",
+      "lead_urls": [
+        "https://href.cool/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "kickscondor.com",
+      "kind": "weird",
+      "canonical_url": "https://www.kickscondor.com/",
+      "lead_urls": [
+        "https://www.kickscondor.com/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "experiments.withgoogle.com",
+      "kind": "creative",
+      "canonical_url": "https://experiments.withgoogle.com/collection/chrome",
+      "lead_urls": [
+        "https://experiments.withgoogle.com/collection/chrome"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "github.com/eric-erki",
+      "kind": "creative",
+      "canonical_url": "https://github.com/eric-erki/awesome-creative-coding",
+      "lead_urls": [
+        "https://github.com/eric-erki/awesome-creative-coding"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "github.com/radiovisual",
+      "kind": "creative",
+      "canonical_url": "https://github.com/radiovisual/awesome-interactive",
+      "lead_urls": [
+        "https://github.com/radiovisual/awesome-interactive"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "github.com/williamrthomas",
+      "kind": "data",
+      "canonical_url": "https://github.com/williamrthomas/database-of-databases",
+      "lead_urls": [
+        "https://github.com/williamrthomas/database-of-databases"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "github.com/awesomedata",
+      "kind": "data",
+      "canonical_url": "https://github.com/awesomedata/awesome-public-datasets",
+      "lead_urls": [
+        "https://github.com/awesomedata/awesome-public-datasets"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "github.com/public-apis",
+      "kind": "data",
+      "canonical_url": "https://github.com/public-apis/public-apis",
+      "lead_urls": [
+        "https://github.com/public-apis/public-apis"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "si.edu",
+      "kind": "data",
+      "canonical_url": "https://www.si.edu/openaccess",
+      "lead_urls": [
+        "https://www.si.edu/openaccess"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "osintframework.com",
+      "kind": "security",
+      "canonical_url": "https://osintframework.com/",
+      "lead_urls": [
+        "https://osintframework.com/"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "github.com/jivoi",
+      "kind": "security",
+      "canonical_url": "https://github.com/jivoi/awesome-osint",
+      "lead_urls": [
+        "https://github.com/jivoi/awesome-osint"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "maxintel.org",
+      "kind": "security",
+      "canonical_url": "https://maxintel.org/osint-tools.html",
+      "lead_urls": [
+        "https://maxintel.org/osint-tools.html"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "github.com/tigergate",
+      "kind": "security",
+      "canonical_url": "https://github.com/tigergate/awesome-security",
+      "lead_urls": [
+        "https://github.com/tigergate/awesome-security"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "osint.dev",
+      "kind": "security",
+      "canonical_url": "https://osint.dev/osint-sources",
+      "lead_urls": [
+        "https://osint.dev/osint-sources"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "en.csintresearch.org",
+      "kind": "security",
+      "canonical_url": "https://en.csintresearch.org/fields/osint",
+      "lead_urls": [
+        "https://en.csintresearch.org/fields/osint"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "github.com/thedoubler",
+      "kind": "maps",
+      "canonical_url": "https://github.com/thedoubler/awesome-maps-data",
+      "lead_urls": [
+        "https://github.com/thedoubler/awesome-maps-data"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "github.com/elasticlabs",
+      "kind": "maps",
+      "canonical_url": "https://github.com/elasticlabs/awesome-gis",
+      "lead_urls": [
+        "https://github.com/elasticlabs/awesome-gis"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "github.com/hal9ai",
+      "kind": "maps",
+      "canonical_url": "https://github.com/hal9ai/awesome-dataviz",
+      "lead_urls": [
+        "https://github.com/hal9ai/awesome-dataviz"
+      ],
+      "max_candidates": 25
+    },
+    {
+      "source_key": "github.com/louisbarclay",
+      "kind": "research",
+      "canonical_url": "https://github.com/louisbarclay/awesome-web-research-tools",
+      "lead_urls": [
+        "https://github.com/louisbarclay/awesome-web-research-tools"
+      ],
+      "max_candidates": 25
+    }
+  ]
+}
