@@ -119,6 +119,22 @@
     mount.replaceChildren();
   }
 
+  function showHistory(result) {
+    if (!result || !result.url || !setup()) return false;
+    pendingIntent = false;
+    clearVisibleResult();
+    var mount = byId('r4mRouteMount');
+    if (!mount) return false;
+    var node = routeMarkup(result);
+    mount.replaceChildren(node);
+    node.hidden = false;
+    mount.classList.add('roll-disclosed');
+    root.requestAnimationFrame(function () {
+      if (typeof root.__r4b1tSyncMobileRoute === 'function') root.__r4b1tSyncMobileRoute();
+    });
+    return true;
+  }
+
   function roll() {
     if (!setup()) return false;
     if (machine.snapshot().active || renderer.isActive() || commitPending) {
@@ -195,6 +211,7 @@
     roll: roll,
     cancel: cancel,
     cancelPendingIntent: cancelPendingIntent,
+    showHistory: showHistory,
     snapshot: function () {
       var snapshot = machine ? machine.snapshot() : null;
       if (!snapshot) return null;
