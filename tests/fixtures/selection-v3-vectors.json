@@ -575,6 +575,22 @@
     {
       "url": "https://faß.de/",
       "code": "SITE_KEY_HOST_NOT_ASCII"
+    },
+    {
+      "url": "https://%65xample.com/a",
+      "code": "SITE_KEY_URL_NOT_CANONICAL"
+    },
+    {
+      "url": "https://github.com/a/../b/repo",
+      "code": "SITE_KEY_URL_NOT_CANONICAL"
+    },
+    {
+      "url": "https://github.com/a/%2E%2E/b/repo",
+      "code": "SITE_KEY_URL_NOT_CANONICAL"
+    },
+    {
+      "url": "https://github.com\\a\\repo",
+      "code": "SITE_KEY_URL_NOT_CANONICAL"
     }
   ]
 }
