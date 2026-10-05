@@ -165,15 +165,30 @@ def _override_key(parsed, host: str, overrides):
     return None
 
 
-def site_key(url: str, psl, overrides) -> str:
-    raw = str(url)
-    authority = re.match(r"^[A-Za-z][A-Za-z0-9+.-]*://([^/?#]*)", raw)
-    if not authority:
+def validate_raw_url(raw: str) -> str:
+    match = re.match(r"^https?://([^/?#]*)([^?#]*)", str(raw), re.IGNORECASE)
+    if not match:
         raise SiteKeyError("SITE_KEY_URL_INVALID")
-    if any(ord(ch) > 0x7F for ch in authority.group(1)):
+
+    authority = match.group(1)
+    raw_path = match.group(2) or ""
+    if any(ord(ch) > 0x7F for ch in authority):
         raise SiteKeyError("SITE_KEY_HOST_NOT_ASCII")
+    if "%" in authority or "\\" in authority or "\\" in raw_path:
+        raise SiteKeyError("SITE_KEY_URL_NOT_CANONICAL")
+
+    for segment in raw_path.split("/"):
+        dots = re.sub(r"%2e", ".", segment, flags=re.IGNORECASE)
+        if dots in {".", ".."}:
+            raise SiteKeyError("SITE_KEY_URL_NOT_CANONICAL")
+    return str(raw)
+
+
+def site_key(url: str, psl, overrides) -> str:
+    raw = validate_raw_url(str(url))
     try:
         parsed = urlsplit(raw)
+        _ = parsed.port
     except ValueError as exc:
         raise SiteKeyError("SITE_KEY_URL_INVALID") from exc
 
