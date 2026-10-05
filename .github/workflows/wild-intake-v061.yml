@@ -1,0 +1,55 @@
+name: WILD Intake v0.6.1
+
+on:
+  push:
+    branches:
+      - feat/wild-50-pilot
+    paths:
+      - 'tools/wild-intake-v0.6.1/**'
+      - '.github/workflows/wild-intake-v061.yml'
+      - 'tools/site_key_v1.py'
+      - 'selection/site-key-v1/**'
+      - 'tests/fixtures/selection-v3-vectors.json'
+      - 'corpus/releases/experience-candidate-v0.4/**'
+  pull_request:
+    paths:
+      - 'tools/wild-intake-v0.6.1/**'
+      - '.github/workflows/wild-intake-v061.yml'
+      - 'tools/site_key_v1.py'
+      - 'selection/site-key-v1/**'
+      - 'tests/fixtures/selection-v3-vectors.json'
+      - 'corpus/releases/experience-candidate-v0.4/**'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned intake dependencies
+        run: python -m pip install -r tools/wild-intake-v0.6.1/requirements.txt
+      - name: Verify frozen script bytes
+        run: |
+          printf '%s  %s\n' \
+            fb645cdcc0d2ce2fc0edfb62fd70750194324d754d41bcf02bcc09cb449510cd \
+            tools/wild-intake-v0.6.1/wild1000.py | sha256sum -c -
+      - name: Real site-key authority + baseline selftest
+        run: |
+          python tools/wild-intake-v0.6.1/wild1000.py selftest \
+            --r4b1t-root . \
+            --release experience-candidate-v0.4 | tee /tmp/wild-selftest.json
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/wild-selftest.json'))
+          assert d['release_urls'] == 7033, d
+          assert d['release_site_keys'] == 733, d
+          assert d['release_unkeyed'] == 0, d
+          assert d['vectors_checked'] >= 25, d
+          print('selftest baseline: 7033 URLs / 733 siteKeys / 0 unkeyed')
+          PY
+      - name: Review-integrity regressions
+        run: python -m pytest -q tools/wild-intake-v0.6.1/tests/test_review_integrity.py
