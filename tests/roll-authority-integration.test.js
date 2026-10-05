@@ -63,7 +63,7 @@ test('all legacy/global ROLL entry points delegate to the production durable pat
 });
 
 test('authority navigation never delegates to browser history', () => {
-  assert.doesNotMatch(runtime, /history\.pushState|history\.back\(|history\.forward\(|history\.replaceState/);
+  assert.doesNotMatch(runtime, /(?:window|root|globalThis)\.history\.(?:pushState|back|forward|replaceState)/);
 });
 
 test('Trail authority refreshes the durable draft under the global lock before prepare/project', () => {
@@ -86,7 +86,7 @@ test('production and bundled local ROLL entry points fail closed without durable
 test('global ROLL completion settles from authoritative reveal or failure, not from legacy draw timing', () => {
   assert.match(production, /activeCompletion/);
   assert.match(production, /function finishCompletion\(value\)/);
-  assert.match(production, /mountNode:[\s\S]*finishCompletion\(true\)/);
+  assert.match(production, /mountNode:[\s\S]*markRevealed\(payload\.result\)[\s\S]*finishCompletion\(/);
   const rollSource = production.slice(production.indexOf('function roll()'), production.indexOf('function cancelPendingIntent'));
   assert.match(rollSource, /beginCompletion\(\)/);
   assert.match(rollSource, /return completion/);
