@@ -1,0 +1,49 @@
+{
+  "schema": "r4b1t-wild-source-expansion-prereg/v1",
+  "campaign_id": "wild-source-expansion-v2",
+  "verified_on": "2026-10-05",
+  "branch": "feat/source-expansion-v1",
+  "lead_file": "corpus/wild/leads-v2.txt",
+  "source_registry": "corpus/wild/source-registry-v2.json",
+  "policy": {
+    "discovery_only": true,
+    "campaign_target": 600,
+    "source_cap": 25,
+    "entry_points_per_sitekey": 1,
+    "max_attempts": 3,
+    "pending_cap": 100,
+    "quota_identity": "lead_source_key",
+    "quota_counts": "REVIEW_ACCEPTED+CAMPAIGN_ACCEPTED",
+    "admission_authority": "review",
+    "observation_authority": "authoritative_probe"
+  },
+  "bounded_harvest": {
+    "max_candidates_per_source": 25,
+    "max_depth": 0,
+    "follow_discovered_source_indexes": false,
+    "recurse_into_source_of_sources": false,
+    "canonicalize_only_at_eligibility": true,
+    "duplicate_policy": "deduplicate_after_extraction_without_weight"
+  },
+  "metrics": [
+    "lead_count",
+    "unique_lead_source_keys",
+    "observed_count",
+    "unique_site_keys",
+    "accepted_count",
+    "rejected_count",
+    "unreviewed_count",
+    "source_cap_hits",
+    "source_concentration",
+    "cross_source_overlap",
+    "accepted_rate_by_source"
+  ],
+  "non_authority": [
+    "lead_order",
+    "source_count",
+    "source_overlap",
+    "source_quality",
+    "source_popularity",
+    "roll_history"
+  ]
+}
