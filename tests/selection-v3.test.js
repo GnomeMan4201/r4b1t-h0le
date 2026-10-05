@@ -122,11 +122,12 @@ test('current URL-uniform distribution is skewed while UNIFORM_SITE is near 1/10
   assert.ok(currentA / 20000 > 0.95);
 
   const prepared = SelectionV3.prepareSites(urls, siteKey, 'UNIFORM_SITE');
+  assert.equal(prepared.groups.length, 10);
   const siteRng = SelectionV3.createSampler('distribution-site');
   let siteA = 0;
   for (let draw = 0; draw < 20000; draw += 1) {
     const selected = SelectionV3.drawSite(prepared, siteRng, null);
-    if (selected.site_key === 'a.example') siteA += 1;
+    if (selected.selection.group.site_key === 'a.example') siteA += 1;
   }
   assert.ok(siteA / 20000 >= 0.08 && siteA / 20000 <= 0.12);
 });
