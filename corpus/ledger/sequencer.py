@@ -6,7 +6,8 @@ from .schema.events import EVENT_SCHEMA, CREATES, GLOBALS, keys, event_hash, sha
 from .schema.identity import MAX_CREATE_SEQ
 from .schema.serialization import parse, serialize, GENESIS_PREV
 from .projection import empty_state, apply_event, projection
-from .consumers.discovery import provenance_source
+from .consumers.discovery import provenance_source as discovery_provenance_source
+from .consumers.wild_discovery import provenance_source as wild_provenance_source
 
 
 def shadow_path(path):
@@ -53,7 +54,9 @@ class Sequencer:
         if expected_events is None:
             for p in proposals:
                 if isinstance(p,dict) and p.get('type')=='RESOURCE_CREATED' and isinstance(p.get('payload'),dict) and isinstance(p['payload'].get('metadata'),dict):
-                    source=provenance_source(p['payload']['metadata'].get('provenance'))
+                    provenance=p['payload']['metadata'].get('provenance')
+                    source=discovery_provenance_source(provenance)
+                    if source is None: source=wild_provenance_source(provenance)
                     if source is not None: discovery_heads.append(source)
         requires_head=any(isinstance(p,dict) and (p.get('type') in ('ARCHIVE_RESOLVED','ARCHIVE_TARGET_REPLACED','ARCHIVE_TARGET_GONE','ARCHIVE_PROBE_SUCCEEDED','ARCHIVE_PROBE_FAILED') or isinstance(p.get('payload'),dict) and (p['payload'].get('probe_version')=='r4b1t-shadow-head-v1' or p['payload'].get('policy_version') in ('shadow-explicit-window-v1','shadow-daily-window-v1','shadow-archive-explicit-window-v1'))) for p in proposals)
         if (requires_head or discovery_heads) and expected_head is None: raise ValueError('versioned evidence windows require expected source head')
