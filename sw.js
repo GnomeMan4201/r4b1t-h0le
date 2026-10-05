@@ -7,6 +7,8 @@ const PRECACHE = [
   './corpus-authority.js',
   './result-metadata.js',
   './motion-tokens.js',
+  './roll-sampler-v1.js',
+  './roll-sampler-registry.js',
   './roll-authority-core.js',
   './roll-authority-ledger.js',
   './roll-authority-runtime.js',
