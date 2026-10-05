@@ -67,6 +67,17 @@ on:
       - 'tools/reexecute_trail.py'
       - 'tests/test_terrain_index.py'
       - 'tests/test_reexecute_trail.py'
+      - 'tools/site_key_v1.py'
+      - 'tools/selection_v3.py'
+      - 'tests/test_selection_v3.py'
+      - 'selection/site-key-v1/**'
+      - 'site-key-v1.js'
+      - 'selection-v3.js'
+      - 'SELECTION_TRANSACTION_V3.md'
+      - 'tests/site-key-v1.test.js'
+      - 'tests/selection-v3.test.js'
+      - 'tests/fixtures/selection-v3-vectors.json'
+      - 'trail-v03.js'
       - 'corpus/terrains/**'
       - 'corpus/runtime/eligibility-profiles-v1.json'
       - 'TERRAIN_AUTHORITY_CONTRACT.md'
@@ -129,6 +140,8 @@ jobs:
           tools/build_corpus_release.py
           tools/terrain_index.py
           tools/reexecute_trail.py
+          tools/site_key_v1.py
+          tools/selection_v3.py
           tests/test_corpus_health.py
           tests/test_compile_eligibility.py
           tests/test_profile_eligibility.py
