@@ -1295,6 +1295,10 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   /* One clearance reserve for the fixed action rows and navigation. */
   html.r4-mobile-active.r4m-stage-result body{padding-bottom:0!important}
   html.r4m-stage-result .r4m-shell{padding-bottom:0}
+  /* Keep the compact result stack together above the fixed action rows.
+     Long content expands the stage and retains its scroll clearance. */
+  html.r4m-stage-result #r4mPrimaryStage{display:flex;flex-direction:column;justify-content:flex-end;min-height:calc(100dvh - 52px)}
+  html.r4m-stage-result #r4mProductionMark,html.r4m-stage-result #r4mRouteMount{flex-shrink:0}
   .r4m-route{grid-template-columns:minmax(0,1fr);min-height:0;margin:0;padding:9px 0 calc(180px + env(safe-area-inset-bottom))}
   .r4m-route-top{padding:0 0 9px;border-bottom:1px solid var(--r4m-v5-rule);color:var(--r4m-v5-dim)}
   .r4m-route>small{margin:12px 0 6px;color:var(--r4m-v5-dim);font-size:.72rem}
@@ -1347,7 +1351,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
 }
 @media (max-width:900px) and (orientation:landscape) and (max-height:560px){
   :root{--r4m-action-inset:max(20px,env(safe-area-inset-left),env(safe-area-inset-right))}
-  html.r4m-stage-result #r4mPrimaryStage{display:grid;grid-template-columns:minmax(0,.3fr) minmax(0,.7fr);gap:20px;align-items:start}
+  html.r4m-stage-result #r4mPrimaryStage{display:grid;grid-template-columns:minmax(0,.3fr) minmax(0,.7fr);gap:20px;align-items:start;align-content:end}
   html.r4m-stage-result #r4mProductionMark{grid-column:1;min-height:0;max-height:170px}
   html.r4m-stage-result #r4mRouteMount{grid-column:2;min-width:0;padding-bottom:0!important}
   .r4m-route{padding-top:6px}
