@@ -29,22 +29,23 @@ Every v3 transaction MUST commit both hashes and `site_key_version: "site-key/v1
 
 For an HTTP(S) URL:
 
-1. Parse the URL.
-2. Use the hostname only; userinfo is forbidden by the corpus contract.
-3. The authoritative URL serialization MUST already contain an ASCII hostname. IDNs therefore enter the corpus in canonical `xn--` punycode form. Raw Unicode authority bytes fail closed before URL parsing.
-4. Before runtime URL parsing, reject URL forms whose normalization differs across supported re-executors:
+1. Inspect the raw authoritative URL bytes before runtime parsing.
+2. The authoritative URL serialization MUST already contain an ASCII hostname. IDNs therefore enter the corpus in canonical `xn--` punycode form. Raw Unicode authority bytes fail closed.
+3. Reject URL forms whose normalization differs across supported re-executors:
    - percent escapes in the authority;
    - ASCII control/space bytes in the authority or path;
    - a backslash in the authority or path;
    - repeated dots in an unbracketed hostname;
    - any path segment that becomes `.` or `..` after case-insensitive replacement of `%2e` with `.`;
    - legacy IPv4 spellings. If every unbracketed host label is decimal or `0x`-hex numeric-like, the host MUST be canonical four-part decimal IPv4, each part `0..255`, with no leading zero except the value `0`.
-5. Malformed or out-of-range ports fail closed.
-6. Lowercase the ASCII hostname.
-7. Strip one trailing dot.
-8. The URL parser removes a valid port before hostname processing.
-9. Bare IP literals are their own site keys.
-10. For normal hosts, resolve the registrable domain (eTLD+1) against the pinned authoritative ASCII PSL derivative. `www.` is not a special case; it disappears only because eTLD+1 resolution collapses it.
+4. Parse the URL only after the raw canonicality checks pass.
+5. Use the hostname only; userinfo is forbidden by the corpus contract.
+6. Malformed or out-of-range ports fail closed.
+7. Lowercase the ASCII hostname.
+8. Strip one trailing dot.
+9. The URL parser removes a valid port before hostname processing.
+10. Bare IP literals are their own site keys.
+11. For normal hosts, resolve the registrable domain (eTLD+1) against the pinned authoritative ASCII PSL derivative. `www.` is not a special case; it disappears only because eTLD+1 resolution collapses it.
 
 Selection consumes canonical release URLs, not arbitrary navigation input. It MUST NOT invoke the host runtime's ambient IDNA implementation or rely on runtime-specific dot-segment/backslash normalization. The raw PSL source is provenance; grouping consumes only the frozen ASCII derivative. This prevents browser/Python URL and IDNA version drift.
 
