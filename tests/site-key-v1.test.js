@@ -82,3 +82,11 @@ test('active experience-v0.4 resolves to 733 site-key/v1 groups', () => {
   assert.equal(urls.length, 7033);
   assert.equal(groups.length, 733);
 });
+
+
+test('platform overrides reject syntactically invalid owner segments', () => {
+  assert.equal(SiteKey.siteKey('https://github.com/@bad/repo', psl, overrides), 'github.com');
+  assert.equal(SiteKey.siteKey('https://github.com/-bad/repo', psl, overrides), 'github.com');
+  assert.equal(SiteKey.siteKey('https://gitlab.com/@bad/repo', psl, overrides), 'gitlab.com');
+  assert.equal(SiteKey.siteKey('https://medium.com/not-an-at-user/post', psl, overrides), 'medium.com');
+});
