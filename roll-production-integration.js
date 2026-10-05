@@ -16,8 +16,8 @@
     var authoritySequence = result && Number.isSafeInteger(result.authoritySequence) ? result.authoritySequence : null;
     var drawLabel = authoritySequence === null ? 'DRAW —' : 'DRAW ' + String(authoritySequence).padStart(4, '0');
     section.innerHTML =
-      '<div class="r4m-route-kicker">SELECTED / COMMITTED <em id="r4mDrawSequence">' + drawLabel + '</em></div>' +
-      '<div class="r4m-route-top"><span>ROUTE / <b id="r4mRouteNo">001</b></span><strong id="r4mTag" hidden></strong></div>' +
+      '<div class="r4m-route-kicker">SELECTED / COMMITTED</div>' +
+      '<div class="r4m-route-top"><span>ROUTE / <b id="r4mRouteNo">001</b></span><em id="r4mDrawSequence">' + drawLabel + '</em><strong id="r4mTag" hidden></strong></div>' +
       '<div class="r4m-route-label">RANDOM CYBERSECURITY RESOURCE</div>' +
       '<div class="r4m-route-proof" id="r4mTypedMeta" hidden><strong id="r4mResourceType"></strong></div>' +
       '<small id="r4mProtocol" hidden></small>' +
@@ -70,6 +70,7 @@
         mount.classList.add('roll-disclosed');
         root.requestAnimationFrame(function () {
           if (typeof root.__r4b1tSyncMobileRoute === 'function') root.__r4b1tSyncMobileRoute();
+          syncAuthorityControls({ authoritySequence: payload.result.authoritySequence });
         });
       }
     });
@@ -97,6 +98,18 @@
       timing: machine.timing
     });
     return true;
+  }
+
+  function syncAuthorityControls(detail) {
+    var authority = root.R4B1TRollAuthority;
+    var marker = byId('r4mDrawSequence');
+    if (marker && detail && Number.isSafeInteger(detail.authoritySequence)) {
+      marker.textContent = 'DRAW ' + String(detail.authoritySequence).padStart(4, '0');
+    }
+    var previous = document.querySelector('[data-mobile-action="previous"]');
+    var forward = document.querySelector('[data-mobile-action="forward"]');
+    if (previous && authority && typeof authority.canPrevious === 'function') previous.disabled = !authority.canPrevious();
+    if (forward && authority && typeof authority.canForward === 'function') forward.disabled = !authority.canForward();
   }
 
   function clearVisibleResult() {
@@ -172,6 +185,9 @@
     return true;
   }
 
+  document.addEventListener('r4b1t:authority-visible', function (event) {
+    syncAuthorityControls(event && event.detail);
+  });
   document.addEventListener('r4b1t:reset', function () { cancel('reset'); });
   window.addEventListener('pagehide', function () { cancel('navigation'); });
 

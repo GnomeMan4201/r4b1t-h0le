@@ -698,6 +698,14 @@ MOTION: waiting for target…';
     if (action === 'help') return openSheet('r4mHelpSheet');
     if (action === 'close-sheets') return closeSheets();
     if (action === 'next') return runRollTransition('next');
+    if (action === 'previous') {
+      var previousAuthority = window.R4B1TRollAuthority;
+      return previousAuthority && typeof previousAuthority.previous === 'function' ? previousAuthority.previous() : false;
+    }
+    if (action === 'forward') {
+      var forwardAuthority = window.R4B1TRollAuthority;
+      return forwardAuthority && typeof forwardAuthority.forward === 'function' ? forwardAuthority.forward() : false;
+    }
     if (action === 'random-mode') {
       call('setMode', 'random');
       closeSheets();
