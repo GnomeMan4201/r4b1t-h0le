@@ -104,6 +104,7 @@ ACCEPT_VERDICTS = {"y", "yes", "accept", "accepted", "1"}
 REJECT_VERDICTS = {"n", "no", "reject", "rejected", "0"}
 MANIFEST_SCHEMA = "r4b1t-wild-campaign/v1"
 CLASSIFICATION_SCHEMA = "r4b1t-resource-classification/v2"
+SOURCE_REGISTRY_SCHEMA = "r4b1t-wild-source-registry/v2"
 MANUAL_SOURCE = "manual"
 
 
@@ -130,6 +131,96 @@ def assert_no_floats(obj, path="$") -> None:
     elif isinstance(obj, list):
         for i, v in enumerate(obj):
             assert_no_floats(v, f"{path}[{i}]")
+
+
+# ---------------------------------------------------------------------------
+# Discovery source registry — bounded, explicit, never an admission authority
+# ---------------------------------------------------------------------------
+
+class SourceRegistry:
+    def __init__(self, path: str, leads_path: str, campaign_source_cap: int):
+        self.path = Path(path)
+        raw_bytes = self.path.read_bytes()
+        self.sha256 = sha256_tag(raw_bytes)
+        try:
+            raw = json.loads(raw_bytes)
+        except (UnicodeDecodeError, json.JSONDecodeError) as e:
+            die(f"[source-registry] invalid JSON: {e}")
+        if canonical_json(raw) != raw_bytes:
+            die("[source-registry] registry is not in canonical form")
+        if raw.get("schema") != SOURCE_REGISTRY_SCHEMA:
+            die(f"[source-registry] schema must be {SOURCE_REGISTRY_SCHEMA}")
+        if raw.get("role") != "discovery_only":
+            die("[source-registry] role must be discovery_only")
+        if raw.get("authority_invariant") != "sources suggest; observations verify; review admits":
+            die("[source-registry] authority_invariant is invalid")
+        registry_cap = raw.get("source_cap")
+        if type(registry_cap) is not int or registry_cap < 1:
+            die("[source-registry] source_cap must be a positive integer")
+        if registry_cap > campaign_source_cap:
+            die(f"[source-registry] source_cap {registry_cap} exceeds campaign source_cap {campaign_source_cap}")
+
+        sources = raw.get("sources")
+        if not isinstance(sources, list) or not sources:
+            die("[source-registry] sources must be a non-empty list")
+        by_key, by_lead = {}, {}
+        for i, src in enumerate(sources):
+            if not isinstance(src, dict):
+                die(f"[source-registry] source {i} is not an object")
+            key, kind = src.get("source_key"), src.get("kind")
+            canonical_url, lead_urls = src.get("canonical_url"), src.get("lead_urls")
+            max_candidates = src.get("max_candidates")
+            if not isinstance(key, str) or not key.strip():
+                die(f"[source-registry] source {i}: source_key required")
+            if key in by_key:
+                die(f"[source-registry] duplicate source_key: {key}")
+            if not isinstance(kind, str) or not kind.strip():
+                die(f"[source-registry] {key}: kind required")
+            if not isinstance(canonical_url, str) or not canonical_url.startswith(("http://", "https://")):
+                die(f"[source-registry] {key}: canonical_url must be http(s)")
+            if not isinstance(lead_urls, list) or not lead_urls:
+                die(f"[source-registry] {key}: lead_urls must be non-empty")
+            if type(max_candidates) is not int or max_candidates < 1 or max_candidates > registry_cap:
+                die(f"[source-registry] {key}: max_candidates must be 1..{registry_cap}")
+            by_key[key] = {"kind": kind, "canonical_url": canonical_url,
+                           "lead_urls": tuple(lead_urls), "max_candidates": max_candidates}
+            for lead in lead_urls:
+                if not isinstance(lead, str) or not lead.strip():
+                    die(f"[source-registry] {key}: invalid lead URL")
+                lead = lead.strip()
+                if lead in by_lead:
+                    die(f"[source-registry] lead URL belongs to multiple sources: {lead}")
+                by_lead[lead] = key
+
+        try:
+            lead_lines = [
+                line.split("#", 1)[0].strip()
+                for line in Path(leads_path).read_text(encoding="utf-8").splitlines()
+                if line.strip() and not line.lstrip().startswith("#")
+            ]
+        except OSError as e:
+            die(f"[source-registry] leads file unreadable: {e}")
+        lead_lines = [x for x in lead_lines if x]
+        duplicates = sorted(k for k, n in Counter(lead_lines).items() if n > 1)
+        if duplicates:
+            die(f"[source-registry] duplicate lead URL(s): {duplicates[:10]}")
+        lead_set, registry_set = set(lead_lines), set(by_lead)
+        missing, orphaned = sorted(lead_set - registry_set), sorted(registry_set - lead_set)
+        if missing:
+            die(f"[source-registry] lead(s) missing from registry: {missing[:10]}")
+        if orphaned:
+            die(f"[source-registry] registry lead(s) missing from leads file: {orphaned[:10]}")
+        self.sources, self.lead_to_source = by_key, by_lead
+        self.lead_count, self.source_count = len(lead_lines), len(by_key)
+        self.registry_cap, self.canonical = registry_cap, raw
+
+    def source_for(self, lead_url: str) -> tuple[str, int]:
+        try:
+            key = self.lead_to_source[lead_url]
+            return key, self.sources[key]["max_candidates"]
+        except KeyError:
+            die(f"[source-registry] lead URL is not registered: {lead_url}")
+
 
 
 # ---------------------------------------------------------------------------
@@ -998,14 +1089,19 @@ def cmd_campaign_init(args) -> None:
 async def cmd_harvest(args) -> None:
     auth = _auth(args)
     camp = Campaign(args.campaign, auth)
+    registry = SourceRegistry(args.source_registry, args.leads, camp.cap)
     polite = Politeness(args.delay)
     out_path, lead_path = camp.path("candidates.jsonl"), camp.path("leads.jsonl")
     seen = {r["url"] for r in load_jsonl(out_path)}
+    harvested_by_source: Counter = Counter()
     lead_records, cand_records = [], []
     raw_leads = [l.split("#", 1)[0].strip() for l in Path(args.leads).read_text().splitlines()]
     async with make_client(args.timeout, 4) as client:
         for raw in filter(None, raw_leads):
-            rec = {"lead_source_url": raw, "lead_observed_at": int(time.time()),
+            registry_source_key, source_limit = registry.source_for(raw)
+            rec = {"lead_source_url": raw, "source_registry_key": registry_source_key,
+                   "source_registry_sha256": registry.sha256,
+                   "lead_observed_at": int(time.time()),
                    "tool_version": TOOL_VERSION, "campaign_manifest_sha256": camp.sha256}
             try:
                 lead, lead_key = admit(auth, raw)
@@ -1042,9 +1138,14 @@ async def cmd_harvest(args) -> None:
                     bad += 1           # verify re-admits and records the reason
                 elif k == probe.final_key:
                     continue           # internal navigation, not a lead
+                if harvested_by_source[registry_source_key] >= source_limit:
+                    continue
                 cand_records.append({"url": target, "anchor": (a.text(strip=True) or "")[:200],
+                                     "source_registry_key": registry_source_key,
+                                     "source_registry_sha256": registry.sha256,
                                      **{f: rec[f] for f in LEAD_FIELDS},
                                      "campaign_manifest_sha256": camp.sha256})
+                harvested_by_source[registry_source_key] += 1
                 n += 1
             lead_records.append({**rec, "status": "HARVESTED", "candidates": n, "unkeyable": bad})
             print(f"[harvest] {probe.final_key:40s} +{n} ({bad} not keyable)"
@@ -1327,6 +1428,8 @@ def main() -> None:
 
     h = sub.add_parser("harvest"); campaign(h)
     h.add_argument("--leads", required=True)
+    h.add_argument("--source-registry", required=True,
+                    help="frozen discovery registry matching every lead URL exactly")
     h.add_argument("--timeout", type=float, default=20)
     h.add_argument("--delay", type=float, default=1.0)
     h.add_argument("--max-bytes", type=int, default=4 * 1024 * 1024)
