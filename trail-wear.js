@@ -10,6 +10,27 @@
     return Number.isSafeInteger(value) && value >= 0 ? value : fallback;
   }
 
+  function rounded(value) {
+    return Number(value.toFixed(3));
+  }
+
+  function materialState(value) {
+    var depth = integer(value, 0);
+    var intensity = Math.min(1, depth / 8);
+    var direction = depth === 0 ? 0 : (depth % 2 === 0 ? -1 : 1);
+    return {
+      depth: depth,
+      band: depth === 0 ? 'surface' : (depth <= 2 ? 'scuffed' : (depth <= 5 ? 'creased' : 'deep')),
+      intensity: rounded(intensity),
+      registration_px: rounded(direction * Math.min(1.6, depth * .18)),
+      tilt_deg: depth === 0 ? 0 : rounded((((depth * 17) % 9) - 4) * .07),
+      skew_deg: depth === 0 ? 0 : rounded(((((depth * 11) % 7) - 3) * .04) * intensity),
+      grain_opacity: rounded(.18 * intensity),
+      edge_wear_px: rounded(Math.min(3, depth * .35)),
+      shadow_px: rounded(Math.min(16, depth * 1.5))
+    };
+  }
+
   function host(url) {
     try { return new URL(url).hostname.replace(/^www\./, ''); }
     catch (_) { return 'revealed route'; }
@@ -108,6 +129,7 @@
     options = options || {};
     ensureInkFilter();
     var model = normalize(input, options);
+    var material = materialState(model.depth);
     container.innerHTML = '';
     var root = document.createElement('div');
     root.className = 'trail-wear' + (options.motion ? ' motion-' + options.motion : '') +
@@ -119,6 +141,14 @@
     root.style.setProperty('--crease-opacity', String(Math.min(.82, .18 + model.crease_count * .045)));
     root.style.setProperty('--fold-width', String(Math.max(1, Math.min(9, Math.round(model.fold_size / 3)))) + 'px');
     root.style.setProperty('--paper-warp', String(Math.min(4, model.fold_size / 8)) + 'deg');
+    root.dataset.materialDepth = String(material.depth);
+    root.dataset.materialBand = material.band;
+    root.style.setProperty('--material-intensity', String(material.intensity));
+    root.style.setProperty('--material-register-x', String(material.registration_px) + 'px');
+    root.style.setProperty('--material-tilt', String(material.tilt_deg) + 'deg');
+    root.style.setProperty('--material-skew', String(material.skew_deg) + 'deg');
+    root.style.setProperty('--material-grain-opacity', String(material.grain_opacity));
+    root.style.setProperty('--material-edge-wear', String(material.edge_wear_px) + 'px');
 
     var meta = document.createElement('div');
     meta.className = 'wear-readout';
@@ -214,6 +244,7 @@
 
   return {
     normalize: normalize,
+    materialState: materialState,
     composeFork: composeFork,
     render: render
   };

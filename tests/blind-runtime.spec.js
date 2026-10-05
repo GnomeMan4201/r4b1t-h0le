@@ -420,3 +420,50 @@ test('mobile Blind keeps the active strata and action rail visually connected', 
 
   expect(gap).toBeLessThanOrEqual(180);
 });
+
+
+test('Blind Descent material state follows depth and rewinds deterministically on RETURN', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'desktop-chromium') test.skip();
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openBlindDescent === 'function' && typeof window.blindDescend === 'function');
+
+  await page.evaluate(async () => {
+    await window.openBlindDescent();
+    await window.blindDescend();
+    await window.blindDescend();
+    await window.blindDescend();
+  });
+
+  const overlay = page.locator('#blindDescentOverlay');
+  await expect(overlay).toHaveAttribute('data-material-depth', '3');
+  await expect(overlay).toHaveAttribute('data-material-band', 'creased');
+
+  const atThree = await page.locator('#blindCard').evaluate((node) => ({
+    intensity: Number.parseFloat(node.style.getPropertyValue('--blind-material-intensity')),
+    register: node.style.getPropertyValue('--blind-register-x'),
+    edge: node.style.getPropertyValue('--blind-edge-wear'),
+  }));
+  expect(atThree.intensity).toBeGreaterThan(0);
+  expect(atThree.register).not.toBe('');
+  expect(atThree.edge).not.toBe('');
+
+  await page.evaluate(() => window.blindReturn());
+  await expect(overlay).toHaveAttribute('data-material-depth', '2');
+  await expect(overlay).toHaveAttribute('data-material-band', 'scuffed');
+
+  const atTwo = await page.locator('#blindCard').evaluate((node) => ({
+    intensity: Number.parseFloat(node.style.getPropertyValue('--blind-material-intensity')),
+    register: node.style.getPropertyValue('--blind-register-x'),
+    edge: node.style.getPropertyValue('--blind-edge-wear'),
+  }));
+  expect(atTwo.intensity).toBeLessThan(atThree.intensity);
+
+  await page.evaluate(() => window.blindDescend());
+  await expect(overlay).toHaveAttribute('data-material-depth', '3');
+  const atThreeAgain = await page.locator('#blindCard').evaluate((node) => ({
+    intensity: Number.parseFloat(node.style.getPropertyValue('--blind-material-intensity')),
+    register: node.style.getPropertyValue('--blind-register-x'),
+    edge: node.style.getPropertyValue('--blind-edge-wear'),
+  }));
+  expect(atThreeAgain).toEqual(atThree);
+});

@@ -56,3 +56,24 @@ test('v0.2 fork composition carries parent paper to fork then diverges', () => {
   assert.equal(stops[2].inherited, false);
   assert.equal(stops[2].divergent, true);
 });
+
+
+test('material descent state is deterministic, reversible, and bounded by depth', () => {
+  const pristine = wear.materialState(0);
+  const depthFourA = wear.materialState(4);
+  const depthFourB = wear.materialState(4);
+  const depthThree = wear.materialState(3);
+  const deep = wear.materialState(99);
+
+  assert.deepEqual(depthFourA, depthFourB);
+  assert.equal(pristine.band, 'surface');
+  assert.equal(pristine.intensity, 0);
+  assert.equal(depthThree.depth, 3);
+  assert.equal(depthFourA.depth, 4);
+  assert.equal(depthFourA.band, 'creased');
+  assert.ok(depthFourA.intensity > depthThree.intensity);
+  assert.ok(depthFourA.grain_opacity > depthThree.grain_opacity);
+  assert.equal(deep.intensity, 1);
+  assert.ok(deep.edge_wear_px <= 3);
+  assert.ok(Math.abs(deep.registration_px) <= 1.6);
+});
