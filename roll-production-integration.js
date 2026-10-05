@@ -197,7 +197,11 @@
     cancelPendingIntent: cancelPendingIntent,
     snapshot: function () {
       var snapshot = machine ? machine.snapshot() : null;
-      return { motion: snapshot, commitPending: commitPending, pendingIntent: pendingIntent };
+      if (!snapshot) return null;
+      return Object.assign({}, snapshot, {
+        commitPending: commitPending,
+        pendingIntent: pendingIntent
+      });
     }
   });
 })(typeof globalThis !== 'undefined' ? globalThis : window);
