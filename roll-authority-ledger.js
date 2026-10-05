@@ -256,37 +256,71 @@
     }
     if (typeof withLock !== 'function') throw new TypeError('withLock is required');
 
-    async function projectPending(projectTerminal, recovered, recoveredPreparedId) {
+    async function projectRecord(record, projectTerminal, context) {
+      if (typeof projectTerminal !== 'function' || !record) return;
+      var projection = await projectTerminal(record, Object.assign({ store: store }, context || {}));
+      if (!projection || projection.deferCompletion !== true) {
+        await store.markProjected(record.transactionId);
+      }
+    }
+
+    async function projectPending(projectTerminal, recoveredPreparedId, recoveryMode) {
       if (typeof projectTerminal !== 'function') return;
       var pending = await store.listUnprojectedCommitted();
       for (var index = 0; index < pending.length; index += 1) {
         var record = pending[index];
-        var projection = await projectTerminal(record, {
-          recovered: Boolean(recovered),
+        await projectRecord(record, projectTerminal, {
+          recovered: true,
           recoveredPrepared: Boolean(recoveredPreparedId && record.transactionId === recoveredPreparedId),
-          store: store
+          recoveryMode: recoveryMode || 'restore'
         });
-        if (!projection || projection.deferCompletion !== true) {
-          await store.markProjected(record.transactionId);
-        }
       }
     }
 
-    async function recoverLocked(projectTerminal) {
+    async function terminalizePreparedIfPresent() {
       var prepared = await store.listPrepared();
-      var recoveredPreparedId = null;
       core.assertPreparedCardinality(prepared);
-      if (prepared.length === 1) {
-        await boundary('recovery:prepared', prepared[0]);
-        var resolution = core.resolvePrepared(prepared[0]);
-        var terminal = await store.terminalize(prepared[0].transactionId, resolution, core.createTerminal);
-        recoveredPreparedId = terminal && terminal.state === 'COMMITTED' ? terminal.transactionId : null;
-        await boundary('recovery:terminal', terminal);
-      }
-      await projectPending(projectTerminal, true, recoveredPreparedId);
+      if (prepared.length !== 1) return null;
+
+      await boundary('recovery:prepared', prepared[0]);
+      var resolution = core.resolvePrepared(prepared[0]);
+      var terminal = await store.terminalize(prepared[0].transactionId, resolution, core.createTerminal);
+      await boundary('recovery:terminal', terminal);
+      return terminal;
+    }
+
+    async function assertPreparedCleared() {
       var remaining = await store.listPrepared();
       core.assertPreparedCardinality(remaining);
       if (remaining.length !== 0) throw new Error('PREPARED_RECOVERY_INCOMPLETE');
+    }
+
+    async function recoverLocked(projectTerminal) {
+      var terminal = await terminalizePreparedIfPresent();
+      var recoveredPreparedId = terminal && terminal.state === 'COMMITTED'
+        ? terminal.transactionId
+        : null;
+      await projectPending(projectTerminal, recoveredPreparedId, 'restore');
+      await assertPreparedCleared();
+    }
+
+    async function recoverBeforeCommitLocked(projectTerminal) {
+      var terminal = await terminalizePreparedIfPresent();
+      if (terminal && terminal.state === 'COMMITTED') {
+        await projectRecord(terminal, projectTerminal, {
+          recovered: true,
+          recoveredPrepared: true,
+          recoveryMode: 'pre-commit'
+        });
+      }
+      await assertPreparedCleared();
+
+      // A pre-existing COMMITTED that has not crossed reveal belongs to another
+      // live or not-yet-restored presentation. Do not silently turn it into a
+      // Trail step merely because this tab wants another draw. Explicit recover()
+      // is the operation that crosses a crash/restoration gap.
+      var pending = await store.listUnprojectedCommitted();
+      if (pending.length) throw new Error('UNREVEALED_COMMIT_PENDING');
     }
 
     async function recover(projectTerminal) {
@@ -296,7 +330,7 @@
     async function commit(createPrepared, projectTerminal) {
       if (typeof createPrepared !== 'function') throw new TypeError('createPrepared is required');
       return withLock(async function () {
-        await recoverLocked(projectTerminal);
+        await recoverBeforeCommitLocked(projectTerminal);
         var prepared = await createPrepared();
         await store.putPrepared(prepared);
         core.assertPreparedCardinality(await store.listPrepared());
@@ -309,10 +343,11 @@
         await boundary('terminal', terminal);
 
         if (terminal.state === 'COMMITTED' && typeof projectTerminal === 'function') {
-          var projection = await projectTerminal(terminal, { recovered: false, store: store });
-          if (!projection || projection.deferCompletion !== true) {
-            await store.markProjected(terminal.transactionId);
-          }
+          await projectRecord(terminal, projectTerminal, {
+            recovered: false,
+            recoveredPrepared: false,
+            recoveryMode: null
+          });
         }
         core.assertPreparedCardinality(await store.listPrepared());
         return terminal;
