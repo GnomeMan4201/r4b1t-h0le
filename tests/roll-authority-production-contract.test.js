@@ -77,3 +77,12 @@ test('browser runtime uses IndexedDB authority, Web Locks and direct sessionStor
   assert.match(ledger, /durability: 'strict'/);
   assert.match(ledger, /PREPARED_CARDINALITY_VIOLATION/);
 });
+
+test('queued ROLL cannot outrun reveal-bound Trail completion', () => {
+  const source = read('roll-production-integration.js');
+  assert.match(source, /var revealPending = null/);
+  assert.match(source, /markRevealed\(payload\.result\)/);
+  assert.match(source, /revealPending = completion/);
+  assert.match(source, /entry\.to === 'SETTLED'[\s\S]*revealPending\.then/);
+  assert.match(source, /commitPending \|\| revealPending/);
+});
