@@ -362,7 +362,7 @@ rows_b = list(byk.values())
 check(all(r["campaign_manifest_sha256"] == MSHA and r["classification_sha256"] == cls.sha256 and r["classification_version"] == cls.version
           for r in rows_b), "review rows carry manifest + classification binding")
 foreign = dict(rows_b[0], campaign_manifest_sha256="sha256:" + "f" * 64)
-write_review(C, rows_b + [foreign])
+write_review(C, [foreign] + rows_b[1:])
 dies(lambda: w.cmd_export(A(campaign=str(C))), "foreign-bound review row refused by export", "binding")
 dies(lambda: w.cmd_stats(A(campaign=str(C))), "foreign-bound review row refused by stats", "binding")
 unbound = dict(rows_b[1], classification_sha256="")
