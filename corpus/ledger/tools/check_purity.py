@@ -2,7 +2,7 @@
 import ast
 from pathlib import Path
 
-MODULES = ('corpus.ledger.consumers.discovery','corpus.ledger.consumers.archive_windows','corpus.ledger.projection','corpus.ledger.schema.events','corpus.ledger.schema.identity','corpus.ledger.schema.serialization','tools.cj1')
+MODULES = ('corpus.ledger.consumers.discovery','corpus.ledger.consumers.wild_discovery','corpus.ledger.consumers.archive_windows','corpus.ledger.projection','corpus.ledger.schema.events','corpus.ledger.schema.identity','corpus.ledger.schema.serialization','tools.cj1')
 STDLIB = ('__future__','re','json','hashlib','typing','ipaddress','urllib.parse')
 FORBIDDEN_CALLS = ('open','eval','exec','compile','__import__','globals','locals','getattr','setattr','vars','input','breakpoint')
 FORBIDDEN_ATTRS = ('now','utcnow','today','time','monotonic','perf_counter','environ','getenv','urandom','random','randint','randrange','socket','connect','request','urlopen','load','read','write','read_text','read_bytes','glob','iterdir','system','popen')

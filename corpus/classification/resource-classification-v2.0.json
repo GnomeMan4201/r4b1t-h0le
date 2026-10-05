@@ -1,0 +1,292 @@
+{
+  "schema": "r4b1t-resource-classification/v2",
+  "version": "resource-classification-v2.0",
+  "status": "frozen",
+  "notes": "FROZEN classification authority for WILD intake. FORM (resource_type: what the thing is) is separated from TOPIC (subjects: what it is about), fixing the v1 collision where security_tool / threat_feed / advisory encode both. Rules are fail-closed: unknown or missing rule keys are invalid. primary_subject_in_subjects=true means subjects must contain primary_subject; max_subjects counts the full list including it. Any semantic change requires a new version and a new authority digest.",
+  "rules": {
+    "max_subjects": 4,
+    "min_reason_chars": 20,
+    "subjects_delimiter": "|",
+    "primary_subject_in_subjects": true
+  },
+  "resource_types": [
+    {
+      "id": "interactive_tool",
+      "description": "single-purpose utility used in the browser: converter, calculator, encoder, generator, analyzer"
+    },
+    {
+      "id": "simulation",
+      "description": "model of a system you can run or perturb"
+    },
+    {
+      "id": "visualization",
+      "description": "explorable view of data or a concept, not primarily a map"
+    },
+    {
+      "id": "map",
+      "description": "geographic or spatial explorer (cables, transmitters, fires, history, language)"
+    },
+    {
+      "id": "experiment",
+      "description": "browser toy, creative-coding piece, one-off oddity; exists to be played with"
+    },
+    {
+      "id": "instrument",
+      "description": "synth, sequencer, playable sound tool"
+    },
+    {
+      "id": "game",
+      "description": "game, puzzle, interactive fiction with a goal"
+    },
+    {
+      "id": "challenge",
+      "description": "CTF, wargame, graded exercise"
+    },
+    {
+      "id": "lab",
+      "description": "hands-on environment for practice"
+    },
+    {
+      "id": "emulator",
+      "description": "runs historical hardware/software in the browser"
+    },
+    {
+      "id": "live_feed",
+      "description": "real-time stream: camera, telemetry, tracker, threat feed"
+    },
+    {
+      "id": "database",
+      "description": "searchable structured collection with its own query interface"
+    },
+    {
+      "id": "archive",
+      "description": "digitized or preserved collection: manuscripts, magazines, software, records"
+    },
+    {
+      "id": "dataset",
+      "description": "downloadable data for offline use"
+    },
+    {
+      "id": "directory",
+      "description": "curated index of other sites/resources"
+    },
+    {
+      "id": "reference",
+      "description": "lookup material: tables, specs, glossaries, cheat sheets"
+    },
+    {
+      "id": "documentation",
+      "description": "manual or docs for a specific system"
+    },
+    {
+      "id": "tutorial",
+      "description": "step-by-step teaching material"
+    },
+    {
+      "id": "course",
+      "description": "structured multi-part curriculum"
+    },
+    {
+      "id": "article",
+      "description": "essay, explainer, blog post, advisory"
+    },
+    {
+      "id": "writeup",
+      "description": "account of solving or investigating a specific thing"
+    },
+    {
+      "id": "paper",
+      "description": "academic or formal research publication"
+    },
+    {
+      "id": "repository",
+      "description": "source code project"
+    },
+    {
+      "id": "software",
+      "description": "installable tool or application (not browser-native)"
+    },
+    {
+      "id": "personal_site",
+      "description": "an individual's handmade site, notebook or long-running niche project as a whole"
+    },
+    {
+      "id": "unclassifiable",
+      "description": "genuinely resists the categories above; reason must say why"
+    }
+  ],
+  "subjects": [
+    {
+      "id": "offensive_security",
+      "description": "exploitation, red teaming, attack techniques, vulnerability research"
+    },
+    {
+      "id": "defensive_security",
+      "description": "detection, hardening, incident response, blue team"
+    },
+    {
+      "id": "malware",
+      "description": "malware analysis, families, samples"
+    },
+    {
+      "id": "reverse_engineering",
+      "description": "binary/protocol/hardware reverse engineering"
+    },
+    {
+      "id": "forensics",
+      "description": "digital forensics and evidence recovery"
+    },
+    {
+      "id": "threat_intelligence",
+      "description": "actors, campaigns, IOCs, threat feeds"
+    },
+    {
+      "id": "privacy",
+      "description": "privacy, anonymity, surveillance, tracking"
+    },
+    {
+      "id": "osint",
+      "description": "open-source investigation, public records, verification"
+    },
+    {
+      "id": "networking",
+      "description": "protocols, packets, network engineering"
+    },
+    {
+      "id": "internet_infrastructure",
+      "description": "BGP, DNS, certificates, cables, measurement"
+    },
+    {
+      "id": "web_culture",
+      "description": "internet history, memes, old web, online communities"
+    },
+    {
+      "id": "computing_history",
+      "description": "vintage hardware/software, demoscene, retro computing"
+    },
+    {
+      "id": "programming",
+      "description": "languages, compilers, algorithms, esolangs"
+    },
+    {
+      "id": "systems",
+      "description": "operating systems, binaries, low-level computing"
+    },
+    {
+      "id": "cryptography",
+      "description": "ciphers, codes, cryptanalysis"
+    },
+    {
+      "id": "mathematics",
+      "description": "pure and recreational math, logic, automata"
+    },
+    {
+      "id": "physics",
+      "description": "physics and physical simulation"
+    },
+    {
+      "id": "chemistry",
+      "description": "chemistry and materials"
+    },
+    {
+      "id": "astronomy_space",
+      "description": "astronomy, spaceflight, orbits, planetary science"
+    },
+    {
+      "id": "earth_science",
+      "description": "geology, seismology, volcanoes"
+    },
+    {
+      "id": "weather_climate",
+      "description": "atmosphere, weather, climate"
+    },
+    {
+      "id": "oceans",
+      "description": "oceanography, marine systems"
+    },
+    {
+      "id": "biology",
+      "description": "life sciences, genomics, microscopy"
+    },
+    {
+      "id": "natural_world",
+      "description": "animals, plants, fungi, ecology, wildlife tracking"
+    },
+    {
+      "id": "health_medicine",
+      "description": "medicine, anatomy, public health"
+    },
+    {
+      "id": "language",
+      "description": "linguistics, writing systems, etymology"
+    },
+    {
+      "id": "music_sound",
+      "description": "music, audio, acoustics, radio listening"
+    },
+    {
+      "id": "visual_art",
+      "description": "art, illustration, generative art, color"
+    },
+    {
+      "id": "design_typography",
+      "description": "design, type, interfaces"
+    },
+    {
+      "id": "literature",
+      "description": "books, writing, interactive fiction"
+    },
+    {
+      "id": "history",
+      "description": "history, historical records"
+    },
+    {
+      "id": "archaeology",
+      "description": "archaeology, ancient sites, artifacts"
+    },
+    {
+      "id": "geography",
+      "description": "places, cartography, borders"
+    },
+    {
+      "id": "transport",
+      "description": "aviation, shipping, rail, roads"
+    },
+    {
+      "id": "energy_infrastructure",
+      "description": "power grids, utilities, physical infrastructure"
+    },
+    {
+      "id": "engineering",
+      "description": "mechanical/civil engineering, CAD"
+    },
+    {
+      "id": "electronics_radio",
+      "description": "circuits, RF, amateur radio, signals"
+    },
+    {
+      "id": "making",
+      "description": "fabrication, 3D printing, crafts"
+    },
+    {
+      "id": "games_play",
+      "description": "games, puzzles, play as subject"
+    },
+    {
+      "id": "society_economics",
+      "description": "economics, politics, law, society"
+    },
+    {
+      "id": "philosophy",
+      "description": "philosophy, ideas"
+    },
+    {
+      "id": "film_media",
+      "description": "film, TV, photography, broadcast"
+    },
+    {
+      "id": "food",
+      "description": "food and cooking"
+    }
+  ]
+}

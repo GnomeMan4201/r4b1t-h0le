@@ -1,0 +1,73 @@
+{
+  "schema": "r4b1t-classification-migration/v1",
+  "version": "legacy-v1-to-v2.0-draft.1",
+  "status": "draft",
+  "from": "resource_type (eligibility-v1 releases)",
+  "to": "r4b1t-resource-classification/v2",
+  "policy": {
+    "deterministic_requires": "one v1 type maps to exactly one v2 resource_type",
+    "otherwise": "REQUIRES_RECLASSIFICATION (never guessed)",
+    "subjects": "v1 has no subject field: every migrated resource is SUBJECTS_REQUIRED, including deterministic type mappings",
+    "eligibility_reason": "informational only; not used to infer v2 fields"
+  },
+  "resource_type_map": {
+    "documentation": "documentation",
+    "writeup": "writeup",
+    "paper": "paper",
+    "reference": "reference",
+    "repository": "repository",
+    "lab": "lab",
+    "article": "article",
+    "dataset": "dataset",
+    "challenge": "challenge",
+    "advisory": "article",
+    "threat_feed": "live_feed",
+    "research": "REQUIRES_RECLASSIFICATION",
+    "security_tool": "REQUIRES_RECLASSIFICATION",
+    "training_resource": "REQUIRES_RECLASSIFICATION"
+  },
+  "candidates_for_review": {
+    "research": [
+      "paper",
+      "article",
+      "writeup",
+      "database",
+      "visualization",
+      "dataset"
+    ],
+    "security_tool": [
+      "interactive_tool",
+      "software",
+      "repository"
+    ],
+    "training_resource": [
+      "tutorial",
+      "course",
+      "lab",
+      "challenge"
+    ]
+  },
+  "impact_experience_candidate_v0.4": {
+    "resources": 7033,
+    "type_deterministic": 5169,
+    "type_requires_reclassification": 1864,
+    "by_v1_type": {
+      "research": 1605,
+      "documentation": 1408,
+      "writeup": 1072,
+      "paper": 913,
+      "reference": 897,
+      "repository": 470,
+      "lab": 295,
+      "security_tool": 212,
+      "training_resource": 47,
+      "advisory": 43,
+      "article": 24,
+      "dataset": 22,
+      "challenge": 19,
+      "threat_feed": 6
+    },
+    "subjects_required": 7033
+  },
+  "gate": "v2 cannot become terrain authority for the existing corpus until type_requires_reclassification == 0 and subjects_required == 0. Not a WILD campaign gate: WILD classifies only new resources directly in v2."
+}

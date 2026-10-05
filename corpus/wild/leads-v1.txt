@@ -1,0 +1,46 @@
+# R4B1T H0L3 — WILD lead set v1
+# Verified 2026-10-05. Leads are discovery inputs, never admission authority.
+# Multiple pages from the same site intentionally share one lead_source_key quota.
+
+# --- weird / experimental web ---
+https://www.wackywebs.com/
+https://openweird.com/weird-websites-when-bored/
+https://openweird.com/weird-websites-when-bored/page/2/
+https://openweird.com/weird-websites-when-bored/page/3/
+https://openweird.com/weird-websites-when-bored/page/4/
+https://openweird.com/weird-websites-when-bored/page/5/
+https://openweird.com/weird-websites-when-bored/page/6/
+https://href.cool/
+https://www.kickscondor.com/
+
+# --- small / personal / indie web ---
+https://512kb.club/
+https://1mb.club/
+https://personalsit.es/
+https://neocities.org/browse
+https://indieweb.org/webring
+https://ring.recurse.com/
+https://curlie.org/desc/Computers/Internet/Searching/Directories
+
+# --- creative coding / interactive experiments ---
+https://experiments.withgoogle.com/collection/chrome
+https://github.com/eric-erki/awesome-creative-coding
+https://github.com/radiovisual/awesome-interactive
+
+# --- obscure databases / public data / APIs ---
+https://github.com/williamrthomas/database-of-databases
+https://github.com/awesomedata/awesome-public-datasets
+https://github.com/public-apis/public-apis
+https://www.si.edu/openaccess
+
+# --- OSINT / security / investigation ---
+https://osintframework.com/
+https://github.com/jivoi/awesome-osint
+https://maxintel.org/osint-tools.html
+https://github.com/tigergate/awesome-security
+
+# --- maps / visualization / research tooling ---
+https://github.com/thedoubler/awesome-maps-data
+https://github.com/elasticlabs/awesome-gis
+https://github.com/hal9ai/awesome-dataviz
+https://github.com/louisbarclay/awesome-web-research-tools
