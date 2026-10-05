@@ -9,11 +9,13 @@ const path = require('node:path');
 const SiteKey = require('../site-key-v1.js');
 
 const ROOT = path.join(__dirname, '..');
-const PSL_PATH = path.join(ROOT, 'selection/site-key-v1/public_suffix_list.dat');
+const PSL_SOURCE_PATH = path.join(ROOT, 'selection/site-key-v1/public_suffix_list.dat');
+const PSL_PATH = path.join(ROOT, 'selection/site-key-v1/public_suffix_list_ascii_v1.dat');
 const OVERRIDE_PATH = path.join(ROOT, 'selection/site-key-v1/platform-overrides.json');
 const VECTOR_PATH = path.join(__dirname, 'fixtures/selection-v3-vectors.json');
 const CORPUS_PATH = path.join(ROOT, 'corpus/releases/experience-candidate-v0.4/urls.txt');
 
+const pslSourceText = fs.readFileSync(PSL_SOURCE_PATH, 'utf8');
 const pslText = fs.readFileSync(PSL_PATH, 'utf8');
 const overrideText = fs.readFileSync(OVERRIDE_PATH, 'utf8');
 const vectors = JSON.parse(fs.readFileSync(VECTOR_PATH, 'utf8'));
@@ -24,7 +26,8 @@ function digest(text) {
   return 'sha256:' + crypto.createHash('sha256').update(text, 'utf8').digest('hex');
 }
 
-test('site-key/v1 pins exact PSL and override bytes', () => {
+test('site-key/v1 pins exact PSL source, ASCII derivative, and override bytes', () => {
+  assert.equal(digest(pslSourceText), vectors.psl_source_sha256);
   assert.equal(digest(pslText), vectors.psl_sha256);
   assert.equal(digest(overrideText), vectors.overrides_sha256);
   assert.equal(SiteKey.SITE_KEY_VERSION, 'site-key/v1');
@@ -35,6 +38,16 @@ test('site-key/v1 normalization vectors are stable', () => {
     assert.equal(
       SiteKey.siteKey(vector.url, psl, overrides),
       vector.site_key,
+      vector.url
+    );
+  }
+});
+
+test('raw Unicode authorities fail closed before site-key selection', () => {
+  for (const vector of vectors.rejections) {
+    assert.throws(
+      () => SiteKey.siteKey(vector.url, psl, overrides),
+      error => error && error.code === vector.code,
       vector.url
     );
   }
