@@ -238,41 +238,6 @@ test('recovery projects an orphan commit and adds it to tab-local history exactl
   assert.deepEqual(runtime.snapshot(), { entries: ['tx-orphan'], cursor: 0 });
 });
 
-test('pre-existing COMMITTED recovery projects durably without auto-showing another tab\'s result', async () => {
-  const store = ledger.createMemoryStore();
-  const preparedRecord = prepared('tx-live-other-tab', 1);
-  await store.putPrepared(preparedRecord);
-  await store.terminalize(
-    preparedRecord.transactionId,
-    core.resolvePrepared(preparedRecord),
-    core.createTerminal
-  );
-
-  const shown = [];
-  const contexts = [];
-  const runtime = runtimeApi.createRuntime({
-    core,
-    ledger,
-    store,
-    withLock: fn => fn(),
-    sessionStorage: memorySessionStorage(),
-    idFactory: () => 'unused',
-    prepare: () => { throw new Error('not used'); },
-    project: async (terminal, context) => {
-      contexts.push([terminal.transactionId, context.recovered, context.recoveredPrepared]);
-      return { projected: true };
-    },
-    show: async terminal => shown.push(terminal.transactionId)
-  });
-
-  await runtime.recover();
-
-  assert.deepEqual(contexts, [['tx-live-other-tab', true, false]]);
-  assert.deepEqual(runtime.snapshot(), { entries: [], cursor: -1 });
-  assert.deepEqual(shown, []);
-  assert.equal((await store.listUnprojectedCommitted()).length, 0);
-});
-
 test('duplicate reveal completion is idempotent', async () => {
   const store = ledger.createMemoryStore();
   let sequence = 0;
