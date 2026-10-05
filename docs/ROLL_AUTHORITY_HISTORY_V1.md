@@ -96,7 +96,9 @@ Any holder of the draw lock owns recovery.
 
 Recovery first resolves the single orphan `PREPARED`, if present, using the persisted eligible snapshot, sampler version, seed material, and draw position.
 
-A crash after terminal commit but before presentation completion remains recoverable. Trail projection is idempotent by authority transaction ID, and recovery may safely replay that projection before presenting the committed result.
+A crash after terminal commit but before presentation completion remains recoverable. Trail projection is idempotent by authority transaction ID, and explicit restore/activation recovery may safely cross that deferred reveal boundary and present the committed result.
+
+A normal new-draw attempt MUST NOT silently recover an unrelated COMMITTED transaction that is still awaiting reveal. If such a transaction exists, prepare is blocked with `UNREVEALED_COMMIT_PENDING`. This prevents a second live tab from converting another tab's in-flight committed result into Trail evidence merely by requesting another ROLL.
 
 ## Trail boundary
 
