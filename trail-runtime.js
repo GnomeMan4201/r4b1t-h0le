@@ -487,9 +487,6 @@
     state.suppressRecord = true;
     try {
       window.selectUrl(terminal.result.url);
-      if (typeof window.__r4b1tRecordHistorySelection === 'function') {
-        window.__r4b1tRecordHistorySelection(terminal.result.url, 'AUTHORITY_HISTORY');
-      }
     } finally {
       state.suppressRecord = previous;
     }
