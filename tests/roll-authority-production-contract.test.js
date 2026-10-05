@@ -66,12 +66,12 @@ test('Trail bridge keeps authority transaction id private from exported v0.3 tra
   assert.doesNotMatch(v03, /authority_transaction_id/);
 });
 
-test('browser runtime uses IndexedDB authority, Web Locks, sessionStorage history and popstate', () => {
+test('browser runtime uses IndexedDB authority, Web Locks and direct sessionStorage cursor navigation', () => {
   const runtime = read('roll-authority-runtime.js');
   const ledger = read('roll-authority-ledger.js');
 
   assert.match(runtime, /sessionStorage/);
-  assert.match(runtime, /popstate/);
+  assert.doesNotMatch(runtime, /popstate|history\.pushState|history\.back\(|history\.forward\(/);
   assert.match(runtime, /createIndexedDbStore/);
   assert.match(runtime, /createNavigatorLock/);
   assert.match(ledger, /durability: 'strict'/);
