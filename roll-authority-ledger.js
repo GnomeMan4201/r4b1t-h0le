@@ -256,12 +256,16 @@
     }
     if (typeof withLock !== 'function') throw new TypeError('withLock is required');
 
-    async function projectPending(projectTerminal, recovered) {
+    async function projectPending(projectTerminal, recovered, recoveredPreparedId) {
       if (typeof projectTerminal !== 'function') return;
       var pending = await store.listUnprojectedCommitted();
       for (var index = 0; index < pending.length; index += 1) {
         var record = pending[index];
-        var projection = await projectTerminal(record, { recovered: Boolean(recovered), store: store });
+        var projection = await projectTerminal(record, {
+          recovered: Boolean(recovered),
+          recoveredPrepared: Boolean(recoveredPreparedId && record.transactionId === recoveredPreparedId),
+          store: store
+        });
         if (!projection || projection.deferCompletion !== true) {
           await store.markProjected(record.transactionId);
         }
@@ -270,14 +274,16 @@
 
     async function recoverLocked(projectTerminal) {
       var prepared = await store.listPrepared();
+      var recoveredPreparedId = null;
       core.assertPreparedCardinality(prepared);
       if (prepared.length === 1) {
         await boundary('recovery:prepared', prepared[0]);
         var resolution = core.resolvePrepared(prepared[0]);
         var terminal = await store.terminalize(prepared[0].transactionId, resolution, core.createTerminal);
+        recoveredPreparedId = terminal && terminal.state === 'COMMITTED' ? terminal.transactionId : null;
         await boundary('recovery:terminal', terminal);
       }
-      await projectPending(projectTerminal, true);
+      await projectPending(projectTerminal, true, recoveredPreparedId);
       var remaining = await store.listPrepared();
       core.assertPreparedCardinality(remaining);
       if (remaining.length !== 0) throw new Error('PREPARED_RECOVERY_INCOMPLETE');
