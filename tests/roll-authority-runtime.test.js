@@ -32,6 +32,34 @@ function prepared(id, sequence) {
   });
 }
 
+test('normal commit adopts authority before reveal but Trail projection is completed only at reveal', async () => {
+  const store = ledger.createMemoryStore();
+  let sequence = 0;
+  const phases = [];
+  const runtime = runtimeApi.createRuntime({
+    core,
+    ledger,
+    store,
+    withLock: fn => fn(),
+    sessionStorage: memorySessionStorage(),
+    idFactory: () => 'tx-' + (sequence + 1),
+    prepare: id => prepared(id, ++sequence),
+    project: async (_terminal, context) => {
+      phases.push(context && context.reveal ? 'reveal' : context && context.recovered ? 'recovery' : 'commit');
+      return context && context.reveal ? { projected: true } : { deferCompletion: true };
+    },
+    show: async () => {}
+  });
+
+  const result = await runtime.commit();
+  assert.deepEqual(phases, ['commit']);
+  assert.equal((await store.listUnprojectedCommitted()).length, 1);
+
+  await runtime.markRevealed(result);
+  assert.deepEqual(phases, ['commit', 'reveal']);
+  assert.equal((await store.listUnprojectedCommitted()).length, 0);
+});
+
 test('commit exposes a compact presentation object and reveal advances tab-local history', async () => {
   const store = ledger.createMemoryStore();
   let sequence = 0;
