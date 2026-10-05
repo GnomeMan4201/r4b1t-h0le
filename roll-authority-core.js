@@ -1,10 +1,14 @@
 (function (root, factory) {
   'use strict';
-  var api = factory();
+  var registry = root && root.R4B1TRollSamplerRegistry;
+  if (typeof module === 'object' && module.exports) registry = require('./roll-sampler-registry.js');
+  var api = factory(registry);
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root) root.R4B1TRollAuthorityCore = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (registry) {
   'use strict';
+
+  if (!registry || typeof registry.get !== 'function') throw new Error('ROLL_SAMPLER_REGISTRY_UNAVAILABLE');
 
   var PREPARED_SCHEMA = 'r4b1t-roll-authority-prepared/v1';
   var TERMINAL_SCHEMA = 'r4b1t-roll-authority-terminal/v1';
@@ -82,35 +86,6 @@
     });
   }
 
-  function utf8(value) {
-    if (typeof TextEncoder === 'function') return new TextEncoder().encode(String(value));
-    var encoded = unescape(encodeURIComponent(String(value)));
-    var bytes = new Uint8Array(encoded.length);
-    for (var index = 0; index < encoded.length; index += 1) bytes[index] = encoded.charCodeAt(index);
-    return bytes;
-  }
-
-  function seedToUint32(seed) {
-    var bytes = utf8(seed);
-    var hash = 2166136261;
-    for (var index = 0; index < bytes.length; index += 1) {
-      hash ^= bytes[index];
-      hash = Math.imul(hash, 16777619);
-    }
-    return hash >>> 0;
-  }
-
-  function createSampler(seed) {
-    var state = seedToUint32(seed);
-    return function nextFloat() {
-      state = (state + 0x6d2b79f5) >>> 0;
-      var mixed = state;
-      mixed = Math.imul(mixed ^ (mixed >>> 15), mixed | 1);
-      mixed ^= mixed + Math.imul(mixed ^ (mixed >>> 7), mixed | 61);
-      return ((mixed ^ (mixed >>> 14)) >>> 0) / 4294967296;
-    };
-  }
-
   function failed(code) {
     return Object.freeze({ state: 'FAILED', failureCode: code });
   }
@@ -119,7 +94,8 @@
     if (!prepared || prepared.state !== 'PREPARED' || prepared.schema !== PREPARED_SCHEMA) {
       return failed(FAILURE_CODES.PREPARED_RECORD_INVALID);
     }
-    if (prepared.samplerVersion !== SAMPLER_VERSION) {
+    var sampler = registry.get(prepared.samplerVersion);
+    if (!sampler) {
       return failed(FAILURE_CODES.SAMPLER_VERSION_UNAVAILABLE);
     }
     if (prepared.eligibleSnapshot === null) {
@@ -136,21 +112,11 @@
     }
 
     try {
-      var nextFloat = createSampler(prepared.seedMaterial);
-      for (var consumed = 0; consumed < prepared.drawStart; consumed += 1) nextFloat();
-
-      var selected = null;
-      var drawCount = 0;
-      do {
-        selected = prepared.eligibleSnapshot[Math.floor(nextFloat() * prepared.eligibleSnapshot.length)];
-        drawCount += 1;
-        if (prepared.repeatGuardReference === null || selected !== prepared.repeatGuardReference) break;
-      } while (drawCount < MAX_DRAWS);
-
+      var resolved = sampler.resolve(prepared, MAX_DRAWS);
       return Object.freeze({
         state: 'COMMITTED',
-        url: selected,
-        drawCount: drawCount
+        url: resolved.url,
+        drawCount: resolved.drawCount
       });
     } catch (_) {
       return failed(FAILURE_CODES.SAMPLER_EXECUTION_FAILURE);
