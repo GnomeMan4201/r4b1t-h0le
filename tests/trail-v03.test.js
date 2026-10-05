@@ -220,7 +220,7 @@ test('v0.1 verifier and IDs remain unchanged', async () => {
 
 
 test('v0.3 accepts a structurally valid v3 ROLL transaction', async () => {
-  const psl = SiteKey.parsePsl(fs.readFileSync(path.join(__dirname, '..', 'selection/site-key-v1/public_suffix_list.dat'), 'utf8'));
+  const psl = SiteKey.parsePsl(fs.readFileSync(path.join(__dirname, '..', 'selection/site-key-v1/public_suffix_list_ascii_v1.dat'), 'utf8'));
   const overrides = SiteKey.parseOverrides(fs.readFileSync(path.join(__dirname, '..', 'selection/site-key-v1/platform-overrides.json'), 'utf8'));
   const urls = ['https://example.org/a', 'https://github.com/OpenAI/project'];
   const tx = SelectionV3.select({
@@ -237,7 +237,7 @@ test('v0.3 accepts a structurally valid v3 ROLL transaction', async () => {
       protocolPolicy: { version: 1, excludeOnion: false },
     },
     corpusRevision: SHA1,
-    pslSha256: 'sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c',
+    pslSha256: 'sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8',
     overridesSha256: 'sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d',
   });
   const route = { route_id: await trail.routeId(tx.route.url), url: tx.route.url };
