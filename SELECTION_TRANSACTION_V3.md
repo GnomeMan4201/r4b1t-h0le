@@ -16,7 +16,7 @@ Inputs are pinned by content hash:
 
 - PSL source snapshot: `selection/site-key-v1/public_suffix_list.dat`
 - PSL source: publicsuffix/list commit `6cd82aff889e3d64e5e03bc5c1f43da1934a960a`
-- PSL source SHA-256: `sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8`
+- PSL source SHA-256: `sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c`
 - authoritative ASCII PSL derivative: `selection/site-key-v1/public_suffix_list_ascii_v1.dat`
 - ASCII PSL derivation: `unicode-nfc-lower-rfc3492/v1`, sorted and deduplicated once at freeze time
 - authoritative PSL SHA-256: `sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8`
