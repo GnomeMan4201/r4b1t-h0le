@@ -82,3 +82,13 @@ test('production and bundled local ROLL entry points fail closed without durable
   assert.match(localRoll, /R4B1TRollProduction/);
   assert.doesNotMatch(localRoll, /__r4b1tCommitRoll/);
 });
+
+test('global ROLL completion settles from authoritative reveal or failure, not from legacy draw timing', () => {
+  assert.match(production, /activeCompletion/);
+  assert.match(production, /function finishCompletion\(value\)/);
+  assert.match(production, /mountNode:[\s\S]*finishCompletion\(true\)/);
+  const rollSource = production.slice(production.indexOf('function roll()'), production.indexOf('function cancelPendingIntent'));
+  assert.match(rollSource, /beginCompletion\(\)/);
+  assert.match(rollSource, /return completion/);
+  assert.match(rollSource, /finishCompletion\(false\)/);
+});
