@@ -75,7 +75,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-route-domain{font:500 .52rem var(--font-mono,"DM Mono",monospace);letter-spacing:.1em;color:#7d7263;text-transform:uppercase;margin:0 0 12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;position:relative;z-index:1}
   .r4m-route>p{font-size:.65rem;line-height:1.58;max-width:92%;margin:0 0 13px;position:relative;z-index:1}
   .r4m-route>code{font:400 .48rem var(--font-mono,"DM Mono",monospace);display:block;color:#6d6254;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:18px;position:relative;z-index:1}
-  .r4m-route-actions{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(20,16,13,.23);position:relative;z-index:1;width:calc(100% + 40px);margin-left:-20px}
+  .r4m-route-actions{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(20,16,13,.23);position:relative;z-index:1;width:calc(100% + 40px);margin-left:-20px}
   .r4m-route-actions button{min-height:48px;border:0;border-right:1px solid rgba(20,16,13,.18);background:transparent;color:#9d2428;font:600 .5rem var(--font-mono,"DM Mono",monospace);letter-spacing:.1em}.r4m-route-actions button:last-child{border-right:0}
   .r4m-enter,.r4m-next{position:relative;z-index:1;width:calc(100% + 40px);margin-left:-20px;border:0;font-family:var(--font-mono,"DM Mono",monospace);font-weight:600;letter-spacing:.12em}
   .r4m-enter{min-height:60px;background:#0d0b09;color:#eee3d0;font-size:.58rem;border-top:1px solid rgba(20,16,13,.23)}
@@ -392,7 +392,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-route-top{margin-bottom:22px;padding-bottom:13px;border-bottom:1px solid var(--r4m-line)}
   .r4m-route h2{overflow-wrap:anywhere}
   .r4m-route>code{display:block;max-width:100%;padding:10px 0 13px;border-top:1px solid var(--r4m-line);border-bottom:1px solid var(--r4m-line);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .r4m-route-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:0}
+  .r4m-route-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:0}
   .r4m-route-actions button{padding:0 6px;font-size:.43rem;letter-spacing:.08em}
   .r4m-route-actions button+button{border-left:1px solid var(--r4m-line)}
   .r4m-route-wear{margin:18px 0 17px;padding-top:13px}
@@ -1108,9 +1108,10 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-route h2{order:5;margin:0;padding-left:0;color:var(--r4m-v3-paper);font:700 1.32rem/1.2 var(--font-head,"Bebas Neue",sans-serif);letter-spacing:.01em}
   .r4m-route>p{order:6;display:-webkit-box!important;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;max-width:100%;margin:8px 0 0;padding-left:0;color:#b9b6ae;font-size:.68rem;line-height:1.55}
   .r4m-route>code{order:7;display:block;margin:9px 0 14px;padding:0;border:0;color:var(--r4m-v3-muted);font-size:.54rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .r4m-route-actions{order:20;grid-column:1/-1!important;display:grid;grid-template-columns:1fr 1fr;width:100%;margin:0;border-top:1px solid var(--r4m-v3-line);border-bottom:0}
+  .r4m-route-actions{order:20;grid-column:1/-1!important;display:grid;grid-template-columns:repeat(4,1fr);width:100%;margin:0;border-top:1px solid var(--r4m-v3-line);border-bottom:0}
   .r4m-route-actions button{min-height:52px;padding:0;background:transparent;color:var(--r4m-v3-paper);border:0;font-size:.58rem;letter-spacing:.08em;text-align:left}
-  .r4m-route-actions button:last-child{text-align:right;border-left:1px solid var(--r4m-v3-line)}
+  .r4m-route-actions button{text-align:center!important}
+  .r4m-route-actions button+button{border-left:1px solid var(--r4m-v3-line)}
   .r4m-enter{order:30;grid-column:1!important;min-width:0;width:100%;min-height:72px;margin:0;padding:0 18px;border:0;background:var(--r4m-v3-paper);color:var(--r4m-v3-ink);font-size:.72rem;letter-spacing:.04em;text-align:left}
   .r4m-next{order:30;grid-column:2!important;position:relative;min-width:0;width:88px;min-height:72px;margin:0;padding:35px 5px 6px;border:0;background:transparent;color:var(--r4m-v3-paper);font-size:.46rem;letter-spacing:.05em;text-align:center}
   .r4m-next-aperture{position:absolute;left:50%;top:8px;width:25px;height:17px;transform:translateX(-50%);border:1.5px solid var(--r4m-v3-paper);border-radius:var(--r4m-ap-shape);background:#000;overflow:hidden}
@@ -1314,7 +1315,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   /* Keep continuation controls in the same place across destination lengths.
      The existing #r4mRollAgain delegates to the unchanged production authority. */
   .r4m-route-actions{position:fixed;z-index:9000;left:var(--r4m-action-inset);right:var(--r4m-action-inset);bottom:calc(128px + env(safe-area-inset-bottom));width:auto;min-height:48px;background:#000;border-top:1px solid var(--r4m-v5-rule)}
-  .r4m-route-actions button{min-height:48px;padding:0 12px;font-size:.75rem}
+  .r4m-route-actions button{min-height:48px;padding:0 5px;font-size:.58rem}
   .r4m-route-actions button:last-child{border-left:1px solid var(--r4m-v5-rule)}
   .r4m-enter{position:fixed;z-index:9000;left:var(--r4m-action-inset);bottom:calc(64px + env(safe-area-inset-bottom));width:calc(var(--r4m-action-width) * .57);height:64px;min-height:64px!important;padding:0 12px!important;background:var(--r4m-v5-red)!important;color:var(--r4m-v5-white)!important;font-size:.72rem;letter-spacing:.01em;font-weight:800}
   #r4mRouteMount #r4mRoute > button.r4m-enter[data-mobile-action="visit"]{background:var(--r4m-v5-red)!important;color:var(--r4m-v5-white)!important}
@@ -1370,3 +1371,6 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   html.r4m-stage-result #r4mProductionMark{height:112px}
   .r4m-roll.r4m-roll-aperture{height:92px!important;min-height:92px!important}
 }
+
+.r4m-route-top #r4mDrawSequence{margin-left:auto;color:var(--r4m-v3-muted,#77736d);font-style:normal;font-size:.5rem;letter-spacing:.08em;white-space:nowrap}
+.r4m-route-actions button:disabled{opacity:.32;cursor:default}

@@ -11,6 +11,17 @@
   // A saved draft that cannot be continued is kept here verbatim, never silently discarded.
   var QUARANTINE_KEY = 'r4b1t_trail_draft_quarantine_v1';
   var MAX_DRAWS_PER_ROLL = 30;
+  var authorityOriginalCommit = null;
+  var authorityReadyResolve = null;
+  var authorityReadyReject = null;
+  window.__r4b1tTrailAuthorityReady = new Promise(function (resolve, reject) {
+    authorityReadyResolve = resolve;
+    authorityReadyReject = reject;
+  });
+  // Trail runtime is also exercised in isolation by integrity tests and may be
+  // embedded without the authority consumer. Mark the promise as handled here;
+  // consumers awaiting the original promise still observe the rejection.
+  window.__r4b1tTrailAuthorityReady.catch(function () {});
   var state = {
     seed: randomSeed(),
     createdAt: new Date().toISOString(),
@@ -227,6 +238,7 @@
     if (transaction) route.selection_transaction = transaction;
     if (evidence && evidence.navigation) route.navigation = evidence.navigation;
     if (evidence && evidence.imported_source) route.imported_source = evidence.imported_source;
+    if (evidence && evidence.authority_transaction_id) route.authority_transaction_id = evidence.authority_transaction_id;
     state.routes.push(route);
     try {
       persist();
@@ -280,6 +292,7 @@
   function wrapRoll() {
     if (typeof window.__r4b1tCommitRoll !== 'function' || window.__r4b1tCommitRoll.__r4b1tAuthority) return false;
     var originalCommit = window.__r4b1tCommitRoll;
+    authorityOriginalCommit = originalCommit;
     var wrappedCommit = function () {
       // Fail closed: without the explicit constraint capture there is no selection.
       if (state.preservationBlocked) return null;
@@ -333,6 +346,210 @@
     wrappedCommit.__r4b1tAuthority = true;
     window.__r4b1tCommitRoll = wrappedCommit;
     return true;
+  }
+
+  function authorityRouteFor(transactionId) {
+    if (!transactionId) return null;
+    for (var index = state.routes.length - 1; index >= 0; index -= 1) {
+      var route = state.routes[index];
+      if (route && route.authority_transaction_id === transactionId) return route;
+    }
+    return null;
+  }
+
+  async function authorityEligibleSnapshot(constraint) {
+    var selectionCore = window.R4b1tSelectionCore;
+    if (!selectionCore || typeof selectionCore.eligiblePool !== 'function') {
+      throw new Error('SELECTION_CORE_UNAVAILABLE');
+    }
+    var loaded = await corpusAuthority.loadActive();
+    if (state.corpusRevision && loaded.revision !== state.corpusRevision) {
+      throw new Error('CORPUS_REVISION_CHANGED');
+    }
+    var terrainIndex = null;
+    if (constraint.terrain !== 'ALL') {
+      var terrainAuthority = window.R4b1tTerrainAuthority;
+      if (!terrainAuthority || typeof terrainAuthority.loadIndex !== 'function') {
+        throw new Error('TERRAIN_AUTHORITY_UNAVAILABLE');
+      }
+      terrainIndex = await terrainAuthority.loadIndex();
+    }
+    return selectionCore.eligiblePool(loaded.urls, terrainIndex, constraint);
+  }
+
+  function refreshAuthorityDraftFromStorage() {
+    if (state.preservationBlocked) throw new Error('DRAFT_PRESERVATION_UNAVAILABLE');
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) throw new Error('DRAFT_AUTHORITY_STATE_UNAVAILABLE');
+    var previous = Object.assign({}, state);
+    try {
+      var saved = JSON.parse(raw);
+      if (!saved || typeof saved.seed !== 'string' || !saved.seed || !Array.isArray(saved.routes)) {
+        throw new Error('Invalid durable draft shape');
+      }
+      if (typeof saved.corpusRevision !== 'string' || saved.corpusRevision !== state.corpusRevision) {
+        throw new Error('Durable draft corpus revision mismatch');
+      }
+      for (var index = 0; index < saved.routes.length; index += 1) {
+        var route = saved.routes[index];
+        if (!route || !/^https?:\/\//i.test(route.url || '')) {
+          throw new Error('Invalid durable draft route at step ' + (index + 1));
+        }
+        new URL(route.url);
+      }
+      state.seed = saved.seed;
+      state.createdAt = typeof saved.createdAt === 'string' ? saved.createdAt : state.createdAt;
+      state.corpusSourceId = typeof saved.corpusSourceId === 'string' ? saved.corpusSourceId : state.corpusSourceId;
+      state.routes = saved.routes;
+      state.parent = saved.parent || null;
+      state.imported = null;
+      state.replayIndex = 0;
+      var failure = restoreSamplerContinuity();
+      if (failure) throw new Error(failure);
+      return true;
+    } catch (error) {
+      Object.assign(state, previous);
+      throw error;
+    }
+  }
+
+  async function prepareAuthorityRoll(transactionId) {
+    var authorityCore = window.R4B1TRollAuthorityCore;
+    if (!authorityCore || typeof authorityCore.createPrepared !== 'function') {
+      throw new Error('ROLL_AUTHORITY_CORE_UNAVAILABLE');
+    }
+    if (state.preservationBlocked) throw new Error('DRAFT_PRESERVATION_UNAVAILABLE');
+    if (!authorityOriginalCommit) wrapRoll();
+    if (!authorityOriginalCommit) throw new Error('ROLL_COMMIT_ADAPTER_UNAVAILABLE');
+    if (!state.corpusRevision) await loadCorpusRevision();
+    refreshAuthorityDraftFromStorage();
+    if (typeof window.__r4b1tCaptureSelectionConstraint !== 'function') {
+      throw new Error('SELECTION_CONSTRAINT_UNAVAILABLE');
+    }
+    var constraint = window.__r4b1tCaptureSelectionConstraint();
+    var eligibleSnapshot = await authorityEligibleSnapshot(constraint);
+    var envelope = await currentEnvelope();
+    return authorityCore.createPrepared({
+      transactionId: transactionId,
+      trailId: envelope.trail_id,
+      trailSequence: state.transactionSequence + 1,
+      corpusDigest: state.corpusRevision,
+      constraint: constraint,
+      eligibleSnapshot: eligibleSnapshot,
+      samplerVersion: authorityCore.SAMPLER_VERSION,
+      seedSource: { kind: 'local-csprng' },
+      seedMaterial: state.seed,
+      drawStart: state.samplerCursor,
+      repeatGuardReference: state.repeatGuardReference
+    });
+  }
+
+  function transactionFromAuthority(terminal) {
+    var prepared = terminal.prepared;
+    return deepFreeze({
+      transaction_version: 'r4b1t-selection-transaction/v2',
+      sequence: prepared.trailSequence,
+      action: 'ROLL',
+      constraint: prepared.constraint,
+      corpus_revision: prepared.corpusDigest,
+      eligible_count: prepared.eligibleCount,
+      sampler: {
+        algorithm: 'uniform-with-repeat-guard-v1',
+        prng: 'mulberry32-v1',
+        seed: prepared.seedMaterial,
+        draw_start: prepared.drawStart,
+        draw_count: terminal.result.drawCount,
+        repeat_guard: {
+          reference: prepared.repeatGuardReference,
+          max_draws: MAX_DRAWS_PER_ROLL
+        }
+      },
+      route: { url: terminal.result.url }
+    });
+  }
+
+  function adoptAuthoritySelection(terminal) {
+    if (typeof authorityOriginalCommit !== 'function') throw new Error('ROLL_COMMIT_ADAPTER_UNAVAILABLE');
+    var prepared = terminal.prepared;
+    var sampler = api.createSampler(prepared.seedMaterial);
+    for (var consumed = 0; consumed < prepared.drawStart; consumed += 1) sampler();
+    var drawCount = 0;
+    var result = authorityOriginalCommit(function () {
+      drawCount += 1;
+      return sampler();
+    }, prepared.constraint, prepared.repeatGuardReference);
+    if (!result || result.url !== terminal.result.url || drawCount !== terminal.result.drawCount) {
+      throw new Error('AUTHORITY_PROJECTION_MISMATCH');
+    }
+    return result;
+  }
+
+  function showAuthorityTerminal(terminal) {
+    if (!terminal || terminal.state !== 'COMMITTED' || !terminal.result || !terminal.result.url) return false;
+    if (typeof window.selectUrl !== 'function') return false;
+    var previous = state.suppressRecord;
+    state.suppressRecord = true;
+    try {
+      window.selectUrl(terminal.result.url);
+    } finally {
+      state.suppressRecord = previous;
+    }
+    if (typeof window.__r4b1tSyncMobileRoute === 'function') {
+      window.requestAnimationFrame(function () { window.__r4b1tSyncMobileRoute(); });
+    }
+    return true;
+  }
+
+  async function projectAuthorityTerminal(terminal, context) {
+    if (!terminal || terminal.state !== 'COMMITTED') return { projected: false };
+    refreshAuthorityDraftFromStorage();
+    var transactionId = terminal.transactionId;
+    var existing = authorityRouteFor(transactionId);
+    if (existing) {
+      return { projected: true, existing: true };
+    }
+
+    var prepared = terminal.prepared;
+    if (!prepared || prepared.corpusDigest !== state.corpusRevision) {
+      throw new Error('AUTHORITY_CORPUS_REVISION_MISMATCH');
+    }
+    if (prepared.seedMaterial !== state.seed ||
+        prepared.trailSequence !== state.transactionSequence + 1 ||
+        prepared.drawStart !== state.samplerCursor) {
+      throw new Error('AUTHORITY_TRAIL_CONTINUITY_MISMATCH');
+    }
+
+    var recovered = Boolean(context && context.recovered);
+    var reveal = Boolean(context && context.reveal);
+
+    // Commit fixes selection authority and adopts the selected route into the
+    // existing application state, but does not append Trail evidence yet.
+    // The Trail step is created only when the machine-owned reveal boundary
+    // completes, or during recovery of a committed-but-unrevealed transaction.
+    if (!recovered && !reveal) {
+      adoptAuthoritySelection(terminal);
+      return { projected: false, adopted: true, deferCompletion: true };
+    }
+
+    var transaction = transactionFromAuthority(terminal);
+    if (!record(terminal.result.url, 'ROLL', transaction, {
+      authority_transaction_id: transactionId
+    })) {
+      throw new Error('AUTHORITY_TRAIL_RECORD_FAILED');
+    }
+
+    state.transactionSequence = transaction.sequence;
+    state.selectionTerrain = prepared.constraint.terrain;
+    state.repeatGuardReference = terminal.result.url;
+    advanceSamplerTo(prepared.drawStart + terminal.result.drawCount);
+
+    return recovered
+      ? { projected: true, recovered: true }
+      : { projected: true, reveal: true };
+  }
+
+  async function showAuthorityTransaction(terminal) {
+    return showAuthorityTerminal(terminal);
   }
 
   async function buildV03Steps() {
@@ -786,15 +1003,36 @@
   window.getLegacyTrailManifest = currentLegacyEnvelope;
   window.resetReproducibleTrail = resetTrail;
   window.getQuarantinedTrailDraft = quarantinedDraft;
+  window.__r4b1tPrepareAuthorityRoll = prepareAuthorityRoll;
+  window.__r4b1tProjectAuthorityTerminal = projectAuthorityTerminal;
+  window.__r4b1tShowAuthorityTransaction = showAuthorityTransaction;
 
   document.addEventListener('DOMContentLoaded', function () {
     ensurePanel();
     watchSelections();
-    loadCorpusRevision().catch(showError);
+    var corpusReady = loadCorpusRevision();
+    corpusReady.catch(showError);
     var attempts = 0;
     var timer = setInterval(function () {
       attempts += 1;
-      if (wrapRoll() || attempts > 100) clearInterval(timer);
+      if (wrapRoll()) {
+        clearInterval(timer);
+        corpusReady.then(function () {
+          authorityReadyResolve(true);
+        }, authorityReadyReject);
+        return;
+      }
+      if (authorityOriginalCommit && window.__r4b1tCommitRoll && window.__r4b1tCommitRoll.__r4b1tAuthority) {
+        clearInterval(timer);
+        corpusReady.then(function () {
+          authorityReadyResolve(true);
+        }, authorityReadyReject);
+        return;
+      }
+      if (attempts > 100) {
+        clearInterval(timer);
+        authorityReadyReject(new Error('ROLL authority bridge unavailable'));
+      }
     }, 25);
   });
 

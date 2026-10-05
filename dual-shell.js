@@ -698,6 +698,14 @@ MOTION: waiting for target…';
     if (action === 'help') return openSheet('r4mHelpSheet');
     if (action === 'close-sheets') return closeSheets();
     if (action === 'next') return runRollTransition('next');
+    if (action === 'previous') {
+      var previousAuthority = window.R4B1TRollAuthority;
+      return previousAuthority && typeof previousAuthority.previous === 'function' ? previousAuthority.previous() : false;
+    }
+    if (action === 'forward') {
+      var forwardAuthority = window.R4B1TRollAuthority;
+      return forwardAuthority && typeof forwardAuthority.forward === 'function' ? forwardAuthority.forward() : false;
+    }
     if (action === 'random-mode') {
       call('setMode', 'random');
       closeSheets();
@@ -840,6 +848,22 @@ MOTION: waiting for target…';
     }
   }
 
+  function syncAuthorityNavigation() {
+    var authority = window.R4B1TRollAuthority;
+    var previous = document.querySelector('[data-mobile-action="previous"]');
+    var forward = document.querySelector('[data-mobile-action="forward"]');
+    var canPrevious = Boolean(authority && typeof authority.canPrevious === 'function' && authority.canPrevious());
+    var canForward = Boolean(authority && typeof authority.canForward === 'function' && authority.canForward());
+    if (previous) {
+      previous.disabled = !canPrevious;
+      previous.setAttribute('aria-disabled', canPrevious ? 'false' : 'true');
+    }
+    if (forward) {
+      forward.disabled = !canForward;
+      forward.setAttribute('aria-disabled', canForward ? 'false' : 'true');
+    }
+  }
+
   function syncRoute() {
     var domain = currentDomain();
     var url = currentUrl();
@@ -911,6 +935,7 @@ MOTION: waiting for target…';
     }
     animateRouteCounter(routeIndex || 1);
     renderRouteWear();
+    syncAuthorityNavigation();
     if (pendingRouteMotion) {
       var nextMotion = pendingRouteMotion;
       pendingRouteMotion = null;
@@ -1196,6 +1221,9 @@ MOTION: waiting for target…';
         return;
       }
       syncEverything();
+    });
+    document.addEventListener('r4b1t:authority-navigation', function () {
+      window.requestAnimationFrame(syncAuthorityNavigation);
     });
     document.addEventListener('r4b1t:reset', function () { window.setTimeout(syncEverything, 20); });
   }
