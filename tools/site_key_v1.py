@@ -14,17 +14,13 @@ class SiteKeyError(ValueError):
     pass
 
 
-def _to_ascii_label(label: str) -> str:
-    try:
-        return label.encode("idna").decode("ascii").lower()
-    except UnicodeError as exc:
-        raise SiteKeyError(f"SITE_KEY_HOST_INVALID: {label}") from exc
-
-
 def normalize_host(host: str) -> str:
     value = str(host or "").strip().rstrip(".")
     if not value:
         raise SiteKeyError("SITE_KEY_HOST_INVALID")
+
+    if any(ord(ch) > 0x7F for ch in value):
+        raise SiteKeyError("SITE_KEY_HOST_NOT_ASCII")
 
     if value.startswith("[") and value.endswith("]"):
         value = value[1:-1]
@@ -38,7 +34,7 @@ def normalize_host(host: str) -> str:
     labels = value.split(".")
     if any(not label for label in labels):
         raise SiteKeyError(f"SITE_KEY_HOST_INVALID: {value}")
-    return ".".join(_to_ascii_label(label) for label in labels)
+    return value.lower()
 
 
 def parse_psl(text: str):
@@ -170,8 +166,14 @@ def _override_key(parsed, host: str, overrides):
 
 
 def site_key(url: str, psl, overrides) -> str:
+    raw = str(url)
+    authority = re.match(r"^[A-Za-z][A-Za-z0-9+.-]*://([^/?#]*)", raw)
+    if not authority:
+        raise SiteKeyError("SITE_KEY_URL_INVALID")
+    if any(ord(ch) > 0x7F for ch in authority.group(1)):
+        raise SiteKeyError("SITE_KEY_HOST_NOT_ASCII")
     try:
-        parsed = urlsplit(str(url))
+        parsed = urlsplit(raw)
     except ValueError as exc:
         raise SiteKeyError("SITE_KEY_URL_INVALID") from exc
 
