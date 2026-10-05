@@ -1298,6 +1298,8 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   /* Keep the compact result stack together above the fixed action rows.
      Long content expands the stage and retains its scroll clearance. */
   html.r4m-stage-result #r4mPrimaryStage{display:flex;flex-direction:column;justify-content:flex-end;min-height:calc(100dvh - 52px)}
+  /* Clearing the prior result must not push the animated mark under the controls. */
+  html.r4m-stage-result #r4mPrimaryStage:has(#r4mRouteMount:empty){justify-content:flex-start;align-content:start}
   html.r4m-stage-result #r4mProductionMark,html.r4m-stage-result #r4mRouteMount{flex-shrink:0}
   .r4m-route{grid-template-columns:minmax(0,1fr);min-height:0;margin:0;padding:9px 0 calc(180px + env(safe-area-inset-bottom))}
   .r4m-route-top{padding:0 0 9px;border-bottom:1px solid var(--r4m-v5-rule);color:var(--r4m-v5-dim)}
