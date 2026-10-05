@@ -83,6 +83,8 @@ test('terminal outcomes receive authority sequence without mutating PREPARED ide
   assert.equal(terminal.authoritySequence, 41);
   assert.equal(terminal.state, 'COMMITTED');
   assert.equal(terminal.result.url, resolution.url);
+  assert.equal(terminal.prepared.eligibleCount, input.eligibleSnapshot.length);
+  assert.equal(Object.prototype.hasOwnProperty.call(terminal.prepared, 'eligibleSnapshot'), false);
   assert.equal(input.authoritySequence, undefined);
 });
 
