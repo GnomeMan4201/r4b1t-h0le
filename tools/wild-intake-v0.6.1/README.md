@@ -1,23 +1,41 @@
-# wild-intake v0.6.1
+WILD intake v0.6.1
 
-v0.6.1 is a **new successor**, not a recovered copy of v0.6.
+Successor provenance
+    v0.6 was previously delivered with wild1000.py SHA-256
+    f7078be2763a34aea633356a3b559d287dfd30125d301f4a2aaac5cd049f7a9e,
+    but those exact bytes are no longer recoverable in the current execution surfaces.
+    v0.6.1 is a new, separately frozen successor derived from the retained v0.5 package
+    plus the intended v0.6 review-integrity changes. It must never be represented as v0.6.
 
-The previously delivered v0.6 claimed:
-`wild1000.py sha256:f7078be2763a34aea633356a3b559d287dfd30125d301f4a2aaac5cd049f7a9e`
+# WILD intake v0.5
 
-Those exact bytes are currently unrecoverable. v0.6.1 is derived from the retained v0.5
-script (`e8d53c700db711e2ce710884510c57aa5e63fd9afe5d8aa3e5595e2215468ba7`)
-with the intended review-integrity changes reapplied under TDD.
+    pip install -r requirements.txt
+    R=~/research_hub/repos/r4b1t-h0le            # feat/selection-v3-site-weighted, clean
 
-Frozen v0.6.1 script:
-`sha256:fb645cdcc0d2ce2fc0edfb62fd70750194324d754d41bcf02bcc09cb449510cd`
+    # 0. authority + baseline sanity (expect 25 vectors, 7033 URLs -> 733 siteKeys)
+    python3 wild1000.py selftest --r4b1t-root $R --release experience-candidate-v0.4
 
-Changes:
-- duplicate review `site_key` rows fail closed;
-- empty review `site_key` rows fail closed;
-- explicit accept and reject verdict vocabularies;
-- unknown non-empty verdicts are `REVIEW_INVALID`;
-- source-ledger/stat accounting includes invalid verdicts.
+    # 1. freeze the classification: review classification-v2.draft.json, edit,
+    #    set "status": "frozen", bump "version", save as e.g. classification-v2.0.json
 
-Before any authoritative WILD run, CI must pass the real R4B1T site-key/v1 selftest against
-`experience-candidate-v0.4` and the focused review-integrity regressions.
+    # 2. bind the campaign (manifest is immutable once written)
+    python3 wild1000.py campaign-init --r4b1t-root $R --campaign wild-50 \
+        --campaign-id wild-50-pilot --release experience-candidate-v0.4 --expect-sitekeys 733 \
+        --classification classification-v2.0.json --campaign-target 1000 --source-cap 50 --pending-cap 100
+
+    # 3. pilot
+    python3 wild1000.py harvest --r4b1t-root $R --campaign wild-50 --leads leads.txt
+    python3 wild1000.py verify  --r4b1t-root $R --campaign wild-50 --limit 50
+    #    ... human review in wild-50/review.csv ...
+    python3 wild1000.py stats   --r4b1t-root $R --campaign wild-50
+    python3 wild1000.py export  --r4b1t-root $R --campaign wild-50   # -> campaign-accepted.jsonl
+
+    # tests (mocked DNS/HTTP, real authority + real v0.4 baseline)
+    R4B1T_ROOT=$R python3 tests/test_wild.py
+
+Run from a host with direct egress: proxies are deliberately ignored.
+
+Files
+    classification-v2.draft.json          taxonomy draft (status: draft — freeze it yourself)
+    legacy-v1-to-v2-migration.draft.json  v1 type -> v2 mapping policy; gates v2 terrain
+                                          authority over the existing corpus, not WILD
