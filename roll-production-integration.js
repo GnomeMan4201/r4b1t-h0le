@@ -6,8 +6,31 @@
   var disclosure = null;
   var pendingIntent = false;
   var commitPending = false;
+  var activeCompletion = null;
+  var activeCompletionResolve = null;
 
   function byId(id) { return document.getElementById(id); }
+
+  function beginCompletion() {
+    if (activeCompletion) return activeCompletion;
+    activeCompletion = new Promise(function (resolve) {
+      activeCompletionResolve = resolve;
+    });
+    return activeCompletion;
+  }
+
+  function finishCompletion(value) {
+    if (typeof activeCompletionResolve !== 'function') return false;
+    var resolve = activeCompletionResolve;
+    activeCompletionResolve = null;
+    resolve(Boolean(value));
+    return true;
+  }
+
+  function clearCompletion() {
+    activeCompletion = null;
+    activeCompletionResolve = null;
+  }
 
   function routeMarkup(result) {
     var section = document.createElement('section');
@@ -68,6 +91,7 @@
         }
         payload.element.hidden = false;
         mount.classList.add('roll-disclosed');
+        finishCompletion(true);
         root.requestAnimationFrame(function () {
           if (typeof root.__r4b1tSyncMobileRoute === 'function') root.__r4b1tSyncMobileRoute();
           syncAuthorityControls({ authoritySequence: payload.result.authoritySequence });
@@ -81,9 +105,15 @@
         if (typeof root.__r4b1tProjectRollPresentation === 'function') {
           root.__r4b1tProjectRollPresentation(entry.to);
         }
-        if (entry.to === 'SETTLED' && pendingIntent) {
-          pendingIntent = false;
-          root.setTimeout(function () { roll(); }, 0);
+        if (entry.to === 'SETTLED') {
+          clearCompletion();
+          if (pendingIntent) {
+            pendingIntent = false;
+            root.setTimeout(function () { roll(); }, 0);
+          }
+        }
+        if (entry.to === 'IDLE' && entry.cause === 'internal:cancel-settled') {
+          clearCompletion();
         }
       },
       onRevealBoundary: function (event) {
@@ -136,17 +166,24 @@
   }
 
   function roll() {
-    if (!setup()) return false;
+    if (!setup()) return Promise.resolve(false);
     if (machine.snapshot().active || renderer.isActive() || commitPending) {
       pendingIntent = true;
-      return true;
+      return activeCompletion || Promise.resolve(true);
     }
 
+    var completion = beginCompletion();
     clearVisibleResult();
-    if (!machine.pointerDown()) return false;
+    if (!machine.pointerDown()) {
+      finishCompletion(false);
+      clearCompletion();
+      return completion;
+    }
     window.setTimeout(function () {
       if (!machine.pointerUp()) {
         renderer.cancel();
+        finishCompletion(false);
+        clearCompletion();
         return;
       }
 
@@ -161,6 +198,7 @@
         if (!result) {
           machine.commitFailed();
           renderer.cancel();
+          finishCompletion(false);
           return;
         }
 
@@ -169,21 +207,24 @@
         if (!disclosure.commit(transactionId, result)) {
           machine.commitFailed();
           renderer.cancel();
+          finishCompletion(false);
           return;
         }
 
         if (!machine.commitAck(capability)) {
           disclosure.cancel(transactionId);
           renderer.cancel();
+          finishCompletion(false);
         }
       }).catch(function (error) {
         commitPending = false;
         console.error('[r4b1t] durable ROLL failed:', error);
         machine.commitFailed();
         renderer.cancel();
+        finishCompletion(false);
       });
     }, 0);
-    return true;
+    return completion;
   }
 
   function cancelPendingIntent() {
@@ -193,11 +234,16 @@
 
   function cancel(reason) {
     pendingIntent = false;
-    if (!machine) return false;
+    if (!machine) {
+      finishCompletion(false);
+      clearCompletion();
+      return false;
+    }
     var snap = machine.snapshot();
     if (snap.transactionId != null && disclosure) disclosure.cancel(snap.transactionId);
     machine.cancel(reason || 'navigation/reset');
     if (renderer) renderer.cancel();
+    finishCompletion(false);
     return true;
   }
 
