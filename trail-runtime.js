@@ -403,7 +403,7 @@
       action: 'ROLL',
       constraint: prepared.constraint,
       corpus_revision: prepared.corpusDigest,
-      eligible_count: prepared.eligibleSnapshot.length,
+      eligible_count: prepared.eligibleCount,
       sampler: {
         algorithm: 'uniform-with-repeat-guard-v1',
         prng: 'mulberry32-v1',
