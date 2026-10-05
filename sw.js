@@ -1,4 +1,4 @@
-const CACHE = 'r4b1t-v26-trail-record-integrity';
+const CACHE = 'r4b1t-v27-roll-authority-history';
 const PRECACHE = [
   './',
   './index.html',
@@ -7,6 +7,9 @@ const PRECACHE = [
   './corpus-authority.js',
   './result-metadata.js',
   './motion-tokens.js',
+  './roll-authority-core.js',
+  './roll-authority-ledger.js',
+  './roll-authority-runtime.js',
   './roll-motion-machine.js',
   './roll-disclosure-boundary.js',
   './roll-renderer.js',
