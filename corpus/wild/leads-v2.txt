@@ -1,0 +1,63 @@
+# R4B1T H0L3 — WILD lead set v2
+# Verified 2026-10-05. Leads are discovery inputs, never admission authority.
+# v2 adds independent source ecosystems; source concentration is measured by lead_source_key.
+# Multiple pages from the same site intentionally share one lead_source_key quota.
+
+# --- meta-index / source-of-sources ---
+https://theindex.fyi/
+https://dir.highlatencylife.com/
+https://directory.weirdnet.org/
+https://base31.org/
+https://internetintro.com/
+https://personalwebsites.org/
+
+# --- high-signal human-curated discovery ---
+https://dir.highlatencylife.com/browse/directories/
+https://dir.highlatencylife.com/browse/personal/
+https://dir.highlatencylife.com/browse/tools/
+https://dir.highlatencylife.com/browse/learning/
+https://dir.highlatencylife.com/browse/communities/
+https://directory.weirdnet.org/c/directories/
+https://directory.weirdnet.org/c/webrings/
+https://directory.weirdnet.org/t/zine/
+https://directory.weirdnet.org/c/software/
+
+# --- existing small/personal/indie sources ---
+https://512kb.club/
+https://1mb.club/
+https://personalsit.es/
+https://neocities.org/browse
+https://indieweb.org/webring
+https://ring.recurse.com/
+https://curlie.org/desc/Computers/Internet/Searching/Directories/
+
+# --- weird / experimental web ---
+https://www.wackywebs.com/
+https://openweird.com/weird-websites-when-bored/
+https://href.cool/
+https://www.kickscondor.com/
+
+# --- creative coding / interactive experiments ---
+https://experiments.withgoogle.com/collection/chrome
+https://github.com/eric-erki/awesome-creative-coding
+https://github.com/radiovisual/awesome-interactive
+
+# --- obscure databases / public data / APIs ---
+https://github.com/williamrthomas/database-of-databases
+https://github.com/awesomedata/awesome-public-datasets
+https://github.com/public-apis/public-apis
+https://www.si.edu/openaccess
+
+# --- OSINT / security / investigation ---
+https://osintframework.com/
+https://github.com/jivoi/awesome-osint
+https://maxintel.org/osint-tools.html
+https://github.com/tigergate/awesome-security
+https://osint.dev/osint-sources
+https://en.csintresearch.org/fields/osint
+
+# --- maps / visualization / research tooling ---
+https://github.com/thedoubler/awesome-maps-data
+https://github.com/elasticlabs/awesome-gis
+https://github.com/hal9ai/awesome-dataviz
+https://github.com/louisbarclay/awesome-web-research-tools
