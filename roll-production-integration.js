@@ -154,7 +154,7 @@
       var authority = root.R4B1TRollAuthority;
       var commitment = authority && typeof authority.commit === 'function'
         ? authority.commit()
-        : Promise.resolve(typeof root.__r4b1tCommitRoll === 'function' ? root.__r4b1tCommitRoll() : null);
+        : Promise.resolve(null);
 
       Promise.resolve(commitment).then(function (result) {
         commitPending = false;
