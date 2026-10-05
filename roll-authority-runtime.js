@@ -40,6 +40,7 @@
     });
     var historyState = loadHistory();
     var visibleTerminal = null;
+    var lastTerminal = null;
 
     function loadHistory() {
       try {
@@ -96,6 +97,7 @@
         function () { return prepare(idFactory()); },
         projectTerminal
       );
+      lastTerminal = terminal || null;
       if (!terminal || terminal.state !== 'COMMITTED') return null;
       return presentation(terminal);
     }
@@ -161,6 +163,7 @@
       canForward: function () { return core.history.canForward(historyState); },
       snapshot: snapshot,
       currentTerminal: function () { return visibleTerminal; },
+      lastTerminal: function () { return lastTerminal; },
       store: function () { return store; }
     });
   }
@@ -271,17 +274,67 @@
       return initialization;
     }
 
-    async function commit() {
-      await init();
-      var result = await runtime.commit();
-      if (!result) {
-        try {
-          root.document.dispatchEvent(new CustomEvent('r4b1t:selection-status', {
-            detail: Object.freeze({ status: 'AUTHORITY_FAILED', message: 'ROLL AUTHORITY FAILED' })
-          }));
-        } catch (_) {}
+    function terrainLabel(id) {
+      return String(id || 'ALL').replace(/_/g, ' ').toUpperCase();
+    }
+
+    function publishSelectionStatus(status, message, terrain) {
+      var detail = Object.freeze({
+        status: status,
+        message: message || '',
+        terrain: terrain || null
+      });
+      var node = root.document.getElementById('rollStatus');
+      if (node) {
+        node.textContent = detail.message;
+        node.dataset.state = detail.status;
+        node.hidden = !detail.message;
       }
-      return result;
+      try {
+        root.document.dispatchEvent(new CustomEvent('r4b1t:selection-status', { detail: detail }));
+      } catch (_) {}
+    }
+
+    function publishTerminalFailure(terminal) {
+      var code = terminal && terminal.failure && terminal.failure.code;
+      var constraint = terminal && terminal.prepared && terminal.prepared.constraint;
+      var terrain = constraint && constraint.terrain || null;
+      if (code === 'EMPTY_ELIGIBLE_SET') {
+        publishSelectionStatus(
+          'EMPTY',
+          'NO ELIGIBLE ROUTES IN ' + terrainLabel(terrain) + ' UNDER CURRENT PROTOCOL POLICY',
+          terrain
+        );
+        return;
+      }
+      publishSelectionStatus('AUTHORITY_FAILED', 'ROLL AUTHORITY FAILED', terrain);
+    }
+
+    function authorityUnavailable(error) {
+      var message = error && error.message || '';
+      return /AUTHORITY.*UNAVAILABLE|TRAIL_AUTHORITY_BRIDGE_UNAVAILABLE|ROLL authority bridge unavailable/i.test(message);
+    }
+
+    async function commit() {
+      try {
+        await init();
+        var result = await runtime.commit();
+        if (!result) publishTerminalFailure(runtime.lastTerminal());
+        else {
+          try {
+            root.document.dispatchEvent(new CustomEvent('r4b1t:authority-committed', {
+              detail: Object.freeze(result)
+            }));
+          } catch (_) {}
+        }
+        return result;
+      } catch (error) {
+        if (authorityUnavailable(error)) {
+          publishSelectionStatus('AUTHORITY_UNAVAILABLE', 'SELECTION AUTHORITY UNAVAILABLE', null);
+          return null;
+        }
+        throw error;
+      }
     }
 
     async function markRevealed(result) {
@@ -332,6 +385,7 @@
       canForward: runtime.canForward,
       historySnapshot: runtime.snapshot,
       currentTerminal: runtime.currentTerminal,
+      lastTerminal: runtime.lastTerminal,
       store: runtime.store
     });
     root.roll = authoritativeRollEntry;
