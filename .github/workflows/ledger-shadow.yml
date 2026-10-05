@@ -61,6 +61,74 @@ jobs:
           sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=29 "$(command -v python3)" -m corpus.ledger.tools.discovery verify --before /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline --after /tmp/discovery-acceptance/corpus/ledger/shadow/after --window /tmp/discovery-acceptance/corpus/ledger/shadow/window > /tmp/discovery-verify-29.json
           cmp /tmp/discovery-verify-17.json /tmp/discovery-verify-29.json
           cat /tmp/discovery-verify-17.json
+      - name: Canonical reviewed WILD discovery and isolated offline verification
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/wild-acceptance/corpus/ledger/shadow
+          cp /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline.sqlite3 /tmp/wild-acceptance/corpus/ledger/shadow/ledger.sqlite3
+
+          python3 -m corpus.ledger.tools.wild_discovery prepare \
+            --boundary-export /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline \
+            --timestamp 2026-10-05T19:38:29.000Z \
+            --out /tmp/wild-acceptance/corpus/ledger/shadow/window \
+            > /tmp/wild-prepare.json
+
+          python3 -m corpus.ledger.tools.shadow append \
+            --store /tmp/wild-acceptance/corpus/ledger/shadow/ledger.sqlite3 \
+            --boundary-export /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline \
+            --proposals /tmp/wild-acceptance/corpus/ledger/shadow/window/proposals.json \
+            --expected-head sha256:d479964f875fd6edf9da5d7c2ace15b32174e36217420f1517ddfe9914eb4dbe \
+            --out /tmp/wild-acceptance/corpus/ledger/shadow/after \
+            > /tmp/wild-append.json
+
+          sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=17 "$(command -v python3)" \
+            -m corpus.ledger.tools.wild_discovery verify \
+            --before /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline \
+            --after /tmp/wild-acceptance/corpus/ledger/shadow/after \
+            --window /tmp/wild-acceptance/corpus/ledger/shadow/window \
+            > /tmp/wild-verify-17.json
+
+          sudo unshare --net env PYTHONPATH="$PWD" PYTHONHASHSEED=29 "$(command -v python3)" \
+            -m corpus.ledger.tools.wild_discovery verify \
+            --before /tmp/shadow-bootstrap/corpus/ledger/shadow/baseline \
+            --after /tmp/wild-acceptance/corpus/ledger/shadow/after \
+            --window /tmp/wild-acceptance/corpus/ledger/shadow/window \
+            > /tmp/wild-verify-29.json
+
+          cmp /tmp/wild-verify-17.json /tmp/wild-verify-29.json
+          python3 - <<'PYWILD'
+          import json
+          from pathlib import Path
+
+          verify=json.load(open('/tmp/wild-verify-17.json'))
+          assert verify['status']=='VERIFIED_SHADOW_WILD_DISCOVERY_WINDOW', verify
+          assert verify['event_count']==30, verify
+
+          projection=json.load(open('/tmp/wild-acceptance/corpus/ledger/shadow/after/projection.json'))
+          wild=[
+              row for row in projection['resources']
+              if row.get('metadata',{}).get('provenance','').startswith('r4b1t-shadow-wild-discovery-v1:')
+          ]
+          assert len(wild)==30, len(wild)
+          assert all(row['eligibility']=='CANDIDATE' for row in wild)
+          assert all(row['availability'] is None for row in wild)
+          assert all(set(row['metadata'])=={'resource_type','eligibility_reason','provenance'} for row in wild)
+
+          window=json.load(open('/tmp/wild-acceptance/corpus/ledger/shadow/window/window.json'))
+          assert len(window['records'])==30
+          assert window['evidence']['artifact_sha256']=='sha256:3dd3f572897203789c93ae5e75fbd2e1f4c0b41720a72e3ebf9fcb27e1cf8a89'
+          assert window['evidence']['campaign_manifest']['digest']=='sha256:f0bead660cdc1d77b44b7acf29e2405d9bbdea3fa8a64666ed28fd47e87f5a4e'
+          print(json.dumps({
+              'status':'CANONICAL_WILD_30_SHADOW_VERIFIED',
+              'records':len(wild),
+              'source_head':window['source_head'],
+              'event_head':verify['event_head'],
+          },sort_keys=True))
+          PYWILD
+
+          cat /tmp/wild-prepare.json
+          cat /tmp/wild-verify-17.json
+
       - name: Synthetic archive lifecycle and offline network-isolated history verification
         run: |
           python3 -m corpus.ledger.tools.history initialize --authority-root . --out /tmp/archive-acceptance/corpus/ledger/shadow/before
@@ -95,4 +163,6 @@ jobs:
             /tmp/archive-acceptance/corpus/ledger/shadow/after
             /tmp/discovery-acceptance/corpus/ledger/shadow/window
             /tmp/discovery-acceptance/corpus/ledger/shadow/after
+            /tmp/wild-acceptance/corpus/ledger/shadow/window
+            /tmp/wild-acceptance/corpus/ledger/shadow/after
           if-no-files-found: error
