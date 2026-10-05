@@ -65,6 +65,13 @@ class SiteKeyV1Tests(unittest.TestCase):
         self.assertEqual(len(site_key_v1.canonical_groups(urls, PSL, OVERRIDES)), 733)
 
 
+    def test_invalid_platform_owner_falls_back_to_registrable_domain(self):
+        self.assertEqual(site_key('https://github.com/@bad/repo'), 'github.com')
+        self.assertEqual(site_key('https://github.com/-bad/repo'), 'github.com')
+        self.assertEqual(site_key('https://gitlab.com/@bad/repo'), 'gitlab.com')
+        self.assertEqual(site_key('https://medium.com/not-an-at-user/post'), 'medium.com')
+
+
 class SelectionV3ParityTests(unittest.TestCase):
     def test_normative_vectors_byte_for_byte(self):
         for vector in VECTORS["vectors"]:
