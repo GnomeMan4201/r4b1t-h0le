@@ -10,6 +10,7 @@ const index = fs.readFileSync('index.html', 'utf8');
 const sw = fs.readFileSync('sw.js', 'utf8');
 const trail = fs.readFileSync('trail-runtime.js', 'utf8');
 const runtime = fs.readFileSync('roll-authority-runtime.js', 'utf8');
+const app = fs.readFileSync('index.html', 'utf8');
 
 test('production ROLL awaits durable authority and preserves machine-owned reveal', () => {
   assert.match(production, /R4B1TRollAuthority/);
@@ -72,4 +73,12 @@ test('Trail authority refreshes the durable draft under the global lock before p
   assert.ok(prepareAt >= 0 && projectAt >= 0);
   assert.match(trail.slice(prepareAt, prepareAt + 700), /refreshAuthorityDraftFromStorage\(\)/);
   assert.match(trail.slice(projectAt, projectAt + 500), /refreshAuthorityDraftFromStorage\(\)/);
+});
+
+test('production and bundled local ROLL entry points fail closed without durable authority', () => {
+  assert.doesNotMatch(production, /Promise\.resolve\(typeof root\.__r4b1tCommitRoll/);
+  const localRoll = app.slice(app.indexOf('function B(){'), app.indexOf('function F(){'));
+  assert.match(localRoll, /R4B1TRollAuthority/);
+  assert.match(localRoll, /R4B1TRollProduction/);
+  assert.doesNotMatch(localRoll, /__r4b1tCommitRoll/);
 });
