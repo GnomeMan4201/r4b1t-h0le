@@ -1,5 +1,7 @@
 # WILD 50 authoritative v0.6.1 comparison
 
+> **SECONDARY / NON-CANONICAL.** This document describes the later duplicate run `37363282447` and its review. The canonical campaign is the first successful post-preregistration run `37362726635`, as frozen in `docs/WILD_50_RUN_RECONCILIATION.md`. Do not use this document or its review outcome for Corpus Ledger shadow translation.
+
 Date: 2026-10-05
 
 Authority:
