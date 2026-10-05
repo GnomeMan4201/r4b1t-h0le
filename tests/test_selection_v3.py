@@ -7,11 +7,13 @@ from tools import selection_v3
 from tools import site_key_v1
 
 ROOT = Path(__file__).resolve().parents[1]
-PSL_PATH = ROOT / "selection/site-key-v1/public_suffix_list.dat"
+PSL_SOURCE_PATH = ROOT / "selection/site-key-v1/public_suffix_list.dat"
+PSL_PATH = ROOT / "selection/site-key-v1/public_suffix_list_ascii_v1.dat"
 OVERRIDES_PATH = ROOT / "selection/site-key-v1/platform-overrides.json"
 VECTORS_PATH = ROOT / "tests/fixtures/selection-v3-vectors.json"
 CORPUS_PATH = ROOT / "corpus/releases/experience-candidate-v0.4/urls.txt"
 
+PSL_SOURCE_TEXT = PSL_SOURCE_PATH.read_text(encoding="utf-8")
 PSL_TEXT = PSL_PATH.read_text(encoding="utf-8")
 OVERRIDES_TEXT = OVERRIDES_PATH.read_text(encoding="utf-8")
 VECTORS = json.loads(VECTORS_PATH.read_text(encoding="utf-8"))
@@ -46,6 +48,10 @@ def options_for(vector):
 class SiteKeyV1Tests(unittest.TestCase):
     def test_pinned_input_hashes(self):
         self.assertEqual(
+            "sha256:" + hashlib.sha256(PSL_SOURCE_TEXT.encode("utf-8")).hexdigest(),
+            VECTORS["psl_source_sha256"],
+        )
+        self.assertEqual(
             "sha256:" + hashlib.sha256(PSL_TEXT.encode("utf-8")).hexdigest(),
             VECTORS["psl_sha256"],
         )
@@ -58,6 +64,12 @@ class SiteKeyV1Tests(unittest.TestCase):
         for vector in VECTORS["normalization"]:
             with self.subTest(vector=vector["url"]):
                 self.assertEqual(site_key(vector["url"]), vector["site_key"])
+
+    def test_raw_unicode_authorities_fail_closed(self):
+        for vector in VECTORS["rejections"]:
+            with self.subTest(vector=vector["url"]):
+                with self.assertRaisesRegex(site_key_v1.SiteKeyError, vector["code"]):
+                    site_key(vector["url"])
 
     def test_active_group_count(self):
         urls = [line.strip() for line in CORPUS_PATH.read_text(encoding="utf-8").splitlines() if line.strip()]
