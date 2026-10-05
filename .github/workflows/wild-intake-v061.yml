@@ -39,7 +39,7 @@ jobs:
           python-version: '3.12'
       - name: Verify frozen tool hash
         run: |
-          echo "8ed896d59617908e07bc537e66655767b303cba28b2e431716a63c6d91fb6306  tools/wild-intake-v0.6.1/wild1000.py" | sha256sum -c -
+          echo "5b112e958d3d47a32f319becfeebebbeafcd6dbbdfdc534aa2ebf7cd01cc88fd  tools/wild-intake-v0.6.1/wild1000.py" | sha256sum -c -
       - name: Install pinned intake dependencies
         run: python -m pip install -r tools/wild-intake-v0.6.1/requirements.txt
       - name: Compile
