@@ -175,6 +175,40 @@ test('new reveal after PREVIOUS truncates forward history without deleting durab
   assert.deepEqual((await store.listRecords()).map(r => r.transactionId), ['tx-1', 'tx-2', 'tx-3', 'tx-4']);
 });
 
+test('explicit recovery presents a terminal commit-gap transaction and records it in tab history', async () => {
+  const store = ledger.createMemoryStore();
+  const gap = prepared('tx-terminal-gap', 1);
+  await store.putPrepared(gap);
+  await store.terminalize(
+    gap.transactionId,
+    core.resolvePrepared(gap),
+    core.createTerminal
+  );
+
+  const shown = [];
+  const runtime = runtimeApi.createRuntime({
+    core,
+    ledger,
+    store,
+    withLock: fn => fn(),
+    sessionStorage: memorySessionStorage(),
+    idFactory: () => 'unused',
+    prepare: () => { throw new Error('not used'); },
+    project: async (_terminal, context) => {
+      assert.equal(context.recovered, true);
+      assert.equal(context.recoveryMode, 'restore');
+      return { projected: true };
+    },
+    show: async terminal => shown.push(terminal.transactionId)
+  });
+
+  await runtime.recover();
+
+  assert.deepEqual(shown, ['tx-terminal-gap']);
+  assert.deepEqual(runtime.snapshot(), { entries: ['tx-terminal-gap'], cursor: 0 });
+  assert.equal((await store.listUnprojectedCommitted()).length, 0);
+});
+
 test('recovery projects an orphan commit and adds it to tab-local history exactly once', async () => {
   const store = ledger.createMemoryStore();
   const orphan = prepared('tx-orphan', 1);
