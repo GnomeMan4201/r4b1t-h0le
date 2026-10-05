@@ -83,9 +83,12 @@ class WildDiscoveryTests(unittest.TestCase):
             bound[key]['digest']='sha256:'+hashlib.sha256(fake_evidence[name]).hexdigest()
         record['campaign_manifest_sha256']=bound['campaign_manifest']['digest']
         record['classification_sha256']=bound['classification']['digest']
-        window=build_window(before,[record],DECLARATION,producer_manifest(),bound)
-        committed=self.writer.submit_many(proposals(before,window),expected_head=before[-1]['hash'])
-        self.assertEqual(verify_window(before,window,committed,producer_files(),fake_evidence)['status'],
+        verified_writer=Sequencer(Path(self.temp.name)/'corpus/ledger/shadow/verified.sqlite3')
+        verified_writer.submit(genesis())
+        verified_before=verified_writer.events()
+        window=build_window(verified_before,[record],DECLARATION,producer_manifest(),bound)
+        committed=verified_writer.submit_many(proposals(verified_before,window),expected_head=verified_before[-1]['hash'])
+        self.assertEqual(verify_window(verified_before,window,committed,producer_files(),fake_evidence)['status'],
                          'VERIFIED_SHADOW_WILD_DISCOVERY_WINDOW')
 
     def test_full_reviewed_record_and_evidence_are_commitment_bound(self):
