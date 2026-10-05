@@ -188,20 +188,21 @@ test('fast-check commands preserve PREPARED <= 1 and cursor invariants with repr
   const ledger = loadLedger();
   await fc.assert(
     fc.asyncProperty(
+      fc.scheduler(),
       fc.commands([
         fc.constant(new RollCommand()),
         fc.constant(new PreviousCommand()),
         fc.constant(new ForwardCommand()),
         fc.constant(new RecoverCommand())
       ], { maxCommands: 40 }),
-      async commands => {
+      async (scheduler, commands) => {
         const store = ledger.createMemoryStore();
         const coordinator = ledger.createCoordinator({ core, store, withLock: fn => fn() });
         const setup = () => ({
           model: { history: core.history.empty(), nextId: 1, nextTrail: 1 },
           real: { store, coordinator }
         });
-        await fc.asyncModelRun(setup, commands);
+        await fc.scheduledModelRun(scheduler, setup, commands);
         assert.ok((await store.listPrepared()).length <= 1);
       }
     ),
