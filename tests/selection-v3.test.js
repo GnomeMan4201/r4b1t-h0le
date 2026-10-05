@@ -9,7 +9,7 @@ const SiteKey = require('../site-key-v1.js');
 const SelectionV3 = require('../selection-v3.js');
 
 const ROOT = path.join(__dirname, '..');
-const pslText = fs.readFileSync(path.join(ROOT, 'selection/site-key-v1/public_suffix_list.dat'), 'utf8');
+const pslText = fs.readFileSync(path.join(ROOT, 'selection/site-key-v1/public_suffix_list_ascii_v1.dat'), 'utf8');
 const overridesText = fs.readFileSync(path.join(ROOT, 'selection/site-key-v1/platform-overrides.json'), 'utf8');
 const vectors = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/selection-v3-vectors.json'), 'utf8'));
 const psl = SiteKey.parsePsl(pslText);
