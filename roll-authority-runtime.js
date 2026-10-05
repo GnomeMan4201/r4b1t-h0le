@@ -78,7 +78,7 @@
 
     async function projectTerminal(terminal, context) {
       var projection = await project(terminal, context);
-      if (context && context.recoveredPrepared && terminal && terminal.state === 'COMMITTED') {
+      if (context && context.recovered && terminal && terminal.state === 'COMMITTED') {
         setCurrentTransaction(terminal.transactionId);
         visibleTerminal = terminal;
         await show(terminal);
