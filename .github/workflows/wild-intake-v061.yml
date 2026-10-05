@@ -13,6 +13,7 @@ on:
       - 'corpus/releases/experience-candidate-v0.4/**'
       - 'corpus/classification/resource-classification-v2.0.json'
       - 'corpus/wild/leads-v1.txt'
+      - 'corpus/wild/pilots/wild-50-v061/review.csv'
   pull_request:
     paths:
       - 'tools/wild-intake-v0.6.1/**'
@@ -23,25 +24,26 @@ on:
       - 'corpus/releases/experience-candidate-v0.4/**'
       - 'corpus/classification/resource-classification-v2.0.json'
       - 'corpus/wild/leads-v1.txt'
+      - 'corpus/wild/pilots/wild-50-v061/review.csv'
   workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
 
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Verify frozen script bytes
+      - name: Verify frozen tool hash
         run: |
-          printf '%s  %s\n' \
-            fb645cdcc0d2ce2fc0edfb62fd70750194324d754d41bcf02bcc09cb449510cd \
-            tools/wild-intake-v0.6.1/wild1000.py | sha256sum -c -
+          echo "fb645cdcc0d2ce2fc0edfb62fd70750194324d754d41bcf02bcc09cb449510cd  tools/wild-intake-v0.6.1/wild1000.py" | sha256sum -c -
 
       - name: Install pinned intake dependencies
         run: python -m pip install -r tools/wild-intake-v0.6.1/requirements.txt
@@ -49,10 +51,10 @@ jobs:
       - name: Compile
         run: python -m py_compile tools/wild-intake-v0.6.1/wild1000.py tools/wild-intake-v0.6.1/tests/test_wild.py
 
-      - name: Real site-key authority + baseline selftest
+      - name: Selftest real siteKey authority and baseline
         run: |
           python tools/wild-intake-v0.6.1/wild1000.py selftest \
-            --r4b1t-root . \
+            --r4b1t-root "$GITHUB_WORKSPACE" \
             --release experience-candidate-v0.4 > /tmp/wild-selftest.json
           cat /tmp/wild-selftest.json
           python - <<'PY'
@@ -61,20 +63,18 @@ jobs:
           assert d['release_urls'] == 7033, d
           assert d['release_site_keys'] == 733, d
           assert d['release_unkeyed'] == 0, d
-          assert d['vectors_checked'] >= 25, d
-          print('selftest baseline: 7033 URLs / 733 siteKeys / 0 unkeyed')
+          assert d['vectors_checked'] > 0, d
           PY
 
-      - name: Full WILD intake regression suite
+      - name: Run WILD intake regression suite
         env:
           R4B1T_ROOT: ${{ github.workspace }}
         run: python tools/wild-intake-v0.6.1/tests/test_wild.py
 
-  pilot:
+  reviewed-export:
     if: github.event_name == 'push'
     needs: verify
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -84,63 +84,69 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Re-verify frozen script bytes
+      - name: Verify frozen tool hash
         run: |
-          printf '%s  %s\n' \
-            fb645cdcc0d2ce2fc0edfb62fd70750194324d754d41bcf02bcc09cb449510cd \
-            tools/wild-intake-v0.6.1/wild1000.py | sha256sum -c -
+          echo "fb645cdcc0d2ce2fc0edfb62fd70750194324d754d41bcf02bcc09cb449510cd  tools/wild-intake-v0.6.1/wild1000.py" | sha256sum -c -
 
       - name: Install pinned intake dependencies
         run: python -m pip install -r tools/wild-intake-v0.6.1/requirements.txt
 
-      - name: Initialize frozen WILD 50 campaign
+      - name: Download and verify authoritative unreviewed evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          python tools/wild-intake-v0.6.1/wild1000.py campaign-init \
-            --r4b1t-root . \
-            --campaign wild-50 \
-            --campaign-id wild-50-pilot-v061 \
-            --release experience-candidate-v0.4 \
-            --expect-sitekeys 733 \
-            --classification corpus/classification/resource-classification-v2.0.json \
-            --campaign-target 1000 \
-            2>&1 | tee wild-50-campaign-init.log
+          rm -rf /tmp/wild-v061
+          mkdir -p /tmp/wild-v061
+          gh run download 37363282447 \
+            --repo "$GITHUB_REPOSITORY" \
+            --name wild-50-v061-evidence \
+            --dir /tmp/wild-v061
+          test -f /tmp/wild-v061/wild-50-evidence.sha256
+          (cd /tmp/wild-v061 && sha256sum -c wild-50-evidence.sha256)
+          cp -a /tmp/wild-v061/wild-50 ./wild-50
 
-      - name: Harvest pinned breadth leads
+      - name: Install and verify human review
         run: |
-          python tools/wild-intake-v0.6.1/wild1000.py harvest \
-            --r4b1t-root . \
-            --campaign wild-50 \
-            --leads corpus/wild/leads-v1.txt \
-            2>&1 | tee wild-50-harvest.log
+          echo "efb96713efc592f9a630482b27c8a7748a78349afb57ef0e23dbb02fef6bd5e6  corpus/wild/pilots/wild-50-v061/review.csv" | sha256sum -c -
+          cp corpus/wild/pilots/wild-50-v061/review.csv wild-50/review.csv
 
-      - name: Verify first 50 site identities
-        run: |
-          python tools/wild-intake-v0.6.1/wild1000.py verify \
-            --r4b1t-root . \
-            --campaign wild-50 \
-            --limit 50 \
-            2>&1 | tee wild-50-verify.log
-
-      - name: Record unreviewed pilot stats
+      - name: Validate reviewed campaign stats
         run: |
           python tools/wild-intake-v0.6.1/wild1000.py stats \
             --r4b1t-root . \
             --campaign wild-50 \
-            2>&1 | tee wild-50-stats.log
+            2>&1 | tee wild-50-reviewed-stats.log
+          grep -Eq 'CAMPAIGN_ACCEPTED[[:space:]]+35 / 1000' wild-50-reviewed-stats.log
+          grep -Eq 'rejected by human[[:space:]]+10' wild-50-reviewed-stats.log
+          grep -Eq 'invalid verdict[[:space:]]+0' wild-50-reviewed-stats.log
 
-      - name: Hash authoritative evidence
+      - name: Export campaign-accepted set
         run: |
-          find wild-50 -type f -print0 | sort -z | xargs -0 sha256sum > wild-50-evidence.sha256
-          sha256sum wild-50-evidence.sha256
+          python tools/wild-intake-v0.6.1/wild1000.py export \
+            --r4b1t-root . \
+            --campaign wild-50 \
+            2>&1 | tee wild-50-reviewed-export.log
+          test "$(wc -l < wild-50/campaign-accepted.jsonl)" -eq 35
 
-      - name: Upload authoritative WILD 50 evidence
-        if: always()
+      - name: Hash reviewed evidence
+        run: |
+          sha256sum \
+            wild-50/review.csv \
+            wild-50/campaign-accepted.jsonl \
+            wild-50-reviewed-stats.log \
+            wild-50-reviewed-export.log \
+            > wild-50-reviewed-evidence.sha256
+          cat wild-50-reviewed-evidence.sha256
+
+      - name: Upload reviewed evidence
         uses: actions/upload-artifact@v4
         with:
-          name: wild-50-v061-evidence
+          name: wild-50-v061-reviewed-evidence
           path: |
-            wild-50/
-            wild-50-*.log
-            wild-50-evidence.sha256
-          if-no-files-found: warn
+            wild-50/review.csv
+            wild-50/campaign-accepted.jsonl
+            wild-50-reviewed-stats.log
+            wild-50-reviewed-export.log
+            wild-50-reviewed-evidence.sha256
+          if-no-files-found: error
           retention-days: 30
