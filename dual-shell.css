@@ -1110,7 +1110,8 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-route>code{order:7;display:block;margin:9px 0 14px;padding:0;border:0;color:var(--r4m-v3-muted);font-size:.54rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .r4m-route-actions{order:20;grid-column:1/-1!important;display:grid;grid-template-columns:repeat(4,1fr);width:100%;margin:0;border-top:1px solid var(--r4m-v3-line);border-bottom:0}
   .r4m-route-actions button{min-height:52px;padding:0;background:transparent;color:var(--r4m-v3-paper);border:0;font-size:.58rem;letter-spacing:.08em;text-align:left}
-  .r4m-route-actions button{text-align:center!important}\n  .r4m-route-actions button+button{border-left:1px solid var(--r4m-v3-line)}
+  .r4m-route-actions button{text-align:center!important}
+  .r4m-route-actions button+button{border-left:1px solid var(--r4m-v3-line)}
   .r4m-enter{order:30;grid-column:1!important;min-width:0;width:100%;min-height:72px;margin:0;padding:0 18px;border:0;background:var(--r4m-v3-paper);color:var(--r4m-v3-ink);font-size:.72rem;letter-spacing:.04em;text-align:left}
   .r4m-next{order:30;grid-column:2!important;position:relative;min-width:0;width:88px;min-height:72px;margin:0;padding:35px 5px 6px;border:0;background:transparent;color:var(--r4m-v3-paper);font-size:.46rem;letter-spacing:.05em;text-align:center}
   .r4m-next-aperture{position:absolute;left:50%;top:8px;width:25px;height:17px;transform:translateX(-50%);border:1.5px solid var(--r4m-v3-paper);border-radius:var(--r4m-ap-shape);background:#000;overflow:hidden}
@@ -1370,4 +1371,6 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   html.r4m-stage-result #r4mProductionMark{height:112px}
   .r4m-roll.r4m-roll-aperture{height:92px!important;min-height:92px!important}
 }
-\n.r4m-route-top #r4mDrawSequence{margin-left:auto;color:var(--r4m-v3-muted,#77736d);font-style:normal;font-size:.5rem;letter-spacing:.08em;white-space:nowrap}\n.r4m-route-actions button:disabled{opacity:.32;cursor:default}\n
+
+.r4m-route-top #r4mDrawSequence{margin-left:auto;color:var(--r4m-v3-muted,#77736d);font-style:normal;font-size:.5rem;letter-spacing:.08em;white-space:nowrap}
+.r4m-route-actions button:disabled{opacity:.32;cursor:default}
