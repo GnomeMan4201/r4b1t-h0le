@@ -85,19 +85,20 @@
       mountNode: function (payload) {
         mount.replaceChildren(payload.element);
         if (typeof root.__r4b1tRevealRoll === 'function') root.__r4b1tRevealRoll(payload.result);
-        if (root.R4B1TRollAuthority && typeof root.R4B1TRollAuthority.markRevealed === 'function') {
-          var completion = Promise.resolve(root.R4B1TRollAuthority.markRevealed(payload.result));
-          revealPending = completion;
-          completion.then(function () {
-            if (revealPending === completion) revealPending = null;
-          }, function (error) {
-            if (revealPending === completion) revealPending = null;
-            console.error('[r4b1t] reveal completion failed:', error);
-          });
-        }
+        var completion = root.R4B1TRollAuthority && typeof root.R4B1TRollAuthority.markRevealed === 'function'
+          ? Promise.resolve(root.R4B1TRollAuthority.markRevealed(payload.result))
+          : Promise.resolve(false);
+        revealPending = completion;
+        completion.then(function (marked) {
+          if (revealPending === completion) revealPending = null;
+          finishCompletion(marked !== false);
+        }, function (error) {
+          if (revealPending === completion) revealPending = null;
+          console.error('[r4b1t] reveal completion failed:', error);
+          finishCompletion(false);
+        });
         payload.element.hidden = false;
         mount.classList.add('roll-disclosed');
-        finishCompletion(true);
         root.requestAnimationFrame(function () {
           if (typeof root.__r4b1tSyncMobileRoute === 'function') root.__r4b1tSyncMobileRoute();
           syncAuthorityControls({ authoritySequence: payload.result.authoritySequence });
@@ -112,10 +113,17 @@
           root.__r4b1tProjectRollPresentation(entry.to);
         }
         if (entry.to === 'SETTLED') {
-          clearCompletion();
-          if (pendingIntent) {
-            pendingIntent = false;
-            root.setTimeout(function () { roll(); }, 0);
+          var releaseSettled = function () {
+            clearCompletion();
+            if (pendingIntent) {
+              pendingIntent = false;
+              root.setTimeout(function () { roll(); }, 0);
+            }
+          };
+          if (revealPending) {
+            revealPending.then(releaseSettled, releaseSettled);
+          } else {
+            releaseSettled();
           }
         }
         if (entry.to === 'IDLE' && entry.cause === 'internal:cancel-settled') {
@@ -173,7 +181,7 @@
 
   function roll() {
     if (!setup()) return Promise.resolve(false);
-    if (machine.snapshot().active || renderer.isActive() || commitPending) {
+    if (machine.snapshot().active || renderer.isActive() || commitPending || revealPending) {
       pendingIntent = true;
       return activeCompletion || Promise.resolve(true);
     }
