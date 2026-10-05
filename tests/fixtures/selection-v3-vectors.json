@@ -1,0 +1,568 @@
+{
+  "schema": "r4b1t-selection-v3-vectors/v1",
+  "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+  "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
+  "normalization": [
+    {
+      "url": "https://WWW.Example.COM:443/a",
+      "site_key": "example.com"
+    },
+    {
+      "url": "https://www.example.com./a",
+      "site_key": "example.com"
+    },
+    {
+      "url": "https://bücher.example/a",
+      "site_key": "xn--bcher-kva.example"
+    },
+    {
+      "url": "https://github.com/OpenAI/project",
+      "site_key": "github.com/openai"
+    },
+    {
+      "url": "https://github.com/openai/other",
+      "site_key": "github.com/openai"
+    },
+    {
+      "url": "https://github.com/Other/project",
+      "site_key": "github.com/other"
+    },
+    {
+      "url": "https://gitlab.com/Group/project",
+      "site_key": "gitlab.com/group"
+    },
+    {
+      "url": "https://medium.com/@Alice/post",
+      "site_key": "medium.com/@alice"
+    },
+    {
+      "url": "https://medium.com/publication/post",
+      "site_key": "medium.com"
+    },
+    {
+      "url": "https://foo.0xdf.gitlab.io/x",
+      "site_key": "0xdf.gitlab.io"
+    },
+    {
+      "url": "https://a.b.example.co.uk/x",
+      "site_key": "example.co.uk"
+    }
+  ],
+  "vectors": [
+    {
+      "name": "uniform-site-basic",
+      "seed": "v3-uniform-site",
+      "draw_start": 0,
+      "mode": "UNIFORM_SITE",
+      "urls": [
+        "https://www.example.com/a",
+        "https://example.com/b",
+        "https://github.com/OpenAI/alpha",
+        "https://github.com/openai/beta",
+        "https://github.com/Other/repo",
+        "https://gitlab.com/Group/one",
+        "https://gitlab.com/group/two",
+        "https://medium.com/@Alice/post",
+        "https://medium.com/@Bob/post",
+        "https://0xdf.gitlab.io/writeup"
+      ],
+      "repeat_guard_reference": null,
+      "expected_transaction": {
+        "transaction_version": "r4b1t-selection-transaction/v3",
+        "sequence": 1,
+        "action": "ROLL",
+        "constraint": {
+          "terrain": "ALL",
+          "terrainIndex": null,
+          "protocolPolicy": {
+            "version": 1,
+            "excludeOnion": false
+          }
+        },
+        "corpus_revision": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "grouping": {
+          "algorithm": "site-weighted-two-stage-v1",
+          "site_key_version": "site-key/v1",
+          "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+          "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
+          "weight_mode": "UNIFORM_SITE"
+        },
+        "eligible_url_count": 10,
+        "eligible_site_count": 7,
+        "total_site_weight": 7,
+        "sampler": {
+          "algorithm": "site-weighted-two-stage-v1",
+          "prng": "mulberry32-u32-v1",
+          "seed": "v3-uniform-site",
+          "draw_start": 0,
+          "draw_count": 2,
+          "site_draw_count": 1,
+          "url_draw_count": 1,
+          "repeat_guard": {
+            "kind": "site-key",
+            "reference": null,
+            "max_site_draws": 30,
+            "mode": "none",
+            "exhausted": false
+          }
+        },
+        "selection": {
+          "site_draw_u32": 2918910462,
+          "site_target": 4,
+          "site_index": 4,
+          "site_key": "gitlab.com/group",
+          "site_weight": 1,
+          "site_bucket_size": 2,
+          "url_draw_u32": 894753053,
+          "url_index": 0
+        },
+        "route": {
+          "url": "https://gitlab.com/Group/one"
+        }
+      },
+      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":7,\"eligible_url_count\":10,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_SITE\"},\"route\":{\"url\":\"https://gitlab.com/Group/one\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":2,\"draw_start\":0,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"none\",\"reference\":null},\"seed\":\"v3-uniform-site\",\"site_draw_count\":1,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":2,\"site_draw_u32\":2918910462,\"site_index\":4,\"site_key\":\"gitlab.com/group\",\"site_target\":4,\"site_weight\":1,\"url_draw_u32\":894753053,\"url_index\":0},\"sequence\":1,\"total_site_weight\":7,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+    },
+    {
+      "name": "sqrt-depth-basic",
+      "seed": "v3-sqrt-depth",
+      "draw_start": 0,
+      "mode": "SQRT_DEPTH",
+      "urls": [
+        "https://www.example.com/a",
+        "https://example.com/b",
+        "https://github.com/OpenAI/alpha",
+        "https://github.com/openai/beta",
+        "https://github.com/Other/repo",
+        "https://gitlab.com/Group/one",
+        "https://gitlab.com/group/two",
+        "https://medium.com/@Alice/post",
+        "https://medium.com/@Bob/post",
+        "https://0xdf.gitlab.io/writeup"
+      ],
+      "repeat_guard_reference": null,
+      "expected_transaction": {
+        "transaction_version": "r4b1t-selection-transaction/v3",
+        "sequence": 1,
+        "action": "ROLL",
+        "constraint": {
+          "terrain": "ALL",
+          "terrainIndex": null,
+          "protocolPolicy": {
+            "version": 1,
+            "excludeOnion": false
+          }
+        },
+        "corpus_revision": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "grouping": {
+          "algorithm": "site-weighted-two-stage-v1",
+          "site_key_version": "site-key/v1",
+          "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+          "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
+          "weight_mode": "SQRT_DEPTH"
+        },
+        "eligible_url_count": 10,
+        "eligible_site_count": 7,
+        "total_site_weight": 540187,
+        "sampler": {
+          "algorithm": "site-weighted-two-stage-v1",
+          "prng": "mulberry32-u32-v1",
+          "seed": "v3-sqrt-depth",
+          "draw_start": 0,
+          "draw_count": 2,
+          "site_draw_count": 1,
+          "url_draw_count": 1,
+          "repeat_guard": {
+            "kind": "site-key",
+            "reference": null,
+            "max_site_draws": 30,
+            "mode": "none",
+            "exhausted": false
+          }
+        },
+        "selection": {
+          "site_draw_u32": 2377171016,
+          "site_target": 298981,
+          "site_index": 3,
+          "site_key": "github.com/other",
+          "site_weight": 65536,
+          "site_bucket_size": 1,
+          "url_draw_u32": 2156914696,
+          "url_index": 0
+        },
+        "route": {
+          "url": "https://github.com/Other/repo"
+        }
+      },
+      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":7,\"eligible_url_count\":10,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"SQRT_DEPTH\"},\"route\":{\"url\":\"https://github.com/Other/repo\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":2,\"draw_start\":0,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"none\",\"reference\":null},\"seed\":\"v3-sqrt-depth\",\"site_draw_count\":1,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":1,\"site_draw_u32\":2377171016,\"site_index\":3,\"site_key\":\"github.com/other\",\"site_target\":298981,\"site_weight\":65536,\"url_draw_u32\":2156914696,\"url_index\":0},\"sequence\":1,\"total_site_weight\":540187,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+    },
+    {
+      "name": "uniform-url-nonzero-cursor",
+      "seed": "v3-uniform-url",
+      "draw_start": 7,
+      "mode": "UNIFORM_URL",
+      "urls": [
+        "https://www.example.com/a",
+        "https://example.com/b",
+        "https://github.com/OpenAI/alpha",
+        "https://github.com/openai/beta",
+        "https://github.com/Other/repo",
+        "https://gitlab.com/Group/one",
+        "https://gitlab.com/group/two",
+        "https://medium.com/@Alice/post",
+        "https://medium.com/@Bob/post",
+        "https://0xdf.gitlab.io/writeup"
+      ],
+      "repeat_guard_reference": null,
+      "expected_transaction": {
+        "transaction_version": "r4b1t-selection-transaction/v3",
+        "sequence": 1,
+        "action": "ROLL",
+        "constraint": {
+          "terrain": "ALL",
+          "terrainIndex": null,
+          "protocolPolicy": {
+            "version": 1,
+            "excludeOnion": false
+          }
+        },
+        "corpus_revision": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "grouping": {
+          "algorithm": "site-weighted-two-stage-v1",
+          "site_key_version": "site-key/v1",
+          "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+          "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
+          "weight_mode": "UNIFORM_URL"
+        },
+        "eligible_url_count": 10,
+        "eligible_site_count": 7,
+        "total_site_weight": 10,
+        "sampler": {
+          "algorithm": "site-weighted-two-stage-v1",
+          "prng": "mulberry32-u32-v1",
+          "seed": "v3-uniform-url",
+          "draw_start": 7,
+          "draw_count": 2,
+          "site_draw_count": 1,
+          "url_draw_count": 1,
+          "repeat_guard": {
+            "kind": "site-key",
+            "reference": null,
+            "max_site_draws": 30,
+            "mode": "none",
+            "exhausted": false
+          }
+        },
+        "selection": {
+          "site_draw_u32": 618484077,
+          "site_target": 1,
+          "site_index": 1,
+          "site_key": "example.com",
+          "site_weight": 2,
+          "site_bucket_size": 2,
+          "url_draw_u32": 3837477653,
+          "url_index": 1
+        },
+        "route": {
+          "url": "https://www.example.com/a"
+        }
+      },
+      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":7,\"eligible_url_count\":10,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_URL\"},\"route\":{\"url\":\"https://www.example.com/a\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":2,\"draw_start\":7,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"none\",\"reference\":null},\"seed\":\"v3-uniform-url\",\"site_draw_count\":1,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":2,\"site_draw_u32\":618484077,\"site_index\":1,\"site_key\":\"example.com\",\"site_target\":1,\"site_weight\":2,\"url_draw_u32\":3837477653,\"url_index\":1},\"sequence\":1,\"total_site_weight\":10,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+    },
+    {
+      "name": "site-redraw",
+      "seed": "redraw-seed-2",
+      "draw_start": 0,
+      "mode": "UNIFORM_SITE",
+      "urls": [
+        "https://a.example.com/1",
+        "https://b.example.com/2",
+        "https://other.net/x"
+      ],
+      "repeat_guard_reference": "example.com",
+      "expected_transaction": {
+        "transaction_version": "r4b1t-selection-transaction/v3",
+        "sequence": 1,
+        "action": "ROLL",
+        "constraint": {
+          "terrain": "ALL",
+          "terrainIndex": null,
+          "protocolPolicy": {
+            "version": 1,
+            "excludeOnion": false
+          }
+        },
+        "corpus_revision": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "grouping": {
+          "algorithm": "site-weighted-two-stage-v1",
+          "site_key_version": "site-key/v1",
+          "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+          "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
+          "weight_mode": "UNIFORM_SITE"
+        },
+        "eligible_url_count": 3,
+        "eligible_site_count": 2,
+        "total_site_weight": 2,
+        "sampler": {
+          "algorithm": "site-weighted-two-stage-v1",
+          "prng": "mulberry32-u32-v1",
+          "seed": "redraw-seed-2",
+          "draw_start": 0,
+          "draw_count": 3,
+          "site_draw_count": 2,
+          "url_draw_count": 1,
+          "repeat_guard": {
+            "kind": "site-key",
+            "reference": "example.com",
+            "max_site_draws": 30,
+            "mode": "redraw",
+            "exhausted": false
+          }
+        },
+        "selection": {
+          "site_draw_u32": 3023278385,
+          "site_target": 1,
+          "site_index": 1,
+          "site_key": "other.net",
+          "site_weight": 1,
+          "site_bucket_size": 1,
+          "url_draw_u32": 3137503178,
+          "url_index": 0
+        },
+        "route": {
+          "url": "https://other.net/x"
+        }
+      },
+      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":2,\"eligible_url_count\":3,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_SITE\"},\"route\":{\"url\":\"https://other.net/x\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":3,\"draw_start\":0,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"redraw\",\"reference\":\"example.com\"},\"seed\":\"redraw-seed-2\",\"site_draw_count\":2,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":1,\"site_draw_u32\":3023278385,\"site_index\":1,\"site_key\":\"other.net\",\"site_target\":1,\"site_weight\":1,\"url_draw_u32\":3137503178,\"url_index\":0},\"sequence\":1,\"total_site_weight\":2,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+    },
+    {
+      "name": "single-site-bypass",
+      "seed": "single-site",
+      "draw_start": 3,
+      "mode": "UNIFORM_SITE",
+      "urls": [
+        "https://a.example/1",
+        "https://a.example/2",
+        "https://a.example/3"
+      ],
+      "repeat_guard_reference": "a.example",
+      "expected_transaction": {
+        "transaction_version": "r4b1t-selection-transaction/v3",
+        "sequence": 1,
+        "action": "ROLL",
+        "constraint": {
+          "terrain": "ALL",
+          "terrainIndex": null,
+          "protocolPolicy": {
+            "version": 1,
+            "excludeOnion": false
+          }
+        },
+        "corpus_revision": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "grouping": {
+          "algorithm": "site-weighted-two-stage-v1",
+          "site_key_version": "site-key/v1",
+          "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+          "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
+          "weight_mode": "UNIFORM_SITE"
+        },
+        "eligible_url_count": 3,
+        "eligible_site_count": 1,
+        "total_site_weight": 1,
+        "sampler": {
+          "algorithm": "site-weighted-two-stage-v1",
+          "prng": "mulberry32-u32-v1",
+          "seed": "single-site",
+          "draw_start": 3,
+          "draw_count": 2,
+          "site_draw_count": 1,
+          "url_draw_count": 1,
+          "repeat_guard": {
+            "kind": "site-key",
+            "reference": "a.example",
+            "max_site_draws": 30,
+            "mode": "single-site-bypass",
+            "exhausted": false
+          }
+        },
+        "selection": {
+          "site_draw_u32": 2489110252,
+          "site_target": 0,
+          "site_index": 0,
+          "site_key": "a.example",
+          "site_weight": 1,
+          "site_bucket_size": 3,
+          "url_draw_u32": 1084334363,
+          "url_index": 0
+        },
+        "route": {
+          "url": "https://a.example/1"
+        }
+      },
+      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":1,\"eligible_url_count\":3,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_SITE\"},\"route\":{\"url\":\"https://a.example/1\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":2,\"draw_start\":3,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"single-site-bypass\",\"reference\":\"a.example\"},\"seed\":\"single-site\",\"site_draw_count\":1,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":3,\"site_draw_u32\":2489110252,\"site_index\":0,\"site_key\":\"a.example\",\"site_target\":0,\"site_weight\":1,\"url_draw_u32\":1084334363,\"url_index\":0},\"sequence\":1,\"total_site_weight\":1,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+    },
+    {
+      "name": "guard-exhaustion",
+      "seed": "exhaust-0",
+      "draw_start": 0,
+      "mode": "UNIFORM_URL",
+      "urls": [
+        "https://a.example/0",
+        "https://a.example/1",
+        "https://a.example/2",
+        "https://a.example/3",
+        "https://a.example/4",
+        "https://a.example/5",
+        "https://a.example/6",
+        "https://a.example/7",
+        "https://a.example/8",
+        "https://a.example/9",
+        "https://a.example/10",
+        "https://a.example/11",
+        "https://a.example/12",
+        "https://a.example/13",
+        "https://a.example/14",
+        "https://a.example/15",
+        "https://a.example/16",
+        "https://a.example/17",
+        "https://a.example/18",
+        "https://a.example/19",
+        "https://a.example/20",
+        "https://a.example/21",
+        "https://a.example/22",
+        "https://a.example/23",
+        "https://a.example/24",
+        "https://a.example/25",
+        "https://a.example/26",
+        "https://a.example/27",
+        "https://a.example/28",
+        "https://a.example/29",
+        "https://a.example/30",
+        "https://a.example/31",
+        "https://a.example/32",
+        "https://a.example/33",
+        "https://a.example/34",
+        "https://a.example/35",
+        "https://a.example/36",
+        "https://a.example/37",
+        "https://a.example/38",
+        "https://a.example/39",
+        "https://a.example/40",
+        "https://a.example/41",
+        "https://a.example/42",
+        "https://a.example/43",
+        "https://a.example/44",
+        "https://a.example/45",
+        "https://a.example/46",
+        "https://a.example/47",
+        "https://a.example/48",
+        "https://a.example/49",
+        "https://a.example/50",
+        "https://a.example/51",
+        "https://a.example/52",
+        "https://a.example/53",
+        "https://a.example/54",
+        "https://a.example/55",
+        "https://a.example/56",
+        "https://a.example/57",
+        "https://a.example/58",
+        "https://a.example/59",
+        "https://a.example/60",
+        "https://a.example/61",
+        "https://a.example/62",
+        "https://a.example/63",
+        "https://a.example/64",
+        "https://a.example/65",
+        "https://a.example/66",
+        "https://a.example/67",
+        "https://a.example/68",
+        "https://a.example/69",
+        "https://a.example/70",
+        "https://a.example/71",
+        "https://a.example/72",
+        "https://a.example/73",
+        "https://a.example/74",
+        "https://a.example/75",
+        "https://a.example/76",
+        "https://a.example/77",
+        "https://a.example/78",
+        "https://a.example/79",
+        "https://a.example/80",
+        "https://a.example/81",
+        "https://a.example/82",
+        "https://a.example/83",
+        "https://a.example/84",
+        "https://a.example/85",
+        "https://a.example/86",
+        "https://a.example/87",
+        "https://a.example/88",
+        "https://a.example/89",
+        "https://a.example/90",
+        "https://a.example/91",
+        "https://a.example/92",
+        "https://a.example/93",
+        "https://a.example/94",
+        "https://a.example/95",
+        "https://a.example/96",
+        "https://a.example/97",
+        "https://a.example/98",
+        "https://a.example/99",
+        "https://b.example/x"
+      ],
+      "repeat_guard_reference": "a.example",
+      "expected_transaction": {
+        "transaction_version": "r4b1t-selection-transaction/v3",
+        "sequence": 1,
+        "action": "ROLL",
+        "constraint": {
+          "terrain": "ALL",
+          "terrainIndex": null,
+          "protocolPolicy": {
+            "version": 1,
+            "excludeOnion": false
+          }
+        },
+        "corpus_revision": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "grouping": {
+          "algorithm": "site-weighted-two-stage-v1",
+          "site_key_version": "site-key/v1",
+          "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+          "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
+          "weight_mode": "UNIFORM_URL"
+        },
+        "eligible_url_count": 101,
+        "eligible_site_count": 2,
+        "total_site_weight": 101,
+        "sampler": {
+          "algorithm": "site-weighted-two-stage-v1",
+          "prng": "mulberry32-u32-v1",
+          "seed": "exhaust-0",
+          "draw_start": 0,
+          "draw_count": 31,
+          "site_draw_count": 30,
+          "url_draw_count": 1,
+          "repeat_guard": {
+            "kind": "site-key",
+            "reference": "a.example",
+            "max_site_draws": 30,
+            "mode": "redraw",
+            "exhausted": true
+          }
+        },
+        "selection": {
+          "site_draw_u32": 2641899435,
+          "site_target": 62,
+          "site_index": 0,
+          "site_key": "a.example",
+          "site_weight": 100,
+          "site_bucket_size": 100,
+          "url_draw_u32": 4115459804,
+          "url_index": 95
+        },
+        "route": {
+          "url": "https://a.example/95"
+        }
+      },
+      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":2,\"eligible_url_count\":101,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_URL\"},\"route\":{\"url\":\"https://a.example/95\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":31,\"draw_start\":0,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":true,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"redraw\",\"reference\":\"a.example\"},\"seed\":\"exhaust-0\",\"site_draw_count\":30,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":100,\"site_draw_u32\":2641899435,\"site_index\":0,\"site_key\":\"a.example\",\"site_target\":62,\"site_weight\":100,\"url_draw_u32\":4115459804,\"url_index\":95},\"sequence\":1,\"total_site_weight\":101,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+    }
+  ]
+}
