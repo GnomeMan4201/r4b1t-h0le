@@ -27,6 +27,7 @@
     "ledger:verify": "python3 -m corpus.ledger.tools.shadow verify"
   },
   "devDependencies": {
-    "@playwright/test": "1.62.0"
+    "@playwright/test": "1.62.0",
+    "fast-check": "4.10.2"
   }
 }
