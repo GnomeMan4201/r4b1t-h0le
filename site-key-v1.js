@@ -124,6 +124,19 @@
     return labels.slice(labels.length - publicSuffixLabels - 1).join('.');
   }
 
+  function validOverrideOwner(host, kind, owner) {
+    if (host === 'github.com' && kind === 'path-owner') {
+      return /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(owner);
+    }
+    if (host === 'gitlab.com' && kind === 'path-owner') {
+      return /^[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?$/.test(owner);
+    }
+    if (host === 'medium.com' && kind === 'at-path-owner') {
+      return /^@[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?$/.test(owner);
+    }
+    return false;
+  }
+
   function overrideKey(parsed, normalizedHost, overrides) {
     if (!overrides || !Array.isArray(overrides.rules)) return null;
     var segments = parsed.pathname.split('/').filter(Boolean);
@@ -134,9 +147,7 @@
       if (!segments.length) return null;
 
       var owner = segments[0];
-      if (rule.kind === 'at-path-owner' && (owner.length < 2 || owner[0] !== '@')) {
-        return null;
-      }
+      if (!validOverrideOwner(normalizedHost, rule.kind, owner)) return null;
       if (rule.case === 'lower') owner = owner.toLowerCase();
       return normalizedHost + '/' + owner;
     }
@@ -212,6 +223,7 @@
     parseOverrides: parseOverrides,
     registrableDomain: registrableDomain,
     siteKey: siteKey,
+    validOverrideOwner: validOverrideOwner,
     compareUtf8: compareUtf8,
     canonicalGroups: canonicalGroups
   });
