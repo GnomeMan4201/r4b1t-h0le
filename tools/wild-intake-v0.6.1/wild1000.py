@@ -197,8 +197,7 @@ class SourceRegistry:
                 line.split("#", 1)[0].strip()
                 for line in Path(leads_path).read_text(encoding="utf-8").splitlines()
                 if line.strip() and not line.lstrip().startswith("#")
-            ]
-        except OSError as e:
+            ]        except OSError as e:
             die(f"[source-registry] leads file unreadable: {e}")
         lead_lines = [x for x in lead_lines if x]
         duplicates = sorted(k for k, n in Counter(lead_lines).items() if n > 1)
@@ -397,8 +396,7 @@ class Classification:
         if ps not in self.subjects:
             p.append(f"primary_subject={ps!r}")
         for x in subs:
-            if x not in self.subjects:
-                p.append(f"subject={x!r}")
+            if x not in self.subjects:                p.append(f"subject={x!r}")
         if len(subs) != len(set(subs)):
             p.append("duplicate subjects")
         if len(subs) > self.max_subjects:
@@ -597,8 +595,7 @@ class Politeness:
         self.last: dict[str, float] = defaultdict(lambda: -1e9)
 
     @asynccontextmanager
-    async def slot(self, host: str):
-        h = host.lower().rstrip(".")
+    async def slot(self, host: str):        h = host.lower().rstrip(".")
         async with self.locks[h]:
             wait = self.last[h] + self.delay - time.monotonic()
             if wait > 0:
@@ -797,8 +794,7 @@ class Obs:
     url: str
     raw_url: str = ""
     site_key: str = ""
-    anchor: str = ""
-    # lead provenance (copied from the harvest record)
+    anchor: str = ""    # lead provenance (copied from the harvest record)
     lead_source_url: str = ""
     lead_final_url: str = ""
     lead_source_key: str = MANUAL_SOURCE
@@ -997,8 +993,7 @@ def source_ledger(obs_latest: dict[str, dict], review: list[dict],
         s = state.get(k, "UNREVIEWED")
         out[src][{"CAMPAIGN_ACCEPTED": "campaign_accepted", "REVIEW_ACCEPTED": "review_accepted",
                   "REVIEW_REJECTED": "human_rejected", "REVIEW_INVALID": "review_invalid",
-                  "UNREVIEWED": "pending"}[s]] += 1
-    return out
+                  "UNREVIEWED": "pending"}[s]] += 1    return out
 
 
 def quota_used(c: Counter) -> int:
@@ -1034,6 +1029,12 @@ def cmd_campaign_init(args) -> None:
     mpath = d / Campaign.MANIFEST
     if mpath.exists():
         die(f"[campaign] {mpath} already exists; a campaign manifest is immutable")
+    registry = None
+    if bool(args.leads) != bool(args.source_registry):
+        die("[campaign] --leads and --source-registry must be supplied together")
+    if args.source_registry:
+        registry = SourceRegistry(args.source_registry, args.leads,
+                                  args.source_cap if args.source_cap is not None else max(1, args.campaign_target * 5 // 100))
     cls = Classification(Path(args.classification))
     if cls.status != "frozen":
         die(f"[campaign] classification {cls.version} has status {cls.status!r}; "
@@ -1066,6 +1067,14 @@ def cmd_campaign_init(args) -> None:
         "sitekey": auth.manifest_block(),
         "classification": {"schema": CLASSIFICATION_SCHEMA, "version": cls.version,
                            "sha256": cls.sha256},
+        **({"discovery_source_registry": {
+            "schema": SOURCE_REGISTRY_SCHEMA,
+            "sha256": registry.sha256,
+            "lead_count": registry.lead_count,
+            "source_count": registry.source_count,
+            "source_cap": registry.registry_cap,
+            "max_depth": 0,
+        }} if registry else {}),
         "policy": {
             "campaign_target": args.campaign_target,
             "source_cap": source_cap,
@@ -1089,7 +1098,15 @@ def cmd_campaign_init(args) -> None:
 async def cmd_harvest(args) -> None:
     auth = _auth(args)
     camp = Campaign(args.campaign, auth)
+    bound_registry = camp.manifest.get("discovery_source_registry")
+    if bound_registry and not args.source_registry:
+        die("[harvest] campaign is bound to a source registry; --source-registry is required")
     registry = SourceRegistry(args.source_registry, args.leads, camp.cap) if args.source_registry else None
+    if bound_registry:
+        if registry.sha256 != bound_registry["sha256"]:
+            die(f"[harvest] source registry hash {registry.sha256} != campaign binding {bound_registry['sha256']}")
+        if registry.lead_count != bound_registry["lead_count"] or registry.source_count != bound_registry["source_count"]:
+            die("[harvest] source registry cardinality differs from campaign binding")
     polite = Politeness(args.delay)
     out_path, lead_path = camp.path("candidates.jsonl"), camp.path("leads.jsonl")
     seen = {r["url"] for r in load_jsonl(out_path)}
@@ -1198,7 +1215,6 @@ async def cmd_verify(args) -> None:
             url, k = admit(auth, raw)
         except Rejected as r:
             skip(r.code); continue
-
         if k in camp.corpus_keys:
             skip("sitekey_in_baseline", k, url); continue
         prev = latest.get(k)
@@ -1397,7 +1413,6 @@ def cmd_export(args) -> None:
 
 
 # ---------------------------------------------------------------------------
-
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -1423,6 +1438,8 @@ def main() -> None:
     c.add_argument("--expect-sitekeys", type=int, help="refuse unless the baseline has this many")
     c.add_argument("--classification", required=True, help="frozen resource-classification-v2 JSON")
     c.add_argument("--campaign-target", type=int, default=1000)
+    c.add_argument("--leads", help="frozen lead file to bind to the campaign registry")
+    c.add_argument("--source-registry", help="frozen discovery registry to bind to the campaign")
     c.add_argument("--source-cap", type=int, help="max accepted siteKeys per lead_source_key "
                    "(default: 5%% of target, integer division)")
     c.add_argument("--pending-cap", type=int, help="max accepted+unreviewed per lead_source_key "
