@@ -10,7 +10,7 @@ Status: setup only. No corpus or ledger mutation is performed by this branch.
 - leads: `corpus/wild/leads-v1.txt`
 - intake tool: `wild-intake-v0.6`
 - required `wild1000.py` SHA-256:
-  `f7078be2763a34aea633356a3b559d287dfd30125d301f4a2aaac5cd049f7a9e`
+  `fb645cdcc0d2ce2fc0edfb62fd70750194324d754d41bcf02bcc09cb449510cd`
 
 Do not substitute an older intake tool.
 
@@ -18,10 +18,10 @@ Do not substitute an older intake tool.
 
 ```bash
 R=/path/to/r4b1t-h0le
-W=/path/to/wild1000.py
+W=$R/tools/wild-intake-v0.6.1/wild1000.py
 
 printf '%s  %s\n' \
-  f7078be2763a34aea633356a3b559d287dfd30125d301f4a2aaac5cd049f7a9e \
+  fb645cdcc0d2ce2fc0edfb62fd70750194324d754d41bcf02bcc09cb449510cd \
   "$W" | sha256sum -c -
 
 python3 "$W" selftest \
