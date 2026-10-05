@@ -165,6 +165,29 @@ def _override_key(parsed, host: str, overrides):
     return None
 
 
+def is_canonical_ipv4(host: str) -> bool:
+    value = host[:-1] if host.endswith(".") else host
+    parts = value.split(".")
+    if len(parts) != 4:
+        return False
+    for part in parts:
+        if re.fullmatch(r"(?:0|[1-9][0-9]{0,2})", part) is None:
+            return False
+        if int(part) > 255:
+            return False
+    return True
+
+
+def is_legacy_ipv4_candidate(host: str) -> bool:
+    value = host[:-1] if host.endswith(".") else host
+    parts = value.split(".")
+    return bool(parts) and all(
+        re.fullmatch(r"[0-9]+", part) is not None
+        or re.fullmatch(r"0x[0-9a-f]+", part, re.IGNORECASE) is not None
+        for part in parts
+    )
+
+
 def validate_raw_url(raw: str) -> str:
     match = re.match(r"^https?://([^/?#]*)([^?#]*)", str(raw), re.IGNORECASE)
     if not match:
@@ -174,8 +197,29 @@ def validate_raw_url(raw: str) -> str:
     raw_path = match.group(2) or ""
     if any(ord(ch) > 0x7F for ch in authority):
         raise SiteKeyError("SITE_KEY_HOST_NOT_ASCII")
-    if "%" in authority or "\\" in authority or "\\" in raw_path:
+    if (
+        any(ord(ch) <= 0x20 or ord(ch) == 0x7F for ch in authority)
+        or any(ord(ch) <= 0x20 or ord(ch) == 0x7F for ch in raw_path)
+        or "%" in authority
+        or "\\" in authority
+        or "\\" in raw_path
+    ):
         raise SiteKeyError("SITE_KEY_URL_NOT_CANONICAL")
+
+    if "@" not in authority:
+        if authority.startswith("["):
+            host_match = re.fullmatch(r"(\[[0-9A-Fa-f:.]+\])(?::[0-9]+)?", authority)
+        else:
+            host_match = re.fullmatch(r"([A-Za-z0-9._-]+)(?::[0-9]+)?", authority)
+        if host_match is None:
+            raise SiteKeyError("SITE_KEY_URL_NOT_CANONICAL")
+
+        raw_host = host_match.group(1)
+        if not raw_host.startswith("["):
+            if ".." in raw_host:
+                raise SiteKeyError("SITE_KEY_URL_NOT_CANONICAL")
+            if is_legacy_ipv4_candidate(raw_host) and not is_canonical_ipv4(raw_host):
+                raise SiteKeyError("SITE_KEY_URL_NOT_CANONICAL")
 
     for segment in raw_path.split("/"):
         dots = re.sub(r"%2e", ".", segment, flags=re.IGNORECASE)
