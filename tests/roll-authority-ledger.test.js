@@ -97,6 +97,31 @@ test('authority sequence is allocated atomically with terminal state and is mono
   assert.equal((await store.listPrepared()).length, 0);
 });
 
+
+test('concurrent callers sharing the global lock serialize to one PREPARED and monotonic terminals', async () => {
+  const ledger = loadLedger();
+  const store = ledger.createMemoryStore();
+  let tail = Promise.resolve();
+  const withLock = fn => {
+    const run = tail.then(fn, fn);
+    tail = run.then(() => undefined, () => undefined);
+    return run;
+  };
+  const coordinator = ledger.createCoordinator({ core, store, withLock });
+  let trailSequence = 0;
+
+  const commitOne = id => coordinator.commit(
+    () => samplePrepared(id, ++trailSequence),
+    async (record, context) => { await context.store.markProjected(record.transactionId); }
+  );
+
+  const [a, b] = await Promise.all([commitOne('tx-race-a'), commitOne('tx-race-b')]);
+
+  assert.deepEqual([a.authoritySequence, b.authoritySequence], [1, 2]);
+  assert.deepEqual((await store.listRecords()).map(r => r.transactionId), ['tx-race-a', 'tx-race-b']);
+  assert.equal((await store.listPrepared()).length, 0);
+});
+
 test('two live PREPARED records are rejected instead of ordered', async () => {
   const ledger = loadLedger();
   const store = ledger.createMemoryStore();
