@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ipaddress
 import json
+import re
 from urllib.parse import urlsplit
 
 SITE_KEY_VERSION = "site-key/v1"
@@ -139,6 +140,16 @@ def registrable_domain(host: str, psl) -> str:
     return ".".join(labels[len(labels) - public_suffix_labels - 1 :])
 
 
+def valid_override_owner(host: str, kind: str, owner: str) -> bool:
+    if host == "github.com" and kind == "path-owner":
+        return re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?", owner) is not None
+    if host == "gitlab.com" and kind == "path-owner":
+        return re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?", owner) is not None
+    if host == "medium.com" and kind == "at-path-owner":
+        return re.fullmatch(r"@[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?", owner) is not None
+    return False
+
+
 def _override_key(parsed, host: str, overrides):
     if not overrides:
         return None
@@ -150,7 +161,7 @@ def _override_key(parsed, host: str, overrides):
         if not segments:
             return None
         owner = segments[0]
-        if rule["kind"] == "at-path-owner" and (len(owner) < 2 or not owner.startswith("@")):
+        if not valid_override_owner(host, rule["kind"], owner):
             return None
         if rule["case"] == "lower":
             owner = owner.lower()
