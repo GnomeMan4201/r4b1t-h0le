@@ -1,0 +1,38 @@
+# R4B1T H0L3 — WILD lead set v1
+# Verified 2026-10-05. Leads are discovery inputs, never admission authority.
+# Multiple pages from the same site intentionally share one lead_source_key quota.
+
+# --- weird / experimental web ---
+https://www.wackywebs.com/
+https://openweird.com/weird-websites-when-bored/
+https://href.cool/
+
+# --- indie / personal / small web ---
+https://ooh.directory/
+https://neocities.org/browse
+https://indieweb.org/webring
+https://512kb.club/
+https://1mb.club/
+
+# --- creative coding / experiments ---
+https://experiments.withgoogle.com/collection/chrome
+https://experiments.withgoogle.com/collections
+
+# --- datasets / APIs / obscure databases ---
+https://github.com/williamrthomas/database-of-databases
+https://github.com/awesomedata/awesome-public-datasets
+https://github.com/public-apis/public-apis
+https://www.si.edu/openaccess
+
+# --- OSINT / security-adjacent ---
+https://osintframework.com/
+https://github.com/jivoi/awesome-osint
+https://github.com/tigergate/awesome-security
+
+# --- maps / data visualization / research tooling ---
+https://github.com/thedoubler/awesome-maps-data
+https://github.com/hal9ai/awesome-dataviz
+https://github.com/louisbarclay/awesome-web-research-tools
+
+# --- historical computing ---
+https://www.pcjs.org/
