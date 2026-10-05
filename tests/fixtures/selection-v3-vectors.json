@@ -46,6 +46,14 @@
     {
       "url": "https://a.b.example.co.uk/x",
       "site_key": "example.co.uk"
+    },
+    {
+      "url": "https://127.0.0.1/a",
+      "site_key": "127.0.0.1"
+    },
+    {
+      "url": "https://[2001:db8::1]/a",
+      "site_key": "[2001:db8::1]"
     }
   ],
   "vectors": [
