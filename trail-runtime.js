@@ -12,6 +12,12 @@
   var QUARANTINE_KEY = 'r4b1t_trail_draft_quarantine_v1';
   var MAX_DRAWS_PER_ROLL = 30;
   var authorityOriginalCommit = null;
+  var authorityReadyResolve = null;
+  var authorityReadyReject = null;
+  window.__r4b1tTrailAuthorityReady = new Promise(function (resolve, reject) {
+    authorityReadyResolve = resolve;
+    authorityReadyReject = reject;
+  });
   var state = {
     seed: randomSeed(),
     createdAt: new Date().toISOString(),
@@ -960,11 +966,29 @@
   document.addEventListener('DOMContentLoaded', function () {
     ensurePanel();
     watchSelections();
-    loadCorpusRevision().catch(showError);
+    var corpusReady = loadCorpusRevision();
+    corpusReady.catch(showError);
     var attempts = 0;
     var timer = setInterval(function () {
       attempts += 1;
-      if (wrapRoll() || attempts > 100) clearInterval(timer);
+      if (wrapRoll()) {
+        clearInterval(timer);
+        corpusReady.then(function () {
+          authorityReadyResolve(true);
+        }, authorityReadyReject);
+        return;
+      }
+      if (authorityOriginalCommit && window.__r4b1tCommitRoll && window.__r4b1tCommitRoll.__r4b1tAuthority) {
+        clearInterval(timer);
+        corpusReady.then(function () {
+          authorityReadyResolve(true);
+        }, authorityReadyReject);
+        return;
+      }
+      if (attempts > 100) {
+        clearInterval(timer);
+        authorityReadyReject(new Error('ROLL authority bridge unavailable'));
+      }
     }, 25);
   });
 
