@@ -78,6 +78,63 @@ test('crash after durable terminal but before Trail projection is reconciled exa
   assert.deepEqual(seen, ['tx-commit-gap']);
 });
 
+test('an unrelated unprojected COMMITTED blocks a new draw instead of being silently recovered', async () => {
+  const ledger = loadLedger();
+  const store = ledger.createMemoryStore();
+  const prepared = samplePrepared('tx-live-unrevealed', 1);
+  await store.putPrepared(prepared);
+  await store.terminalize(
+    prepared.transactionId,
+    core.resolvePrepared(prepared),
+    core.createTerminal
+  );
+
+  const projected = [];
+  let preparedNew = false;
+  const coordinator = ledger.createCoordinator({ core, store, withLock: fn => fn() });
+
+  await assert.rejects(
+    coordinator.commit(
+      () => {
+        preparedNew = true;
+        return samplePrepared('tx-should-not-start', 2);
+      },
+      async record => {
+        projected.push(record.transactionId);
+        return { projected: true };
+      }
+    ),
+    /UNREVEALED_COMMIT_PENDING/
+  );
+
+  assert.equal(preparedNew, false);
+  assert.deepEqual(projected, []);
+  assert.equal((await store.listUnprojectedCommitted()).length, 1);
+  assert.equal((await store.listPrepared()).length, 0);
+});
+
+test('explicit recovery crosses an unprojected COMMITTED gap', async () => {
+  const ledger = loadLedger();
+  const store = ledger.createMemoryStore();
+  const prepared = samplePrepared('tx-crash-gap', 1);
+  await store.putPrepared(prepared);
+  await store.terminalize(
+    prepared.transactionId,
+    core.resolvePrepared(prepared),
+    core.createTerminal
+  );
+
+  const projected = [];
+  const coordinator = ledger.createCoordinator({ core, store, withLock: fn => fn() });
+  await coordinator.recover(async (record, context) => {
+    projected.push([record.transactionId, context.recovered, context.recoveryMode]);
+    return { projected: true };
+  });
+
+  assert.deepEqual(projected, [['tx-crash-gap', true, 'restore']]);
+  assert.equal((await store.listUnprojectedCommitted()).length, 0);
+});
+
 test('authority sequence is allocated atomically with terminal state and is monotonic', async () => {
   const ledger = loadLedger();
   const store = ledger.createMemoryStore();
