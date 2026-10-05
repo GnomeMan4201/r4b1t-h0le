@@ -373,6 +373,42 @@
     return selectionCore.eligiblePool(loaded.urls, terrainIndex, constraint);
   }
 
+  function refreshAuthorityDraftFromStorage() {
+    if (state.preservationBlocked) throw new Error('DRAFT_PRESERVATION_UNAVAILABLE');
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) throw new Error('DRAFT_AUTHORITY_STATE_UNAVAILABLE');
+    var previous = Object.assign({}, state);
+    try {
+      var saved = JSON.parse(raw);
+      if (!saved || typeof saved.seed !== 'string' || !saved.seed || !Array.isArray(saved.routes)) {
+        throw new Error('Invalid durable draft shape');
+      }
+      if (typeof saved.corpusRevision !== 'string' || saved.corpusRevision !== state.corpusRevision) {
+        throw new Error('Durable draft corpus revision mismatch');
+      }
+      for (var index = 0; index < saved.routes.length; index += 1) {
+        var route = saved.routes[index];
+        if (!route || !/^https?:\/\//i.test(route.url || '')) {
+          throw new Error('Invalid durable draft route at step ' + (index + 1));
+        }
+        new URL(route.url);
+      }
+      state.seed = saved.seed;
+      state.createdAt = typeof saved.createdAt === 'string' ? saved.createdAt : state.createdAt;
+      state.corpusSourceId = typeof saved.corpusSourceId === 'string' ? saved.corpusSourceId : state.corpusSourceId;
+      state.routes = saved.routes;
+      state.parent = saved.parent || null;
+      state.imported = null;
+      state.replayIndex = 0;
+      var failure = restoreSamplerContinuity();
+      if (failure) throw new Error(failure);
+      return true;
+    } catch (error) {
+      Object.assign(state, previous);
+      throw error;
+    }
+  }
+
   async function prepareAuthorityRoll(transactionId) {
     var authorityCore = window.R4B1TRollAuthorityCore;
     if (!authorityCore || typeof authorityCore.createPrepared !== 'function') {
@@ -382,6 +418,7 @@
     if (!authorityOriginalCommit) wrapRoll();
     if (!authorityOriginalCommit) throw new Error('ROLL_COMMIT_ADAPTER_UNAVAILABLE');
     if (!state.corpusRevision) await loadCorpusRevision();
+    refreshAuthorityDraftFromStorage();
     if (typeof window.__r4b1tCaptureSelectionConstraint !== 'function') {
       throw new Error('SELECTION_CONSTRAINT_UNAVAILABLE');
     }
@@ -464,6 +501,7 @@
 
   async function projectAuthorityTerminal(terminal, context) {
     if (!terminal || terminal.state !== 'COMMITTED') return { projected: false };
+    refreshAuthorityDraftFromStorage();
     var transactionId = terminal.transactionId;
     var existing = authorityRouteFor(transactionId);
     if (existing) {
