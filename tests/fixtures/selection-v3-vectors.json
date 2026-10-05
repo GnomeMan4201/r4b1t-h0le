@@ -1,6 +1,6 @@
 {
   "schema": "r4b1t-selection-v3-vectors/v1",
-  "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+  "psl_sha256": "sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8",
   "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
   "normalization": [
     {
@@ -12,7 +12,7 @@
       "site_key": "example.com"
     },
     {
-      "url": "https://bücher.example/a",
+      "url": "https://xn--bcher-kva.example/a",
       "site_key": "xn--bcher-kva.example"
     },
     {
@@ -83,7 +83,7 @@
         "grouping": {
           "algorithm": "site-weighted-two-stage-v1",
           "site_key_version": "site-key/v1",
-          "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+          "psl_sha256": "sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8",
           "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
           "weight_mode": "UNIFORM_SITE"
         },
@@ -120,7 +120,7 @@
           "url": "https://gitlab.com/Group/one"
         }
       },
-      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":7,\"eligible_url_count\":10,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_SITE\"},\"route\":{\"url\":\"https://gitlab.com/Group/one\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":2,\"draw_start\":0,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"none\",\"reference\":null},\"seed\":\"v3-uniform-site\",\"site_draw_count\":1,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":2,\"site_draw_u32\":2918910462,\"site_index\":4,\"site_key\":\"gitlab.com/group\",\"site_target\":4,\"site_weight\":1,\"url_draw_u32\":894753053,\"url_index\":0},\"sequence\":1,\"total_site_weight\":7,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":7,\"eligible_url_count\":10,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_SITE\"},\"route\":{\"url\":\"https://gitlab.com/Group/one\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":2,\"draw_start\":0,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"none\",\"reference\":null},\"seed\":\"v3-uniform-site\",\"site_draw_count\":1,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":2,\"site_draw_u32\":2918910462,\"site_index\":4,\"site_key\":\"gitlab.com/group\",\"site_target\":4,\"site_weight\":1,\"url_draw_u32\":894753053,\"url_index\":0},\"sequence\":1,\"total_site_weight\":7,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
     },
     {
       "name": "sqrt-depth-basic",
@@ -156,7 +156,7 @@
         "grouping": {
           "algorithm": "site-weighted-two-stage-v1",
           "site_key_version": "site-key/v1",
-          "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+          "psl_sha256": "sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8",
           "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
           "weight_mode": "SQRT_DEPTH"
         },
@@ -193,7 +193,7 @@
           "url": "https://github.com/Other/repo"
         }
       },
-      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":7,\"eligible_url_count\":10,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"SQRT_DEPTH\"},\"route\":{\"url\":\"https://github.com/Other/repo\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":2,\"draw_start\":0,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"none\",\"reference\":null},\"seed\":\"v3-sqrt-depth\",\"site_draw_count\":1,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":1,\"site_draw_u32\":2377171016,\"site_index\":3,\"site_key\":\"github.com/other\",\"site_target\":298981,\"site_weight\":65536,\"url_draw_u32\":2156914696,\"url_index\":0},\"sequence\":1,\"total_site_weight\":540187,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":7,\"eligible_url_count\":10,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"SQRT_DEPTH\"},\"route\":{\"url\":\"https://github.com/Other/repo\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":2,\"draw_start\":0,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"none\",\"reference\":null},\"seed\":\"v3-sqrt-depth\",\"site_draw_count\":1,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":1,\"site_draw_u32\":2377171016,\"site_index\":3,\"site_key\":\"github.com/other\",\"site_target\":298981,\"site_weight\":65536,\"url_draw_u32\":2156914696,\"url_index\":0},\"sequence\":1,\"total_site_weight\":540187,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
     },
     {
       "name": "uniform-url-nonzero-cursor",
@@ -229,7 +229,7 @@
         "grouping": {
           "algorithm": "site-weighted-two-stage-v1",
           "site_key_version": "site-key/v1",
-          "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+          "psl_sha256": "sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8",
           "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
           "weight_mode": "UNIFORM_URL"
         },
@@ -266,7 +266,7 @@
           "url": "https://www.example.com/a"
         }
       },
-      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":7,\"eligible_url_count\":10,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_URL\"},\"route\":{\"url\":\"https://www.example.com/a\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":2,\"draw_start\":7,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"none\",\"reference\":null},\"seed\":\"v3-uniform-url\",\"site_draw_count\":1,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":2,\"site_draw_u32\":618484077,\"site_index\":1,\"site_key\":\"example.com\",\"site_target\":1,\"site_weight\":2,\"url_draw_u32\":3837477653,\"url_index\":1},\"sequence\":1,\"total_site_weight\":10,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":7,\"eligible_url_count\":10,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_URL\"},\"route\":{\"url\":\"https://www.example.com/a\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":2,\"draw_start\":7,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"none\",\"reference\":null},\"seed\":\"v3-uniform-url\",\"site_draw_count\":1,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":2,\"site_draw_u32\":618484077,\"site_index\":1,\"site_key\":\"example.com\",\"site_target\":1,\"site_weight\":2,\"url_draw_u32\":3837477653,\"url_index\":1},\"sequence\":1,\"total_site_weight\":10,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
     },
     {
       "name": "site-redraw",
@@ -295,7 +295,7 @@
         "grouping": {
           "algorithm": "site-weighted-two-stage-v1",
           "site_key_version": "site-key/v1",
-          "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+          "psl_sha256": "sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8",
           "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
           "weight_mode": "UNIFORM_SITE"
         },
@@ -332,7 +332,7 @@
           "url": "https://other.net/x"
         }
       },
-      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":2,\"eligible_url_count\":3,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_SITE\"},\"route\":{\"url\":\"https://other.net/x\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":3,\"draw_start\":0,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"redraw\",\"reference\":\"example.com\"},\"seed\":\"redraw-seed-2\",\"site_draw_count\":2,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":1,\"site_draw_u32\":3023278385,\"site_index\":1,\"site_key\":\"other.net\",\"site_target\":1,\"site_weight\":1,\"url_draw_u32\":3137503178,\"url_index\":0},\"sequence\":1,\"total_site_weight\":2,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":2,\"eligible_url_count\":3,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_SITE\"},\"route\":{\"url\":\"https://other.net/x\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":3,\"draw_start\":0,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"redraw\",\"reference\":\"example.com\"},\"seed\":\"redraw-seed-2\",\"site_draw_count\":2,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":1,\"site_draw_u32\":3023278385,\"site_index\":1,\"site_key\":\"other.net\",\"site_target\":1,\"site_weight\":1,\"url_draw_u32\":3137503178,\"url_index\":0},\"sequence\":1,\"total_site_weight\":2,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
     },
     {
       "name": "single-site-bypass",
@@ -361,7 +361,7 @@
         "grouping": {
           "algorithm": "site-weighted-two-stage-v1",
           "site_key_version": "site-key/v1",
-          "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+          "psl_sha256": "sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8",
           "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
           "weight_mode": "UNIFORM_SITE"
         },
@@ -398,7 +398,7 @@
           "url": "https://a.example/1"
         }
       },
-      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":1,\"eligible_url_count\":3,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_SITE\"},\"route\":{\"url\":\"https://a.example/1\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":2,\"draw_start\":3,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"single-site-bypass\",\"reference\":\"a.example\"},\"seed\":\"single-site\",\"site_draw_count\":1,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":3,\"site_draw_u32\":2489110252,\"site_index\":0,\"site_key\":\"a.example\",\"site_target\":0,\"site_weight\":1,\"url_draw_u32\":1084334363,\"url_index\":0},\"sequence\":1,\"total_site_weight\":1,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":1,\"eligible_url_count\":3,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_SITE\"},\"route\":{\"url\":\"https://a.example/1\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":2,\"draw_start\":3,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":false,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"single-site-bypass\",\"reference\":\"a.example\"},\"seed\":\"single-site\",\"site_draw_count\":1,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":3,\"site_draw_u32\":2489110252,\"site_index\":0,\"site_key\":\"a.example\",\"site_target\":0,\"site_weight\":1,\"url_draw_u32\":1084334363,\"url_index\":0},\"sequence\":1,\"total_site_weight\":1,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
     },
     {
       "name": "guard-exhaustion",
@@ -525,7 +525,7 @@
         "grouping": {
           "algorithm": "site-weighted-two-stage-v1",
           "site_key_version": "site-key/v1",
-          "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+          "psl_sha256": "sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8",
           "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
           "weight_mode": "UNIFORM_URL"
         },
@@ -562,7 +562,19 @@
           "url": "https://a.example/95"
         }
       },
-      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":2,\"eligible_url_count\":101,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_URL\"},\"route\":{\"url\":\"https://a.example/95\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":31,\"draw_start\":0,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":true,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"redraw\",\"reference\":\"a.example\"},\"seed\":\"exhaust-0\",\"site_draw_count\":30,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":100,\"site_draw_u32\":2641899435,\"site_index\":0,\"site_key\":\"a.example\",\"site_target\":62,\"site_weight\":100,\"url_draw_u32\":4115459804,\"url_index\":95},\"sequence\":1,\"total_site_weight\":101,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+      "expected_canonical_json": "{\"action\":\"ROLL\",\"constraint\":{\"protocolPolicy\":{\"excludeOnion\":false,\"version\":1},\"terrain\":\"ALL\",\"terrainIndex\":null},\"corpus_revision\":\"sha256:1111111111111111111111111111111111111111111111111111111111111111\",\"eligible_site_count\":2,\"eligible_url_count\":101,\"grouping\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"overrides_sha256\":\"sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d\",\"psl_sha256\":\"sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8\",\"site_key_version\":\"site-key/v1\",\"weight_mode\":\"UNIFORM_URL\"},\"route\":{\"url\":\"https://a.example/95\"},\"sampler\":{\"algorithm\":\"site-weighted-two-stage-v1\",\"draw_count\":31,\"draw_start\":0,\"prng\":\"mulberry32-u32-v1\",\"repeat_guard\":{\"exhausted\":true,\"kind\":\"site-key\",\"max_site_draws\":30,\"mode\":\"redraw\",\"reference\":\"a.example\"},\"seed\":\"exhaust-0\",\"site_draw_count\":30,\"url_draw_count\":1},\"selection\":{\"site_bucket_size\":100,\"site_draw_u32\":2641899435,\"site_index\":0,\"site_key\":\"a.example\",\"site_target\":62,\"site_weight\":100,\"url_draw_u32\":4115459804,\"url_index\":95},\"sequence\":1,\"total_site_weight\":101,\"transaction_version\":\"r4b1t-selection-transaction/v3\"}"
+    }
+  ],
+  "psl_source_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+  "psl_derivation": "unicode-nfc-lower-rfc3492/v1",
+  "rejections": [
+    {
+      "url": "https://bücher.example/a",
+      "code": "SITE_KEY_HOST_NOT_ASCII"
+    },
+    {
+      "url": "https://faß.de/",
+      "code": "SITE_KEY_HOST_NOT_ASCII"
     }
   ]
 }
