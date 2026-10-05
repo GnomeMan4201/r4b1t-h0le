@@ -1,5 +1,5 @@
 # R4B1T H0L3 — WILD lead set v1
-# Verified 2026-10-05. Leads are discovery inputs, never admission authority.
+# Seeded 2026-10-05 from live/current discovery sources. The WILD harvester remains the liveness/admission evidence producer.
 # Multiple pages from the same site intentionally share one lead_source_key quota.
 
 # --- weird / experimental web ---
