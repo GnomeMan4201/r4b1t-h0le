@@ -88,6 +88,31 @@ test('commit exposes a compact presentation object and reveal advances tab-local
   assert.deepEqual(shown, []);
 });
 
+test('reveal-time Trail projection is serialized by the same global authority lock', async () => {
+  const store = ledger.createMemoryStore();
+  let sequence = 0;
+  let lockCalls = 0;
+  const runtime = runtimeApi.createRuntime({
+    core,
+    ledger,
+    store,
+    withLock: async fn => {
+      lockCalls += 1;
+      return fn();
+    },
+    sessionStorage: memorySessionStorage(),
+    idFactory: () => 'tx-' + (sequence + 1),
+    prepare: id => prepared(id, ++sequence),
+    project: async (_terminal, context) => context && context.reveal ? { projected: true } : { deferCompletion: true },
+    show: async () => {}
+  });
+
+  const result = await runtime.commit();
+  assert.equal(lockCalls, 1);
+  await runtime.markRevealed(result);
+  assert.equal(lockCalls, 2);
+});
+
 test('PREVIOUS and FORWARD only move the transaction cursor and show recorded terminals', async () => {
   const store = ledger.createMemoryStore();
   let sequence = 0;
@@ -177,6 +202,41 @@ test('recovery projects an orphan commit and adds it to tab-local history exactl
 
   assert.deepEqual(projected, [['tx-orphan', true]]);
   assert.deepEqual(runtime.snapshot(), { entries: ['tx-orphan'], cursor: 0 });
+});
+
+test('pre-existing COMMITTED recovery projects durably without auto-showing another tab\'s result', async () => {
+  const store = ledger.createMemoryStore();
+  const preparedRecord = prepared('tx-live-other-tab', 1);
+  await store.putPrepared(preparedRecord);
+  await store.terminalize(
+    preparedRecord.transactionId,
+    core.resolvePrepared(preparedRecord),
+    core.createTerminal
+  );
+
+  const shown = [];
+  const contexts = [];
+  const runtime = runtimeApi.createRuntime({
+    core,
+    ledger,
+    store,
+    withLock: fn => fn(),
+    sessionStorage: memorySessionStorage(),
+    idFactory: () => 'unused',
+    prepare: () => { throw new Error('not used'); },
+    project: async (terminal, context) => {
+      contexts.push([terminal.transactionId, context.recovered, context.recoveredPrepared]);
+      return { projected: true };
+    },
+    show: async terminal => shown.push(terminal.transactionId)
+  });
+
+  await runtime.recover();
+
+  assert.deepEqual(contexts, [['tx-live-other-tab', true, false]]);
+  assert.deepEqual(runtime.snapshot(), { entries: [], cursor: -1 });
+  assert.deepEqual(shown, []);
+  assert.equal((await store.listUnprojectedCommitted()).length, 0);
 });
 
 test('duplicate reveal completion is idempotent', async () => {
