@@ -27,6 +27,9 @@ on:
       - 'corpus/releases/experience-candidate-v0.4/**'
       - 'corpus/classification/resource-classification-v2.0.json'
       - 'corpus/wild/leads-v1.txt'
+      - 'corpus/wild/leads-v2.txt'
+      - 'corpus/wild/source-registry-v2.json'
+      - 'corpus/wild/evidence/**'
   workflow_dispatch:
 
 jobs:
