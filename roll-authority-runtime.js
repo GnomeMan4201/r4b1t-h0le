@@ -78,7 +78,7 @@
 
     async function projectTerminal(terminal, context) {
       var projection = await project(terminal, context);
-      if (context && context.recovered && terminal && terminal.state === 'COMMITTED') {
+      if (context && context.recoveredPrepared && terminal && terminal.state === 'COMMITTED') {
         setCurrentTransaction(terminal.transactionId);
         visibleTerminal = terminal;
         await show(terminal);
@@ -102,24 +102,27 @@
 
     async function markRevealed(result) {
       if (!result || typeof result.transactionId !== 'string' || !result.transactionId) return false;
-      var terminal = await store.get(result.transactionId);
-      if (!terminal || terminal.state !== 'COMMITTED') return false;
+      return withLock(async function () {
+        var terminal = await store.get(result.transactionId);
+        if (!terminal || terminal.state !== 'COMMITTED') return false;
 
-      var projection = await project(terminal, {
-        recovered: false,
-        reveal: true,
-        store: store
+        var projection = await project(terminal, {
+          recovered: false,
+          recoveredPrepared: false,
+          reveal: true,
+          store: store
+        });
+        if (projection && projection.deferCompletion === true) return false;
+
+        // Persist tab-local navigation before marking the durable reveal/projection
+        // complete. A crash in between is therefore harmless: recovery may replay
+        // the idempotent projection without losing the visible transaction from
+        // session history.
+        setCurrentTransaction(terminal.transactionId);
+        visibleTerminal = terminal;
+        await store.markProjected(terminal.transactionId);
+        return true;
       });
-      if (projection && projection.deferCompletion === true) return false;
-
-      // Persist tab-local navigation before marking the durable reveal/projection
-      // complete. A crash in between is therefore harmless: recovery may replay
-      // the idempotent projection without losing the visible transaction from
-      // session history.
-      setCurrentTransaction(terminal.transactionId);
-      visibleTerminal = terminal;
-      await store.markProjected(terminal.transactionId);
-      return true;
     }
 
     async function move(nextHistory) {
