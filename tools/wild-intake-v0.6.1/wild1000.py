@@ -1089,7 +1089,7 @@ def cmd_campaign_init(args) -> None:
 async def cmd_harvest(args) -> None:
     auth = _auth(args)
     camp = Campaign(args.campaign, auth)
-    registry = SourceRegistry(args.source_registry, args.leads, camp.cap)
+    registry = SourceRegistry(args.source_registry, args.leads, camp.cap) if args.source_registry else None
     polite = Politeness(args.delay)
     out_path, lead_path = camp.path("candidates.jsonl"), camp.path("leads.jsonl")
     seen = {r["url"] for r in load_jsonl(out_path)}
@@ -1098,9 +1098,11 @@ async def cmd_harvest(args) -> None:
     raw_leads = [l.split("#", 1)[0].strip() for l in Path(args.leads).read_text().splitlines()]
     async with make_client(args.timeout, 4) as client:
         for raw in filter(None, raw_leads):
-            registry_source_key, source_limit = registry.source_for(raw)
-            rec = {"lead_source_url": raw, "source_registry_key": registry_source_key,
-                   "source_registry_sha256": registry.sha256,
+            registry_source_key = registry.source_for(raw)[0] if registry else None
+            source_limit = registry.sources[registry_source_key]["max_candidates"] if registry else 0
+            rec = {"lead_source_url": raw,
+                   "source_registry_key": registry_source_key,
+                   "source_registry_sha256": registry.sha256 if registry else "",
                    "lead_observed_at": int(time.time()),
                    "tool_version": TOOL_VERSION, "campaign_manifest_sha256": camp.sha256}
             try:
@@ -1138,14 +1140,15 @@ async def cmd_harvest(args) -> None:
                     bad += 1           # verify re-admits and records the reason
                 elif k == probe.final_key:
                     continue           # internal navigation, not a lead
-                if harvested_by_source[registry_source_key] >= source_limit:
+                if registry and harvested_by_source[registry_source_key] >= source_limit:
                     continue
                 cand_records.append({"url": target, "anchor": (a.text(strip=True) or "")[:200],
-                                     "source_registry_key": registry_source_key,
-                                     "source_registry_sha256": registry.sha256,
+                                     **({"source_registry_key": registry_source_key,
+                                         "source_registry_sha256": registry.sha256} if registry else {}),
                                      **{f: rec[f] for f in LEAD_FIELDS},
                                      "campaign_manifest_sha256": camp.sha256})
-                harvested_by_source[registry_source_key] += 1
+                if registry:
+                    harvested_by_source[registry_source_key] += 1
                 n += 1
             lead_records.append({**rec, "status": "HARVESTED", "candidates": n, "unkeyable": bad})
             print(f"[harvest] {probe.final_key:40s} +{n} ({bad} not keyable)"
@@ -1428,7 +1431,7 @@ def main() -> None:
 
     h = sub.add_parser("harvest"); campaign(h)
     h.add_argument("--leads", required=True)
-    h.add_argument("--source-registry", required=True,
+    h.add_argument("--source-registry",
                     help="frozen discovery registry matching every lead URL exactly")
     h.add_argument("--timeout", type=float, default=20)
     h.add_argument("--delay", type=float, default=1.0)
