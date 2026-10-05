@@ -60,3 +60,7 @@ test('all legacy/global ROLL entry points delegate to the production durable pat
   assert.match(runtime, /root\.roll\s*=\s*authoritativeRollEntry/);
   assert.match(runtime, /__r4b1tSeeded\s*=\s*true/);
 });
+
+test('authority navigation never delegates to browser history', () => {
+  assert.doesNotMatch(runtime, /history\.pushState|history\.back\(|history\.forward\(|history\.replaceState/);
+});
