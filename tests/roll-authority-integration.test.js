@@ -92,3 +92,11 @@ test('global ROLL completion settles from authoritative reveal or failure, not f
   assert.match(rollSource, /return completion/);
   assert.match(rollSource, /finishCompletion\(false\)/);
 });
+
+test('historical authority projection does not mutate the legacy Session History ledger', () => {
+  const showAt = trail.indexOf('function showAuthorityTerminal');
+  const projectAt = trail.indexOf('async function projectAuthorityTerminal', showAt);
+  assert.ok(showAt >= 0 && projectAt > showAt);
+  const showSource = trail.slice(showAt, projectAt);
+  assert.doesNotMatch(showSource, /__r4b1tRecordHistorySelection|_recordSessionHistory/);
+});
