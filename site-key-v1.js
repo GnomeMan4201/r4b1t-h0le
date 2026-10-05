@@ -149,6 +149,23 @@
     return null;
   }
 
+  function isCanonicalIpv4(host) {
+    var value = host.slice(-1) === '.' ? host.slice(0, -1) : host;
+    var parts = value.split('.');
+    if (parts.length !== 4) return false;
+    return parts.every(function (part) {
+      return /^(?:0|[1-9][0-9]{0,2})$/.test(part) && Number(part) <= 255;
+    });
+  }
+
+  function isLegacyIpv4Candidate(host) {
+    var value = host.slice(-1) === '.' ? host.slice(0, -1) : host;
+    var parts = value.split('.');
+    return parts.length > 0 && parts.every(function (part) {
+      return /^[0-9]+$/.test(part) || /^0x[0-9a-f]+$/i.test(part);
+    });
+  }
+
   function validateRawUrl(raw) {
     var match = String(raw).match(/^https?:\/\/([^\/?#]*)([^?#]*)/i);
     if (!match) throw fail('SITE_KEY_URL_INVALID');
@@ -156,9 +173,25 @@
     var authority = match[1];
     var rawPath = match[2] || '';
     if (/[^\x00-\x7f]/.test(authority)) throw fail('SITE_KEY_HOST_NOT_ASCII');
-    if (authority.indexOf('%') !== -1 || authority.indexOf('\\') !== -1 ||
+    if (/[\x00-\x20\x7f]/.test(authority) || /[\x00-\x20\x7f]/.test(rawPath) ||
+        authority.indexOf('%') !== -1 || authority.indexOf('\\') !== -1 ||
         rawPath.indexOf('\\') !== -1) {
       throw fail('SITE_KEY_URL_NOT_CANONICAL');
+    }
+
+    if (authority.indexOf('@') === -1) {
+      var hostMatch = authority[0] === '['
+        ? authority.match(/^(\[[0-9A-Fa-f:.]+\])(?::[0-9]+)?$/)
+        : authority.match(/^([A-Za-z0-9._-]+)(?::[0-9]+)?$/);
+      if (!hostMatch) throw fail('SITE_KEY_URL_NOT_CANONICAL');
+
+      var rawHost = hostMatch[1];
+      if (rawHost[0] !== '[') {
+        if (rawHost.indexOf('..') !== -1) throw fail('SITE_KEY_URL_NOT_CANONICAL');
+        if (isLegacyIpv4Candidate(rawHost) && !isCanonicalIpv4(rawHost)) {
+          throw fail('SITE_KEY_URL_NOT_CANONICAL');
+        }
+      }
     }
 
     var segments = rawPath.split('/');
@@ -240,6 +273,8 @@
     registrableDomain: registrableDomain,
     siteKey: siteKey,
     validateRawUrl: validateRawUrl,
+    isCanonicalIpv4: isCanonicalIpv4,
+    isLegacyIpv4Candidate: isLegacyIpv4Candidate,
     validOverrideOwner: validOverrideOwner,
     compareUtf8: compareUtf8,
     canonicalGroups: canonicalGroups
