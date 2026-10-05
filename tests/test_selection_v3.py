@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from tools import selection_v3
+from tools import selection_v3_metrics
 from tools import site_key_v1
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -82,6 +83,18 @@ class SiteKeyV1Tests(unittest.TestCase):
         self.assertEqual(site_key('https://github.com/-bad/repo'), 'github.com')
         self.assertEqual(site_key('https://gitlab.com/@bad/repo'), 'gitlab.com')
         self.assertEqual(site_key('https://medium.com/not-an-at-user/post'), 'medium.com')
+
+    def test_active_diversity_metrics_are_recomputable(self):
+        urls = [line.strip() for line in CORPUS_PATH.read_text(encoding="utf-8").splitlines() if line.strip()]
+        report = selection_v3_metrics.compute_report(urls, site_key)
+        self.assertEqual(report["url_count"], 7033)
+        self.assertEqual(report["site_key_count"], 733)
+        self.assertEqual(report["modes"]["UNIFORM_SITE"]["effective_sites"], 733)
+        self.assertAlmostEqual(report["modes"]["UNIFORM_SITE"]["max_site_probability"], 1 / 733, places=15)
+        self.assertAlmostEqual(report["modes"]["SQRT_DEPTH"]["effective_sites"], 448.64033478088453, places=12)
+        self.assertAlmostEqual(report["modes"]["SQRT_DEPTH"]["max_site_probability"], 0.027211505700766473, places=15)
+        self.assertAlmostEqual(report["modes"]["UNIFORM_URL"]["effective_sites"], 33.4476072159403, places=12)
+        self.assertAlmostEqual(report["modes"]["UNIFORM_URL"]["max_site_probability"], 0.1305275131522821, places=15)
 
 
 class SelectionV3ParityTests(unittest.TestCase):
