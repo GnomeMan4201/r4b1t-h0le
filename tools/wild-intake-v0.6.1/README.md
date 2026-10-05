@@ -21,7 +21,8 @@ Successor provenance
     # 2. bind the campaign (manifest is immutable once written)
     python3 wild1000.py campaign-init --r4b1t-root $R --campaign wild-50 \
         --campaign-id wild-50-pilot --release experience-candidate-v0.4 --expect-sitekeys 733 \
-        --classification classification-v2.0.json --campaign-target 1000 --source-cap 50 --pending-cap 100
+        --classification classification-v2.0.json --campaign-target 1000 --source-cap 50 --pending-cap 100 \
+        --leads corpus/wild/leads-v2.txt --source-registry corpus/wild/source-registry-v2.json
 
     # 3. pilot
     python3 wild1000.py harvest --r4b1t-root $R --campaign wild-50 --leads leads.txt --source-registry corpus/wild/source-registry-v2.json
