@@ -190,10 +190,10 @@
       '.blind-title{font-family:"Bebas Neue",sans-serif;font-size:clamp(38px,9vw,74px);line-height:.9;letter-spacing:.05em}' +
       '.blind-depth{text-align:right;font-family:"Bebas Neue",sans-serif;font-size:48px;color:#ff3333;line-height:.85}' +
       '.blind-depth small{display:block;font-family:"DM Mono",monospace;font-size:8px;letter-spacing:.2em;color:#9a8f7a;margin-top:8px}' +
-      '.blind-card{align-self:center;position:relative;border:1px solid #60342e;border-left:8px dotted #cc1111;background:#15100fee;padding:30px;min-height:300px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;box-shadow:0 18px 0 #220808;transition:transform .3s,border-radius .3s}' +
+      '.blind-card{--blind-material-intensity:0;--blind-register-x:0px;--blind-ghost-x:0px;--blind-wear-rotate:0deg;--blind-skew-y:0deg;--blind-grain-color:rgba(255,255,255,0);--blind-ghost-color:rgba(251,1,24,0);--blind-edge-wear:0px;--blind-shadow-depth:18px;align-self:center;position:relative;border:1px solid #60342e;border-left:8px dotted #cc1111;background-color:#15100fee;background-image:repeating-linear-gradient(113deg,transparent 0 9px,var(--blind-grain-color) 10px 11px,transparent 12px 21px);padding:30px;min-height:300px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;box-shadow:0 var(--blind-shadow-depth) 0 #220808;transform:translateX(var(--blind-register-x)) rotate(var(--blind-wear-rotate)) skewY(var(--blind-skew-y));clip-path:polygon(var(--blind-edge-wear) 0,100% var(--blind-edge-wear),calc(100% - var(--blind-edge-wear)) 100%,0 calc(100% - var(--blind-edge-wear)));transition:transform .3s,border-radius .3s,clip-path .3s,box-shadow .3s}' +
       '.blind-card:before{content:"";position:absolute;inset:0;background:url("rabbit-aperture.svg") center/78% no-repeat;opacity:.055;pointer-events:none}' +
       '.blind-state{position:relative;font-size:10px;letter-spacing:.2em;color:#ff3333;margin-bottom:24px}' +
-      '.blind-message{position:relative;font-family:"Bebas Neue",sans-serif;font-size:clamp(42px,10vw,86px);line-height:.9;max-width:620px}' +
+      '.blind-message{position:relative;font-family:"Bebas Neue",sans-serif;font-size:clamp(42px,10vw,86px);line-height:.9;max-width:620px;text-shadow:var(--blind-ghost-x) 0 0 var(--blind-ghost-color)}' +
       '.blind-message span{color:#ff3333}' +
       '.blind-proof{position:relative;font-size:9px;line-height:1.7;color:#9a8f7a;margin-top:24px;overflow-wrap:anywhere}' +
       '.blind-wear{margin-top:16px}' +
@@ -220,7 +220,7 @@
       '#blindDescentOverlay .blind-title{margin:4px 0 0;color:#ece9e1;font-size:clamp(42px,14vw,66px);letter-spacing:.01em}' +
       '#blindDescentOverlay .blind-depth{color:#ece9e1;font-size:44px}' +
       '#blindDescentOverlay .blind-depth small{color:#8e8b84;letter-spacing:.12em}' +
-      '#blindDescentOverlay .blind-card{min-height:150px;margin:22px 0 12px;padding:18px 0;border:0;border-radius:0!important;background:transparent;box-shadow:none!important;transform:none!important}' +
+      '#blindDescentOverlay .blind-card{min-height:150px;margin:22px 0 12px;padding:18px 0;border:0;border-radius:0!important;background-color:transparent;background-image:repeating-linear-gradient(113deg,transparent 0 9px,var(--blind-grain-color) 10px 11px,transparent 12px 21px);box-shadow:none!important;transform:translateX(var(--blind-register-x)) rotate(var(--blind-wear-rotate)) skewY(var(--blind-skew-y))}' +
       '#blindDescentOverlay .blind-card:before{display:none}' +
       '#blindDescentOverlay .blind-state{margin-bottom:14px;color:#8e8b84;font-size:8px;letter-spacing:.14em}' +
       '#blindDescentOverlay .blind-message{font-size:clamp(38px,12vw,58px);color:#ece9e1}' +
@@ -315,12 +315,32 @@
     if (!state.manifest) return;
     var wear = api.deriveWear(state.manifest);
     var card = document.getElementById('blindCard');
+    var overlay = document.getElementById('blindDescentOverlay');
+    var material = window.R4b1tWear && typeof window.R4b1tWear.materialState === 'function' ?
+      window.R4b1tWear.materialState(state.currentDepth) : null;
     var message = document.getElementById('blindMessage');
     var proof = document.getElementById('blindProof');
     document.getElementById('blindDepth').firstChild.nodeValue = String(state.currentDepth).padStart(3, '0');
     document.getElementById('blindStatus').textContent = status || 'READY / COMMIT LOCALLY';
     renderStrata();
-    card.style.transform = 'rotate(' + Math.min(wear.committed_count * 0.13, 1.3) + 'deg)';
+    if (material) {
+      var baseRotation = Math.min(wear.committed_count * 0.13, 1.3);
+      overlay.dataset.materialDepth = String(material.depth);
+      overlay.dataset.materialBand = material.band;
+      card.dataset.materialDepth = String(material.depth);
+      card.dataset.materialBand = material.band;
+      card.style.setProperty('--blind-material-intensity', String(material.intensity));
+      card.style.setProperty('--blind-register-x', String(material.registration_px) + 'px');
+      card.style.setProperty('--blind-ghost-x', String(-material.registration_px) + 'px');
+      card.style.setProperty('--blind-wear-rotate', String(baseRotation + material.tilt_deg) + 'deg');
+      card.style.setProperty('--blind-skew-y', String(material.skew_deg) + 'deg');
+      card.style.setProperty('--blind-grain-color', 'rgba(255,255,255,' + String(material.grain_opacity) + ')');
+      card.style.setProperty('--blind-ghost-color', 'rgba(251,1,24,' + String(Math.min(.24, material.intensity * .24)) + ')');
+      card.style.setProperty('--blind-edge-wear', String(material.edge_wear_px) + 'px');
+      card.style.setProperty('--blind-shadow-depth', String(18 + material.shadow_px) + 'px');
+    } else {
+      card.style.transform = 'rotate(' + Math.min(wear.committed_count * 0.13, 1.3) + 'deg)';
+    }
     card.style.borderRadius = '0 0 ' + wear.fold_size + 'px 0';
     transition = transition || {};
     card.classList.remove('ink-reveal-card', 'motion-descend-card', 'motion-return-card');
