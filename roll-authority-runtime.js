@@ -104,9 +104,21 @@
       if (!result || typeof result.transactionId !== 'string' || !result.transactionId) return false;
       var terminal = await store.get(result.transactionId);
       if (!terminal || terminal.state !== 'COMMITTED') return false;
-      await store.markProjected(terminal.transactionId);
+
+      var projection = await project(terminal, {
+        recovered: false,
+        reveal: true,
+        store: store
+      });
+      if (projection && projection.deferCompletion === true) return false;
+
+      // Persist tab-local navigation before marking the durable reveal/projection
+      // complete. A crash in between is therefore harmless: recovery may replay
+      // the idempotent projection without losing the visible transaction from
+      // session history.
       setCurrentTransaction(terminal.transactionId);
       visibleTerminal = terminal;
+      await store.markProjected(terminal.transactionId);
       return true;
     }
 
