@@ -14,9 +14,12 @@ The grouping function is `site-key/v1`.
 
 Inputs are pinned by content hash:
 
-- PSL snapshot: `selection/site-key-v1/public_suffix_list.dat`
+- PSL source snapshot: `selection/site-key-v1/public_suffix_list.dat`
 - PSL source: publicsuffix/list commit `6cd82aff889e3d64e5e03bc5c1f43da1934a960a`
-- PSL SHA-256: `sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c`
+- PSL source SHA-256: `sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8`
+- authoritative ASCII PSL derivative: `selection/site-key-v1/public_suffix_list_ascii_v1.dat`
+- ASCII PSL derivation: `unicode-nfc-lower-rfc3492/v1`, sorted and deduplicated once at freeze time
+- authoritative PSL SHA-256: `sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8`
 - platform override table: `selection/site-key-v1/platform-overrides.json`
 - override SHA-256: `sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d`
 
@@ -28,12 +31,14 @@ For an HTTP(S) URL:
 
 1. Parse the URL.
 2. Use the hostname only; userinfo is forbidden by the corpus contract.
-3. Convert IDN labels to ASCII/punycode.
+3. The authoritative URL serialization MUST already contain an ASCII hostname. IDNs therefore enter the corpus in canonical `xn--` punycode form. Raw Unicode authority bytes fail closed before URL parsing.
 4. Lowercase the ASCII hostname.
 5. Strip one trailing dot.
 6. The URL parser removes the port before hostname processing.
 7. Bare IP literals are their own site keys.
-8. For normal hosts, resolve the registrable domain (eTLD+1) against the pinned PSL snapshot. `www.` is not a special case; it disappears only because eTLD+1 resolution collapses it.
+8. For normal hosts, resolve the registrable domain (eTLD+1) against the pinned authoritative ASCII PSL derivative. `www.` is not a special case; it disappears only because eTLD+1 resolution collapses it.
+
+Selection MUST NOT invoke the host runtime's ambient IDNA implementation. The raw PSL source is provenance; grouping consumes only the frozen ASCII derivative. This prevents browser/Python Unicode and IDNA version drift.
 
 ### 2.2 Platform overrides
 
@@ -158,7 +163,7 @@ A v3 ROLL transaction commits at minimum:
   "grouping": {
     "algorithm": "site-weighted-two-stage-v1",
     "site_key_version": "site-key/v1",
-    "psl_sha256": "sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c",
+    "psl_sha256": "sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8",
     "overrides_sha256": "sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d",
     "weight_mode": "UNIFORM_SITE"
   },
@@ -205,7 +210,7 @@ A verifier MUST:
 
 1. validate transaction shape and version;
 2. verify corpus revision and reconstruct the eligible URL pool from the committed constraint;
-3. verify the pinned PSL and override bytes against the committed SHA-256 values;
+3. verify the authoritative ASCII PSL derivative and override bytes against the committed SHA-256 values; the raw PSL source hash is provenance and does not participate in per-roll selection;
 4. derive the previous successful ROLL site reference and compare it with `repeat_guard.reference`;
 5. rebuild canonical site buckets;
 6. recompute counts and integer weights;
@@ -234,7 +239,7 @@ Required vector coverage includes:
 - PSL subdomain collapse;
 - GitHub/GitLab platform-owner separation;
 - mixed-case GitHub owner equivalence;
-- IDN/punycode normalization;
+- canonical punycode IDN input and rejection of raw Unicode authority bytes;
 - trailing-dot normalization;
 - site-level redraw;
 - single-site bypass;
