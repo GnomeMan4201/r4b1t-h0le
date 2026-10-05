@@ -146,8 +146,8 @@ class SourceRegistry:
             raw = json.loads(raw_bytes)
         except (UnicodeDecodeError, json.JSONDecodeError) as e:
             die(f"[source-registry] invalid JSON: {e}")
-        if canonical_json(raw) != raw_bytes:
-            die("[source-registry] registry is not in canonical form")
+        # Registry formatting is not authority; the raw bytes are hashed so
+        # formatting drift remains observable without making pretty JSON invalid.
         if raw.get("schema") != SOURCE_REGISTRY_SCHEMA:
             die(f"[source-registry] schema must be {SOURCE_REGISTRY_SCHEMA}")
         if raw.get("role") != "discovery_only":
