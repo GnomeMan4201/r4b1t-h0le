@@ -6,18 +6,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  var HISTORY_KEY = 'r4b1t_roll_navigation_v1';
-
-  function defaultIdFactory(root) {
-    return function transactionId() {
-      if (root.crypto && typeof root.crypto.randomUUID === 'function') return root.crypto.randomUUID();
-      var bytes = new Uint8Array(16);
-      root.crypto.getRandomValues(bytes);
-      return Array.from(bytes, function (byte) {
-        return byte.toString(16).padStart(2, '0');
-      }).join('');
-    };
-  }
+  var DEFAULT_HISTORY_KEY = 'r4b1t_roll_navigation_v1';
 
   function createRuntime(options) {
     options = options || {};
@@ -26,61 +15,86 @@
     var store = options.store;
     var withLock = options.withLock;
     var sessionStorage = options.sessionStorage;
+    var historyKey = options.historyKey || DEFAULT_HISTORY_KEY;
     var idFactory = options.idFactory;
     var prepare = options.prepare;
-    var project = options.project;
-    var show = options.show;
+    var project = typeof options.project === 'function' ? options.project : async function () {};
+    var show = typeof options.show === 'function' ? options.show : async function () {};
 
-    if (!core || !core.history) throw new TypeError('roll authority core is required');
-    if (!ledger || typeof ledger.createCoordinator !== 'function') throw new TypeError('roll authority ledger is required');
-    if (!store) throw new TypeError('authority store is required');
+    if (!core || !ledger || !store) throw new TypeError('core, ledger and store are required');
     if (typeof withLock !== 'function') throw new TypeError('withLock is required');
-    if (!sessionStorage || typeof sessionStorage.getItem !== 'function' || typeof sessionStorage.setItem !== 'function') {
-      throw new TypeError('sessionStorage is required');
-    }
+    if (!sessionStorage) throw new TypeError('sessionStorage is required');
     if (typeof idFactory !== 'function') throw new TypeError('idFactory is required');
     if (typeof prepare !== 'function') throw new TypeError('prepare is required');
-    if (typeof project !== 'function') throw new TypeError('project is required');
-    if (typeof show !== 'function') throw new TypeError('show is required');
 
-    var coordinator = ledger.createCoordinator({
-      core: core,
-      store: store,
-      withLock: withLock
-    });
-
-    var historyState = core.history.empty();
-    var visibleTerminal = null;
+    var historyState = loadHistory();
 
     function loadHistory() {
       try {
-        historyState = core.history.normalize(JSON.parse(sessionStorage.getItem(HISTORY_KEY) || 'null'));
+        return core.history.normalize(JSON.parse(sessionStorage.getItem(historyKey) || 'null'));
       } catch (_) {
-        historyState = core.history.empty();
+        return core.history.empty();
       }
     }
 
     function persistHistory() {
-      sessionStorage.setItem(HISTORY_KEY, JSON.stringify({
+      sessionStorage.setItem(historyKey, JSON.stringify({
         entries: Array.from(historyState.entries),
         cursor: historyState.cursor
       }));
     }
 
-    function setCurrentTransaction(transactionId) {
-      var entries = Array.from(historyState.entries);
-      var existing = entries.indexOf(transactionId);
-      if (existing >= 0) {
-        historyState = core.history.normalize({ entries: entries, cursor: existing });
-      } else {
-        historyState = core.history.push(historyState, transactionId);
-      }
-      persistHistory();
-      return historyState;
+    function snapshot() {
+      return {
+        entries: Array.from(historyState.entries),
+        cursor: historyState.cursor
+      };
     }
 
-    function presentation(terminal) {
-      if (!terminal || terminal.state !== 'COMMITTED' || !terminal.result) return null;
+    function pushTransaction(transactionId) {
+      if (core.history.current(historyState) === transactionId) return false;
+      historyState = core.history.push(historyState, transactionId);
+      persistHistory();
+      return true;
+    }
+
+    async function showCurrent() {
+      var transactionId = core.history.current(historyState);
+      if (!transactionId) return null;
+      var terminal = await store.get(transactionId);
+      if (!terminal || terminal.state !== 'COMMITTED') return null;
+      await show(terminal);
+      return terminal;
+    }
+
+    async function projectTerminal(terminal, context) {
+      var projection = await project(terminal, context);
+      if (context && context.recovered && terminal.state === 'COMMITTED') {
+        pushTransaction(terminal.transactionId);
+        await show(terminal);
+      }
+      return projection;
+    }
+
+    var coordinator = ledger.createCoordinator({
+      core: core,
+      store: store,
+      withLock: withLock,
+      boundary: options.boundary
+    });
+
+    async function recover() {
+      await coordinator.recover(projectTerminal);
+      return snapshot();
+    }
+
+    async function commit() {
+      var id = idFactory();
+      var terminal = await coordinator.commit(
+        function () { return prepare(id); },
+        projectTerminal
+      );
+      if (!terminal || terminal.state !== 'COMMITTED') return null;
       return Object.freeze({
         url: terminal.result.url,
         transactionId: terminal.transactionId,
@@ -88,62 +102,37 @@
       });
     }
 
-    async function projectTerminal(terminal, context) {
-      var projected = await project(terminal, context);
-      if (context && context.recovered && terminal && terminal.state === 'COMMITTED') {
-        setCurrentTransaction(terminal.transactionId);
-        visibleTerminal = terminal;
-      }
-      return projected;
-    }
-
-    async function recover() {
-      await coordinator.recover(projectTerminal);
-      return true;
-    }
-
-    async function commit() {
-      var terminal = await coordinator.commit(
-        function () { return prepare(idFactory()); },
-        projectTerminal
-      );
-      if (!terminal || terminal.state !== 'COMMITTED') return null;
-      return presentation(terminal);
-    }
-
     async function markRevealed(result) {
-      if (!result || typeof result.transactionId !== 'string' || !result.transactionId) return false;
+      if (!result || !result.transactionId) return false;
       var terminal = await store.get(result.transactionId);
       if (!terminal || terminal.state !== 'COMMITTED') return false;
+      pushTransaction(terminal.transactionId);
       await store.markProjected(terminal.transactionId);
-      setCurrentTransaction(terminal.transactionId);
-      visibleTerminal = terminal;
       return true;
-    }
-
-    async function move(nextHistory) {
-      var transactionId = core.history.current(nextHistory);
-      if (!transactionId) return false;
-      var terminal = await store.get(transactionId);
-      if (!terminal || terminal.state !== 'COMMITTED') return false;
-      historyState = nextHistory;
-      persistHistory();
-      await show(terminal);
-      visibleTerminal = terminal;
-      return presentation(terminal);
     }
 
     async function previous() {
-      if (!core.history.canPrevious(historyState)) return false;
-      return move(core.history.previous(historyState));
+      if (!core.history.canPrevious(historyState)) return null;
+      historyState = core.history.previous(historyState);
+      persistHistory();
+      return showCurrent();
     }
 
     async function forward() {
-      if (!core.history.canForward(historyState)) return false;
-      return move(core.history.forward(historyState));
+      if (!core.history.canForward(historyState)) return null;
+      historyState = core.history.forward(historyState);
+      persistHistory();
+      return showCurrent();
     }
 
-    loadHistory();
+    async function navigateTo(transactionId) {
+      var entries = Array.from(historyState.entries);
+      var cursor = entries.indexOf(transactionId);
+      if (cursor < 0) return null;
+      historyState = core.history.normalize({ entries: entries, cursor: cursor });
+      persistHistory();
+      return showCurrent();
+    }
 
     return Object.freeze({
       recover: recover,
@@ -151,13 +140,11 @@
       markRevealed: markRevealed,
       previous: previous,
       forward: forward,
+      navigateTo: navigateTo,
       canPrevious: function () { return core.history.canPrevious(historyState); },
       canForward: function () { return core.history.canForward(historyState); },
-      snapshot: function () {
-        return { entries: Array.from(historyState.entries), cursor: historyState.cursor };
-      },
-      currentTerminal: function () { return visibleTerminal; },
-      store: function () { return store; }
+      snapshot: snapshot,
+      currentTransactionId: function () { return core.history.current(historyState); }
     });
   }
 
@@ -166,102 +153,189 @@
     var ledger = root.R4B1TRollAuthorityLedger;
     if (!core || !ledger) return null;
 
-    var bridgeReady = async function () {
-      if (root.__r4b1tTrailAuthorityReady && typeof root.__r4b1tTrailAuthorityReady.then === 'function') {
-        await root.__r4b1tTrailAuthorityReady;
-      }
-      if (typeof root.__r4b1tPrepareAuthorityRoll !== 'function' ||
-          typeof root.__r4b1tProjectAuthorityTerminal !== 'function' ||
-          typeof root.__r4b1tShowAuthorityTransaction !== 'function') {
-        throw new Error('TRAIL_AUTHORITY_BRIDGE_UNAVAILABLE');
-      }
-    };
+    var runtime = null;
+    var store = null;
+    var initialization = null;
+    var visibleTerminal = null;
 
-    var store = ledger.createIndexedDbStore({ indexedDB: root.indexedDB });
-    var runtime = createRuntime({
-      core: core,
-      ledger: ledger,
-      store: store,
-      withLock: ledger.createNavigatorLock(root.navigator),
-      sessionStorage: root.sessionStorage,
-      idFactory: defaultIdFactory(root),
-      prepare: async function (transactionId) {
-        await bridgeReady();
-        return root.__r4b1tPrepareAuthorityRoll(transactionId);
-      },
-      project: async function (terminal, context) {
-        await bridgeReady();
-        return root.__r4b1tProjectAuthorityTerminal(terminal, context);
-      },
-      show: async function (terminal) {
-        await bridgeReady();
-        await root.__r4b1tShowAuthorityTransaction(terminal);
-        if (root.R4B1TRollProduction && typeof root.R4B1TRollProduction.showHistory === 'function') {
-          root.R4B1TRollProduction.showHistory(presentationForBrowser(terminal));
-        }
-      }
-    });
-
-    function presentationForBrowser(terminal) {
-      return Object.freeze({
-        url: terminal.result.url,
-        transactionId: terminal.transactionId,
-        authoritySequence: terminal.authoritySequence
-      });
+    function transactionId() {
+      if (root.crypto && typeof root.crypto.randomUUID === 'function') return root.crypto.randomUUID();
+      var bytes = new Uint8Array(16);
+      root.crypto.getRandomValues(bytes);
+      return Array.from(bytes, function (byte) {
+        return byte.toString(16).padStart(2, '0');
+      }).join('');
     }
 
-    function emitNavigationState() {
+    function browserState(transactionIdValue, cursor) {
+      return {
+        r4b1tRollNavigation: true,
+        transactionId: transactionIdValue || null,
+        cursor: Number.isSafeInteger(cursor) ? cursor : -1
+      };
+    }
+
+    function notifyVisible(terminal) {
+      visibleTerminal = terminal || null;
       try {
-        root.document.dispatchEvent(new CustomEvent('r4b1t:authority-navigation', {
-          detail: Object.freeze({
-            canPrevious: runtime.canPrevious(),
-            canForward: runtime.canForward(),
-            history: runtime.snapshot()
-          })
+        root.document.dispatchEvent(new CustomEvent('r4b1t:authority-visible', {
+          detail: terminal ? {
+            transactionId: terminal.transactionId,
+            authoritySequence: terminal.authoritySequence,
+            url: terminal.result && terminal.result.url
+          } : null
         }));
       } catch (_) {}
     }
 
-    async function init() {
-      await bridgeReady();
-      if (root.navigator.storage && typeof root.navigator.storage.persist === 'function') {
-        root.navigator.storage.persist().catch(function () {});
+    async function show(terminal) {
+      if (typeof root.__r4b1tShowAuthorityTransaction === 'function') {
+        await root.__r4b1tShowAuthorityTransaction(terminal);
       }
-      await runtime.recover();
-      emitNavigationState();
-      return true;
+      notifyVisible(terminal);
+    }
+
+    async function project(terminal, context) {
+      if (typeof root.__r4b1tProjectAuthorityTerminal !== 'function') {
+        throw new Error('TRAIL_AUTHORITY_BRIDGE_UNAVAILABLE');
+      }
+      return root.__r4b1tProjectAuthorityTerminal(terminal, context);
+    }
+
+    function syncBrowserBaseline() {
+      var snap = runtime.snapshot();
+      var transactionIdValue = runtime.currentTransactionId();
+      var state = root.history.state;
+      if (state && state.r4b1tRollNavigation && state.transactionId === transactionIdValue) return;
+      root.history.replaceState(browserState(transactionIdValue, snap.cursor), '', root.location.href);
+    }
+
+    async function init() {
+      if (runtime) return true;
+      if (initialization) return initialization;
+
+      initialization = (async function () {
+        store = ledger.createIndexedDbStore({ indexedDB: root.indexedDB });
+        runtime = createRuntime({
+          core: core,
+          ledger: ledger,
+          store: store,
+          withLock: ledger.createNavigatorLock(root.navigator),
+          sessionStorage: root.sessionStorage,
+          idFactory: transactionId,
+          prepare: function (id) {
+            if (typeof root.__r4b1tPrepareAuthorityRoll !== 'function') {
+              throw new Error('TRAIL_AUTHORITY_PREPARE_UNAVAILABLE');
+            }
+            return root.__r4b1tPrepareAuthorityRoll(id);
+          },
+          project: project,
+          show: show
+        });
+
+        syncBrowserBaseline();
+
+        if (root.navigator.storage && typeof root.navigator.storage.persist === 'function') {
+          root.navigator.storage.persist().catch(function () {});
+        }
+
+        var before = runtime.currentTransactionId();
+        await runtime.recover();
+        var after = runtime.currentTransactionId();
+        if (after && after !== before) {
+          var terminal = await store.get(after);
+          if (terminal) notifyVisible(terminal);
+          var snap = runtime.snapshot();
+          root.history.pushState(browserState(after, snap.cursor), '', root.location.href);
+        }
+        return true;
+      }()).catch(function (error) {
+        initialization = null;
+        throw error;
+      });
+
+      return initialization;
     }
 
     async function commit() {
-      await bridgeReady();
+      await init();
       var result = await runtime.commit();
-      if (!result) return null;
+      if (!result) {
+        try {
+          root.document.dispatchEvent(new CustomEvent('r4b1t:selection-status', {
+            detail: { status: 'AUTHORITY_FAILED', message: 'ROLL AUTHORITY FAILED' }
+          }));
+        } catch (_) {}
+      }
       return result;
     }
 
     async function markRevealed(result) {
-      var completed = await runtime.markRevealed(result);
-      emitNavigationState();
-      return completed;
+      await init();
+      var before = runtime.currentTransactionId();
+      var marked = await runtime.markRevealed(result);
+      if (!marked) return false;
+      var terminal = await store.get(result.transactionId);
+      notifyVisible(terminal);
+      if (before !== result.transactionId) {
+        var snap = runtime.snapshot();
+        root.history.pushState(
+          browserState(result.transactionId, snap.cursor),
+          '',
+          root.location.href
+        );
+      }
+      return true;
     }
 
-    async function previous() {
-      if (root.R4B1TRollProduction && typeof root.R4B1TRollProduction.cancelPendingIntent === 'function') {
-        root.R4B1TRollProduction.cancelPendingIntent();
+    function cancelPendingNavigationIntent() {
+      var production = root.R4B1TRollProduction;
+      if (production && typeof production.cancelPendingIntent === 'function') {
+        production.cancelPendingIntent('navigation');
       }
-      var result = await runtime.previous();
-      emitNavigationState();
-      return result;
     }
 
-    async function forward() {
-      if (root.R4B1TRollProduction && typeof root.R4B1TRollProduction.cancelPendingIntent === 'function') {
-        root.R4B1TRollProduction.cancelPendingIntent();
-      }
-      var result = await runtime.forward();
-      emitNavigationState();
-      return result;
+    function previous() {
+      cancelPendingNavigationIntent();
+      if (!runtime || !runtime.canPrevious()) return false;
+      root.history.back();
+      return true;
     }
+
+    function forward() {
+      cancelPendingNavigationIntent();
+      if (!runtime || !runtime.canForward()) return false;
+      root.history.forward();
+      return true;
+    }
+
+    root.addEventListener('popstate', function (event) {
+      var state = event.state;
+      if (!runtime || !state || !state.r4b1tRollNavigation || !state.transactionId) return;
+      runtime.navigateTo(state.transactionId).catch(function (error) {
+        console.error('[r4b1t] history restore failed:', error);
+      });
+    });
+
+    root.document.addEventListener('keydown', function (event) {
+      if (event.code !== 'Escape' || event.defaultPrevented) return;
+      var target = event.target;
+      if (target && target.closest && target.closest('input, textarea, select, [role="dialog"], .r4m-sheet.open')) return;
+      if (previous()) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    }, true);
+
+    async function immediateRoll() {
+      var result = await commit();
+      if (!result || typeof root.__r4b1tRevealRoll !== 'function') return false;
+      root.__r4b1tRevealRoll(result);
+      await markRevealed(result);
+      return true;
+    }
+    immediateRoll.__r4b1tSeeded = true;
+    immediateRoll.__r4b1tAuthorityLedger = true;
 
     root.R4B1TRollAuthority = Object.freeze({
       init: init,
@@ -269,41 +343,28 @@
       markRevealed: markRevealed,
       previous: previous,
       forward: forward,
-      canPrevious: runtime.canPrevious,
-      canForward: runtime.canForward,
-      historySnapshot: runtime.snapshot,
-      currentTerminal: runtime.currentTerminal,
-      store: runtime.store
+      canPrevious: function () { return runtime ? runtime.canPrevious() : false; },
+      canForward: function () { return runtime ? runtime.canForward() : false; },
+      historySnapshot: function () { return runtime ? runtime.snapshot() : { entries: [], cursor: -1 }; },
+      currentTerminal: function () { return visibleTerminal; },
+      store: function () { return store; }
     });
 
-    root.document.addEventListener('keydown', function (event) {
-      if (event.code !== 'Escape' || event.defaultPrevented) return;
-      var target = event.target;
-      if (target && target.closest && target.closest('input, textarea, select, [role="dialog"], .r4m-sheet.open')) return;
-      if (!runtime.canPrevious()) return;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      previous().catch(function (error) {
-        console.error('[r4b1t] previous failed:', error);
-      });
-    }, true);
+    root.roll = immediateRoll;
 
-    var start = function () {
-      init().catch(function (error) {
-        console.error('[r4b1t] authority init failed:', error);
-      });
-    };
     if (root.document.readyState === 'loading') {
-      root.document.addEventListener('DOMContentLoaded', start, { once: true });
+      root.document.addEventListener('DOMContentLoaded', function () {
+        init().catch(function (error) { console.error('[r4b1t] authority init failed:', error); });
+      }, { once: true });
     } else {
-      start();
+      init().catch(function (error) { console.error('[r4b1t] authority init failed:', error); });
     }
 
-    return runtime;
+    return root.R4B1TRollAuthority;
   }
 
   return Object.freeze({
-    HISTORY_KEY: HISTORY_KEY,
+    HISTORY_KEY: DEFAULT_HISTORY_KEY,
     createRuntime: createRuntime,
     installBrowser: installBrowser
   });
