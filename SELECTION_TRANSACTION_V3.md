@@ -41,11 +41,134 @@ Overrides run against the normalized hostname before the default registrable-dom
 
 The v1 table currently defines:
 
-- `github.com/<owner>`: first path segment, lowercased.
-- `gitlab.com/<owner>`: first path segment, lowercased.
-- `medium.com/@user`: first path segment only when it starts with `@`, lowercased.
+- `github.com/<owner>`: first path segment, lowercased. The pre-fold segment MUST match `^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?# Selection Transaction v3
 
-When an override does not match its required path shape, selection falls back to the registrable domain.
+Status: frozen for implementation; not production selection authority until the v3 integration gate is merged.
+
+## 1. Purpose
+
+v3 changes ROLL from URL-uniform selection to deterministic, auditable, site-aware two-stage selection while preserving v1/v2 replay semantics unchanged.
+
+The eligible URL set is still produced before selection by the existing release, terrain, and protocol-policy authorities. v3 groups only that already-eligible set.
+
+## 2. Site identity
+
+The grouping function is `site-key/v1`.
+
+Inputs are pinned by content hash:
+
+- PSL snapshot: `selection/site-key-v1/public_suffix_list.dat`
+- PSL source: publicsuffix/list commit `6cd82aff889e3d64e5e03bc5c1f43da1934a960a`
+- PSL SHA-256: `sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c`
+- platform override table: `selection/site-key-v1/platform-overrides.json`
+- override SHA-256: `sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d`
+
+Every v3 transaction MUST commit both hashes and `site_key_version: "site-key/v1"`.
+
+### 2.1 URL/host normalization
+
+For an HTTP(S) URL:
+
+1. Parse the URL.
+2. Use the hostname only; userinfo is forbidden by the corpus contract.
+3. Convert IDN labels to ASCII/punycode.
+4. Lowercase the ASCII hostname.
+5. Strip one trailing dot.
+6. The URL parser removes the port before hostname processing.
+7. Bare IP literals are their own site keys.
+8. For normal hosts, resolve the registrable domain (eTLD+1) against the pinned PSL snapshot. `www.` is not a special case; it disappears only because eTLD+1 resolution collapses it.
+
+### 2.2 Platform overrides
+
+Overrides run against the normalized hostname before the default registrable-domain result is returned.
+
+.
+- `gitlab.com/<owner>`: first path segment, lowercased. The pre-fold segment MUST match `^[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?# Selection Transaction v3
+
+Status: frozen for implementation; not production selection authority until the v3 integration gate is merged.
+
+## 1. Purpose
+
+v3 changes ROLL from URL-uniform selection to deterministic, auditable, site-aware two-stage selection while preserving v1/v2 replay semantics unchanged.
+
+The eligible URL set is still produced before selection by the existing release, terrain, and protocol-policy authorities. v3 groups only that already-eligible set.
+
+## 2. Site identity
+
+The grouping function is `site-key/v1`.
+
+Inputs are pinned by content hash:
+
+- PSL snapshot: `selection/site-key-v1/public_suffix_list.dat`
+- PSL source: publicsuffix/list commit `6cd82aff889e3d64e5e03bc5c1f43da1934a960a`
+- PSL SHA-256: `sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c`
+- platform override table: `selection/site-key-v1/platform-overrides.json`
+- override SHA-256: `sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d`
+
+Every v3 transaction MUST commit both hashes and `site_key_version: "site-key/v1"`.
+
+### 2.1 URL/host normalization
+
+For an HTTP(S) URL:
+
+1. Parse the URL.
+2. Use the hostname only; userinfo is forbidden by the corpus contract.
+3. Convert IDN labels to ASCII/punycode.
+4. Lowercase the ASCII hostname.
+5. Strip one trailing dot.
+6. The URL parser removes the port before hostname processing.
+7. Bare IP literals are their own site keys.
+8. For normal hosts, resolve the registrable domain (eTLD+1) against the pinned PSL snapshot. `www.` is not a special case; it disappears only because eTLD+1 resolution collapses it.
+
+### 2.2 Platform overrides
+
+Overrides run against the normalized hostname before the default registrable-domain result is returned.
+
+.
+- `medium.com/@user`: first path segment, lowercased. The pre-fold segment MUST match `^@[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?# Selection Transaction v3
+
+Status: frozen for implementation; not production selection authority until the v3 integration gate is merged.
+
+## 1. Purpose
+
+v3 changes ROLL from URL-uniform selection to deterministic, auditable, site-aware two-stage selection while preserving v1/v2 replay semantics unchanged.
+
+The eligible URL set is still produced before selection by the existing release, terrain, and protocol-policy authorities. v3 groups only that already-eligible set.
+
+## 2. Site identity
+
+The grouping function is `site-key/v1`.
+
+Inputs are pinned by content hash:
+
+- PSL snapshot: `selection/site-key-v1/public_suffix_list.dat`
+- PSL source: publicsuffix/list commit `6cd82aff889e3d64e5e03bc5c1f43da1934a960a`
+- PSL SHA-256: `sha256:102b252c18b5f87f4c81f017e75282a82c18e00cd0c2e601b5b02a0f7a601f2c`
+- platform override table: `selection/site-key-v1/platform-overrides.json`
+- override SHA-256: `sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d`
+
+Every v3 transaction MUST commit both hashes and `site_key_version: "site-key/v1"`.
+
+### 2.1 URL/host normalization
+
+For an HTTP(S) URL:
+
+1. Parse the URL.
+2. Use the hostname only; userinfo is forbidden by the corpus contract.
+3. Convert IDN labels to ASCII/punycode.
+4. Lowercase the ASCII hostname.
+5. Strip one trailing dot.
+6. The URL parser removes the port before hostname processing.
+7. Bare IP literals are their own site keys.
+8. For normal hosts, resolve the registrable domain (eTLD+1) against the pinned PSL snapshot. `www.` is not a special case; it disappears only because eTLD+1 resolution collapses it.
+
+### 2.2 Platform overrides
+
+Overrides run against the normalized hostname before the default registrable-domain result is returned.
+
+.
+
+Percent-encoded or otherwise non-matching owner segments do not activate an override. When an override does not match its required path shape, selection falls back to the registrable domain.
 
 A changed override table is a changed pinned input and MUST have a new committed SHA-256.
 
