@@ -34,8 +34,11 @@ For an HTTP(S) URL:
 3. The authoritative URL serialization MUST already contain an ASCII hostname. IDNs therefore enter the corpus in canonical `xn--` punycode form. Raw Unicode authority bytes fail closed before URL parsing.
 4. Before runtime URL parsing, reject URL forms whose normalization differs across supported re-executors:
    - percent escapes in the authority;
+   - ASCII control/space bytes in the authority or path;
    - a backslash in the authority or path;
-   - any path segment that becomes `.` or `..` after case-insensitive replacement of `%2e` with `.`.
+   - repeated dots in an unbracketed hostname;
+   - any path segment that becomes `.` or `..` after case-insensitive replacement of `%2e` with `.`;
+   - legacy IPv4 spellings. If every unbracketed host label is decimal or `0x`-hex numeric-like, the host MUST be canonical four-part decimal IPv4, each part `0..255`, with no leading zero except the value `0`.
 5. Malformed or out-of-range ports fail closed.
 6. Lowercase the ASCII hostname.
 7. Strip one trailing dot.
