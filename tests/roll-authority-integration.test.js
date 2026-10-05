@@ -9,6 +9,7 @@ const shell = fs.readFileSync('dual-shell.js', 'utf8');
 const index = fs.readFileSync('index.html', 'utf8');
 const sw = fs.readFileSync('sw.js', 'utf8');
 const trail = fs.readFileSync('trail-runtime.js', 'utf8');
+const runtime = fs.readFileSync('roll-authority-runtime.js', 'utf8');
 
 test('production ROLL awaits durable authority and preserves machine-owned reveal', () => {
   assert.match(production, /R4B1TRollAuthority/);
@@ -51,4 +52,11 @@ test('Trail bridge publishes readiness only after corpus load and authority wrap
   assert.match(trail, /authorityReadyResolve/);
   assert.match(trail, /wrapRoll\(\)/);
   assert.match(trail, /corpusReady\.then/);
+});
+
+test('all legacy/global ROLL entry points delegate to the production durable path', () => {
+  assert.match(runtime, /function authoritativeRollEntry\(\)/);
+  assert.match(runtime, /R4B1TRollProduction[\s\S]*\.roll\(\)/);
+  assert.match(runtime, /root\.roll\s*=\s*authoritativeRollEntry/);
+  assert.match(runtime, /__r4b1tSeeded\s*=\s*true/);
 });
