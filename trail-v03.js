@@ -18,6 +18,7 @@
   var FORMAT = 'r4b1t-trail/v0.3';
   var TRANSACTION = 'r4b1t-selection-transaction/v2';
   var TRANSACTION_V3 = 'r4b1t-selection-transaction/v3';
+  var TRANSACTION_V3 = 'r4b1t-selection-transaction/v3';
   var SHA256 = /^sha256:[0-9a-f]{64}$/;
   var IMPORT_FORMATS = new Set(['r4b1t-trail/v0.1', FORMAT]);
 
@@ -233,9 +234,156 @@
     if (transactionUrl !== stepRoute.url) throw new Error('ROLL transaction route mismatch');
   }
 
+  function validateTransactionV2(transaction, stepRoute, corpusRevision) {
+    assertKeys(transaction, [
+      'transaction_version', 'sequence', 'action', 'constraint', 'corpus_revision',
+      'eligible_count', 'sampler', 'route'
+    ], 'ROLL transaction');
+
+    if (transaction.transaction_version !== TRANSACTION || transaction.action !== 'ROLL') {
+      throw new TypeError('ROLL transaction version/action is invalid');
+    }
+    if (!Number.isSafeInteger(transaction.sequence) || transaction.sequence < 1) {
+      throw new TypeError('ROLL transaction sequence is invalid');
+    }
+    if (transaction.corpus_revision !== corpusRevision) {
+      throw new Error('ROLL transaction corpus revision mismatch');
+    }
+    if (!Number.isSafeInteger(transaction.eligible_count) || transaction.eligible_count < 1) {
+      throw new TypeError('ROLL eligible count is invalid');
+    }
+
+    validateConstraint(transaction.constraint);
+
+    assertKeys(transaction.sampler, [
+      'algorithm', 'prng', 'seed', 'draw_start', 'draw_count', 'repeat_guard'
+    ], 'ROLL sampler');
+    if (transaction.sampler.algorithm !== 'uniform-with-repeat-guard-v1' ||
+        transaction.sampler.prng !== 'mulberry32-v1' ||
+        typeof transaction.sampler.seed !== 'string' || !transaction.sampler.seed) {
+      throw new TypeError('ROLL sampler declaration is invalid');
+    }
+    if (!Number.isSafeInteger(transaction.sampler.draw_start) || transaction.sampler.draw_start < 0 ||
+        !Number.isSafeInteger(transaction.sampler.draw_count) || transaction.sampler.draw_count < 1) {
+      throw new TypeError('ROLL sampler interval is invalid');
+    }
+
+    assertKeys(transaction.sampler.repeat_guard, ['reference', 'max_draws'], 'ROLL repeat guard');
+    if (transaction.sampler.repeat_guard.reference !== null) {
+      assertUrl(transaction.sampler.repeat_guard.reference, 'ROLL repeat guard reference');
+    }
+    if (transaction.sampler.repeat_guard.max_draws !== 30) {
+      throw new TypeError('ROLL repeat guard max_draws is invalid');
+    }
+
+    assertKeys(transaction.route, ['url'], 'ROLL transaction route');
+    var transactionUrl = assertUrl(transaction.route.url, 'ROLL transaction route URL');
+    if (transactionUrl !== stepRoute.url) throw new Error('ROLL transaction route mismatch');
+  }
+
+  function validateTransactionV3(transaction, stepRoute, corpusRevision) {
+    assertKeys(transaction, [
+      'transaction_version', 'sequence', 'action', 'constraint', 'corpus_revision',
+      'grouping', 'eligible_url_count', 'eligible_site_count', 'total_site_weight',
+      'sampler', 'selection', 'route'
+    ], 'ROLL v3 transaction');
+
+    if (transaction.transaction_version !== TRANSACTION_V3 || transaction.action !== 'ROLL') {
+      throw new TypeError('ROLL v3 transaction version/action is invalid');
+    }
+    if (!Number.isSafeInteger(transaction.sequence) || transaction.sequence < 1) {
+      throw new TypeError('ROLL v3 transaction sequence is invalid');
+    }
+    if (transaction.corpus_revision !== corpusRevision) {
+      throw new Error('ROLL v3 transaction corpus revision mismatch');
+    }
+    if (!Number.isSafeInteger(transaction.eligible_url_count) || transaction.eligible_url_count < 1 ||
+        !Number.isSafeInteger(transaction.eligible_site_count) || transaction.eligible_site_count < 1 ||
+        !Number.isSafeInteger(transaction.total_site_weight) || transaction.total_site_weight < 1 ||
+        transaction.total_site_weight >= 4294967296) {
+      throw new TypeError('ROLL v3 eligible counts/weight are invalid');
+    }
+
+    validateConstraint(transaction.constraint);
+
+    assertKeys(transaction.grouping, [
+      'algorithm', 'site_key_version', 'psl_sha256', 'overrides_sha256', 'weight_mode'
+    ], 'ROLL v3 grouping');
+    if (transaction.grouping.algorithm !== 'site-weighted-two-stage-v1' ||
+        transaction.grouping.site_key_version !== 'site-key/v1' ||
+        !['UNIFORM_SITE', 'SQRT_DEPTH', 'UNIFORM_URL'].includes(transaction.grouping.weight_mode)) {
+      throw new TypeError('ROLL v3 grouping declaration is invalid');
+    }
+    assertSha(transaction.grouping.psl_sha256, 'ROLL v3 PSL digest');
+    assertSha(transaction.grouping.overrides_sha256, 'ROLL v3 override digest');
+
+    assertKeys(transaction.sampler, [
+      'algorithm', 'prng', 'seed', 'draw_start', 'draw_count',
+      'site_draw_count', 'url_draw_count', 'repeat_guard'
+    ], 'ROLL v3 sampler');
+    if (transaction.sampler.algorithm !== 'site-weighted-two-stage-v1' ||
+        transaction.sampler.prng !== 'mulberry32-u32-v1' ||
+        typeof transaction.sampler.seed !== 'string' || !transaction.sampler.seed) {
+      throw new TypeError('ROLL v3 sampler declaration is invalid');
+    }
+    if (!Number.isSafeInteger(transaction.sampler.draw_start) || transaction.sampler.draw_start < 0 ||
+        !Number.isSafeInteger(transaction.sampler.draw_count) || transaction.sampler.draw_count < 2 ||
+        !Number.isSafeInteger(transaction.sampler.site_draw_count) ||
+        transaction.sampler.site_draw_count < 1 || transaction.sampler.site_draw_count > 30 ||
+        transaction.sampler.url_draw_count !== 1 ||
+        transaction.sampler.draw_count !== transaction.sampler.site_draw_count + 1) {
+      throw new TypeError('ROLL v3 sampler interval is invalid');
+    }
+
+    var guard = transaction.sampler.repeat_guard;
+    assertKeys(guard, ['kind', 'reference', 'max_site_draws', 'mode', 'exhausted'], 'ROLL v3 repeat guard');
+    if (guard.kind !== 'site-key' || guard.max_site_draws !== 30 ||
+        !['none', 'single-site-bypass', 'redraw'].includes(guard.mode) ||
+        typeof guard.exhausted !== 'boolean' ||
+        (guard.reference !== null && (typeof guard.reference !== 'string' || !guard.reference))) {
+      throw new TypeError('ROLL v3 repeat guard is invalid');
+    }
+    if (guard.reference === null && (guard.mode !== 'none' || guard.exhausted || transaction.sampler.site_draw_count !== 1)) {
+      throw new TypeError('ROLL v3 null guard semantics are invalid');
+    }
+    if (guard.mode === 'single-site-bypass' &&
+        (guard.reference === null || transaction.eligible_site_count !== 1 ||
+         guard.exhausted || transaction.sampler.site_draw_count !== 1)) {
+      throw new TypeError('ROLL v3 single-site guard semantics are invalid');
+    }
+    if (guard.mode === 'redraw' &&
+        (guard.reference === null || transaction.eligible_site_count <= 1 ||
+         (guard.exhausted && transaction.sampler.site_draw_count !== 30))) {
+      throw new TypeError('ROLL v3 redraw guard semantics are invalid');
+    }
+
+    var selection = transaction.selection;
+    assertKeys(selection, [
+      'site_draw_u32', 'site_target', 'site_index', 'site_key', 'site_weight',
+      'site_bucket_size', 'url_draw_u32', 'url_index'
+    ], 'ROLL v3 selection');
+    function u32(value) { return Number.isSafeInteger(value) && value >= 0 && value <= 0xffffffff; }
+    if (!u32(selection.site_draw_u32) || !u32(selection.url_draw_u32) ||
+        !Number.isSafeInteger(selection.site_target) || selection.site_target < 0 ||
+        selection.site_target >= transaction.total_site_weight ||
+        !Number.isSafeInteger(selection.site_index) || selection.site_index < 0 ||
+        selection.site_index >= transaction.eligible_site_count ||
+        typeof selection.site_key !== 'string' || !selection.site_key ||
+        !Number.isSafeInteger(selection.site_weight) || selection.site_weight < 1 ||
+        !Number.isSafeInteger(selection.site_bucket_size) || selection.site_bucket_size < 1 ||
+        !Number.isSafeInteger(selection.url_index) || selection.url_index < 0 ||
+        selection.url_index >= selection.site_bucket_size) {
+      throw new TypeError('ROLL v3 selection evidence is invalid');
+    }
+
+    assertKeys(transaction.route, ['url'], 'ROLL v3 transaction route');
+    var transactionUrl = assertUrl(transaction.route.url, 'ROLL v3 transaction route URL');
+    if (transactionUrl !== stepRoute.url) throw new Error('ROLL v3 transaction route mismatch');
+  }
+
   function validateTransaction(transaction, stepRoute, corpusRevision) {
-    if (!transaction || typeof transaction !== 'object') {
-      throw new TypeError('ROLL transaction is invalid');
+    if (!transaction || typeof transaction !== 'object' || Array.isArray(transaction)) {
+      throw new TypeError('ROLL transaction must be an object');
     }
     if (transaction.transaction_version === TRANSACTION) {
       return validateTransactionV2(transaction, stepRoute, corpusRevision);
