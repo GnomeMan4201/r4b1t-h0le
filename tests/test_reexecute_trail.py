@@ -90,7 +90,7 @@ class ReexecuteTrailUnitTests(unittest.TestCase):
             "route": {"url": first_url},
         }
 
-        psl_bytes = (ROOT / "selection/site-key-v1/public_suffix_list.dat").read_bytes()
+        psl_bytes = (ROOT / "selection/site-key-v1/public_suffix_list_ascii_v1.dat").read_bytes()
         override_bytes = (ROOT / "selection/site-key-v1/platform-overrides.json").read_bytes()
         psl = site_key_v1.parse_psl(psl_bytes.decode("utf-8"))
         overrides = site_key_v1.parse_overrides(override_bytes.decode("utf-8"))
