@@ -373,6 +373,8 @@
       throw new Error('ROLL_AUTHORITY_CORE_UNAVAILABLE');
     }
     if (state.preservationBlocked) throw new Error('DRAFT_PRESERVATION_UNAVAILABLE');
+    if (!authorityOriginalCommit) wrapRoll();
+    if (!authorityOriginalCommit) throw new Error('ROLL_COMMIT_ADAPTER_UNAVAILABLE');
     if (!state.corpusRevision) await loadCorpusRevision();
     if (typeof window.__r4b1tCaptureSelectionConstraint !== 'function') {
       throw new Error('SELECTION_CONSTRAINT_UNAVAILABLE');
