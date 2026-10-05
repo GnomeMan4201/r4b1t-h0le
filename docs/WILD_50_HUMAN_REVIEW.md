@@ -1,4 +1,6 @@
 # WILD 50 human review — v0.6.1
+
+> **SECONDARY / NON-CANONICAL.** This document describes the later duplicate run `37363282447` and its review. The canonical campaign is the first successful post-preregistration run `37362726635`, as frozen in `docs/WILD_50_RUN_RECONCILIATION.md`. Do not use this document or its review outcome for Corpus Ledger shadow translation.
 Date: 2026-10-05
 Scope: the 45 authoritative `LIVE_CANDIDATE` + `MANUAL_CHECK` rows from workflow run `37363282447`. The four `RETRYABLE` observations and one intake-level `REJECTED` observation are not converted into human-review rows.
 This review does not mutate the public corpus or ledger. It supplies human verdict, frozen classification-v2.0 fields, and the required one-line reason.
