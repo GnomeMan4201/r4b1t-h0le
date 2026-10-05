@@ -6,6 +6,7 @@
   var disclosure = null;
   var pendingIntent = false;
   var commitPending = false;
+  var revealPending = null;
   var activeCompletion = null;
   var activeCompletionResolve = null;
 
@@ -85,7 +86,12 @@
         mount.replaceChildren(payload.element);
         if (typeof root.__r4b1tRevealRoll === 'function') root.__r4b1tRevealRoll(payload.result);
         if (root.R4B1TRollAuthority && typeof root.R4B1TRollAuthority.markRevealed === 'function') {
-          root.R4B1TRollAuthority.markRevealed(payload.result).catch(function (error) {
+          var completion = Promise.resolve(root.R4B1TRollAuthority.markRevealed(payload.result));
+          revealPending = completion;
+          completion.then(function () {
+            if (revealPending === completion) revealPending = null;
+          }, function (error) {
+            if (revealPending === completion) revealPending = null;
             console.error('[r4b1t] reveal completion failed:', error);
           });
         }
@@ -263,6 +269,7 @@
       if (!snapshot) return null;
       return Object.assign({}, snapshot, {
         commitPending: commitPending,
+        revealPending: Boolean(revealPending),
         pendingIntent: pendingIntent
       });
     }
