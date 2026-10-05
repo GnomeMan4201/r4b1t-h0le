@@ -591,6 +591,30 @@
     {
       "url": "https://github.com\\a\\repo",
       "code": "SITE_KEY_URL_NOT_CANONICAL"
+    },
+    {
+      "url": "https://127.1/a",
+      "code": "SITE_KEY_URL_NOT_CANONICAL"
+    },
+    {
+      "url": "https://2130706433/a",
+      "code": "SITE_KEY_URL_NOT_CANONICAL"
+    },
+    {
+      "url": "https://0177.0.0.1/a",
+      "code": "SITE_KEY_URL_NOT_CANONICAL"
+    },
+    {
+      "url": "https://0x7f.0.0.1/a",
+      "code": "SITE_KEY_URL_NOT_CANONICAL"
+    },
+    {
+      "url": "https://example.com../a",
+      "code": "SITE_KEY_URL_NOT_CANONICAL"
+    },
+    {
+      "url": "https://github.com/a b/repo",
+      "code": "SITE_KEY_URL_NOT_CANONICAL"
     }
   ]
 }
