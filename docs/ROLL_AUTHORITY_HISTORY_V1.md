@@ -123,7 +123,7 @@ If the cursor is behind the tail and a new ROLL is revealed, forward navigation 
 
 Repeated resources are allowed. History uniqueness is per authority transaction ID, not per result URL.
 
-Browser Back/Forward and in-app PREVIOUS/FORWARD resolve through the same cursor state. Escape routes through PREVIOUS when no higher-priority dialog or sheet owns Escape.
+Browser Back/Forward remain browser navigation and are intentionally not coupled to the authority cursor. In-app PREVIOUS/FORWARD and Escape operate only on the tab-local transaction cursor; Escape yields to any higher-priority dialog, sheet, or input.
 
 The visible card exposes `DRAW <authoritySequence>` so two consecutive selections of the same URL are still visibly distinct transactions.
 
