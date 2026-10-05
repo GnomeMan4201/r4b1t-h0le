@@ -294,6 +294,50 @@ test('mobile wear sample exposes revealed concealed and forked states', async ({
 });
 
 
+test('ROLL AGAIN keeps the production mark above fixed controls while the result is cleared', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+
+  await page.setViewportSize({ width: 390, height: 664 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitForApplicationReady(page);
+  await page.waitForSelector('#r4mProductionMark svg');
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  await expect(page.locator('html')).toHaveClass(/\bresult-ready\b/);
+
+  await page.evaluate(() => {
+    window.__emptyResultFrames = [];
+    window.__emptyResultObserver = new MutationObserver(() => {
+      if (document.querySelector('#r4mRouteMount').childElementCount) return;
+      const mark = document.querySelector('#r4mProductionMark').getBoundingClientRect();
+      const header = document.querySelector('.r4m-header').getBoundingClientRect();
+      const again = document.querySelector('#r4mRollAgain').getBoundingClientRect();
+      window.__emptyResultFrames.push({
+        phase: document.documentElement.dataset.r4mPresentation,
+        markTop: mark.top,
+        markBottom: mark.bottom,
+        headerBottom: header.bottom,
+        controlsTop: again.top,
+      });
+    });
+    window.__emptyResultObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-r4m-presentation'],
+    });
+  });
+  await page.locator('#r4mRollAgain').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  const frames = await page.evaluate(() => {
+    window.__emptyResultObserver.disconnect();
+    return window.__emptyResultFrames;
+  });
+  expect(frames.length).toBeGreaterThan(0);
+  for (const frame of frames) {
+    expect(frame.markTop, frame.phase).toBeGreaterThanOrEqual(frame.headerBottom - 1);
+    expect(frame.markBottom, frame.phase).toBeLessThanOrEqual(frame.controlsTop + 1);
+  }
+});
+
 test('ordinary mobile controls execute visible timed motion', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
 
@@ -530,4 +574,3 @@ test('desktop Tor modal traps focus and restores the visit control', async ({ pa
   await expect(tor).toHaveAttribute('aria-hidden', 'true');
   await expect(visit).toBeFocused();
 });
-
