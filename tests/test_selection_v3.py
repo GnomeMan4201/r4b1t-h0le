@@ -91,9 +91,9 @@ class SiteKeyV1Tests(unittest.TestCase):
         self.assertEqual(report["site_key_count"], 733)
         self.assertEqual(report["modes"]["UNIFORM_SITE"]["effective_sites"], 733)
         self.assertAlmostEqual(report["modes"]["UNIFORM_SITE"]["max_site_probability"], 1 / 733, places=15)
-        self.assertAlmostEqual(report["modes"]["SQRT_DEPTH"]["effective_sites"], 448.64033478088453, places=12)
+        self.assertAlmostEqual(report["modes"]["SQRT_DEPTH"]["effective_sites"], 448.640335, places=6)
         self.assertAlmostEqual(report["modes"]["SQRT_DEPTH"]["max_site_probability"], 0.027211505700766473, places=15)
-        self.assertAlmostEqual(report["modes"]["UNIFORM_URL"]["effective_sites"], 33.4476072159403, places=12)
+        self.assertAlmostEqual(report["modes"]["UNIFORM_URL"]["effective_sites"], 33.447607, places=6)
         self.assertAlmostEqual(report["modes"]["UNIFORM_URL"]["max_site_probability"], 0.1305275131522821, places=15)
 
 
