@@ -1,0 +1,147 @@
+name: WILD 50 Review v0.6.1
+
+on:
+  push:
+    branches:
+      - feat/wild-50-pilot
+    paths:
+      - 'corpus/wild/pilot/wild-50-v061-review.csv'
+      - '.github/workflows/wild-50-review-v061.yml'
+      - 'tools/wild-intake-v0.6.1/**'
+      - 'tools/site_key_v1.py'
+      - 'selection/site-key-v1/**'
+      - 'tests/fixtures/selection-v3-vectors.json'
+      - 'corpus/releases/experience-candidate-v0.4/**'
+      - 'corpus/classification/resource-classification-v2.0.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  review-and-export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SOURCE_RUN_ID: '37363282447'
+      SOURCE_ARTIFACT_ID: '11368035463'
+      SOURCE_ARTIFACT_NAME: wild-50-v061-evidence
+      SOURCE_ARTIFACT_DIGEST: sha256:59a09c93652b45ad65b068637229958b19f80b570c71eb2780ec94fc31972cdc
+      TOOL_SHA256: fb645cdcc0d2ce2fc0edfb62fd70750194324d754d41bcf02bcc09cb449510cd
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify frozen v0.6.1 tool
+        run: |
+          printf '%s  %s\n' \
+            "$TOOL_SHA256" \
+            tools/wild-intake-v0.6.1/wild1000.py | sha256sum -c -
+          python -m pip install -r tools/wild-intake-v0.6.1/requirements.txt
+
+      - name: Verify source artifact identity
+        run: |
+          got_digest="$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$SOURCE_ARTIFACT_ID" --jq .digest)"
+          got_run="$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$SOURCE_ARTIFACT_ID" --jq .workflow_run.id)"
+          test "$got_digest" = "$SOURCE_ARTIFACT_DIGEST"
+          test "$got_run" = "$SOURCE_RUN_ID"
+          echo "artifact $SOURCE_ARTIFACT_ID from run $SOURCE_RUN_ID: $got_digest"
+
+      - name: Download and verify original campaign evidence
+        run: |
+          rm -rf /tmp/wild-evidence
+          mkdir -p /tmp/wild-evidence
+          gh run download "$SOURCE_RUN_ID" -n "$SOURCE_ARTIFACT_NAME" -D /tmp/wild-evidence
+          cd /tmp/wild-evidence
+          sha256sum -c wild-50-evidence.sha256
+
+      - name: Apply frozen human review
+        run: |
+          cp corpus/wild/pilot/wild-50-v061-review.csv /tmp/wild-evidence/wild-50/review.csv
+          test "$(($(wc -l < /tmp/wild-evidence/wild-50/review.csv)-1))" -eq 45
+
+      - name: Validate reviewed stats
+        run: |
+          python tools/wild-intake-v0.6.1/wild1000.py stats \
+            --r4b1t-root . \
+            --campaign /tmp/wild-evidence/wild-50 \
+            2>&1 | tee /tmp/wild-evidence/wild-50-reviewed-stats.log
+          grep -Eq 'CAMPAIGN_ACCEPTED +31 / 1000' /tmp/wild-evidence/wild-50-reviewed-stats.log
+          grep -Eq 'REVIEW_ACCEPTED +0' /tmp/wild-evidence/wild-50-reviewed-stats.log
+          grep -Eq 'rejected by human +14' /tmp/wild-evidence/wild-50-reviewed-stats.log
+          grep -Eq 'invalid verdict +0' /tmp/wild-evidence/wild-50-reviewed-stats.log
+          grep -Eq 'awaiting review +0' /tmp/wild-evidence/wild-50-reviewed-stats.log
+
+      - name: Export campaign-accepted resources
+        run: |
+          python tools/wild-intake-v0.6.1/wild1000.py export \
+            --r4b1t-root . \
+            --campaign /tmp/wild-evidence/wild-50 \
+            2>&1 | tee /tmp/wild-evidence/wild-50-export.log
+          test "$(wc -l < /tmp/wild-evidence/wild-50/campaign-accepted.jsonl)" -eq 31
+
+      - name: Summarize reviewed evidence
+        run: |
+          python - <<'PY'
+          import csv, json
+          from collections import Counter
+          from pathlib import Path
+          d=Path('/tmp/wild-evidence/wild-50')
+          rows=list(csv.DictReader(open(d/'review.csv', newline='')))
+          accepted=[r for r in rows if r['verdict'].strip().lower() in {'y','yes','accept','accepted','1'}]
+          rejected=[r for r in rows if r['verdict'].strip().lower() in {'n','no','reject','rejected','0'}]
+          summary={
+            'schema':'r4b1t-wild-50-reviewed-summary/v1',
+            'source_run_id':37363282447,
+            'source_artifact_id':11368035463,
+            'source_artifact_digest':'sha256:59a09c93652b45ad65b068637229958b19f80b570c71eb2780ec94fc31972cdc',
+            'campaign_manifest_sha256':'sha256:d2ce78ceb521ffa9db4d91c762f4e220274b5168cf18dd90c93d1e5533b0ecc0',
+            'accepted':len(accepted),
+            'rejected':len(rejected),
+            'resource_types':dict(sorted(Counter(r['resource_type'] for r in accepted).items())),
+            'primary_subjects':dict(sorted(Counter(r['primary_subject'] for r in accepted).items())),
+            'accepted_by_source':dict(sorted(Counter(r['lead_source_key'] for r in accepted).items())),
+            'accepted_manual_check':sum(r['intake_status']=='MANUAL_CHECK' for r in accepted),
+            'rejected_manual_check':sum(r['intake_status']=='MANUAL_CHECK' for r in rejected),
+          }
+          (Path('/tmp/wild-evidence')/'wild-50-reviewed-summary.json').write_text(
+              json.dumps(summary, indent=2, sort_keys=True)+'\n')
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+      - name: Hash reviewed outputs
+        run: |
+          cd /tmp/wild-evidence
+          sha256sum \
+            wild-50/review.csv \
+            wild-50/campaign-accepted.jsonl \
+            wild-50-reviewed-stats.log \
+            wild-50-export.log \
+            wild-50-reviewed-summary.json \
+            > wild-50-reviewed.sha256
+          sha256sum wild-50-reviewed.sha256
+
+      - name: Upload reviewed WILD 50 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: wild-50-v061-reviewed
+          path: |
+            /tmp/wild-evidence/wild-50/campaign-manifest.json
+            /tmp/wild-evidence/wild-50/classification.json
+            /tmp/wild-evidence/wild-50/observations.jsonl
+            /tmp/wild-evidence/wild-50/review.csv
+            /tmp/wild-evidence/wild-50/campaign-accepted.jsonl
+            /tmp/wild-evidence/wild-50-reviewed-stats.log
+            /tmp/wild-evidence/wild-50-export.log
+            /tmp/wild-evidence/wild-50-reviewed-summary.json
+            /tmp/wild-evidence/wild-50-reviewed.sha256
+          if-no-files-found: error
+          retention-days: 30
