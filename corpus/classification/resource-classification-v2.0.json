@@ -2,7 +2,7 @@
   "schema": "r4b1t-resource-classification/v2",
   "version": "resource-classification-v2.0",
   "status": "frozen",
-  "notes": "FROZEN classification authority for WILD intake. FORM (resource_type: what the thing is) is separated from TOPIC (subjects: what it is about), fixing the v1 collision where security_tool / threat_feed / advisory encode both. Rules are fail-closed: unknown or missing rule keys are invalid. primary_subject_in_subjects=true means subjects must contain primary_subject; max_subjects counts the full list including it. Any semantic change requires a new version and authority digest.",
+  "notes": "FROZEN classification authority for WILD intake. FORM (resource_type: what the thing is) is separated from TOPIC (subjects: what it is about), fixing the v1 collision where security_tool / threat_feed / advisory encode both. Rules are fail-closed: unknown or missing rule keys are invalid. primary_subject_in_subjects=true means subjects must contain primary_subject; max_subjects counts the full list including it. Any semantic change requires a new version and a new authority digest.",
   "rules": {
     "max_subjects": 4,
     "min_reason_chars": 20,
