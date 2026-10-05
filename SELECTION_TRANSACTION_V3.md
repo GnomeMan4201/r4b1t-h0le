@@ -32,13 +32,18 @@ For an HTTP(S) URL:
 1. Parse the URL.
 2. Use the hostname only; userinfo is forbidden by the corpus contract.
 3. The authoritative URL serialization MUST already contain an ASCII hostname. IDNs therefore enter the corpus in canonical `xn--` punycode form. Raw Unicode authority bytes fail closed before URL parsing.
-4. Lowercase the ASCII hostname.
-5. Strip one trailing dot.
-6. The URL parser removes the port before hostname processing.
-7. Bare IP literals are their own site keys.
-8. For normal hosts, resolve the registrable domain (eTLD+1) against the pinned authoritative ASCII PSL derivative. `www.` is not a special case; it disappears only because eTLD+1 resolution collapses it.
+4. Before runtime URL parsing, reject URL forms whose normalization differs across supported re-executors:
+   - percent escapes in the authority;
+   - a backslash in the authority or path;
+   - any path segment that becomes `.` or `..` after case-insensitive replacement of `%2e` with `.`.
+5. Malformed or out-of-range ports fail closed.
+6. Lowercase the ASCII hostname.
+7. Strip one trailing dot.
+8. The URL parser removes a valid port before hostname processing.
+9. Bare IP literals are their own site keys.
+10. For normal hosts, resolve the registrable domain (eTLD+1) against the pinned authoritative ASCII PSL derivative. `www.` is not a special case; it disappears only because eTLD+1 resolution collapses it.
 
-Selection MUST NOT invoke the host runtime's ambient IDNA implementation. The raw PSL source is provenance; grouping consumes only the frozen ASCII derivative. This prevents browser/Python Unicode and IDNA version drift.
+Selection consumes canonical release URLs, not arbitrary navigation input. It MUST NOT invoke the host runtime's ambient IDNA implementation or rely on runtime-specific dot-segment/backslash normalization. The raw PSL source is provenance; grouping consumes only the frozen ASCII derivative. This prevents browser/Python URL and IDNA version drift.
 
 ### 2.2 Platform overrides
 
@@ -239,7 +244,7 @@ Required vector coverage includes:
 - PSL subdomain collapse;
 - GitHub/GitLab platform-owner separation;
 - mixed-case GitHub owner equivalence;
-- canonical punycode IDN input and rejection of raw Unicode authority bytes;
+- canonical punycode IDN input, rejection of raw Unicode authority bytes, and rejection of cross-runtime URL-normalization traps;
 - trailing-dot normalization;
 - site-level redraw;
 - single-site bypass;
