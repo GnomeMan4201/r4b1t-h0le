@@ -24,7 +24,7 @@ Successor provenance
         --classification classification-v2.0.json --campaign-target 1000 --source-cap 50 --pending-cap 100
 
     # 3. pilot
-    python3 wild1000.py harvest --r4b1t-root $R --campaign wild-50 --leads leads.txt
+    python3 wild1000.py harvest --r4b1t-root $R --campaign wild-50 --leads leads.txt --source-registry corpus/wild/source-registry-v2.json
     python3 wild1000.py verify  --r4b1t-root $R --campaign wild-50 --limit 50
     #    ... human review in wild-50/review.csv ...
     python3 wild1000.py stats   --r4b1t-root $R --campaign wild-50
