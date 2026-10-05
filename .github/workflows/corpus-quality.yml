@@ -17,6 +17,7 @@ on:
       - 'tests/test_reexecute_trail.py'
       - 'tools/site_key_v1.py'
       - 'tools/selection_v3.py'
+      - 'tools/selection_v3_metrics.py'
       - 'tests/test_selection_v3.py'
       - 'selection/site-key-v1/**'
       - 'site-key-v1.js'
@@ -69,6 +70,7 @@ on:
       - 'tests/test_reexecute_trail.py'
       - 'tools/site_key_v1.py'
       - 'tools/selection_v3.py'
+      - 'tools/selection_v3_metrics.py'
       - 'tests/test_selection_v3.py'
       - 'selection/site-key-v1/**'
       - 'site-key-v1.js'
@@ -142,6 +144,7 @@ jobs:
           tools/reexecute_trail.py
           tools/site_key_v1.py
           tools/selection_v3.py
+          tools/selection_v3_metrics.py
           tests/test_corpus_health.py
           tests/test_compile_eligibility.py
           tests/test_profile_eligibility.py
