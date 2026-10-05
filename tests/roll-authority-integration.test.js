@@ -64,3 +64,12 @@ test('all legacy/global ROLL entry points delegate to the production durable pat
 test('authority navigation never delegates to browser history', () => {
   assert.doesNotMatch(runtime, /history\.pushState|history\.back\(|history\.forward\(|history\.replaceState/);
 });
+
+test('Trail authority refreshes the durable draft under the global lock before prepare/project', () => {
+  assert.match(trail, /function refreshAuthorityDraftFromStorage\(\)/);
+  const prepareAt = trail.indexOf('async function prepareAuthorityRoll');
+  const projectAt = trail.indexOf('async function projectAuthorityTerminal');
+  assert.ok(prepareAt >= 0 && projectAt >= 0);
+  assert.match(trail.slice(prepareAt, prepareAt + 700), /refreshAuthorityDraftFromStorage\(\)/);
+  assert.match(trail.slice(projectAt, projectAt + 500), /refreshAuthorityDraftFromStorage\(\)/);
+});
