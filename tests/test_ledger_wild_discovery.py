@@ -158,5 +158,51 @@ class WildDiscoveryTests(unittest.TestCase):
             with self.subTest(forbidden=forbidden),self.assertRaises(ValueError):
                 check_source(path.read_text()+'\n'+forbidden,'corpus.ledger.consumers.wild_discovery')
 
+
+class WildDiscoveryFilesTests(unittest.TestCase):
+    def test_canonical_reviewed_export_prepares_appends_and_verifies_offline_window(self):
+        from corpus.ledger.tools.wild_discovery import prepare,verify_exports
+        from corpus.ledger.tools.shadow import export,read_canonical
+        from corpus.ledger.genesis import snapshot,import_proposals
+        from tests.test_ledger_genesis import ROOT,COMMIT
+
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)/'corpus/ledger/shadow'
+            payload,artifacts=snapshot(ROOT,COMMIT)
+            writer=Sequencer(root/'ledger.sqlite3')
+            writer.submit_many(import_proposals(payload,artifacts,T)[:2])
+            before=root/'before'
+            export(writer,artifacts,before)
+
+            original=writer.events()
+            window_dir=root/'wild-window'
+            result=prepare(before,DECLARATION,window_dir)
+            self.assertEqual(result['status'],'SHADOW_WILD_DISCOVERY_PROPOSALS_ONLY')
+            self.assertEqual(result['records'],30)
+            self.assertEqual(writer.events(),original)
+            self.assertEqual(len(read_canonical(window_dir/'proposals.json')),30)
+            self.assertTrue((window_dir/'evidence_files/corpus/wild/reviews/wild-50-v061-campaign-accepted.jsonl').is_file())
+
+            with self.assertRaises(ValueError):
+                prepare(before,DECLARATION,window_dir)
+
+            submitted=read_canonical(window_dir/'proposals.json')
+            writer.submit_many(submitted,expected_head=result['source_head'])
+            after=root/'after'
+            export(writer,artifacts,after)
+            verified=verify_exports(before,after,window_dir)
+            self.assertEqual(verified['status'],'VERIFIED_SHADOW_WILD_DISCOVERY_WINDOW')
+            self.assertEqual(verified['event_count'],30)
+
+            created=writer.snapshot()['resources'][-30:]
+            self.assertTrue(all(row['eligibility']=='CANDIDATE' for row in created))
+            self.assertTrue(all(row['availability'] is None for row in created))
+
+            review=window_dir/'evidence_files/corpus/wild/reviews/wild-50-v061-review.csv'
+            review.write_bytes(review.read_bytes()+b'changed')
+            with self.assertRaises(ValueError):
+                verify_exports(before,after,window_dir)
+
+
 if __name__=='__main__':
     unittest.main()
