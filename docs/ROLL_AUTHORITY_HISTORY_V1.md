@@ -104,6 +104,8 @@ The authority transaction ID is private implementation metadata on the local dra
 
 The public Trail ROLL transaction remains `r4b1t-selection-transaction/v2`.
 
+A normal durable commit adopts the selected route but does **not** append its Trail step yet. The Trail step is appended only when the existing machine-owned reveal boundary is crossed. If the browser dies after COMMITTED but before that boundary, recovery owns crossing the deferred boundary exactly once through transaction-ID-idempotent projection.
+
 Navigation never appends, removes, or rewrites Trail steps.
 
 Current local-CSPRNG records establish deterministic internal consistency and replayability. They do **not** independently prove that selection was random or unbiased.
