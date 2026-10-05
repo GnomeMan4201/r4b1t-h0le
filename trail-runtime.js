@@ -18,6 +18,10 @@
     authorityReadyResolve = resolve;
     authorityReadyReject = reject;
   });
+  // Trail runtime is also exercised in isolation by integrity tests and may be
+  // embedded without the authority consumer. Mark the promise as handled here;
+  // consumers awaiting the original promise still observe the rejection.
+  window.__r4b1tTrailAuthorityReady.catch(function () {});
   var state = {
     seed: randomSeed(),
     createdAt: new Date().toISOString(),
