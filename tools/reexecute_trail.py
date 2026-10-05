@@ -23,12 +23,17 @@ from typing import Any
 
 try:
     from tools import cj1 as shared_cj1
+    from tools import selection_v3 as selection_v3_ref
+    from tools import site_key_v1 as site_key_v1_ref
 except ModuleNotFoundError:
     import cj1 as shared_cj1
+    import selection_v3 as selection_v3_ref
+    import site_key_v1 as site_key_v1_ref
 from urllib.parse import urlsplit
 
 FORMAT = "r4b1t-trail/v0.3"
 TRANSACTION = "r4b1t-selection-transaction/v2"
+TRANSACTION_V3 = "r4b1t-selection-transaction/v3"
 TERRAIN_SCHEMA = "r4b1t-terrain-index-v1"
 REGISTRY_SCHEMA = "r4b1t-eligibility-profiles-v1"
 SAMPLER_ALGORITHM = "uniform-with-repeat-guard-v1"
@@ -436,7 +441,7 @@ def verify_integrity(envelope: Any) -> dict[str, Any]:
     return manifest
 
 
-def validate_roll_transaction(
+def validate_roll_transaction_v2(
     transaction: Any,
     step_url: str,
     corpus_revision: str,
@@ -488,6 +493,144 @@ def validate_roll_transaction(
     return seed, sampler, constraint
 
 
+def validate_roll_transaction_v3(
+    transaction: Any,
+    step_url: str,
+    corpus_revision: str,
+) -> tuple[str, dict[str, Any], dict[str, Any]]:
+    exact_keys(
+        transaction,
+        {
+            "transaction_version", "sequence", "action", "constraint", "corpus_revision",
+            "grouping", "eligible_url_count", "eligible_site_count", "total_site_weight",
+            "sampler", "selection", "route",
+        },
+        "ROLL v3 transaction",
+    )
+    if transaction.get("transaction_version") != TRANSACTION_V3 or transaction.get("action") != "ROLL":
+        fail("TRANSACTION_INVALID", "v3 version/action")
+    safe_int(transaction.get("sequence"), "v3 transaction sequence", 1)
+    if transaction.get("corpus_revision") != corpus_revision:
+        fail("TRANSACTION_INVALID", "corpus revision")
+    safe_int(transaction.get("eligible_url_count"), "eligible_url_count", 1)
+    safe_int(transaction.get("eligible_site_count"), "eligible_site_count", 1)
+    total_weight = safe_int(transaction.get("total_site_weight"), "total_site_weight", 1)
+    if total_weight >= TWO32:
+        fail("TRANSACTION_INVALID", "total_site_weight")
+
+    grouping = transaction.get("grouping")
+    exact_keys(
+        grouping,
+        {"algorithm", "site_key_version", "psl_sha256", "overrides_sha256", "weight_mode"},
+        "v3 grouping",
+    )
+    valid_sha(grouping.get("psl_sha256"), "v3 psl_sha256")
+    valid_sha(grouping.get("overrides_sha256"), "v3 overrides_sha256")
+
+    sampler = transaction.get("sampler")
+    exact_keys(
+        sampler,
+        {
+            "algorithm", "prng", "seed", "draw_start", "draw_count",
+            "site_draw_count", "url_draw_count", "repeat_guard",
+        },
+        "v3 sampler",
+    )
+    seed = sampler.get("seed")
+    if not isinstance(seed, str) or not seed:
+        fail("SAMPLER_INVALID", "seed")
+    safe_int(sampler.get("draw_start"), "draw_start", 0)
+    safe_int(sampler.get("draw_count"), "draw_count", 2)
+    safe_int(sampler.get("site_draw_count"), "site_draw_count", 1)
+    safe_int(sampler.get("url_draw_count"), "url_draw_count", 1)
+    guard = sampler.get("repeat_guard")
+    exact_keys(
+        guard,
+        {"kind", "reference", "max_site_draws", "mode", "exhausted"},
+        "v3 repeat_guard",
+    )
+    if guard.get("reference") is not None and (
+        not isinstance(guard.get("reference"), str) or not guard["reference"]
+    ):
+        fail("SAMPLER_INVALID", "v3 repeat guard reference")
+
+    selection = transaction.get("selection")
+    exact_keys(
+        selection,
+        {
+            "site_draw_u32", "site_target", "site_index", "site_key", "site_weight",
+            "site_bucket_size", "url_draw_u32", "url_index",
+        },
+        "v3 selection",
+    )
+
+    route = transaction.get("route")
+    exact_keys(route, {"url"}, "transaction route")
+    if valid_url(route.get("url"), "transaction route URL") != step_url:
+        fail("TRANSACTION_ROUTE_MISMATCH")
+
+    constraint = transaction.get("constraint")
+    if not isinstance(constraint, dict):
+        fail("CONSTRAINT_INVALID")
+    return seed, sampler, constraint
+
+
+def validate_roll_transaction(
+    transaction: Any,
+    step_url: str,
+    corpus_revision: str,
+) -> tuple[str, str, dict[str, Any], dict[str, Any]]:
+    if not isinstance(transaction, dict):
+        fail("TRANSACTION_INVALID")
+    version = transaction.get("transaction_version")
+    if version == TRANSACTION:
+        seed, sampler, constraint = validate_roll_transaction_v2(
+            transaction, step_url, corpus_revision
+        )
+    elif version == TRANSACTION_V3:
+        seed, sampler, constraint = validate_roll_transaction_v3(
+            transaction, step_url, corpus_revision
+        )
+    else:
+        fail("TRANSACTION_INVALID", "unsupported version")
+    return version, seed, sampler, constraint
+
+
+def load_site_key_authority(root: Path, grouping: dict[str, Any]):
+    psl_path = root / "selection" / "site-key-v1" / "public_suffix_list_ascii_v1.dat"
+    overrides_path = root / "selection" / "site-key-v1" / "platform-overrides.json"
+    try:
+        psl_bytes = psl_path.read_bytes()
+        overrides_bytes = overrides_path.read_bytes()
+    except OSError as exc:
+        fail("SITE_KEY_AUTHORITY_UNAVAILABLE", str(exc))
+
+    psl_digest = digest_bytes(psl_bytes)
+    overrides_digest = digest_bytes(overrides_bytes)
+    if grouping.get("psl_sha256") != psl_digest:
+        fail("SITE_KEY_AUTHORITY_MISMATCH", "PSL digest")
+    if grouping.get("overrides_sha256") != overrides_digest:
+        fail("SITE_KEY_AUTHORITY_MISMATCH", "override digest")
+    if grouping.get("algorithm") != selection_v3_ref.ALGORITHM:
+        fail("SITE_KEY_AUTHORITY_MISMATCH", "selection algorithm")
+    if grouping.get("site_key_version") != site_key_v1_ref.SITE_KEY_VERSION:
+        fail("SITE_KEY_AUTHORITY_MISMATCH", "site-key version")
+    if grouping.get("weight_mode") not in selection_v3_ref.WEIGHT_MODES:
+        fail("SITE_KEY_AUTHORITY_MISMATCH", "weight mode")
+
+    try:
+        psl = site_key_v1_ref.parse_psl(psl_bytes.decode("utf-8", "strict"))
+        overrides = site_key_v1_ref.parse_overrides(overrides_bytes.decode("utf-8", "strict"))
+    except (UnicodeDecodeError, site_key_v1_ref.SiteKeyError, json.JSONDecodeError) as exc:
+        fail("SITE_KEY_AUTHORITY_INVALID", str(exc))
+
+    return (
+        lambda url: site_key_v1_ref.site_key(url, psl, overrides),
+        psl_digest,
+        overrides_digest,
+    )
+
+
 def reexecute(envelope: Any, root: Path) -> dict[str, Any]:
     root = root.resolve()
     manifest = verify_integrity(envelope)
@@ -500,6 +643,7 @@ def reexecute(envelope: Any, root: Path) -> dict[str, Any]:
     prng: Mulberry32 | None = None
     terrain_cache: dict[str, TerrainIndex] = {}
     roll_results: list[dict[str, Any]] = []
+    site_key_cache: dict[tuple[str, str], tuple[Any, str, str]] = {}
 
     for step in manifest["steps"]:
         if step["kind"] != "ROLL":
@@ -507,7 +651,7 @@ def reexecute(envelope: Any, root: Path) -> dict[str, Any]:
         sequence += 1
         step_url = step["route"]["url"]
         tx = step["transaction"]
-        tx_seed, sampler, constraint = validate_roll_transaction(
+        version, tx_seed, sampler, constraint = validate_roll_transaction(
             tx, step_url, manifest["corpus_revision"]
         )
 
@@ -515,8 +659,6 @@ def reexecute(envelope: Any, root: Path) -> dict[str, Any]:
             fail("ROLL_CONTINUITY_MISMATCH", f"step {step['index']} sequence")
         if sampler["draw_start"] != cursor:
             fail("ROLL_CONTINUITY_MISMATCH", f"step {step['index']} draw_start")
-        if sampler["repeat_guard"]["reference"] != previous_roll_url:
-            fail("ROLL_CONTINUITY_MISMATCH", f"step {step['index']} repeat guard")
 
         if seed is None:
             seed = tx_seed
@@ -526,38 +668,40 @@ def reexecute(envelope: Any, root: Path) -> dict[str, Any]:
         assert prng is not None
 
         pool, terrain_index = eligible_pool(release, constraint, terrain_cache, root)
-        if tx["eligible_count"] != len(pool):
-            fail(
-                "ELIGIBLE_COUNT_MISMATCH",
-                f"step {step['index']}: declared {tx['eligible_count']}, actual {len(pool)}",
-            )
 
-        reference = previous_roll_url
-        selected = None
-        consumed = 0
-        while consumed < 30:
-            selected = pool[prng.pool_index(len(pool))]
-            consumed += 1
-            if reference is None or selected != reference:
-                break
+        if version == TRANSACTION:
+            if sampler["repeat_guard"]["reference"] != previous_roll_url:
+                fail("ROLL_CONTINUITY_MISMATCH", f"step {step['index']} repeat guard")
+            if tx["eligible_count"] != len(pool):
+                fail(
+                    "ELIGIBLE_COUNT_MISMATCH",
+                    f"step {step['index']}: declared {tx['eligible_count']}, actual {len(pool)}",
+                )
 
-        if sampler["draw_count"] != consumed:
-            fail(
-                "DRAW_COUNT_MISMATCH",
-                f"step {step['index']}: declared {sampler['draw_count']}, actual {consumed}",
-            )
-        if selected != step_url:
-            fail(
-                "ROUTE_REEXECUTION_MISMATCH",
-                f"step {step['index']}: expected {selected!r}, recorded {step_url!r}",
-            )
+            reference = previous_roll_url
+            selected = None
+            consumed = 0
+            while consumed < 30:
+                selected = pool[prng.pool_index(len(pool))]
+                consumed += 1
+                if reference is None or selected != reference:
+                    break
 
-        cursor += consumed
-        previous_roll_url = step_url
-        roll_results.append(
-            {
+            if sampler["draw_count"] != consumed:
+                fail(
+                    "DRAW_COUNT_MISMATCH",
+                    f"step {step['index']}: declared {sampler['draw_count']}, actual {consumed}",
+                )
+            if selected != step_url:
+                fail(
+                    "ROUTE_REEXECUTION_MISMATCH",
+                    f"step {step['index']}: expected {selected!r}, recorded {step_url!r}",
+                )
+
+            result = {
                 "step": step["index"],
                 "sequence": sequence,
+                "transaction_version": version,
                 "url": step_url,
                 "terrain": constraint["terrain"],
                 "eligible_count": len(pool),
@@ -565,7 +709,69 @@ def reexecute(envelope: Any, root: Path) -> dict[str, Any]:
                 "draw_count": consumed,
                 "terrain_authority": terrain_index.status if terrain_index else "NOT_APPLICABLE_ALL",
             }
-        )
+        else:
+            grouping = tx["grouping"]
+            authority_key = (grouping["psl_sha256"], grouping["overrides_sha256"])
+            authority = site_key_cache.get(authority_key)
+            if authority is None:
+                authority = load_site_key_authority(root, grouping)
+                site_key_cache[authority_key] = authority
+            site_key, psl_digest, overrides_digest = authority
+
+            expected_reference = (
+                None if previous_roll_url is None else site_key(previous_roll_url)
+            )
+            if sampler["repeat_guard"]["reference"] != expected_reference:
+                fail("ROLL_CONTINUITY_MISMATCH", f"step {step['index']} repeat guard")
+
+            try:
+                selection_v3_ref.verify_transaction(
+                    tx,
+                    eligible_urls=pool,
+                    site_key=site_key,
+                    seed=tx_seed,
+                    draw_start=sampler["draw_start"],
+                    weight_mode=grouping["weight_mode"],
+                    repeat_guard_reference=expected_reference,
+                    sequence=sequence,
+                    constraint=constraint,
+                    corpus_revision=manifest["corpus_revision"],
+                    psl_sha256=psl_digest,
+                    overrides_sha256=overrides_digest,
+                )
+            except selection_v3_ref.SelectionV3Error as exc:
+                fail("SELECTION_V3_MISMATCH", str(exc))
+            except site_key_v1_ref.SiteKeyError as exc:
+                fail("SITE_KEY_AUTHORITY_INVALID", str(exc))
+
+            consumed = sampler["draw_count"]
+            for _ in range(consumed):
+                prng.next_uint32()
+
+            if tx["eligible_url_count"] != len(pool):
+                fail(
+                    "ELIGIBLE_COUNT_MISMATCH",
+                    f"step {step['index']}: declared {tx['eligible_url_count']}, actual {len(pool)}",
+                )
+
+            result = {
+                "step": step["index"],
+                "sequence": sequence,
+                "transaction_version": version,
+                "url": step_url,
+                "terrain": constraint["terrain"],
+                "eligible_count": len(pool),
+                "eligible_site_count": tx["eligible_site_count"],
+                "weight_mode": grouping["weight_mode"],
+                "site_key": tx["selection"]["site_key"],
+                "draw_start": sampler["draw_start"],
+                "draw_count": consumed,
+                "terrain_authority": terrain_index.status if terrain_index else "NOT_APPLICABLE_ALL",
+            }
+
+        cursor += consumed
+        previous_roll_url = step_url
+        roll_results.append(result)
 
     return {
         "status": "PROVENANCE_REEXECUTED",
