@@ -261,8 +261,10 @@
       var pending = await store.listUnprojectedCommitted();
       for (var index = 0; index < pending.length; index += 1) {
         var record = pending[index];
-        await projectTerminal(record, { recovered: Boolean(recovered), store: store });
-        await store.markProjected(record.transactionId);
+        var projection = await projectTerminal(record, { recovered: Boolean(recovered), store: store });
+        if (!projection || projection.deferCompletion !== true) {
+          await store.markProjected(record.transactionId);
+        }
       }
     }
 
@@ -301,8 +303,10 @@
         await boundary('terminal', terminal);
 
         if (terminal.state === 'COMMITTED' && typeof projectTerminal === 'function') {
-          await projectTerminal(terminal, { recovered: false, store: store });
-          await store.markProjected(terminal.transactionId);
+          var projection = await projectTerminal(terminal, { recovered: false, store: store });
+          if (!projection || projection.deferCompletion !== true) {
+            await store.markProjected(terminal.transactionId);
+          }
         }
         core.assertPreparedCardinality(await store.listPrepared());
         return terminal;
