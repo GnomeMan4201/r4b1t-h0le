@@ -1,12 +1,14 @@
 import csv
 import importlib.util
 import tempfile
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 TOOL = HERE.parent / "wild1000.py"
 spec = importlib.util.spec_from_file_location("wild_v061", TOOL)
 w = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = w
 spec.loader.exec_module(w)
 
 
