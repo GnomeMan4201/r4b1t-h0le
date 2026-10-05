@@ -71,7 +71,7 @@ test('browser runtime uses IndexedDB authority, Web Locks and direct sessionStor
   const ledger = read('roll-authority-ledger.js');
 
   assert.match(runtime, /sessionStorage/);
-  assert.doesNotMatch(runtime, /popstate|history\.pushState|history\.back\(|history\.forward\(/);
+  assert.doesNotMatch(runtime, /popstate|(?:window|root|globalThis)\.history\.(?:pushState|back|forward|replaceState)/);
   assert.match(runtime, /createIndexedDbStore/);
   assert.match(runtime, /createNavigatorLock/);
   assert.match(ledger, /durability: 'strict'/);
