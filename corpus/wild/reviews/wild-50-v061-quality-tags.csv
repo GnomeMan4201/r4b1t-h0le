@@ -1,0 +1,48 @@
+<PARSED TEXT FOR SHEET: 1 / 1 TABS
+TAB NAME: wild-50-v061-quality-tags.csv>
+index,site_key,verdict,quality_tags,review_note
+0,0xded.dev,accept,investigative/security|technically useful|personal/indie,"Independent hacker and maker site combining security work, software experiments, and hands-on builds."
+1,0xedward.io,accept,investigative/security|educational|personal/indie,"Independent security engineer's site with browser-security, CTF, privacy, and philosophy writing."
+2,100daystooffload.com,accept,personal/indie|web culture|educational,Long-running personal-blogging challenge that actively connects independent writers across the web.
+3,100r.co,accept,personal/indie|educational|scientific/data,North Pacific sailing logbook from a distinctive low-tech maker project documenting life and travel at sea.
+4,1984.ninja,unreviewed,other,"Authoritative probe returned 200, but human inspection could not establish the resource's contents well enough to judge it."
+5,1thingaweek.com,accept,personal/indie|educational|artistic/creative,"Long-running weekly independent blog mixing technology, design, maps, photography, and everyday experiments."
+6,2050.earth,accept,scientific/data|artistic/creative|educational,Interactive globe for exploring geographically anchored predictions about society and technology in 2050.
+7,23ro.de,unreviewed,personal/indie,"Authoritative probe returned 200, but current human inspection did not provide enough content to make a defensible quality decision."
+8,24hoursofhappy.com,accept,weird/experimental|artistic/creative|web culture,"Unusual interactive web presentation of a continuous 24-hour music video, built to be explored in time."
+9,24timezones.com,reject,technically useful,Accidental event-countdown deep link on a generic time utility; not a distinct WILD discovery resource.
+10,250kb.club,accept,personal/indie|technically useful|web culture,Curated directory of web pages under 250 KB that rewards lightweight design and small-web craftsmanship.
+11,29a.ch,accept,investigative/security|technically useful|educational,"Browser-based image-forensics workbench with clone detection, metadata, error analysis, and other investigative tools."
+12,2chat.co,accept,investigative/security|technically useful,"Direct browser utility for checking whether a phone number is registered on WhatsApp, useful during OSINT verification."
+13,2earth.github.io,accept,educational|personal/indie|technically useful,"Engineer-written independent site connecting product design, remanufacturing, sustainability, standards, and systems thinking."
+14,41j.com,accept,technically useful|investigative/security|educational|personal/indie,"Hands-on technical blog documenting hardware repair, embedded devices, firmware dumping, networking, and reverse engineering."
+15,42crunch.com,reject,investigative/security|technically useful,"Corporate product-marketing homepage; useful vendor context, but not distinctive enough as a standalone WILD discovery resource."
+16,44mb.club,accept,personal/indie|web culture,Small-web webring that links lightweight independent sites and provides another non-algorithmic discovery path.
+17,46692.dev,unreviewed,other,Authoritative state is MANUAL_CHECK with HTTP 403 and human inspection found no reliable content basis for acceptance or rejection.
+18,4chansearch.com,accept,investigative/security|web culture|technically useful,"Purpose-built search interface for locating material across 4chan, useful for web-culture research and OSINT."
+19,60z.github.io,reject,personal/indie,Primarily a personal identity or portfolio landing page with no sufficiently distinct resource evident from the review evidence.
+20,64b.it,reject,technically useful,Commercial software-consulting landing page; too generic to justify one of the breadth-first WILD identities.
+21,8yd.no,accept,educational|technically useful|personal/indie,"Independent developer and UI-lead site with substantive writing about interface design, accessibility, software, and the web."
+22,96tilinfinity.com,reject,artistic/creative,"Design-agency marketing page with playful copy, but primarily commercial promotion rather than an independent discovery resource."
+23,99tools.net,reject,technically useful,Large generic web-utility and SEO tool aggregator; useful in places but too broad and commodity-like for this breadth pass.
+24,a16z.com,reject,educational,Mainstream venture-firm AI landing page; high visibility and broad coverage work against the WILD goal of uncommon discovery.
+25,aadinternals.com,accept,investigative/security|technically useful|educational,"Focused Azure AD OSINT toolkit collecting investigation techniques for red, blue, bounty, and identity-security work."
+26,aanandmadhav.com,reject,personal/indie,Professional product and UX portfolio whose main purpose is career presentation rather than a distinct reusable resource.
+27,aaqa.dev,accept,technically useful|educational|personal/indie,"Independent infrastructure-engineering site exploring systems, ML infrastructure, inference engineering, and low-level tooling."
+28,aaronj.sh,unreviewed,personal/indie,"Authoritative probe was live, but current human inspection did not expose enough content to classify or judge the site confidently."
+29,aaronjeskie.com,reject,technically useful|personal/indie,Extended software-engineering resume and portfolio; the side projects are better candidate URLs than the portfolio homepage itself.
+30,aaronmassicotte.com,accept,personal/indie|artistic/creative|web culture,"Lightweight multilingual personal site mixing small applications, writing, recipes, and photography in one handmade space."
+31,aaronstrick.com,accept,personal/indie|artistic/creative|weird/experimental|playful/game,"Handmade exploratory personal site with original music, rotating discoveries, art, physical projects, and playful navigation."
+32,aashvik.com,accept,technically useful|educational|personal/indie,"Dense independent maker site covering robotics, electronics, tiny hardware builds, shell tooling, and software experiments."
+33,aavina.com,accept,personal/indie|artistic/creative|playful/game,"Independent small-web site spanning technology, books, video and board games, movies, and other personal interests."
+34,aawadia.dev,accept,technically useful|educational|personal/indie,"Technical personal blog with current writing on RocksDB, language design, vector search, Kubernetes, software, and finance."
+35,abandon.ie,accept,personal/indie|artistic/creative|technically useful|playful/game,"Distinctive indie-game and UX-engineering site combining web standards, game development, interface design, illustration, and 3D work."
+36,aberle.photo,accept,artistic/creative|personal/indie|historical/archive,"Independent photography site organized around curated portfolios, travel stories, field notes, and a browsable image archive."
+37,abhishe.com,accept,personal/indie|educational|web culture,"Independent writing and resource site combining business, wealth visualization, books, blogrolls, and personal essays."
+38,abjectsubli.me,accept,personal/indie|artistic/creative|historical/archive,"Highly personal literary blog mixing memoir, cultural history, books, art, and deliberately idiosyncratic web publishing."
+39,abmurrow.com,accept,technically useful|personal/indie|web culture|artistic/creative,"Active retro-web blog combining Drupal and NixOS work, experimental literature, webrings, badges, bookmarks, and recipes."
+40,abordage.dev,reject,technically useful|personal/indie,Professional backend-engineering portfolio dominated by career and consulting presentation rather than a discrete discovery resource.
+41,abouhanna.com,reject,personal/indie,"Insufficient evidence of a distinctive resource beyond a personal or professional landing page, so it does not clear the WILD bar."
+42,aboutdavid.me,accept,technically useful|personal/indie|web culture,"Small open-source personal site linking lightweight coding projects, RSS, a public build trail, and independent-web identity."
+43,afranca.com.br,accept,technically useful|educational|personal/indie,Independent open-source-oriented engineering blog with technical writing and participation in the IndieWeb ecosystem.
+44,helloadrien.dev,accept,technically useful|educational|personal/indie|playful/game,"Project-heavy independent developer site spanning software, AI, data, infrastructure, electronics, security, games, and creative work."
