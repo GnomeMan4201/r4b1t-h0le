@@ -531,3 +531,77 @@ test('desktop Tor modal traps focus and restores the visit control', async ({ pa
   await expect(visit).toBeFocused();
 });
 
+
+
+test('History records a ROLL reveal before OPEN and OPEN does not duplicate it', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitForApplicationReady(page);
+
+  const selected = await page.evaluate(() => {
+    const tx = window.__r4b1tCommitRoll(() => 0);
+    if (!tx) throw new Error('deterministic ROLL fixture could not commit');
+    if (!window.__r4b1tRevealRoll(tx)) throw new Error('deterministic ROLL fixture could not reveal');
+    return tx.url;
+  });
+
+  await page.evaluate(() => window.toggleHistory());
+  const rows = page.locator('#historyList > button');
+  await expect(rows).toHaveCount(1);
+  await expect(rows.first()).toContainText(new URL(selected).hostname.replace(/^www\./, ''));
+  await page.evaluate(() => window.toggleHistory());
+
+  await page.evaluate(() => {
+    window.visit();
+    const tor = document.getElementById('torModal');
+    if (tor && tor.classList.contains('open') && typeof window.torConfirmYes === 'function') {
+      window.torConfirmYes();
+    }
+    if (typeof window.closeIframe === 'function') window.closeIframe();
+  });
+
+  await page.evaluate(() => window.toggleHistory());
+  await expect(page.locator('#historyList > button')).toHaveCount(1);
+});
+
+test('History records Blind reveal but never a concealed Blind commitment', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitForApplicationReady(page);
+  await page.waitForFunction(() => typeof window.blindDescend === 'function');
+
+  await page.evaluate(async () => {
+    await window.openBlindDescent();
+    await window.blindDescend();
+  });
+
+  await page.evaluate(() => window.toggleHistory());
+  await expect(page.locator('#historyList > button')).toHaveCount(0);
+  await expect(page.locator('#historyList')).toContainText('no history yet');
+  await page.evaluate(() => window.toggleHistory());
+
+  const revealed = await page.evaluate(async () => window.blindReveal());
+
+  await page.evaluate(() => window.toggleHistory());
+  const rows = page.locator('#historyList > button');
+  await expect(rows).toHaveCount(1);
+  await expect(rows.first()).toContainText(new URL(revealed).hostname.replace(/^www\./, ''));
+});
+
+test('explicit Branch selection records once and History revisit does not append', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitForApplicationReady(page);
+
+  const branchUrl = 'https://example.com/branch-fixture';
+  await page.evaluate((url) => window.selectUrl(url, 'branch'), branchUrl);
+
+  await page.evaluate(() => window.toggleHistory());
+  let rows = page.locator('#historyList > button');
+  await expect(rows).toHaveCount(1);
+  await expect(rows.first()).toContainText('example.com');
+
+  await rows.first().click();
+  await expect(page.locator('#previewUrl')).toHaveText(branchUrl);
+
+  await page.evaluate(() => window.toggleHistory());
+  rows = page.locator('#historyList > button');
+  await expect(rows).toHaveCount(1);
+});
