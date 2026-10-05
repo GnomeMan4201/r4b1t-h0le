@@ -438,6 +438,40 @@ bad_registry.write_bytes(REGISTRY_V2.read_bytes().replace(
 dies(lambda: w.SourceRegistry(str(bad_registry), str(LEADS_V2), 25),
      "registry/lead mismatch fails closed", "lead(s) missing from registry")
 
+# Campaign binding: the registry hash/cardinality become immutable campaign authority.
+TINY_REG = D / "tiny-registry.json"
+TINY_REG.write_text(json.dumps({
+    "schema": w.SOURCE_REGISTRY_SCHEMA,
+    "verified_on": "2026-10-05",
+    "role": "discovery_only",
+    "authority_invariant": "sources suggest; observations verify; review admits",
+    "source_cap": 25,
+    "sources": [{
+        "source_key": "lists.example", "kind": "test",
+        "canonical_url": "https://lists.example/",
+        "lead_urls": ["https://lists.example/", "https://lists.example/page2"],
+        "max_candidates": 25,
+    }],
+}, indent=2) + "\n")
+BOUND = D / "bound-camp"
+init(BOUND, r4b1t_root=str(FAKE), release="mini-v1", expect_sitekeys=3,
+     leads=str(D / "leads.txt"), source_registry=str(TINY_REG))
+bm = json.loads((BOUND / "campaign-manifest.json").read_text())
+check(bm["discovery_source_registry"]["lead_count"] == 2 and
+      bm["discovery_source_registry"]["source_count"] == 1,
+      "campaign manifest immutably binds discovery registry cardinality")
+check(bm["discovery_source_registry"]["sha256"] == w.sha256_tag(TINY_REG.read_bytes()),
+      "campaign manifest binds exact discovery registry bytes")
+asyncio.run(w.cmd_harvest(A(campaign=str(BOUND), leads=str(D / "leads.txt"),
+                            source_registry=str(TINY_REG), timeout=5, delay=0, max_bytes=4 * MiB)))
+check(len(w.load_jsonl(BOUND / "candidates.jsonl")) <= 25,
+      "bound harvest enforces registry per-source candidate cap")
+BAD_TINY = D / "tiny-registry-mutated.json"
+BAD_TINY.write_text(TINY_REG.read_text().replace('"max_candidates": 25', '"max_candidates": 24'))
+dies(lambda: asyncio.run(w.cmd_harvest(A(campaign=str(BOUND), leads=str(D / "leads.txt"),
+                                             source_registry=str(BAD_TINY), timeout=5, delay=0, max_bytes=4 * MiB))),
+     "bound harvest refuses registry drift", "source registry hash")
+
 shutil.rmtree(D, ignore_errors=True)
 print("\nALL PASS" if ok else "\nFAILURES")
 sys.exit(0 if ok else 1)
