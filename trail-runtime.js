@@ -515,7 +515,17 @@
       throw new Error('AUTHORITY_TRAIL_CONTINUITY_MISMATCH');
     }
 
-    if (!(context && context.recovered)) adoptAuthoritySelection(terminal);
+    var recovered = Boolean(context && context.recovered);
+    var reveal = Boolean(context && context.reveal);
+
+    // Commit fixes selection authority and adopts the selected route into the
+    // existing application state, but does not append Trail evidence yet.
+    // The Trail step is created only when the machine-owned reveal boundary
+    // completes, or during recovery of a committed-but-unrevealed transaction.
+    if (!recovered && !reveal) {
+      adoptAuthoritySelection(terminal);
+      return { projected: false, adopted: true, deferCompletion: true };
+    }
 
     var transaction = transactionFromAuthority(terminal);
     if (!record(terminal.result.url, 'ROLL', transaction, {
@@ -529,12 +539,9 @@
     state.repeatGuardReference = terminal.result.url;
     advanceSamplerTo(prepared.drawStart + terminal.result.drawCount);
 
-    if (context && context.recovered) {
-      return { projected: true, recovered: true };
-    }
-    // The Trail projection is durable, but presentation is not complete until
-    // the existing machine-owned reveal boundary fires.
-    return { projected: true, deferCompletion: true };
+    return recovered
+      ? { projected: true, recovered: true }
+      : { projected: true, reveal: true };
   }
 
   async function showAuthorityTransaction(terminal) {
