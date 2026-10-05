@@ -279,6 +279,14 @@ The pinned grouping produces **733 site keys**.
 
 These metrics describe the marginal site distribution before the repeat guard. Under UNIFORM_SITE the guard preserves the uniform long-run marginal by symmetry, so the effective-site count remains exactly 733.
 
+They are independently recomputable from checked-in bytes with:
+
+```bash
+python3 tools/selection_v3_metrics.py --release-dir corpus/releases/experience-candidate-v0.4
+```
+
+The report binds the release URL digest plus the authoritative ASCII PSL and override-table digests.
+
 ## 13. Production gate
 
 This contract and the pure implementations may land before public cutover.
