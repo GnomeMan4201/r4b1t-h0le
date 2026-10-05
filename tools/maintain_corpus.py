@@ -35,6 +35,62 @@ def stamp(value):
     return datetime.fromisoformat(value.replace('Z', '+00:00'))
 
 
+def failure_class(observation):
+    """Classify evidence for review without changing reachability or selection."""
+    if observation.get('outcome') == 'reachable':
+        return None
+    if observation.get('outcome') == 'missing':
+        return 'http_missing'
+
+    error = observation.get('error')
+    if error == 'SSLError':
+        return 'tls_error'
+    if error in {'ConnectTimeout', 'ReadTimeout', 'Timeout'}:
+        return 'timeout'
+    if error == 'ConnectionError':
+        return 'connection_error'
+    if error == 'TooManyRedirects':
+        return 'redirect_error'
+    if error == 'TargetGuardError':
+        # PublicTargetGuard intentionally collapses unresolved and non-global
+        # targets, so maintenance must not over-claim a DNS diagnosis.
+        return 'target_guard_or_dns'
+
+    status = observation.get('status')
+    if status in {401, 403}:
+        return 'access_control'
+    if status == 429:
+        return 'rate_limited'
+    if isinstance(status, int) and status >= 500:
+        return 'server_error'
+    if isinstance(status, int) and status >= 400:
+        return 'http_other'
+    return 'unknown'
+
+
+def failure_streak(history):
+    streak = []
+    for row in reversed(history):
+        if row.get('outcome') == 'reachable':
+            break
+        streak.append(row)
+    return streak
+
+
+def health_state(history, now):
+    """Derived evidence-only state. Only confirmed missing can become retire-ready."""
+    if not history:
+        return 'UNCHECKED'
+    if history[-1].get('outcome') == 'reachable':
+        return 'ACTIVE'
+    if retirement_ready(history, now):
+        return 'RETIRE_CANDIDATE'
+
+    failures = failure_streak(history)
+    distinct_days = {row['at'][:10] for row in failures if row.get('at')}
+    return 'SUSPECT' if len(distinct_days) >= 2 else 'RETRY'
+
+
 def request(method, url, headers, guard, limiter, timeout=8):
     """Public-target check and host pacing at every redirect; no automatic redirects."""
     session = get_worker_session()
@@ -67,10 +123,12 @@ def probe(url, guard, limiter):
             status = response.status_code
             response.close()
             method = 'GET'
-        result.update(status=status, final_url=final, method=method)
+        result.update(status=status, final_url=final, method=method,
+                      redirected=final.rstrip('/') != url.rstrip('/'))
         result['outcome'] = 'missing' if status in {404, 410} and method == 'GET' else 'reachable' if 200 <= status < 400 else 'indeterminate'
     except (requests.exceptions.RequestException, TargetGuardError, ValueError, OSError) as exc:
         result['error'] = type(exc).__name__
+    result['failure_class'] = failure_class(result)
     return result
 
 
@@ -206,13 +264,17 @@ def discover(source, previous, active, pending, now, guard, limiter):
 def health_summary(health, now):
     """Latest persisted evidence for active URLs, distinct from this run's sample."""
     counts = {kind: 0 for kind in ['reachable', 'missing', 'indeterminate', 'unchecked']}
+    states = {kind: 0 for kind in ['ACTIVE', 'RETRY', 'SUSPECT', 'RETIRE_CANDIDATE', 'UNCHECKED']}
     issues = []
     for url, history in sorted(health.items()):
         if not history:
             counts['unchecked'] += 1
+            states['UNCHECKED'] += 1
             continue
         last = history[-1]
         counts[last['outcome']] += 1
+        state = health_state(history, now)
+        states[state] += 1
         if last['outcome'] == 'reachable':
             continue
         streak = []
@@ -220,10 +282,17 @@ def health_summary(health, now):
             if row['outcome'] != 'missing' or row.get('method') != 'GET' or row.get('status') not in {404, 410}:
                 break
             streak.append(row)
+        prior_ok = next((row.get('at') for row in reversed(history)
+                         if row.get('outcome') == 'reachable'), None)
         issues.append({**last, 'url': url,
+                       'failure_class': failure_class(last),
+                       'state': state,
+                       'consecutive_failures': len(failure_streak(history)),
+                       'last_ok': prior_ok,
                        'missing_days': len({row['at'][:10] for row in streak}),
                        'retirement_ready': retirement_ready(history, now)})
     return {'checked': len(health) - counts['unchecked'], 'counts': counts,
+            'states': states,
             'due': len(due_urls(list(health), health, now, len(health))),
             'issues': issues}
 
@@ -240,17 +309,20 @@ def review_tables(report):
     sections.append(f"Cumulative latest observations: {health['checked']} of {report['active_urls']} active URLs checked; "
                     f"{health['counts']['reachable']} reachable, {health['counts']['missing']} missing, "
                     f"{health['counts']['indeterminate']} indeterminate, {health['counts']['unchecked']} unchecked. "
+                    f"Operational states: {health['states']['RETRY']} retry, {health['states']['SUSPECT']} suspect, "
+                    f"{health['states']['RETIRE_CANDIDATE']} retirement candidates. "
                     f"{health['due']} URLs are due now. These are persisted observations, not a current full sweep.")
     issues = health['issues']
     sections.append('## URLs needing review')
     if issues:
         sections.append(f"Showing {min(100, len(issues))} of {len(issues)} latest missing or indeterminate results. "
                         "Full records are in `proposals.json` under `health_summary.issues`. Missing days count the latest consecutive GET-confirmed streak; readiness still requires the full timing policy.")
-        sections.append('| URL | Latest UTC observation | Result | Final URL | Missing days | Proposal |\n'
-                        '| --- | --- | --- | --- | --- | --- |')
+        sections.append('| URL | Latest UTC observation | State | Failure class | Result | Final URL | Missing days | Proposal |\n'
+                        '| --- | --- | --- | --- | --- | --- | --- | --- |')
         for row in issues[:100]:
             proposal = 'quarantined' if row['url'] in report['quarantined_candidates'] else 'retirement candidate' if row['url'] in report['retirement_candidates'] else 'await evidence'
-            cells = [row['url'], row['at'], f"{row['outcome']} / {row.get('status') or row.get('error') or 'unknown'}",
+            cells = [row['url'], row['at'], row['state'], row.get('failure_class') or '',
+                     f"{row['outcome']} / {row.get('status') or row.get('error') or 'unknown'}",
                      row.get('final_url', ''), row['missing_days'], proposal]
             sections[-1] += '\n| ' + ' | '.join(table_cell(v) for v in cells) + ' |'
     else:
@@ -325,11 +397,12 @@ def run(root, registry_path, state_path, out_dir, limit=1000, workers=12, now=No
     (out_dir / 'state.json').write_bytes(index_bytes(state))
     (out_dir / 'proposals.json').write_bytes(index_bytes(report))
     counts = {kind: sum(r['outcome'] == kind for r in today) for kind in ['reachable', 'missing', 'indeterminate']}
+    redirected = sum(bool(r.get('redirected')) for r in today)
     summary = f'''# Daily corpus maintenance
 
 Generated: {now.isoformat()}
 
-Checked {len(today)} of {len(urls)} active URLs: {counts['reachable']} reachable, {counts['missing']} missing, {counts['indeterminate']} indeterminate.
+Checked {len(today)} of {len(urls)} active URLs: {counts['reachable']} reachable, {counts['missing']} missing, {counts['indeterminate']} indeterminate; {redirected} redirected.
 
 {len(pending)} unreviewed discoveries; {len(retire)} retirement candidates; {len(quarantine)} quarantined candidates.
 
