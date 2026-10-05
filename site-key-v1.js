@@ -17,13 +17,8 @@
   function normalizeHost(host) {
     var value = String(host || '').trim().replace(/\.$/, '');
     if (!value) throw fail('SITE_KEY_HOST_INVALID');
-    if (value[0] === '[' && value[value.length - 1] === ']') return value.toLowerCase();
-    try {
-      var parsed = new URL('http://' + value);
-      return parsed.hostname.toLowerCase().replace(/\.$/, '');
-    } catch (_) {
-      throw fail('SITE_KEY_HOST_INVALID', value);
-    }
+    if (/[^\x00-\x7f]/.test(value)) throw fail('SITE_KEY_HOST_NOT_ASCII');
+    return value.toLowerCase();
   }
 
   function parsePsl(text) {
@@ -155,9 +150,13 @@
   }
 
   function siteKey(url, psl, overrides) {
+    var raw = String(url);
+    var authority = raw.match(/^https?:\/\/([^\/?#]*)/i);
+    if (!authority) throw fail('SITE_KEY_URL_INVALID');
+    if (/[^\x00-\x7f]/.test(authority[1])) throw fail('SITE_KEY_HOST_NOT_ASCII');
     var parsed;
     try {
-      parsed = new URL(String(url));
+      parsed = new URL(raw);
     } catch (_) {
       throw fail('SITE_KEY_URL_INVALID');
     }
