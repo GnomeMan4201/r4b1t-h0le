@@ -21,6 +21,7 @@ FILES=(
     'corpus/ledger/consumers/WILD_DISCOVERY_WINDOWS_V1.md',
     'corpus/ledger/consumers/wild_discovery.py',
     'corpus/ledger/sequencer.py',
+    'corpus/ledger/tools/shadow.py',
     'corpus/ledger/tools/wild_discovery.py',
 )
 
