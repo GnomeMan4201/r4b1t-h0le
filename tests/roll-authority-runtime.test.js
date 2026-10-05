@@ -72,7 +72,7 @@ test('commit exposes a compact presentation object and reveal advances tab-local
     sessionStorage: memorySessionStorage(),
     idFactory: () => 'tx-' + (sequence + 1),
     prepare: id => prepared(id, ++sequence),
-    project: async () => ({ deferCompletion: true }),
+    project: async (_terminal, context) => context && context.reveal ? { projected: true } : { deferCompletion: true },
     show: async terminal => shown.push(terminal.transactionId)
   });
 
@@ -100,7 +100,7 @@ test('PREVIOUS and FORWARD only move the transaction cursor and show recorded te
     sessionStorage: memorySessionStorage(),
     idFactory: () => 'tx-' + (sequence + 1),
     prepare: id => prepared(id, ++sequence),
-    project: async () => ({ deferCompletion: true }),
+    project: async (_terminal, context) => context && context.reveal ? { projected: true } : { deferCompletion: true },
     show: async terminal => shown.push(terminal.transactionId)
   });
 
@@ -133,7 +133,7 @@ test('new reveal after PREVIOUS truncates forward history without deleting durab
     sessionStorage: memorySessionStorage(),
     idFactory: () => 'tx-' + (sequence + 1),
     prepare: id => prepared(id, ++sequence),
-    project: async () => ({ deferCompletion: true }),
+    project: async (_terminal, context) => context && context.reveal ? { projected: true } : { deferCompletion: true },
     show: async () => {}
   });
 
@@ -190,7 +190,7 @@ test('duplicate reveal completion is idempotent', async () => {
     sessionStorage: memorySessionStorage(),
     idFactory: () => 'tx-1',
     prepare: id => prepared(id, ++sequence),
-    project: async () => ({ deferCompletion: true }),
+    project: async (_terminal, context) => context && context.reveal ? { projected: true } : { deferCompletion: true },
     show: async () => {}
   });
 
