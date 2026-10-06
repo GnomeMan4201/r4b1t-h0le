@@ -21,6 +21,100 @@ test.beforeEach(async ({ page }) => {
   await blockExternalNetwork(page);
 });
 
+test('mobile legacy source surfaces cannot widen the phone viewport', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile-'));
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  // Stress the retained source DOM; it must remain available to the mobile
+  // projection without becoming a surface that iOS can fit the viewport to.
+  const geometry = await page.evaluate(() => {
+    const rig = document.querySelector('body > .rig');
+    const fixture = document.createElement('div');
+    fixture.style.cssText = 'width:1800px;height:300px';
+    rig.appendChild(fixture);
+    const rect = rig.getBoundingClientRect();
+    const result = {
+      width: rect.width, height: rect.height,
+      containment: getComputedStyle(rig).contain,
+      pageWidth: document.documentElement.scrollWidth,
+      viewportWidth: innerWidth,
+      navHeight: document.querySelector('.r4m-nav').getBoundingClientRect().height,
+      viewport: document.querySelector('meta[name="viewport"]').content,
+      sourceRetained: typeof window.roll === 'function' && !!document.querySelector('#previewUrl'),
+    };
+    fixture.remove();
+    return result;
+  });
+  expect(geometry.width).toBe(0);
+  expect(geometry.height).toBe(0);
+  expect(geometry.containment).toBe('strict');
+  expect(geometry.pageWidth).toBeLessThanOrEqual(geometry.viewportWidth);
+  expect(geometry.navHeight).toBe(64);
+  expect(geometry.viewport).toContain('shrink-to-fit=no');
+  expect(geometry.viewport).not.toMatch(/user-scalable\s*=\s*no|maximum-scale/);
+  expect(geometry.sourceRetained).toBe(true);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRollAgain')).toBeVisible();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+});
+
+test('mobile secondary result actions stay neutral beside the fixed OPEN and ROLL AGAIN controls', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile-'));
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.evaluate(() => {
+    window.__arrivalControls = [];
+    window.__captureArrivalControls = true;
+    function sample() {
+      if (!window.__captureArrivalControls) return;
+      const open = document.querySelector('[data-mobile-action="visit"]');
+      if (open) {
+        const rect = open.getBoundingClientRect();
+        window.__arrivalControls.push({ top: rect.top, height: rect.height });
+      }
+      requestAnimationFrame(sample);
+    }
+    requestAnimationFrame(sample);
+  });
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  await page.waitForTimeout(500);
+  await page.locator('#r4mRollAgain').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  await page.waitForTimeout(500);
+  const arrival = await page.evaluate(() => {
+    window.__captureArrivalControls = false;
+    return window.__arrivalControls;
+  });
+  expect(arrival.length).toBeGreaterThan(0);
+  for (const frame of arrival) {
+    expect(Math.abs(frame.top - (844 - 128)), 'OPEN during arrival').toBeLessThanOrEqual(1);
+    expect(frame.height).toBe(64);
+  }
+  const controls = await page.evaluate(() => {
+    const read = (selector) => {
+      const node = document.querySelector(selector);
+      const rect = node.getBoundingClientRect();
+      return { height: rect.height, top: rect.top, bottom: rect.bottom, background: getComputedStyle(node).backgroundColor };
+    };
+    return {
+      open: read('[data-mobile-action="visit"]'),
+      again: read('#r4mRollAgain'),
+      keep: read('[data-mobile-action="keep"]'),
+      inspect: read('[data-mobile-action="inspect"]'),
+    };
+  });
+  expect(controls.keep.background).toBe(controls.inspect.background);
+  expect(controls.keep.background).not.toBe(controls.open.background);
+  expect(controls.keep.height).toBeGreaterThanOrEqual(48);
+  expect(controls.keep.bottom).toBeLessThanOrEqual(controls.open.top + 1);
+  expect(controls.open.height).toBe(64);
+  expect(controls.again.height).toBe(64);
+  expect(controls.open.top).toBe(controls.again.top);
+});
+
 test('desktop keeps the native r4b1t shell', async ({ page }, testInfo) => {
   if (testInfo.project.name === 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });

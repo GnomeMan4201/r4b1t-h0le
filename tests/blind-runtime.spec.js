@@ -17,6 +17,47 @@ test.beforeEach(async ({ page }) => {
   await blockExternalNetwork(page);
 });
 
+test('mobile Blind fits fallback type and restores the rabbit after Map closes without changing commitments', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile-'));
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.openBlindDescent === 'function' && document.querySelector('#r4mProductionMark svg'));
+  await page.addStyleTag({ content: '.blind-title,.blind-message,.blind-depth{font-family:Arial,sans-serif!important}' });
+  await page.locator('#r4mModeBlind').click();
+  await page.locator('[data-mobile-action="blind-descent"]').click();
+  await expect(page.locator('#blindDepth')).toContainText('001');
+  await page.evaluate(async () => { for (let i = 0; i < 4; i++) await window.blindDescend(); });
+  await page.waitForTimeout(700);
+  const geometry = await page.locator('#blindDescentOverlay').evaluate((overlay) => {
+    const card = document.querySelector('#blindCard').getBoundingClientRect();
+    const depth = document.querySelector('#blindDepth').getBoundingClientRect();
+    return { width: overlay.clientWidth, scrollWidth: overlay.scrollWidth, cardLeft: card.left, cardRight: card.right, depthRight: depth.right };
+  });
+  expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.width + 1);
+  expect(geometry.cardLeft).toBeGreaterThanOrEqual(0);
+  expect(geometry.cardRight).toBeLessThanOrEqual(320);
+  expect(geometry.depthRight).toBeLessThanOrEqual(320);
+  const saved = await page.evaluate(() => ({ public: localStorage.getItem('r4b1t_blind_public_v02'), private: localStorage.getItem('r4b1t_blind_private_v02') }));
+  await page.locator('[data-blind-action="topology"]').click();
+  await expect(page.locator('#trailTopologyOverlay')).toHaveClass(/\bopen\b/);
+  await page.locator('.topology-inspect').first().click();
+  await expect(page.locator('#trailTopologyInspector')).toBeVisible();
+  const inspector = await page.locator('#trailTopologyInspector').evaluate((panel) => ({ width: panel.clientWidth, scrollWidth: panel.scrollWidth }));
+  expect(inspector.scrollWidth).toBeLessThanOrEqual(inspector.width + 1);
+  await page.locator('.topology-close').click();
+  await expect(page.locator('#blindDescentOverlay')).not.toHaveClass(/\bopen\b/);
+  await expect(page.locator('#trailTopologyOverlay')).not.toHaveClass(/\bopen\b/);
+  await expect(page.locator('html')).not.toHaveClass(/\bblind-descending\b/);
+  await expect.poll(() => page.locator('#r4h-blind-rabbit').evaluate(node => getComputedStyle(node).transform)).toBe('none');
+  expect(await page.evaluate(() => ({ public: localStorage.getItem('r4b1t_blind_public_v02'), private: localStorage.getItem('r4b1t_blind_private_v02') }))).toEqual(saved);
+  await page.evaluate(() => window.openBlindDescent());
+  await expect(page.locator('#blindDepth')).toContainText('005');
+  await expect(page.locator('html')).toHaveClass(/\bblind-descending\b/);
+  await page.locator('[data-blind-action="close"]').click();
+  await expect(page.locator('html')).not.toHaveClass(/\bblind-descending\b/);
+  expect(await page.evaluate(() => ({ public: localStorage.getItem('r4b1t_blind_public_v02'), private: localStorage.getItem('r4b1t_blind_private_v02') }))).toEqual(saved);
+});
+
 test('blind descent commits without changing or exposing the visible route', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => typeof window.blindDescend === 'function' && typeof window.getBlindManifest === 'function');
