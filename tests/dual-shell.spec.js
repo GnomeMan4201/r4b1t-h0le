@@ -21,6 +21,53 @@ test.beforeEach(async ({ page }) => {
   await blockExternalNetwork(page);
 });
 
+async function simulateInitialScale(page, scale) {
+  await page.route('**/*', async (route) => {
+    const request = route.request();
+    const hostname = new URL(request.url()).hostname;
+    if (request.resourceType() !== 'document' || !['localhost', '127.0.0.1'].includes(hostname)) {
+      return route.fallback();
+    }
+    const response = await route.fetch();
+    const body = (await response.text()).replace('initial-scale=1.0', `initial-scale=${scale}`);
+    return route.fulfill({ response, body });
+  });
+}
+
+test('mobile viewport rejects a half-size initial fit while retaining 64px actions', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile-'));
+  await page.setViewportSize({ width: 390, height: 635 });
+  // The physical device reported layout 780x1270 and visual scale 0.5.
+  // Exercise the same under-scaled initial viewport through response metadata;
+  // this is a reproduction of geometry, not an iOS host-browser simulation.
+  await simulateInitialScale(page, 0.5);
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await expect.poll(() => page.evaluate(() => visualViewport.scale)).toBe(1);
+  expect(await page.evaluate(() => innerWidth)).toBe(390);
+  await page.locator('#r4mRoll').click();
+  await page.waitForFunction(() => document.documentElement.dataset.r4mPresentation === 'revealed');
+  for (const selector of ['.r4m-nav', '[data-mobile-action="visit"]', '#r4mRollAgain']) {
+    const displayedHeight = await page.locator(selector).evaluate(element =>
+      element.getBoundingClientRect().height * visualViewport.scale);
+    expect(displayedHeight).toBe(64);
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
+});
+
+test('mobile viewport keeps zoom-in available above its initial scale floor', async ({ page, browserName }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile-') || browserName !== 'chromium',
+    'Runtime page-scale emulation uses the Chromium protocol; Linux WebKit does not emulate iOS pinch gestures.');
+  await page.setViewportSize({ width: 390, height: 635 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  const session = await page.context().newCDPSession(page);
+  await session.send('Emulation.setPageScaleFactor', { pageScaleFactor: 2 });
+  await expect.poll(() => page.evaluate(() => visualViewport.scale)).toBe(2);
+  const meta = await page.locator('meta[name="viewport"]').getAttribute('content');
+  expect(meta).not.toMatch(/maximum-scale|user-scalable\s*=\s*no/);
+});
+
 test('opt-in viewport debug reports geometry and stylesheet identity without changing the Trail', async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith('mobile-'));
   await page.setViewportSize({ width: 390, height: 844 });
