@@ -1,0 +1,20 @@
+{
+  "schema": "r4b1t-site-key-overrides/v1",
+  "rules": [
+    {
+      "host": "github.com",
+      "kind": "path-owner",
+      "case": "lower"
+    },
+    {
+      "host": "gitlab.com",
+      "kind": "path-owner",
+      "case": "lower"
+    },
+    {
+      "host": "medium.com",
+      "kind": "at-path-owner",
+      "case": "lower"
+    }
+  ]
+}

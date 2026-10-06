@@ -7,6 +7,8 @@ const path = require('node:path');
 
 const trail = require('../trail-manifest.js');
 const v03 = require('../trail-v03.js');
+const SelectionV3 = require('../selection-v3.js');
+const SiteKey = require('../site-key-v1.js');
 
 const SHA1 = 'sha256:' + '1'.repeat(64);
 const SHA2 = 'sha256:' + '2'.repeat(64);
@@ -214,4 +216,38 @@ test('v0.1 verifier and IDs remain unchanged', async () => {
   const before = source.trail_id;
   const verified = await trail.verify(source);
   assert.equal(verified.trail_id, before);
+});
+
+
+test('v0.3 accepts a structurally valid v3 ROLL transaction', async () => {
+  const psl = SiteKey.parsePsl(fs.readFileSync(path.join(__dirname, '..', 'selection/site-key-v1/public_suffix_list_ascii_v1.dat'), 'utf8'));
+  const overrides = SiteKey.parseOverrides(fs.readFileSync(path.join(__dirname, '..', 'selection/site-key-v1/platform-overrides.json'), 'utf8'));
+  const urls = ['https://example.org/a', 'https://github.com/OpenAI/project'];
+  const tx = SelectionV3.select({
+    eligibleUrls: urls,
+    siteKey: url => SiteKey.siteKey(url, psl, overrides),
+    seed: SEED,
+    drawStart: 0,
+    weightMode: 'UNIFORM_SITE',
+    repeatGuardReference: null,
+    sequence: 1,
+    constraint: {
+      terrain: 'ALL',
+      terrainIndex: null,
+      protocolPolicy: { version: 1, excludeOnion: false },
+    },
+    corpusRevision: SHA1,
+    pslSha256: 'sha256:2b44fcd3f7a3da5f9d326073a495629a65eaf66c88a9f018b494067933f026e8',
+    overridesSha256: 'sha256:36945dc17210612eb86f3e46762601467d81f0355e8f8dceceb4e13a3e0f003d',
+  });
+  const route = { route_id: await trail.routeId(tx.route.url), url: tx.route.url };
+  const envelope = await v03.envelope({
+    format: v03.FORMAT,
+    created_at: '2026-10-05T15:02:00.000Z',
+    corpus_revision: SHA1,
+    steps: [{ index: 1, kind: 'ROLL', route, transaction: tx }],
+    parent: null,
+  });
+  const verified = await v03.verify(envelope);
+  assert.equal(verified.manifest.steps[0].transaction.transaction_version, 'r4b1t-selection-transaction/v3');
 });
