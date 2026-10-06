@@ -295,7 +295,7 @@ test('mobile wear sample exposes revealed concealed and forked states', async ({
 
 
 test('ROLL AGAIN keeps the production mark above fixed controls while the result is cleared', async ({ page }, testInfo) => {
-  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  if (!testInfo.project.name.startsWith('mobile-')) test.skip();
 
   await page.setViewportSize({ width: 390, height: 664 });
   await page.goto('./', { waitUntil: 'domcontentloaded' });
@@ -306,6 +306,14 @@ test('ROLL AGAIN keeps the production mark above fixed controls while the result
   await expect(page.locator('html')).toHaveClass(/\bresult-ready\b/);
 
   await page.evaluate(() => {
+    // Keep this fixture short so a jump to the header cannot pass unnoticed.
+    document.querySelector('#ogTitle').textContent = 'A committed destination';
+    document.querySelector('#ogDesc').textContent = '';
+    window.__r4b1tSyncMobileRoute();
+  });
+  await page.waitForTimeout(150);
+  await page.evaluate(() => {
+    window.__settledMarkTop = document.querySelector('#r4mProductionMark').getBoundingClientRect().top;
     window.__emptyResultFrames = [];
     window.__emptyResultObserver = new MutationObserver(() => {
       if (document.querySelector('#r4mRouteMount').childElementCount) return;
@@ -316,6 +324,7 @@ test('ROLL AGAIN keeps the production mark above fixed controls while the result
         phase: document.documentElement.dataset.r4mPresentation,
         markTop: mark.top,
         markBottom: mark.bottom,
+        settledMarkTop: window.__settledMarkTop,
         headerBottom: header.bottom,
         controlsTop: again.top,
       });
@@ -335,6 +344,7 @@ test('ROLL AGAIN keeps the production mark above fixed controls while the result
   for (const frame of frames) {
     expect(frame.markTop, frame.phase).toBeGreaterThanOrEqual(frame.headerBottom - 1);
     expect(frame.markBottom, frame.phase).toBeLessThanOrEqual(frame.controlsTop + 1);
+    expect(Math.abs(frame.markTop - frame.settledMarkTop), frame.phase).toBeLessThanOrEqual(1);
   }
 });
 

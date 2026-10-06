@@ -615,6 +615,7 @@ MOTION: waiting for target…';
     // a ROLL takes the stage: no shell sheet stays open over it
     closeSheets();
     if (kind === 'roll' && window.R4B1TRollProduction && typeof window.R4B1TRollProduction.roll === 'function') {
+      rememberResultLayout();
       return window.R4B1TRollProduction.roll();
     }
     if (routeTransitionBusy) return;
@@ -840,6 +841,26 @@ MOTION: waiting for target…';
     }
   }
 
+  // Geometry is presentation only: retain no route text or selection state.
+  // Keep visible marks in place, including on a slightly scrolled landscape
+  // page. If the mark is offscreen, cap the reserve at one viewport so the
+  // next draw returns it above the fixed controls.
+  function rememberResultLayout() {
+    var mount = byId('r4mRouteMount');
+    var stage = byId('r4mPrimaryStage');
+    var mark = byId('r4mProductionMark');
+    if (!mq.matches || !stage || !mark || !mount || !mount.childElementCount || mount.hidden ||
+        !document.documentElement.classList.contains('r4m-stage-result')) return;
+    var landscape = window.matchMedia('(orientation: landscape) and (max-height: 560px)').matches;
+    var available = Math.max(0, parseFloat(window.getComputedStyle(stage).minHeight) - (landscape ? 0 : mark.offsetHeight));
+    var markRect = mark.getBoundingClientRect();
+    var again = byId('r4mRollAgain');
+    var markVisible = markRect.top >= 0 && again && markRect.bottom <= again.getBoundingClientRect().top;
+    var height = markVisible ? mount.offsetHeight : Math.min(mount.offsetHeight, available);
+    stage.style.setProperty('--r4m-cleared-height', Math.ceil(height) + 'px');
+    stage.style.setProperty('--r4m-cleared-align', 'flex-end');
+  }
+
   function syncRoute() {
     var domain = currentDomain();
     var url = currentUrl();
@@ -911,6 +932,7 @@ MOTION: waiting for target…';
     }
     animateRouteCounter(routeIndex || 1);
     renderRouteWear();
+    rememberResultLayout();
     if (pendingRouteMotion) {
       var nextMotion = pendingRouteMotion;
       pendingRouteMotion = null;
@@ -1122,6 +1144,11 @@ MOTION: waiting for target…';
     if (markRollTimer !== null) { window.clearTimeout(markRollTimer); markRollTimer = null; }
     document.documentElement.classList.remove('r4m-stage-result', 'blind-descending', 'rolling', 'result-ready');
     var mount = byId('r4mRouteMount');
+    var stage = byId('r4mPrimaryStage');
+    if (stage) {
+      stage.style.removeProperty('--r4m-cleared-height');
+      stage.style.removeProperty('--r4m-cleared-align');
+    }
     if (mount) mount.hidden = false;
     setRollPresentationState('idle');
     setPrimaryMode('roll');
@@ -1146,6 +1173,9 @@ MOTION: waiting for target…';
 
   function observeSource() {
     if (syncObserver) return;
+    if (typeof ResizeObserver === 'function') {
+      new ResizeObserver(rememberResultLayout).observe(byId('r4mRouteMount'));
+    }
     var sources = ['previewDomain', 'previewUrl', 'ogTitle', 'ogDesc', 'tagBadge', 'darkBadge', 'typedResourceMeta', 'typedResourceType', 'typedEligibilityReason', 'typedProvenance', 'counter'];
     var observer = new MutationObserver(function () { window.requestAnimationFrame(syncRoute); });
     sources.forEach(function (id) {

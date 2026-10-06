@@ -66,9 +66,14 @@ test('production mark stays outside the hero hidden by RESULT and BLIND stage CS
 });
 
 
-test('blind return releases the production descent state only at the surface', () => {
+test('blind descent pose follows the visible stage without changing committed depth on close', () => {
   const blind = fs.readFileSync('blind-runtime.js', 'utf8');
-  assert.match(blind, /function returnTowardSurface\(\)[\s\S]*state\.currentDepth = Math\.max\(0, state\.currentDepth - 1\)[\s\S]*if \(state\.currentDepth === 0\) \{[\s\S]*classList\.remove\('blind-descending'\)/);
+  assert.match(blind, /function returnTowardSurface\(\)[\s\S]*state\.currentDepth = Math\.max\(0, state\.currentDepth - 1\)[\s\S]*render\('RETURNING \/ COMMITMENTS UNCHANGED'/);
+  const projection = blind.slice(blind.indexOf('function syncBlindMark()'), blind.indexOf('function terrain()'));
+  assert.match(projection, /classList\.toggle\('blind-descending',[\s\S]*overlay\.classList\.contains\('open'\) && state\.currentDepth > 0/);
+  const close = blind.slice(blind.indexOf('function close()'), blind.indexOf('window.openBlindDescent = open'));
+  assert.match(close, /syncBlindMark\(\)/);
+  assert.doesNotMatch(close, /state\.currentDepth\s*=|save\(|api\.commit\(|selectUrl\(/);
 });
 
 
