@@ -15,6 +15,77 @@
   var rollPendingTimer = null;
   var ledgerRowObserver = null;
   var motionDebugEnabled = /[?&]debug-motion=1(?:&|$)/.test(window.location.search);
+  var viewportDebugLastMotion = 'Waiting for input';
+  var viewportDebugAssets = 'CSS: measuring';
+
+  function viewportDebugSnapshot() {
+    var viewport = window.visualViewport;
+    var meta = document.querySelector('meta[name="viewport"]');
+    var root = document.documentElement;
+    function control(selector) {
+      var element = document.querySelector(selector);
+      if (!element) return null;
+      var rect = element.getBoundingClientRect();
+      var style = getComputedStyle(element);
+      return { cssHeight: style.height, rectHeight: rect.height, top: rect.top };
+    }
+    return {
+      screen: { width: screen.width, height: screen.height, dpr: devicePixelRatio },
+      layout: { width: innerWidth, height: innerHeight, clientWidth: root.clientWidth, scrollWidth: root.scrollWidth },
+      visual: viewport ? { width: viewport.width, height: viewport.height, scale: viewport.scale } : null,
+      standalone: navigator.standalone === true,
+      displayStandalone: window.matchMedia('(display-mode: standalone)').matches,
+      viewportMeta: meta ? meta.content : '(missing)',
+      rootZoom: getComputedStyle(root).zoom || '(not exposed)',
+      navigation: control('.r4m-nav'),
+      open: control('[data-mobile-action="visit"]'),
+      rollAgain: control('#r4mRollAgain'),
+    };
+  }
+
+  function renderViewportDebug() {
+    if (!motionDebugEnabled) return;
+    var panel = byId('r4mMotionDebug');
+    if (!panel) return;
+    // Keep the opt-in report readable in short landscape viewports without
+    // changing any normal interface geometry or intercepting its controls.
+    var shortLandscape = innerHeight < 450 && innerWidth > innerHeight;
+    panel.style.width = shortLandscape ? 'calc(100vw - 16px)' : 'min(370px,calc(100vw - 16px))';
+    panel.style.fontSize = shortLandscape ? '11px' : (innerHeight < 620 ? '11px' : '14px');
+    var info = viewportDebugSnapshot();
+    function number(value) { return Math.round(value * 100) / 100; }
+    function size(value) { return number(value.width) + ' × ' + number(value.height); }
+    function row(label, value) {
+      return label + ': ' + (value ? value.cssHeight + ' / rect ' + number(value.rectHeight) + 'px' : 'absent');
+    }
+    panel.textContent = 'VIEWPORT / MOTION DEBUG\n' +
+      'SCREEN: ' + size(info.screen) + ' DPR ' + info.screen.dpr + '\n' +
+      'LAYOUT: ' + size(info.layout) + ' scroll ' + info.layout.scrollWidth + '\n' +
+      'VISUAL: ' + (info.visual ? size(info.visual) + ' scale ' + number(info.visual.scale) : 'unavailable') + '\n' +
+      'STANDALONE: ' + info.standalone + ' / display ' + info.displayStandalone + '\n' +
+      'ROOT ZOOM: ' + info.rootZoom + '\n' +
+      'META: ' + info.viewportMeta + '\n' +
+      row('NAV', info.navigation) + '\n' + row('OPEN', info.open) + '\n' + row('AGAIN', info.rollAgain) + '\n' +
+      viewportDebugAssets + '\n' + viewportDebugLastMotion;
+  }
+
+  async function measureViewportDebugAssets() {
+    try {
+      var link = Array.prototype.find.call(document.querySelectorAll('link[rel="stylesheet"]'), function (element) {
+        return new URL(element.href).pathname.endsWith('/dual-shell.css');
+      });
+      if (!link || !window.crypto || !window.crypto.subtle) throw new Error('asset hash unavailable');
+      var response = await fetch(link.href, { cache: 'no-store' });
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      var digest = await window.crypto.subtle.digest('SHA-256', await response.arrayBuffer());
+      viewportDebugAssets = 'CSS SHA256: ' + Array.prototype.map.call(new Uint8Array(digest), function (value) {
+        return value.toString(16).padStart(2, '0');
+      }).join('');
+    } catch (error) {
+      viewportDebugAssets = 'CSS: ' + error.message;
+    }
+    renderViewportDebug();
+  }
 
   function byId(id) { return document.getElementById(id); }
 
@@ -539,9 +610,22 @@
     var panel = document.createElement('aside');
     panel.id = 'r4mMotionDebug';
     panel.setAttribute('aria-live', 'polite');
-    panel.style.cssText = 'position:fixed;z-index:12000;right:8px;bottom:calc(76px + env(safe-area-inset-bottom));width:min(310px,calc(100vw - 16px));padding:10px;background:#050505ee;color:#f3ead8;border:1px solid #ff3333;box-shadow:4px 4px 0 #3a0808;font:500 10px/1.55 "DM Mono",monospace;letter-spacing:.04em;pointer-events:none;white-space:pre-wrap';
-    panel.textContent = 'MOTION DEBUG / waiting for input';
+    panel.style.cssText = 'position:fixed;z-index:12000;right:8px;bottom:calc(76px + env(safe-area-inset-bottom));width:min(370px,calc(100vw - 16px));max-height:calc(100dvh - 150px);overflow:hidden;padding:10px;background:#050505ee;color:#f3ead8;border:1px solid #ff3333;box-shadow:4px 4px 0 #3a0808;font:500 14px/1.35 "DM Mono",monospace;letter-spacing:.02em;pointer-events:none;white-space:pre-wrap;overflow-wrap:anywhere';
     document.body.appendChild(panel);
+    renderViewportDebug();
+    measureViewportDebugAssets();
+    window.addEventListener('resize', renderViewportDebug);
+    window.addEventListener('pageshow', renderViewportDebug);
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', renderViewportDebug);
+    var phaseObserver = new MutationObserver(renderViewportDebug);
+    phaseObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-r4m-presentation', 'data-r4b1t-interface'] });
+    // Observe geometry changes only in the opt-in diagnostic view. No route,
+    // Trail, commitment, storage or selection data is read by this report.
+    if (window.ResizeObserver) {
+      var observer = new ResizeObserver(renderViewportDebug);
+      var host = byId('r4mShellHost');
+      if (host) observer.observe(host);
+    }
   }
 
   function reportMotion(action, element, className) {
@@ -555,22 +639,16 @@
     var animationName = style.animationName && style.animationName !== 'none' ? style.animationName : 'none';
     var duration = timing.duration || style.animationDuration || 'none';
     var transition = style.transitionDuration && style.transitionDuration !== '0s' ? style.transitionDuration : 'none';
-    panel.textContent =
-      'MOTION DEBUG\
-' +
-      'LAST TAP: ' + (panel.dataset.lastTap || action) + '\
-' +
-      'MOTION: ' + action + '\
-' +
-      'TARGET: #' + (element.id || element.className || element.tagName).toString().replace(/\\s+/g, '.') + '\
-' +
-      'CLASS: ' + (className || '(none)') + '\
-' +
-      'ANIMATION: ' + animationName + '\
-' +
-      'DURATION: ' + String(duration) + '\
-' +
-      'TRANSITION: ' + transition;
+    viewportDebugLastMotion = [
+      'TAP: ' + (panel.dataset.lastTap || action),
+      'MOTION: ' + action,
+      'TARGET: #' + (element.id || element.className || element.tagName).toString().replace(/\s+/g, '.'),
+      'CLASS: ' + (className || '(none)'),
+      'ANIMATION: ' + animationName,
+      'DURATION: ' + String(duration),
+      'TRANSITION: ' + transition,
+    ].join(' · ');
+    renderViewportDebug();
   }
 
   function reportTap(action) {
@@ -579,9 +657,8 @@
     var panel = byId('r4mMotionDebug');
     if (panel) {
       panel.dataset.lastTap = action;
-      panel.textContent = 'MOTION DEBUG\
-LAST TAP: ' + action + '\
-MOTION: waiting for target…';
+      viewportDebugLastMotion = 'LAST TAP: ' + action + '\nMOTION: waiting for target…';
+      renderViewportDebug();
     }
   }
 

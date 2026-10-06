@@ -21,6 +21,52 @@ test.beforeEach(async ({ page }) => {
   await blockExternalNetwork(page);
 });
 
+test('opt-in viewport debug reports geometry and stylesheet identity without changing the Trail', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile-'));
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./?debug-motion=1', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  const panel = page.locator('#r4mMotionDebug');
+  await expect(panel).toContainText('LAYOUT: 390 × 844');
+  await expect(panel).toContainText('NAV: 64px / rect 64px');
+  await expect(panel).toContainText('CSS SHA256: 143c39400faa23a44d49cc73ef200031609932cd271b707d72a0ed7455ee0d33');
+  const before = await page.evaluate(async () => JSON.stringify(await window.getTrailManifest()));
+  const stored = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()));
+  await page.setViewportSize({ width: 375, height: 667 });
+  await expect(panel).toContainText('LAYOUT: 375 × 667');
+  expect(await page.evaluate(async () => JSON.stringify(await window.getTrailManifest()))).toBe(before);
+  expect(await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()))).toBe(stored);
+  await page.locator('#r4mRoll').click();
+  await page.waitForFunction(() => document.documentElement.dataset.r4mPresentation === 'revealed');
+  await expect(panel).toContainText('OPEN: 64px / rect 64px');
+  await expect(panel).toContainText('AGAIN: 64px / rect 64px');
+  const after = await page.evaluate(() => window.getTrailManifest());
+  expect(after.manifest.steps).toHaveLength(JSON.parse(before).manifest.steps.length + 1);
+  expect(after.manifest.steps.slice(0, -1)).toEqual(JSON.parse(before).manifest.steps);
+  expect(await page.evaluate(async () => (await window.R4b1tTrailV03.verify(await window.getTrailManifest())).trail_id)).toBe(after.trail_id);
+  await expect(panel).not.toContainText(await page.locator('#r4mUrl').textContent());
+  for (const viewport of [{ width: 320, height: 568 }, { width: 844, height: 390 }]) {
+    await page.setViewportSize(viewport);
+    await expect(panel).toContainText(`LAYOUT: ${viewport.width} × ${viewport.height}`);
+    const geometry = await panel.evaluate(element => ({
+      contentHeight: element.scrollHeight, height: element.clientHeight,
+      pageWidth: document.documentElement.scrollWidth, viewportWidth: innerWidth,
+    }));
+    expect(geometry.contentHeight).toBeLessThanOrEqual(geometry.height);
+    expect(geometry.pageWidth).toBe(geometry.viewportWidth);
+  }
+});
+
+test('normal mobile navigation does not create the viewport diagnostic panel', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile-'));
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await expect(page.locator('#r4mMotionDebug')).toHaveCount(0);
+  await page.locator('#r4mRoll').click();
+  await page.waitForFunction(() => document.documentElement.dataset.r4mPresentation === 'revealed');
+  await expect(page.locator('#r4mMotionDebug')).toHaveCount(0);
+});
+
 test('mobile legacy source surfaces cannot widen the phone viewport', async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith('mobile-'));
   await page.setViewportSize({ width: 390, height: 844 });
