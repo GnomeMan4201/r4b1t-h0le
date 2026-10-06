@@ -36,6 +36,7 @@
       standalone: navigator.standalone === true,
       displayStandalone: window.matchMedia('(display-mode: standalone)').matches,
       viewportMeta: meta ? meta.content : '(missing)',
+      viewportReset: root.dataset.r4mViewportReset || 'waiting',
       rootZoom: getComputedStyle(root).zoom || '(not exposed)',
       navigation: control('.r4m-nav'),
       open: control('[data-mobile-action="visit"]'),
@@ -63,7 +64,7 @@
       'LAYOUT: ' + size(info.layout) + ' scroll ' + info.layout.scrollWidth + '\n' +
       'VISUAL: ' + (info.visual ? size(info.visual) + ' scale ' + number(info.visual.scale) : 'unavailable') + '\n' +
       'STANDALONE: ' + info.standalone + ' / display ' + info.displayStandalone + '\n' +
-      'ROOT ZOOM: ' + info.rootZoom + '\n' +
+      'ROOT ZOOM: ' + info.rootZoom + ' / reset ' + info.viewportReset + '\n' +
       'META: ' + info.viewportMeta + '\n' +
       row('NAV', info.navigation) + '\n' + row('OPEN', info.open) + '\n' + row('AGAIN', info.rollAgain) + '\n' +
       viewportDebugAssets + '\n' + viewportDebugLastMotion;
@@ -618,7 +619,7 @@
     window.addEventListener('pageshow', renderViewportDebug);
     if (window.visualViewport) window.visualViewport.addEventListener('resize', renderViewportDebug);
     var phaseObserver = new MutationObserver(renderViewportDebug);
-    phaseObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-r4m-presentation', 'data-r4b1t-interface'] });
+    phaseObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-r4m-presentation', 'data-r4b1t-interface', 'data-r4m-viewport-reset'] });
     // Observe geometry changes only in the opt-in diagnostic view. No route,
     // Trail, commitment, storage or selection data is read by this report.
     if (window.ResizeObserver) {
