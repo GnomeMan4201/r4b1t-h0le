@@ -1,0 +1,1 @@
+{"availability_transitions":false,"cron_utc":"47 11 * * *","daily_observation_budget":100,"eligibility_transitions":false,"heartbeat_policy":"shadow-daily-window-v1","ordering":"numeric-create-seq-round-robin","probe_version":"r4b1t-shadow-head-v1","public_authority":false,"schema":"r4b1t-shadow-schedule-policy-v1","version":"shadow-daily-round-robin-v1","window_limit":100}
