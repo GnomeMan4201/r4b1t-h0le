@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<title>Mobile viewport comparison</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 16px; background: #fff; color: #111; font: 16px/1.5 system-ui, sans-serif; }
+  h1 { font-size: 24px; line-height: 1.2; }
+  button, a { font: inherit; }
+  button { min-height: 64px; padding: 8px 16px; border: 2px solid #111; background: #eee; color: #111; }
+  a { display: inline-block; padding-block: 16px; color: #003b96; }
+  #square { width: 64px; height: 64px; background: #c11; }
+  pre { padding: 12px; border: 1px solid #888; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; }
+</style>
+</head>
+<body>
+<h1>Minimal mobile page</h1>
+<p>This page uses no app styles, app scripts, fonts, or viewport repair. It only measures the browser. It is not a fix.</p>
+<div id="square" aria-label="64 by 64 CSS pixel reference square"></div>
+<p>The red square is 64 × 64 CSS pixels.</p>
+<button id="tap" type="button">64px tap control</button>
+<p id="taps" role="status">Taps: 0</p>
+<p id="finding">Measuring…</p>
+<pre id="report" aria-label="Viewport measurements"></pre>
+<p>Compare the text and control size here with the full app in this same browser.</p>
+<a id="app" href="./?debug-motion=1">Open the full app with measurements →</a>
+<p>Use Back to return to this page. No settings changes are needed.</p>
+<noscript>JavaScript is disabled. The square and control still provide a visual reference.</noscript>
+<script>
+(() => {
+  'use strict';
+  const report = document.getElementById('report');
+  const finding = document.getElementById('finding');
+  let taps = 0;
+  let frame = 0;
+  let reason = 'initial';
+  const number = value => Number(value.toFixed(2));
+  function measure() {
+    frame = 0;
+    const visual = window.visualViewport;
+    const square = document.getElementById('square').getBoundingClientRect();
+    const button = document.getElementById('tap').getBoundingClientRect();
+    const scale = visual ? visual.scale : null;
+    const expectedWidth = Math.min(screen.width, screen.height);
+    const half = scale !== null && Math.abs(scale - 0.5) < 0.03;
+    const normal = scale !== null && Math.abs(scale - 1) < 0.03;
+    finding.textContent = half ? 'This minimal page is also rendering at half scale.' :
+      normal ? 'This minimal page reports normal scale (1).' : 'Read the measured scale below.';
+    report.textContent = [
+      'PROBE: minimal-v1 (no viewport writes)',
+      'EVENT: ' + reason,
+      'SCREEN: ' + screen.width + ' × ' + screen.height + ' / DPR ' + devicePixelRatio,
+      'LAYOUT: ' + innerWidth + ' × ' + innerHeight,
+      'DOCUMENT: ' + document.documentElement.clientWidth + ' / scroll ' + document.documentElement.scrollWidth,
+      'VISUAL: ' + (visual ? number(visual.width) + ' × ' + number(visual.height) + ' / scale ' + number(scale) : 'unavailable'),
+      'ROOT ZOOM: ' + getComputedStyle(document.documentElement).zoom,
+      'BODY FONT: ' + getComputedStyle(document.body).fontSize,
+      'SQUARE RECT: ' + number(square.width) + ' × ' + number(square.height),
+      'BUTTON RECT HEIGHT: ' + number(button.height),
+      'BUTTON × VISUAL SCALE: ' + (scale === null ? 'unavailable' : number(button.height * scale)),
+      'STANDALONE: ' + (navigator.standalone === true) + ' / display ' + matchMedia('(display-mode: standalone)').matches,
+      'SERVICE WORKER CONTROLS PAGE: ' + !!(navigator.serviceWorker && navigator.serviceWorker.controller),
+      'PORTRAIT SCREEN WIDTH: ' + expectedWidth,
+      'META: ' + document.querySelector('meta[name="viewport"]').content,
+    ].join('\n');
+  }
+  function schedule(event) {
+    reason = event.type + (event.type === 'pageshow' && event.persisted ? ' (restored)' : '');
+    if (!frame) frame = requestAnimationFrame(measure);
+  }
+  document.getElementById('tap').addEventListener('click', () => {
+    document.getElementById('taps').textContent = 'Taps: ' + (++taps);
+  });
+  window.addEventListener('pageshow', schedule);
+  window.addEventListener('resize', schedule);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', schedule);
+  measure();
+})();
+</script>
+</body>
+</html>
