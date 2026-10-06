@@ -307,6 +307,29 @@
     root.classList.toggle('result-ready', resultReady);
   }
 
+  // Preserve the canonical .rolling trigger and 1050ms mark timing, but re-arm
+  // that same trigger when a new authoritative ROLL begins before the previous
+  // mark run has finished. Normal ROLLs continue through syncProductionMarkState.
+  function rearmProductionMarkRollIfActive() {
+    if (markRollTimer === null || !byId('r4h-root')) return false;
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return false;
+    var root = document.documentElement;
+    window.clearTimeout(markRollTimer);
+    markRollTimer = null;
+    root.classList.remove('rolling', 'result-ready');
+    void byId('r4h-root').getBoundingClientRect();
+    root.classList.add('rolling');
+    markRollTimer = window.setTimeout(function () {
+      markRollTimer = null;
+      root.classList.remove('rolling');
+      syncProductionMarkState();
+    }, MARK_ROLL_MS);
+    return true;
+  }
+
+  window.__r4b1tRearmProductionMarkRollIfActive = rearmProductionMarkRollIfActive;
+
   // ── Secondary mark states ───────────────────────────────────────────────
   // Presentation only. The production mark reacts to which secondary surface is
   // open (.branch-open, .trail-open, .topology-open, .history-open, .replay-open)
@@ -692,6 +715,12 @@
   function runRollTransition(kind) {
     // a ROLL takes the stage: no shell sheet stays open over it
     closeSheets();
+    if (kind === 'roll' && window.R4B1T_ROLL_REEL_ENABLED !== false &&
+        window.R4B1TRollReel && typeof window.R4B1TRollReel.isMounted === 'function' &&
+        window.R4B1TRollReel.isMounted() && typeof window.R4B1TRollReel.quickRoll === 'function') {
+      rememberResultLayout();
+      return window.R4B1TRollReel.quickRoll();
+    }
     if (kind === 'roll' && window.R4B1TRollProduction && typeof window.R4B1TRollProduction.roll === 'function') {
       rememberResultLayout();
       return window.R4B1TRollProduction.roll();
@@ -898,8 +927,9 @@
     ['r4mMenuSheet', 'r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet'].forEach(function (id) {
       var sheet = byId(id);
       if (!sheet) return;
+      var wasOpen = sheet.classList.contains('open') || sheet.classList.contains('sheet-open');
       sheet.classList.remove('open', 'sheet-open');
-      sheet.classList.add('sheet-close');
+      sheet.classList.toggle('sheet-close', wasOpen);
       sheet.setAttribute('aria-hidden', 'true');
     });
     var backdrop = byId('r4mBackdrop');
@@ -1292,6 +1322,22 @@
     else if (typeof mq.addListener === 'function') mq.addListener(listener);
 
     var rollButton = byId('r4mRoll');
+    var reelMounted = false;
+    if (rollButton && window.R4B1T_ROLL_REEL_ENABLED !== false &&
+        window.R4B1TRollReel && typeof window.R4B1TRollReel.mount === 'function' &&
+        window.R4B1TRollProduction) {
+      reelMounted = window.R4B1TRollReel.mount({
+        button: rollButton,
+        roll: function (charge) {
+          closeSheets();
+          rememberResultLayout();
+          return window.R4B1TRollProduction.roll({ reel: true, charge: charge });
+        },
+        slam: function () {
+          return typeof window.R4B1TRollProduction.slam === 'function' && window.R4B1TRollProduction.slam();
+        }
+      });
+    }
     if (rollButton) rollButton.addEventListener('click', function () {
       runRollTransition('roll');
     });

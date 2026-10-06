@@ -1,0 +1,59 @@
+name: PR 274 Phone Preview
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pr-274-phone-preview
+  cancel-in-progress: true
+
+jobs:
+  publish-preview:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.number == 274
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out PR source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          path: source
+
+      - name: Check out published Pages branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: gh-pages
+          path: pages
+          fetch-depth: 0
+
+      - name: Publish isolated PR 274 preview path
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf pages/pr-274
+          mkdir -p pages/pr-274
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='preview' \
+            --exclude='test-results' \
+            --exclude='playwright-report' \
+            source/ pages/pr-274/
+          printf '%s\n' "PR #274 phone preview — commit $GITHUB_SHA" > pages/pr-274/PREVIEW_BUILD.txt
+          cd pages
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add pr-274
+          if git diff --cached --quiet; then
+            echo "Preview already current."
+            exit 0
+          fi
+          git commit -m "preview: publish PR 274 at /pr-274/"
+          git push origin HEAD:gh-pages

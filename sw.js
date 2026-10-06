@@ -10,6 +10,8 @@ const PRECACHE = [
   './roll-motion-machine.js',
   './roll-disclosure-boundary.js',
   './roll-renderer.js',
+  './roll-reel.js',
+  './roll-reel.css',
   './roll-production-integration.js',
   './dual-shell.js',
   './dual-shell.css',

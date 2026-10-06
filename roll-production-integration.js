@@ -4,6 +4,7 @@
   var machine = null;
   var renderer = null;
   var disclosure = null;
+  var reelActive = false;
 
   function byId(id) { return document.getElementById(id); }
 
@@ -29,6 +30,10 @@
       '</div>' +
       '<button class="r4m-next" type="button" data-mobile-action="next"><span class="r4m-next-aperture" data-aperture-role="selection" aria-hidden="true"><i class="r4m-ap-depth-ring"></i></span><span>ROLL AGAIN</span></button>';
     return section;
+  }
+
+  function reelApi() {
+    return root.R4B1TRollReel || null;
   }
 
   function setup() {
@@ -69,6 +74,13 @@
         if (typeof root.__r4b1tProjectRollPresentation === 'function') {
           root.__r4b1tProjectRollPresentation(entry.to);
         }
+        var reel = reelApi();
+        if (reelActive && reel && typeof reel.onTransition === 'function') {
+          reel.onTransition(entry.to, entry);
+        }
+        if (entry.to === 'SETTLED' || entry.to === 'CANCELLED' || entry.to === 'IDLE') {
+          reelActive = false;
+        }
       },
       onRevealBoundary: function (event) {
         disclosure.reveal(event);
@@ -91,11 +103,26 @@
     mount.replaceChildren();
   }
 
-  function roll() {
+  function reelRequest(options) {
+    if (!options || options.reel !== true) return null;
+    if (root.R4B1T_ROLL_REEL_ENABLED === false) return null;
+    var reel = reelApi();
+    if (!reel || typeof reel.prepare !== 'function') return null;
+    return Object.freeze({
+      reel: reel,
+      charge: Number.isFinite(options.charge) ? options.charge : 0.22
+    });
+  }
+
+  function roll(options) {
     if (!setup()) return false;
     if (machine.snapshot().active || renderer.isActive()) return false;
 
+    var requestedReel = reelRequest(options);
     clearVisibleResult();
+    if (typeof root.__r4b1tRearmProductionMarkRollIfActive === 'function') {
+      root.__r4b1tRearmProductionMarkRollIfActive();
+    }
     if (!machine.pointerDown()) return false;
     window.setTimeout(function () {
       if (!machine.pointerUp()) {
@@ -107,6 +134,7 @@
       if (!result) {
         machine.commitFailed();
         renderer.cancel();
+        if (requestedReel) requestedReel.reel.cancel('commit-failed');
         return;
       }
 
@@ -115,18 +143,46 @@
       if (!disclosure.commit(transactionId, result)) {
         machine.commitFailed();
         renderer.cancel();
+        if (requestedReel) requestedReel.reel.cancel('disclosure-commit-failed');
         return;
       }
 
-      if (!machine.commitAck(capability)) {
+      var reelPlan = null;
+      if (requestedReel) {
+        try {
+          reelPlan = requestedReel.reel.prepare({
+            result: result,
+            charge: requestedReel.charge
+          });
+        } catch (_) {
+          reelPlan = null;
+        }
+        if (!reelPlan && typeof requestedReel.reel.cancel === 'function') {
+          requestedReel.reel.cancel('prepare-failed');
+        }
+      }
+      reelActive = Boolean(reelPlan);
+
+      if (!machine.commitAck(capability, reelPlan && reelPlan.timing ? reelPlan.timing : null)) {
         disclosure.cancel(transactionId);
         renderer.cancel();
+        if (requestedReel) requestedReel.reel.cancel('commit-ack-failed');
+        reelActive = false;
       }
     }, 0);
     return true;
   }
 
+  function slam() {
+    if (!machine || !reelActive || typeof machine.slamToLock !== 'function') return false;
+    return machine.slamToLock();
+  }
+
   function cancel(reason) {
+    var reel = reelApi();
+    var reelBusy = reelActive || Boolean(reel && typeof reel.isActive === 'function' && reel.isActive());
+    if (reelBusy && reel && typeof reel.cancel === 'function') reel.cancel(reason || 'navigation/reset');
+    reelActive = false;
     if (!machine) return false;
     var snap = machine.snapshot();
     if (snap.transactionId != null && disclosure) disclosure.cancel(snap.transactionId);
@@ -140,7 +196,19 @@
 
   root.R4B1TRollProduction = Object.freeze({
     roll: roll,
+    slam: slam,
     cancel: cancel,
-    snapshot: function () { return machine ? machine.snapshot() : null; }
+    snapshot: function () {
+      var snap = machine ? machine.snapshot() : null;
+      if (!snap) return null;
+      return Object.freeze({
+        state: snap.state,
+        active: snap.active,
+        transactionId: snap.transactionId,
+        committedTransactionId: snap.committedTransactionId,
+        revealFired: snap.revealFired,
+        reelActive: reelActive
+      });
+    }
   });
 })(typeof globalThis !== 'undefined' ? globalThis : window);
