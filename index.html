@@ -2,7 +2,62 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<script>
+(function () {
+  'use strict';
+  // A startup-only recovery for the measured 2:1 mobile viewport. SafariViewController
+  // can ignore scale limits. Do not counteract zoom or change layout after input.
+  var finished = false;
+  var root = document.documentElement;
+  var inputEvents = ['pointerdown', 'touchstart', 'wheel', 'keydown'];
+  function cleanup() {
+    inputEvents.forEach(function (name) { window.removeEventListener(name, stop, true); });
+  }
+  function stop() {
+    if (finished) return;
+    finished = true;
+    root.dataset.r4mViewportReset = 'user-input';
+    cleanup();
+  }
+  inputEvents.forEach(function (name) {
+    window.addEventListener(name, stop, { capture: true, passive: true });
+  });
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted) { stop(); return; }
+    requestAnimationFrame(function () {
+      if (finished) return;
+      finished = true;
+      cleanup();
+      var viewport = window.visualViewport;
+      var meta = document.querySelector('meta[name="viewport"]');
+      var width = viewport && viewport.width * viewport.scale;
+      var matchesScreen = width && Math.min(Math.abs(width - screen.width), Math.abs(width - screen.height)) <= 2;
+      if (!viewport || !meta || !matchMedia('(pointer: coarse)').matches ||
+          viewport.scale < 0.45 || viewport.scale > 0.55 || width > 900 || !matchesScreen ||
+          Math.abs(innerWidth - viewport.width) > 2 ||
+          Math.abs(document.documentElement.scrollWidth - innerWidth) > 2) {
+        root.dataset.r4mViewportReset = 'not-needed';
+        return;
+      }
+      var original = meta.content;
+      var responsive = original.replace(/width\s*=\s*[^,]+/i, 'width=device-width')
+        .replace(/initial-scale\s*=\s*[^,]+/i, 'initial-scale=1.0');
+      root.dataset.r4mViewportReset = 'attempted';
+      // Change the width argument, rather than relying on an ignored minimum.
+      // Restore device-width immediately afterward so orientation remains responsive.
+      meta.content = responsive.replace('width=device-width', 'width=' + Math.round(width));
+      requestAnimationFrame(function () {
+        meta.content = responsive;
+        requestAnimationFrame(function () {
+          root.dataset.r4mViewportReset = Math.abs(window.visualViewport.scale - 1) < 0.02 &&
+            Math.abs(innerWidth - width) <= 2 ? 'recovered' : 'unresolved';
+        });
+      });
+    });
+  }, { once: true });
+})();
+</script>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">

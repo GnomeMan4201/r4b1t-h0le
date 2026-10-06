@@ -34,16 +34,18 @@ async function simulateInitialScale(page, scale) {
   });
 }
 
-test('mobile viewport rejects a half-size initial fit while retaining 64px actions', async ({ page }, testInfo) => {
+test('mobile startup resets the measured half-size viewport without scale limits', async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith('mobile-'));
   await page.setViewportSize({ width: 390, height: 635 });
   // The physical device reported layout 780x1270 and visual scale 0.5.
   // Exercise the same under-scaled initial viewport through response metadata;
   // this is a reproduction of geometry, not an iOS host-browser simulation.
   await simulateInitialScale(page, 0.5);
-  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await page.goto('./?debug-motion=1', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
   await expect.poll(() => page.evaluate(() => visualViewport.scale)).toBe(1);
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-viewport-reset', 'recovered');
+  await expect(page.locator('#r4mMotionDebug')).toContainText('reset recovered');
   expect(await page.evaluate(() => innerWidth)).toBe(390);
   await page.locator('#r4mRoll').click();
   await page.waitForFunction(() => document.documentElement.dataset.r4mPresentation === 'revealed');
@@ -55,7 +57,7 @@ test('mobile viewport rejects a half-size initial fit while retaining 64px actio
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
 });
 
-test('mobile viewport keeps zoom-in available above its initial scale floor', async ({ page, browserName }, testInfo) => {
+test('mobile viewport preserves later zoom in and return to normal size', async ({ page, browserName }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith('mobile-') || browserName !== 'chromium',
     'Runtime page-scale emulation uses the Chromium protocol; Linux WebKit does not emulate iOS pinch gestures.');
   await page.setViewportSize({ width: 390, height: 635 });
@@ -64,8 +66,60 @@ test('mobile viewport keeps zoom-in available above its initial scale floor', as
   const session = await page.context().newCDPSession(page);
   await session.send('Emulation.setPageScaleFactor', { pageScaleFactor: 2 });
   await expect.poll(() => page.evaluate(() => visualViewport.scale)).toBe(2);
+  // Chromium clamps below fit-to-width even without this startup code.
+  await session.send('Emulation.setPageScaleFactor', { pageScaleFactor: 1.25 });
+  await expect.poll(() => page.evaluate(() => visualViewport.scale)).toBe(1.25);
+  await session.send('Emulation.setPageScaleFactor', { pageScaleFactor: 1 });
+  await expect.poll(() => page.evaluate(() => visualViewport.scale)).toBe(1);
   const meta = await page.locator('meta[name="viewport"]').getAttribute('content');
-  expect(meta).not.toMatch(/maximum-scale|user-scalable\s*=\s*no/);
+  expect(meta).not.toMatch(/minimum-scale|maximum-scale|user-scalable\s*=\s*no/);
+});
+
+test('mobile startup does not reset the viewport after user input begins', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile-'));
+  await page.setViewportSize({ width: 390, height: 635 });
+  await page.addInitScript(() => document.addEventListener('DOMContentLoaded', () =>
+    window.dispatchEvent(new Event('pointerdown'))));
+  await simulateInitialScale(page, 0.5);
+  await page.goto('./', { waitUntil: 'load' });
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-viewport-reset', 'user-input');
+  expect(await page.evaluate(() => visualViewport.scale)).toBe(0.5);
+  await expect(page.locator('meta[name="viewport"]')).toHaveAttribute('content', /initial-scale=0.5/);
+});
+
+test('normal startup leaves viewport metadata and scale unchanged', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'load' });
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-viewport-reset', 'not-needed');
+  await expect(page.locator('meta[name="viewport"]')).toHaveAttribute('content', 'width=device-width, initial-scale=1.0, shrink-to-fit=no');
+  expect(await page.evaluate(() => visualViewport.scale)).toBe(1);
+});
+
+test('mobile startup reports an unresolved host reset without repeated attempts', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile-'));
+  await page.setViewportSize({ width: 390, height: 635 });
+  // Model a host exposing metadata writes without applying their viewport effect.
+  // This is a refusal model, not a native SafariViewController simulation.
+  await page.addInitScript(() => {
+    const descriptor = Object.getOwnPropertyDescriptor(HTMLMetaElement.prototype, 'content');
+    const requested = new WeakMap();
+    window.__viewportWrites = [];
+    Object.defineProperty(HTMLMetaElement.prototype, 'content', {
+      configurable: true,
+      get() { return requested.has(this) ? requested.get(this) : descriptor.get.call(this); },
+      set(value) {
+        if (this.name !== 'viewport') return descriptor.set.call(this, value);
+        requested.set(this, value);
+        window.__viewportWrites.push(value);
+      },
+    });
+  });
+  await simulateInitialScale(page, 0.5);
+  await page.goto('./?debug-motion=1', { waitUntil: 'load' });
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-viewport-reset', 'unresolved');
+  await expect(page.locator('#r4mMotionDebug')).toContainText('reset unresolved');
+  await page.waitForTimeout(150);
+  expect(await page.evaluate(() => window.__viewportWrites.length)).toBe(2);
+  expect(await page.evaluate(() => visualViewport.scale)).toBe(0.5);
 });
 
 test('opt-in viewport debug reports geometry and stylesheet identity without changing the Trail', async ({ page }, testInfo) => {
