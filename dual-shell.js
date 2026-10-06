@@ -281,6 +281,66 @@
   // then shows .result-ready. Otherwise the roll is cut mid-launch and snaps home.
   var MARK_ROLL_MS = 1050;
   var markRollTimer = null;
+  var markRollActive = false;
+  var markRollRabbit = null;
+  var markRollOnStart = null;
+  var markRollOnEnd = null;
+
+  function clearProductionMarkRollWatch() {
+    if (markRollTimer !== null) {
+      window.clearTimeout(markRollTimer);
+      markRollTimer = null;
+    }
+    if (markRollRabbit) {
+      if (markRollOnStart) markRollRabbit.removeEventListener('animationstart', markRollOnStart);
+      if (markRollOnEnd) markRollRabbit.removeEventListener('animationend', markRollOnEnd);
+    }
+    markRollRabbit = null;
+    markRollOnStart = null;
+    markRollOnEnd = null;
+  }
+
+  function finishProductionMarkRoll() {
+    if (!markRollActive) return;
+    markRollActive = false;
+    clearProductionMarkRollWatch();
+    document.documentElement.classList.remove('rolling');
+    syncProductionMarkState();
+  }
+
+  function startProductionMarkRoll() {
+    var root = document.documentElement;
+    var rabbit = byId('r4h-roll-rabbit');
+    if (!rabbit) return false;
+    clearProductionMarkRollWatch();
+    markRollActive = true;
+    markRollRabbit = rabbit;
+    var animationStarted = false;
+
+    markRollOnStart = function (event) {
+      if (event.target !== rabbit || event.animationName !== 'r4h-roll-rabbit') return;
+      animationStarted = true;
+      if (markRollTimer !== null) {
+        window.clearTimeout(markRollTimer);
+        markRollTimer = null;
+      }
+    };
+    markRollOnEnd = function (event) {
+      if (event.target !== rabbit || event.animationName !== 'r4h-roll-rabbit') return;
+      finishProductionMarkRoll();
+    };
+    rabbit.addEventListener('animationstart', markRollOnStart);
+    rabbit.addEventListener('animationend', markRollOnEnd);
+    root.classList.remove('result-ready');
+    root.classList.add('rolling');
+
+    // Fallback only covers a run whose rabbit animation never starts.
+    markRollTimer = window.setTimeout(function () {
+      if (!animationStarted) finishProductionMarkRoll();
+    }, MARK_ROLL_MS + 300);
+    return true;
+  }
+
   function syncProductionMarkState() {
     var root = document.documentElement;
     if (!byId('r4h-root')) return;
@@ -289,43 +349,31 @@
     var resultReady = presentation === 'reveal' || presentation === 'revealed';
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
-      // no mark motion to wait for: represent the state directly
+      clearProductionMarkRollWatch();
+      markRollActive = false;
       root.classList.toggle('rolling', rolling);
       root.classList.toggle('result-ready', resultReady);
       return;
     }
-    if (rolling && markRollTimer === null) {
-      root.classList.remove('result-ready');
-      root.classList.add('rolling');
-      markRollTimer = window.setTimeout(function () {
-        markRollTimer = null;
-        root.classList.remove('rolling');
-        syncProductionMarkState();
-      }, MARK_ROLL_MS);
-    }
-    if (markRollTimer !== null) return;
+    if (rolling && !markRollActive) startProductionMarkRoll();
+    if (markRollActive) return;
     root.classList.toggle('result-ready', resultReady);
   }
 
-  // Preserve the canonical .rolling trigger and 1050ms mark timing, but re-arm
-  // that same trigger when a new authoritative ROLL begins before the previous
-  // mark run has finished. Normal ROLLs continue through syncProductionMarkState.
+  // Re-arm the canonical .rolling trigger when a new authoritative ROLL begins
+  // before the prior mark run completes. The restarted run is also owned by the
+  // rabbit's named animationend, never by a fixed presentation timer.
   function rearmProductionMarkRollIfActive() {
-    if (markRollTimer === null || !byId('r4h-root')) return false;
+    var rabbit = byId('r4h-roll-rabbit');
+    if (!markRollActive || !rabbit) return false;
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) return false;
     var root = document.documentElement;
-    window.clearTimeout(markRollTimer);
-    markRollTimer = null;
+    clearProductionMarkRollWatch();
+    markRollActive = false;
     root.classList.remove('rolling', 'result-ready');
-    void byId('r4h-root').getBoundingClientRect();
-    root.classList.add('rolling');
-    markRollTimer = window.setTimeout(function () {
-      markRollTimer = null;
-      root.classList.remove('rolling');
-      syncProductionMarkState();
-    }, MARK_ROLL_MS);
-    return true;
+    void rabbit.getBoundingClientRect();
+    return startProductionMarkRoll();
   }
 
   window.__r4b1tRearmProductionMarkRollIfActive = rearmProductionMarkRollIfActive;

@@ -236,3 +236,85 @@ test('REEL stays inside portrait and short-landscape mobile viewports', async ({
   expect(box.right).toBeLessThanOrEqual(box.innerWidth + 1);
   expect(box.scrollWidth).toBeLessThanOrEqual(box.innerWidth + 1);
 });
+
+
+test('rabbit lifecycle completes 10 normal REEL rolls without cancellation', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  test.setTimeout(120_000);
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+  await page.waitForTimeout(1300);
+
+  await page.evaluate(() => {
+    const rabbit = document.getElementById('r4h-roll-rabbit');
+    window.__rabbitLifecycle = { starts: 0, ends: 0, cancels: 0 };
+    rabbit.addEventListener('animationstart', event => {
+      if (event.animationName === 'r4h-roll-rabbit') window.__rabbitLifecycle.starts += 1;
+    });
+    rabbit.addEventListener('animationend', event => {
+      if (event.animationName === 'r4h-roll-rabbit') window.__rabbitLifecycle.ends += 1;
+    });
+    rabbit.addEventListener('animationcancel', event => {
+      if (event.animationName === 'r4h-roll-rabbit') window.__rabbitLifecycle.cancels += 1;
+    });
+  });
+
+  for (let i = 1; i <= 10; i += 1) {
+    await page.evaluate(() => window.R4B1TRollReel.quickRoll());
+    await page.waitForFunction(target => window.__rabbitLifecycle.starts >= target, i);
+    await page.waitForFunction(() => {
+      const reel = window.R4B1TRollReel.snapshot();
+      const production = window.R4B1TRollProduction.snapshot();
+      return reel.phase === 'revealed' && reel.landedUrl && production && !production.active;
+    });
+    await page.waitForFunction(target => window.__rabbitLifecycle.ends >= target, i);
+  }
+
+  expect(await page.evaluate(() => window.__rabbitLifecycle)).toEqual({
+    starts: 10,
+    ends: 10,
+    cancels: 0,
+  });
+});
+
+test('rabbit lifecycle completes 10 slammed REEL rolls without cancellation', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  test.setTimeout(120_000);
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+  await page.waitForTimeout(1300);
+
+  await page.evaluate(() => {
+    const rabbit = document.getElementById('r4h-roll-rabbit');
+    window.__rabbitLifecycle = { starts: 0, ends: 0, cancels: 0 };
+    rabbit.addEventListener('animationstart', event => {
+      if (event.animationName === 'r4h-roll-rabbit') window.__rabbitLifecycle.starts += 1;
+    });
+    rabbit.addEventListener('animationend', event => {
+      if (event.animationName === 'r4h-roll-rabbit') window.__rabbitLifecycle.ends += 1;
+    });
+    rabbit.addEventListener('animationcancel', event => {
+      if (event.animationName === 'r4h-roll-rabbit') window.__rabbitLifecycle.cancels += 1;
+    });
+  });
+
+  const reelWindow = page.locator('#r4mRollReel .r4m-reel-window');
+  for (let i = 1; i <= 10; i += 1) {
+    await page.evaluate(() => window.R4B1TRollReel.quickRoll());
+    await page.waitForFunction(() => window.R4B1TRollReel.snapshot().phase === 'spin');
+    await reelWindow.click({ position: { x: 40, y: 40 } });
+    await page.waitForFunction(target => window.__rabbitLifecycle.starts >= target, i);
+    await page.waitForFunction(() => {
+      const reel = window.R4B1TRollReel.snapshot();
+      const production = window.R4B1TRollProduction.snapshot();
+      return reel.phase === 'revealed' && reel.landedUrl && production && !production.active;
+    });
+    await page.waitForFunction(target => window.__rabbitLifecycle.ends >= target, i);
+  }
+
+  expect(await page.evaluate(() => window.__rabbitLifecycle)).toEqual({
+    starts: 10,
+    ends: 10,
+    cancels: 0,
+  });
+});

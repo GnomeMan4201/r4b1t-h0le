@@ -191,3 +191,13 @@ test('slam interrupts presentation only and reveals the same committed transacti
   assert.equal(reveals.length, 1);
   assert.equal(machine.snapshot().committedTransactionId, committed);
 });
+
+
+test('rabbit mark lifecycle is owned by named animationend with a no-start fallback', () => {
+  assert.match(shell, /rabbit\.addEventListener\('animationstart', markRollOnStart\)/);
+  assert.match(shell, /rabbit\.addEventListener\('animationend', markRollOnEnd\)/);
+  assert.match(shell, /event\.animationName !== 'r4h-roll-rabbit'/);
+  assert.match(shell, /if \(!animationStarted\) finishProductionMarkRoll\(\)/);
+  assert.match(shell, /MARK_ROLL_MS \+ 300/);
+  assert.match(shell, /return startProductionMarkRoll\(\)/);
+});
