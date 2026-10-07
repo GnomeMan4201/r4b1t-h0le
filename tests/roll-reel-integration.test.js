@@ -12,7 +12,8 @@ const shell = fs.readFileSync('dual-shell.js', 'utf8');
 const trail = fs.readFileSync('trail-runtime.js', 'utf8');
 const index = fs.readFileSync('index.html', 'utf8');
 const svg = fs.readFileSync('r4b1t-h0l3-production.svg', 'utf8');
-const sw = fs.readFileSync('sw.js', 'utf8');\nconst feel = fs.readFileSync('feel-monitor.js', 'utf8');
+const sw = fs.readFileSync('sw.js', 'utf8');
+const feel = fs.readFileSync('feel-monitor.js', 'utf8');
 
 function fakeClock() {
   let now = 0;
