@@ -12,7 +12,7 @@ const shell = fs.readFileSync('dual-shell.js', 'utf8');
 const trail = fs.readFileSync('trail-runtime.js', 'utf8');
 const index = fs.readFileSync('index.html', 'utf8');
 const svg = fs.readFileSync('r4b1t-h0l3-production.svg', 'utf8');
-const sw = fs.readFileSync('sw.js', 'utf8');
+const sw = fs.readFileSync('sw.js', 'utf8');\nconst feel = fs.readFileSync('feel-monitor.js', 'utf8');
 
 function fakeClock() {
   let now = 0;
@@ -233,4 +233,18 @@ test('completed rabbit run is not retriggered by a longer REEL presentation phas
 
 test('every fresh rabbit run forces a rendered class boundary for WebKit', () => {
   assert.match(shell, /classList\.remove\('rolling'\);[\s\S]*rabbit\.getBoundingClientRect\(\);[\s\S]*classList\.add\('rolling'\)/);
+});
+
+
+test('feel monitor is explicit opt-in, presentation-only, ephemeral, and does not encode motion constants', () => {
+  assert.match(index, /<script src="feel-monitor\.js" defer><\/script>/);
+  assert.match(sw, /'\.\/feel-monitor\.js'/);
+  assert.match(feel, /URLSearchParams\(root\.location\.search\)\.get\('feel'\) === '1'/);
+  assert.match(feel, /requestAnimationFrame\(sampleFrame\)/);
+  assert.match(feel, /data-phase/);
+  assert.match(feel, /animationstart/);
+  assert.match(feel, /animationend/);
+  assert.match(feel, /animationcancel/);
+  assert.doesNotMatch(feel, /localStorage|sessionStorage|indexedDB|sendBeacon|XMLHttpRequest|fetch\(/);
+  assert.doesNotMatch(feel, /HIT_STOP_MS|SPRING_K|SPRING_C|PROTOTYPE_WEIGHT|OVERSHOOT_ROWS|easeOutCubic/);
 });
