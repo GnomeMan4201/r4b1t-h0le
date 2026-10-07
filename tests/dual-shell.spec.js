@@ -168,6 +168,52 @@ test('normal mobile navigation does not create the viewport diagnostic panel', a
   await expect(page.locator('#r4mMotionDebug')).toHaveCount(0);
 });
 
+
+test('mobile layout stays within the browser-provided layout viewport across ROLL, result, MENU and Blind', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile-'));
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  async function expectFit(stage) {
+    const geometry = await page.evaluate(() => ({
+      scrollWidth: document.documentElement.scrollWidth,
+      clientWidth: document.documentElement.clientWidth,
+      innerWidth: window.innerWidth,
+      scale: window.visualViewport ? window.visualViewport.scale : null,
+    }));
+    expect(geometry.scrollWidth, stage + ' scroll width').toBe(geometry.clientWidth);
+    expect(geometry.clientWidth, stage + ' client/inner width').toBe(geometry.innerWidth);
+    return geometry;
+  }
+
+  await expectFit('load');
+  await expect(page.locator('#r4mMotionDebug')).toHaveCount(0);
+
+  await page.locator('#r4mRoll').click();
+  await page.waitForFunction(() => document.documentElement.dataset.r4mPresentation === 'revealed');
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expectFit('result');
+
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'false');
+  await expectFit('menu-open');
+
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('#r4mBackdrop')).toBeHidden({ timeout: 1000 });
+  await expectFit('menu-close');
+
+  await page.evaluate(() => document.getElementById('r4mModeBlind').click());
+  await expect(page.locator('#r4mDescentEntry')).toBeVisible();
+  await expectFit('blind-ready');
+
+  await page.evaluate(() => document.querySelector('#r4mDescentEntry [data-mobile-action="blind-descent"]').click());
+  await expect(page.locator('#blindDescentOverlay')).toHaveClass(/open/);
+  await expectFit('blind-descent');
+  await expect(page.locator('#r4mMotionDebug')).toHaveCount(0);
+});
+
 test('mobile legacy source surfaces cannot widen the phone viewport', async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith('mobile-'));
   await page.setViewportSize({ width: 390, height: 844 });
@@ -953,14 +999,18 @@ test('P3-1 mobile landscape uses the available viewport without horizontal overf
   const metrics = await page.evaluate(() => {
     const shell = document.querySelector('.r4m-shell');
     const roll = document.querySelector('.r4m-roll');
+    const reel = document.querySelector('#r4mRollReel .r4m-reel-window');
     const trail = document.querySelector('.r4m-trail-scroll');
     const shellRect = shell.getBoundingClientRect();
     const rollRect = roll.getBoundingClientRect();
+    const reelRect = reel.getBoundingClientRect();
     return {
       viewport: document.documentElement.clientWidth,
       documentWidth: document.documentElement.scrollWidth,
       shellWidth: shellRect.width,
       rollWidth: rollRect.width,
+      rollHeight: rollRect.height,
+      reelWidth: reelRect.width,
       trailDisplay: getComputedStyle(trail).display,
       trailRows: getComputedStyle(trail).gridTemplateRows
     };
@@ -968,7 +1018,10 @@ test('P3-1 mobile landscape uses the available viewport without horizontal overf
 
   expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewport);
   expect(metrics.shellWidth).toBeGreaterThan(metrics.viewport * 0.9);
-  expect(metrics.rollWidth).toBeGreaterThan(metrics.viewport * 0.85);
+  expect(metrics.reelWidth).toBeGreaterThan(metrics.viewport * 0.85);
+  expect(metrics.rollWidth).toBeGreaterThanOrEqual(160);
+  expect(metrics.rollWidth).toBeLessThanOrEqual(208);
+  expect(Math.abs(metrics.rollWidth - metrics.rollHeight)).toBeLessThanOrEqual(1);
   expect(metrics.trailDisplay).toBe('grid');
   expect(metrics.trailRows.split(' ').length).toBe(2);
 

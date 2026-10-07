@@ -281,6 +281,74 @@
   // then shows .result-ready. Otherwise the roll is cut mid-launch and snaps home.
   var MARK_ROLL_MS = 1050;
   var markRollTimer = null;
+  var markRollActive = false;
+  var markRollCompleted = false;
+  var markRollRabbit = null;
+  var markRollOnStart = null;
+  var markRollOnEnd = null;
+
+  function clearProductionMarkRollWatch() {
+    if (markRollTimer !== null) {
+      window.clearTimeout(markRollTimer);
+      markRollTimer = null;
+    }
+    if (markRollRabbit) {
+      if (markRollOnStart) markRollRabbit.removeEventListener('animationstart', markRollOnStart);
+      if (markRollOnEnd) markRollRabbit.removeEventListener('animationend', markRollOnEnd);
+    }
+    markRollRabbit = null;
+    markRollOnStart = null;
+    markRollOnEnd = null;
+  }
+
+  function finishProductionMarkRoll() {
+    if (!markRollActive) return;
+    markRollActive = false;
+    markRollCompleted = true;
+    clearProductionMarkRollWatch();
+    document.documentElement.classList.remove('rolling');
+    syncProductionMarkState();
+  }
+
+  function startProductionMarkRoll() {
+    var root = document.documentElement;
+    var rabbit = byId('r4h-roll-rabbit');
+    if (!rabbit) return false;
+    clearProductionMarkRollWatch();
+    markRollActive = true;
+    markRollCompleted = false;
+    markRollRabbit = rabbit;
+    var animationStarted = false;
+
+    markRollOnStart = function (event) {
+      if (event.target !== rabbit || event.animationName !== 'r4h-roll-rabbit') return;
+      animationStarted = true;
+      if (markRollTimer !== null) {
+        window.clearTimeout(markRollTimer);
+        markRollTimer = null;
+      }
+    };
+    markRollOnEnd = function (event) {
+      if (event.target !== rabbit || event.animationName !== 'r4h-roll-rabbit') return;
+      finishProductionMarkRoll();
+    };
+    rabbit.addEventListener('animationstart', markRollOnStart);
+    rabbit.addEventListener('animationend', markRollOnEnd);
+    root.classList.remove('result-ready');
+    // WebKit can coalesce a remove/re-add that happens immediately after
+    // animationend. Force one style/layout flush so every authoritative new
+    // ROLL creates a fresh canonical rabbit animationstart.
+    root.classList.remove('rolling');
+    void rabbit.getBoundingClientRect();
+    root.classList.add('rolling');
+
+    // Fallback only covers a run whose rabbit animation never starts.
+    markRollTimer = window.setTimeout(function () {
+      if (!animationStarted) finishProductionMarkRoll();
+    }, MARK_ROLL_MS + 300);
+    return true;
+  }
+
   function syncProductionMarkState() {
     var root = document.documentElement;
     if (!byId('r4h-root')) return;
@@ -289,23 +357,40 @@
     var resultReady = presentation === 'reveal' || presentation === 'revealed';
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
-      // no mark motion to wait for: represent the state directly
+      clearProductionMarkRollWatch();
+      markRollActive = false;
+      markRollCompleted = false;
       root.classList.toggle('rolling', rolling);
       root.classList.toggle('result-ready', resultReady);
       return;
     }
-    if (rolling && markRollTimer === null) {
-      root.classList.remove('result-ready');
-      root.classList.add('rolling');
-      markRollTimer = window.setTimeout(function () {
-        markRollTimer = null;
-        root.classList.remove('rolling');
-        syncProductionMarkState();
-      }, MARK_ROLL_MS);
-    }
-    if (markRollTimer !== null) return;
+    // A long REEL presentation may outlive the rabbit's fixed 1000ms run.
+    // Once that run completes, presentation phase changes must not manufacture
+    // a second .rolling trigger. Only a new ROLL transition or explicit rearm
+    // may start the rabbit again.
+    if (!rolling) markRollCompleted = false;
+    if (rolling && !markRollActive && !markRollCompleted) startProductionMarkRoll();
+    if (markRollActive) return;
     root.classList.toggle('result-ready', resultReady);
   }
+
+  // Re-arm the canonical .rolling trigger when a new authoritative ROLL begins
+  // before the prior mark run completes. The restarted run is also owned by the
+  // rabbit's named animationend, never by a fixed presentation timer.
+  function rearmProductionMarkRollIfActive() {
+    var rabbit = byId('r4h-roll-rabbit');
+    if (!markRollActive || !rabbit) return false;
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return false;
+    var root = document.documentElement;
+    clearProductionMarkRollWatch();
+    markRollActive = false;
+    markRollCompleted = false;
+    root.classList.remove('rolling', 'result-ready');
+    return startProductionMarkRoll();
+  }
+
+  window.__r4b1tRearmProductionMarkRollIfActive = rearmProductionMarkRollIfActive;
 
   // ── Secondary mark states ───────────────────────────────────────────────
   // Presentation only. The production mark reacts to which secondary surface is
@@ -692,6 +777,12 @@
   function runRollTransition(kind) {
     // a ROLL takes the stage: no shell sheet stays open over it
     closeSheets();
+    if (kind === 'roll' && window.R4B1T_ROLL_REEL_ENABLED !== false &&
+        window.R4B1TRollReel && typeof window.R4B1TRollReel.isMounted === 'function' &&
+        window.R4B1TRollReel.isMounted() && typeof window.R4B1TRollReel.quickRoll === 'function') {
+      rememberResultLayout();
+      return window.R4B1TRollReel.quickRoll();
+    }
     if (kind === 'roll' && window.R4B1TRollProduction && typeof window.R4B1TRollProduction.roll === 'function') {
       rememberResultLayout();
       return window.R4B1TRollProduction.roll();
@@ -898,8 +989,9 @@
     ['r4mMenuSheet', 'r4mFilterSheet', 'r4mBranchSheet', 'r4mHelpSheet', 'r4mInspectSheet'].forEach(function (id) {
       var sheet = byId(id);
       if (!sheet) return;
+      var wasOpen = sheet.classList.contains('open') || sheet.classList.contains('sheet-open');
       sheet.classList.remove('open', 'sheet-open');
-      sheet.classList.add('sheet-close');
+      sheet.classList.toggle('sheet-close', wasOpen);
       sheet.setAttribute('aria-hidden', 'true');
     });
     var backdrop = byId('r4mBackdrop');
@@ -969,6 +1061,8 @@
     var titleNode = byId('r4mTitle');
     var descNode = byId('r4mDescription');
     var tagNode = byId('r4mTag');
+    var resultCategory = byId('r4mResultCategory');
+    var reelSnapshot = window.R4B1TRollReel && typeof window.R4B1TRollReel.snapshot === 'function' ? window.R4B1TRollReel.snapshot() : null;
     var verifiedTypedMeta = Boolean(typedMeta && typedMeta.dataset.state === 'verified');
     var typedTypeText = verifiedTypedMeta && typedType ? typedType.textContent.trim() : '';
     var typedReasonText = verifiedTypedMeta && typedReason ? typedReason.textContent.trim() : '';
@@ -991,6 +1085,7 @@
       tagNode.textContent = tag;
       tagNode.hidden = !tag;
     }
+    if (resultCategory) resultCategory.textContent = reelSnapshot && reelSnapshot.landedCategory ? reelSnapshot.landedCategory : 'REFERENCE';
     if (mobileTypedMeta) mobileTypedMeta.hidden = !verifiedTypedMeta;
     if (mobileTypedType) mobileTypedType.textContent = typedTypeText;
     byId('r4mInspectDomain').textContent = displayDomain;
@@ -1292,6 +1387,22 @@
     else if (typeof mq.addListener === 'function') mq.addListener(listener);
 
     var rollButton = byId('r4mRoll');
+    var reelMounted = false;
+    if (rollButton && window.R4B1T_ROLL_REEL_ENABLED !== false &&
+        window.R4B1TRollReel && typeof window.R4B1TRollReel.mount === 'function' &&
+        window.R4B1TRollProduction) {
+      reelMounted = window.R4B1TRollReel.mount({
+        button: rollButton,
+        roll: function (charge) {
+          closeSheets();
+          rememberResultLayout();
+          return window.R4B1TRollProduction.roll({ reel: true, charge: charge });
+        },
+        slam: function () {
+          return typeof window.R4B1TRollProduction.slam === 'function' && window.R4B1TRollProduction.slam();
+        }
+      });
+    }
     if (rollButton) rollButton.addEventListener('click', function () {
       runRollTransition('roll');
     });

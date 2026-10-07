@@ -25,7 +25,7 @@
 <p id="finding">Measuring…</p>
 <pre id="report" aria-label="Viewport measurements"></pre>
 <p>Compare the text and control size here with the full app in this same browser.</p>
-<a id="app" href="./?debug-motion=1">Open the full app with measurements →</a>
+<a id="app" href="./">Open the full app →</a>
 <p>Use Back to return to this page. No settings changes are needed.</p>
 <noscript>JavaScript is disabled. The square and control still provide a visual reference.</noscript>
 <script>
@@ -49,7 +49,7 @@
     finding.textContent = half ? 'This minimal page is also rendering at half scale.' :
       normal ? 'This minimal page reports normal scale (1).' : 'Read the measured scale below.';
     report.textContent = [
-      'PROBE: minimal-v1 (no viewport writes)',
+      'PROBE: minimal-v1 (no viewport writes)',\n      'ORIGIN: ' + location.origin,
       'EVENT: ' + reason,
       'SCREEN: ' + screen.width + ' × ' + screen.height + ' / DPR ' + devicePixelRatio,
       'LAYOUT: ' + innerWidth + ' × ' + innerHeight,

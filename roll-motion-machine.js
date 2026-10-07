@@ -47,6 +47,7 @@
     let committedTransactionId = null;
     let revealFired = false;
     let activeCommitCapability = null;
+    let activeTiming = timing;
     let timer = null;
     const log = [];
 
@@ -93,6 +94,7 @@
     function pointerDown() {
       if (active || (state !== STATES.IDLE && state !== STATES.SETTLED)) return false;
       clearScheduled();
+      activeTiming = timing;
       active = true;
       transactionId += 1;
       committedTransactionId = null;
@@ -111,20 +113,38 @@
       return true;
     }
 
-    function commitAck(capability = activeCommitCapability) {
+    function resolveTiming(override) {
+      if (!override || typeof override !== 'object') return timing;
+      const next = { ...timing };
+      ['accelerate', 'decelerate', 'lockHold', 'cardEnter'].forEach(key => {
+        if (Number.isFinite(override[key]) && override[key] >= 0) next[key] = override[key];
+      });
+      return Object.freeze(next);
+    }
+
+    function commitAck(capability = activeCommitCapability, timingOverride = null) {
       if (state !== STATES.RELEASED || committedTransactionId !== null) return false;
       if (capability !== activeCommitCapability) return false;
+      activeTiming = resolveTiming(timingOverride);
       committedTransactionId = transactionId;
       transition(STATES.STRIP_ACCELERATING, 'commit:ack');
-      schedule(timing.accelerate, () => {
+      schedule(activeTiming.accelerate, () => {
         if (state !== STATES.STRIP_ACCELERATING) return;
         transition(STATES.STRIP_DECELERATING, 'internal:accelerated');
-        schedule(timing.decelerate, () => {
+        schedule(activeTiming.decelerate, () => {
           if (state !== STATES.STRIP_DECELERATING) return;
           transition(STATES.LOCKED, 'internal:locked');
-          schedule(timing.lockHold, crossRevealBoundary);
+          schedule(activeTiming.lockHold, crossRevealBoundary);
         });
       });
+      return true;
+    }
+
+    function slamToLock() {
+      if (state !== STATES.STRIP_ACCELERATING && state !== STATES.STRIP_DECELERATING) return false;
+      clearScheduled();
+      transition(STATES.LOCKED, 'presentation:slam');
+      schedule(activeTiming.lockHold, crossRevealBoundary);
       return true;
     }
 
@@ -139,10 +159,11 @@
       revealFired = true;
       onRevealBoundary(Object.freeze({ transactionId, at: clock.now() }), snapshot());
       transition(STATES.CARD_ENTERING, 'internal:reveal-boundary');
-      schedule(timing.cardEnter, () => {
+      schedule(activeTiming.cardEnter, () => {
         if (state !== STATES.CARD_ENTERING) return;
         transition(STATES.SETTLED, 'internal:card-settled');
         activeCommitCapability = null;
+        activeTiming = timing;
         active = false;
       });
       return true;
@@ -153,6 +174,7 @@
       clearScheduled();
       transition(STATES.IDLE, 'pointercancel');
       activeCommitCapability = null;
+      activeTiming = timing;
       active = false;
       return true;
     }
@@ -172,6 +194,7 @@
         if (state !== STATES.CANCELLED) return;
         transition(STATES.IDLE, 'internal:cancel-settled');
         activeCommitCapability = null;
+        activeTiming = timing;
         active = false;
       });
       return true;
@@ -192,6 +215,7 @@
       pointerUp,
       pointerCancel,
       commitAck,
+      slamToLock,
       commitFailed,
       cancel,
       presentationComplete,

@@ -328,7 +328,11 @@
       state.transactionSequence = transaction.sequence;
       state.selectionTerrain = selectionTerrain;
       state.repeatGuardReference = result.url;
-      return Object.freeze({ url: result.url, transaction: transaction });
+      return Object.freeze({
+        url: result.url,
+        transaction: transaction,
+        eligiblePool: Array.isArray(result.eligiblePool) ? Object.freeze(result.eligiblePool.slice()) : Object.freeze([])
+      });
     };
     wrappedCommit.__r4b1tAuthority = true;
     window.__r4b1tCommitRoll = wrappedCommit;
