@@ -19,10 +19,14 @@ test('production mark remains presentation-only and follows authoritative ROLL p
   assert.match(source, /var rolling = \['contact','compression','committed','travel','brake','seat'\]/);
   assert.doesNotMatch(source, /var rolling = \[[^\n]*'reveal'/);
   assert.match(source, /var resultReady = presentation === 'reveal' \|\| presentation === 'revealed'/);
-  // the mark holds .rolling for its full 1000ms ROLL rather than mirroring the ~660ms strip phases
+  // the mark holds .rolling until the canonical rabbit animation itself ends.
   assert.match(source, /var MARK_ROLL_MS = 1050;/);
-  assert.match(source, /if \(rolling && markRollTimer === null\)[\s\S]*classList\.add\('rolling'\)[\s\S]*setTimeout\([\s\S]*classList\.remove\('rolling'\)[\s\S]*MARK_ROLL_MS\)/);
-  assert.match(source, /if \(markRollTimer !== null\) return;\s*root\.classList\.toggle\('result-ready', resultReady\)/);
+  assert.match(source, /rabbit\.addEventListener\('animationstart', markRollOnStart\)/);
+  assert.match(source, /rabbit\.addEventListener\('animationend', markRollOnEnd\)/);
+  assert.match(source, /event\.animationName !== 'r4h-roll-rabbit'/);
+  assert.match(source, /if \(!animationStarted\) finishProductionMarkRoll\(\)/);
+  assert.match(source, /MARK_ROLL_MS \+ 300/);
+  assert.match(source, /if \(markRollActive\) return;\s*root\.classList\.toggle\('result-ready', resultReady\)/);
   // only the reduced-motion branch may mirror the phases directly
   assert.match(source, /if \(reduced\) \{[\s\S]*classList\.toggle\('rolling', rolling\)[\s\S]*return;\s*\}/);
   assert.match(source, /classList\.toggle\('result-ready', resultReady\)/);

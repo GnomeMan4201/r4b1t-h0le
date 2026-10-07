@@ -132,7 +132,7 @@ test('rabbit ROLL animation definition and trigger remain the canonical 1000ms s
   assert.match(svg, /@keyframes r4h-roll-rabbit\{[\s\S]*31% \{transform:translate\(0,480px\)[\s\S]*34% \{transform:translate\(0,640px\)[\s\S]*90%,100% \{transform:none\}/);
   assert.match(svg, /#r4h-roll-rabbit\{animation:r4h-roll-rabbit 1000ms linear 0ms 1 none\}/);
   assert.match(shell, /var MARK_ROLL_MS = 1050/);
-  assert.match(shell, /function rearmProductionMarkRollIfActive\(\)[\s\S]*markRollTimer === null[\s\S]*classList\.remove\('rolling', 'result-ready'\)[\s\S]*classList\.add\('rolling'\)[\s\S]*MARK_ROLL_MS/);
+  assert.match(shell, /function rearmProductionMarkRollIfActive\(\)[\s\S]*markRollActive[\s\S]*clearProductionMarkRollWatch\(\)[\s\S]*classList\.remove\('rolling', 'result-ready'\)[\s\S]*return startProductionMarkRoll\(\)/);
   assert.match(production, /__r4b1tRearmProductionMarkRollIfActive/);
   assert.doesNotMatch(reel, /r4h-roll-rabbit|MARK_ROLL_MS/);
 });
