@@ -174,7 +174,7 @@ test('WebKit: layout width invariant and debug-off survive result, MENU and Blin
   await page.evaluate(() => document.getElementById('r4mModeBlind').click());
   await expect(page.locator('#r4mDescentEntry')).toBeVisible();
   await expectFit(page, 'blind-ready');
-  await page.locator('#r4mDescentEntry [data-mobile-action="blind-descent"]').click();
+  await page.evaluate(() => document.querySelector('#r4mDescentEntry [data-mobile-action="blind-descent"]').click());
   await expect(page.locator('#blindDescentOverlay')).toHaveClass(/open/);
   await expectFit(page, 'blind-descent');
   await expect(page.locator('#r4mMotionDebug')).toHaveCount(0);

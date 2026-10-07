@@ -221,3 +221,11 @@ test('REEL presentation retains the Heavy Roll geometry and presentation-only ca
   assert.match(production, /r4mResultCategory/);
   assert.doesNotMatch(reel, /loadResourceMetadata|resourceFor\(/);
 });
+
+
+test('completed rabbit run is not retriggered by a longer REEL presentation phase', () => {
+  assert.match(shell, /var markRollCompleted = false/);
+  assert.match(shell, /markRollCompleted = true;[\s\S]*classList\.remove\('rolling'\)/);
+  assert.match(shell, /if \(!rolling\) markRollCompleted = false/);
+  assert.match(shell, /rolling && !markRollActive && !markRollCompleted/);
+});

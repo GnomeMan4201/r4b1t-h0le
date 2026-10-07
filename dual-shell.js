@@ -282,6 +282,7 @@
   var MARK_ROLL_MS = 1050;
   var markRollTimer = null;
   var markRollActive = false;
+  var markRollCompleted = false;
   var markRollRabbit = null;
   var markRollOnStart = null;
   var markRollOnEnd = null;
@@ -303,6 +304,7 @@
   function finishProductionMarkRoll() {
     if (!markRollActive) return;
     markRollActive = false;
+    markRollCompleted = true;
     clearProductionMarkRollWatch();
     document.documentElement.classList.remove('rolling');
     syncProductionMarkState();
@@ -314,6 +316,7 @@
     if (!rabbit) return false;
     clearProductionMarkRollWatch();
     markRollActive = true;
+    markRollCompleted = false;
     markRollRabbit = rabbit;
     var animationStarted = false;
 
@@ -351,11 +354,17 @@
     if (reduced) {
       clearProductionMarkRollWatch();
       markRollActive = false;
+      markRollCompleted = false;
       root.classList.toggle('rolling', rolling);
       root.classList.toggle('result-ready', resultReady);
       return;
     }
-    if (rolling && !markRollActive) startProductionMarkRoll();
+    // A long REEL presentation may outlive the rabbit's fixed 1000ms run.
+    // Once that run completes, presentation phase changes must not manufacture
+    // a second .rolling trigger. Only a new ROLL transition or explicit rearm
+    // may start the rabbit again.
+    if (!rolling) markRollCompleted = false;
+    if (rolling && !markRollActive && !markRollCompleted) startProductionMarkRoll();
     if (markRollActive) return;
     root.classList.toggle('result-ready', resultReady);
   }
@@ -371,6 +380,7 @@
     var root = document.documentElement;
     clearProductionMarkRollWatch();
     markRollActive = false;
+    markRollCompleted = false;
     root.classList.remove('rolling', 'result-ready');
     void rabbit.getBoundingClientRect();
     return startProductionMarkRoll();

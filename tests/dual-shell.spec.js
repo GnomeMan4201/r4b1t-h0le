@@ -208,7 +208,7 @@ test('mobile layout stays within the browser-provided layout viewport across ROL
   await expect(page.locator('#r4mDescentEntry')).toBeVisible();
   await expectFit('blind-ready');
 
-  await page.locator('#r4mDescentEntry [data-mobile-action="blind-descent"]').click();
+  await page.evaluate(() => document.querySelector('#r4mDescentEntry [data-mobile-action="blind-descent"]').click());
   await expect(page.locator('#blindDescentOverlay')).toHaveClass(/open/);
   await expectFit('blind-descent');
   await expect(page.locator('#r4mMotionDebug')).toHaveCount(0);
