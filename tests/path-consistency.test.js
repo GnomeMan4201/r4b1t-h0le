@@ -173,7 +173,7 @@ test('browser Trail Card handoff delegates SHA-256 formatting to the shared trai
 test('Trail Card handoff binds exact source bytes and rejects modified bytes', async () => {
   const trail = require('../trail-manifest.js');
   const handoff = require('../trail-card-share.js');
-  const source = new TextEncoder().encode('{"text":"café"}  \\n');
+  const source = new TextEncoder().encode('{"text":"café"}  ' + String.fromCharCode(10));
   const digest = 'sha256:' + await trail.sha256Hex(source);
   const card = {
     format: 'r4b1t-trail-card/v0.1',
