@@ -229,3 +229,8 @@ test('completed rabbit run is not retriggered by a longer REEL presentation phas
   assert.match(shell, /if \(!rolling\) markRollCompleted = false/);
   assert.match(shell, /rolling && !markRollActive && !markRollCompleted/);
 });
+
+
+test('every fresh rabbit run forces a rendered class boundary for WebKit', () => {
+  assert.match(shell, /classList\.remove\('rolling'\);[\s\S]*rabbit\.getBoundingClientRect\(\);[\s\S]*classList\.add\('rolling'\)/);
+});

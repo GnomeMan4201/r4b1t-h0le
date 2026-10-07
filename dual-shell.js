@@ -335,6 +335,11 @@
     rabbit.addEventListener('animationstart', markRollOnStart);
     rabbit.addEventListener('animationend', markRollOnEnd);
     root.classList.remove('result-ready');
+    // WebKit can coalesce a remove/re-add that happens immediately after
+    // animationend. Force one style/layout flush so every authoritative new
+    // ROLL creates a fresh canonical rabbit animationstart.
+    root.classList.remove('rolling');
+    void rabbit.getBoundingClientRect();
     root.classList.add('rolling');
 
     // Fallback only covers a run whose rabbit animation never starts.
@@ -382,7 +387,6 @@
     markRollActive = false;
     markRollCompleted = false;
     root.classList.remove('rolling', 'result-ready');
-    void rabbit.getBoundingClientRect();
     return startProductionMarkRoll();
   }
 
