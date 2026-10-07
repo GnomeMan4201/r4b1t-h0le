@@ -106,7 +106,7 @@ jobs:
           CI: 'true'
         run: >
           npx playwright test --config=playwright.reel-webkit.config.js
-          --grep "10 normal + 10 slammed"
+          --grep "normal.*slammed"
           --repeat-each=10
 
       - name: Run WebKit reduced-motion and viewport acceptance
