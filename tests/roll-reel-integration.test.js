@@ -80,7 +80,7 @@ test('the exact eligible pool used by selection is only carried downstream for p
 test('landing row is bound to the already selected result, never re-picked', () => {
   assert.match(reel, /ui\.dataset\.landedUrl = spin\.result\.url/);
   assert.match(reel, /spin\.position = spin\.to;[\s\S]*drawRows\(spin\.position, 0\)/);
-  assert.match(reel, /var to = loops \* pool\.length \+ targetIndex/);
+  assert.match(reel, /var to = reduced\(\) \? targetIndex : loops \* pool\.length \+ targetIndex/);
 });
 
 test('reel mechanics include wind meter, minimum tap charge, slam, detents and overshoot', () => {
@@ -117,8 +117,10 @@ test('keyboard hold-to-wind and pointer gestures are attached to the focused ROL
   assert.match(reel, /button\.addEventListener\('keyup', onKeyUp\)/);
   assert.match(reel, /button\.addEventListener\('pointerdown', onPointerDown\)/);
   assert.match(reel, /button\.addEventListener\('pointerup', onPointerUp\)/);
-  assert.match(reelCss, /#r4mRoll\.r4m-reel-winding/);
-  assert.match(reelCss, /#r4mRoll\.r4m-reel-release/);
+  assert.match(reel, /button\.classList\.add\('r4m-reel-winding'\)/);
+  assert.match(reelCss, /#r4mRoll \.r4m-ap-label/);
+  assert.match(reelCss, /var\(--r4m-reel-charge\)/);
+  assert.match(reelCss, /#r4mRoll\.r4m-reel-release \.r4m-ap-label/);
   assert.match(reelCss, /-webkit-user-select:none/);
   assert.match(reelCss, /-webkit-touch-callout:none/);
 });
