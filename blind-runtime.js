@@ -194,8 +194,8 @@
       '.blind-title{font-family:"Bebas Neue",sans-serif;font-size:clamp(38px,9vw,74px);line-height:.9;letter-spacing:.05em}' +
       '.blind-depth{text-align:right;font-family:"Bebas Neue",sans-serif;font-size:48px;color:#ff3333;line-height:.85}' +
       '.blind-depth small{display:block;font-family:"DM Mono",monospace;font-size:8px;letter-spacing:.2em;color:#9a8f7a;margin-top:8px}' +
-      '.blind-card{--blind-material-intensity:0;--blind-register-x:0px;--blind-ghost-x:0px;--blind-wear-rotate:0deg;--blind-skew-y:0deg;--blind-grain-color:rgba(255,255,255,0);--blind-ghost-color:rgba(251,1,24,0);--blind-edge-wear:0px;--blind-shadow-depth:18px;align-self:center;position:relative;border:1px solid #60342e;border-left:8px dotted #cc1111;background-color:#15100fee;background-image:repeating-linear-gradient(113deg,transparent 0 9px,var(--blind-grain-color) 10px 11px,transparent 12px 21px);padding:30px;min-height:300px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;box-shadow:0 var(--blind-shadow-depth) 0 #220808;transform:translateX(var(--blind-register-x)) rotate(var(--blind-wear-rotate)) skewY(var(--blind-skew-y));clip-path:polygon(var(--blind-edge-wear) 0,100% var(--blind-edge-wear),calc(100% - var(--blind-edge-wear)) 100%,0 calc(100% - var(--blind-edge-wear)));transition:transform .3s,border-radius .3s,clip-path .3s,box-shadow .3s}' +
-      '.blind-card:before{content:"";position:absolute;inset:0;background:url("rabbit-aperture.svg") center/78% no-repeat;opacity:.055;pointer-events:none}' +
+      '.blind-card{--blind-material-intensity:0;--blind-register-x:0px;--blind-ghost-x:0px;--blind-wear-rotate:0deg;--blind-skew-y:0deg;--blind-grain-color:rgba(255,255,255,0);--blind-ghost-color:rgba(251,1,24,0);--blind-edge-wear:0px;--blind-shadow-depth:18px;--blind-material-filter:none;align-self:center;position:relative;border:1px solid #60342e;border-left:8px dotted #cc1111;background-color:#15100fee;background-image:repeating-linear-gradient(113deg,transparent 0 9px,var(--blind-grain-color) 10px 11px,transparent 12px 21px);padding:30px;min-height:300px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;box-shadow:0 var(--blind-shadow-depth) 0 #220808;transform:translateX(var(--blind-register-x)) rotate(var(--blind-wear-rotate)) skewY(var(--blind-skew-y));clip-path:polygon(var(--blind-edge-wear) 0,100% var(--blind-edge-wear),calc(100% - var(--blind-edge-wear)) 100%,0 calc(100% - var(--blind-edge-wear)));transition:transform .3s,border-radius .3s,clip-path .3s,box-shadow .3s}' +
+      '.blind-card:before{content:"";position:absolute;inset:0;background:url("rabbit-aperture.svg") center/78% no-repeat;opacity:.055;pointer-events:none;filter:var(--blind-material-filter)}' +
       '.blind-state{position:relative;font-size:10px;letter-spacing:.2em;color:#ff3333;margin-bottom:24px}' +
       '.blind-message{position:relative;font-family:"Bebas Neue",sans-serif;font-size:clamp(42px,10vw,86px);line-height:.9;max-width:620px;text-shadow:var(--blind-ghost-x) 0 0 var(--blind-ghost-color)}' +
       '.blind-message span{color:#ff3333}' +
@@ -259,7 +259,11 @@
     overlay.setAttribute('aria-labelledby', 'blindDescentTitle');
     overlay.setAttribute('aria-hidden', 'true');
     overlay.setAttribute('tabindex', '-1');
-    overlay.innerHTML = '<div class="blind-grid">' +
+    overlay.innerHTML = '<svg aria-hidden="true" width="0" height="0" style="position:absolute"><defs>' +
+      '<filter id="r4b1tMaterialWarp" x="-8%" y="-8%" width="116%" height="116%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="17" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/></filter>' +
+      '<filter id="r4b1tMaterialWarpDeep" x="-12%" y="-12%" width="124%" height="124%"><feTurbulence type="fractalNoise" baseFrequency=".055" numOctaves="3" seed="17" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter>' +
+      '</defs></svg>' +
+      '<div class="blind-grid">' +
       '<header class="blind-head"><div><div class="blind-kicker">APERTURE / BLIND</div><h2 class="blind-title" id="blindDescentTitle">BLIND DESCENT</h2></div><div class="blind-depth" id="blindDepth">000<small>DEPTH / COMMITTED</small></div></header>' +
       '<div><article class="blind-card" id="blindCard"><div class="blind-state" id="blindStatus">READY / NOTHING SELECTED</div><div class="blind-message" id="blindMessage">DESCEND WITHOUT <span>LOOKING.</span></div><div class="blind-proof" id="blindProof">Selection happens before reveal. Reveal cannot reroll, replace, filter, or reject.</div></article><div class="blind-strata" id="blindStrata" aria-label="Blind descent strata"></div><div class="blind-wear" id="blindWear" aria-label="Persistent trail wear"></div></div>' +
       '<footer><div class="blind-reveal-target" id="blindRevealTarget">NO CONCEALED COMMITMENT</div><div class="blind-actions"><button type="button" data-blind-action="descend">DESCEND BLIND</button><button type="button" data-blind-action="reveal" aria-describedby="blindRevealTarget">REVEAL ROUTE</button><button type="button" data-blind-action="return">RETURN</button></div><div class="blind-subactions"><button type="button" data-blind-action="export">EXPORT PUBLIC SNAPSHOT</button><button type="button" data-blind-action="topology">MAP TRAILS</button><button type="button" data-blind-action="reset">NEW GENESIS</button><button type="button" data-blind-action="close">CLOSE</button></div></footer>' +
@@ -345,6 +349,9 @@
       card.style.setProperty('--blind-ghost-color', 'rgba(251,1,24,' + String(Math.min(.24, material.intensity * .24)) + ')');
       card.style.setProperty('--blind-edge-wear', String(material.edge_wear_px) + 'px');
       card.style.setProperty('--blind-shadow-depth', String(18 + material.shadow_px) + 'px');
+      card.style.setProperty('--blind-material-filter',
+        material.depth >= 6 ? 'url(#r4b1tMaterialWarpDeep)' :
+        material.depth >= 3 ? 'url(#r4b1tMaterialWarp)' : 'none');
     } else {
       card.style.transform = 'rotate(' + Math.min(wear.committed_count * 0.13, 1.3) + 'deg)';
     }
