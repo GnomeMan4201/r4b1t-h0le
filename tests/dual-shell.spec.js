@@ -168,6 +168,51 @@ test('normal mobile navigation does not create the viewport diagnostic panel', a
   await expect(page.locator('#r4mMotionDebug')).toHaveCount(0);
 });
 
+
+test('mobile layout stays within the browser-provided layout viewport across ROLL, result, MENU and Blind', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile-'));
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+
+  async function expectFit(stage) {
+    const geometry = await page.evaluate(() => ({
+      scrollWidth: document.documentElement.scrollWidth,
+      clientWidth: document.documentElement.clientWidth,
+      innerWidth: window.innerWidth,
+      scale: window.visualViewport ? window.visualViewport.scale : null,
+    }));
+    expect(geometry.scrollWidth, stage + ' scroll width').toBe(geometry.clientWidth);
+    expect(geometry.clientWidth, stage + ' client/inner width').toBe(geometry.innerWidth);
+    return geometry;
+  }
+
+  await expectFit('load');
+  await expect(page.locator('#r4mMotionDebug')).toHaveCount(0);
+
+  await page.locator('#r4mRoll').click();
+  await page.waitForFunction(() => document.documentElement.dataset.r4mPresentation === 'revealed');
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expectFit('result');
+
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'false');
+  await expectFit('menu-open');
+
+  await page.locator('#r4mMenuSheet [data-mobile-action="close-sheets"]').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'true');
+  await expectFit('menu-close');
+
+  await page.locator('#r4mModeBlind').click();
+  await expect(page.locator('#r4mDescentEntry')).toBeVisible();
+  await expectFit('blind-ready');
+
+  await page.locator('#r4mDescentEntry [data-mobile-action="blind-descent"]').click();
+  await expect(page.locator('#blindDescentOverlay')).toHaveClass(/open/);
+  await expectFit('blind-descent');
+  await expect(page.locator('#r4mMotionDebug')).toHaveCount(0);
+});
+
 test('mobile legacy source surfaces cannot widen the phone viewport', async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith('mobile-'));
   await page.setViewportSize({ width: 390, height: 844 });

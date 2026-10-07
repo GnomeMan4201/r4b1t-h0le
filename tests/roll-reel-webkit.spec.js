@@ -1,0 +1,190 @@
+'use strict';
+
+const { test, expect } = require('@playwright/test');
+
+async function blockExternalNetwork(page) {
+  await page.route('**/*', async route => {
+    const raw = route.request().url();
+    if (raw.startsWith('data:') || raw.startsWith('blob:')) return route.continue();
+    const url = new URL(raw);
+    if (url.hostname === '127.0.0.1' || url.hostname === 'localhost') return route.continue();
+    return route.abort('blockedbyclient');
+  });
+}
+
+async function ready(page) {
+  await page.waitForFunction(() => (
+    window.R4B1TRollReel &&
+    window.R4B1TRollProduction &&
+    window.R4B1TRollReel.isMounted &&
+    window.R4B1TRollReel.isMounted() &&
+    window.__r4b1tCommitRoll &&
+    window.__r4b1tCommitRoll.__r4b1tAuthority
+  ));
+}
+
+async function expectFit(page, label) {
+  const geometry = await page.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+    innerWidth: window.innerWidth,
+  }));
+  expect(geometry.scrollWidth, label + ' scroll width').toBe(geometry.clientWidth);
+  expect(geometry.clientWidth, label + ' client/inner width').toBe(geometry.innerWidth);
+}
+
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    try { localStorage.removeItem('r4b1t-roll-reel-sound'); } catch (_) {}
+  });
+  await blockExternalNetwork(page);
+});
+
+test('WebKit: 10 normal + 10 slammed rolls preserve rabbit lifecycle and authority', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+  await page.waitForTimeout(1300);
+
+  await page.evaluate(() => {
+    const rabbit = document.getElementById('r4h-roll-rabbit');
+    window.__webkitRabbit = { starts: 0, ends: 0, cancels: 0 };
+    rabbit.addEventListener('animationstart', event => {
+      if (event.animationName === 'r4h-roll-rabbit') window.__webkitRabbit.starts += 1;
+    });
+    rabbit.addEventListener('animationend', event => {
+      if (event.animationName === 'r4h-roll-rabbit') window.__webkitRabbit.ends += 1;
+    });
+    rabbit.addEventListener('animationcancel', event => {
+      if (event.animationName === 'r4h-roll-rabbit') window.__webkitRabbit.cancels += 1;
+    });
+  });
+
+  for (let i = 1; i <= 10; i += 1) {
+    await page.evaluate(() => {
+      document.documentElement.classList.remove('r4m-stage-result');
+      window.R4B1TRollReel.quickRoll();
+    });
+    await page.waitForFunction(target => window.__webkitRabbit.starts >= target, i);
+    await page.waitForFunction(() => {
+      const reel = window.R4B1TRollReel.snapshot();
+      const production = window.R4B1TRollProduction.snapshot();
+      return reel.phase === 'revealed' && reel.landedUrl && production && !production.active;
+    });
+    await page.waitForFunction(target => window.__webkitRabbit.ends >= target, i);
+    const bound = await page.evaluate(() => {
+      const reel = window.R4B1TRollReel.snapshot();
+      const rendered = document.getElementById('r4mUrl').textContent;
+      const center = document.querySelector('#r4mRollReel .r4m-reel-row.is-payline');
+      return reel.landedUrl === rendered && center && center.dataset.url === rendered;
+    });
+    expect(bound).toBe(true);
+  }
+
+  for (let i = 1; i <= 10; i += 1) {
+    const target = 10 + i;
+    await page.evaluate(() => {
+      document.documentElement.classList.remove('r4m-stage-result');
+      window.R4B1TRollReel.quickRoll();
+    });
+    await page.waitForFunction(() => window.R4B1TRollReel.snapshot().phase === 'spin');
+    await page.evaluate(() => {
+      document.querySelector('#r4mRollReel .r4m-reel-window').dispatchEvent(new PointerEvent('pointerdown', {
+        bubbles: true,
+        cancelable: true,
+        pointerId: 9,
+        pointerType: 'touch',
+        clientX: 40,
+        clientY: 40,
+      }));
+    });
+    await page.waitForFunction(count => window.__webkitRabbit.starts >= count, target);
+    await page.waitForFunction(() => {
+      const reel = window.R4B1TRollReel.snapshot();
+      const production = window.R4B1TRollProduction.snapshot();
+      return reel.phase === 'revealed' && reel.landedUrl && production && !production.active;
+    });
+    await page.waitForFunction(count => window.__webkitRabbit.ends >= count, target);
+    const bound = await page.evaluate(() => {
+      const reel = window.R4B1TRollReel.snapshot();
+      const rendered = document.getElementById('r4mUrl').textContent;
+      const center = document.querySelector('#r4mRollReel .r4m-reel-row.is-payline');
+      return reel.landedUrl === rendered && center && center.dataset.url === rendered;
+    });
+    expect(bound).toBe(true);
+  }
+
+  expect(await page.evaluate(() => window.__webkitRabbit)).toEqual({
+    starts: 20,
+    ends: 20,
+    cancels: 0,
+  });
+});
+
+test('WebKit: reduced motion lands the authoritative result with no spin frames', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+
+  await page.evaluate(() => {
+    window.__webkitReducedSpinFrames = 0;
+    const real = window.requestAnimationFrame;
+    window.requestAnimationFrame = callback => real.call(window, now => {
+      if (window.R4B1TRollReel && window.R4B1TRollReel.snapshot().phase === 'spin') {
+        window.__webkitReducedSpinFrames += 1;
+      }
+      callback(now);
+    });
+    window.R4B1TRollReel.quickRoll();
+  });
+
+  await page.waitForFunction(() => {
+    const reel = window.R4B1TRollReel.snapshot();
+    const production = window.R4B1TRollProduction.snapshot();
+    return reel.phase === 'revealed' && reel.landedUrl && production && !production.active;
+  });
+
+  const result = await page.evaluate(() => {
+    const reel = window.R4B1TRollReel.snapshot();
+    const rendered = document.getElementById('r4mUrl').textContent;
+    const center = document.querySelector('#r4mRollReel .r4m-reel-row.is-payline');
+    return {
+      landed: reel.landedUrl,
+      rendered,
+      center: center && center.dataset.url,
+      frames: window.__webkitReducedSpinFrames,
+      reelFrameActive: reel.reelFrameActive,
+    };
+  });
+  expect(result.landed).toBe(result.rendered);
+  expect(result.center).toBe(result.rendered);
+  expect(result.frames).toBe(0);
+  expect(result.reelFrameActive).toBe(false);
+});
+
+test('WebKit: layout width invariant and debug-off survive result, MENU and Blind', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+
+  await expect(page.locator('#r4mMotionDebug')).toHaveCount(0);
+  await expectFit(page, 'load');
+
+  await page.locator('#r4mRoll').click();
+  await page.waitForFunction(() => document.documentElement.dataset.r4mPresentation === 'revealed');
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expectFit(page, 'result');
+
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'false');
+  await expectFit(page, 'menu-open');
+  await page.locator('#r4mMenuSheet [data-mobile-action="close-sheets"]').click();
+  await expectFit(page, 'menu-close');
+
+  await page.locator('#r4mModeBlind').click();
+  await expect(page.locator('#r4mDescentEntry')).toBeVisible();
+  await expectFit(page, 'blind-ready');
+  await page.locator('#r4mDescentEntry [data-mobile-action="blind-descent"]').click();
+  await expect(page.locator('#blindDescentOverlay')).toHaveClass(/open/);
+  await expectFit(page, 'blind-descent');
+  await expect(page.locator('#r4mMotionDebug')).toHaveCount(0);
+});

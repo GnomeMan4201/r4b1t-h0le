@@ -76,8 +76,8 @@ jobs:
       - name: Install locked Node dependencies
         run: npm ci
 
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Install Chromium and WebKit
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Stage site under /r4b1t-h0le/ path
         run: |
@@ -99,3 +99,9 @@ jobs:
           --project=mobile-chromium
           --grep "rabbit lifecycle completes|REEL lands on the exact authoritative result and slam does not re-pick"
           --repeat-each=10
+
+      - name: Run WebKit REEL acceptance smoke
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'true'
+        run: npx playwright test --config=playwright.reel-webkit.config.js
