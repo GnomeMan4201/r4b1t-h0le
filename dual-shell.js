@@ -1047,6 +1047,8 @@
     var titleNode = byId('r4mTitle');
     var descNode = byId('r4mDescription');
     var tagNode = byId('r4mTag');
+    var resultCategory = byId('r4mResultCategory');
+    var reelSnapshot = window.R4B1TRollReel && typeof window.R4B1TRollReel.snapshot === 'function' ? window.R4B1TRollReel.snapshot() : null;
     var verifiedTypedMeta = Boolean(typedMeta && typedMeta.dataset.state === 'verified');
     var typedTypeText = verifiedTypedMeta && typedType ? typedType.textContent.trim() : '';
     var typedReasonText = verifiedTypedMeta && typedReason ? typedReason.textContent.trim() : '';
@@ -1069,6 +1071,7 @@
       tagNode.textContent = tag;
       tagNode.hidden = !tag;
     }
+    if (resultCategory) resultCategory.textContent = reelSnapshot && reelSnapshot.landedCategory ? reelSnapshot.landedCategory : 'REFERENCE';
     if (mobileTypedMeta) mobileTypedMeta.hidden = !verifiedTypedMeta;
     if (mobileTypedType) mobileTypedType.textContent = typedTypeText;
     byId('r4mInspectDomain').textContent = displayDomain;

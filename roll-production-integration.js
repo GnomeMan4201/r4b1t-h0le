@@ -14,7 +14,7 @@
     section.id = 'r4mRoute';
     section.innerHTML =
       '<div class="r4m-route-kicker">SELECTED / COMMITTED</div>' +
-      '<div class="r4m-route-top"><span>ROUTE / <b id="r4mRouteNo">001</b></span><strong id="r4mTag" hidden></strong></div>' +
+      '<div class="r4m-route-top"><span><b id="r4mResultCategory">REFERENCE</b> · ROLL <b id="r4mRouteNo">001</b></span><strong id="r4mTag" hidden></strong></div>' +
       '<div class="r4m-route-label">RANDOM CYBERSECURITY RESOURCE</div>' +
       '<div class="r4m-route-proof" id="r4mTypedMeta" hidden><strong id="r4mResourceType"></strong></div>' +
       '<small id="r4mProtocol" hidden></small>' +

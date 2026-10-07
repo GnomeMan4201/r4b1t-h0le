@@ -85,6 +85,8 @@ test('REEL lands on the exact authoritative result and slam does not re-pick', a
   expect(result.landed).toBe(result.rendered);
   expect(result.center).toBe(result.rendered);
   expect(result.transaction).not.toBeNull();
+  await expect(page.locator('#r4mRollReel .r4m-reel-row.is-payline .r4m-reel-type')).toHaveText(/^(TOOL|REFERENCE|RULES|WRITEUPS|FRAMEWORK|TESTS|DATASET|LABS)$/);
+  await expect(page.locator('#r4mRollReel .r4m-reel-row.is-payline .r4m-reel-name')).not.toHaveText('');
   expect(result.rabbit.starts).toBe(1);
   await page.waitForFunction(() => window.__reelRabbit.ends === 1);
   expect(pageErrors).toEqual([]);
@@ -164,6 +166,14 @@ test('reduced motion resolves in about 250ms and 50 rolls leave no live loops', 
   await ready(page);
 
   const elapsed = await page.evaluate(async () => {
+    window.__reducedSpinFrames = 0;
+    const original = window.requestAnimationFrame;
+    window.requestAnimationFrame = function (callback) {
+      return original.call(window, function (now) {
+        if (window.R4B1TRollReel && window.R4B1TRollReel.snapshot().phase === 'spin') window.__reducedSpinFrames += 1;
+        callback(now);
+      });
+    };
     const start = performance.now();
     window.R4B1TRollReel.quickRoll();
     while (!window.R4B1TRollReel.snapshot().landedUrl) {
@@ -171,8 +181,9 @@ test('reduced motion resolves in about 250ms and 50 rolls leave no live loops', 
     }
     return performance.now() - start;
   });
-  expect(elapsed).toBeGreaterThanOrEqual(180);
+  expect(elapsed).toBeGreaterThanOrEqual(120);
   expect(elapsed).toBeLessThan(450);
+  expect(await page.evaluate(() => window.__reducedSpinFrames)).toBe(0);
   await page.waitForFunction(() => {
     const production = window.R4B1TRollProduction.snapshot();
     return production && !production.active && window.R4B1TRollReel.snapshot().phase === 'revealed';
@@ -326,4 +337,34 @@ test('rabbit lifecycle completes 10 slammed REEL rolls without cancellation', as
     ends: 10,
     cancels: 0,
   });
+});
+
+
+test('Heavy Roll REEL uses three visible 64px rows, triangular payline marks, and a round 208px ROLL well', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+
+  const geometry = await page.evaluate(() => {
+    const win = document.querySelector('#r4mRollReel .r4m-reel-window').getBoundingClientRect();
+    const row = document.querySelector('#r4mRollReel .r4m-reel-row').getBoundingClientRect();
+    const roll = document.getElementById('r4mRoll').getBoundingClientRect();
+    const pay = getComputedStyle(document.querySelector('#r4mRollReel .r4m-reel-payline'), '::before');
+    return {
+      windowHeight: win.height,
+      rowHeight: row.height,
+      rollWidth: roll.width,
+      rollHeight: roll.height,
+      paylineBorderLeft: pay.borderLeftWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+      clientWidth: document.documentElement.clientWidth,
+    };
+  });
+  expect(geometry.windowHeight).toBe(192);
+  expect(geometry.rowHeight).toBe(64);
+  expect(geometry.rollWidth).toBe(208);
+  expect(geometry.rollHeight).toBe(208);
+  expect(geometry.paylineBorderLeft).toBe('9px');
+  expect(geometry.scrollWidth).toBe(geometry.clientWidth);
 });

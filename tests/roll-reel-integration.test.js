@@ -87,7 +87,7 @@ test('reel mechanics include wind meter, minimum tap charge, slam, detents and o
   assert.match(reel, /var MIN_CHARGE = 0\.22/);
   assert.match(reel, /for \(var i = 0; i < 10; i \+= 1\)/);
   assert.match(reel, /OVERSHOOT_ROWS = 0\.26/);
-  assert.match(reel, /HIT_STOP_MS = 70/);
+  assert.match(reel, /HIT_STOP_MS = 76/);
   assert.match(reel, /function detent\(speed\)/);
   assert.match(reel, /function requestSlam/);
   assert.match(reel, /function onReelPointerDown\(event\)/);
@@ -95,8 +95,8 @@ test('reel mechanics include wind meter, minimum tap charge, slam, detents and o
   assert.match(reel, /event\.key !== 'Escape'/);
 });
 
-test('reduced motion resolves the reel at the lock boundary in about 250ms', () => {
-  assert.match(reel, /accelerate: 80,[\s\S]*decelerate: 100,[\s\S]*lockHold: 70/);
+test('reduced motion resolves without strip travel and keeps the reveal short', () => {
+  assert.match(reel, /accelerate: 0,[\s\S]*decelerate: 0,[\s\S]*lockHold: 70,[\s\S]*cardEnter: 130/);
   assert.match(reelCss, /@media \(prefers-reduced-motion:reduce\)/);
   assert.match(reelCss, /filter:none!important/);
 });
@@ -200,4 +200,22 @@ test('rabbit mark lifecycle is owned by named animationend with a no-start fallb
   assert.match(shell, /if \(!animationStarted\) finishProductionMarkRoll\(\)/);
   assert.match(shell, /MARK_ROLL_MS \+ 300/);
   assert.match(shell, /return startProductionMarkRoll\(\)/);
+});
+
+
+test('REEL presentation retains the Heavy Roll geometry and presentation-only category chips', () => {
+  assert.match(reel, /var ROW_HEIGHT = 64/);
+  assert.match(reel, /PROTOTYPE_WEIGHT = 0\.6/);
+  assert.match(reel, /1\.1 \+ value \* 1\.3/);
+  assert.match(reel, /SPRING_K = 380/);
+  assert.match(reel, /SPRING_C = 16/);
+  assert.match(reel, /className = 'r4m-reel-name'/);
+  assert.match(reel, /className = 'r4m-reel-type'/);
+  assert.match(reel, /vibrate\(3\)/);
+  assert.match(reelCss, /height:192px/);
+  assert.match(reelCss, /top:64px/);
+  assert.match(reelCss, /border-left:9px solid var\(--r4m-reel-red-hi\)/);
+  assert.match(reelCss, /width:min\(208px,calc\(100vw - 48px\)\)/);
+  assert.match(production, /r4mResultCategory/);
+  assert.doesNotMatch(reel, /loadResourceMetadata|resourceFor\(/);
 });

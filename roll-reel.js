@@ -3,9 +3,13 @@
 
   var MIN_CHARGE = 0.22;
   var CHARGE_MS = 950;
-  var ROW_HEIGHT = 52;
+  var ROW_HEIGHT = 64;
   var OVERSHOOT_ROWS = 0.26;
-  var HIT_STOP_MS = 70;
+  var HIT_STOP_MS = 76;
+  var PROTOTYPE_WEIGHT = 0.6;
+  var PROTOTYPE_DURATION_FACTOR = 0.8 + 0.5 * PROTOTYPE_WEIGHT;
+  var SPRING_K = 380;
+  var SPRING_C = 16;
   var SOUND_KEY = 'r4b1t-roll-reel-sound';
 
   var mounted = false;
@@ -33,6 +37,9 @@
   var spin = null;
   var callbacks = null;
   var particles = [];
+  var rings = [];
+  var categoryByUrl = new Map();
+  var windPosition = 0;
   var soundOn = false;
   var audio = null;
   var master = null;
@@ -260,6 +267,15 @@
     }
   }
 
+  function ring(x, y, radius, velocity, maxLife) {
+    if (reduced() || !ctx) return;
+    rings.push({ x: x, y: y, radius: radius, velocity: velocity, life: 0, max: maxLife });
+    if (!fxFrame) {
+      lastFxAt = performance.now();
+      fxFrame = root.requestAnimationFrame(drawFx);
+    }
+  }
+
   function drawFx(now) {
     if (!ctx || !canvas) {
       fxFrame = 0;
@@ -287,8 +303,21 @@
       ctx.stroke();
       return true;
     });
+    rings = rings.filter(function (r) {
+      r.life += dt;
+      if (r.life >= r.max) return false;
+      var k = 1 - r.life / r.max;
+      r.radius += r.velocity * dt * k;
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = 'rgba(204,17,17,' + (k * 0.68).toFixed(3) + ')';
+      ctx.lineWidth = 2 + k * 4;
+      ctx.beginPath();
+      ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
+      ctx.stroke();
+      return true;
+    });
     ctx.globalCompositeOperation = 'source-over';
-    if (particles.length) fxFrame = root.requestAnimationFrame(drawFx);
+    if (particles.length || rings.length) fxFrame = root.requestAnimationFrame(drawFx);
     else {
       ctx.clearRect(0, 0, root.innerWidth, root.innerHeight);
       fxFrame = 0;
@@ -303,6 +332,58 @@
     }
   }
 
+  function resourceName(url) {
+    try {
+      var parsed = new URL(url, root.location && root.location.href ? root.location.href : undefined);
+      var host = parsed.hostname.replace(/^www\./i, '');
+      var parts = parsed.pathname.split('/').filter(Boolean).map(function (part) {
+        try { return decodeURIComponent(part); } catch (_) { return part; }
+      });
+      var candidate = '';
+      if ((host === 'github.com' || host === 'gitlab.com') && parts.length >= 2) candidate = parts[1];
+      else if (parts.length) candidate = parts[parts.length - 1];
+      if (!candidate || /^(index|home|docs?|documentation|web-security)$/i.test(candidate)) candidate = host.split('.')[0];
+      candidate = candidate.replace(/\.(?:html?|md|txt|json)$/i, '').replace(/[-_]+/g, ' ').trim();
+      return candidate || host || String(url);
+    } catch (_) {
+      return hostname(url);
+    }
+  }
+
+  function categoryForTerrain(terrainId, url) {
+    var id = String(terrainId || '').toLowerCase();
+    var hint = (String(url || '') + ' ' + id).toLowerCase();
+    if (/atomic[-_]?red[-_]?team|\btests?\b|testing|benchmark/.test(hint)) return 'TESTS';
+    if (/mitre|attack|framework/.test(hint)) return 'FRAMEWORK';
+    if (/sigma|yara|suricata|rule[_-]?collection|\brules?\b/.test(hint)) return 'RULES';
+    if (/\blab\b|labs|challenge|ctf|academy|pwn\.college/.test(hint)) return 'LABS';
+    if (/dataset|threat[_-]?feed|corpus|wordlist|seclists/.test(hint)) return 'DATASET';
+    if (/writeup|research|paper|advisory|vulnerability|article|report/.test(hint)) return 'WRITEUPS';
+    if (/documentation|reference|training[_-]?resource|wiki|cheat|gtfobins|lolbas/.test(hint)) return 'REFERENCE';
+    return 'TOOL';
+  }
+
+  function categoryFor(url) {
+    return categoryByUrl.get(url) || categoryForTerrain('', url);
+  }
+
+  function warmPresentationCategories() {
+    var corpus = root.R4b1tCorpusAuthority;
+    var terrain = root.R4b1tTerrainAuthority;
+    if (!corpus || !terrain || typeof corpus.loadActive !== 'function' || typeof terrain.loadIndex !== 'function') return;
+    Promise.all([corpus.loadActive(), terrain.loadIndex()]).then(function (values) {
+      var active = values[0];
+      var index = values[1];
+      if (!active || !Array.isArray(active.urls) || !index || !Array.isArray(index.terrains)) return;
+      index.terrains.forEach(function (entry) {
+        var chip = categoryForTerrain(entry.id, '');
+        entry.members.forEach(function (member) {
+          if (active.urls[member]) categoryByUrl.set(active.urls[member], chip);
+        });
+      });
+    }).catch(function () {});
+  }
+
   function createRows() {
     rows = [];
     strip.replaceChildren();
@@ -310,16 +391,24 @@
       var row = document.createElement('div');
       row.className = 'r4m-reel-row';
       var label = document.createElement('span');
-      label.className = 'r4m-reel-host';
+      label.className = 'r4m-reel-name';
+      var type = document.createElement('span');
+      type.className = 'r4m-reel-type';
       row.appendChild(label);
+      row.appendChild(type);
       strip.appendChild(row);
       rows.push(row);
     }
   }
 
   function drawRows(position, speed) {
-    if (!spin || !spin.labels.length) return;
-    var count = spin.labels.length;
+    var model = spin || {
+      labels: ['READY', 'R4B1T H0L3', 'ROLL'],
+      categories: ['REFERENCE', 'TOOL', 'LABS'],
+      pool: ['', '', '']
+    };
+    if (!model.labels.length) return;
+    var count = model.labels.length;
     var base = Math.floor(position);
     var frac = position - base;
     rows.forEach(function (row, index) {
@@ -328,35 +417,37 @@
       var item = mod(logical, count);
       var y = (k - frac) * ROW_HEIGHT + ROW_HEIGHT;
       row.style.transform = 'translate3d(0,' + y.toFixed(2) + 'px,0)';
-      if (row.dataset.logical !== String(logical)) {
+      if (row.dataset.logical !== String(logical) || row.dataset.model !== String(model.pool[item] || model.labels[item])) {
         row.dataset.logical = String(logical);
-        row.querySelector('.r4m-reel-host').textContent = spin.labels[item];
-        row.dataset.url = spin.pool[item];
+        row.dataset.model = String(model.pool[item] || model.labels[item]);
+        row.querySelector('.r4m-reel-name').textContent = model.labels[item];
+        row.querySelector('.r4m-reel-type').textContent = model.categories[item] || 'REFERENCE';
+        row.dataset.url = model.pool[item] || '';
       }
       var distance = Math.abs(y - ROW_HEIGHT) / ROW_HEIGHT;
       row.style.opacity = String(Math.max(0.22, 1 - distance * 0.5));
       row.classList.toggle('is-payline', distance < 0.5);
     });
-    var blur = reduced() ? 0 : Math.min(6, Math.max(0, (speed - 7) * 0.14));
+    var blur = reduced() ? 0 : Math.min(7, Math.max(0, (speed - 6) * 0.18));
     strip.style.filter = blur > 0.3 ? 'blur(' + blur.toFixed(1) + 'px)' : 'none';
   }
 
   function timingForCharge(value) {
     if (reduced()) {
       return Object.freeze({
-        accelerate: 80,
-        decelerate: 100,
+        accelerate: 0,
+        decelerate: 0,
         lockHold: 70,
-        cardEnter: 90
+        cardEnter: 130
       });
     }
-    var spinMs = Math.round(500 + value * 250);
+    var spinMs = Math.round((1.1 + value * 1.3) * PROTOTYPE_DURATION_FACTOR * 1000);
     var accelerate = Math.round(spinMs * 0.28);
     return Object.freeze({
       accelerate: accelerate,
       decelerate: spinMs - accelerate,
-      lockHold: 150,
-      cardEnter: 110
+      lockHold: HIT_STOP_MS,
+      cardEnter: 620
     });
   }
 
@@ -383,6 +474,8 @@
     }
     charge = clamp((now - chargeStartedAt) / CHARGE_MS, 0, 1);
     setMeter(charge);
+    windPosition = reduced() ? 0 : -charge * 0.22;
+    drawRows(windPosition, 0);
     rumbleSet(charge);
     var step = Math.floor(charge * 10);
     var previous = Number(ui.dataset.windStep || '0');
@@ -434,6 +527,7 @@
       root.setTimeout(function () { if (ui) ui.classList.remove('r4m-reel-shake'); }, 190);
       var center = buttonCenter();
       sparks(center.x, center.rect.top + center.rect.height * 0.34, 12 + Math.round(value * 18), -Math.PI / 2, 1.5, 320 + value * 360);
+      ring(center.x, center.y, Math.max(36, center.rect.width * 0.32), 260 + value * 300, 0.45);
     }
     throwThunk(value);
     vibrate(Math.round(14 + value * 18));
@@ -448,8 +542,8 @@
     rumbleStop();
     var value = Math.max(MIN_CHARGE, charge);
     charge = 0;
-    setMeter(value);
     releaseEffects(value);
+    clearMeter();
     phase = 'awaiting-commit';
     ui.dataset.phase = phase;
     setHint('COMMITTING');
@@ -467,8 +561,8 @@
     }
     if (phase === 'spin' || phase === 'lock' || phase === 'armed') return requestSlam();
     var value = MIN_CHARGE;
-    setMeter(value);
     releaseEffects(value);
+    clearMeter();
     phase = 'awaiting-commit';
     ui.dataset.phase = phase;
     setHint('COMMITTING');
@@ -488,15 +582,17 @@
       targetIndex = pool.length - 1;
     }
     pool = Object.freeze(pool.slice());
-    var labels = Object.freeze(pool.map(hostname));
+    var labels = Object.freeze(pool.map(resourceName));
+    var categories = Object.freeze(pool.map(categoryFor));
     var timing = timingForCharge(value);
     var loops = reduced() ? 0 : 2 + Math.round(value * 4);
-    var from = 0;
-    var to = loops * pool.length + targetIndex;
+    var from = reduced() ? targetIndex : -value * 0.22;
+    var to = reduced() ? targetIndex : loops * pool.length + targetIndex;
     spin = {
       result: options.result,
       pool: pool,
       labels: labels,
+      categories: categories,
       targetIndex: targetIndex,
       from: from,
       to: to,
@@ -510,12 +606,16 @@
       lastPosition: from,
       lastAt: 0,
       lastRow: Math.floor(from + 0.5),
-      lastTickAt: 0
+      lastTickAt: 0,
+      springVelocity: 0,
+      springStarted: false,
+      slammed: false
     };
     ui.hidden = false;
     ui.dataset.phase = 'armed';
     ui.dataset.targetUrl = options.result.url;
     ui.removeAttribute('data-landed-url');
+    ui.removeAttribute('data-landed-category');
     phase = 'armed';
     setHint('THROW');
     createRows();
@@ -542,23 +642,28 @@
     } else {
       if (!spin.lockAt) spin.lockAt = now;
       var lockElapsed = now - spin.lockAt;
+      var dtSeconds = Math.min(0.05, Math.max(0, (now - (spin.lastAt || now)) / 1000));
       if (reduced()) {
         spin.position = spin.to;
       } else if (lockElapsed <= HIT_STOP_MS) {
-        spin.position = spin.to + spin.over;
+        // Heavy Roll REEL hit-stop: freeze just beyond the payline before the spring returns.
       } else {
-        var settleDuration = Math.max(1, spin.timing.lockHold - HIT_STOP_MS);
-        var settle = clamp((lockElapsed - HIT_STOP_MS) / settleDuration, 0, 1);
-        var spring = Math.exp(-6.2 * settle) * Math.cos(8.4 * settle);
-        spin.position = spin.to + spin.over * spring;
+        spin.springStarted = true;
+        spin.springVelocity += ((spin.to - spin.position) * SPRING_K - spin.springVelocity * SPRING_C) * dtSeconds;
+        spin.position += spin.springVelocity * dtSeconds;
+        if (Math.abs(spin.to - spin.position) < 0.002 && Math.abs(spin.springVelocity) < 0.02) {
+          spin.position = spin.to;
+          spin.springVelocity = 0;
+        }
       }
     }
 
     var dt = Math.max(1, now - (spin.lastAt || now));
     var speed = Math.abs(spin.position - spin.lastPosition) * 1000 / dt;
     var row = Math.floor(spin.position + 0.5);
-    if (phase === 'spin' && row !== spin.lastRow && now - spin.lastTickAt > 18) {
+    if (phase === 'spin' && row !== spin.lastRow && now - spin.lastTickAt > 22) {
       detent(speed);
+      vibrate(3);
       spin.lastTickAt = now;
       spin.lastRow = row;
     }
@@ -572,21 +677,33 @@
     if (!spin) return;
     phase = 'lock';
     ui.dataset.phase = phase;
-    spin.position = spin.to + spin.over;
+    spin.position = reduced() ? spin.to : spin.to + spin.over * (spin.slammed ? 0.45 : 1);
+    spin.springVelocity = 0;
+    spin.springStarted = false;
     spin.lockAt = performance.now();
+    spin.lastAt = spin.lockAt;
+    spin.lastPosition = spin.position;
     drawRows(spin.position, 0);
     windowEl.classList.remove('r4m-reel-lock');
+    button.classList.remove('r4m-reel-impact');
     void windowEl.offsetWidth;
     windowEl.classList.add('r4m-reel-lock');
-    root.setTimeout(function () { if (windowEl) windowEl.classList.remove('r4m-reel-lock'); }, 100);
+    button.classList.add('r4m-reel-impact');
+    root.setTimeout(function () {
+      if (windowEl) windowEl.classList.remove('r4m-reel-lock');
+      if (button) button.classList.remove('r4m-reel-impact');
+    }, 460);
     latch();
-    vibrate([12, 28, 36]);
+    vibrate([14, 30, 45]);
     if (!reduced()) {
       var rect = windowEl.getBoundingClientRect();
-      sparks(rect.left + 5, rect.top + rect.height / 2, 14, Math.PI, 0.9, 360);
-      sparks(rect.right - 5, rect.top + rect.height / 2, 14, 0, 0.9, 360);
+      sparks(rect.left + 4, rect.top + rect.height / 2, 16, Math.PI, 0.9, 420);
+      sparks(rect.right - 4, rect.top + rect.height / 2, 16, 0, 0.9, 420);
+      var center = buttonCenter();
+      sparks(center.x, center.y - center.rect.height * 0.18, 24, -Math.PI / 2, 1.7, 520);
+      ring(center.x, center.y, Math.max(42, center.rect.width * 0.36), 360, 0.5);
     }
-    if (!reelFrame) reelFrame = root.requestAnimationFrame(reelStep);
+    if (!reduced() && !reelFrame) reelFrame = root.requestAnimationFrame(reelStep);
   }
 
   function onTransition(state) {
@@ -594,10 +711,16 @@
     if (state === 'STRIP_ACCELERATING') {
       phase = 'spin';
       ui.dataset.phase = phase;
-      setHint('TAP TO SLAM');
+      setHint(reduced() ? 'SETTLING' : 'TAP TO SLAM');
       spin.startAt = 0;
       spin.lockAt = 0;
-      if (!reelFrame) reelFrame = root.requestAnimationFrame(reelStep);
+      if (reduced()) {
+        spin.position = spin.to;
+        spin.lastPosition = spin.to;
+        drawRows(spin.position, 0);
+      } else if (!reelFrame) {
+        reelFrame = root.requestAnimationFrame(reelStep);
+      }
       if (slamPending) {
         slamPending = false;
         root.setTimeout(function () { requestSlam(); }, 0);
@@ -609,6 +732,13 @@
       return true;
     }
     if (state === 'CARD_ENTERING') {
+      ui.dataset.landedUrl = spin.result.url;
+      ui.dataset.landedCategory = spin.categories[spin.targetIndex] || categoryFor(spin.result.url);
+      setHint('LOCKED');
+      clearMeter();
+      return true;
+    }
+    if (state === 'SETTLED') {
       if (reelFrame) {
         root.cancelAnimationFrame(reelFrame);
         reelFrame = 0;
@@ -616,16 +746,9 @@
       phase = 'revealed';
       ui.dataset.phase = phase;
       spin.position = spin.to;
+      spin.springVelocity = 0;
       drawRows(spin.position, 0);
       strip.style.filter = 'none';
-      ui.dataset.landedUrl = spin.result.url;
-      setHint('LOCKED');
-      clearMeter();
-      return true;
-    }
-    if (state === 'SETTLED') {
-      phase = 'revealed';
-      ui.dataset.phase = phase;
       return true;
     }
     if (state === 'CANCELLED' || state === 'IDLE') {
@@ -641,7 +764,9 @@
       event.stopPropagation();
     }
     if (!spin || (phase !== 'spin' && phase !== 'armed')) return false;
+    spin.slammed = true;
     var ok = callbacks && typeof callbacks.slam === 'function' ? callbacks.slam() : false;
+    if (!ok) spin.slammed = false;
     if (ok) {
       setHint('SLAM');
       vibrate(12);
@@ -664,6 +789,7 @@
       ui.dataset.phase = phase;
       ui.removeAttribute('data-target-url');
       ui.removeAttribute('data-landed-url');
+      ui.removeAttribute('data-landed-category');
       ui.classList.remove('r4m-reel-shake');
     }
     if (strip) {
@@ -672,7 +798,7 @@
     }
     rows = [];
     if (button) {
-      button.classList.remove('r4m-reel-winding', 'r4m-reel-release');
+      button.classList.remove('r4m-reel-winding', 'r4m-reel-release', 'r4m-reel-impact');
       button.style.removeProperty('--r4m-reel-charge');
     }
     clearMeter();
@@ -684,6 +810,7 @@
     settleTimer = 0;
     resetIdle();
     particles = [];
+    rings = [];
     if (fxFrame) {
       root.cancelAnimationFrame(fxFrame);
       fxFrame = 0;
@@ -828,6 +955,8 @@
     document.body.appendChild(canvas);
     ctx = canvas.getContext('2d');
     fitCanvas();
+    createRows();
+    drawRows(0, 0);
   }
 
   function mount(options) {
@@ -836,6 +965,7 @@
     button = options.button;
     callbacks = { roll: options.roll, slam: options.slam };
     buildUi();
+    warmPresentationCategories();
     document.documentElement.classList.add('r4m-reel-enabled');
 
     button.addEventListener('pointerdown', onPointerDown);
@@ -909,6 +1039,7 @@
         charge: charge,
         targetUrl: spin && spin.result ? spin.result.url : null,
         landedUrl: ui ? ui.dataset.landedUrl || null : null,
+        landedCategory: ui ? ui.dataset.landedCategory || null : null,
         soundOn: soundOn,
         chargeFrameActive: Boolean(chargeFrame),
         reelFrameActive: Boolean(reelFrame),
