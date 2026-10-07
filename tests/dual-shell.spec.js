@@ -1869,6 +1869,11 @@ test('mobile revealed destination text remains legible without moving the fixed 
   await waitReady(page);
   await page.locator('#r4mRoll').click();
   await expect(page.locator('#r4mRoute')).toBeVisible();
+  // A visible result does not mean the reel/authority is ready to accept the
+  // next operation. Match the established repeat-ROLL test's reveal boundary
+  // and additionally require the reel's final settled presentation phase.
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  await expect(page.locator('#r4mRollReel')).toHaveAttribute('data-phase', 'revealed');
 
   const geometry = await page.evaluate(() => {
     const mark = document.getElementById('r4mProductionMark');
