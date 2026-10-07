@@ -57,3 +57,45 @@ jobs:
           fi
           git commit -m "preview: publish PR 274 at /pr-274/"
           git push origin HEAD:gh-pages
+
+
+  reel-rabbit-repeat:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.number == 274
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out PR source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Install locked Node dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Stage site under /r4b1t-h0le/ path
+        run: |
+          mkdir -p test-site/r4b1t-h0le
+          rsync -a \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='test-site' \
+            --exclude='playwright-report' \
+            --exclude='test-results' \
+            ./ test-site/r4b1t-h0le/
+
+      - name: Repeat rabbit and authority acceptance ten times
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'true'
+        run: >
+          npx playwright test tests/roll-reel.spec.js
+          --project=mobile-chromium
+          --grep "rabbit lifecycle completes|REEL lands on the exact authoritative result and slam does not re-pick"
+          --repeat-each=10
