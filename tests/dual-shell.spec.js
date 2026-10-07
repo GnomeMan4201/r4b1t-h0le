@@ -1134,18 +1134,29 @@ test('Part 2 mobile IA exposes secondary instruments through MENU and keeps ROLL
   await expect(page.locator('#r4mModeRoll')).toHaveAttribute('aria-pressed', 'true');
 });
 
-test('mobile primary stage swaps ROLL for the disclosed result without auto-scroll', async ({ page }, testInfo) => {
+test('mobile primary stage swaps ROLL for the disclosed result without auto-scroll or reveal jump', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await waitReady(page);
 
-  const before = await page.evaluate(() => window.scrollY);
+  const before = await page.evaluate(() => ({
+    scrollY: window.scrollY,
+    markTop: document.getElementById('r4mProductionMark').getBoundingClientRect().top,
+  }));
   await page.locator('#r4mRoll').click();
   await expect(page.locator('#r4mRoute')).toBeVisible();
   await expect(page.locator('html')).toHaveClass(/r4m-stage-result/);
   await expect(page.locator('#r4mRoll')).toBeHidden();
   await expect(page.locator('#r4mRollAgain')).toBeVisible();
-  expect(await page.evaluate(() => window.scrollY)).toBe(before);
+  const after = await page.evaluate(() => ({
+    scrollY: window.scrollY,
+    markTop: document.getElementById('r4mProductionMark').getBoundingClientRect().top,
+    justify: getComputedStyle(document.getElementById('r4mPrimaryStage')).justifyContent,
+  }));
+  expect(after.scrollY).toBe(before.scrollY);
+  expect(after.justify).toBe('flex-start');
+  expect(Math.abs(after.markTop - before.markTop), 'production mark reveal anchor').toBeLessThanOrEqual(1);
 
   const button = page.locator('#r4mRollAgain');
   await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
@@ -1158,7 +1169,12 @@ test('mobile primary stage swaps ROLL for the disclosed result without auto-scro
     const current = await button.boundingBox();
     expect(current.x).toBeCloseTo(position.x, 0);
     expect(current.y).toBeCloseTo(position.y, 0);
-    expect(await page.evaluate(() => window.scrollY)).toBe(before);
+    const repeatGeometry = await page.evaluate(() => ({
+      scrollY: window.scrollY,
+      markTop: document.getElementById('r4mProductionMark').getBoundingClientRect().top,
+    }));
+    expect(repeatGeometry.scrollY).toBe(before.scrollY);
+    expect(Math.abs(repeatGeometry.markTop - before.markTop), 'repeat reveal anchor').toBeLessThanOrEqual(1);
     await expect.poll(() => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length)).toBe(beforeTrail + index + 1);
   }
 });
