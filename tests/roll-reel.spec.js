@@ -359,3 +359,36 @@ test('Heavy Roll REEL uses three visible 64px rows, triangular payline marks, an
   expect(geometry.paylineBorderLeft).toBe('9px');
   expect(geometry.scrollWidth).toBe(geometry.clientWidth);
 });
+
+
+test('feel overlay is absent normally and reports observer-only roll metrics with ?feel=1', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+  await expect(page.locator('#r4mFeelMonitor')).toHaveCount(0);
+
+  await page.goto('./?feel=1', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+  const monitor = page.locator('#r4mFeelMonitor');
+  await expect(monitor).toBeVisible();
+
+  await page.evaluate(() => window.R4B1TRollReel.quickRoll());
+  await page.waitForFunction(() => {
+    const reel = window.R4B1TRollReel.snapshot();
+    const production = window.R4B1TRollProduction.snapshot();
+    return reel.phase === 'revealed' && reel.landedUrl && production && !production.active;
+  });
+
+  await expect(page.locator('#r4mFeelSpin')).not.toHaveText('—');
+  await expect(page.locator('#r4mFeelWorst')).not.toHaveText('—');
+  await expect(page.locator('#r4mFeelHitStop')).not.toHaveText('—');
+  await expect(page.locator('#r4mFeelRabbit')).toContainText('C 0');
+
+  const text = await monitor.textContent();
+  expect(text).toContain('spin');
+  expect(text).toContain('frames >20');
+  expect(text).toContain('worst frame');
+  expect(text).toContain('hit-stop');
+  expect(text).toContain('rabbit');
+});

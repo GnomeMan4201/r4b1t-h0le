@@ -13,6 +13,7 @@ const PRECACHE = [
   './roll-reel.js',
   './roll-reel.css',
   './roll-production-integration.js',
+  './feel-monitor.js',
   './dual-shell.js',
   './dual-shell.css',
   './trail-manifest.js',
