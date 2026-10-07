@@ -1028,7 +1028,9 @@
     var markVisible = markRect.top >= 0 && again && markRect.bottom <= again.getBoundingClientRect().top;
     var height = markVisible ? mount.offsetHeight : Math.min(mount.offsetHeight, available);
     stage.style.setProperty('--r4m-cleared-height', Math.ceil(height) + 'px');
-    stage.style.setProperty('--r4m-cleared-align', 'flex-end');
+    // Match the revealed stage while its route is concealed. Portrait is
+    // top-anchored; the existing compact landscape grid remains end-aligned.
+    stage.style.setProperty('--r4m-cleared-align', landscape ? 'flex-end' : 'flex-start');
   }
 
   function syncRoute() {
