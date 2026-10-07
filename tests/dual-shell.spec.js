@@ -199,7 +199,7 @@ test('mobile layout stays within the browser-provided layout viewport across ROL
   await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'false');
   await expectFit('menu-open');
 
-  await page.locator('#r4mMenuSheet [data-mobile-action="close-sheets"]').click();
+  await page.locator('#r4mNavMenu').click();
   await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'true');
   await expect(page.locator('#r4mBackdrop')).toBeHidden({ timeout: 1000 });
   await expectFit('menu-close');

@@ -167,7 +167,8 @@ test('WebKit: layout width invariant and debug-off survive result, MENU and Blin
   await page.locator('#r4mNavMenu').click();
   await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'false');
   await expectFit(page, 'menu-open');
-  await page.locator('#r4mMenuSheet [data-mobile-action="close-sheets"]').click();
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'true');
   await expect(page.locator('#r4mBackdrop')).toBeHidden({ timeout: 1000 });
   await expectFit(page, 'menu-close');
 
