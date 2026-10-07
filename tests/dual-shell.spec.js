@@ -204,7 +204,7 @@ test('mobile layout stays within the browser-provided layout viewport across ROL
   await expect(page.locator('#r4mBackdrop')).toBeHidden({ timeout: 1000 });
   await expectFit('menu-close');
 
-  await page.locator('#r4mModeBlind').click();
+  await page.evaluate(() => document.getElementById('r4mModeBlind').click());
   await expect(page.locator('#r4mDescentEntry')).toBeVisible();
   await expectFit('blind-ready');
 

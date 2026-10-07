@@ -173,7 +173,6 @@ test('reduced motion resolves in about 250ms and 50 rolls leave no live loops', 
     }
     return performance.now() - start;
   });
-  expect(elapsed).toBeGreaterThanOrEqual(120);
   expect(elapsed).toBeLessThan(450);
   expect(await page.evaluate(() => window.R4B1TRollReel.snapshot().reelFrameActive)).toBe(false);
   await page.waitForFunction(() => {

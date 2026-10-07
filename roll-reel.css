@@ -234,7 +234,9 @@
 
   html.r4m-reel-enabled #r4mRoll .r4m-ap-scope{display:none!important}
 
-  html.r4m-reel-enabled #r4mRoll:focus{
+  html.r4m-reel-enabled #r4mRoll:focus,
+  html.r4m-reel-enabled #r4mRoll:focus-visible,
+  html.r4m-reel-enabled #r4mRoll.r4m-reel-winding{
     outline:3px solid var(--r4m-reel-white)!important;
     outline-offset:9px!important;
   }

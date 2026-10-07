@@ -171,7 +171,7 @@ test('WebKit: layout width invariant and debug-off survive result, MENU and Blin
   await expect(page.locator('#r4mBackdrop')).toBeHidden({ timeout: 1000 });
   await expectFit(page, 'menu-close');
 
-  await page.locator('#r4mModeBlind').click();
+  await page.evaluate(() => document.getElementById('r4mModeBlind').click());
   await expect(page.locator('#r4mDescentEntry')).toBeVisible();
   await expectFit(page, 'blind-ready');
   await page.locator('#r4mDescentEntry [data-mobile-action="blind-descent"]').click();

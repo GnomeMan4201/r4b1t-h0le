@@ -108,7 +108,6 @@ test.describe('production mark timing authority', () => {
     for (const selector of ['#r4mRoll', '#r4mRollAgain']) {
       const ev = await rollOnce(page, selector);
       const on = first(ev, 'mark-rolling-on');
-      const off = first(ev, 'mark-rolling-off');
       const markEnd = first(ev, 'mark-roll-animation-end');
       const authority = {
         commit: first(ev, 'commit'),
@@ -121,19 +120,18 @@ test.describe('production mark timing authority', () => {
       const markStart = first(ev, 'mark-roll-animation-start');
       const markCancel = first(ev, 'mark-roll-animation-cancel');
       expect(on).not.toBeNull();
-      expect(off).not.toBeNull();
       expect(markStart).not.toBeNull();
       expect(markEnd).not.toBeNull();
       expect(markCancel).toBeNull();
       // animation events, not a presentation timer, define the rabbit's complete run.
       expect(markEnd - markStart).toBeGreaterThanOrEqual(950);
-      expect(off).toBeGreaterThanOrEqual(markEnd);
+      expect(await page.evaluate(() => document.documentElement.classList.contains('rolling'))).toBe(false);
       // commitment starts before the mark finishes; later reveal timing belongs to the REEL.
       expect(authority.commit).toBeLessThan(markEnd);
-      // the mark only shows the result after its roll, never before
+      // result-ready is downstream of the completed rabbit run.
       const resultOn = ev.filter((x) => x.name === 'mark-result-on').map((x) => x.t);
       expect(resultOn.length).toBeGreaterThan(0);
-      expect(resultOn.every((t) => t >= off)).toBe(true);
+      expect(resultOn.every((t) => t >= markEnd)).toBe(true);
     }
   });
 
