@@ -1303,7 +1303,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   html.r4m-stage-result .r4m-shell{padding-bottom:0}
   /* Keep the compact result stack together above the fixed action rows.
      Long content expands the stage and retains its scroll clearance. */
-  html.r4m-stage-result #r4mPrimaryStage{display:flex;flex-direction:column;justify-content:flex-end;min-height:calc(100dvh - 52px)}
+  html.r4m-stage-result #r4mPrimaryStage{display:flex;flex-direction:column;justify-content:flex-start;min-height:calc(100dvh - 52px)}
   /* Retain measured space while the committed route is concealed.
      The first draw still starts above the controls without a prior result. */
   html.r4m-stage-result #r4mPrimaryStage:has(#r4mRouteMount:empty){justify-content:var(--r4m-cleared-align,flex-start);align-content:var(--r4m-cleared-align,start)}
