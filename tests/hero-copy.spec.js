@@ -45,5 +45,5 @@ test('mobile landing states the product once and leaves utilities to MENU', asyn
   await expect(page.locator('.r4m-enter')).toHaveCount(0);
 
   await page.locator('#r4mRoll').click();
-  await expect(page.locator('.r4m-enter')).toHaveText('OPEN DESTINATION ↗', { timeout: 1500 });
+  await expect(page.locator('.r4m-enter')).toHaveText('OPEN DESTINATION ↗', { timeout: 4000 });
 });

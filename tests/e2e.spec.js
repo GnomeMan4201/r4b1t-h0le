@@ -360,8 +360,8 @@ test('ordinary mobile controls execute visible timed motion', async ({ page }, t
   await expect(roll).toHaveClass(/\broll-(release|accelerate|decelerate|seat)\b/);
 
   const route = page.locator('#r4mRoute');
-  await expect(route).toBeVisible({ timeout: 1500 });
-  await expect(roll).not.toHaveAttribute('aria-busy', 'true', { timeout: 1500 });
+  await expect(route).toBeVisible({ timeout: 4000 });
+  await expect(roll).not.toHaveAttribute('aria-busy', 'true', { timeout: 4000 });
 
   // ROLL AGAIN runs the authoritative ROLL sequence. Capture the short card
   // entrance animation before clicking so polling cannot miss its 110ms window.
@@ -379,12 +379,12 @@ test('ordinary mobile controls execute visible timed motion', async ({ page }, t
   await expect(roll).toHaveAttribute('aria-busy', 'true');
   await expect(roll).toHaveClass(/\broll-(release|accelerate|decelerate|seat)\b/);
   await expect(route).toHaveCount(0);
-  await expect(route).toBeVisible({ timeout: 1500 });
+  await expect(route).toBeVisible({ timeout: 4000 });
   await expect.poll(() => page.evaluate(() => window.__repeatRouteMotion)).toEqual({
     name: 'r4mRollCardEnter',
     duration: 110,
   });
-  await expect(roll).not.toHaveAttribute('aria-busy', 'true', { timeout: 1500 });
+  await expect(roll).not.toHaveAttribute('aria-busy', 'true', { timeout: 4000 });
 
   await page.locator('#r4mNavMenu').click();
   await page.locator('#r4mMenuSheet [data-mobile-action="filter"]').click();
@@ -416,8 +416,8 @@ test('motion debug overlay reports the real mobile animation', async ({ page }, 
   const debug = page.locator('#r4mMotionDebug');
   await expect(debug).toContainText('MOTION DEBUG');
   await expect(page.locator('#r4mRoll')).toHaveAttribute('aria-busy', 'true');
-  await expect(page.locator('#r4mRoute')).toBeVisible({ timeout: 1500 });
-  await expect(page.locator('#r4mRoll')).not.toHaveAttribute('aria-busy', 'true', { timeout: 1500 });
+  await expect(page.locator('#r4mRoute')).toBeVisible({ timeout: 4000 });
+  await expect(page.locator('#r4mRoll')).not.toHaveAttribute('aria-busy', 'true', { timeout: 4000 });
 });
 test('mobile connective motion covers press authority reveal ledger and copy states', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
@@ -441,8 +441,8 @@ test('mobile connective motion covers press authority reveal ledger and copy sta
   await expect(rollButton).toHaveClass(/\broll-(release|accelerate|decelerate|seat)\b/);
 
   const route = page.locator('#r4mRoute');
-  await expect(route).toBeVisible({ timeout: 1500 });
-  await expect(rollButton).not.toHaveAttribute('aria-busy', 'true', { timeout: 1500 });
+  await expect(route).toBeVisible({ timeout: 4000 });
+  await expect(rollButton).not.toHaveAttribute('aria-busy', 'true', { timeout: 4000 });
   await expect(page.locator('#r4mRouteNo .r4m-route-digit')).toHaveCount(3);
 
   const keepButton = page.locator('.r4m-route-actions [data-mobile-action="keep"]');

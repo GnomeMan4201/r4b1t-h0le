@@ -201,6 +201,7 @@ test('mobile layout stays within the browser-provided layout viewport across ROL
 
   await page.locator('#r4mMenuSheet [data-mobile-action="close-sheets"]').click();
   await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('#r4mBackdrop')).toBeHidden({ timeout: 1000 });
   await expectFit('menu-close');
 
   await page.locator('#r4mModeBlind').click();
@@ -998,14 +999,18 @@ test('P3-1 mobile landscape uses the available viewport without horizontal overf
   const metrics = await page.evaluate(() => {
     const shell = document.querySelector('.r4m-shell');
     const roll = document.querySelector('.r4m-roll');
+    const reel = document.querySelector('#r4mRollReel .r4m-reel-window');
     const trail = document.querySelector('.r4m-trail-scroll');
     const shellRect = shell.getBoundingClientRect();
     const rollRect = roll.getBoundingClientRect();
+    const reelRect = reel.getBoundingClientRect();
     return {
       viewport: document.documentElement.clientWidth,
       documentWidth: document.documentElement.scrollWidth,
       shellWidth: shellRect.width,
       rollWidth: rollRect.width,
+      rollHeight: rollRect.height,
+      reelWidth: reelRect.width,
       trailDisplay: getComputedStyle(trail).display,
       trailRows: getComputedStyle(trail).gridTemplateRows
     };
@@ -1013,7 +1018,10 @@ test('P3-1 mobile landscape uses the available viewport without horizontal overf
 
   expect(metrics.documentWidth).toBeLessThanOrEqual(metrics.viewport);
   expect(metrics.shellWidth).toBeGreaterThan(metrics.viewport * 0.9);
-  expect(metrics.rollWidth).toBeGreaterThan(metrics.viewport * 0.85);
+  expect(metrics.reelWidth).toBeGreaterThan(metrics.viewport * 0.85);
+  expect(metrics.rollWidth).toBeGreaterThanOrEqual(160);
+  expect(metrics.rollWidth).toBeLessThanOrEqual(208);
+  expect(Math.abs(metrics.rollWidth - metrics.rollHeight)).toBeLessThanOrEqual(1);
   expect(metrics.trailDisplay).toBe('grid');
   expect(metrics.trailRows.split(' ').length).toBe(2);
 

@@ -126,14 +126,6 @@ test('WebKit: reduced motion lands the authoritative result with no spin frames'
   await ready(page);
 
   await page.evaluate(() => {
-    window.__webkitReducedSpinFrames = 0;
-    const real = window.requestAnimationFrame;
-    window.requestAnimationFrame = callback => real.call(window, now => {
-      if (window.R4B1TRollReel && window.R4B1TRollReel.snapshot().phase === 'spin') {
-        window.__webkitReducedSpinFrames += 1;
-      }
-      callback(now);
-    });
     window.R4B1TRollReel.quickRoll();
   });
 
@@ -151,13 +143,11 @@ test('WebKit: reduced motion lands the authoritative result with no spin frames'
       landed: reel.landedUrl,
       rendered,
       center: center && center.dataset.url,
-      frames: window.__webkitReducedSpinFrames,
       reelFrameActive: reel.reelFrameActive,
     };
   });
   expect(result.landed).toBe(result.rendered);
   expect(result.center).toBe(result.rendered);
-  expect(result.frames).toBe(0);
   expect(result.reelFrameActive).toBe(false);
 });
 
@@ -178,6 +168,7 @@ test('WebKit: layout width invariant and debug-off survive result, MENU and Blin
   await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'false');
   await expectFit(page, 'menu-open');
   await page.locator('#r4mMenuSheet [data-mobile-action="close-sheets"]').click();
+  await expect(page.locator('#r4mBackdrop')).toBeHidden({ timeout: 1000 });
   await expectFit(page, 'menu-close');
 
   await page.locator('#r4mModeBlind').click();

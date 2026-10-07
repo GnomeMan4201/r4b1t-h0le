@@ -1,11 +1,10 @@
 'use strict';
 
-// The production mark is presentation only. Its ROLL is a fixed 1000ms SVG sequence,
-// so dual-shell holds html.rolling for 1050ms after a roll starts and applies
-// html.result-ready only afterwards. These tests prove that hold is a *visual* delay
-// only: selection, commitment, reveal, trail recording and result availability run on
-// the ROLL state machine's own timing and complete while the mark is still rolling,
-// and they complete at the same times when the mark is absent altogether.
+// The production mark is presentation only. Its ROLL is a fixed 1000ms SVG sequence.
+// dual-shell now owns html.rolling through the rabbit's named animationend, with only
+// a no-start fallback. These tests prove the mark never becomes selection authority:
+// commitment begins independently, reveal follows the ROLL presentation timing, and
+// the rabbit is allowed to finish its own full sequence without cancellation.
 
 const { test, expect } = require('@playwright/test');
 
@@ -49,7 +48,11 @@ async function instrument(page) {
     new MutationObserver(sample).observe(html, { attributes: true, attributeFilter: ['class', 'data-r4m-presentation'] });
     requestAnimationFrame(sample);
     const rabbit = document.getElementById('r4h-roll-rabbit');
-    if (rabbit) rabbit.addEventListener('animationend', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-end'); });
+    if (rabbit) {
+      rabbit.addEventListener('animationstart', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-start'); });
+      rabbit.addEventListener('animationend', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-end'); });
+      rabbit.addEventListener('animationcancel', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-cancel'); });
+    }
     // each roll gets a fresh timeline; last-seen states carry over so only changes are logged
     window.__markStart = () => { log.events.length = 0; disclosed = false; log.t0 = performance.now(); };
   });
@@ -96,7 +99,7 @@ test.describe('production mark timing authority', () => {
     expect(after.svgClass).toBeNull();
   });
 
-  test('result authority is ready while the mark is still finishing its 1000ms ROLL', async ({ page }) => {
+  test('rabbit finishes its own 1000ms ROLL independently of REEL reveal timing', async ({ page }) => {
     await openShell(page);
     await page.waitForSelector('#r4h-root', { state: 'attached' });
     await page.waitForTimeout(1300);
@@ -115,12 +118,18 @@ test.describe('production mark timing authority', () => {
         recorded: first(ev, 'trail-recorded'),
       };
       for (const [k, v] of Object.entries(authority)) expect(v, `${selector}: ${k} happened`).not.toBeNull();
-      // the mark rolls for its full sequence and its own animation completes first
-      expect(off - on).toBeGreaterThanOrEqual(1000);
+      const markStart = first(ev, 'mark-roll-animation-start');
+      const markCancel = first(ev, 'mark-roll-animation-cancel');
+      expect(on).not.toBeNull();
+      expect(off).not.toBeNull();
+      expect(markStart).not.toBeNull();
       expect(markEnd).not.toBeNull();
-      expect(markEnd).toBeLessThanOrEqual(off);
-      // every authority milestone completes while the mark is still rolling
-      for (const [k, v] of Object.entries(authority)) expect(v, `${selector}: ${k} before the mark finishes`).toBeLessThan(off);
+      expect(markCancel).toBeNull();
+      // animation events, not a presentation timer, define the rabbit's complete run.
+      expect(markEnd - markStart).toBeGreaterThanOrEqual(950);
+      expect(off).toBeGreaterThanOrEqual(markEnd);
+      // commitment starts before the mark finishes; later reveal timing belongs to the REEL.
+      expect(authority.commit).toBeLessThan(markEnd);
       // the mark only shows the result after its roll, never before
       const resultOn = ev.filter((x) => x.name === 'mark-result-on').map((x) => x.t);
       expect(resultOn.length).toBeGreaterThan(0);

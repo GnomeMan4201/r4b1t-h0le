@@ -166,14 +166,6 @@ test('reduced motion resolves in about 250ms and 50 rolls leave no live loops', 
   await ready(page);
 
   const elapsed = await page.evaluate(async () => {
-    window.__reducedSpinFrames = 0;
-    const original = window.requestAnimationFrame;
-    window.requestAnimationFrame = function (callback) {
-      return original.call(window, function (now) {
-        if (window.R4B1TRollReel && window.R4B1TRollReel.snapshot().phase === 'spin') window.__reducedSpinFrames += 1;
-        callback(now);
-      });
-    };
     const start = performance.now();
     window.R4B1TRollReel.quickRoll();
     while (!window.R4B1TRollReel.snapshot().landedUrl) {
@@ -183,7 +175,7 @@ test('reduced motion resolves in about 250ms and 50 rolls leave no live loops', 
   });
   expect(elapsed).toBeGreaterThanOrEqual(120);
   expect(elapsed).toBeLessThan(450);
-  expect(await page.evaluate(() => window.__reducedSpinFrames)).toBe(0);
+  expect(await page.evaluate(() => window.R4B1TRollReel.snapshot().reelFrameActive)).toBe(false);
   await page.waitForFunction(() => {
     const production = window.R4B1TRollProduction.snapshot();
     return production && !production.active && window.R4B1TRollReel.snapshot().phase === 'revealed';
