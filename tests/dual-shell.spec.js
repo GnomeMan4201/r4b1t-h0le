@@ -1861,3 +1861,43 @@ test('mobile secondary actions project and clear presentation-only state classes
   await page.locator('#historyOverlay button').last().click();
   await expect(html).not.toHaveClass(/\bhistory-open\b/);
 });
+
+test('mobile revealed destination text remains legible without moving the fixed action rail', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+
+  const geometry = await page.evaluate(() => {
+    const mark = document.getElementById('r4mProductionMark');
+    const domain = document.querySelector('#r4mRoute .r4m-route-domain');
+    const title = document.getElementById('r4mTitle');
+    const action = document.getElementById('r4mRollAgain');
+    const open = document.querySelector('#r4mRoute [data-mobile-action="visit"]');
+    return {
+      markTop: mark.getBoundingClientRect().top,
+      actionTop: action.getBoundingClientRect().top,
+      openTop: open.getBoundingClientRect().top,
+      titleSize: parseFloat(getComputedStyle(title).fontSize),
+      titleLine: parseFloat(getComputedStyle(title).lineHeight),
+      domainWidth: domain.getBoundingClientRect().width,
+    };
+  });
+  expect(geometry.titleSize).toBeGreaterThanOrEqual(22);
+  expect(geometry.titleLine).toBeGreaterThan(geometry.titleSize);
+  expect(geometry.domainWidth).toBeGreaterThan(0);
+  await expect(page.locator('#r4mRollAgain')).toBeVisible();
+
+  await page.locator('#r4mRollAgain').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  const after = await page.evaluate(() => ({
+    markTop: document.getElementById('r4mProductionMark').getBoundingClientRect().top,
+    actionTop: document.getElementById('r4mRollAgain').getBoundingClientRect().top,
+    openTop: document.querySelector('#r4mRoute [data-mobile-action="visit"]').getBoundingClientRect().top,
+  }));
+  expect(Math.abs(after.markTop - geometry.markTop)).toBeLessThanOrEqual(1);
+  expect(Math.abs(after.actionTop - geometry.actionTop)).toBeLessThanOrEqual(1);
+  expect(Math.abs(after.openTop - geometry.openTop)).toBeLessThanOrEqual(1);
+});
