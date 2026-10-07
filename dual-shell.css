@@ -1315,10 +1315,11 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   #r4mProtocol{margin-bottom:6.75px}
   .r4m-route-domain{padding:.75px 0 1.5px;font-size:clamp(2.2rem,10.5vw,3.5rem);line-height:.98;color:var(--r4m-v5-white);white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
   .r4m-route-mouth{width:58px;height:5px;margin:9px 0 12px;border:0;border-radius:0;background:var(--r4m-v5-red);transform:none}
-  #r4mRouteMount #r4mTitle{color:var(--r4m-v5-white)!important;font-size:1.4rem!important;overflow-wrap:anywhere}
-  .r4m-route>p{margin-top:6px;color:#bdbdbd;font-size:.82rem;line-height:1.55}
+  /* Result readability only: preserve stage geometry and fixed action rails. */
+  #r4mRouteMount #r4mTitle{color:var(--r4m-v5-white)!important;font-size:clamp(1.4rem,5vw,1.55rem)!important;line-height:1.22;overflow-wrap:anywhere}
+  .r4m-route>p{margin-top:6px;color:#c8c8c8;font-size:.875rem;line-height:1.55}
   #r4mDescription[hidden]{display:none!important}
-  .r4m-route>code{margin:6.75px 0 10.5px;color:#a6a6a6;font-size:.75rem;line-height:1.5;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+  .r4m-route>code{margin:6.75px 0 10.5px;color:#b0b0b0;font-size:.8rem;line-height:1.5;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
   /* Keep continuation controls in the same place across destination lengths.
      The existing #r4mRollAgain delegates to the unchanged production authority. */
   .r4m-route-actions{position:fixed;z-index:9000;left:var(--r4m-action-inset);right:var(--r4m-action-inset);bottom:calc(128px + env(safe-area-inset-bottom));width:auto;min-height:48px;background:#000;border-top:1px solid var(--r4m-v5-rule)}
