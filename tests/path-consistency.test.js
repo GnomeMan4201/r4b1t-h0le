@@ -164,6 +164,33 @@ test('session history is a keyboard-accessible dialog with reachable empty state
   assert.ok(index.includes('_trapDialogKey(t,a,toggleHistory)'));
 });
 
+test('browser Trail Card handoff delegates SHA-256 formatting to the shared trail primitive', () => {
+  const share = read('trail-card-share.js');
+  assert.ok(share.includes('trail.sha256Hex('));
+  assert.ok(!share.includes("crypto.subtle.digest('SHA-256'"));
+});
+
+test('Trail Card handoff binds exact source bytes and rejects modified bytes', async () => {
+  const trail = require('../trail-manifest.js');
+  const handoff = require('../trail-card-share.js');
+  const source = new TextEncoder().encode('{"text":"café"}  \\n');
+  const digest = 'sha256:' + await trail.sha256Hex(source);
+  const card = {
+    format: 'r4b1t-trail-card/v0.1',
+    source: { artifact_digest: digest, artifact_format: 'r4b1t-trail/v0.1' },
+    verification: { state: 'UNVERIFIED', verified_digest: null },
+    display: null,
+  };
+  const checked = await handoff.validatePair({ source_bytes: source, card });
+  assert.equal(checked.digest, digest);
+  assert.deepEqual(checked.sourceBytes, source);
+  const modified = new Uint8Array([...source, 0x20]);
+  await assert.rejects(
+    handoff.validatePair({ source_bytes: modified, card }),
+    /source digest mismatch/,
+  );
+});
+
 test('generated runtime dialogs expose full focus lifecycle semantics', () => {
   const trail = read('trail-runtime.js');
   const blind = read('blind-runtime.js');
