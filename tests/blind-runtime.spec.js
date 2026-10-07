@@ -483,10 +483,12 @@ test('Blind Descent material state follows depth and rewinds deterministically o
     intensity: Number.parseFloat(node.style.getPropertyValue('--blind-material-intensity')),
     register: node.style.getPropertyValue('--blind-register-x'),
     edge: node.style.getPropertyValue('--blind-edge-wear'),
+    filter: node.style.getPropertyValue('--blind-material-filter'),
   }));
   expect(atThree.intensity).toBeGreaterThan(0);
   expect(atThree.register).not.toBe('');
   expect(atThree.edge).not.toBe('');
+  expect(atThree.filter).toBe('url(#r4b1tMaterialWarp)');
 
   await page.evaluate(() => window.blindReturn());
   await expect(overlay).toHaveAttribute('data-material-depth', '2');
@@ -496,8 +498,10 @@ test('Blind Descent material state follows depth and rewinds deterministically o
     intensity: Number.parseFloat(node.style.getPropertyValue('--blind-material-intensity')),
     register: node.style.getPropertyValue('--blind-register-x'),
     edge: node.style.getPropertyValue('--blind-edge-wear'),
+    filter: node.style.getPropertyValue('--blind-material-filter'),
   }));
   expect(atTwo.intensity).toBeLessThan(atThree.intensity);
+  expect(atTwo.filter).toBe('none');
 
   await page.evaluate(() => window.blindDescend());
   await expect(overlay).toHaveAttribute('data-material-depth', '3');
@@ -505,6 +509,7 @@ test('Blind Descent material state follows depth and rewinds deterministically o
     intensity: Number.parseFloat(node.style.getPropertyValue('--blind-material-intensity')),
     register: node.style.getPropertyValue('--blind-register-x'),
     edge: node.style.getPropertyValue('--blind-edge-wear'),
+    filter: node.style.getPropertyValue('--blind-material-filter'),
   }));
   expect(atThreeAgain).toEqual(atThree);
 });
