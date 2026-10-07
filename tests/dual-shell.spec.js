@@ -130,7 +130,7 @@ test('opt-in viewport debug reports geometry and stylesheet identity without cha
   const panel = page.locator('#r4mMotionDebug');
   await expect(panel).toContainText('LAYOUT: 390 × 844');
   await expect(panel).toContainText('NAV: 64px / rect 64px');
-  await expect(panel).toContainText('CSS SHA256: 6855f1fcdb62b069801e317d15ebdd4ef013b0f4a7c5d9a735a207667c33e3df');
+  await expect(panel).toContainText('CSS SHA256: 8834f9530a332bae16049fc3418e694ff897d7ecf1fab0176e5cdecfd6f33dd1');
   const before = await page.evaluate(async () => JSON.stringify(await window.getTrailManifest()));
   const stored = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()));
   await page.setViewportSize({ width: 375, height: 667 });
@@ -1890,14 +1890,26 @@ test('mobile revealed destination text remains legible without moving the fixed 
   expect(geometry.domainWidth).toBeGreaterThan(0);
   await expect(page.locator('#r4mRollAgain')).toBeVisible();
 
+  const beforeSteps = await page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length);
   await page.locator('#r4mRollAgain').click();
+  // Visibility alone can describe the previous result during a new REEL cycle.
+  // Wait for the next authoritative reveal and the reel to settle.
+  await expect.poll(() => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length))
+    .toBe(beforeSteps + 1);
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  await expect(page.locator('#r4mRollReel')).toHaveAttribute('data-phase', 'revealed');
   await expect(page.locator('#r4mRoute')).toBeVisible();
-  const after = await page.evaluate(() => ({
-    markTop: document.getElementById('r4mProductionMark').getBoundingClientRect().top,
-    actionTop: document.getElementById('r4mRollAgain').getBoundingClientRect().top,
-    openTop: document.querySelector('#r4mRoute [data-mobile-action="visit"]').getBoundingClientRect().top,
-  }));
-  expect(Math.abs(after.markTop - geometry.markTop)).toBeLessThanOrEqual(1);
-  expect(Math.abs(after.actionTop - geometry.actionTop)).toBeLessThanOrEqual(1);
-  expect(Math.abs(after.openTop - geometry.openTop)).toBeLessThanOrEqual(1);
+
+  const afterMark = await page.locator('#r4mProductionMark').evaluate(el => el.getBoundingClientRect().top);
+  expect(Math.abs(afterMark - geometry.markTop)).toBeLessThanOrEqual(1);
+  // Pointer-release CSS transitions can temporarily translate buttons by a
+  // fractional pixel. Assert their settled positions, without loosening 1px.
+  await expect.poll(() => page.evaluate(({ actionTop, openTop }) => {
+    const action = document.getElementById('r4mRollAgain');
+    const open = document.querySelector('#r4mRoute [data-mobile-action="visit"]');
+    return Math.max(
+      Math.abs(action.getBoundingClientRect().top - actionTop),
+      Math.abs(open.getBoundingClientRect().top - openTop),
+    );
+  }, { actionTop: geometry.actionTop, openTop: geometry.openTop })).toBeLessThanOrEqual(1);
 });
