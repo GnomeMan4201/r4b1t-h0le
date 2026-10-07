@@ -1179,6 +1179,49 @@ test('mobile primary stage swaps ROLL for the disclosed result without auto-scro
   }
 });
 
+for (const width of [390, 780]) {
+  test(`repeat ROLL keeps portrait stage anchored throughout motion at ${width}px`, async ({ page }, testInfo) => {
+    test.skip(!testInfo.project.name.startsWith('mobile-'));
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 1270 });
+    await page.goto('./', { waitUntil: 'domcontentloaded' });
+    await waitReady(page);
+    await page.locator('#r4mRoll').click();
+    await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+    for (let roll = 0; roll < 3; roll += 1) {
+      await page.evaluate(() => {
+        const mark = document.getElementById('r4mProductionMark');
+        const reel = document.getElementById('r4mRollReel');
+        const baseline = [mark.getBoundingClientRect().top, reel.getBoundingClientRect().top, scrollY];
+        window.anchorProbe = { baseline, samples: [], running: true };
+        const sample = () => {
+          const probe = window.anchorProbe;
+          if (!probe.running) return;
+          probe.samples.push({ phase: reel.dataset.phase, empty: !document.getElementById('r4mRouteMount').childElementCount,
+            geometry: [mark.getBoundingClientRect().top, reel.getBoundingClientRect().top, scrollY] });
+          requestAnimationFrame(sample);
+        };
+        requestAnimationFrame(sample);
+      });
+      const beforeSteps = await page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length);
+      await page.locator('#r4mRollAgain').click();
+      await page.waitForFunction(() => window.anchorProbe.samples.some(sample => sample.phase === 'spin'));
+      await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+      const probe = await page.evaluate(() => {
+        window.anchorProbe.running = false;
+        return window.anchorProbe;
+      });
+      expect(probe.samples.some(sample => sample.empty), 'sampled concealed route').toBe(true);
+      expect(probe.samples.some(sample => sample.phase === 'lock'), 'sampled landing').toBe(true);
+      for (const sample of probe.samples) {
+        sample.geometry.forEach((value, index) => {
+          expect(Math.abs(value - probe.baseline[index]), `roll ${roll} ${sample.phase} geometry ${index}`).toBeLessThanOrEqual(1);
+        });
+      }
+      await expect.poll(() => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length)).toBe(beforeSteps + 1);
+    }
+  });
+}
+
 test('mobile primary mode switch gives exactly one exploration instrument the stage', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.goto('./', { waitUntil: 'domcontentloaded' });
