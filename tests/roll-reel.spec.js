@@ -298,11 +298,20 @@ test('rabbit lifecycle completes 10 slammed REEL rolls without cancellation', as
     });
   });
 
-  const reelWindow = page.locator('#r4mRollReel .r4m-reel-window');
   for (let i = 1; i <= 10; i += 1) {
     await page.evaluate(() => window.R4B1TRollReel.quickRoll());
     await page.waitForFunction(() => window.R4B1TRollReel.snapshot().phase === 'spin');
-    await reelWindow.click({ position: { x: 40, y: 40 } });
+    await page.evaluate(() => {
+      const reelWindow = document.querySelector('#r4mRollReel .r4m-reel-window');
+      reelWindow.dispatchEvent(new PointerEvent('pointerdown', {
+        bubbles: true,
+        cancelable: true,
+        pointerId: 7,
+        pointerType: 'touch',
+        clientX: 40,
+        clientY: 40,
+      }));
+    });
     await page.waitForFunction(target => window.__rabbitLifecycle.starts >= target, i);
     await page.waitForFunction(() => {
       const reel = window.R4B1TRollReel.snapshot();
