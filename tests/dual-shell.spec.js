@@ -1861,3 +1861,49 @@ test('mobile secondary actions project and clear presentation-only state classes
   await page.locator('#historyOverlay button').last().click();
   await expect(html).not.toHaveClass(/\bhistory-open\b/);
 });
+
+test('mobile reel and mechanism form a compact stage without affecting result anchor', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await expect(page.locator('#r4mRollReel')).toBeAttached();
+
+  const geometry = await page.evaluate(() => {
+    const reel = document.getElementById('r4mRollReel');
+    const roll = document.getElementById('r4mRoll');
+    const mark = document.getElementById('r4mProductionMark');
+    const reelStyle = getComputedStyle(reel);
+    const rollStyle = getComputedStyle(roll);
+    return {
+      reelMarginBottom: reelStyle.marginBottom,
+      rollMarginTop: rollStyle.marginTop,
+      markTop: mark.getBoundingClientRect().top,
+    };
+  });
+  expect(geometry.reelMarginBottom).toBe('6px');
+  expect(geometry.rollMarginTop).toBe('2px');
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  const result = await page.evaluate(() => ({
+    markTop: document.getElementById('r4mProductionMark').getBoundingClientRect().top,
+    scrollY: window.scrollY,
+    action: document.getElementById('r4mRollAgain').getBoundingClientRect().top,
+  }));
+  expect(Math.abs(result.markTop - geometry.markTop)).toBeLessThanOrEqual(1);
+  expect(result.scrollY).toBe(0);
+  await expect(page.locator('#r4mRollAgain')).toBeVisible();
+  for (let index = 0; index < 3; index += 1) {
+    await page.locator('#r4mRollAgain').click();
+    await expect(page.locator('#r4mRoute')).toBeVisible();
+    const after = await page.evaluate(() => ({
+      markTop: document.getElementById('r4mProductionMark').getBoundingClientRect().top,
+      scrollY: window.scrollY,
+      action: document.getElementById('r4mRollAgain').getBoundingClientRect().top,
+    }));
+    expect(Math.abs(after.markTop - result.markTop)).toBeLessThanOrEqual(1);
+    expect(Math.abs(after.action - result.action)).toBeLessThanOrEqual(1);
+    expect(after.scrollY).toBe(result.scrollY);
+  }
+});
