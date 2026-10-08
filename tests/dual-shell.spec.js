@@ -130,7 +130,7 @@ test('opt-in viewport debug reports geometry and stylesheet identity without cha
   const panel = page.locator('#r4mMotionDebug');
   await expect(panel).toContainText('LAYOUT: 390 × 844');
   await expect(panel).toContainText('NAV: 64px / rect 64px');
-  await expect(panel).toContainText('CSS SHA256: 42455a5d8284cc3c782db53124830896b39a09c99f885e27df247cec809b2518');
+  await expect(panel).toContainText('CSS SHA256: 9ef73b9b08939354f186e8fafd1d76b87072ce51f30b98524ed4a80eb9f74e6a');
   const before = await page.evaluate(async () => JSON.stringify(await window.getTrailManifest()));
   const stored = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()));
   await page.setViewportSize({ width: 375, height: 667 });
@@ -1975,4 +1975,67 @@ test('mobile displays complete source summaries without hiding trailing text beh
   expect(Math.abs(settled.openTop - initial.openTop)).toBeLessThanOrEqual(1);
   expect(Math.abs(settled.againTop - initial.againTop)).toBeLessThanOrEqual(1);
   expect(settled.descriptionBottom).toBeLessThan(settled.openTop);
+});
+
+test('portrait mobile short RESULT anchors the URL footer while keeping actions and authority stable', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  const initialMarkTop = await page.locator('#r4mProductionMark').evaluate(el => el.getBoundingClientRect().top);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  await expect(page.locator('#r4mRollReel')).toHaveAttribute('data-phase', 'revealed');
+
+  // Only project short source metadata; never mutate selection or the Trail.
+  const beforeSteps = await page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length);
+  await page.evaluate(() => {
+    document.getElementById('ogTitle').textContent = 'Short Resource';
+    document.getElementById('ogDesc').textContent = 'A concise description of this resource.';
+    window.__r4b1tSyncMobileRoute();
+  });
+  await expect(page.locator('#r4mDescription')).toHaveText('A concise description of this resource.');
+
+  const sample = await page.evaluate(() => {
+    const rect = selector => document.querySelector(selector).getBoundingClientRect();
+    const route = document.getElementById('r4mRoute');
+    const address = document.getElementById('r4mUrl');
+    return {
+      layout: getComputedStyle(route).display,
+      addressBorder: getComputedStyle(address).borderTopWidth,
+      markTop: rect('#r4mProductionMark').top,
+      descriptionBottom: rect('#r4mDescription').bottom,
+      addressTop: rect('#r4mUrl').top,
+      addressBottom: rect('#r4mUrl').bottom,
+      actionsTop: rect('#r4mRoute .r4m-route-actions').top,
+      againTop: rect('#r4mRollAgain').top,
+      openTop: rect('#r4mRoute [data-mobile-action="visit"]').top,
+      pageWidth: document.documentElement.scrollWidth,
+      viewportWidth: innerWidth,
+    };
+  });
+  expect(sample.layout).toBe('flex');
+  expect(sample.addressBorder).toBe('1px');
+  expect(sample.markTop).toBeCloseTo(initialMarkTop, 0);
+  expect(sample.addressTop - sample.descriptionBottom).toBeGreaterThan(24);
+  expect(sample.actionsTop - sample.addressBottom).toBeGreaterThan(10);
+  expect(sample.actionsTop - sample.addressBottom).toBeLessThan(100);
+  expect(sample.pageWidth).toBeLessThanOrEqual(sample.viewportWidth);
+  expect(await page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length)).toBe(beforeSteps);
+
+  // The first cycle must fully settle before starting another; preserve
+  // 1px anchor tolerance while testing the same fixed action geometry.
+  await page.locator('#r4mRollAgain').click();
+  await expect.poll(() => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length))
+    .toBe(beforeSteps + 1);
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  await expect(page.locator('#r4mRollReel')).toHaveAttribute('data-phase', 'revealed');
+  await expect.poll(() => page.evaluate(({ markTop, againTop, openTop }) => {
+    const rect = selector => document.querySelector(selector).getBoundingClientRect();
+    return Math.max(
+      Math.abs(rect('#r4mProductionMark').top - markTop),
+      Math.abs(rect('#r4mRollAgain').top - againTop),
+      Math.abs(rect('#r4mRoute [data-mobile-action="visit"]').top - openTop),
+    );
+  }, { markTop: sample.markTop, againTop: sample.againTop, openTop: sample.openTop })).toBeLessThanOrEqual(1);
 });
