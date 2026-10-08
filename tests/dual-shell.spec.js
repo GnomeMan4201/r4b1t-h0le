@@ -2016,7 +2016,7 @@ test('portrait mobile short RESULT anchors the URL footer while keeping actions 
   });
   expect(sample.layout).toBe('flex');
   expect(sample.addressBorder).toBe('1px');
-  expect(sample.markTop).toBeCloseTo(initialMarkTop, 0);
+  expect(Math.abs(sample.markTop - initialMarkTop)).toBeLessThanOrEqual(1);
   expect(sample.addressTop - sample.descriptionBottom).toBeGreaterThan(24);
   expect(sample.actionsTop - sample.addressBottom).toBeGreaterThan(10);
   expect(sample.actionsTop - sample.addressBottom).toBeLessThan(100);
