@@ -1317,7 +1317,9 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   .r4m-route-mouth{width:58px;height:5px;margin:9px 0 12px;border:0;border-radius:0;background:var(--r4m-v5-red);transform:none}
   /* Result readability only: preserve stage geometry and fixed action rails. */
   #r4mRouteMount #r4mTitle{color:var(--r4m-v5-white)!important;font-size:clamp(1.4rem,5vw,1.55rem)!important;line-height:1.22;overflow-wrap:anywhere}
-  .r4m-route>p{margin-top:6px;color:#c8c8c8;font-size:.875rem;line-height:1.55}
+  /* The source summary should never be clipped at the v3 three-line limit.
+     Long metadata flows in document scroll, under the existing fixed-action clearance. */
+  .r4m-route>p{margin-top:6px;color:#c8c8c8;font-size:.875rem;line-height:1.55;display:block!important;-webkit-line-clamp:unset;overflow:visible;overflow-wrap:anywhere}
   #r4mDescription[hidden]{display:none!important}
   .r4m-route>code{margin:6.75px 0 10.5px;color:#b0b0b0;font-size:.8rem;line-height:1.5;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
   /* Keep continuation controls in the same place across destination lengths.

@@ -130,7 +130,7 @@ test('opt-in viewport debug reports geometry and stylesheet identity without cha
   const panel = page.locator('#r4mMotionDebug');
   await expect(panel).toContainText('LAYOUT: 390 × 844');
   await expect(panel).toContainText('NAV: 64px / rect 64px');
-  await expect(panel).toContainText('CSS SHA256: 8834f9530a332bae16049fc3418e694ff897d7ecf1fab0176e5cdecfd6f33dd1');
+  await expect(panel).toContainText('CSS SHA256: 42455a5d8284cc3c782db53124830896b39a09c99f885e27df247cec809b2518');
   const before = await page.evaluate(async () => JSON.stringify(await window.getTrailManifest()));
   const stored = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()));
   await page.setViewportSize({ width: 375, height: 667 });
@@ -1917,4 +1917,62 @@ test('mobile revealed destination text remains legible without moving the fixed 
       Math.abs(open.getBoundingClientRect().top - openTop),
     );
   }, { actionTop: geometry.actionTop, openTop: geometry.openTop })).toBeLessThanOrEqual(1);
+});
+
+test('mobile displays complete source summaries without hiding trailing text behind fixed actions', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  await expect(page.locator('#r4mRollReel')).toHaveAttribute('data-phase', 'revealed');
+
+  // Only replace presentation metadata; the selected destination and Trail
+  // transaction remain authoritative and completely untouched.
+  const longDescription = Array.from({ length: 24 },
+    (_, index) => 'Source-provided context segment ' + (index + 1) + ' with useful details.')
+    .join(' ') + ' END_OF_SOURCE_DESCRIPTION';
+  const initial = await page.evaluate(() => ({
+    openTop: document.querySelector('#r4mRoute [data-mobile-action="visit"]').getBoundingClientRect().top,
+    againTop: document.getElementById('r4mRollAgain').getBoundingClientRect().top,
+    markTop: document.getElementById('r4mProductionMark').getBoundingClientRect().top,
+  }));
+  await page.evaluate(description => {
+    document.getElementById('ogDesc').textContent = description;
+    window.__r4b1tSyncMobileRoute();
+  }, longDescription);
+
+  const description = page.locator('#r4mDescription');
+  await expect(description).toHaveText(longDescription);
+  const layout = await description.evaluate(node => {
+    const style = getComputedStyle(node);
+    return {
+      display: style.display,
+      clamp: style.webkitLineClamp,
+      overflow: style.overflowY,
+      height: node.getBoundingClientRect().height,
+      lineHeight: parseFloat(style.lineHeight),
+      pageWidth: document.documentElement.scrollWidth,
+      viewportWidth: innerWidth,
+      docHeight: document.documentElement.scrollHeight,
+      viewportHeight: innerHeight,
+    };
+  });
+  expect(layout.display).toBe('block');
+  expect(layout.clamp).toBe('none');
+  expect(layout.overflow).toBe('visible');
+  expect(layout.height).toBeGreaterThan(layout.lineHeight * 4);
+  expect(layout.pageWidth).toBeLessThanOrEqual(layout.viewportWidth);
+  expect(layout.docHeight).toBeGreaterThan(layout.viewportHeight);
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+  const settled = await page.evaluate(() => ({
+    openTop: document.querySelector('#r4mRoute [data-mobile-action="visit"]').getBoundingClientRect().top,
+    againTop: document.getElementById('r4mRollAgain').getBoundingClientRect().top,
+    descriptionBottom: document.getElementById('r4mDescription').getBoundingClientRect().bottom,
+  }));
+  expect(Math.abs(settled.openTop - initial.openTop)).toBeLessThanOrEqual(1);
+  expect(Math.abs(settled.againTop - initial.againTop)).toBeLessThanOrEqual(1);
+  expect(settled.descriptionBottom).toBeLessThan(settled.openTop);
 });
