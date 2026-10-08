@@ -401,6 +401,32 @@
     }
   }
 
+  // Cosmetic randomness only. The committed result owns exactly one landing slot;
+  // sampled logical rows stay stable through scrolling, hit-stop and spring-back.
+  function presentationItem(model, logical) {
+    if (!model.decoyIndices) return mod(logical, model.labels.length);
+    if (logical === model.to) return model.targetIndex;
+    if (model.displayRows.has(logical)) return model.displayRows.get(logical);
+    var choices = model.decoyIndices;
+    if (!choices.length) return -1; // Singleton pool: blank flanks, never duplicate the winner.
+    var before = logical - 1 === model.to ? model.targetIndex : model.displayRows.get(logical - 1);
+    var after = logical + 1 === model.to ? model.targetIndex : model.displayRows.get(logical + 1);
+    var start = Math.floor(Math.random() * choices.length);
+    var item = choices[start];
+    // Avoid repeated/adjacent corpus entries wherever the pool permits it.
+    // Bounded fallback keeps very small pools usable without retry loops.
+    for (var offset = 0; offset < choices.length; offset += 1) {
+      var candidate = choices[(start + offset) % choices.length];
+      if ((before === undefined || Math.abs(candidate - before) > 1) &&
+          (after === undefined || Math.abs(candidate - after) > 1)) {
+        item = candidate;
+        break;
+      }
+    }
+    model.displayRows.set(logical, item);
+    return item;
+  }
+
   function drawRows(position, speed) {
     var model = spin || {
       labels: ['READY', 'R4B1T H0L3', 'ROLL'],
@@ -408,20 +434,19 @@
       pool: ['', '', '']
     };
     if (!model.labels.length) return;
-    var count = model.labels.length;
     var base = Math.floor(position);
     var frac = position - base;
     rows.forEach(function (row, index) {
       var k = index - 2;
       var logical = base + k;
-      var item = mod(logical, count);
+      var item = presentationItem(model, logical);
       var y = (k - frac) * ROW_HEIGHT + ROW_HEIGHT;
       row.style.transform = 'translate3d(0,' + y.toFixed(2) + 'px,0)';
       if (row.dataset.logical !== String(logical) || row.dataset.model !== String(model.pool[item] || model.labels[item])) {
         row.dataset.logical = String(logical);
         row.dataset.model = String(model.pool[item] || model.labels[item]);
-        row.querySelector('.r4m-reel-name').textContent = model.labels[item];
-        row.querySelector('.r4m-reel-type').textContent = model.categories[item] || 'REFERENCE';
+        row.querySelector('.r4m-reel-name').textContent = model.labels[item] || '—';
+        row.querySelector('.r4m-reel-type').textContent = item < 0 ? '' : model.categories[item] || 'REFERENCE';
         row.dataset.url = model.pool[item] || '';
       }
       var distance = Math.abs(y - ROW_HEIGHT) / ROW_HEIGHT;
@@ -594,6 +619,11 @@
       labels: labels,
       categories: categories,
       targetIndex: targetIndex,
+      decoyIndices: pool.reduce(function (indices, url, index) {
+        if (url !== options.result.url) indices.push(index);
+        return indices;
+      }, []),
+      displayRows: new Map(),
       from: from,
       to: to,
       over: reduced() ? 0 : OVERSHOOT_ROWS,
