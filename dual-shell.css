@@ -1380,6 +1380,19 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   /* Trim the mark's empty surround without scaling its SVG artwork. */
   html.r4m-stage-result #r4mProductionMark{height:112px}
   .r4m-roll.r4m-roll-aperture{height:92px!important;min-height:92px!important}
+  /* Short mobile results read as one stage: keep identity close to the
+     production mark and anchor the existing URL as the disclosure footer.
+     Never affect motion, the fixed action rail, or landscape composition.
+     Long source descriptions naturally grow and remain scrollable. */
+  html.r4m-stage-result #r4mRouteMount .r4m-route{
+    display:flex;flex-direction:column;box-sizing:border-box;
+    min-height:calc(100dvh - 164px);
+    padding-bottom:calc(192px + env(safe-area-inset-bottom));
+  }
+  html.r4m-stage-result #r4mRouteMount .r4m-route>code{
+    flex:0 0 auto;margin-top:auto;padding-top:12px;
+    border-top:1px solid var(--r4m-v5-rule);
+  }
 }
 
 /* Mobile proof facts use readable type and fit their own scroll surface. */
