@@ -77,6 +77,7 @@ test('REEL lands on the exact authoritative result and slam does not re-pick', a
       landed: reel.landedUrl,
       rendered: document.getElementById('r4mUrl').textContent,
       center: center && center.dataset.url,
+      flanks: [...document.querySelectorAll('#r4mRollReel .r4m-reel-row:not(.is-payline)')].map(row => row.dataset.url),
       rabbit: window.__reelRabbit,
       transaction: window.R4B1TRollProduction.snapshot().committedTransactionId
     };
@@ -84,6 +85,7 @@ test('REEL lands on the exact authoritative result and slam does not re-pick', a
 
   expect(result.landed).toBe(result.rendered);
   expect(result.center).toBe(result.rendered);
+  expect(result.flanks).not.toContain(result.rendered);
   expect(result.transaction).not.toBeNull();
   await expect(page.locator('#r4mRollReel .r4m-reel-row.is-payline .r4m-reel-type')).toHaveText(/^(TOOL|REFERENCE|RULES|WRITEUPS|FRAMEWORK|TESTS|DATASET|LABS)$/);
   await expect(page.locator('#r4mRollReel .r4m-reel-row.is-payline .r4m-reel-name')).not.toHaveText('');

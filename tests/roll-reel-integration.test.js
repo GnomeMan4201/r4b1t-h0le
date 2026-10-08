@@ -249,3 +249,66 @@ test('feel monitor is explicit opt-in, presentation-only, ephemeral, and does no
   assert.doesNotMatch(feel, /localStorage|sessionStorage|indexedDB|sendBeacon|XMLHttpRequest|fetch\(/);
   assert.doesNotMatch(feel, /HIT_STOP_MS|SPRING_K|SPRING_C|PROTOTYPE_WEIGHT|OVERSHOOT_ROWS|easeOutCubic/);
 });
+
+
+function decoyHarness(random = () => 0.5) {
+  const vm = require('node:vm');
+  const context = vm.createContext({ Math: Object.assign(Object.create(Math), { random }) });
+  vm.runInContext(reel.replace('root.R4B1TRollReel = Object.freeze({',
+    'root.presentationItem = presentationItem; root.R4B1TRollReel = Object.freeze({'), context);
+  return context.presentationItem;
+}
+
+function decoyModel(size, winner = 0) {
+  return {
+    labels: Array.from({ length: size }, (_, i) => String(i)),
+    targetIndex: winner,
+    to: 10000 + winner,
+    decoyIndices: Array.from({ length: size }, (_, i) => i).filter(i => i !== winner),
+    displayRows: new Map()
+  };
+}
+
+test('sorted-pool presentation has unrelated stable decoys and one committed landing slot', () => {
+  let calls = 0;
+  const item = decoyHarness(() => { calls++; return 0.5; });
+  const model = decoyModel(100, 50);
+  for (let logical = -2; logical < 100; logical++) {
+    const selected = item(model, logical);
+    assert.notEqual(selected, model.targetIndex);
+    if (logical > -2) assert.ok(Math.abs(selected - item(model, logical - 1)) > 1);
+    const draws = calls;
+    assert.equal(item(model, logical), selected);
+    assert.equal(calls, draws, 'spring/overshoot revisits must not redraw a row');
+  }
+  const final = [-2, -1, 0, 1, 2].map(k => item(model, model.to + k));
+  assert.equal(final[2], 50);
+  assert.equal(final.filter(i => i === 50).length, 1);
+  assert.ok(Math.abs(final[1] - 50) > 1);
+  assert.ok(Math.abs(final[3] - 50) > 1);
+  assert.deepEqual([-2, -1, 0, 1, 2].map(k => item(model, model.to + k)), final);
+});
+
+test('decoy entropy changes presentation, never the committed landing row', () => {
+  const low = decoyHarness(() => 0);
+  const high = decoyHarness(() => 0.999999);
+  const a = decoyModel(100, 50);
+  const b = decoyModel(100, 50);
+  assert.notEqual(low(a, 0), high(b, 0));
+  assert.equal(low(a, a.to), high(b, b.to));
+  assert.equal(a.targetIndex, 50);
+  assert.equal(b.targetIndex, 50);
+});
+
+test('tiny pools terminate and singleton flanks cannot repeat the winner', () => {
+  const item = decoyHarness(() => 0);
+  for (const size of [1, 2, 3]) {
+    const model = decoyModel(size);
+    const final = [-2, -1, 0, 1, 2].map(k => item(model, model.to + k));
+    assert.equal(final[2], 0);
+    assert.equal(final.filter(i => i === 0).length, 1);
+    for (const decoy of final.filter((_, i) => i !== 2)) {
+      assert.ok(size === 1 ? decoy === -1 : decoy > 0 && decoy < size);
+    }
+  }
+});
