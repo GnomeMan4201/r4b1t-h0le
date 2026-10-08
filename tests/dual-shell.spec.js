@@ -130,7 +130,7 @@ test('opt-in viewport debug reports geometry and stylesheet identity without cha
   const panel = page.locator('#r4mMotionDebug');
   await expect(panel).toContainText('LAYOUT: 390 × 844');
   await expect(panel).toContainText('NAV: 64px / rect 64px');
-  await expect(panel).toContainText('CSS SHA256: 9ef73b9b08939354f186e8fafd1d76b87072ce51f30b98524ed4a80eb9f74e6a');
+  await expect(panel).toContainText('CSS SHA256: 25f96d9941f751f6065dde34f265a4382767242d2e8b5978e10421b0594dbeea');
   const before = await page.evaluate(async () => JSON.stringify(await window.getTrailManifest()));
   const stored = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()));
   await page.setViewportSize({ width: 375, height: 667 });
@@ -1977,7 +1977,7 @@ test('mobile displays complete source summaries without hiding trailing text beh
   expect(settled.descriptionBottom).toBeLessThan(settled.openTop);
 });
 
-test('portrait mobile short RESULT anchors the URL footer while keeping actions and authority stable', async ({ page }, testInfo) => {
+test('portrait short RESULT groups its URL without covering fixed actions', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile-chromium');
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./', { waitUntil: 'domcontentloaded' });
@@ -2002,6 +2002,8 @@ test('portrait mobile short RESULT anchors the URL footer while keeping actions 
     const address = document.getElementById('r4mUrl');
     return {
       layout: getComputedStyle(route).display,
+      routeMinimum: getComputedStyle(route).minHeight,
+      addressMargin: parseFloat(getComputedStyle(address).marginTop),
       addressBorder: getComputedStyle(address).borderTopWidth,
       markTop: rect('#r4mProductionMark').top,
       descriptionBottom: rect('#r4mDescription').bottom,
@@ -2014,12 +2016,13 @@ test('portrait mobile short RESULT anchors the URL footer while keeping actions 
       viewportWidth: innerWidth,
     };
   });
-  expect(sample.layout).toBe('flex');
+  expect(sample.layout).toBe('grid');
+  expect(sample.routeMinimum).toBe('0px');
   expect(sample.addressBorder).toBe('1px');
+  expect(sample.addressMargin).toBeGreaterThanOrEqual(18);
+  expect(sample.addressMargin).toBeLessThanOrEqual(28);
   expect(Math.abs(sample.markTop - initialMarkTop)).toBeLessThanOrEqual(1);
-  expect(sample.addressTop - sample.descriptionBottom).toBeGreaterThan(24);
-  expect(sample.actionsTop - sample.addressBottom).toBeGreaterThan(10);
-  expect(sample.actionsTop - sample.addressBottom).toBeLessThan(100);
+  expect(sample.addressTop - sample.descriptionBottom).toBeGreaterThan(16);
   expect(sample.pageWidth).toBeLessThanOrEqual(sample.viewportWidth);
   expect(await page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length)).toBe(beforeSteps);
 
@@ -2038,4 +2041,17 @@ test('portrait mobile short RESULT anchors the URL footer while keeping actions 
       Math.abs(rect('#r4mRoute [data-mobile-action="visit"]').top - openTop),
     );
   }, { markTop: sample.markTop, againTop: sample.againTop, openTop: sample.openTop })).toBeLessThanOrEqual(1);
+
+  // On a compact result the URL is visible above fixed buttons. On taller
+  // metadata it must be reachable by ordinary document scrolling, rather
+  // than forced beneath the action rail by an artificial min-height.
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  const visible = await page.evaluate(() => ({
+    addressBottom: document.getElementById('r4mUrl').getBoundingClientRect().bottom,
+    actionsTop: document.querySelector('#r4mRoute .r4m-route-actions').getBoundingClientRect().top,
+    scrollWidth: document.documentElement.scrollWidth,
+    viewportWidth: innerWidth,
+  }));
+  expect(visible.addressBottom).toBeLessThan(visible.actionsTop);
+  expect(visible.scrollWidth).toBeLessThanOrEqual(visible.viewportWidth);
 });
