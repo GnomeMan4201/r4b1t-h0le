@@ -1976,3 +1976,66 @@ test('mobile displays complete source summaries without hiding trailing text beh
   expect(Math.abs(settled.againTop - initial.againTop)).toBeLessThanOrEqual(1);
   expect(settled.descriptionBottom).toBeLessThan(settled.openTop);
 });
+
+
+test('mobile reel and mechanism maintain compact stage across settled ROLLs', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await expect(page.locator('#r4mRollReel')).toBeAttached();
+
+  const before = await page.evaluate(() => {
+    const reel = document.getElementById('r4mRollReel');
+    const roll = document.getElementById('r4mRoll');
+    const mark = document.getElementById('r4mProductionMark');
+    const window = reel.querySelector('.r4m-reel-window');
+    return {
+      reelMarginBottom: getComputedStyle(reel).marginBottom,
+      rollMarginTop: getComputedStyle(roll).marginTop,
+      reelWindowHeight: window.getBoundingClientRect().height,
+      markTop: mark.getBoundingClientRect().top,
+    };
+  });
+  expect(before.reelMarginBottom).toBe('6px');
+  expect(before.rollMarginTop).toBe('2px');
+  expect(before.reelWindowHeight).toBe(192);
+
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  await expect(page.locator('#r4mRollReel')).toHaveAttribute('data-phase', 'revealed');
+  const result = await page.evaluate(() => ({
+    markTop: document.getElementById('r4mProductionMark').getBoundingClientRect().top,
+    scrollY: window.scrollY,
+    actionTop: document.getElementById('r4mRollAgain').getBoundingClientRect().top,
+    openTop: document.querySelector('#r4mRoute [data-mobile-action="visit"]').getBoundingClientRect().top,
+  }));
+  expect(Math.abs(result.markTop - before.markTop)).toBeLessThanOrEqual(1);
+  expect(result.scrollY).toBe(0);
+
+  for (let index = 0; index < 3; index += 1) {
+    const beforeSteps = await page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length);
+    await page.locator('#r4mRollAgain').click();
+    await expect.poll(() => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length))
+      .toBe(beforeSteps + 1);
+    await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+    await expect(page.locator('#r4mRollReel')).toHaveAttribute('data-phase', 'revealed');
+
+    const after = await page.evaluate(() => ({
+      markTop: document.getElementById('r4mProductionMark').getBoundingClientRect().top,
+      scrollY: window.scrollY,
+    }));
+    expect(Math.abs(after.markTop - result.markTop)).toBeLessThanOrEqual(1);
+    expect(after.scrollY).toBe(result.scrollY);
+    // CSS button-release transitions can temporarily move the action rail;
+    // assert its final position only after both authority and reel settle.
+    await expect.poll(() => page.evaluate(({ actionTop, openTop }) => {
+      const action = document.getElementById('r4mRollAgain');
+      const open = document.querySelector('#r4mRoute [data-mobile-action="visit"]');
+      return Math.max(
+        Math.abs(action.getBoundingClientRect().top - actionTop),
+        Math.abs(open.getBoundingClientRect().top - openTop),
+      );
+    }, result)).toBeLessThanOrEqual(1);
+  }
+});
