@@ -45,12 +45,27 @@ async function instrument(page) {
       }
       requestAnimationFrame(sample);
     };
+    // Capture every authoritative presentation attribute write, even when
+    // multiple transitions happen between two animation frames.
+    new MutationObserver(records => {
+      if (log.t0 === null) return;
+      for (const record of records) {
+        mark('presentation-mutation', {
+          before: record.oldValue,
+          after: html.getAttribute('data-r4m-presentation'),
+        });
+      }
+    }).observe(html, {
+      attributes: true,
+      attributeOldValue: true,
+      attributeFilter: ['data-r4m-presentation'],
+    });
     new MutationObserver(sample).observe(html, { attributes: true, attributeFilter: ['class', 'data-r4m-presentation'] });
     requestAnimationFrame(sample);
     const rabbit = document.getElementById('r4h-roll-rabbit');
     if (rabbit) {
-      rabbit.addEventListener('animationstart', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-start'); });
-      rabbit.addEventListener('animationend', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-end'); });
+      rabbit.addEventListener('animationstart', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-start', { elapsedTime: e.elapsedTime }); });
+      rabbit.addEventListener('animationend', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-end', { elapsedTime: e.elapsedTime }); });
       rabbit.addEventListener('animationcancel', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-cancel'); });
     }
     // each roll gets a fresh timeline; last-seen states carry over so only changes are logged
@@ -116,7 +131,7 @@ test.describe('production mark timing authority', () => {
         mounted: first(ev, 'result-mounted'),
         recorded: first(ev, 'trail-recorded'),
       };
-      for (const [k, v] of Object.entries(authority)) expect(v, `${selector}: ${k} happened`).not.toBeNull();
+      for (const [k, v] of Object.entries(authority)) expect(v, `${selector}: ${k} happened; timeline=${JSON.stringify(ev)}`).not.toBeNull();
       const markStart = first(ev, 'mark-roll-animation-start');
       const markCancel = first(ev, 'mark-roll-animation-cancel');
       expect(on).not.toBeNull();
@@ -124,7 +139,7 @@ test.describe('production mark timing authority', () => {
       expect(markEnd).not.toBeNull();
       expect(markCancel).toBeNull();
       // animation events, not a presentation timer, define the rabbit's complete run.
-      expect(markEnd - markStart).toBeGreaterThanOrEqual(950);
+      expect(markEnd - markStart, `${selector}: rabbit event timestamps; timeline=${JSON.stringify(ev)}`).toBeGreaterThanOrEqual(950);
       expect(await page.evaluate(() => document.documentElement.classList.contains('rolling'))).toBe(false);
       // commitment starts before the mark finishes; later reveal timing belongs to the REEL.
       expect(authority.commit).toBeLessThan(markEnd);
