@@ -280,13 +280,37 @@
   // mark holds .rolling for its full run instead of mirroring the phases, and only
   // then shows .result-ready. Otherwise the roll is cut mid-launch and snaps home.
   var MARK_ROLL_MS = 1050;
+  var MARK_ROLL_ABSOLUTE_CEILING_MS = 3000;
   var markRollTimer = null;
+  var markRollCeilingTimer = null;
   var markRollFrame = null;
+  var markRollRunId = 0;
+  var markRollTrace = null;
   var markRollActive = false;
   var markRollCompleted = false;
   var markRollRabbit = null;
   var markRollOnStart = null;
   var markRollOnEnd = null;
+
+  // Read the *existing* CSSAnimation only when a fallback fires, never at
+  // trigger time. This avoids adding an early forced style/layout flush.
+  function rabbitRollAnimationSnapshot(rabbit) {
+    var matches = [];
+    try {
+      if (typeof rabbit.getAnimations === 'function') {
+        matches = rabbit.getAnimations().filter(function (animation) {
+          // The named production CSS animation is the only relevant authority.
+          return !animation.animationName || animation.animationName === 'r4h-roll-rabbit';
+        });
+      }
+    } catch (_) { /* No WAAPI support: retain the bounded fallback. */ }
+    return {
+      count: matches.length,
+      running: matches.some(function (animation) {
+        return animation.playState === 'running' || animation.playState === 'pending';
+      })
+    };
+  }
 
   function clearProductionMarkRollWatch() {
     if (markRollFrame !== null) {
@@ -297,6 +321,10 @@
       window.clearTimeout(markRollTimer);
       markRollTimer = null;
     }
+    if (markRollCeilingTimer !== null) {
+      window.clearTimeout(markRollCeilingTimer);
+      markRollCeilingTimer = null;
+    }
     if (markRollRabbit) {
       if (markRollOnStart) markRollRabbit.removeEventListener('animationstart', markRollOnStart);
       if (markRollOnEnd) markRollRabbit.removeEventListener('animationend', markRollOnEnd);
@@ -306,8 +334,12 @@
     markRollOnEnd = null;
   }
 
-  function finishProductionMarkRoll() {
+  function finishProductionMarkRoll(reason) {
     if (!markRollActive) return;
+    if (markRollTrace) {
+      markRollTrace.finishedAt = performance.now();
+      markRollTrace.finishReason = reason || 'animationend';
+    }
     markRollActive = false;
     markRollCompleted = true;
     clearProductionMarkRollWatch();
@@ -324,10 +356,23 @@
     markRollCompleted = false;
     markRollRabbit = rabbit;
     var animationStarted = false;
+    var runId = ++markRollRunId;
+    // Small timestamp-only trace. No computed-style reads before first frame.
+    markRollTrace = {
+      runId: runId, armedAt: null, firstFrameAt: null,
+      animationStartAt: null, animationEndAt: null,
+      softFallbackAt: null, softFallbackAnimationCount: null,
+      softFallbackHasRunningAnimation: null, ceilingAt: null,
+      ceilingAnimationCount: null, finishedAt: null, finishReason: null
+    };
+    window.__r4b1tRabbitFallbackTrace = markRollTrace;
 
     markRollOnStart = function (event) {
       if (event.target !== rabbit || event.animationName !== 'r4h-roll-rabbit') return;
       animationStarted = true;
+      if (markRollTrace && markRollTrace.runId === runId) {
+        markRollTrace.animationStartAt = performance.now();
+      }
       if (markRollTimer !== null) {
         window.clearTimeout(markRollTimer);
         markRollTimer = null;
@@ -335,7 +380,10 @@
     };
     markRollOnEnd = function (event) {
       if (event.target !== rabbit || event.animationName !== 'r4h-roll-rabbit') return;
-      finishProductionMarkRoll();
+      if (markRollTrace && markRollTrace.runId === runId) {
+        markRollTrace.animationEndAt = performance.now();
+      }
+      finishProductionMarkRoll('animationend');
     };
     rabbit.addEventListener('animationstart', markRollOnStart);
     rabbit.addEventListener('animationend', markRollOnEnd);
@@ -345,17 +393,35 @@
     // ROLL creates a fresh canonical rabbit animationstart.
     root.classList.remove('rolling');
     void rabbit.getBoundingClientRect();
+    markRollTrace.armedAt = performance.now();
     root.classList.add('rolling');
 
-    // Do not expire the no-start fallback before WebKit has had a rendering
-    // opportunity. A busy first paint can otherwise cause the timer to strip
-    // .rolling before the browser registers r4h-roll-rabbit.
-    // The canonical SVG animation/event remains the sole normal completion.
-    markRollFrame = window.requestAnimationFrame(function () {
+    // Hard ceiling prevents an indefinitely armed mark if rAF never fires,
+    // animationstart arrives but animationend does not, or WebKit is backgrounded.
+    // This is a safety release; the CSS animationend is still normal completion.
+    markRollCeilingTimer = window.setTimeout(function () {
+      if (!markRollActive || markRollRunId !== runId) return;
+      var snapshot = rabbitRollAnimationSnapshot(rabbit);
+      markRollTrace.ceilingAt = performance.now();
+      markRollTrace.ceilingAnimationCount = snapshot.count;
+      finishProductionMarkRoll('absolute-ceiling');
+    }, MARK_ROLL_ABSOLUTE_CEILING_MS);
+
+    // The soft no-start deadline begins after WebKit has dispatched a frame.
+    // A running/pending CSSAnimation must not be removed merely because its
+    // animationstart DOM event has not been delivered yet.
+    markRollFrame = window.requestAnimationFrame(function (timestamp) {
       markRollFrame = null;
-      if (!markRollActive || markRollRabbit !== rabbit || animationStarted) return;
+      if (!markRollActive || markRollRunId !== runId) return;
+      markRollTrace.firstFrameAt = timestamp;
+      if (animationStarted) return;
       markRollTimer = window.setTimeout(function () {
-        if (!animationStarted) finishProductionMarkRoll();
+        if (!markRollActive || markRollRunId !== runId || animationStarted) return;
+        var snapshot = rabbitRollAnimationSnapshot(rabbit);
+        markRollTrace.softFallbackAt = performance.now();
+        markRollTrace.softFallbackAnimationCount = snapshot.count;
+        markRollTrace.softFallbackHasRunningAnimation = snapshot.running;
+        if (!snapshot.running) finishProductionMarkRoll('no-start-after-frame');
       }, MARK_ROLL_MS + 300);
     });
     return true;
@@ -1328,7 +1394,10 @@
   }
 
   function resetRollStage() {
-    if (markRollTimer !== null) { window.clearTimeout(markRollTimer); markRollTimer = null; }
+    // Reset cancels both clocks and a pending frame from the previous ROLL.
+    clearProductionMarkRollWatch();
+    markRollActive = false;
+    markRollCompleted = false;
     document.documentElement.classList.remove('r4m-stage-result', 'blind-descending', 'rolling', 'result-ready');
     var mount = byId('r4mRouteMount');
     var stage = byId('r4mPrimaryStage');
