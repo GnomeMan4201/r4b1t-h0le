@@ -403,6 +403,43 @@ test('WAAPI finished resolves before delayed DOM animationend without cancellati
   assert.equal(h.trace().finishReason, 'animationend');
 });
 
+
+test('experimental finished-no-event recovery waits for two rAF callbacks', async () => {
+  let resolve;
+  const finished = new Promise(done => { resolve = done; });
+  const animation = { animationName: 'r4h-roll-rabbit', playState: 'running', finished };
+  const h = markFallbackHarness();
+  h.start(); h.frame();
+  h.setAnimations([animation]); h.dispatch('animationstart');
+  animation.playState = 'finished'; resolve();
+  await finished; await new Promise(setImmediate);
+  assert.equal(h.rolling(), true);
+  h.frame();
+  assert.equal(h.rolling(), true, 'one callback must not release .rolling');
+  h.frame();
+  assert.equal(h.rolling(), false);
+  assert.equal(h.trace().finishReason, 'finished-no-event');
+  assert.deepEqual(h.events(), { starts: 1, ends: 0, cancels: 0 });
+});
+
+test('named animationend arriving during two-frame grace still owns completion', async () => {
+  let resolve;
+  const finished = new Promise(done => { resolve = done; });
+  const animation = { animationName: 'r4h-roll-rabbit', playState: 'running', finished };
+  const h = markFallbackHarness();
+  h.start(); h.frame();
+  h.setAnimations([animation]); h.dispatch('animationstart');
+  animation.playState = 'finished'; resolve();
+  await finished; await new Promise(setImmediate);
+  h.frame();
+  h.dispatch('animationend');
+  h.frame();
+  assert.equal(h.rolling(), false);
+  assert.equal(h.trace().finishReason, 'animationend');
+  assert.deepEqual(h.events(), { starts: 1, ends: 1, cancels: 0 });
+});
+
+
 test('late prior-roll WAAPI promise cannot end a second run', async () => {
   let resolveFirst;
   const stalePromise = new Promise(resolve => { resolveFirst = resolve; });
