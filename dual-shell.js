@@ -467,6 +467,32 @@
     // mechanism that may remove a genuinely started/running rabbit animation.
     markRollLongCapTimer = window.setTimeout(function () {
       if (!currentRun()) return;
+      var diagnostic = {
+        reason: 'hung-10s-absolute-cap',
+        occurredAt: new Date().toISOString(),
+        elapsedMs: Math.round(performance.now() - markRollTrace.armedAt),
+        animationStarted: animationStarted,
+        firstFrameObserved: firstFrameObserved,
+        runId: runId
+      };
+      // Device-local, privacy-preserving counter. No URL, destination,
+      // identity or analytics transmission, and a storage error cannot trap
+      // the rabbit in rolling indefinitely.
+      try {
+        var key = 'r4b1t:rabbit-hung-recoveries:v1';
+        var prior = JSON.parse(window.localStorage.getItem(key) || '{}');
+        var count = Number.isSafeInteger(prior.count) && prior.count >= 0 ? prior.count : 0;
+        diagnostic.count = Math.min(count + 1, Number.MAX_SAFE_INTEGER);
+        window.localStorage.setItem(key, JSON.stringify({
+          count: diagnostic.count,
+          lastAt: diagnostic.occurredAt,
+          lastReason: diagnostic.reason
+        }));
+      } catch (_) { diagnostic.storageUnavailable = true; }
+      window.__r4b1tRabbitRecoveryDiagnostics = diagnostic;
+      if (window.console && typeof window.console.warn === 'function') {
+        window.console.warn('[R4B1T] Rabbit 10s emergency recovery (not normal animation completion)', diagnostic);
+      }
       finishProductionMarkRoll('hung-10s-absolute-cap');
     }, MARK_ROLL_HUNG_CAP_MS);
 
