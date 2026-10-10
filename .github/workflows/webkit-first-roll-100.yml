@@ -1,0 +1,77 @@
+name: WebKit 100 First-Roll Acceptance
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/webkit-first-roll-100.yml'
+      - 'tests/roll-reel-first-roll-stress.spec.js'
+      - 'playwright.reel-webkit-first-roll-stress.config.js'
+      - 'dual-shell.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: webkit-first-roll-100-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  first-roll-100:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: npm ci
+      - run: npx playwright install --with-deps webkit
+      - name: Stage site
+        run: |
+          mkdir -p test-site/r4b1t-h0le
+          rsync -a --exclude='.git' --exclude='node_modules' --exclude='test-site' --exclude='playwright-report' --exclude='test-results' ./ test-site/r4b1t-h0le/
+      - name: 100 independent uninjected first ROLLs
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'true'
+        shell: bash
+        run: |
+          set +e
+          npx playwright test --config=playwright.reel-webkit-first-roll-stress.config.js --project=mobile-webkit --repeat-each=100 --workers=4 --reporter=json > first-roll-100.json
+          test_exit=$?
+          set -e
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const report = JSON.parse(fs.readFileSync('first-roll-100.json','utf8'));
+          const tests = [];
+          const collect = groups => {
+            for (const group of groups || []) {
+              for (const spec of group.specs || []) {
+                for (const t of spec.tests || []) {
+                  tests.push({ status: t.status, failed: t.status !== 'expected',
+                    error: (t.results || []).flatMap(x => x.error?.message ? [x.error.message.slice(0,1600)] : []) });
+                }
+              }
+              collect(group.suites);
+            }
+          };
+          collect(report.suites);
+          const failed = tests.filter(t => t.failed);
+          const pass = tests.length === 100 && failed.length === 0;
+          console.log(JSON.stringify({ uninjected: true, independentFirstRollTrials: tests.length,
+            firstRollFailures: failed.length, meetsGate: pass, failures: failed }, null, 2));
+          if (!pass) process.exitCode = 1;
+          NODE
+          if [[ "$test_exit" -ne 0 ]]; then exit "$test_exit"; fi
+      - name: Upload first-roll results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: first-roll-100-${{ github.sha }}
+          path: |
+            first-roll-100.json
+            test-results/
+          retention-days: 14
+          if-no-files-found: warn
