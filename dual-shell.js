@@ -341,6 +341,10 @@
     root.classList.remove('rolling');
     void rabbit.getBoundingClientRect();
     root.classList.add('rolling');
+    // WebKit may defer CSS animation registration until after this task. Force
+    // animation-style resolution while the ROLL trigger is still present.
+    // Read-only: the SVG, keyframes, start/end events and durations are unchanged.
+    void rabbit.getAnimations();
 
     // Fallback only covers a run whose rabbit animation never starts.
     markRollTimer = window.setTimeout(function () {
