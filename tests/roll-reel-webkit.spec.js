@@ -86,7 +86,23 @@ test('WebKit: 10 normal + 10 slammed rolls preserve rabbit lifecycle and authori
     const rabbit = document.getElementById('r4h-roll-rabbit');
     window.__webkitRabbit = { starts: 0, ends: 0, cancels: 0 };
     // Diagnostics ONLY: no class writes, timing changes, or alternate pass path.
-    const diag = window.__webkitRabbitDiag = { events: [], stateChanges: [] };
+    const mark = document.getElementById('r4mProductionMark');
+    const markRect = mark ? mark.getBoundingClientRect() : null;
+    const rabbitRect = rabbit.getBoundingClientRect();
+    const diag = window.__webkitRabbitDiag = {
+      events: [], stateChanges: [],
+      initialGeometry: {
+        markTop: markRect ? markRect.top : null,
+        markBottom: markRect ? markRect.bottom : null,
+        rabbitTop: rabbitRect.top,
+        rabbitBottom: rabbitRect.bottom,
+        viewportHeight: innerHeight,
+        scrollY: window.scrollY,
+        visibilityState: document.visibilityState,
+        markDisplay: mark ? getComputedStyle(mark).display : null,
+        svgDisplay: getComputedStyle(rabbit.ownerSVGElement).display,
+      },
+    };
     const html = document.documentElement;
     new MutationObserver(records => {
       for (const record of records) {
