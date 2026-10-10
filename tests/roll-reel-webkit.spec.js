@@ -206,12 +206,28 @@ test('WebKit: canonical rabbit visibly descends and returns over its CSS ROLL', 
       try { return new DOMMatrix(transform).m42; } catch (_) { return null; }
     };
     window.__rabbitVisual = { starts: 0, ends: 0, cancels: 0,
-      samples: [], startedAt: null, endedAt: null, cssDuration: null };
+      samples: [], startedAt: null, endedAt: null, cssDuration: null,
+      startElapsedSec: null, endElapsedSec: null, startCssTime: null, endCssTime: null };
     const trace = window.__rabbitVisual;
+    let canonicalAnimation = null;
+    const getCanonical = () => {
+      if (canonicalAnimation) return canonicalAnimation;
+      canonicalAnimation = rabbit.getAnimations().find(a => a.animationName === 'r4h-roll-rabbit') || null;
+      return canonicalAnimation;
+    };
+    const timeline = () => {
+      const animation = getCanonical();
+      return {
+        currentTime: animation ? Number(animation.currentTime) : null,
+        playState: animation?.playState || null
+      };
+    };
     const sample = stamp => {
       if (trace.ends || trace.cancels) return;
       if (trace.samples.length < 200) {
-        trace.samples.push({ t: stamp, y: readY() });
+        // Browser timestamp is only diagnostic; phase comes from the actual
+        // CSSAnimation.currentTime, read in the SAME rAF as computed transform.
+        trace.samples.push({ t: stamp, wallNow: performance.now(), ...timeline(), y: readY() });
         requestAnimationFrame(sample);
       }
     };
@@ -219,6 +235,8 @@ test('WebKit: canonical rabbit visibly descends and returns over its CSS ROLL', 
       if (event.animationName !== 'r4h-roll-rabbit') return;
       trace.starts++;
       trace.startedAt = performance.now();
+      trace.startElapsedSec = event.elapsedTime;
+      trace.startCssTime = timeline();
       trace.cssDuration = getComputedStyle(rabbit).animationDuration;
       requestAnimationFrame(sample);
     });
@@ -226,6 +244,8 @@ test('WebKit: canonical rabbit visibly descends and returns over its CSS ROLL', 
       if (event.animationName === 'r4h-roll-rabbit') {
         trace.ends++;
         trace.endedAt = performance.now();
+        trace.endElapsedSec = event.elapsedTime;
+        trace.endCssTime = timeline();
       }
     });
     rabbit.addEventListener('animationcancel', event => {
@@ -243,6 +263,13 @@ test('WebKit: canonical rabbit visibly descends and returns over its CSS ROLL', 
       starts: trace.starts, ends: trace.ends, cancels: trace.cancels,
       cssDuration: trace.cssDuration, elapsedMs: trace.endedAt - trace.startedAt,
       samples: trace.samples.length, validSamples: values.length,
+      animationSamples: trace.samples,
+      startElapsedSec: trace.startElapsedSec, endElapsedSec: trace.endElapsedSec,
+      startCssTime: trace.startCssTime, endCssTime: trace.endCssTime,
+      // A sparse maxY is not evidence of a deficient CSS trajectory unless
+      // an rAF actually observed the expected middle (310–560ms) phase.
+      middlePhaseCoverage: trace.samples.filter(x => Number.isFinite(x.currentTime) &&
+        x.currentTime >= 310 && x.currentTime <= 560),
       maxY: values.length ? Math.max(...values) : null,
       minY: values.length ? Math.min(...values) : null,
       lastY: values.length ? values[values.length - 1] : null,
