@@ -11,21 +11,19 @@ const b = source.indexOf('  function syncProductionMarkState() {',a);
 if(a<0||b<=a)throw new Error('Missing mark function section');
 let block = source.slice(a,b);
 if(mode==='control'){
-  const old = [
-    '    // Fallback only covers a run whose rabbit animation never starts.',
-    '    markRollTimer = window.setTimeout(function () {',
-    '      if (!animationStarted) finishProductionMarkRoll();',
-    '    }, MARK_ROLL_MS + 300);'
-  ].join('\n');
-  const replacement = [
-    '    // Test-only extraction of original no-start decision.',
+  // Control ablation restores the ORIGINAL no-start decision precisely:
+  // without animationstart, remove .rolling immediately, even before paint.
+  // Keep every other file and selection path identical to the release SHA.
+  const start=block.indexOf('    function runNoStartFallbackCheck() {');
+  const end=block.indexOf('    markRollFrame = window.requestAnimationFrame',start);
+  if(start<0||end<=start)throw new Error('Candidate decision helper absent');
+  const exactOriginal=[
     '    function runNoStartFallbackCheck() {',
     '      if (!animationStarted) finishProductionMarkRoll();',
     '    }',
-    '    markRollTimer = window.setTimeout(runNoStartFallbackCheck, MARK_ROLL_MS + 300);'
+    ''
   ].join('\n');
-  if(block.split(old).length!==2)throw new Error('Pinned original control does not match');
-  block=block.replace(old,replacement);
+  block=block.slice(0,start)+exactOriginal+block.slice(end);
 }else{
   if(!block.includes('function runNoStartFallbackCheck()')||
      !block.includes('!firstFrameObserved'))throw new Error('Candidate first-frame guard absent');
