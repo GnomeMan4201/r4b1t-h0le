@@ -1,0 +1,83 @@
+name: WebKit Rabbit 20x Reproduction
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/webkit-rabbit-repeat.yml'
+      - 'dual-shell.js'
+      - 'tests/roll-reel-webkit.spec.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: webkit-repeat-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  webkit-20x:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Check out exact branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install WebKit with dependencies
+        run: npx playwright install --with-deps webkit
+      - name: Stage site under /r4b1t-h0le/
+        run: |
+          mkdir -p test-site/r4b1t-h0le
+          rsync -a --exclude='.git' --exclude='node_modules' --exclude='test-site' --exclude='playwright-report' --exclude='test-results' ./ test-site/r4b1t-h0le/
+      - name: Repeat the original strict 20-roll test twenty times
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'true'
+        shell: bash
+        run: |
+          set +e
+          npx playwright test --config=playwright.reel-webkit.config.js --project=mobile-webkit --grep 'WebKit: 10 normal' --repeat-each=20 --reporter=json > webkit-repeat-results.json
+          test_exit=$?
+          set -e
+          node - <<'NODE'
+          const fs = require('fs');
+          try {
+            const report = JSON.parse(fs.readFileSync('webkit-repeat-results.json', 'utf8'));
+            const suites = [];
+            const collect = items => {
+              for (const s of items || []) {
+                for (const spec of s.specs || []) for (const test of spec.tests || []) suites.push({ title: spec.title, test });
+                collect(s.suites);
+              }
+            };
+            collect(report.suites);
+            const outcomes = suites.map(x => ({
+              name: x.title,
+              outcome: x.test.status,
+              tries: (x.test.results || []).map(r => ({ status: r.status, durationMs: r.duration, error: r.error?.message?.slice(0, 500) || '' }))
+            }));
+            const failures = outcomes.filter(x => x.outcome !== 'expected' && x.outcome !== 'skipped');
+            process.stdout.write(JSON.stringify({ expectedRepetitions: 20, executed: outcomes.length, failures: failures.length, failureRate: outcomes.length ? Number((failures.length / outcomes.length).toFixed(4)) : null, failedRepetitions: failures }, null, 2) + '\n');
+            if (outcomes.length !== 20) process.exitCode = 1;
+          } catch (error) {
+            console.error('Unable to parse WebKit repeat report:', error.message);
+            process.exitCode = 1;
+          }
+          NODE
+          if [[ "$test_exit" -ne 0 ]]; then exit "$test_exit"; fi
+      - name: Upload repeat results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: rabbit-webkit-repeat-${{ github.sha }}
+          path: |
+            webkit-repeat-results.json
+            test-results/
+          retention-days: 14
+          if-no-files-found: warn
