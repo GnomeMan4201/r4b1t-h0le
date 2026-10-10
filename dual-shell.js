@@ -512,6 +512,20 @@
       if (animationStarted) return;
       markRollTimer = window.setTimeout(runNoStartFallbackCheck, MARK_ROLL_MS + 300);
     });
+    // TEST ONLY: force the *actual no-start fallback decision* before the
+    // first rendering opportunity. No timer ordering assumption is involved.
+    if (window.__R4B1T_TEST__ && window.__R4B1T_TEST__.fallbackNow === true &&
+        !window.__r4b1tSyncFallbackUsed) {
+      window.__r4b1tSyncFallbackUsed = true;
+      window.__r4b1tSyncFallbackRecord = {
+        wasRolling: root.classList.contains('rolling'),
+        hadFrame: firstFrameObserved,
+        runId: runId,
+        at: performance.now()
+      };
+      runNoStartFallbackCheck();
+      window.__r4b1tSyncFallbackRecord.rollingAfter = root.classList.contains('rolling');
+    }
     return true;
   }
 
