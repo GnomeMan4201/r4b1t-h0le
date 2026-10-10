@@ -1,0 +1,82 @@
+name: WebKit First-Roll CPU Stress
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/webkit-first-roll-stress.yml'
+      - 'tests/roll-reel-first-roll-stress.spec.js'
+      - 'playwright.reel-webkit-first-roll-stress.config.js'
+      - 'dual-shell.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: webkit-first-roll-stress-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  first-roll-stress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: npm ci
+      - run: npx playwright install --with-deps webkit
+      - name: Stage site
+        run: |
+          mkdir -p test-site/r4b1t-h0le
+          rsync -a --exclude='.git' --exclude='node_modules' --exclude='test-site' --exclude='playwright-report' --exclude='test-results' ./ test-site/r4b1t-h0le/
+      - name: 20 fresh-page first ROLLs / 4 workers / matched CPU contention
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'true'
+        shell: bash
+        run: |
+          set -e
+          node -e 'let x = 1; const until = Date.now() + 18 * 60 * 1000; while (Date.now() < until) { x = Math.imul(x, 1664525) + 1013904223; }' &
+          burner_pid=$!
+          trap 'kill "$burner_pid" 2>/dev/null || true' EXIT
+          set +e
+          npx playwright test --config=playwright.reel-webkit-first-roll-stress.config.js --project=mobile-webkit --repeat-each=20 --workers=4 --reporter=json > webkit-stress-results.json
+          test_exit=$?
+          set -e
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const r = JSON.parse(fs.readFileSync('webkit-stress-results.json','utf8'));
+          const out = [];
+          const collect = suites => {
+            for (const suite of suites || []) {
+              for (const spec of suite.specs || []) {
+                for (const test of spec.tests || []) {
+                  out.push({name: spec.title, status: test.status,
+                    failed: test.status !== 'expected',
+                    errors: (test.results || []).flatMap(x => x.error?.message ? [x.error.message.slice(0,1400)] : [])});
+                }
+              }
+              collect(suite.suites);
+            }
+          };
+          collect(r.suites);
+          const failed = out.filter(x => x.failed);
+          console.log(JSON.stringify({ condition: process.env.GITHUB_HEAD_REF,
+            independentFirstRollTrials: out.length, firstRollFailures: failed.length,
+            failureRate: out.length ? failed.length/out.length : null, failedTrials: failed }, null, 2));
+          if(out.length !== 20) process.exitCode = 1;
+          NODE
+          if [[ "$test_exit" -ne 0 ]]; then exit "$test_exit"; fi
+      - name: Upload stress evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: webkit-first-roll-stress-${{ github.sha }}
+          path: |
+            webkit-stress-results.json
+            test-results/
+          retention-days: 14
+          if-no-files-found: warn
