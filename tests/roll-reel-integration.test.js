@@ -204,7 +204,10 @@ test('rabbit mark lifecycle is owned by named animationend with a bounded animat
   // Verify a deadline exists even when a hidden tab never receives rAF.
   assert.match(shell, /MARK_ROLL_ABSOLUTE_CEILING_MS = 3000/);
   assert.match(shell, /markRollCeilingTimer = window\.setTimeout\(function/);
-  assert.match(shell, /finishProductionMarkRoll\('absolute-ceiling'\)/);
+  assert.match(shell, /finishProductionMarkRoll\('absolute-no-start-ceiling'\)/);
+  assert.match(shell, /MARK_ROLL_COMPLETION_WATCHDOG_MS = 1250/);
+  assert.match(shell, /markRollRunId \+= 1/);
+  assert.match(shell, /if \(snapshot\.running\) \{[\s\S]*armCompletionWatchdog\('animation-active-at-3s'\)/);
   // An active CSS animation cannot be cleared for a merely delayed start event.
   assert.match(shell, /markRollFrame = window\.requestAnimationFrame\(function \(timestamp\)/);
   assert.match(shell, /MARK_ROLL_MS \+ 300/);
