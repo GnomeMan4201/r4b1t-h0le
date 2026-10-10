@@ -57,6 +57,7 @@ async function waitForRabbitStart(page, target, cycle) {
           currentTime: item.currentTime,
         })) : [],
         counters: window.__webkitRabbit,
+        fallbackTrace: window.__r4b1tRabbitFallbackTrace || null,
         reel: window.R4B1TRollReel.snapshot(),
         production: window.R4B1TRollProduction.snapshot(),
       };
