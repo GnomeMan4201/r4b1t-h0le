@@ -1380,6 +1380,13 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   /* Trim the mark's empty surround without scaling its SVG artwork. */
   html.r4m-stage-result #r4mProductionMark{height:112px}
   .r4m-roll.r4m-roll-aperture{height:92px!important;min-height:92px!important}
+  /* Group the route URL as a readable footer, without reserving an
+     extra viewport-sized stage below the still-visible REEL.
+     Existing route clearance handles long content and fixed actions. */
+  html.r4m-stage-result #r4mRouteMount .r4m-route>code{
+    margin-top:clamp(18px,3dvh,28px);padding-top:12px;
+    border-top:1px solid var(--r4m-v5-rule);
+  }
 }
 
 /* Mobile proof facts use readable type and fit their own scroll surface. */
