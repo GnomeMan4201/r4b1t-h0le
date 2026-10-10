@@ -281,6 +281,7 @@
   // then shows .result-ready. Otherwise the roll is cut mid-launch and snaps home.
   var MARK_ROLL_MS = 1050;
   var markRollTimer = null;
+  var markRollFrame = null;
   var markRollActive = false;
   var markRollCompleted = false;
   var markRollRabbit = null;
@@ -288,6 +289,10 @@
   var markRollOnEnd = null;
 
   function clearProductionMarkRollWatch() {
+    if (markRollFrame !== null) {
+      window.cancelAnimationFrame(markRollFrame);
+      markRollFrame = null;
+    }
     if (markRollTimer !== null) {
       window.clearTimeout(markRollTimer);
       markRollTimer = null;
@@ -342,10 +347,17 @@
     void rabbit.getBoundingClientRect();
     root.classList.add('rolling');
 
-    // Fallback only covers a run whose rabbit animation never starts.
-    markRollTimer = window.setTimeout(function () {
-      if (!animationStarted) finishProductionMarkRoll();
-    }, MARK_ROLL_MS + 300);
+    // Do not expire the no-start fallback before WebKit has had a rendering
+    // opportunity. A busy first paint can otherwise cause the timer to strip
+    // .rolling before the browser registers r4h-roll-rabbit.
+    // The canonical SVG animation/event remains the sole normal completion.
+    markRollFrame = window.requestAnimationFrame(function () {
+      markRollFrame = null;
+      if (!markRollActive || markRollRabbit !== rabbit || animationStarted) return;
+      markRollTimer = window.setTimeout(function () {
+        if (!animationStarted) finishProductionMarkRoll();
+      }, MARK_ROLL_MS + 300);
+    });
     return true;
   }
 
