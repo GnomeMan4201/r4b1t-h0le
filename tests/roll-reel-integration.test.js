@@ -298,6 +298,9 @@ function markFallbackHarness(source = shell, initialTime = 0) {
         get() { throw new Error('SecurityError: storage denied'); }
       });
     },
+    throwOnStorageWrite: () => {
+      window.localStorage.setItem = () => { throw new Error('QuotaExceededError: storage full'); };
+    },
     setAnimations: value => { animations = value; },
     dispatch: kind => {
       if (kind === 'animationstart') eventCounts.starts++;
@@ -375,6 +378,21 @@ test('10-second recovery still completes when Safari storage access throws', () 
   assert.equal(h.recovery().storageUnavailable, true);
   assert.equal(h.recoveryRecord(), null);
   assert.equal(h.warnings().length, 1, 'warning remains available when persistence is denied');
+});
+
+test('10-second recovery still completes when Safari localStorage write throws', () => {
+  const h = markFallbackHarness();
+  h.throwOnStorageWrite();
+  h.start();
+  h.frame();
+  h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  h.dispatch('animationstart');
+  h.tick(10000);
+  assert.equal(h.rolling(), false);
+  assert.equal(h.trace().finishReason, 'hung-10s-absolute-cap');
+  assert.equal(h.recovery().storageUnavailable, true);
+  assert.equal(h.warnings().length, 1);
+  assert.equal(h.recoveryRecord(), null);
 });
 
 test('normal rabbit animationend never records an emergency or emits warning', () => {
