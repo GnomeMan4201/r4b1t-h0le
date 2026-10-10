@@ -57,6 +57,10 @@ async function waitForRabbitStart(page, target, cycle) {
           currentTime: item.currentTime,
         })) : [],
         counters: window.__webkitRabbit,
+        reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+        rabbitDisplay: rabbit ? getComputedStyle(rabbit).display : null,
+        rabbitVisibility: rabbit ? getComputedStyle(rabbit).visibility : null,
+        lifecycleDiagnostics: window.__webkitRabbitDiag || null,
         reel: window.R4B1TRollReel.snapshot(),
         production: window.R4B1TRollProduction.snapshot(),
       };
@@ -81,6 +85,37 @@ test('WebKit: 10 normal + 10 slammed rolls preserve rabbit lifecycle and authori
   await page.evaluate(() => {
     const rabbit = document.getElementById('r4h-roll-rabbit');
     window.__webkitRabbit = { starts: 0, ends: 0, cancels: 0 };
+    // Diagnostics ONLY: no class writes, timing changes, or alternate pass path.
+    const diag = window.__webkitRabbitDiag = { events: [], stateChanges: [] };
+    const html = document.documentElement;
+    new MutationObserver(records => {
+      for (const record of records) {
+        if (diag.stateChanges.length >= 150) break;
+        diag.stateChanges.push({
+          t: Math.round(performance.now()),
+          field: record.attributeName,
+          before: record.oldValue,
+          after: html.getAttribute(record.attributeName),
+        });
+      }
+    }).observe(html, {
+      attributes: true,
+      attributeOldValue: true,
+      attributeFilter: ['class', 'data-r4m-presentation'],
+    });
+    for (const kind of ['animationstart', 'animationend', 'animationcancel']) {
+      rabbit.addEventListener(kind, event => {
+        if (diag.events.length >= 80) return;
+        diag.events.push({
+          t: Math.round(performance.now()),
+          kind,
+          name: event.animationName,
+          elapsedTime: event.elapsedTime,
+          htmlClass: html.className,
+          presentation: html.getAttribute('data-r4m-presentation'),
+        });
+      });
+    }
     rabbit.addEventListener('animationstart', event => {
       if (event.animationName === 'r4h-roll-rabbit') window.__webkitRabbit.starts += 1;
     });
