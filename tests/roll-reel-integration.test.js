@@ -212,7 +212,8 @@ test('rabbit mark lifecycle is owned by named animationend with a bounded animat
   assert.match(shell, /markRollFrame = window\.requestAnimationFrame\(function \(timestamp\)/);
   assert.match(shell, /MARK_ROLL_MS \+ 300/);
   assert.match(shell, /rabbit\.getAnimations\(\)/);
-  assert.match(shell, /if \(!snapshot\.running\) finishProductionMarkRoll\('no-start-after-frame'\)/);
+  assert.match(shell, /if \(snapshot\.running\) \{[\s\S]*armCompletionWatchdog\('animation-active-at-soft-fallback'\)/);
+  assert.match(shell, /finishProductionMarkRoll\('no-start-after-frame'\)/);
   assert.match(shell, /clearProductionMarkRollWatch\(\)/);
   assert.match(shell, /return startProductionMarkRoll\(\)/);
 });
