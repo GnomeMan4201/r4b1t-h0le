@@ -290,6 +290,8 @@
   var markRollLongCapTimer = null;
   var markRollCompletionTimer = null;
   var markRollFrame = null;
+  var markRollFinishedGraceFrame = null;
+  var markRollFinishedGraceFrame2 = null;
   var markRollRunId = 0;
   var markRollTrace = null;
   var markRollActive = false;
@@ -322,6 +324,14 @@
     if (markRollFrame !== null) {
       window.cancelAnimationFrame(markRollFrame);
       markRollFrame = null;
+    }
+    if (markRollFinishedGraceFrame !== null) {
+      window.cancelAnimationFrame(markRollFinishedGraceFrame);
+      markRollFinishedGraceFrame = null;
+    }
+    if (markRollFinishedGraceFrame2 !== null) {
+      window.cancelAnimationFrame(markRollFinishedGraceFrame2);
+      markRollFinishedGraceFrame2 = null;
     }
     if (markRollTimer !== null) {
       window.clearTimeout(markRollTimer);
@@ -381,12 +391,33 @@
       ceilingAt: null, ceilingAnimationCount: null,
       ceilingMatchingCount: null, watchdogArmedAt: null,
       watchdogReason: null, finishedAt: null, finishReason: null,
-      waapiResolvedAt: null, waapiObservedFinishedAt: null, rechecks: 0
+      waapiResolvedAt: null, waapiObservedFinishedAt: null,
+      finishedNoEventGraceArmedAt: null, finishedNoEventGraceCompletedAt: null, rechecks: 0
     };
     window.__r4b1tRabbitFallbackTrace = markRollTrace;
 
     function currentRun() {
       return markRollActive && markRollRunId === runId && markRollRabbit === rabbit;
+    }
+
+    function scheduleFinishedNoEventGrace(animation) {
+      if (!currentRun() || markRollFinishedGraceFrame !== null ||
+          markRollFinishedGraceFrame2 !== null) return;
+      if (!animation || animation.playState !== 'finished') return;
+      markRollTrace.finishedNoEventGraceArmedAt = performance.now();
+      markRollFinishedGraceFrame = window.requestAnimationFrame(function () {
+        markRollFinishedGraceFrame = null;
+        if (!currentRun()) return;
+        markRollFinishedGraceFrame2 = window.requestAnimationFrame(function () {
+          markRollFinishedGraceFrame2 = null;
+          if (!currentRun()) return;
+          if (animation.playState !== 'finished') return;
+          markRollTrace.finishedNoEventGraceCompletedAt = performance.now();
+          // EXPERIMENT ONLY. Class removal here may still cause animationcancel
+          // instead of a lazily queued WebKit animationend. Strict E2E detects it.
+          finishProductionMarkRoll('finished-no-event');
+        });
+      });
     }
 
     function watchAnimationFinished(animation) {
@@ -402,6 +433,7 @@
             // Removing .rolling here caused animationcancel in 16/20 injected
             // trials; preserve CSS/event ownership until named animationend.
             markRollTrace.waapiResolvedAt = performance.now();
+            scheduleFinishedNoEventGrace(animation);
           }
         }, function () { /* rejected = cancelled, no completion claim */ });
       }
@@ -416,6 +448,7 @@
         // The finished state is supporting evidence, not permission to
         // remove the trigger before WebKit dispatches animationend.
         markRollTrace.waapiObservedFinishedAt = performance.now();
+        scheduleFinishedNoEventGrace(snapshot.animation);
       }
       // Never remove .rolling while the canonical CSS animation is running
       // or pending. Continue to observe until animationend, WAAPI finished,
