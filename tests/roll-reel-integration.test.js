@@ -215,6 +215,176 @@ test('rabbit mark lifecycle is owned by named animationend with a bounded animat
 });
 
 
+
+function markFallbackHarness(source = shell) {
+  const vm = require('node:vm');
+  const start = source.indexOf('  var MARK_ROLL_MS = 1050;');
+  const end = source.indexOf('  // ── Secondary mark states', start);
+  assert.ok(start >= 0 && end > start, 'extracted only presentation mark logic');
+  const classes = new Set();
+  const timers = new Map();
+  const frames = new Map();
+  const listeners = new Map();
+  let nextId = 1;
+  let clock = 0;
+  let animations = [];
+  const rabbit = {
+    getBoundingClientRect: () => ({ width: 1 }),
+    getAnimations: () => animations,
+    addEventListener: (name, fn) => {
+      if (!listeners.has(name)) listeners.set(name, new Set());
+      listeners.get(name).add(fn);
+    },
+    removeEventListener: (name, fn) => listeners.get(name)?.delete(fn)
+  };
+  const html = {
+    classList: {
+      add: (...names) => names.forEach(name => classes.add(name)),
+      remove: (...names) => names.forEach(name => classes.delete(name)),
+      contains: name => classes.has(name),
+      toggle: (name, force) => {
+        const active = force === undefined ? !classes.has(name) : force;
+        active ? classes.add(name) : classes.delete(name);
+        return active;
+      }
+    },
+    getAttribute: name => name === 'data-r4m-presentation' ? 'revealed' : null
+  };
+  const window = {
+    setTimeout(fn, delay) {
+      const id = nextId++;
+      timers.set(id, { fn, at: clock + delay, delay });
+      return id;
+    },
+    clearTimeout: id => timers.delete(id),
+    requestAnimationFrame(fn) {
+      const id = nextId++;
+      frames.set(id, fn);
+      return id;
+    },
+    cancelAnimationFrame: id => frames.delete(id),
+    matchMedia: () => ({ matches: false })
+  };
+  const context = { window, document: { documentElement: html },
+    performance: { now: () => clock },
+    byId: id => id === 'r4h-roll-rabbit' ? rabbit : id === 'r4h-root' ? {} : null };
+  vm.runInNewContext(
+    source.slice(start, end) +
+      '\nwindow.__markTest = { startProductionMarkRoll, rearmProductionMarkRollIfActive };\n',
+    context
+  );
+  const api = window.__markTest;
+  return {
+    start: () => api.startProductionMarkRoll(),
+    rearm: () => api.rearmProductionMarkRollIfActive(),
+    rolling: () => classes.has('rolling'),
+    trace: () => window.__r4b1tRabbitFallbackTrace,
+    setAnimations: value => { animations = value; },
+    dispatch: kind => {
+      for (const fn of Array.from(listeners.get(kind) || [])) {
+        fn({ target: rabbit, animationName: 'r4h-roll-rabbit' });
+      }
+    },
+    tick: delta => {
+      const endTime = clock + delta;
+      for (;;) {
+        const ready = [...timers.entries()].filter(([, job]) => job.at <= endTime)
+          .sort((a,b) => a[1].at - b[1].at || a[0] - b[0])[0];
+        if (!ready) break;
+        timers.delete(ready[0]);
+        clock = ready[1].at;
+        ready[1].fn();
+      }
+      clock = endTime;
+    },
+    frame: () => {
+      const entries = [...frames.entries()];
+      frames.clear();
+      entries.forEach(([, fn]) => fn(clock));
+    },
+    scheduled: () => [...timers.values()].map(x => ({ at: x.at, delay: x.delay }))
+  };
+}
+
+test('rabbit no-frame path clears rolling at the 3000ms no-start ceiling', () => {
+  const harness = markFallbackHarness();
+  assert.equal(harness.start(), true);
+  harness.tick(2999);
+  assert.equal(harness.rolling(), true);
+  harness.tick(1);
+  assert.equal(harness.rolling(), false);
+  assert.equal(harness.trace().finishReason, 'absolute-no-start-ceiling');
+});
+
+test('rabbit late start at 2200ms is not truncated by the old 3000ms ceiling', () => {
+  const harness = markFallbackHarness();
+  assert.equal(harness.start(), true);
+  harness.tick(2200);
+  harness.frame();
+  harness.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  harness.dispatch('animationstart');
+  harness.tick(800);
+  assert.equal(harness.rolling(), true, 'canonical CSS animation still running at 3000ms');
+  harness.tick(200);
+  harness.dispatch('animationend');
+  assert.equal(harness.rolling(), false);
+  assert.equal(harness.trace().finishReason, 'animationend');
+});
+
+test('rabbit WAAPI-running guard survives a delayed animationstart event', () => {
+  const harness = markFallbackHarness();
+  assert.equal(harness.start(), true);
+  harness.frame();
+  harness.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  harness.tick(1350);
+  assert.equal(harness.rolling(), true, 'soft fallback must not cancel running CSS animation');
+  assert.equal(harness.trace().softFallbackAnimationCount, 1);
+  harness.dispatch('animationstart');
+  harness.tick(1000);
+  harness.dispatch('animationend');
+  assert.equal(harness.trace().finishReason, 'animationend');
+});
+
+test('stale first-roll watchdog cannot remove second roll rolling class', () => {
+  const harness = markFallbackHarness();
+  assert.equal(harness.start(), true);
+  harness.tick(150);
+  assert.equal(harness.rearm(), true);
+  harness.tick(2850);
+  assert.equal(harness.rolling(), true, 'first roll ceiling must not finish second roll');
+  harness.dispatch('animationstart');
+  harness.tick(1000);
+  harness.dispatch('animationend');
+  assert.equal(harness.trace().finishReason, 'animationend');
+});
+
+test('fallback regression tests independently reject disabling ceiling or guard', () => {
+  const noCeiling = shell.replace(
+    'MARK_ROLL_ABSOLUTE_CEILING_MS = 3000',
+    'MARK_ROLL_ABSOLUTE_CEILING_MS = 300000'
+  );
+  assert.notEqual(noCeiling, shell, 'ceiling mutation changed source');
+  assert.throws(() => {
+    const h = markFallbackHarness(noCeiling);
+    h.start(); h.tick(3000);
+    assert.equal(h.rolling(), false);
+  }, /true !== false/, 'disabling the ceiling must make the safety test red');
+
+  const noGuard = shell.replace(
+    "if (snapshot.running) {\n          armCompletionWatchdog('animation-active-at-soft-fallback');",
+    "if (false) {\n          armCompletionWatchdog('animation-active-at-soft-fallback');"
+  );
+  assert.notEqual(noGuard, shell, 'guard mutation changed source');
+  assert.throws(() => {
+    const h = markFallbackHarness(noGuard);
+    h.start(); h.frame();
+    h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+    h.tick(1350);
+    assert.equal(h.rolling(), true);
+  }, /false !== true/, 'disabling the running-animation guard must make the safety test red');
+});
+
+
 test('REEL presentation retains the Heavy Roll geometry and presentation-only category chips', () => {
   assert.match(reel, /var ROW_HEIGHT = 64/);
   assert.match(reel, /PROTOTYPE_WEIGHT = 0\.6/);
