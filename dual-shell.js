@@ -281,6 +281,7 @@
   // then shows .result-ready. Otherwise the roll is cut mid-launch and snaps home.
   var MARK_ROLL_MS = 1050;
   var MARK_ROLL_ABSOLUTE_CEILING_MS = 3000;
+  var MARK_ROLL_COMPLETION_WATCHDOG_MS = 1250;
   var markRollTimer = null;
   var markRollCeilingTimer = null;
   var markRollFrame = null;
@@ -315,6 +316,9 @@
   }
 
   function clearProductionMarkRollWatch() {
+    // Invalidate callbacks already queued for delivery, in addition to
+    // cancelling their handles. Old ROLL callbacks must never finish a new one.
+    markRollRunId += 1;
     if (markRollFrame !== null) {
       window.cancelAnimationFrame(markRollFrame);
       markRollFrame = null;
@@ -366,12 +370,34 @@
       softFallbackAt: null, softFallbackAnimationCount: null,
       softFallbackMatchingCount: null, softFallbackHasRunningAnimation: null,
       ceilingAt: null, ceilingAnimationCount: null,
-      ceilingMatchingCount: null, finishedAt: null, finishReason: null
+      ceilingMatchingCount: null, watchdogArmedAt: null,
+      watchdogReason: null, finishedAt: null, finishReason: null
     };
     window.__r4b1tRabbitFallbackTrace = markRollTrace;
 
+    function currentRun() {
+      return markRollActive && markRollRunId === runId && markRollRabbit === rabbit;
+    }
+
+    function armCompletionWatchdog(reason) {
+      if (!currentRun()) return;
+      if (markRollCeilingTimer !== null) window.clearTimeout(markRollCeilingTimer);
+      markRollTrace.watchdogArmedAt = performance.now();
+      markRollTrace.watchdogReason = reason;
+      // Starting from the *observed* event/active animation preserves the
+      // entire canonical 1000ms motion, even after a late first frame.
+      markRollCeilingTimer = window.setTimeout(function () {
+        if (!currentRun()) return;
+        var snapshot = rabbitRollAnimationSnapshot(rabbit);
+        markRollTrace.ceilingAt = performance.now();
+        markRollTrace.ceilingAnimationCount = snapshot.count;
+        markRollTrace.ceilingMatchingCount = snapshot.matchingCount;
+        finishProductionMarkRoll('completion-watchdog');
+      }, MARK_ROLL_COMPLETION_WATCHDOG_MS);
+    }
+
     markRollOnStart = function (event) {
-      if (event.target !== rabbit || event.animationName !== 'r4h-roll-rabbit') return;
+      if (!currentRun() || event.target !== rabbit || event.animationName !== 'r4h-roll-rabbit') return;
       animationStarted = true;
       if (markRollTrace && markRollTrace.runId === runId) {
         markRollTrace.animationStartAt = performance.now();
@@ -380,9 +406,10 @@
         window.clearTimeout(markRollTimer);
         markRollTimer = null;
       }
+      armCompletionWatchdog('animationstart');
     };
     markRollOnEnd = function (event) {
-      if (event.target !== rabbit || event.animationName !== 'r4h-roll-rabbit') return;
+      if (!currentRun() || event.target !== rabbit || event.animationName !== 'r4h-roll-rabbit') return;
       if (markRollTrace && markRollTrace.runId === runId) {
         markRollTrace.animationEndAt = performance.now();
       }
@@ -399,16 +426,20 @@
     markRollTrace.armedAt = performance.now();
     root.classList.add('rolling');
 
-    // Hard ceiling prevents an indefinitely armed mark if rAF never fires,
-    // animationstart arrives but animationend does not, or WebKit is backgrounded.
-    // This is a safety release; the CSS animationend is still normal completion.
+    // 3000ms is a NO-START ceiling, including a page that never receives rAF.
+    // If the browser reports a canonical animation actually running/pending,
+    // move to a separate bounded completion watchdog rather than truncating it.
     markRollCeilingTimer = window.setTimeout(function () {
-      if (!markRollActive || markRollRunId !== runId) return;
+      if (!currentRun()) return;
       var snapshot = rabbitRollAnimationSnapshot(rabbit);
       markRollTrace.ceilingAt = performance.now();
       markRollTrace.ceilingAnimationCount = snapshot.count;
       markRollTrace.ceilingMatchingCount = snapshot.matchingCount;
-      finishProductionMarkRoll('absolute-ceiling');
+      if (snapshot.running) {
+        armCompletionWatchdog('animation-active-at-3s');
+        return;
+      }
+      finishProductionMarkRoll('absolute-no-start-ceiling');
     }, MARK_ROLL_ABSOLUTE_CEILING_MS);
 
     // The soft no-start deadline begins after WebKit has dispatched a frame.
@@ -416,17 +447,21 @@
     // animationstart DOM event has not been delivered yet.
     markRollFrame = window.requestAnimationFrame(function (timestamp) {
       markRollFrame = null;
-      if (!markRollActive || markRollRunId !== runId) return;
+      if (!currentRun()) return;
       markRollTrace.firstFrameAt = timestamp;
       if (animationStarted) return;
       markRollTimer = window.setTimeout(function () {
-        if (!markRollActive || markRollRunId !== runId || animationStarted) return;
+        if (!currentRun() || animationStarted) return;
         var snapshot = rabbitRollAnimationSnapshot(rabbit);
         markRollTrace.softFallbackAt = performance.now();
         markRollTrace.softFallbackAnimationCount = snapshot.count;
         markRollTrace.softFallbackMatchingCount = snapshot.matchingCount;
         markRollTrace.softFallbackHasRunningAnimation = snapshot.running;
-        if (!snapshot.running) finishProductionMarkRoll('no-start-after-frame');
+        if (snapshot.running) {
+          armCompletionWatchdog('animation-active-at-soft-fallback');
+          return;
+        }
+        finishProductionMarkRoll('no-start-after-frame');
       }, MARK_ROLL_MS + 300);
     });
     return true;
