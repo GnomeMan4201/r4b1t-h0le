@@ -76,6 +76,38 @@ test.beforeEach(async ({ page }) => {
   await blockExternalNetwork(page);
 });
 
+// Diagnostic only: exercise the user-initiated tap separately from quickRoll().
+test('WebKit: physical ROLL tap produces one complete canonical rabbit run', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+  const rabbit = page.locator('#r4h-roll-rabbit');
+  await expect(rabbit).toBeAttached();
+  await page.waitForTimeout(1300);
+  await page.evaluate(() => {
+    window.__gestureRabbit = { starts: 0, ends: 0, cancels: 0 };
+    const element = document.getElementById('r4h-roll-rabbit');
+    for (const [name, counter] of [
+      ['animationstart', 'starts'],
+      ['animationend', 'ends'],
+      ['animationcancel', 'cancels'],
+    ]) {
+      element.addEventListener(name, event => {
+        if (event.animationName === 'r4h-roll-rabbit') window.__gestureRabbit[counter] += 1;
+      });
+    }
+  });
+  await page.locator('#r4mRoll').tap();
+  await page.waitForFunction(() => document.documentElement.dataset.r4mPresentation === 'revealed');
+  await page.waitForFunction(() => window.__gestureRabbit.ends === 1, null, { timeout: 12000 });
+  const state = await page.evaluate(() => ({
+    events: window.__gestureRabbit,
+    rendered: document.getElementById('r4mUrl').textContent,
+    landed: window.R4B1TRollReel.snapshot().landedUrl,
+  }));
+  expect(state.events).toEqual({ starts: 1, ends: 1, cancels: 0 });
+  expect(state.rendered).toBe(state.landed);
+});
+
 test('WebKit: 10 normal + 10 slammed rolls preserve rabbit lifecycle and authority', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await ready(page);
