@@ -341,6 +341,9 @@
     root.classList.remove('rolling');
     void rabbit.getBoundingClientRect();
     root.classList.add('rolling');
+    // Isolated WebKit hypothesis: resolve the active CSS animation style
+    // synchronously, with no extra logging or geometry instrumentation.
+    void window.getComputedStyle(rabbit).animationName;
 
     // Fallback only covers a run whose rabbit animation never starts.
     markRollTimer = window.setTimeout(function () {
