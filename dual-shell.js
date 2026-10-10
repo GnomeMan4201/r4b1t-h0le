@@ -346,6 +346,18 @@
     markRollTimer = window.setTimeout(function () {
       if (!animationStarted) finishProductionMarkRoll();
     }, MARK_ROLL_MS + 300);
+    // TEST-ONLY fault hook: applied after .rolling and all relevant
+    // fallback timers/rAF have been armed, in the same JavaScript task.
+    // This entire hook must NOT be included in any production merge.
+    if (Number(window.__r4b1tFaultFirstRollBlockMs) > 0 && !window.__r4b1tFaultFirstRollUsed) {
+      window.__r4b1tFaultFirstRollUsed = true;
+      var faultDuration = Math.min(2000, Number(window.__r4b1tFaultFirstRollBlockMs));
+      var faultStarted = performance.now();
+      window.__r4b1tFaultRecord = { startedAt: faultStarted, durationMs: faultDuration };
+      while (performance.now() - faultStarted < faultDuration) { /* intentionally occupy the main thread */ }
+      window.__r4b1tFaultRecord.endedAt = performance.now();
+      window.__r4b1tFaultRecord.rollingAfterBlock = root.classList.contains('rolling');
+    }
     return true;
   }
 
