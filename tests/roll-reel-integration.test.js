@@ -473,8 +473,8 @@ test('fallback regression tests independently reject disabling ceiling or guard'
   }, /true !== false/, 'disabling the ceiling must make the safety test red');
 
   const noGuard = shell.replace(
-    "if (snapshot.running || snapshot.finished) {\n          armCompletionWatchdog('animation-active-at-soft-fallback', snapshot);",
-    "if (false) {\n          armCompletionWatchdog('animation-active-at-soft-fallback', snapshot);"
+    "if (snapshot.running || snapshot.finished) {\n        armCompletionWatchdog('animation-active-at-soft-fallback', snapshot);",
+    "if (false) {\n        armCompletionWatchdog('animation-active-at-soft-fallback', snapshot);"
   );
   assert.notEqual(noGuard, shell, 'guard mutation changed source');
   assert.throws(() => {
