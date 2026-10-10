@@ -1,0 +1,97 @@
+name: WebKit Release Synchronous Mechanism 20x
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/webkit-release-synchronous-mechanism.yml'
+      - 'tools/prepare-rabbit-sync-fixture.cjs'
+      - 'tests/roll-reel-fallback-now.spec.js'
+      - 'dual-shell.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-sync-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  same-sha-control-and-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: npm ci
+      - run: npx playwright install --with-deps webkit
+      - name: Verify release candidate has zero runtime fault hooks
+        shell: bash
+        run: |
+          if grep -nE '__R4B1T_TEST__|__r4b1tSyncFallback|__r4b1tTestSoftDelayApplied' dual-shell.js; then
+            echo 'ERROR: test-only injection present in production JavaScript' >&2
+            exit 1
+          fi
+          git show 5327771344b1bcc97b43d68950dacc67deec41b2:dual-shell.js > /tmp/rabbit-control-dual-shell.js
+      - name: Stage candidate site at exact PR SHA
+        run: |
+          mkdir -p test-site/r4b1t-h0le
+          rsync -a --exclude='.git' --exclude='node_modules' --exclude='test-site' --exclude='playwright-report' --exclude='test-results' ./ test-site/r4b1t-h0le/
+          cp test-site/r4b1t-h0le/dual-shell.js /tmp/rabbit-release-dual-shell.js
+      - name: 20 original-control injected decisions (expect 20 specific failures)
+        shell: bash
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'true'
+        run: |
+          cp /tmp/rabbit-control-dual-shell.js test-site/r4b1t-h0le/dual-shell.js
+          node tools/prepare-rabbit-sync-fixture.cjs control
+          npx playwright test --config=playwright.reel-webkit-fallback-now.config.js --project=mobile-webkit --repeat-each=20 --workers=4 --reporter=json > sync-control.json || true
+          node - <<'NODE'
+          const report=require('./sync-control.json'), tests=[];
+          function walk(items){for(const s of items||[]){for(const x of s.specs||[])for(const t of x.tests||[])tests.push(t);walk(s.suites)}}
+          walk(report.suites);
+          const failures=tests.filter(t=>t.status!=='expected');
+          const actual=failures.every(t=>(t.results||[]).some(r=>r.error?.message?.includes('SYNC_FALLBACK_LIFECYCLE')&&
+            r.error.message.includes('"starts":0')&&r.error.message.includes('"rollingAfter":false')));
+          const pass=tests.length===20&&failures.length===20&&actual;
+          console.log(JSON.stringify({sha:process.env.GITHUB_SHA,controlTrials:tests.length,controlFailures:failures.length,targetSpecific:actual,meetsGate:pass},null,2));
+          if(!pass)process.exit(1);
+          NODE
+      - name: 20 guarded candidate decisions (expect zero failures)
+        shell: bash
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'true'
+        run: |
+          cp /tmp/rabbit-release-dual-shell.js test-site/r4b1t-h0le/dual-shell.js
+          node tools/prepare-rabbit-sync-fixture.cjs candidate
+          set +e
+          npx playwright test --config=playwright.reel-webkit-fallback-now.config.js --project=mobile-webkit --repeat-each=20 --workers=4 --reporter=json > sync-candidate.json
+          status=$?
+          set -e
+          node - <<'NODE'
+          const report=require('./sync-candidate.json'), tests=[];
+          function walk(items){for(const s of items||[]){for(const x of s.specs||[])for(const t of x.tests||[])tests.push(t);walk(s.suites)}}
+          walk(report.suites);
+          const fails=tests.filter(t=>t.status!=='expected');
+          console.log(JSON.stringify({sha:process.env.GITHUB_SHA,candidateTrials:tests.length,candidateFailures:fails.length,errors:fails.flatMap(t=>(t.results||[]).map(r=>r.error?.message).filter(Boolean).slice(0,1))},null,2));
+          if(tests.length!==20||fails.length!==0)process.exit(1);
+          NODE
+          if [[ "$status" -ne 0 ]]; then exit "$status"; fi
+      - name: Verify original production bytes are unchanged
+        run: cmp /tmp/rabbit-release-dual-shell.js dual-shell.js
+      - name: Upload mechanism gate evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: release-mechanism-${{ github.sha }}
+          path: |
+            sync-control.json
+            sync-candidate.json
+            test-results/
+          if-no-files-found: warn
+          retention-days: 14
