@@ -227,6 +227,8 @@ function markFallbackHarness(source = shell, initialTime = 0) {
   const frames = new Map();
   const listeners = new Map();
   const eventCounts = { starts: 0, ends: 0, cancels: 0 };
+  const stored = new Map();
+  const warnings = [];
   let nextId = 1;
   let clock = initialTime;
   let animations = [];
@@ -265,7 +267,12 @@ function markFallbackHarness(source = shell, initialTime = 0) {
       return id;
     },
     cancelAnimationFrame: id => frames.delete(id),
-    matchMedia: () => ({ matches: false })
+    matchMedia: () => ({ matches: false }),
+    localStorage: {
+      getItem: key => stored.get(key) || null,
+      setItem: (key, value) => stored.set(key, value)
+    },
+    console: { warn: (...args) => warnings.push(args) }
   };
   const context = { window, document: { documentElement: html },
     performance: { now: () => clock },
@@ -282,6 +289,9 @@ function markFallbackHarness(source = shell, initialTime = 0) {
     rearm: () => api.rearmProductionMarkRollIfActive(),
     rolling: () => classes.has('rolling'),
     trace: () => window.__r4b1tRabbitFallbackTrace,
+    recovery: () => window.__r4b1tRabbitRecoveryDiagnostics,
+    recoveryRecord: () => JSON.parse(stored.get('r4b1t:rabbit-hung-recoveries:v1') || 'null'),
+    warnings: () => warnings.slice(),
     setAnimations: value => { animations = value; },
     dispatch: kind => {
       if (kind === 'animationstart') eventCounts.starts++;
@@ -321,6 +331,42 @@ test('rabbit no-frame path clears rolling at the 3000ms no-start ceiling', () =>
   harness.tick(1);
   assert.equal(harness.rolling(), false);
   assert.equal(harness.trace().finishReason, 'absolute-no-start-ceiling');
+});
+
+test('10-second hung cap emits local counter, console warning, and abnormal reason', () => {
+  const h = markFallbackHarness();
+  h.start();
+  h.frame();
+  h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  h.dispatch('animationstart');
+  h.tick(9999);
+  assert.equal(h.rolling(), true);
+  assert.equal(h.recoveryRecord(), null);
+  assert.equal(h.warnings().length, 0);
+  h.tick(1);
+  assert.equal(h.rolling(), false);
+  assert.equal(h.trace().finishReason, 'hung-10s-absolute-cap');
+  assert.equal(h.recovery().reason, 'hung-10s-absolute-cap');
+  assert.equal(h.recovery().animationStarted, true);
+  assert.equal(h.recoveryRecord().count, 1);
+  assert.equal(h.recoveryRecord().lastReason, 'hung-10s-absolute-cap');
+  assert.equal(h.warnings().length, 1);
+  assert.match(h.warnings()[0][0], /emergency recovery/);
+  assert.equal(JSON.stringify(h.recoveryRecord()).includes('http'), false);
+});
+
+test('normal rabbit animationend never records an emergency or emits warning', () => {
+  const h = markFallbackHarness();
+  h.start();
+  h.frame();
+  h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  h.dispatch('animationstart');
+  h.tick(1100);
+  h.dispatch('animationend');
+  h.tick(10000);
+  assert.equal(h.trace().finishReason, 'animationend');
+  assert.equal(h.recoveryRecord(), null);
+  assert.equal(h.warnings().length, 0);
 });
 
 test('rabbit late start at 2200ms is not truncated by the old 3000ms ceiling', () => {
