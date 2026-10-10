@@ -19,7 +19,9 @@ async function instrument(page) {
   await page.evaluate(() => {
     const log = window.__markLog = { t0: null, events: [] };
     const now = () => (log.t0 === null ? null : Math.round(performance.now() - log.t0));
-    const mark = (name, extra) => log.events.push({ name, t: now(), extra: extra || null });
+    const mark = (name, extra, details) => log.events.push({
+      name, t: now(), extra: extra || null, details: details || null
+    });
     const html = document.documentElement;
     const wrap = (key, name) => {
       const original = window[key];
@@ -49,9 +51,22 @@ async function instrument(page) {
     requestAnimationFrame(sample);
     const rabbit = document.getElementById('r4h-roll-rabbit');
     if (rabbit) {
-      rabbit.addEventListener('animationstart', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-start'); });
-      rabbit.addEventListener('animationend', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-end'); });
-      rabbit.addEventListener('animationcancel', (e) => { if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-cancel'); });
+      const animationInfo = (e) => {
+        const animation = rabbit.getAnimations().find(a => a.animationName === 'r4h-roll-rabbit');
+        return { eventElapsedSec: e.elapsedTime,
+          cssTime: animation ? Number(animation.currentTime) : null,
+          state: animation ? animation.playState : 'not-reported',
+          browserNow: performance.now() };
+      };
+      rabbit.addEventListener('animationstart', (e) => {
+        if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-start', null, animationInfo(e));
+      });
+      rabbit.addEventListener('animationend', (e) => {
+        if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-end', null, animationInfo(e));
+      });
+      rabbit.addEventListener('animationcancel', (e) => {
+        if (e.animationName === 'r4h-roll-rabbit') mark('mark-roll-animation-cancel', null, animationInfo(e));
+      });
     }
     // each roll gets a fresh timeline; last-seen states carry over so only changes are logged
     window.__markStart = () => { log.events.length = 0; disclosed = false; log.t0 = performance.now(); };
@@ -124,7 +139,13 @@ test.describe('production mark timing authority', () => {
       expect(markEnd).not.toBeNull();
       expect(markCancel).toBeNull();
       // animation events, not a presentation timer, define the rabbit's complete run.
-      expect(markEnd - markStart).toBeGreaterThanOrEqual(950);
+      // Keep 950ms acceptance unchanged. On failure, report CSS event.elapsedTime
+      // and CSSAnimation.currentTime to separate delayed event dispatch from
+      // genuinely shortened motion; do not infer from performance.now alone.
+      const animationEvents = ev.filter(x => x.name.startsWith('mark-roll-animation-'));
+      expect(markEnd - markStart, JSON.stringify({
+        selector, observedMs: markEnd - markStart, animationEvents
+      })).toBeGreaterThanOrEqual(950);
       expect(await page.evaluate(() => document.documentElement.classList.contains('rolling'))).toBe(false);
       // commitment starts before the mark finishes; later reveal timing belongs to the REEL.
       expect(authority.commit).toBeLessThan(markEnd);
