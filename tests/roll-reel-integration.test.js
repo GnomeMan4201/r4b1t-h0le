@@ -268,7 +268,8 @@ function markFallbackHarness(source = shell, initialTime = 0) {
   };
   const context = { window, document: { documentElement: html },
     performance: { now: () => clock },
-    byId: id => id === 'r4h-roll-rabbit' ? rabbit : id === 'r4h-root' ? {} : null };
+    byId: id => id === 'r4h-roll-rabbit' ? rabbit : id === 'r4h-root' ? {} : null,
+    syncProductionMarkState: () => {} };
   vm.runInNewContext(
     source.slice(start, end) +
       '\nwindow.__markTest = { startProductionMarkRoll, rearmProductionMarkRollIfActive };\n',
