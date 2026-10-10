@@ -292,6 +292,12 @@ function markFallbackHarness(source = shell, initialTime = 0) {
     recovery: () => window.__r4b1tRabbitRecoveryDiagnostics,
     recoveryRecord: () => JSON.parse(stored.get('r4b1t:rabbit-hung-recoveries:v1') || 'null'),
     warnings: () => warnings.slice(),
+    throwOnStorage: () => {
+      Object.defineProperty(window, 'localStorage', {
+        configurable: true,
+        get() { throw new Error('SecurityError: storage denied'); }
+      });
+    },
     setAnimations: value => { animations = value; },
     dispatch: kind => {
       if (kind === 'animationstart') eventCounts.starts++;
@@ -353,6 +359,22 @@ test('10-second hung cap emits local counter, console warning, and abnormal reas
   assert.equal(h.warnings().length, 1);
   assert.match(h.warnings()[0][0], /emergency recovery/);
   assert.equal(JSON.stringify(h.recoveryRecord()).includes('http'), false);
+});
+
+test('10-second recovery still completes when Safari storage access throws', () => {
+  const h = markFallbackHarness();
+  h.throwOnStorage();
+  h.start();
+  h.frame();
+  h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  h.dispatch('animationstart');
+  h.tick(10000);
+  assert.equal(h.rolling(), false, 'storage denial must never trap the rabbit');
+  assert.equal(h.trace().finishReason, 'hung-10s-absolute-cap');
+  assert.equal(h.recovery().reason, 'hung-10s-absolute-cap');
+  assert.equal(h.recovery().storageUnavailable, true);
+  assert.equal(h.recoveryRecord(), null);
+  assert.equal(h.warnings().length, 1, 'warning remains available when persistence is denied');
 });
 
 test('normal rabbit animationend never records an emergency or emits warning', () => {
