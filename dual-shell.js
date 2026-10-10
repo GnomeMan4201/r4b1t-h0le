@@ -295,17 +295,19 @@
   // Read the *existing* CSSAnimation only when a fallback fires, never at
   // trigger time. This avoids adding an early forced style/layout flush.
   function rabbitRollAnimationSnapshot(rabbit) {
-    var matches = [];
+    var all = [];
     try {
       if (typeof rabbit.getAnimations === 'function') {
-        matches = rabbit.getAnimations().filter(function (animation) {
-          // The named production CSS animation is the only relevant authority.
-          return !animation.animationName || animation.animationName === 'r4h-roll-rabbit';
-        });
+        all = rabbit.getAnimations();
       }
     } catch (_) { /* No WAAPI support: retain the bounded fallback. */ }
+    var matches = all.filter(function (animation) {
+      // Only the canonical rabbit CSS animation controls this fallback.
+      return !animation.animationName || animation.animationName === 'r4h-roll-rabbit';
+    });
     return {
-      count: matches.length,
+      count: all.length, // raw rabbit.getAnimations().length for diagnosis
+      matchingCount: matches.length,
       running: matches.some(function (animation) {
         return animation.playState === 'running' || animation.playState === 'pending';
       })
@@ -362,8 +364,9 @@
       runId: runId, armedAt: null, firstFrameAt: null,
       animationStartAt: null, animationEndAt: null,
       softFallbackAt: null, softFallbackAnimationCount: null,
-      softFallbackHasRunningAnimation: null, ceilingAt: null,
-      ceilingAnimationCount: null, finishedAt: null, finishReason: null
+      softFallbackMatchingCount: null, softFallbackHasRunningAnimation: null,
+      ceilingAt: null, ceilingAnimationCount: null,
+      ceilingMatchingCount: null, finishedAt: null, finishReason: null
     };
     window.__r4b1tRabbitFallbackTrace = markRollTrace;
 
@@ -404,6 +407,7 @@
       var snapshot = rabbitRollAnimationSnapshot(rabbit);
       markRollTrace.ceilingAt = performance.now();
       markRollTrace.ceilingAnimationCount = snapshot.count;
+      markRollTrace.ceilingMatchingCount = snapshot.matchingCount;
       finishProductionMarkRoll('absolute-ceiling');
     }, MARK_ROLL_ABSOLUTE_CEILING_MS);
 
@@ -420,6 +424,7 @@
         var snapshot = rabbitRollAnimationSnapshot(rabbit);
         markRollTrace.softFallbackAt = performance.now();
         markRollTrace.softFallbackAnimationCount = snapshot.count;
+        markRollTrace.softFallbackMatchingCount = snapshot.matchingCount;
         markRollTrace.softFallbackHasRunningAnimation = snapshot.running;
         if (!snapshot.running) finishProductionMarkRoll('no-start-after-frame');
       }, MARK_ROLL_MS + 300);
