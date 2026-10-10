@@ -207,8 +207,8 @@ test('rabbit CSS lifecycle is event/WAAPI owned with only 10s emergency truncati
   assert.match(shell, /finishProductionMarkRoll\('hung-10s-absolute-cap'\)/);
   assert.match(shell, /animation\.finished\.then\(function \(\)/);
   assert.match(shell, /animation\.playState === 'finished'/);
-  assert.match(shell, /finishProductionMarkRoll\('waapi-finished'\)/);
-  assert.match(shell, /finishProductionMarkRoll\('waapi-observed-finished'\)/);
+  assert.match(shell, /markRollTrace\.waapiResolvedAt = performance\.now\(\)/);
+  assert.match(shell, /markRollTrace\.waapiObservedFinishedAt = performance\.now\(\)/);
   assert.match(shell, /markRollRunId \+= 1/);
   assert.match(shell, /MARK_ROLL_MS \+ 300/);
   assert.match(shell, /rabbit\.getAnimations\(\)/);
@@ -226,6 +226,7 @@ function markFallbackHarness(source = shell, initialTime = 0) {
   const timers = new Map();
   const frames = new Map();
   const listeners = new Map();
+  const eventCounts = { starts: 0, ends: 0, cancels: 0 };
   let nextId = 1;
   let clock = initialTime;
   let animations = [];
@@ -283,10 +284,14 @@ function markFallbackHarness(source = shell, initialTime = 0) {
     trace: () => window.__r4b1tRabbitFallbackTrace,
     setAnimations: value => { animations = value; },
     dispatch: kind => {
+      if (kind === 'animationstart') eventCounts.starts++;
+      if (kind === 'animationend') eventCounts.ends++;
+      if (kind === 'animationcancel') eventCounts.cancels++;
       for (const fn of Array.from(listeners.get(kind) || [])) {
         fn({ target: rabbit, animationName: 'r4h-roll-rabbit' });
       }
     },
+    events: () => ({ ...eventCounts }),
     tick: delta => {
       const endTime = clock + delta;
       for (;;) {
@@ -373,6 +378,7 @@ test('late WebKit event timeline: start at 4455, end at 5800, no forced cancel',
   h.dispatch('animationend');
   assert.equal(h.rolling(), false);
   assert.equal(h.trace().animationEndAt, 5800);
+  assert.deepEqual(h.events(), { starts: 1, ends: 1, cancels: 0 });
   assert.equal(h.trace().finishReason, 'animationend');
 });
 
@@ -390,8 +396,11 @@ test('WAAPI finished resolves before delayed DOM animationend without cancellati
   resolveFinished();
   await finished;
   await new Promise(setImmediate);
+  assert.equal(h.rolling(), true, 'finished evidence must not cancel pending animationend');
+  assert.notEqual(h.trace().waapiResolvedAt, null);
+  h.dispatch('animationend');
   assert.equal(h.rolling(), false);
-  assert.equal(h.trace().finishReason, 'waapi-finished');
+  assert.equal(h.trace().finishReason, 'animationend');
 });
 
 test('late prior-roll WAAPI promise cannot end a second run', async () => {
