@@ -21,7 +21,7 @@
     width:100%;
     max-width:100%;
     min-width:0;
-    margin:0 0 12px;
+    margin:0 0 6px;
     padding:12px;
     display:grid;
     gap:10px;
@@ -193,7 +193,7 @@
     width:min(208px,calc(100vw - 48px))!important;
     height:min(208px,calc(100vw - 48px))!important;
     min-height:min(208px,calc(100vw - 48px))!important;
-    margin:6px auto 14px!important;
+    margin:2px auto 14px!important;
     padding:0!important;
     border:0!important;
     border-radius:50%!important;
