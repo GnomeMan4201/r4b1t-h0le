@@ -35,19 +35,18 @@ jobs:
             echo 'ERROR: test-only injection present in production JavaScript' >&2
             exit 1
           fi
-          git show 5327771344b1bcc97b43d68950dacc67deec41b2:dual-shell.js > /tmp/rabbit-control-dual-shell.js
       - name: Stage candidate site at exact PR SHA
         run: |
           mkdir -p test-site/r4b1t-h0le
           rsync -a --exclude='.git' --exclude='node_modules' --exclude='test-site' --exclude='playwright-report' --exclude='test-results' ./ test-site/r4b1t-h0le/
           cp test-site/r4b1t-h0le/dual-shell.js /tmp/rabbit-release-dual-shell.js
-      - name: 20 original-control injected decisions (expect 20 specific failures)
+      - name: 20 original-fallback-logic ablation trials (expect 20 specific failures)
         shell: bash
         env:
           BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
           CI: 'true'
         run: |
-          cp /tmp/rabbit-control-dual-shell.js test-site/r4b1t-h0le/dual-shell.js
+          cp /tmp/rabbit-release-dual-shell.js test-site/r4b1t-h0le/dual-shell.js
           node tools/prepare-rabbit-sync-fixture.cjs control
           npx playwright test --config=playwright.reel-webkit-fallback-now.config.js --project=mobile-webkit --repeat-each=20 --workers=4 --reporter=json > sync-control.json || true
           node - <<'NODE'
