@@ -156,6 +156,81 @@ test('WebKit: 10 normal + 10 slammed rolls preserve rabbit lifecycle and authori
   });
 });
 
+test('WebKit: two rapid physical ROLL taps cannot steal the next rabbit run', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+  await expect(page.locator('#r4h-roll-rabbit')).toBeAttached();
+  await page.waitForTimeout(1300);
+
+  await page.evaluate(() => {
+    const rabbit = document.getElementById('r4h-roll-rabbit');
+    const roll = document.getElementById('r4mRoll');
+    window.__rapidRabbit = { starts: 0, ends: 0, cancels: 0, pointerDownAt: [] };
+    roll.addEventListener('pointerdown', () => {
+      window.__rapidRabbit.pointerDownAt.push(performance.now());
+    });
+    rabbit.addEventListener('animationstart', e => {
+      if (e.animationName === 'r4h-roll-rabbit') window.__rapidRabbit.starts++;
+    });
+    rabbit.addEventListener('animationend', e => {
+      if (e.animationName === 'r4h-roll-rabbit') window.__rapidRabbit.ends++;
+    });
+    rabbit.addEventListener('animationcancel', e => {
+      if (e.animationName === 'r4h-roll-rabbit') window.__rapidRabbit.cancels++;
+    });
+  });
+
+  const box = await page.locator('#r4mRoll').boundingBox();
+  expect(box).not.toBeNull();
+  const x = box.x + box.width / 2;
+  const y = box.y + box.height / 2;
+  await page.touchscreen.tap(x, y);
+  await page.touchscreen.tap(x, y);
+
+  const gestures = await page.evaluate(() => window.__rapidRabbit.pointerDownAt);
+  expect(gestures.length, 'two browser-touch ROLL attempts').toBe(2);
+  // Check the interval to prove this actually exercised the rapid-tap case.
+  expect(gestures[1] - gestures[0], 'two taps must be within 300ms').toBeLessThan(300);
+
+  await page.waitForFunction(() => {
+    const reel = window.R4B1TRollReel.snapshot();
+    const production = window.R4B1TRollProduction.snapshot();
+    return reel.phase === 'revealed' && reel.landedUrl && production && !production.active;
+  });
+  await page.waitForFunction(() => window.__rapidRabbit.ends >= 1);
+  const afterRapid = await page.evaluate(() => ({
+    lifecycle: { starts: window.__rapidRabbit.starts, ends: window.__rapidRabbit.ends, cancels: window.__rapidRabbit.cancels },
+    committed: window.R4B1TRollProduction.snapshot().committedTransactionId,
+  }));
+  expect(afterRapid.lifecycle).toEqual({ starts: 1, ends: 1, cancels: 0 });
+  expect(afterRapid.committed).toBe(1);
+
+  // An overlap is not an authorized second selection. Require the *next
+  // accepted* ROLL to get its own complete rabbit lifecycle, without stale
+  // timers from the first attempt removing html.rolling.
+  const accepted = await page.evaluate(() => {
+    document.documentElement.classList.remove('r4m-stage-result');
+    return window.R4B1TRollReel.quickRoll();
+  });
+  expect(accepted).toBe(true);
+  await page.waitForFunction(() => window.__rapidRabbit.starts >= 2);
+  await page.waitForFunction(() => {
+    const reel = window.R4B1TRollReel.snapshot();
+    const production = window.R4B1TRollProduction.snapshot();
+    return reel.phase === 'revealed' && reel.landedUrl && production && !production.active
+      && window.__rapidRabbit.ends >= 2;
+  });
+  const final = await page.evaluate(() => ({
+    lifecycle: { starts: window.__rapidRabbit.starts, ends: window.__rapidRabbit.ends, cancels: window.__rapidRabbit.cancels },
+    committed: window.R4B1TRollProduction.snapshot().committedTransactionId,
+    rendered: document.getElementById('r4mUrl').textContent,
+    landed: window.R4B1TRollReel.snapshot().landedUrl,
+  }));
+  expect(final.lifecycle).toEqual({ starts: 2, ends: 2, cancels: 0 });
+  expect(final.committed).toBe(2);
+  expect(final.rendered).toBe(final.landed);
+});
+
 test('WebKit: reduced motion lands the authoritative result with no spin frames', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('./', { waitUntil: 'domcontentloaded' });
