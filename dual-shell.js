@@ -380,7 +380,7 @@
       ceilingAt: null, ceilingAnimationCount: null,
       ceilingMatchingCount: null, watchdogArmedAt: null,
       watchdogReason: null, finishedAt: null, finishReason: null,
-      waapiResolvedAt: null, rechecks: 0
+      waapiResolvedAt: null, waapiObservedFinishedAt: null, rechecks: 0
     };
     window.__r4b1tRabbitFallbackTrace = markRollTrace;
 
@@ -397,8 +397,10 @@
         animation.finished.then(function () {
           if (!currentRun() || observedAnimation !== animation) return;
           if (animation.playState === 'finished') {
+            // WebKit can deliver animationend *after* finished resolves.
+            // Removing .rolling here caused animationcancel in 16/20 injected
+            // trials; preserve CSS/event ownership until named animationend.
             markRollTrace.waapiResolvedAt = performance.now();
-            finishProductionMarkRoll('waapi-finished');
           }
         }, function () { /* rejected = cancelled, no completion claim */ });
       }
@@ -409,9 +411,10 @@
       var snapshot = rabbitRollAnimationSnapshot(rabbit);
       markRollTrace.rechecks += 1;
       if (snapshot.animation) watchAnimationFinished(snapshot.animation);
-      if (snapshot.finished) {
-        finishProductionMarkRoll('waapi-observed-finished');
-        return;
+      if (snapshot.finished && !markRollTrace.waapiObservedFinishedAt) {
+        // The finished state is supporting evidence, not permission to
+        // remove the trigger before WebKit dispatches animationend.
+        markRollTrace.waapiObservedFinishedAt = performance.now();
       }
       // Never remove .rolling while the canonical CSS animation is running
       // or pending. Continue to observe until animationend, WAAPI finished,
