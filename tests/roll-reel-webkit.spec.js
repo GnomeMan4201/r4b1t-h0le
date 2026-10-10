@@ -33,6 +33,38 @@ async function expectFit(page, label) {
   expect(geometry.clientWidth, label + ' client/inner width').toBe(geometry.innerWidth);
 }
 
+// An absent animationstart must surface a diagnostic, not consume the entire
+// 180-second lifecycle test timeout. Preserve the event-count contract.
+async function waitForRabbitStart(page, target, cycle) {
+  try {
+    await page.waitForFunction(count => window.__webkitRabbit.starts >= count, target, { timeout: 12000 });
+  } catch (error) {
+    const diagnostic = await page.evaluate(() => {
+      const rabbit = document.getElementById('r4h-roll-rabbit');
+      const root = document.getElementById('r4h-root');
+      const animation = rabbit ? getComputedStyle(rabbit) : null;
+      return {
+        rabbitMounted: Boolean(rabbit),
+        markRootMounted: Boolean(root),
+        markRootClass: root ? root.getAttribute('class') : null,
+        htmlClass: document.documentElement.className,
+        presentation: document.documentElement.getAttribute('data-r4m-presentation'),
+        animationName: animation ? animation.animationName : null,
+        animationDuration: animation ? animation.animationDuration : null,
+        activeRabbitAnimations: rabbit ? rabbit.getAnimations().map(item => ({
+          name: item.animationName || '',
+          playState: item.playState,
+          currentTime: item.currentTime,
+        })) : [],
+        counters: window.__webkitRabbit,
+        reel: window.R4B1TRollReel.snapshot(),
+        production: window.R4B1TRollProduction.snapshot(),
+      };
+    });
+    throw new Error(`WebKit rabbit animationstart absent on ${cycle} (expected start ${target}): ${JSON.stringify(diagnostic)}; cause: ${error.message}`);
+  }
+}
+
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
     try { localStorage.removeItem('r4b1t-roll-reel-sound'); } catch (_) {}
@@ -40,9 +72,42 @@ test.beforeEach(async ({ page }) => {
   await blockExternalNetwork(page);
 });
 
+// Exercise a real iPhone-style tap alongside the strict programmatic 20-roll suite.
+test('WebKit: physical ROLL tap produces one complete canonical rabbit run', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await ready(page);
+  const rabbit = page.locator('#r4h-roll-rabbit');
+  await expect(rabbit).toBeAttached();
+  await page.waitForTimeout(1300);
+  await page.evaluate(() => {
+    window.__gestureRabbit = { starts: 0, ends: 0, cancels: 0 };
+    const element = document.getElementById('r4h-roll-rabbit');
+    for (const [name, counter] of [
+      ['animationstart', 'starts'],
+      ['animationend', 'ends'],
+      ['animationcancel', 'cancels'],
+    ]) {
+      element.addEventListener(name, event => {
+        if (event.animationName === 'r4h-roll-rabbit') window.__gestureRabbit[counter] += 1;
+      });
+    }
+  });
+  await page.locator('#r4mRoll').tap();
+  await page.waitForFunction(() => document.documentElement.dataset.r4mPresentation === 'revealed');
+  await page.waitForFunction(() => window.__gestureRabbit.ends === 1, null, { timeout: 12000 });
+  const state = await page.evaluate(() => ({
+    events: window.__gestureRabbit,
+    rendered: document.getElementById('r4mUrl').textContent,
+    landed: window.R4B1TRollReel.snapshot().landedUrl,
+  }));
+  expect(state.events).toEqual({ starts: 1, ends: 1, cancels: 0 });
+  expect(state.rendered).toBe(state.landed);
+});
+
 test('WebKit: 10 normal + 10 slammed rolls preserve rabbit lifecycle and authority', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await ready(page);
+  await expect(page.locator('#r4h-roll-rabbit')).toBeAttached();
   await page.waitForTimeout(1300);
 
   await page.evaluate(() => {
@@ -60,11 +125,12 @@ test('WebKit: 10 normal + 10 slammed rolls preserve rabbit lifecycle and authori
   });
 
   for (let i = 1; i <= 10; i += 1) {
-    await page.evaluate(() => {
+    const started = await page.evaluate(() => {
       document.documentElement.classList.remove('r4m-stage-result');
-      window.R4B1TRollReel.quickRoll();
+      return window.R4B1TRollReel.quickRoll();
     });
-    await page.waitForFunction(target => window.__webkitRabbit.starts >= target, i);
+    expect(started, 'normal ROLL request accepted').toBe(true);
+    await waitForRabbitStart(page, i, 'normal');
     await page.waitForFunction(() => {
       const reel = window.R4B1TRollReel.snapshot();
       const production = window.R4B1TRollProduction.snapshot();
@@ -82,10 +148,11 @@ test('WebKit: 10 normal + 10 slammed rolls preserve rabbit lifecycle and authori
 
   for (let i = 1; i <= 10; i += 1) {
     const target = 10 + i;
-    await page.evaluate(() => {
+    const started = await page.evaluate(() => {
       document.documentElement.classList.remove('r4m-stage-result');
-      window.R4B1TRollReel.quickRoll();
+      return window.R4B1TRollReel.quickRoll();
     });
+    expect(started, 'slammed ROLL request accepted').toBe(true);
     await page.waitForFunction(() => window.R4B1TRollReel.snapshot().phase === 'spin');
     await page.evaluate(() => {
       document.querySelector('#r4mRollReel .r4m-reel-window').dispatchEvent(new PointerEvent('pointerdown', {
@@ -97,7 +164,7 @@ test('WebKit: 10 normal + 10 slammed rolls preserve rabbit lifecycle and authori
         clientY: 40,
       }));
     });
-    await page.waitForFunction(count => window.__webkitRabbit.starts >= count, target);
+    await waitForRabbitStart(page, target, 'slammed');
     await page.waitForFunction(() => {
       const reel = window.R4B1TRollReel.snapshot();
       const production = window.R4B1TRollProduction.snapshot();
