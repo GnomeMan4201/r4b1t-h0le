@@ -282,6 +282,10 @@
   // The SVG defines the canonical 1000ms CSS animation. Timers below are
   // recovery only; they never replace the named animation's normal completion.
   var MARK_ROLL_MS = 1050;
+  // EXPERIMENT ONLY. This override never exists in production candidate #296.
+  var MARK_ROLL_SOFT_FALLBACK_DELAY_MS =
+    window.__R4B1T_TEST__ && window.__R4B1T_TEST__.markRollMs === 5
+      ? 5 : MARK_ROLL_MS + 300;
   var MARK_ROLL_ABSOLUTE_CEILING_MS = 3000; // never started / no rendered frame
   var MARK_ROLL_HUNG_CAP_MS = 10000; // sole time-based path that may interrupt a started animation
   var MARK_ROLL_RECHECK_MS = 300;
@@ -497,6 +501,7 @@
     void rabbit.getBoundingClientRect();
     markRollTrace.armedAt = performance.now();
     root.classList.add('rolling');
+    window.__r4b1tTestSoftDelayApplied = MARK_ROLL_SOFT_FALLBACK_DELAY_MS;
 
     // Emergency 10-second maximum from class application: the ONLY timed
     // mechanism that may remove a genuinely started/running rabbit animation.
@@ -543,7 +548,7 @@
       firstFrameObserved = true;
       markRollTrace.firstFrameAt = timestamp;
       if (animationStarted) return;
-      markRollTimer = window.setTimeout(runNoStartFallbackCheck, MARK_ROLL_MS + 300);
+      markRollTimer = window.setTimeout(runNoStartFallbackCheck, MARK_ROLL_SOFT_FALLBACK_DELAY_MS);
     });
     return true;
   }
