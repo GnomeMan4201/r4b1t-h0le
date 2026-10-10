@@ -217,7 +217,7 @@ test('rabbit CSS lifecycle is event/WAAPI owned with only 10s emergency truncati
 });
 
 
-function markFallbackHarness(source = shell) {
+function markFallbackHarness(source = shell, initialTime = 0) {
   const vm = require('node:vm');
   const start = source.indexOf('  var MARK_ROLL_MS = 1050;');
   const end = source.indexOf('  // ── Secondary mark states', start);
@@ -227,7 +227,7 @@ function markFallbackHarness(source = shell) {
   const frames = new Map();
   const listeners = new Map();
   let nextId = 1;
-  let clock = 0;
+  let clock = initialTime;
   let animations = [];
   const rabbit = {
     getBoundingClientRect: () => ({ width: 1 }),
@@ -361,9 +361,8 @@ test('stale first-roll watchdog cannot remove second roll rolling class', () => 
 
 
 test('late WebKit event timeline: start at 4455, end at 5800, no forced cancel', () => {
-  const h = markFallbackHarness();
+  const h = markFallbackHarness(shell, 4455);
   h.start();
-  h.tick(4455);
   h.frame();
   h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
   h.dispatch('animationstart');
@@ -427,8 +426,8 @@ test('fallback regression tests independently reject disabling ceiling or guard'
   }, /true !== false/, 'disabling the ceiling must make the safety test red');
 
   const noGuard = shell.replace(
-    "if (snapshot.running || snapshot.finished) {\\n          armCompletionWatchdog('animation-active-at-soft-fallback', snapshot);",
-    "if (false) {\\n          armCompletionWatchdog('animation-active-at-soft-fallback', snapshot);"
+    "if (snapshot.running || snapshot.finished) {\n          armCompletionWatchdog('animation-active-at-soft-fallback', snapshot);",
+    "if (false) {\n          armCompletionWatchdog('animation-active-at-soft-fallback', snapshot);"
   );
   assert.notEqual(noGuard, shell, 'guard mutation changed source');
   assert.throws(() => {
