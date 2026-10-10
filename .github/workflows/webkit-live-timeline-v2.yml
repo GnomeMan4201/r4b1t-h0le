@@ -1,0 +1,79 @@
+name: WebKit First-Roll Live Timeline V2 20x
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/webkit-live-timeline-v2.yml'
+      - 'tests/roll-reel-live-lifecycle-v2.spec.js'
+      - 'playwright.reel-webkit-live-v2.config.js'
+      - 'dual-shell.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rabbit-live-timeline-v2-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  live-20:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Verify exact experimental head
+        run: test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha || github.sha }}"
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: npm ci
+      - run: npx playwright install --with-deps webkit
+      - name: Stage site
+        run: |
+          mkdir -p test-site/r4b1t-h0le
+          rsync -a --exclude='.git' --exclude='node_modules' --exclude='test-site' --exclude='playwright-report' --exclude='test-results' ./ test-site/r4b1t-h0le/
+      - name: Run twenty uninjected fresh first ROLLs with CSS time and frame-coverage evidence
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'true'
+        shell: bash
+        run: |
+          set +e
+          npx playwright test --config=playwright.reel-webkit-live-v2.config.js --project=mobile-webkit --repeat-each=20 --workers=4 --reporter=json > rabbit-live-v2.json
+          status=$?
+          set -e
+          node - <<'NODE'
+          const fs=require('node:fs'),json=JSON.parse(fs.readFileSync('rabbit-live-v2.json','utf8'));
+          const tests=[];
+          const walk=suites=>{for(const s of suites||[]){for(const p of s.specs||[])for(const t of p.tests||[])tests.push(t);walk(s.suites)}};
+          walk(json.suites);
+          const failed=tests.filter(t=>t.status!=='expected');
+          const records=tests.flatMap(t=>(t.results||[]).flatMap(result=>
+            (result.stdout||[]).map(entry=>typeof entry==='string'?entry:entry.text||'')
+            .filter(line=>line.includes('RABBIT_LIVE_COVERAGE_V2 ')).map(line=>{
+              const str=line.slice(line.indexOf('RABBIT_LIVE_COVERAGE_V2 ')+24).trim();
+              try{return JSON.parse(str)}catch(e){return {invalid:true,raw:str.slice(0,180)}}
+            })));
+          const missing=records.filter(r=>r.coverage==='MIDDLE_PHASE_UNOBSERVED').length;
+          const observed=records.filter(r=>r.coverage==='MIDDLE_PHASE_OBSERVED').length;
+          const pass=tests.length===20&&failed.length===0&&records.length===20&&records.every(x=>!x.invalid);
+          console.log(JSON.stringify({head:process.env.GITHUB_HEAD_REF,trials:tests.length,failed:failed.length,
+            coverageObserved:observed,coverageMissing:missing,recorded:records.length,meetsEventTimelineGate:pass,
+            failures:failed.map(t=>({title:t.title,errors:(t.results||[]).map(r=>r.error?.message).filter(Boolean)}))},null,2));
+          if(!pass)process.exitCode=1;
+          NODE
+          if [[ "$status" -ne 0 ]]; then exit "$status"; fi
+      - name: Upload raw per-trial evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: rabbit-live-v2-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            rabbit-live-v2.json
+            test-results/
+          if-no-files-found: warn
+          retention-days: 14
