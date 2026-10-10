@@ -196,12 +196,21 @@ test('slam interrupts presentation only and reveals the same committed transacti
 });
 
 
-test('rabbit mark lifecycle is owned by named animationend with a no-start fallback', () => {
+test('rabbit mark lifecycle is owned by named animationend with a bounded animation-aware fallback', () => {
   assert.match(shell, /rabbit\.addEventListener\('animationstart', markRollOnStart\)/);
   assert.match(shell, /rabbit\.addEventListener\('animationend', markRollOnEnd\)/);
   assert.match(shell, /event\.animationName !== 'r4h-roll-rabbit'/);
-  assert.match(shell, /if \(!animationStarted\) finishProductionMarkRoll\(\)/);
+  assert.match(shell, /finishProductionMarkRoll\('animationend'\)/);
+  // Verify a deadline exists even when a hidden tab never receives rAF.
+  assert.match(shell, /MARK_ROLL_ABSOLUTE_CEILING_MS = 3000/);
+  assert.match(shell, /markRollCeilingTimer = window\.setTimeout\(function/);
+  assert.match(shell, /finishProductionMarkRoll\('absolute-ceiling'\)/);
+  // An active CSS animation cannot be cleared for a merely delayed start event.
+  assert.match(shell, /markRollFrame = window\.requestAnimationFrame\(function \(timestamp\)/);
   assert.match(shell, /MARK_ROLL_MS \+ 300/);
+  assert.match(shell, /rabbit\.getAnimations\(\)/);
+  assert.match(shell, /if \(!snapshot\.running\) finishProductionMarkRoll\('no-start-after-frame'\)/);
+  assert.match(shell, /clearProductionMarkRollWatch\(\)/);
   assert.match(shell, /return startProductionMarkRoll\(\)/);
 });
 
