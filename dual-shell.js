@@ -282,6 +282,10 @@
   // The SVG defines the canonical 1000ms CSS animation. Timers below are
   // recovery only; they never replace the named animation's normal completion.
   var MARK_ROLL_MS = 1050;
+  // EXPERIMENT ONLY. This override never exists in production candidate #296.
+  var MARK_ROLL_SOFT_FALLBACK_DELAY_MS =
+    window.__R4B1T_TEST__ && window.__R4B1T_TEST__.markRollMs === 5
+      ? 5 : MARK_ROLL_MS + 300;
   var MARK_ROLL_ABSOLUTE_CEILING_MS = 3000; // never started / no rendered frame
   var MARK_ROLL_HUNG_CAP_MS = 10000; // sole time-based path that may interrupt a started animation
   var MARK_ROLL_RECHECK_MS = 300;
@@ -290,6 +294,8 @@
   var markRollLongCapTimer = null;
   var markRollCompletionTimer = null;
   var markRollFrame = null;
+  var markRollFinishedGraceFrame = null;
+  var markRollFinishedGraceFrame2 = null;
   var markRollRunId = 0;
   var markRollTrace = null;
   var markRollActive = false;
@@ -322,6 +328,14 @@
     if (markRollFrame !== null) {
       window.cancelAnimationFrame(markRollFrame);
       markRollFrame = null;
+    }
+    if (markRollFinishedGraceFrame !== null) {
+      window.cancelAnimationFrame(markRollFinishedGraceFrame);
+      markRollFinishedGraceFrame = null;
+    }
+    if (markRollFinishedGraceFrame2 !== null) {
+      window.cancelAnimationFrame(markRollFinishedGraceFrame2);
+      markRollFinishedGraceFrame2 = null;
     }
     if (markRollTimer !== null) {
       window.clearTimeout(markRollTimer);
@@ -381,12 +395,33 @@
       ceilingAt: null, ceilingAnimationCount: null,
       ceilingMatchingCount: null, watchdogArmedAt: null,
       watchdogReason: null, finishedAt: null, finishReason: null,
-      waapiResolvedAt: null, waapiObservedFinishedAt: null, rechecks: 0
+      waapiResolvedAt: null, waapiObservedFinishedAt: null,
+      finishedNoEventGraceArmedAt: null, finishedNoEventGraceCompletedAt: null, rechecks: 0
     };
     window.__r4b1tRabbitFallbackTrace = markRollTrace;
 
     function currentRun() {
       return markRollActive && markRollRunId === runId && markRollRabbit === rabbit;
+    }
+
+    function scheduleFinishedNoEventGrace(animation) {
+      if (!currentRun() || markRollFinishedGraceFrame !== null ||
+          markRollFinishedGraceFrame2 !== null) return;
+      if (!animation || animation.playState !== 'finished') return;
+      markRollTrace.finishedNoEventGraceArmedAt = performance.now();
+      markRollFinishedGraceFrame = window.requestAnimationFrame(function () {
+        markRollFinishedGraceFrame = null;
+        if (!currentRun()) return;
+        markRollFinishedGraceFrame2 = window.requestAnimationFrame(function () {
+          markRollFinishedGraceFrame2 = null;
+          if (!currentRun()) return;
+          if (animation.playState !== 'finished') return;
+          markRollTrace.finishedNoEventGraceCompletedAt = performance.now();
+          // EXPERIMENT ONLY. Class removal here may still cause animationcancel
+          // instead of a lazily queued WebKit animationend. Strict E2E detects it.
+          finishProductionMarkRoll('finished-no-event');
+        });
+      });
     }
 
     function watchAnimationFinished(animation) {
@@ -402,6 +437,7 @@
             // Removing .rolling here caused animationcancel in 16/20 injected
             // trials; preserve CSS/event ownership until named animationend.
             markRollTrace.waapiResolvedAt = performance.now();
+            scheduleFinishedNoEventGrace(animation);
           }
         }, function () { /* rejected = cancelled, no completion claim */ });
       }
@@ -416,6 +452,7 @@
         // The finished state is supporting evidence, not permission to
         // remove the trigger before WebKit dispatches animationend.
         markRollTrace.waapiObservedFinishedAt = performance.now();
+        scheduleFinishedNoEventGrace(snapshot.animation);
       }
       // Never remove .rolling while the canonical CSS animation is running
       // or pending. Continue to observe until animationend, WAAPI finished,
@@ -464,6 +501,7 @@
     void rabbit.getBoundingClientRect();
     markRollTrace.armedAt = performance.now();
     root.classList.add('rolling');
+    window.__r4b1tTestSoftDelayApplied = MARK_ROLL_SOFT_FALLBACK_DELAY_MS;
 
     // Emergency 10-second maximum from class application: the ONLY timed
     // mechanism that may remove a genuinely started/running rabbit animation.
@@ -510,7 +548,7 @@
       firstFrameObserved = true;
       markRollTrace.firstFrameAt = timestamp;
       if (animationStarted) return;
-      markRollTimer = window.setTimeout(runNoStartFallbackCheck, MARK_ROLL_MS + 300);
+      markRollTimer = window.setTimeout(runNoStartFallbackCheck, MARK_ROLL_SOFT_FALLBACK_DELAY_MS);
     });
     return true;
   }
