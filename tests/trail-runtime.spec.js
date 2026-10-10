@@ -18,6 +18,15 @@ test.beforeEach(async ({ page }) => {
 });
 
 async function rollAndWaitForTrail(page) {
+  // Trail authoritative selection wrapper installs asynchronously (25ms poll).
+  // A present window.roll function alone is NOT a readiness signal and may
+  // commit nothing before the wrapper owns immutable transaction recording.
+  await page.waitForFunction(() => (
+    typeof window.roll === 'function' &&
+    typeof window.getTrailManifest === 'function' &&
+    typeof window.__r4b1tCommitRoll === 'function' &&
+    window.__r4b1tCommitRoll.__r4b1tAuthority === true
+  ));
   await page.evaluate(() => window.roll());
   await expect.poll(async () => page.evaluate(async () => {
     const snapshot = await window.getTrailManifest();
