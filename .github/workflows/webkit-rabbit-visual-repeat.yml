@@ -1,12 +1,9 @@
-name: WebKit Rabbit Visual 20x
+name: WebKit Rabbit Legacy rAF Visual Diagnostic 20x
 
+# Historical strict rAF sampling audit. Missing middle-phase frames are inconclusive;
+# preserve full red evidence on demand, not as the release geometry gate.
+# Adopted release gates are controlled CSS pose x20 and live CSS timeline x20.
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/webkit-rabbit-visual-repeat.yml'
-      - 'tests/roll-reel-webkit.spec.js'
-      - 'dual-shell.js'
-      - 'r4b1t-h0l3-production.svg'
   workflow_dispatch:
 
 permissions:
