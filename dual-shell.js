@@ -280,6 +280,12 @@
   // mark holds .rolling for its full run instead of mirroring the phases, and only
   // then shows .result-ready. Otherwise the roll is cut mid-launch and snaps home.
   var MARK_ROLL_MS = 1050;
+  // EXPERIMENT-ONLY injection, read once during shell initialization.
+  // Absent on production branches. 5 means total soft-fallback delay, not
+  // the canonical 1000ms SVG animation duration.
+  var MARK_ROLL_SOFT_FALLBACK_DELAY_MS =
+    window.__R4B1T_TEST__ && window.__R4B1T_TEST__.markRollMs === 5
+      ? 5 : MARK_ROLL_MS + 300;
   var markRollTimer = null;
   var markRollActive = false;
   var markRollCompleted = false;
@@ -341,11 +347,12 @@
     root.classList.remove('rolling');
     void rabbit.getBoundingClientRect();
     root.classList.add('rolling');
+    window.__r4b1tTestSoftDelayApplied = MARK_ROLL_SOFT_FALLBACK_DELAY_MS;
 
     // Fallback only covers a run whose rabbit animation never starts.
     markRollTimer = window.setTimeout(function () {
       if (!animationStarted) finishProductionMarkRoll();
-    }, MARK_ROLL_MS + 300);
+    }, MARK_ROLL_SOFT_FALLBACK_DELAY_MS);
     return true;
   }
 
