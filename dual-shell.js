@@ -370,6 +370,7 @@
     markRollCompleted = false;
     markRollRabbit = rabbit;
     var animationStarted = false;
+    var firstFrameObserved = false;
     var observedAnimation = null;
     var runId = ++markRollRunId;
     markRollTrace = {
@@ -488,24 +489,28 @@
 
     // The normal no-start soft deadline starts only after the browser has
     // dispatched its first rAF callback; no frame means no soft timeout.
+    // Keep the decision as a single function for same-task race tests: neither
+    // the timer nor a test caller may remove .rolling before first rAF.
+    function runNoStartFallbackCheck() {
+      if (!currentRun() || animationStarted || !firstFrameObserved) return;
+      var snapshot = rabbitRollAnimationSnapshot(rabbit);
+      markRollTrace.softFallbackAt = performance.now();
+      markRollTrace.softFallbackAnimationCount = snapshot.count;
+      markRollTrace.softFallbackMatchingCount = snapshot.matchingCount;
+      markRollTrace.softFallbackHasRunningAnimation = snapshot.running;
+      if (snapshot.running || snapshot.finished) {
+        armCompletionWatchdog('animation-active-at-soft-fallback', snapshot);
+        return;
+      }
+      finishProductionMarkRoll('no-start-after-frame');
+    }
     markRollFrame = window.requestAnimationFrame(function (timestamp) {
       markRollFrame = null;
       if (!currentRun()) return;
+      firstFrameObserved = true;
       markRollTrace.firstFrameAt = timestamp;
       if (animationStarted) return;
-      markRollTimer = window.setTimeout(function () {
-        if (!currentRun() || animationStarted) return;
-        var snapshot = rabbitRollAnimationSnapshot(rabbit);
-        markRollTrace.softFallbackAt = performance.now();
-        markRollTrace.softFallbackAnimationCount = snapshot.count;
-        markRollTrace.softFallbackMatchingCount = snapshot.matchingCount;
-        markRollTrace.softFallbackHasRunningAnimation = snapshot.running;
-        if (snapshot.running || snapshot.finished) {
-          armCompletionWatchdog('animation-active-at-soft-fallback', snapshot);
-          return;
-        }
-        finishProductionMarkRoll('no-start-after-frame');
-      }, MARK_ROLL_MS + 300);
+      markRollTimer = window.setTimeout(runNoStartFallbackCheck, MARK_ROLL_MS + 300);
     });
     return true;
   }
