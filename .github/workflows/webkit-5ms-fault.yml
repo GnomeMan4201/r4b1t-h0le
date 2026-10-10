@@ -1,0 +1,81 @@
+name: WebKit 5ms Soft Timer Fault
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/webkit-5ms-fault.yml'
+      - 'tests/roll-reel-5ms-fault.spec.js'
+      - 'playwright.reel-webkit-5ms-fault.config.js'
+      - 'dual-shell.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rabbit-5ms-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  soft-5ms:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: npm ci
+      - run: npx playwright install --with-deps webkit
+      - name: Stage site
+        run: |
+          mkdir -p test-site/r4b1t-h0le
+          rsync -a --exclude='.git' --exclude='node_modules' --exclude='test-site' --exclude='playwright-report' --exclude='test-results' ./ test-site/r4b1t-h0le/
+      - name: Run 20 fresh-page first ROLL trials with total 5ms fallback
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'true'
+        shell: bash
+        run: |
+          set +e
+          npx playwright test --config=playwright.reel-webkit-5ms-fault.config.js --project=mobile-webkit --repeat-each=20 --workers=4 --reporter=json > fault-5ms-results.json
+          test_exit=$?
+          set -e
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const report = JSON.parse(fs.readFileSync('fault-5ms-results.json','utf8'));
+          const trials = [];
+          const walk = suites => {
+            for (const suite of suites || []) {
+              for (const spec of suite.specs || []) {
+                for (const t of spec.tests || []) {
+                  trials.push({ index: trials.length+1, status:t.status,
+                    failed:t.status!=='expected',
+                    errors:(t.results||[]).flatMap(x=>x.error?.message?[x.error.message.slice(0,1700)]:[]) });
+                }
+              }
+              walk(suite.suites);
+            }
+          };
+          walk(report.suites);
+          const failures=trials.filter(t=>t.failed);
+          const isControl=process.env.GITHUB_HEAD_REF.includes('five-ms-control');
+          const expectedFailures=isControl?20:0;
+          const meetsGate=trials.length===20 && failures.length===expectedFailures;
+          console.log(JSON.stringify({head:process.env.GITHUB_HEAD_REF, trials:trials.length,
+            firstRollFailures:failures.length, expectedFailures, meetsGate, failures},null,2));
+          if(!meetsGate)process.exitCode=1;
+          NODE
+          # A failed strict Playwright assertion is the expected control outcome.
+          if [[ "$test_exit" -ne 0 && ! "${GITHUB_HEAD_REF}" =~ five-ms-control ]]; then exit "$test_exit"; fi
+      - name: Upload 5ms trial data
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: webkit-5ms-${{ github.sha }}
+          path: |
+            fault-5ms-results.json
+            test-results/
+          retention-days: 14
+          if-no-files-found: warn
