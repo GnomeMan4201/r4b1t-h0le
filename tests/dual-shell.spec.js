@@ -2149,6 +2149,7 @@ test('Machine opt-in uses the real mobile selector and preserves menu / Trail au
   await page.locator('#r4mModeBlind').click();
   await expect(page.locator('html')).toHaveClass(/r4m-stage-blind/);
   await expect(page.locator('#r4mRoll')).toBeHidden();
+  await expect(page.locator('#r4mHero')).toBeHidden();
   expect(await page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length)).toBe(before.steps);
   await page.locator('#r4mModeRoll').click();
   await expect(page.locator('#r4mRoll')).toBeVisible();
@@ -2157,6 +2158,7 @@ test('Machine opt-in uses the real mobile selector and preserves menu / Trail au
   await page.locator('#r4mRoll').click();
   await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
   await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expect(page.locator('#r4mHero')).toBeHidden();
   await expect.poll(() => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length))
     .toBe(before.steps + 1);
 
