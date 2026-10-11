@@ -1,0 +1,180 @@
+/*
+ * R4B1T H0L3 — THE MACHINE / REAL-SHELL PRESENTATION STUDY v1
+ *
+ * Explicit opt-in via /?machine=1 only. Uses the *existing* mobile DOM,
+ * authoritative ROLL, production rabbit SVG, canonical REEL, Blind Descent,
+ * result projection, MENU and Trail operations. No selectors, animations,
+ * transitions, presentation state, aria-state or geometry authority live here.
+ *
+ * Visual-only: no changes to element positions, dimensions, state visibility,
+ * timers, selection/commit/reveal semantics, or animation keyframes.
+ */
+@media (max-width:900px){
+  html[data-r4b1t-machine="1"]{
+    --r4m-machine-ink:#090909;
+    --r4m-machine-metal:#191718;
+    --r4m-machine-ridge:#473331;
+    --r4m-machine-red:#bd2029;
+    --r4m-machine-red-hi:#f04145;
+    --r4m-machine-bone:#f2e9df;
+    --r4m-machine-muted:#b3a39a;
+    --r4m-v5-red:var(--r4m-machine-red);
+    --r4m-v5-red-hi:var(--r4m-machine-red-hi);
+    --r4m-v5-white:var(--r4m-machine-bone);
+    --r4m-v5-rule:#493532;
+  }
+  html[data-r4b1t-machine="1"].r4-mobile-active,
+  html[data-r4b1t-machine="1"].r4-mobile-active body{
+    background:#080707!important;
+    color:var(--r4m-machine-bone);
+  }
+  html[data-r4b1t-machine="1"] .r4m-shell{
+    background:
+      repeating-linear-gradient(125deg,transparent 0 5px,rgba(255,255,255,.009) 6px 7px),
+      radial-gradient(ellipse at 50% 6%,rgba(100,18,22,.18),transparent 58%),
+      #0b0909;
+    color:var(--r4m-machine-bone);
+  }
+  html[data-r4b1t-machine="1"] .r4m-header{
+    background:linear-gradient(180deg,#251a1a,#100d0d 76%,#090909)!important;
+    border-bottom:1px solid #53332f;
+    box-shadow:inset 0 1px rgba(255,255,255,.06),0 3px 10px #000;
+  }
+  html[data-r4b1t-machine="1"] .r4m-wordmark{
+    color:var(--r4m-machine-red-hi);
+    text-shadow:0 2px #000;
+  }
+  html[data-r4b1t-machine="1"] .r4m-wordmark span{
+    color:var(--r4m-machine-bone);
+  }
+  html[data-r4b1t-machine="1"] .r4m-mode-switch{
+    background:linear-gradient(180deg,#1b1515,#0d0b0b);
+    border-color:#4a3332;
+    box-shadow:inset 0 2px 7px #000;
+  }
+  html[data-r4b1t-machine="1"] .r4m-mode-switch button{
+    color:#ac9e96;
+  }
+  html[data-r4b1t-machine="1"] .r4m-mode-switch button.active{
+    color:#fff3e9;
+    background:linear-gradient(180deg,#3c1217,#231013);
+    box-shadow:inset 0 -2px 0 var(--r4m-machine-red-hi);
+  }
+  html[data-r4b1t-machine="1"] .r4m-hero{
+    border-color:#493230;
+    color:var(--r4m-machine-bone);
+  }
+  html[data-r4b1t-machine="1"] .r4m-hero h1{
+    color:var(--r4m-machine-bone);
+    text-shadow:0 1px #000;
+  }
+  html[data-r4b1t-machine="1"] .r4m-hero small{
+    color:var(--r4m-machine-red-hi);
+  }
+  html[data-r4b1t-machine="1"] .r4m-hero p{
+    color:var(--r4m-machine-muted);
+  }
+  /* Frame stays the same size, and the actual SVG and rabbit CSS are untouched. */
+  html[data-r4b1t-machine="1"] #r4mProductionMark{
+    background:radial-gradient(ellipse at 50% 48%,#27080c 0,#130b0c 44%,#080707 77%);
+    border:1px solid #41302e;
+    box-shadow:inset 0 0 0 3px #0b0a0a,inset 0 0 0 4px #332321,
+      inset 0 0 27px rgba(174,16,28,.17),0 6px 20px rgba(0,0,0,.46);
+  }
+  /* Do not style #r4h-roll-rabbit, its transform, or any rolling class. */
+  html[data-r4b1t-machine="1"] .r4m-roll.r4m-roll-aperture{
+    color:#fff6eb!important;
+    background:
+      linear-gradient(180deg,rgba(255,255,255,.1),transparent 30%,rgba(0,0,0,.34)),
+      repeating-linear-gradient(0deg,transparent 0 13px,rgba(0,0,0,.07) 14px 15px),
+      linear-gradient(135deg,#b32630,#84161b 65%,#4a1014)!important;
+    border:2px solid #bd4042!important;
+    box-shadow:inset 0 2px 0 rgba(255,204,201,.37),
+      inset 0 -7px 0 rgba(44,3,7,.64),0 0 0 3px #1d1211,0 6px 18px #000!important;
+  }
+  html[data-r4b1t-machine="1"] .r4m-ap-label{
+    color:#fff4e9!important;
+    text-shadow:2px 2px #511116;
+  }
+  html[data-r4b1t-machine="1"] .r4m-ap-scope{
+    color:#f9c9c3!important;
+  }
+  /* Keep physical REEL geometry, row positions and motion timings untouched. */
+  html[data-r4b1t-machine="1"] .r4m-reel-ui{
+    background:linear-gradient(175deg,#292223,#111010 43%,#090808);
+    color:var(--r4m-machine-bone);
+    border-color:#634344;
+    box-shadow:inset 0 1px rgba(255,255,255,.11),
+      inset 0 0 0 3px #141111,0 12px 25px rgba(0,0,0,.5);
+  }
+  html[data-r4b1t-machine="1"] .r4m-reel-window{
+    background:#050405;
+    border-color:#593532;
+    box-shadow:inset 0 8px 22px #000,inset 0 -8px 22px #000,
+      0 0 0 1px #5b3938;
+  }
+  /* A reveal gets industrial framing while the genuine route DOM owns content. */
+  html[data-r4b1t-machine="1"] #r4mRouteMount .r4m-route{
+    background:linear-gradient(180deg,rgba(57,23,24,.17),transparent 80%),#100e0e;
+    border-inline:1px solid #473331;
+    box-shadow:inset 3px 0 #171111,inset -3px 0 #171111;
+  }
+  html[data-r4b1t-machine="1"] .r4m-route-top{
+    color:#f4a5a0;
+    border-bottom-color:#5d3838;
+  }
+  html[data-r4b1t-machine="1"] .r4m-route-domain{
+    color:#fff2e8;
+    text-shadow:0 2px #050404;
+  }
+  html[data-r4b1t-machine="1"] #r4mRouteMount .r4m-route-actions button{
+    background:linear-gradient(#251b1b,#100d0d);
+    color:#ffe2dd;
+    border-color:#533436;
+  }
+  html[data-r4b1t-machine="1"] .r4m-enter{
+    background:linear-gradient(180deg,#cf2931,#871219)!important;
+    color:#fff4e8!important;
+    box-shadow:inset 0 2px rgba(255,204,202,.24),
+      inset 0 -4px rgba(49,5,8,.5),0 0 0 1px #4c2527;
+  }
+  html[data-r4b1t-machine="1"] #r4mRollAgain{
+    background:linear-gradient(180deg,#292322,#110f0f)!important;
+    color:#f4e8dc!important;
+    border-color:#764043;
+    box-shadow:inset 0 1px rgba(255,255,255,.08);
+  }
+  html[data-r4b1t-machine="1"] .r4m-nav-minimal{
+    background:linear-gradient(#191213,#070606)!important;
+    border-top-color:#633638;
+    box-shadow:0 -7px 18px #0007;
+  }
+  html[data-r4b1t-machine="1"] .r4m-nav-minimal button{
+    color:#dfcfc4;
+  }
+  html[data-r4b1t-machine="1"] #r4mNavMenu{
+    border-left-color:#3a2929;
+  }
+  html[data-r4b1t-machine="1"] .r4m-menu-sheet{
+    background:
+      repeating-linear-gradient(135deg,transparent 0 6px,rgba(255,255,255,.008) 7px 8px),
+      linear-gradient(#171112,#090808)!important;
+    color:#f2e9df;
+  }
+  html[data-r4b1t-machine="1"] .r4m-menu-group h3{
+    color:#f15b5e;
+  }
+  html[data-r4b1t-machine="1"] .r4m-menu-primary-actions button,
+  html[data-r4b1t-machine="1"] .r4m-menu-from-here>button,
+  html[data-r4b1t-machine="1"] .r4m-menu-proof-grid button,
+  html[data-r4b1t-machine="1"] .r4m-ledger{
+    background:linear-gradient(180deg,#211a1a,#100d0d);
+    color:#ece2d8;
+    border-color:#4b3534;
+  }
+  html[data-r4b1t-machine="1"] :is(button,a):focus-visible{
+    outline:3px solid #fff0df;
+    outline-offset:2px;
+  }
+}
+/* Reduced-motion changes are already owned by the production animation code. */
