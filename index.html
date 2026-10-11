@@ -113,6 +113,9 @@
   <link rel="stylesheet" href="proof-session-import.css">
   <link rel="stylesheet" href="trail-comparison-import.css">
   <link rel="stylesheet" href="replay-inspection.css">
+  <!-- Explicit visual opt-in only; no selection or presentation state writes. -->
+  <script>(function(){if(new URLSearchParams(location.search).get("machine")==="1"){document.documentElement.setAttribute("data-r4b1t-machine","1");}})();</script>
+  <link rel="stylesheet" href="experiments/the-machine/live-shell-theme.css">
 </head>
 <body>
 
