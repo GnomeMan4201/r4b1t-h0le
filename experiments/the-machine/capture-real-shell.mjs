@@ -70,6 +70,7 @@ try {
   await page.locator('#r4mRoll').click();
   await page.waitForFunction(()=>document.documentElement.getAttribute('data-r4m-presentation')==='revealed',{timeout:15000});
   await page.locator('#r4mRoute').waitFor({state:'visible'});
+  if (await page.locator('#r4mHero').isVisible()) throw new Error('Invitation hero leaked into result stage');
   await capture(page,'03-machine-result');
   await page.locator('#r4mNavMenu').click();
   await page.waitForFunction(()=>document.getElementById('r4mMenuSheet')?.getAttribute('aria-hidden')==='false');
