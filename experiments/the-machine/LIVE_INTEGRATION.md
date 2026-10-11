@@ -10,7 +10,7 @@ Translate the approved standalone concept into an *additive presentation skin* o
 - Normal URL (without `?machine=1`) remains unchanged; theme selector is explicitly opt-in and scoped to widths <= 900px.
 - The unchanged original `anime.min.js` loads the original `dual-shell.css` and `dual-shell.js`; overlay stylesheet is linked *last*. No modification of original CSS integrity hash, HTML markup, canonical production SVG, or JavaScript selection/commit/reveal/Trail code.
 - No CSS targeting rabbit animation keyframes/transforms, ROLL state or animation classes. Original REEL window 192px, 6/2px margins, button dimensions, viewport and fixed-action positions are not changed.
-- Theming applies only to texture, borders, colors and shadows on existing controls and DOM. No fake result text, badges or provenance.
+- Theming changes textures, borders, color and shadows. Based on actual 390×844 screenshot evidence, the opt-in skin **restores the source-provided headline** (only when portrait is at least 375×780, while retaining above-fold ROLL) and reduces the oversized result-domain typography for readability. These refinements may change non-authoritative text flow, but do not move or resize the fixed action rails, main ROLL/reel dimensions, rabbit geometry, or alter motion authority. No fake result text, badges or provenance.
 
 ## Product scope
 Invitation: visual hierarchy, logo and canonical production mark; ROLL/BLIND switch and ROLL/MENU intact.
