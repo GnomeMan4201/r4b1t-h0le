@@ -77,7 +77,7 @@
   /* Frame stays the same size, and the actual SVG and rabbit CSS are untouched. */
   html[data-r4b1t-machine="1"] #r4mProductionMark{
     background:radial-gradient(ellipse at 50% 48%,#27080c 0,#130b0c 44%,#080707 77%);
-    border:1px solid #41302e;
+    outline:1px solid #41302e;
     box-shadow:inset 0 0 0 3px #0b0a0a,inset 0 0 0 4px #332321,
       inset 0 0 27px rgba(174,16,28,.17),0 6px 20px rgba(0,0,0,.46);
   }
@@ -88,7 +88,7 @@
       linear-gradient(180deg,rgba(255,255,255,.1),transparent 30%,rgba(0,0,0,.34)),
       repeating-linear-gradient(0deg,transparent 0 13px,rgba(0,0,0,.07) 14px 15px),
       linear-gradient(135deg,#b32630,#84161b 65%,#4a1014)!important;
-    border:2px solid #bd4042!important;
+    border:1px solid #bd4042!important;
     box-shadow:inset 0 2px 0 rgba(255,204,201,.37),
       inset 0 -7px 0 rgba(44,3,7,.64),0 0 0 3px #1d1211,0 6px 18px #000!important;
   }
@@ -116,8 +116,7 @@
   /* A reveal gets industrial framing while the genuine route DOM owns content. */
   html[data-r4b1t-machine="1"] #r4mRouteMount .r4m-route{
     background:linear-gradient(180deg,rgba(57,23,24,.17),transparent 80%),#100e0e;
-    border-inline:1px solid #473331;
-    box-shadow:inset 3px 0 #171111,inset -3px 0 #171111;
+    box-shadow:inset 0 0 0 1px #473331,inset 3px 0 #171111,inset -3px 0 #171111;
   }
   html[data-r4b1t-machine="1"] .r4m-route-top{
     color:#f4a5a0;
