@@ -1,0 +1,87 @@
+// Capture authentic mobile-shell visual evidence for the opt-in Machine skin.
+// Only run against localhost staged at the exact PR head. This never publishes the site.
+import { chromium } from '@playwright/test';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+
+const root = process.env.BASE_URL || 'http://127.0.0.1:8080/r4b1t-h0le/';
+if (!/^http:\/\/127\.0\.0\.1:[0-9]+\/r4b1t-h0le\/$/.test(root)) {
+  throw new Error('Refusing non-local preview target');
+}
+const folder = resolve('machine-visual-evidence');
+await mkdir(folder, { recursive: true });
+const browser = await chromium.launch({ headless: true });
+const report = { mode:'visual-evidence-only', baseURL:root, viewport:'390x844', screenshots:[], noIOSSafariClaim:true };
+const issues = [];
+async function makePage(q) {
+  const context = await browser.newContext({
+    viewport:{width:390,height:844}, deviceScaleFactor:3, isMobile:true,
+    hasTouch:true, reducedMotion:'no-preference', serviceWorkers:'block'
+  });
+  const page = await context.newPage();
+  page.on('pageerror', error => issues.push(error.message));
+  await page.route('**/*', async route => {
+    const u = new URL(route.request().url());
+    if (['127.0.0.1','localhost'].includes(u.hostname) || ['blob:','data:'].includes(u.protocol)) return route.continue();
+    return route.abort('blockedbyclient');
+  });
+  await page.goto(root+q, {waitUntil:'domcontentloaded'});
+  await page.locator('#r4mRoll').waitFor({state:'visible',timeout:20000});
+  await page.waitForFunction(() => typeof window.getTrailManifest === 'function');
+  return {page,context};
+}
+async function capture(page, label) {
+  const data=await page.evaluate(()=>{
+    const rect=id=>{
+      const e=document.querySelector(id);
+      if (!e)return null;
+      const r=e.getBoundingClientRect();
+      return {top:Math.round(r.top),bottom:Math.round(r.bottom),left:Math.round(r.left),right:Math.round(r.right),width:Math.round(r.width),height:Math.round(r.height)};
+    };
+    const h=document.querySelector('.r4m-header');
+    return {
+      machine:document.documentElement.getAttribute('data-r4b1t-machine'),
+      phase:document.documentElement.getAttribute('data-r4m-presentation'),
+      stage:document.documentElement.className,
+      viewport:innerWidth,
+      scrollWidth:document.documentElement.scrollWidth,
+      headerBackground:h?getComputedStyle(h).backgroundImage:null,
+      roll:rect('#r4mRoll'),mark:rect('#r4mProductionMark'),
+      reel:rect('#r4mRollReel'),route:rect('#r4mRoute'),
+      menu:rect('#r4mMenuSheet'),nav:rect('.r4m-nav')
+    };
+  });
+  await page.screenshot({path:resolve(folder,label+'.png'),fullPage:true,animations:'disabled'});
+  report.screenshots.push({label,...data});
+  if(data.scrollWidth>data.viewport) issues.push(label+' horizontal overflow '+data.scrollWidth+' > '+data.viewport);
+  return data;
+}
+try {
+  const {page:plain,context:plainCtx}=await makePage('');
+  const a=await capture(plain,'01-default-original');
+  if (a.machine!==null) throw new Error('Default site unexpectedly opted into Machine');
+  await plainCtx.close();
+
+  const {page,context}=await makePage('?machine=1');
+  const b=await capture(page,'02-machine-invitation');
+  if (b.machine!=='1') throw new Error('Machine query opt-in missing');
+  if (!b.headerBackground?.includes('linear-gradient')) throw new Error('Machine header skin not computed');
+  await page.locator('#r4mRoll').click();
+  await page.waitForFunction(()=>document.documentElement.getAttribute('data-r4m-presentation')==='revealed',{timeout:15000});
+  await page.locator('#r4mRoute').waitFor({state:'visible'});
+  await capture(page,'03-machine-result');
+  await page.locator('#r4mNavMenu').click();
+  await page.waitForFunction(()=>document.getElementById('r4mMenuSheet')?.getAttribute('aria-hidden')==='false');
+  await capture(page,'04-machine-menu');
+  const trail=await page.evaluate(async()=> (await window.getTrailManifest()).manifest.steps.length);
+  report.trailStepsAfterOneRoll=trail;
+  if (trail!==1) issues.push('Expected exactly one recorded Trail step after first ROLL, got '+trail);
+  await context.close();
+
+  report.issues=issues;
+  await writeFile(resolve(folder,'report.json'),JSON.stringify(report,null,2)+'\n');
+  console.log('MACHINE_VISUAL_EVIDENCE '+JSON.stringify({screens:report.screenshots.map(x=>x.label),trail,issues}));
+  if(issues.length) process.exitCode=1;
+} finally {
+  await browser.close();
+}
