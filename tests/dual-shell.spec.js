@@ -2128,6 +2128,13 @@ test('Machine opt-in uses the real mobile selector and preserves menu / Trail au
   await expect(page.locator('#r4mRoll')).toBeVisible();
   await expect(page.locator('#r4mModeBlind')).toBeVisible();
   await expect(page.locator('#r4mNavMenu')).toBeVisible();
+  await expect(page.locator('#r4mHero h1')).toBeVisible();
+  await expect(page.locator('#r4mHero h1')).toHaveText('A HOLE, NOT A FEED.');
+  const firstFit = await page.evaluate(() => ({
+    rollBottom: document.querySelector('#r4mRoll').getBoundingClientRect().bottom,
+    navTop: document.querySelector('.r4m-nav').getBoundingClientRect().top,
+  }));
+  expect(firstFit.rollBottom).toBeLessThanOrEqual(firstFit.navTop);
 
   const before = await page.evaluate(async () => ({
     steps: (await window.getTrailManifest()).manifest.steps.length,
