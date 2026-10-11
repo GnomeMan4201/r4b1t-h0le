@@ -46,7 +46,7 @@ async function capture(page, label) {
       viewport:innerWidth,
       scrollWidth:document.documentElement.scrollWidth,
       headerBackground:h?getComputedStyle(h).backgroundImage:null,
-      roll:rect('#r4mRoll'),mark:rect('#r4mProductionMark'),
+      roll:rect('#r4mRoll'),hero:rect('#r4mHero h1'),mark:rect('#r4mProductionMark'),
       reel:rect('#r4mRollReel'),route:rect('#r4mRoute'),
       menu:rect('#r4mMenuSheet'),nav:rect('.r4m-nav')
     };
@@ -66,6 +66,7 @@ try {
   const b=await capture(page,'02-machine-invitation');
   if (b.machine!=='1') throw new Error('Machine query opt-in missing');
   if (!b.headerBackground?.includes('linear-gradient')) throw new Error('Machine header skin not computed');
+  if (!b.hero?.height || b.roll.bottom>b.nav.top) throw new Error('Machine hero hidden or first ROLL not above nav');
   await page.locator('#r4mRoll').click();
   await page.waitForFunction(()=>document.documentElement.getAttribute('data-r4m-presentation')==='revealed',{timeout:15000});
   await page.locator('#r4mRoute').waitFor({state:'visible'});
