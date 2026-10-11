@@ -2117,3 +2117,63 @@ test('mobile reel and mechanism maintain compact stage across settled ROLLs', as
     }, result)).toBeLessThanOrEqual(1);
   }
 });
+
+
+test('Machine opt-in uses the real mobile selector and preserves menu / Trail authority', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./?machine=1', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await expect(page.locator('html')).toHaveAttribute('data-r4b1t-machine', '1');
+  await expect(page.locator('#r4mRoll')).toBeVisible();
+  await expect(page.locator('#r4mModeBlind')).toBeVisible();
+  await expect(page.locator('#r4mNavMenu')).toBeVisible();
+
+  const before = await page.evaluate(async () => ({
+    steps: (await window.getTrailManifest()).manifest.steps.length,
+    themed: getComputedStyle(document.querySelector('.r4m-header')).backgroundImage,
+    width: document.documentElement.scrollWidth,
+    viewport: innerWidth,
+  }));
+  expect(before.themed).toContain('linear-gradient');
+  expect(before.width).toBeLessThanOrEqual(before.viewport);
+
+  // A mode switch must not perform selection or create a Trail step.
+  await page.locator('#r4mModeBlind').click();
+  await expect(page.locator('html')).toHaveClass(/r4m-stage-blind/);
+  await expect(page.locator('#r4mRoll')).toBeHidden();
+  expect(await page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length)).toBe(before.steps);
+  await page.locator('#r4mModeRoll').click();
+  await expect(page.locator('#r4mRoll')).toBeVisible();
+
+  // This click invokes production selection/reveal, not the demo timer.
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
+  await expect(page.locator('#r4mRoute')).toBeVisible();
+  await expect.poll(() => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length))
+    .toBe(before.steps + 1);
+
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden','false');
+  await expect(page.locator('#r4mMenuSheet [data-mobile-action="history"]')).toBeVisible();
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden','true');
+
+  await page.locator('#r4mRollAgain').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
+  await expect.poll(() => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length))
+    .toBe(before.steps + 2);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth))
+    .toBeLessThanOrEqual(await page.evaluate(() => innerWidth));
+});
+
+test('Machine visual opt-in leaves normal mobile presentation default untouched', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  expect(await page.locator('html').getAttribute('data-r4b1t-machine')).toBeNull();
+  await expect(page.locator('#r4mRoll')).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth))
+    .toBeLessThanOrEqual(await page.evaluate(() => innerWidth));
+});
