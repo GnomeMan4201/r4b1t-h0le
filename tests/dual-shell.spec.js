@@ -2176,6 +2176,36 @@ test('Machine opt-in uses the real mobile selector and preserves menu / Trail au
     .toBeLessThanOrEqual(await page.evaluate(() => innerWidth));
 });
 
+
+test('Machine compact iPhone browser pane keeps the real invitation and ROLL above navigation', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.setViewportSize({ width: 390, height: 680 });
+  await page.goto('./?machine=1', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await expect(page.locator('#r4mHero h1')).toBeVisible();
+  await expect(page.locator('#r4mHero h1')).toHaveText('A HOLE, NOT A FEED.');
+  await expect(page.locator('#r4mRollReel')).toBeVisible();
+  await expect(page.locator('#r4mRoll')).toBeVisible();
+  const position = await page.evaluate(() => ({
+    rollBottom: document.querySelector('#r4mRoll').getBoundingClientRect().bottom,
+    navTop: document.querySelector('.r4m-nav').getBoundingClientRect().top,
+    reelWindowHeight: document.querySelector('.r4m-reel-window').getBoundingClientRect().height,
+    width: document.documentElement.scrollWidth,
+    viewport: innerWidth,
+  }));
+  expect(position.rollBottom).toBeLessThanOrEqual(position.navTop - 4);
+  expect(position.reelWindowHeight).toBe(192);
+  expect(position.width).toBeLessThanOrEqual(position.viewport);
+  const beforeSteps = await page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  await expect(page.locator('#r4mHero')).toBeHidden();
+  await expect.poll(() => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length))
+    .toBe(beforeSteps + 1);
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'false');
+});
+
 test('Machine visual opt-in leaves normal mobile presentation default untouched', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile-chromium');
   await page.setViewportSize({ width: 390, height: 844 });

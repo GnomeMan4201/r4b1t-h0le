@@ -13,9 +13,9 @@ await mkdir(folder, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const report = { mode:'visual-evidence-only', baseURL:root, viewport:'390x844', screenshots:[], noIOSSafariClaim:true };
 const issues = [];
-async function makePage(q) {
+async function makePage(q, height=844) {
   const context = await browser.newContext({
-    viewport:{width:390,height:844}, deviceScaleFactor:3, isMobile:true,
+    viewport:{width:390,height}, deviceScaleFactor:3, isMobile:true,
     hasTouch:true, reducedMotion:'no-preference', serviceWorkers:'block'
   });
   const page = await context.newPage();
@@ -43,7 +43,7 @@ async function capture(page, label) {
       machine:document.documentElement.getAttribute('data-r4b1t-machine'),
       phase:document.documentElement.getAttribute('data-r4m-presentation'),
       stage:document.documentElement.className,
-      viewport:innerWidth,
+      viewport:innerWidth, viewportHeight:innerHeight,
       scrollWidth:document.documentElement.scrollWidth,
       headerBackground:h?getComputedStyle(h).backgroundImage:null,
       roll:rect('#r4mRoll'),hero:rect('#r4mHero h1'),mark:rect('#r4mProductionMark'),
@@ -79,6 +79,20 @@ try {
   report.trailStepsAfterOneRoll=trail;
   if (trail!==1) issues.push('Expected exactly one recorded Trail step after first ROLL, got '+trail);
   await context.close();
+
+
+  // Short mobile browser chrome takes vertical room on physical iPhones.
+  // This separate 390x680 emulation is NOT physical Safari or a smoothness test.
+  const {page:compact,context:compactCtx}=await makePage('?machine=1',680);
+  const compactIdle=await capture(compact,'05-machine-compact-invitation');
+  if (!compactIdle.hero?.height) throw new Error('Compact Machine invitation headline hidden');
+  if (compactIdle.roll.bottom>compactIdle.nav.top-4) throw new Error('Compact ROLL button occluded by bottom navigation');
+  await compact.locator('#r4mRoll').click();
+  await compact.waitForFunction(()=>document.documentElement.getAttribute('data-r4m-presentation')==='revealed',{timeout:15000});
+  await compact.locator('#r4mRoute').waitFor({state:'visible'});
+  if (await compact.locator('#r4mHero').isVisible()) throw new Error('Compact invitation hero leaked after reveal');
+  await capture(compact,'06-machine-compact-result');
+  await compactCtx.close();
 
   report.issues=issues;
   await writeFile(resolve(folder,'report.json'),JSON.stringify(report,null,2)+'\n');

@@ -24,3 +24,6 @@ MENU: existing live History, Terrain, Trail, replay and proof instrument actions
 - Compare plain `/` vs `/?machine=1`: normal path unchanged and identity of authoritative JS/SVG blobs preserved.
 - Conduct physical iPhone inspection before any default theme rollout; prior WebKit rAF middle-phase 2/20 observation remains unresolved.
 - No merge of this draft / production deployment without separate approval.
+
+## Compact browser viewport review (iPhone screen recording, 2026-10-11)
+A physical iPhone recording in an in-app browser revealed that the original >=780px-height headline rule did not fire in a shorter browser pane, and the 208px circular ROLL extended behind fixed bottom navigation. The Machine-only compact-portrait CSS now shows the source invitation headline, reduces only the displayed logo and ROLL control footprint, and leaves the REEL window (192px), authority, and rabbit motion unchanged. New 390x680 browser checks and screenshots cover this case. Real iPhone retest is still required; emulator geometry is not compositor smoothness proof.
