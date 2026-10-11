@@ -211,6 +211,13 @@
       text-align:left!important;
     }
   }
+  /* Existing stage ownership wins: no invitation when a real result or
+     BLIND DESCENT owns the instrument. The fresh-landing copy only exists
+     in the ROLL invitation stage. */
+  html[data-r4b1t-machine="1"].r4m-stage-result #r4mHero,
+  html[data-r4b1t-machine="1"].r4m-stage-blind #r4mHero {
+    display:none!important;
+  }
   /* Keep source domain readable without changing fixed action rail geometry. */
   html[data-r4b1t-machine="1"] #r4mRouteMount .r4m-route-domain {
     font-size:clamp(1.55rem,7.5vw,2.5rem);
