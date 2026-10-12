@@ -119,30 +119,54 @@ async function observationSnapshot(page) {
 async function rollOnce(page, selector) {
   await page.evaluate(() => window.__markStart());
   await page.locator(selector).tap();
+  // Keep an original fixed-time diagnostic checkpoint to explain the prior
+  // failure, but do not make this arbitrary time boundary a correctness gate.
   await page.waitForTimeout(2300);
   const fixedWindow = await observationSnapshot(page);
-  const expected = ['commit','reveal','presentation:revealed','result-mounted','trail-recorded'];
-  const observed = new Set(fixedWindow.events.map(e =>
+  const required = ['commit','reveal','presentation:revealed','result-mounted',
+    'trail-recorded','mark-roll-animation-start','mark-roll-animation-end',
+    'mark-rolling-on','mark-rolling-off','mark-result-on'];
+  const names = events => new Set(events.map(e =>
     e.name === 'presentation' ? 'presentation:'+e.extra : e.name));
-  const missing = expected.filter(e => !observed.has(e));
-  if (missing.length) {
-    // Forensics only; do NOT change the return value or the original fixed
-    // 2300ms assertions. Detect post-window arrival or lost observer samples.
-    // Wait for a bounded authoritative DOM completion OR retained event set.
+  const missingAt2300 = required.filter(e => !names(fixedWindow.events).has(e));
+  const rootReadyAt2300 = fixedWindow.phase === 'revealed' &&
+    fixedWindow.reelPhase === 'revealed' &&
+    fixedWindow.mountDisclosed && fixedWindow.renderedResult;
+  if (missingAt2300.length || !rootReadyAt2300) {
+    let timedOut = false;
     try {
-      await page.waitForFunction(() => {
-        const root=document.documentElement, log=window.__markLog;
-        if (root.getAttribute('data-r4m-presentation')==='revealed' &&
-            document.getElementById('r4mRouteMount')?.childElementCount > 0)
-          return true;
-        return log?.events.some(e=>e.name==='presentation'&&e.extra==='revealed');
-      }, null, { timeout:3500, polling:100 });
-    } catch (_) { /* timeout also carries evidence */ }
-    const late = await observationSnapshot(page);
-    // Explicit names mark that fixed-time data remain the actual assertion input.
+      // A bounded wait for the REAL authoritative projection, not an added
+      // arbitrary sleep. This does not change selection, CSS motion or runtime.
+      // Every required event must still be observed, including rabbit end.
+      await page.waitForFunction(requiredNames => {
+        const html = document.documentElement;
+        const reel = document.getElementById('r4mRollReel');
+        const mount = document.getElementById('r4mRouteMount');
+        const log = window.__markLog;
+        const observed = new Set((log?.events || []).map(e =>
+          e.name === 'presentation' ? 'presentation:'+e.extra : e.name));
+        return html.getAttribute('data-r4m-presentation') === 'revealed' &&
+          reel?.getAttribute('data-phase') === 'revealed' &&
+          mount?.classList.contains('roll-disclosed') &&
+          mount.childElementCount > 0 &&
+          requiredNames.every(name=>observed.has(name));
+      }, required, { timeout:3500, polling:50 });
+    } catch (_) { timedOut = true; }
+    const after = await observationSnapshot(page);
+    const missingAfter = required.filter(e => !names(after.events).has(e));
     console.log('ISSUE307_OBSERVATION '+JSON.stringify({
-      selector, missingAt2300:missing, fixedWindow, late
+      selector, missingAt2300, rootReadyAt2300, timedOut, fixedWindow,
+      after, missingAfter
     }));
+    if (timedOut || missingAfter.length || after.phase !== 'revealed' ||
+        after.reelPhase !== 'revealed' || !after.mountDisclosed || !after.renderedResult) {
+      throw new Error('ISSUE307_BOUNDED_REVEAL_FAILED '+JSON.stringify({
+        selector, missingAt2300, missingAfter, timedOut,
+        fixedPhase:fixedWindow.phase, afterPhase:after.phase,
+        finalReel:after.reelPhase, finalMount:after.mountDisclosed
+      }));
+    }
+    return after.events;
   }
   return fixedWindow.events;
 }
