@@ -1756,85 +1756,86 @@ test('mobile ROLL AGAIN and bottom ROLL use distinct aperture glyphs for action 
 
 
 
-test('post-reveal ROLL controls use filled mini-machine faces without extra button semantics', async ({ page }, testInfo) => {
+test('post-reveal ROLL AGAIN is a recessed slab and bottom ROLL is navigation', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile-chromium');
   for (const viewport of [{width:320,height:568},{width:375,height:667},{width:390,height:680},{width:390,height:844}]) {
     await page.setViewportSize(viewport);
     await page.goto('./', {waitUntil:'domcontentloaded'});
     await waitReady(page);
-    const nav = page.locator('#r4mNavRoll');
+    const nav=page.locator('#r4mNavRoll');
     await expect(nav).toBeVisible();
     await expect(nav.locator('.r4m-nav-aperture')).toHaveAttribute('aria-hidden','true');
-    // Role remains navigation; the mini face is only decorative.
-    await expect(nav.locator('.r4m-nav-aperture')).toHaveAttribute('data-aperture-role','navigation');
-    const stepsBefore = await page.evaluate(async () =>
-      (await window.getTrailManifest()).manifest.steps.length);
+    await expect(nav.locator('.r4m-nav-aperture')).toHaveCSS('display','none');
+    await expect(nav).toHaveAttribute('data-mobile-action','nav-roll');
+    const stepsBefore=await page.evaluate(async ()=>(await window.getTrailManifest()).manifest.steps.length);
+
     await page.locator('#r4mRoll').click();
     await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
-    const again = page.locator('#r4mRollAgain');
+    const again=page.locator('#r4mRollAgain');
     await expect(again).toBeVisible();
-    await expect(again.locator('.r4m-next-aperture')).toHaveAttribute('aria-hidden','true');
-    await expect(again.locator('.r4m-next-aperture')).toHaveAttribute('data-aperture-role','selection');
+    await expect(again.locator('.r4m-next-aperture')).toHaveCSS('display','none');
+    await expect(again).toHaveAttribute('data-mobile-action','roll-again');
     await expect(again.locator('button')).toHaveCount(0);
     await expect(nav.locator('button')).toHaveCount(0);
     await expect(page.locator('nav.r4m-nav button')).toHaveCount(2);
-    const visual = await page.evaluate(() => {
-      const nav = document.getElementById('r4mNavRoll');
-      const again = document.getElementById('r4mRollAgain');
-      const result = (button,child) => {
-        const el=button.querySelector(child), style=getComputedStyle(el);
-        const face=getComputedStyle(el,'::before'), core=getComputedStyle(el,'::after');
-        const b=el.getBoundingClientRect(),p=button.getBoundingClientRect();
-        return {
-          radius:style.borderTopLeftRadius,
-          width:b.width,height:b.height,
-          bezel:style.backgroundImage,
-          face:face.content,faceBackground:face.backgroundImage,
-          core:core.content,coreBackground:core.backgroundImage,coreWidth:core.width,
-          buttonTop:p.top,buttonBottom:p.bottom,
-          labelRight:button.lastElementChild?.getBoundingClientRect().right || null,
-          buttonRight:p.right,
-          centerTarget:document.elementFromPoint(b.x+b.width/2,b.y+b.height/2)?.closest('button')?.id,
-        };
+
+    const read=await page.evaluate(() => {
+      const again=document.getElementById('r4mRollAgain');
+      const nav=document.getElementById('r4mNavRoll');
+      const visit=document.querySelector('#r4mRoute [data-mobile-action="visit"]');
+      const reel=document.getElementById('r4mRollReel');
+      const slab=again.getBoundingClientRect(),rail=document.querySelector('.r4m-nav').getBoundingClientRect();
+      const rest=getComputedStyle(again);
+      const initial={
+        slabColor:rest.backgroundColor, slabBorder:rest.borderTopColor,
+        slabShadow:rest.boxShadow, slabTransform:rest.transform,
+        visitColor:getComputedStyle(visit).backgroundColor,
+        labelRight:again.lastElementChild.getBoundingClientRect().right,
+        buttonRight:slab.right,
+        buttonBottom:slab.bottom,
+        railTop:rail.top,
+        navTop:nav.getBoundingClientRect().top,
+        navBar:getComputedStyle(nav,'::before').backgroundColor,
+        navGlyph:getComputedStyle(nav.querySelector('.r4m-nav-aperture')).display,
+        stage:reel.dataset.phase,
       };
-      const navTop=document.querySelector('.r4m-nav').getBoundingClientRect().top;
-      return {
-        again:result(again,'.r4m-next-aperture'),
-        nav:result(nav,'.r4m-nav-aperture'),
-        navTop,scrollWidth:document.documentElement.scrollWidth,innerWidth,
-      };
+      again.classList.add('motion-pressed');
+      const pressed=getComputedStyle(again);
+      initial.press={transform:pressed.transform,border:pressed.borderTopColor,shadow:pressed.boxShadow};
+      again.classList.remove('motion-pressed');
+      // Existing reel phase is the only hold authority; styling never sets it
+      // in production. Snapshot the declarative CSS hook, then restore it.
+      const prior=reel.dataset.phase;
+      reel.dataset.phase='awaiting-commit';
+      const hold=getComputedStyle(again);
+      initial.hold={transform:hold.transform,border:hold.borderTopColor,shadow:hold.boxShadow};
+      reel.dataset.phase='spin';
+      const spin=getComputedStyle(again);
+      initial.spin={border:spin.borderTopColor,transform:spin.transform};
+      reel.dataset.phase=prior;
+      return {...initial,overflow:document.documentElement.scrollWidth-innerWidth};
     });
-    console.log('MINI_ROLL_FACE '+JSON.stringify({viewport,visual}));
-    for (const key of ['again','nav']) {
-      const item=visual[key];
-      expect(item.radius).toBe('50%');
-      expect(item.width).toBeGreaterThanOrEqual(key==='again'?28:26);
-      expect(item.height).toBeGreaterThanOrEqual(key==='again'?28:26);
-      expect(item.face).not.toBe('none');
-      expect(item.faceBackground).toContain('radial-gradient');
-      expect(item.bezel).toContain('conic-gradient');
-      expect(item.core).not.toBe('none');
-      expect(item.coreBackground).toContain('radial-gradient');
-      expect(item.coreBackground).toContain('rgb(0, 0, 0)');
-      expect(item.centerTarget).toBe(key==='nav'?'r4mNavRoll':'r4mRollAgain');
-    }
-    expect(visual.again.width).toBeGreaterThan(visual.nav.width + 2);
-    expect(visual.again.labelRight).toBeLessThanOrEqual(visual.again.buttonRight+1);
-    expect(visual.again.buttonBottom).toBeLessThanOrEqual(visual.navTop+1);
-    expect(visual.scrollWidth).toBeLessThanOrEqual(visual.innerWidth+1);
-    await page.screenshot({path:testInfo.outputPath('machined-mini-roll-'+viewport.width+'x'+viewport.height+'.png')});
-    // Press the existing single real parent ROLL AGAIN: no second selection.
+    console.log('ROLL_SLAB_VISUAL '+JSON.stringify({viewport,read}));
+    expect(read.slabColor).not.toBe(read.visitColor);
+    expect(read.slabBorder).not.toBe('rgb(255, 26, 46)');
+    expect(read.navGlyph).toBe('none');
+    expect(read.navBar).toBe('rgb(251, 1, 24)');
+    expect(read.labelRight).toBeLessThanOrEqual(read.buttonRight+1);
+    expect(read.buttonBottom).toBeLessThanOrEqual(read.railTop+1);
+    expect(read.overflow).toBeLessThanOrEqual(1);
+    expect(read.press.border).toBe('rgb(255, 26, 46)');
+    expect(read.hold.border).toBe('rgb(255, 26, 46)');
+    expect(read.spin.border).toBe(read.slabBorder);
+    expect(read.press.transform).not.toBe('none');
+    expect(read.hold.transform).not.toBe('none');
+
+    await page.screenshot({path:testInfo.outputPath('recessed-roll-slab-'+viewport.width+'x'+viewport.height+'.png')});
     await again.click();
     await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
-    await expect.poll(() => page.evaluate(async () =>
-      (await window.getTrailManifest()).manifest.steps.length)).toBe(stepsBefore+2);
-    // Bottom ROLL remains the same navigation action; do not assume this
-    // control necessarily exposes the hero on a revealed-result screen.
+    await expect.poll(() => page.evaluate(async ()=>(await window.getTrailManifest()).manifest.steps.length)).toBe(stepsBefore+2);
     await nav.click();
     await expect(nav).toBeVisible();
-    await expect(nav).toHaveAttribute('data-mobile-action','nav-roll');
-    await expect.poll(() => page.evaluate(async () =>
-      (await window.getTrailManifest()).manifest.steps.length)).toBe(stepsBefore+2);
+    await expect.poll(() => page.evaluate(async ()=>(await window.getTrailManifest()).manifest.steps.length)).toBe(stepsBefore+2);
   }
 });
 

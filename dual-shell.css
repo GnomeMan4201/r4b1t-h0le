@@ -1440,101 +1440,64 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   }
 }
 
-/* Mini ROLL mechanism v2: machined red press-face with a true dark core.
-   Presentation only. Both glyphs are aria-hidden spans inside the original
-   single real buttons; the SVG, REEL, draw, Trail and action rails are untouched.
-   The secondary ROLL AGAIN control has a larger mechanism; nav ROLL is smaller.
-   Narrow phones keep enough room for readable, untruncated action text. */
+/* ROLL continuation as a single recessed machine slab. The REEL is the
+   mechanism: remove duplicate mini controls; navigation stays navigation.
+   No new DOM, event handlers, reel state, sampler or selection authority. */
 @media (max-width:900px) {
-  html.r4-mobile-active #r4mRollAgain { gap:6px; }
-
   html.r4-mobile-active #r4mRollAgain .r4m-next-aperture,
   html.r4-mobile-active #r4mNavRoll .r4m-nav-aperture {
-    position:relative;
-    display:block!important;
+    display:none!important;
+  }
+
+  /* Whole slab is the tactile actuator; OPEN DESTINATION remains the
+     single solid red action, so the repeat action is intentionally quiet. */
+  html.r4-mobile-active.r4m-stage-result #r4mRollAgain {
     box-sizing:border-box;
-    width:clamp(28px,9.2vw,38px);
-    height:clamp(28px,9.2vw,38px);
-    min-width:clamp(28px,9.2vw,38px);
-    flex:0 0 clamp(28px,9.2vw,38px);
-    margin:0;
-    border:2px solid #ad1d2c;
-    border-radius:50%!important;
-    background:conic-gradient(from -40deg,#717073,#292628 45deg,#0a090b 115deg,#2f292b 215deg,#080709 275deg,#aaa0a1 336deg,#717073 360deg);
-    box-shadow:
-      inset 0 1px 1px rgba(255,255,255,.45),
-      inset 0 -4px 5px #050304,
-      0 0 0 2px #080608,
-      0 0 0 3px #6b0e1b,
-      0 3px 0 2px #210407,
-      0 5px 8px rgba(0,0,0,.85),
-      0 0 13px rgba(251,1,24,.36);
-    overflow:visible;
-    isolation:isolate;
-    pointer-events:none;
+    display:flex!important;
+    gap:0;
+    padding-inline:6px;
+    border:1px solid #420c15;
+    border-top-color:#64121d;
+    background:linear-gradient(180deg,#0e0b0c 0%,#070606 45%,#030303 100%);
+    box-shadow:inset 0 0 0 1px #26060b,inset 0 3px 8px rgba(0,0,0,.94),0 3px 0 #000;
+    color:#f5f4f4;
+    font-weight:800;
+    transform:translateY(0);
+    filter:none;
+    transition:transform 60ms ease-out,box-shadow 60ms ease-out,border-color 60ms ease-out,background-color 60ms ease-out;
+  }
+  html.r4-mobile-active #r4mRollAgain>span:last-child {
+    flex:none;
+    white-space:nowrap;
+    text-align:center;
+  }
+
+  /* Real existing interaction signals: down, shared pointer press, and
+     reel COMMITTING hold. Stop the hold at STRIP_ACCELERATING / spin.
+     Whether the slab stays visible during this interval is owned by the
+     existing source application's presentation lifecycle. */
+  html.r4-mobile-active #r4mRollAgain:is(:active,.motion-pressed),
+  html.r4-mobile-active:has(#r4mRollReel[data-phase="awaiting-commit"]) #r4mRollAgain:not([hidden]) {
+    transform:translateY(2px)!important;
+    border-color:#ff1a2e!important;
+    background:#090203;
+    box-shadow:inset 0 0 0 1px #ff1a2e,inset 0 3px 8px #000,0 1px 0 #000!important;
+    filter:none!important;
+  }
+
+  /* Nav remains a labelled tab, not a second miniature actuator. Its
+     existing narrow active bar continues to mark the ROLL section. */
+  html.r4-mobile-active #r4mNavRoll {
+    gap:0;
     transform:none;
+    box-shadow:none;
   }
-
-  /* Raised, luminous red face nested inside the metal bezel. */
-  html.r4-mobile-active #r4mRollAgain .r4m-next-aperture::before,
-  html.r4-mobile-active #r4mNavRoll .r4m-nav-aperture::before {
-    content:"";
-    position:absolute;
-    inset:3px;
-    border:1px solid #ff4458;
-    border-radius:50%;
-    background:radial-gradient(circle at 32% 20%,#ff9ca5 0%,#ff4d61 14%,#f20724 44%,#a9071c 73%,#55040e 100%);
-    box-shadow:
-      inset 0 1px 2px rgba(255,255,255,.55),
-      inset 0 -4px 5px rgba(44,0,5,.85),
-      0 2px 0 #56050e,
-      0 0 7px rgba(255,25,44,.6);
-    pointer-events:none;
-    transition:transform .12s ease;
-  }
-
-  /* A BLACK HOLE, not a specular dot: readable at tiny icon scale. */
-  html.r4-mobile-active #r4mRollAgain .r4m-next-aperture::after,
-  html.r4-mobile-active #r4mNavRoll .r4m-nav-aperture::after {
-    content:"";
-    position:absolute;
-    inset:30%;
-    border:1.5px solid #710613;
-    border-radius:50%;
-    background:radial-gradient(circle at 45% 34%,#131013 0%,#000 55%,#060104 100%);
-    box-shadow:
-      inset 0 1px 3px #000,
-      0 0 0 1px rgba(255,140,149,.7),
-      0 0 4px 1px rgba(255,16,38,.85);
-    pointer-events:none;
-    transition:transform .12s ease;
-  }
-
-  html.r4-mobile-active #r4mNavRoll .r4m-nav-aperture {
-    width:clamp(26px,7.5vw,30px);
-    height:clamp(26px,7.5vw,30px);
-    min-width:clamp(26px,7.5vw,30px);
-    flex-basis:clamp(26px,7.5vw,30px);
-  }
-
-  /* A physical press response on the decorative face only. */
-  html.r4-mobile-active #r4mRollAgain:active .r4m-next-aperture,
-  html.r4-mobile-active #r4mNavRoll:active .r4m-nav-aperture {
-    box-shadow:inset 0 3px 5px #000,0 0 0 2px #080608,0 0 0 3px #6b0e1b,0 1px 1px #250408;
-  }
-  html.r4-mobile-active #r4mRollAgain:active .r4m-next-aperture::before,
-  html.r4-mobile-active #r4mNavRoll:active .r4m-nav-aperture::before,
-  html.r4-mobile-active #r4mRollAgain:active .r4m-next-aperture::after,
-  html.r4-mobile-active #r4mNavRoll:active .r4m-nav-aperture::after {
-    transform:translateY(1px) scale(.95);
+  html.r4-mobile-active #r4mNavRoll b {
+    font-weight:900;
+    letter-spacing:.11em;
   }
 }
 @media (prefers-reduced-motion:reduce) {
-  html.r4-mobile-active #r4mRollAgain .r4m-next-aperture::before,
-  html.r4-mobile-active #r4mRollAgain .r4m-next-aperture::after,
-  html.r4-mobile-active #r4mNavRoll .r4m-nav-aperture::before,
-  html.r4-mobile-active #r4mNavRoll .r4m-nav-aperture::after {
-    transition:none;
-  }
+  html.r4-mobile-active #r4mRollAgain { transition:none!important; }
 }
 

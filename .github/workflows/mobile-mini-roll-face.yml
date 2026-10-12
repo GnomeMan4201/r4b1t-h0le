@@ -1,4 +1,4 @@
-name: Mobile Mini ROLL Face Evidence
+name: Mobile ROLL Slab Evidence
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  mini-roll-evidence:
+  roll-slab-evidence:
     if: github.event_name == 'workflow_dispatch' || startsWith(github.head_ref, 'design/mobile-machined-roll-glyphs-')
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -35,16 +35,16 @@ jobs:
           set -euo pipefail
           mkdir -p test-site/r4b1t-h0le
           rsync -a --exclude='.git' --exclude='node_modules' --exclude='test-site' --exclude='playwright-report' --exclude='test-results' ./ test-site/r4b1t-h0le/
-      - name: Verify machined mini faces and real ROLL continuation (no retries)
+      - name: Verify recessed ROLL slab, quiet nav and real continuation (no retries)
         env:
           BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
           CI: 'false'
-        run: npx playwright test tests/dual-shell.spec.js --project=mobile-chromium -g "post-reveal ROLL controls use filled mini-machine faces" --retries=0 --reporter=line
+        run: npx playwright test tests/dual-shell.spec.js --project=mobile-chromium -g "post-reveal ROLL AGAIN is a recessed slab" --retries=0 --reporter=line
       - name: Upload screenshots and failure traces
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: mini-roll-faces-${{ github.event.pull_request.head.sha || github.sha }}
+          name: roll-slab-evidence-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
             test-results/
             playwright-report/
