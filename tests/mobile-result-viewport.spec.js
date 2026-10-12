@@ -28,6 +28,14 @@ for (const height of [668, 635]) {
     await page.goto('./', { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => window.R4B1TRollReel && window.R4B1TRollReel.isMounted() &&
       window.__r4b1tCommitRoll && window.__r4b1tCommitRoll.__r4b1tAuthority);
+    const entry = await page.evaluate(() => ({
+      roll: document.getElementById('r4mRoll').getBoundingClientRect().toJSON(),
+      nav: document.querySelector('.r4m-nav').getBoundingClientRect().toJSON(), scrollY,
+    }));
+    expect(entry.scrollY).toBe(0);
+    expect(entry.roll.height).toBe(208);
+    expect(entry.roll.bottom, 'first ROLL must not need an automatic click scroll')
+      .toBeLessThanOrEqual(entry.nav.top - 8);
     const count = await page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length);
     const ids = new Set();
     for (let index = 0; index < 10; index += 1) {
