@@ -33,6 +33,55 @@ test.beforeEach(async ({ page }) => {
   await blockExternalNetwork(page);
 });
 
+test('mobile numeric/date reel labels are identifiable and preserve selected URLs', async ({ page }, testInfo) => {
+  if (testInfo.project.name !== 'mobile-chromium') test.skip();
+  await page.setViewportSize({width: 390, height: 844});
+  await page.emulateMedia({reducedMotion: 'reduce'});
+  await page.goto('./', {waitUntil: 'domcontentloaded'});
+  await ready(page);
+
+  for (const [name, url] of [
+    ['reel-numeric-sector035', 'https://sector035.nl/articles/2024-30'],
+    ['reel-numeric-tmpout', 'https://tmpout.sh/4/4.html'],
+  ]) {
+    const prepared = await page.evaluate(selected => window.R4B1TRollReel.prepare({
+      charge: 0.22,
+      result: {url: selected, eligiblePool: [selected, 'https://example.org/docs/overview']}
+    }) != null, url);
+    expect(prepared).toBe(true);
+    const payline = page.locator('#r4mRollReel .r4m-reel-row.is-payline');
+    await expect(payline).toHaveAttribute('data-url', url);
+    await expect(payline.locator('.r4m-reel-name')).toHaveText(
+      new URL(url).hostname + new URL(url).pathname
+    );
+    const geometry = await page.evaluate(() => {
+      const reel = document.querySelector('#r4mRollReel .r4m-reel-window');
+      const payline = reel.querySelector('.r4m-reel-row.is-payline');
+      const label = payline.querySelector('.r4m-reel-name');
+      const outer = reel.getBoundingClientRect();
+      const inner = label.getBoundingClientRect();
+      return {
+        documentWidth: document.documentElement.scrollWidth,
+        viewportWidth: innerWidth,
+        reelWidth: outer.width,
+        reelLeft: outer.left,
+        reelRight: outer.right,
+        labelWidth: inner.width,
+        fontSize: parseFloat(getComputedStyle(label).fontSize)
+      };
+    });
+    expect(geometry.documentWidth).toBeLessThanOrEqual(geometry.viewportWidth + 1);
+    expect(geometry.reelLeft).toBeGreaterThanOrEqual(-1);
+    expect(geometry.reelRight).toBeLessThanOrEqual(geometry.viewportWidth + 1);
+    expect(geometry.labelWidth).toBeGreaterThan(100);
+    expect(geometry.fontSize).toBeGreaterThan(15);
+    // Presentation-only fixture: no committed transaction or sampler is changed.
+    await page.locator('#r4mRollReel .r4m-reel-window').screenshot({
+      path: testInfo.outputPath(name + '.png')
+    });
+  }
+});
+
 test('REEL lands on the exact authoritative result and slam does not re-pick', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   const pageErrors = [];
