@@ -437,9 +437,29 @@ function extractMeta(html, keys) {
   return '';
 }
 
+function usablePageTitle(raw) {
+  const value = decodeEntities(raw).replace(/\s+/g, ' ').trim();
+  // A bare year, integer or year-number fragment is an identifier, not a
+  // trustworthy human-readable page title.
+  return /^(?:\d+|(?:19|20)\d{2}(?:[\s._-]+\d{1,4}){1,3})$/.test(value) ? '' : value;
+}
+
+function urlTitleFallback(baseUrl) {
+  try {
+    const url = new URL(baseUrl);
+    return url.hostname.replace(/^www\./i, '') + (url.pathname || '/');
+  } catch {
+    return '';
+  }
+}
+
 export function parseOpenGraph(html, baseUrl) {
   const titleTag = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i);
-  const title = extractMeta(html, ['og:title', 'twitter:title']) || decodeEntities(titleTag?.[1] || '');
+  const title = [
+    decodeEntities(titleTag?.[1] || ''),
+    extractMeta(html, ['og:title']),
+    extractMeta(html, ['twitter:title']),
+  ].map(usablePageTitle).find(Boolean) || urlTitleFallback(baseUrl);
   const desc = extractMeta(html, ['og:description', 'description', 'twitter:description']);
   const site_name = extractMeta(html, ['og:site_name']);
   const keywords = extractMeta(html, ['keywords']);
