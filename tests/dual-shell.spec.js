@@ -1758,7 +1758,7 @@ test('mobile ROLL AGAIN and bottom ROLL use distinct aperture glyphs for action 
 
 test('post-reveal ROLL controls use filled mini-machine faces without extra button semantics', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile-chromium');
-  for (const viewport of [{width:390,height:680},{width:390,height:844}]) {
+  for (const viewport of [{width:320,height:568},{width:375,height:667},{width:390,height:680},{width:390,height:844}]) {
     await page.setViewportSize(viewport);
     await page.goto('./', {waitUntil:'domcontentloaded'});
     await waitReady(page);
@@ -1783,14 +1783,17 @@ test('post-reveal ROLL controls use filled mini-machine faces without extra butt
       const again = document.getElementById('r4mRollAgain');
       const result = (button,child) => {
         const el=button.querySelector(child), style=getComputedStyle(el);
-        const face=getComputedStyle(el,'::before'), glint=getComputedStyle(el,'::after');
+        const face=getComputedStyle(el,'::before'), core=getComputedStyle(el,'::after');
         const b=el.getBoundingClientRect(),p=button.getBoundingClientRect();
         return {
           radius:style.borderTopLeftRadius,
           width:b.width,height:b.height,
+          bezel:style.backgroundImage,
           face:face.content,faceBackground:face.backgroundImage,
-          glint:glint.content,
+          core:core.content,coreBackground:core.backgroundImage,coreWidth:core.width,
           buttonTop:p.top,buttonBottom:p.bottom,
+          labelRight:button.lastElementChild?.getBoundingClientRect().right || null,
+          buttonRight:p.right,
           centerTarget:document.elementFromPoint(b.x+b.width/2,b.y+b.height/2)?.closest('button')?.id,
         };
       };
@@ -1805,13 +1808,18 @@ test('post-reveal ROLL controls use filled mini-machine faces without extra butt
     for (const key of ['again','nav']) {
       const item=visual[key];
       expect(item.radius).toBe('50%');
-      expect(item.width).toBeGreaterThanOrEqual(24);
-      expect(item.height).toBeGreaterThanOrEqual(24);
+      expect(item.width).toBeGreaterThanOrEqual(key==='again'?28:26);
+      expect(item.height).toBeGreaterThanOrEqual(key==='again'?28:26);
       expect(item.face).not.toBe('none');
       expect(item.faceBackground).toContain('radial-gradient');
-      expect(item.glint).not.toBe('none');
+      expect(item.bezel).toContain('conic-gradient');
+      expect(item.core).not.toBe('none');
+      expect(item.coreBackground).toContain('radial-gradient');
+      expect(item.coreBackground).toContain('rgb(0, 0, 0)');
       expect(item.centerTarget).toBe(key==='nav'?'r4mNavRoll':'r4mRollAgain');
     }
+    expect(visual.again.width).toBeGreaterThan(visual.nav.width + 2);
+    expect(visual.again.labelRight).toBeLessThanOrEqual(visual.again.buttonRight+1);
     expect(visual.again.buttonBottom).toBeLessThanOrEqual(visual.navTop+1);
     expect(visual.scrollWidth).toBeLessThanOrEqual(visual.innerWidth+1);
     await page.screenshot({path:testInfo.outputPath('machined-mini-roll-'+viewport.width+'x'+viewport.height+'.png')});
