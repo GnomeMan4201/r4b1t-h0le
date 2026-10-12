@@ -2186,6 +2186,12 @@ test('Machine compact iPhone browser pane keeps the real invitation and ROLL abo
   await expect(page.locator('#r4mHero h1')).toHaveText('A HOLE, NOT A FEED.');
   await expect(page.locator('#r4mRollReel')).toBeVisible();
   await expect(page.locator('#r4mRoll')).toBeVisible();
+  const idleMark = await page.evaluate(() => ({
+    frameHeight: document.querySelector('#r4mProductionMark').getBoundingClientRect().height,
+    svgHeight: document.querySelector('#r4mProductionMark svg').getBoundingClientRect().height,
+  }));
+  expect(idleMark.frameHeight).toBeGreaterThan(0);
+  expect(idleMark.svgHeight).toBeGreaterThan(0);
   const position = await page.evaluate(() => ({
     rollBottom: document.querySelector('#r4mRoll').getBoundingClientRect().bottom,
     navTop: document.querySelector('.r4m-nav').getBoundingClientRect().top,
@@ -2200,6 +2206,13 @@ test('Machine compact iPhone browser pane keeps the real invitation and ROLL abo
   await page.locator('#r4mRoll').click();
   await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
   await expect(page.locator('#r4mHero')).toBeHidden();
+  const revealedMark = await page.evaluate(() => ({
+    frameHeight: document.querySelector('#r4mProductionMark').getBoundingClientRect().height,
+    svgHeight: document.querySelector('#r4mProductionMark svg').getBoundingClientRect().height,
+  }));
+  // A route reveal must not enlarge the unchanged production mark in compact Machine.
+  expect(Math.abs(revealedMark.frameHeight - idleMark.frameHeight)).toBeLessThanOrEqual(1);
+  expect(Math.abs(revealedMark.svgHeight - idleMark.svgHeight)).toBeLessThanOrEqual(1);
   await expect.poll(() => page.evaluate(async () => (await window.getTrailManifest()).manifest.steps.length))
     .toBe(beforeSteps + 1);
   await page.locator('#r4mNavMenu').click();

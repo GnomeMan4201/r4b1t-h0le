@@ -261,6 +261,16 @@
   html[data-r4b1t-machine="1"]:not(.r4m-stage-result):not(.r4m-stage-blind) #r4mProductionMark svg {
     max-height:clamp(64px,10.5dvh,82px)!important;
   }
+  /* The compact invitation reduced the mark to ~71px at 390x680,
+     but result previously restored 112px and enlarged the rabbit mid-reveal.
+     Keep the SAME mark frame in both stages; no SVG/keyframe changes. */
+  html[data-r4b1t-machine="1"].r4m-stage-result #r4mProductionMark {
+    min-height:0!important;
+    height:clamp(64px,10.5dvh,82px)!important;
+  }
+  html[data-r4b1t-machine="1"].r4m-stage-result #r4mProductionMark svg {
+    max-height:clamp(64px,10.5dvh,82px)!important;
+  }
   html[data-r4b1t-machine="1"].r4m-reel-enabled:not(.r4m-stage-result):not(.r4m-stage-blind) #r4mRoll {
     width:clamp(128px,21dvh,170px)!important;
     height:clamp(128px,21dvh,170px)!important;

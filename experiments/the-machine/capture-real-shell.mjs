@@ -47,6 +47,7 @@ async function capture(page, label) {
       scrollWidth:document.documentElement.scrollWidth,
       headerBackground:h?getComputedStyle(h).backgroundImage:null,
       roll:rect('#r4mRoll'),hero:rect('#r4mHero h1'),mark:rect('#r4mProductionMark'),
+      svgMark:rect('#r4mProductionMark svg'),
       reel:rect('#r4mRollReel'),route:rect('#r4mRoute'),
       menu:rect('#r4mMenuSheet'),nav:rect('.r4m-nav')
     };
@@ -91,7 +92,11 @@ try {
   await compact.waitForFunction(()=>document.documentElement.getAttribute('data-r4m-presentation')==='revealed',{timeout:15000});
   await compact.locator('#r4mRoute').waitFor({state:'visible'});
   if (await compact.locator('#r4mHero').isVisible()) throw new Error('Compact invitation hero leaked after reveal');
-  await capture(compact,'06-machine-compact-result');
+  const compactResult=await capture(compact,'06-machine-compact-result');
+  if (Math.abs(compactResult.mark.height-compactIdle.mark.height)>1)
+    throw new Error('Compact production mark frame jumped between invite and reveal');
+  if (Math.abs(compactResult.svgMark.height-compactIdle.svgMark.height)>1)
+    throw new Error('Compact production SVG display size jumped between invite and reveal');
   await compactCtx.close();
 
   report.issues=issues;
