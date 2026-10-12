@@ -1416,3 +1416,26 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   #trailTopologyOverlay .topology-inspector-grid{grid-template-columns:minmax(0,1fr);gap:4px}
   #trailTopologyOverlay .topology-inspector-grid dd{margin-bottom:8px}
 }
+
+
+/* Short phone browser pane — keep the whole initial ROLL in front of, not
+   behind, the fixed bottom navigation. This only changes the *idle/in-flight*
+   presentation footprint on exceptionally short portrait phones: the canonical
+   rabbit SVG/keyframes, fixed navigation, 192px REEL, transaction/Trail and
+   ordinary-height/default result layouts are untouched.
+   Physical-device RED: 375x667 / 390x680 clipped the 208px ROLL by 80/67px.
+   A compact 19dvh button and 12dvh mark frame restore clearance. */
+@media (max-width:430px) and (max-height:754px) and (orientation:portrait) {
+  html.r4-mobile-active.r4m-reel-enabled:not(.r4m-stage-result):not(.r4m-stage-blind) #r4mProductionMark {
+    min-height:0!important;
+    height:clamp(70px,12dvh,94px)!important;
+  }
+  html.r4-mobile-active.r4m-reel-enabled:not(.r4m-stage-result):not(.r4m-stage-blind) #r4mProductionMark svg {
+    max-height:clamp(70px,12dvh,94px)!important;
+  }
+  html.r4-mobile-active.r4m-reel-enabled:not(.r4m-stage-result):not(.r4m-stage-blind) #r4mRoll {
+    width:clamp(112px,19dvh,148px)!important;
+    height:clamp(112px,19dvh,148px)!important;
+    min-height:clamp(112px,19dvh,148px)!important;
+  }
+}

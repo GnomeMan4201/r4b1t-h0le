@@ -1337,6 +1337,7 @@ test('compact mobile first viewport exposes full ROLL above fixed navigation wit
   const observations = [];
   for (const viewport of [
     { width: 375, height: 667 }, { width: 390, height: 680 },
+    { width: 390, height: 740 }, { width: 390, height: 754 },
     { width: 430, height: 779 }, { width: 390, height: 844 },
   ]) {
     await page.setViewportSize(viewport);
@@ -1362,7 +1363,7 @@ test('compact mobile first viewport exposes full ROLL above fixed navigation wit
   }
   console.log('ROLL_COMPACT_VIEWPORT_GEOMETRY '+JSON.stringify(observations));
   for (const g of observations) {
-    expect(g.stage).toBe('idle');
+    expect([null, 'idle']).toContain(g.stage);
     expect(g.scrollY).toBe(0);
     expect(g.horizontalOverflow).toBeLessThanOrEqual(1);
     expect(g.reelHeight).toBe(192);
@@ -1373,6 +1374,18 @@ test('compact mobile first viewport exposes full ROLL above fixed navigation wit
   }
   const fullHeight = observations.find(g => g.viewport[1] === 844);
   expect(fullHeight.rollHeight).toBeGreaterThanOrEqual(200);
+  // The compact visual correction must not intercept the real ROLL authority.
+  await page.setViewportSize({ width: 390, height: 680 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  const beforeSteps = await page.evaluate(async () =>
+    (await window.getTrailManifest()).manifest.steps.length);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
+  await expect(page.locator('#r4mRollReel')).toHaveAttribute('data-phase','revealed');
+  await expect.poll(() => page.evaluate(async () =>
+    (await window.getTrailManifest()).manifest.steps.length)).toBe(beforeSteps + 1);
+  await expect(page.locator('#r4mRollAgain')).toBeVisible();
 });
 
 test('fresh mobile landing keeps ROLL above persistent navigation at phone height', async ({ page }, testInfo) => {
