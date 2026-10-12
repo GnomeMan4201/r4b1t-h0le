@@ -22,15 +22,15 @@ const { eligiblePool } = require('../selection-core.js');
 const ROOT = path.resolve(__dirname, '..');
 
 function parseArgs(argv) {
-  const options = { terrain: 'ALL,article,reference', rolls: 300, seed: 4201, json: false };
+  const options = { terrain: 'ALL,article,reference', rolls: 300, seed: 4201, seeds: 1, json: false };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--help' || arg === '-h') {
-      console.log('Usage: node tools/reel_domain_audit.js [--terrain ALL,article,reference] [--rolls 300] [--seed 4201] [--json]');
+      console.log('Usage: node tools/reel_domain_audit.js [--terrain ALL,article,reference] [--rolls 300] [--seed 4201] [--seeds 200] [--json]');
       process.exit(0);
     }
     if (arg === '--json') { options.json = true; continue; }
-    if (!['--terrain', '--rolls', '--seed'].includes(arg) || i + 1 >= argv.length) {
+    if (!['--terrain', '--rolls', '--seed', '--seeds'].includes(arg) || i + 1 >= argv.length) {
       throw new Error('Unknown or incomplete argument: ' + arg);
     }
     const value = argv[++i];
@@ -39,10 +39,13 @@ function parseArgs(argv) {
   options.terrain = String(options.terrain).split(',').filter(Boolean);
   options.rolls = Number(options.rolls);
   options.seed = Number(options.seed);
+  options.seeds = Number(options.seeds);
   if (!Number.isSafeInteger(options.rolls) || options.rolls < 1 || options.rolls > 1000000)
     throw new Error('rolls must be an integer between 1 and 1000000');
   if (!Number.isSafeInteger(options.seed) || options.seed < 0 || options.seed > 4294967295)
     throw new Error('seed must be a uint32');
+  if (!Number.isSafeInteger(options.seeds) || options.seeds < 1 || options.seeds > 1000)
+    throw new Error('seeds must be an integer between 1 and 1000');
   return options;
 }
 
@@ -117,6 +120,58 @@ function pickUrl(pool, rng, previous) {
   return choice;
 }
 
+/**
+ * Independent seed sweep: each chain starts with a null previous URL.
+ * Report observed replicate means and empirical standard errors, retaining
+ * the exact fixed-seed golden vector separately in run().
+ * This is a deterministic regression diagnostic, not proof of RNG fairness.
+ */
+function multiSeedTrial(pool, rolls, baseSeed, seeds, expectation) {
+  const hosts = pool.map(hostOf);
+  const index = new Map(pool.map((url, i) => [url, i]));
+  const counts = new Array(pool.length).fill(0);
+  const sameHostPerSeed = [];
+  const sameUrlPerSeed = [];
+  for (let k = 0; k < seeds; k++) {
+    const rng = seededRandom((baseSeed + k) >>> 0);
+    let previous = null, prevHost = '', sameHost = 0, sameUrl = 0;
+    for (let j = 0; j < rolls; j++) {
+      const url = pickUrl(pool, rng, previous);
+      const position = index.get(url);
+      if (position === undefined) throw new Error('multi-seed output escaped eligible pool');
+      counts[position]++;
+      const host = hosts[position];
+      if (previous != null && previous === url) sameUrl++;
+      if (previous != null && prevHost === host) sameHost++;
+      previous = url;
+      prevHost = host;
+    }
+    sameHostPerSeed.push(sameHost);
+    sameUrlPerSeed.push(sameUrl);
+  }
+  function stats(values) {
+    const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
+    const variance = values.reduce((sum, value) => sum + (value - mean) ** 2, 0) /
+      Math.max(1, values.length - 1);
+    return { mean, standard_error: Math.sqrt(variance / values.length) };
+  }
+  // A marginal frequency guard catches missing/oversampled URLs even if the
+  // aggregate same-host transitions happen to look correct.
+  const total = rolls * seeds;
+  const expectedEach = total / pool.length;
+  const singleUrlStdDev = Math.sqrt(total * (1 / pool.length) * (1 - 1 / pool.length));
+  const maxUrlFrequencyZ = counts.reduce((max, count) =>
+    Math.max(max, Math.abs(count - expectedEach) / Math.max(singleUrlStdDev, Number.EPSILON)), 0);
+  return {
+    seeds, rolls_per_seed: rolls, total_draws: total,
+    expected: expectation,
+    observed: { same_url: stats(sameUrlPerSeed), same_host: stats(sameHostPerSeed) },
+    max_url_frequency_z: maxUrlFrequencyZ,
+    max_url_frequency_count: Math.max(...counts),
+    min_url_frequency_count: Math.min(...counts)
+  };
+}
+
 function run(options) {
   const active = JSON.parse(fs.readFileSync(path.join(ROOT, 'corpus/runtime/active-v1.json'), 'utf8'));
   if (!active.active || active.active.selection_authority !== true) throw new Error('active promotion lacks authority');
@@ -166,6 +221,10 @@ function run(options) {
       adjacent_same_host: adjacentSameHost, adjacent_same_url: adjacentSameUrl,
       expected_transitions: expectedTransitions(corpusHosts, eligible.length, options.rolls),
       observed_transitions: { same_url: adjacentSameUrl, same_host: adjacentSameHost },
+      ...(options.seeds > 1 ? { multi_seed: multiSeedTrial(
+        eligible, options.rolls, (options.seed + index * options.seeds) >>> 0,
+        options.seeds, expectedTransitions(corpusHosts, eligible.length, options.rolls).uniform_with_repeat_guard_v1
+      ) } : {}),
       expected_top_hosts: summary(corpusHosts, eligible.length),
       observed_top_hosts: summary(observed, options.rolls),
       requested: Object.fromEntries(['gtfobins.org', 'tmpout.sh'].map(h => [h, {
@@ -198,6 +257,15 @@ try {
           '; guarded expected ' +
           formatExpectation(r.expected_transitions.uniform_with_repeat_guard_v1[field]) +
           '; observed ' + r.observed_transitions[field]);
+      }
+      if (r.multi_seed) {
+        console.log('multi-seed (' + r.multi_seed.seeds + ' seeds x ' + r.multi_seed.rolls_per_seed + ' rolls):');
+        console.log('  identical URL mean ' + r.multi_seed.observed.same_url.mean.toFixed(4) +
+          ', expected ' + formatExpectation(r.multi_seed.expected.same_url));
+        console.log('  same-host mean ' + r.multi_seed.observed.same_host.mean.toFixed(4) +
+          ' +/- SE ' + r.multi_seed.observed.same_host.standard_error.toFixed(4) +
+          ', expected ' + formatExpectation(r.multi_seed.expected.same_host));
+        console.log('  max URL marginal z-score ' + r.multi_seed.max_url_frequency_z.toFixed(3));
       }
       for (const [host, v] of Object.entries(r.requested)) {
         console.log('  ' + host + ': eligible ' + v.eligible + ' (' + v.expected_pct + '%), drawn ' + v.drawn + ' (' + v.observed_pct + '%)');
