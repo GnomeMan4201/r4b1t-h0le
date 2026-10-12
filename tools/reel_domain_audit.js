@@ -76,6 +76,35 @@ function summary(counts, total, max = 10) {
     .map(([host, count]) => ({ host, count, pct: +(100 * count / total).toFixed(3) }));
 }
 
+/**
+ * Independent statistical oracle, separate from the sampler/simulation.
+ * For R draws within one fixed eligible pool of N distinct URLs, there are
+ * R-1 adjacent transitions. The first ROLL has no previous-URL reference.
+ *
+ * A previous URL reappears only if ALL 30 independent attempts choose it:
+ *   q = (1/N)^30  (for N=1, q=1)
+ * If a previous URL is in the pool, the other N-1 URLs are symmetric.
+ * Host repeats still occur when a different URL belongs to the same host.
+ */
+function expectedTransitions(counts, poolSize, rolls) {
+  const transitions = Math.max(0, rolls - 1);
+  const n = poolSize;
+  if (!Number.isSafeInteger(n) || n < 1) throw new Error('expected transitions: pool must be nonempty');
+  const hostCounts = Object.values(counts);
+  const squared = hostCounts.reduce((sum, count) => sum + count * count, 0);
+  const others = hostCounts.reduce((sum, count) => sum + count * (count - 1), 0);
+  const exhausted = Math.pow(1 / n, 30);
+  const iidUrl = transitions / n;
+  const iidHost = transitions * squared / (n * n);
+  const guardedUrl = transitions * exhausted;
+  const guardedHost = transitions * (n === 1
+    ? 1 : exhausted + (1 - exhausted) * others / (n * (n - 1)));
+  return Object.freeze({
+    independent_iid: Object.freeze({ same_url: iidUrl, same_host: iidHost }),
+    uniform_with_repeat_guard_v1: Object.freeze({ same_url: guardedUrl, same_host: guardedHost })
+  });
+}
+
 // Mirror index.html's ee(pool, rng, reference). This is a sampling model,
 // NOT the production commit/reveal RNG implementation.
 function pickUrl(pool, rng, previous) {
@@ -135,6 +164,8 @@ function run(options) {
       terrain, pool: eligible.length, unique_hosts: Object.keys(corpusHosts).length,
       draws: options.rolls, distinct_urls_rolled: new Set(rolled).size,
       adjacent_same_host: adjacentSameHost, adjacent_same_url: adjacentSameUrl,
+      expected_transitions: expectedTransitions(corpusHosts, eligible.length, options.rolls),
+      observed_transitions: { same_url: adjacentSameUrl, same_host: adjacentSameHost },
       expected_top_hosts: summary(corpusHosts, eligible.length),
       observed_top_hosts: summary(observed, options.rolls),
       requested: Object.fromEntries(['gtfobins.org', 'tmpout.sh'].map(h => [h, {
@@ -144,7 +175,7 @@ function run(options) {
     };
   });
   return { schema: 'r4b1t-reel-domain-audit-v1', authority_digest: digest, terrain_digest: terrainDigest, release: active.active.release_id,
-    simulation: 'seeded offline URL-uniform sample (not live roll or proof)',
+    simulation: 'seeded offline URL-uniform-with-30-draw-repeat-guard model (not live roll or proof)',
     seed: options.seed, results };
 }
 
@@ -160,7 +191,14 @@ try {
     console.log(report.simulation + '; seed=' + report.seed);
     for (const r of report.results) {
       console.log('\n' + r.terrain + ' — ' + r.pool + ' eligible URLs, ' + r.unique_hosts + ' hosts, ' + r.draws + ' simulated selections');
-      console.log('URL repeats in consecutive rolls: ' + r.adjacent_same_url + '; same-host transitions: ' + r.adjacent_same_host);
+      function formatExpectation(value) { return value === 0 ? '0' : value < 0.0001 ? value.toExponential(3) : value.toFixed(3); }
+      for (const field of ['same_url', 'same_host']) {
+        console.log(field + ' transitions: independent expected ' +
+          formatExpectation(r.expected_transitions.independent_iid[field]) +
+          '; guarded expected ' +
+          formatExpectation(r.expected_transitions.uniform_with_repeat_guard_v1[field]) +
+          '; observed ' + r.observed_transitions[field]);
+      }
       for (const [host, v] of Object.entries(r.requested)) {
         console.log('  ' + host + ': eligible ' + v.eligible + ' (' + v.expected_pct + '%), drawn ' + v.drawn + ' (' + v.observed_pct + '%)');
       }
