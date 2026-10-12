@@ -294,10 +294,26 @@ test('OG parser returns bounded metadata and resolves relative images', () => {
     '<html><head><title>Fallback</title><meta property="og:title" content="Example"><meta name="description" content="Desc"><meta property="og:image" content="/cover.png"><meta property="og:site_name" content="Site"></head></html>',
     'https://example.com/a/page',
   );
-  assert.equal(parsed.title, 'Example');
+  assert.equal(parsed.title, 'Fallback');
   assert.equal(parsed.desc, 'Desc');
   assert.equal(parsed.image, 'https://example.com/cover.png');
   assert.equal(parsed.site_name, 'Site');
+});
+
+test('HTML title extraction ignores date fragments and falls back to OG then URL', () => {
+  const baseUrl = 'https://sector035.nl/articles/2024-30';
+  const fromOg = parseOpenGraph(
+    '<head><title>2024 30</title><meta property="og:title" content="Real Research Article"></head>',
+    baseUrl
+  );
+  assert.equal(fromOg.title, 'Real Research Article');
+  const fromUrl = parseOpenGraph(
+    '<head><title>2024-30</title><meta property="og:title" content="4"><meta name="twitter:title" content="30"></head>',
+    baseUrl
+  );
+  assert.equal(fromUrl.title, 'sector035.nl/articles/2024-30');
+  assert.equal(parseOpenGraph('<head><title>4</title></head>', 'https://binary.golf/4').title, 'binary.golf/4');
+  assert.equal(parseOpenGraph('<head><meta property="og:title" content="An actual title"></head>', baseUrl).title, 'An actual title');
 });
 
 test('replacement contract supports HEAD and rejects undocumented POST', async () => {
