@@ -1959,6 +1959,7 @@ test('mobile inspection has readable fields and a touch-sized close control with
   expect(metrics.closeWidth).toBeGreaterThanOrEqual(44);
   expect(metrics.closeHeight).toBeGreaterThanOrEqual(44);
   expect(metrics.pageWidth).toBeLessThanOrEqual(metrics.viewportWidth);
+  await page.screenshot({ path: testInfo.outputPath('mobile-inspect-readability.png') });
   await page.locator('#r4mInspectSheet [data-mobile-action="close-sheets"]').click();
   await expect(page.locator('#r4mBackdrop')).toBeHidden();
   await expect(page.locator('#r4mRollAgain')).toBeInViewport();
