@@ -116,12 +116,17 @@ async function observationSnapshot(page) {
   });
 }
 
-async function rollOnce(page, selector) {
+async function rollOnce(page, selector, options = {}) {
   await page.evaluate(() => window.__markStart());
   await page.locator(selector).tap();
   // Keep an original fixed-time diagnostic checkpoint to explain the prior
   // failure, but do not make this arbitrary time boundary a correctness gate.
   await page.waitForTimeout(2300);
+  // Only the normal-motion rabbit-timing test requires named animation events.
+  // The authority-independence test deliberately blocks the mark; the reduced-
+  // motion test legitimately omits normal animationstart/animationend events.
+  // Preserve their original 2300ms event collection and exact assertions.
+  if (!options.requireNormalMarkTimeline) return page.evaluate(() => window.__markLog.events);
   const fixedWindow = await observationSnapshot(page);
   const required = ['commit','reveal','presentation:revealed','result-mounted',
     'trail-recorded','mark-roll-animation-start','mark-roll-animation-end',
@@ -212,7 +217,7 @@ test.describe('production mark timing authority', () => {
     await instrument(page);
 
     for (const selector of ['#r4mRoll', '#r4mRollAgain']) {
-      const ev = await rollOnce(page, selector);
+      const ev = await rollOnce(page, selector, { requireNormalMarkTimeline:true });
       const on = first(ev, 'mark-rolling-on');
       const markEnd = first(ev, 'mark-roll-animation-end');
       const authority = {
