@@ -1820,8 +1820,13 @@ test('post-reveal ROLL controls use filled mini-machine faces without extra butt
     await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
     await expect.poll(() => page.evaluate(async () =>
       (await window.getTrailManifest()).manifest.steps.length)).toBe(stepsBefore+2);
+    // Bottom ROLL remains the same navigation action; do not assume this
+    // control necessarily exposes the hero on a revealed-result screen.
     await nav.click();
-    await expect(page.locator('#r4mRoll')).toBeVisible();
+    await expect(nav).toBeVisible();
+    await expect(nav).toHaveAttribute('data-mobile-action','nav-roll');
+    await expect.poll(() => page.evaluate(async () =>
+      (await window.getTrailManifest()).manifest.steps.length)).toBe(stepsBefore+2);
   }
 });
 
