@@ -43,6 +43,7 @@ test('mobile numeric/date reel labels are identifiable and preserve selected URL
   for (const [name, url] of [
     ['reel-numeric-sector035', 'https://sector035.nl/articles/2024-30'],
     ['reel-numeric-tmpout', 'https://tmpout.sh/4/4.html'],
+    ['reel-numeric-tmpout2', 'https://tmpout.sh/2/2.html'],
   ]) {
     const prepared = await page.evaluate(selected => window.R4B1TRollReel.prepare({
       charge: 0.22,
@@ -51,16 +52,21 @@ test('mobile numeric/date reel labels are identifiable and preserve selected URL
     expect(prepared).toBe(true);
     const payline = page.locator('#r4mRollReel .r4m-reel-row.is-payline');
     await expect(payline).toHaveAttribute('data-url', url);
-    await expect(payline.locator('.r4m-reel-name')).toHaveText(
-      new URL(url).hostname + new URL(url).pathname
-    );
+    const nameNode = payline.locator('.r4m-reel-name');
+    await expect(nameNode).toHaveText(new URL(url).hostname + new URL(url).pathname);
+    await expect(nameNode.locator('.r4m-reel-name-host')).toHaveText(new URL(url).hostname);
+    await expect(nameNode.locator('.r4m-reel-name-path')).toHaveText(new URL(url).pathname);
     const geometry = await page.evaluate(() => {
       const reel = document.querySelector('#r4mRollReel .r4m-reel-window');
       const payline = reel.querySelector('.r4m-reel-row.is-payline');
       const label = payline.querySelector('.r4m-reel-name');
       const outer = reel.getBoundingClientRect();
       const inner = label.getBoundingClientRect();
+      const host = label.querySelector('.r4m-reel-name-host');
+      const path = label.querySelector('.r4m-reel-name-path');
       return {
+        hostVisible: !!host && host.scrollWidth <= host.clientWidth + 1,
+        pathVisible: !!path && path.scrollWidth <= path.clientWidth + 1,
         documentWidth: document.documentElement.scrollWidth,
         viewportWidth: innerWidth,
         reelWidth: outer.width,
@@ -75,6 +81,8 @@ test('mobile numeric/date reel labels are identifiable and preserve selected URL
     expect(geometry.reelRight).toBeLessThanOrEqual(geometry.viewportWidth + 1);
     expect(geometry.labelWidth).toBeGreaterThan(100);
     expect(geometry.fontSize).toBeGreaterThan(15);
+    expect(geometry.hostVisible, 'hostname must not be clipped').toBe(true);
+    expect(geometry.pathVisible, 'numeric slug and full path must not be ellipsized').toBe(true);
     // Presentation-only fixture: no committed transaction or sampler is changed.
     await page.locator('#r4mRollReel .r4m-reel-window').screenshot({
       path: testInfo.outputPath(name + '.png')
