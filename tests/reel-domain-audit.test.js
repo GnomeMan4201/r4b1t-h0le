@@ -83,6 +83,30 @@ test('production selector: no-reference is unrestricted, previous URL retries un
   assert.equal(calls, 1);
 });
 
+test('repeat guard compares deserialized URL values, not object identity', () => {
+  const select = productionSelector();
+  const pool = JSON.parse(JSON.stringify([
+    'https://same.example/a', 'https://same.example/b'
+  ]));
+  const restored = JSON.parse('{"reference":"https://same.example/a"}').reference;
+  assert.equal(typeof pool[0], 'string');
+  assert.equal(typeof restored, 'string');
+  assert.equal(restored, pool[0]);
+  let draws = 0;
+  const result = select(pool, () => {
+    draws++;
+    return draws === 1 ? 0 : 0.9;
+  }, restored);
+  assert.equal(result, pool[1]);
+  assert.equal(draws, 2, 'restored URL must still trigger one rejected draw');
+  const activePool = require('../selection-core.js').eligiblePool(
+    ['https://same.example/a', 'https://same.example/b'], null,
+    {terrain:'ALL',protocolPolicy:{version:1,excludeOnion:false}}
+  );
+  assert.ok(activePool.every(value => typeof value === 'string'),
+    'authoritative eligiblePool yields URL strings');
+});
+
 test('production selector: bounded at 30, with singleton repeat and cross-terrain references', () => {
   const select = productionSelector();
   const a = 'https://same.example/a';
