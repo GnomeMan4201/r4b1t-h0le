@@ -1,0 +1,52 @@
+name: Mobile ROLL Slab Evidence
+
+on:
+  pull_request:
+    paths:
+      - 'dual-shell.css'
+      - 'tests/dual-shell.spec.js'
+      - '.github/workflows/mobile-mini-roll-face.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  roll-slab-evidence:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.head_ref, 'design/mobile-machined-roll-glyphs-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact PR head
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Assert checkout SHA
+        run: test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha || github.sha }}"
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: npm ci
+      - run: npm audit --audit-level=high
+      - run: npx playwright install --with-deps chromium
+      - name: Stage subpath site without publishing
+        run: |
+          set -euo pipefail
+          mkdir -p test-site/r4b1t-h0le
+          rsync -a --exclude='.git' --exclude='node_modules' --exclude='test-site' --exclude='playwright-report' --exclude='test-results' ./ test-site/r4b1t-h0le/
+      - name: Verify recessed ROLL slab, quiet nav and real continuation (no retries)
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'false'
+        run: npx playwright test tests/dual-shell.spec.js --project=mobile-chromium -g "post-reveal ROLL AGAIN is a recessed slab" --retries=0 --reporter=line
+      - name: Upload screenshots and failure traces
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: roll-slab-evidence-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: warn
+          retention-days: 14

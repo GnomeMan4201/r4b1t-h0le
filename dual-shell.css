@@ -1439,3 +1439,68 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     min-height:clamp(112px,19dvh,148px)!important;
   }
 }
+
+/* ROLL continuation as a single recessed machine slab. The REEL is the
+   mechanism: remove duplicate mini controls; navigation stays navigation.
+   No new DOM, event handlers, reel state, sampler or selection authority. */
+@media (max-width:900px) {
+  html.r4-mobile-active #r4mRollAgain .r4m-next-aperture,
+  html.r4-mobile-active #r4mNavRoll .r4m-nav-aperture {
+    display:none!important;
+  }
+
+  /* Whole slab is the tactile actuator; OPEN DESTINATION remains the
+     single solid red action, so the repeat action is intentionally quiet. */
+  html.r4-mobile-active.r4m-stage-result #r4mRollAgain {
+    box-sizing:border-box;
+    display:flex!important;
+    gap:0;
+    padding-inline:6px;
+    border:1px solid #420c15;
+    border-top-color:#64121d;
+    background:linear-gradient(180deg,#0e0b0c 0%,#070606 45%,#030303 100%);
+    box-shadow:inset 0 0 0 1px #26060b,inset 0 3px 8px rgba(0,0,0,.94),0 3px 0 #000;
+    color:#f5f4f4;
+    font-weight:800;
+    transform:translateY(0);
+    filter:none;
+    transition:transform 60ms ease-out,box-shadow 60ms ease-out,border-color 60ms ease-out,background-color 60ms ease-out;
+  }
+  html.r4-mobile-active #r4mRollAgain>span:last-child {
+    flex:none;
+    white-space:nowrap;
+    text-align:center;
+  }
+
+  /* Real existing interaction signals: down, shared pointer press, and
+     reel COMMITTING hold. Stop the hold at STRIP_ACCELERATING / spin.
+     Whether the slab stays visible during this interval is owned by the
+     existing source application's presentation lifecycle. */
+  html.r4-mobile-active #r4mRollAgain:is(:active,.motion-pressed),
+  html.r4-mobile-active:has(#r4mRollReel[data-phase="awaiting-commit"]) #r4mRollAgain {
+    transform:translateY(2px)!important;
+    /* A quick commit may enter spin within 40ms. Illuminate immediately
+       rather than waiting for the normal 60ms border/shadow transition. */
+    transition:transform 60ms ease-out,border-color 0ms,box-shadow 0ms,background-color 0ms;
+    border-color:#ff1a2e!important;
+    background:#090203;
+    box-shadow:inset 0 0 0 1px #ff1a2e,inset 0 3px 8px #000,0 1px 0 #000!important;
+    filter:none!important;
+  }
+
+  /* Nav remains a labelled tab, not a second miniature actuator. Its
+     existing narrow active bar continues to mark the ROLL section. */
+  html.r4-mobile-active #r4mNavRoll {
+    gap:0;
+    transform:none;
+    box-shadow:none;
+  }
+  html.r4-mobile-active #r4mNavRoll b {
+    font-weight:900;
+    letter-spacing:.11em;
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  html.r4-mobile-active #r4mRollAgain { transition:none!important; }
+}
+

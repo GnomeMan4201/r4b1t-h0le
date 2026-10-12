@@ -1756,6 +1756,131 @@ test('mobile ROLL AGAIN and bottom ROLL use distinct aperture glyphs for action 
 
 
 
+test('post-reveal ROLL AGAIN is a recessed slab and bottom ROLL is navigation', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  for (const viewport of [{width:320,height:568},{width:375,height:667},{width:390,height:680},{width:390,height:844}]) {
+    await page.setViewportSize(viewport);
+    await page.goto('./', {waitUntil:'domcontentloaded'});
+    await waitReady(page);
+    const nav=page.locator('#r4mNavRoll');
+    await expect(nav).toBeVisible();
+    await expect(nav.locator('.r4m-nav-aperture')).toHaveAttribute('aria-hidden','true');
+    await expect(nav.locator('.r4m-nav-aperture')).toHaveCSS('display','none');
+    await expect(nav).toHaveAttribute('data-mobile-action','nav-roll');
+    const stepsBefore=await page.evaluate(async ()=>(await window.getTrailManifest()).manifest.steps.length);
+
+    await page.locator('#r4mRoll').click();
+    await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
+    const again=page.locator('#r4mRollAgain');
+    await expect(again).toBeVisible();
+    await expect(again.locator('.r4m-next-aperture')).toHaveCSS('display','none');
+    await expect(again).toHaveAttribute('data-mobile-action','roll-again');
+    await expect(again.locator('button')).toHaveCount(0);
+    await expect(nav.locator('button')).toHaveCount(0);
+    await expect(page.locator('nav.r4m-nav button')).toHaveCount(2);
+
+    const read=await page.evaluate(async () => {
+      const settle=async()=>{ await new Promise(resolve=>setTimeout(resolve,200)); };
+      const again=document.getElementById('r4mRollAgain');
+      const nav=document.getElementById('r4mNavRoll');
+      const visit=document.querySelector('#r4mRoute [data-mobile-action="visit"]');
+      const reel=document.getElementById('r4mRollReel');
+      const slab=again.getBoundingClientRect(),rail=document.querySelector('.r4m-nav').getBoundingClientRect();
+      const rest=getComputedStyle(again);
+      const initial={
+        slabColor:rest.backgroundColor, slabBorder:rest.borderTopColor,
+        slabShadow:rest.boxShadow, slabTransform:rest.transform,
+        visitColor:getComputedStyle(visit).backgroundColor,
+        labelRight:again.lastElementChild.getBoundingClientRect().right,
+        buttonRight:slab.right,
+        buttonBottom:slab.bottom,
+        railTop:rail.top,
+        navTop:nav.getBoundingClientRect().top,
+        navBar:getComputedStyle(nav,'::before').backgroundColor,
+        navGlyph:getComputedStyle(nav.querySelector('.r4m-nav-aperture')).display,
+        stage:reel.dataset.phase,
+      };
+      again.classList.add('motion-pressed');
+      await settle(); // CSS transition must finish before sampling physical drop
+      const pressed=getComputedStyle(again);
+      initial.press={transform:pressed.transform,border:pressed.borderTopColor,shadow:pressed.boxShadow};
+      again.classList.remove('motion-pressed');
+      await settle();
+      // Existing reel phase is the only hold authority; styling never sets it
+      // in production. Snapshot the declarative CSS hook, then restore it.
+      const prior=reel.dataset.phase;
+      reel.dataset.phase='awaiting-commit';
+      await settle();
+      const hold=getComputedStyle(again);
+      initial.hold={transform:hold.transform,border:hold.borderTopColor,shadow:hold.boxShadow};
+      reel.dataset.phase='spin';
+      await settle();
+      const spin=getComputedStyle(again);
+      initial.spin={border:spin.borderTopColor,transform:spin.transform};
+      reel.dataset.phase=prior;
+      return {...initial,overflow:document.documentElement.scrollWidth-innerWidth};
+    });
+    console.log('ROLL_SLAB_VISUAL '+JSON.stringify({viewport,read}));
+    expect(read.slabColor).not.toBe(read.visitColor);
+    expect(read.slabBorder).not.toBe('rgb(255, 26, 46)');
+    expect(read.navGlyph).toBe('none');
+    expect(read.navBar).toBe('rgb(251, 1, 24)');
+    expect(read.labelRight).toBeLessThanOrEqual(read.buttonRight+1);
+    expect(read.buttonBottom).toBeLessThanOrEqual(read.railTop+1);
+    expect(read.overflow).toBeLessThanOrEqual(1);
+    expect(read.press.border).toBe('rgb(255, 26, 46)');
+    expect(read.hold.border).toBe('rgb(255, 26, 46)');
+    expect(read.spin.border).toBe(read.slabBorder);
+    expect(read.press.transform).not.toBe('none');
+    expect(read.hold.transform).not.toBe('none');
+
+    await page.screenshot({path:testInfo.outputPath('recessed-roll-slab-'+viewport.width+'x'+viewport.height+'.png')});
+    // Diagnostic-only: sample the *real* ROLL AGAIN -> reel handoff under rAF.
+    // Do not manufacture phase changes. This records whether the physical
+    // pressed slab remains visible until spin starts, rather than asserting
+    // CSS support in isolation means users saw it.
+    if (viewport.height === 680) await page.evaluate(() => {
+      const again=document.getElementById('r4mRollAgain');
+      const reel=document.getElementById('r4mRollReel');
+      const probe={samples:[],running:true};
+      window.__slabRealHandoff=probe;
+      let prev='';
+      const sample=() => {
+        if (!probe.running || probe.samples.length>350) return;
+        const style=getComputedStyle(again);
+        const b=again.getBoundingClientRect();
+        const state={
+          phase:reel.dataset.phase||'',presentation:document.documentElement.dataset.r4mPresentation||'',
+          display:style.display,visibility:style.visibility,opacity:style.opacity,
+          border:style.borderTopColor,transform:style.transform,
+          visible:b.width>0&&b.height>0&&style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)>.5,
+          y:Math.round(b.top),
+        };
+        const key=[state.phase,state.presentation,state.display,state.border,state.visible].join('|');
+        if (key!==prev) {probe.samples.push({...state,at:Math.round(performance.now())});prev=key;}
+        requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
+    await again.click();
+    await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
+    await expect.poll(() => page.evaluate(async ()=>(await window.getTrailManifest()).manifest.steps.length)).toBe(stepsBefore+2);
+    if (viewport.height === 680) {
+      const handoff=await page.evaluate(() => {
+        const probe=window.__slabRealHandoff;probe.running=false;return probe.samples;
+      });
+      console.log('ROLL_SLAB_REAL_HANDOFF '+JSON.stringify(handoff));
+      expect(handoff.some(s=>s.phase==='awaiting-commit' && s.visible &&
+        s.border==='rgb(255, 26, 46)' && s.transform.includes(', 2)')),
+        'real commitment shows lit 2px-pressed slab').toBe(true);
+      expect(handoff.some(s=>s.phase==='spin'), 'real reel spin observed').toBe(true);
+    }
+    await nav.click();
+    await expect(nav).toBeVisible();
+    await expect.poll(() => page.evaluate(async ()=>(await window.getTrailManifest()).manifest.steps.length)).toBe(stepsBefore+2);
+  }
+});
+
 test('revealed result is free of legacy red rail, generated DESCENT label, and red CTA override', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.setViewportSize({ width: 512, height: 1108 });
