@@ -1479,6 +1479,9 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
   html.r4-mobile-active #r4mRollAgain:is(:active,.motion-pressed),
   html.r4-mobile-active:has(#r4mRollReel[data-phase="awaiting-commit"]) #r4mRollAgain {
     transform:translateY(2px)!important;
+    /* A quick commit may enter spin within 40ms. Illuminate immediately
+       rather than waiting for the normal 60ms border/shadow transition. */
+    transition:transform 60ms ease-out,border-color 0ms,box-shadow 0ms,background-color 0ms;
     border-color:#ff1a2e!important;
     background:#090203;
     box-shadow:inset 0 0 0 1px #ff1a2e,inset 0 3px 8px #000,0 1px 0 #000!important;

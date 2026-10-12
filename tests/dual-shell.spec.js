@@ -1870,6 +1870,9 @@ test('post-reveal ROLL AGAIN is a recessed slab and bottom ROLL is navigation', 
         const probe=window.__slabRealHandoff;probe.running=false;return probe.samples;
       });
       console.log('ROLL_SLAB_REAL_HANDOFF '+JSON.stringify(handoff));
+      expect(handoff.some(s=>s.phase==='awaiting-commit' && s.visible &&
+        s.border==='rgb(255, 26, 46)' && s.transform.includes(', 2)')),
+        'real commitment shows lit 2px-pressed slab').toBe(true);
       expect(handoff.some(s=>s.phase==='spin'), 'real reel spin observed').toBe(true);
     }
     await nav.click();
