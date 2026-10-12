@@ -130,7 +130,7 @@ test('opt-in viewport debug reports geometry and stylesheet identity without cha
   const panel = page.locator('#r4mMotionDebug');
   await expect(panel).toContainText('LAYOUT: 390 × 844');
   await expect(panel).toContainText('NAV: 64px / rect 64px');
-  await expect(panel).toContainText('CSS SHA256: 42455a5d8284cc3c782db53124830896b39a09c99f885e27df247cec809b2518');
+  await expect(panel).toContainText('CSS SHA256: 92976e02f7a8e95bec1b82e446706330a638ac8b52f1bde0ce6919e514ead3d4');
   const before = await page.evaluate(async () => JSON.stringify(await window.getTrailManifest()));
   const stored = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()));
   await page.setViewportSize({ width: 375, height: 667 });
@@ -1917,6 +1917,56 @@ test('mobile revealed destination text remains legible without moving the fixed 
       Math.abs(open.getBoundingClientRect().top - openTop),
     );
   }, { actionTop: geometry.actionTop, openTop: geometry.openTop })).toBeLessThanOrEqual(1);
+});
+
+test('mobile inspection has readable fields and a touch-sized close control without changing the route', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+  const before = await page.evaluate(async () => ({
+    url: document.getElementById('r4mUrl').textContent,
+    steps: (await window.getTrailManifest()).manifest.steps,
+  }));
+  await page.locator('#r4mRoute [data-mobile-action="inspect"]').click();
+  await expect(page.locator('#r4mInspectSheet')).toHaveAttribute('aria-hidden', 'false');
+  const metrics = await page.locator('#r4mInspectSheet').evaluate(sheet => {
+    const label = getComputedStyle(sheet.querySelector('small'));
+    const body = getComputedStyle(sheet.querySelector('code'));
+    const close = sheet.querySelector('[data-mobile-action="close-sheets"]').getBoundingClientRect();
+    function luminance(color) {
+      const channels = color.match(/[\d.]+/g).slice(0, 3).map(Number).map(c => {
+        const s = c / 255;
+        return s <= .04045 ? s / 12.92 : Math.pow((s + .055) / 1.055, 2.4);
+      });
+      return channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722;
+    }
+    const background = luminance(getComputedStyle(sheet).backgroundColor);
+    const foreground = luminance(label.color);
+    return {
+      labelSize: parseFloat(label.fontSize), bodySize: parseFloat(body.fontSize),
+      contrast: (Math.max(foreground, background) + .05) / (Math.min(foreground, background) + .05),
+      closeWidth: close.width, closeHeight: close.height,
+      pageWidth: document.documentElement.scrollWidth, viewportWidth: innerWidth,
+    };
+  });
+  expect(metrics.labelSize).toBeGreaterThanOrEqual(12);
+  expect(metrics.bodySize).toBeGreaterThanOrEqual(14);
+  expect(metrics.contrast).toBeGreaterThanOrEqual(4.5);
+  expect(metrics.closeWidth).toBeGreaterThanOrEqual(44);
+  expect(metrics.closeHeight).toBeGreaterThanOrEqual(44);
+  expect(metrics.pageWidth).toBeLessThanOrEqual(metrics.viewportWidth);
+  await page.locator('#r4mInspectSheet [data-mobile-action="close-sheets"]').click();
+  await expect(page.locator('#r4mBackdrop')).toBeHidden();
+  await expect(page.locator('#r4mRollAgain')).toBeInViewport();
+  const after = await page.evaluate(async () => ({
+    url: document.getElementById('r4mUrl').textContent,
+    steps: (await window.getTrailManifest()).manifest.steps,
+  }));
+  expect(after).toEqual(before);
 });
 
 test('mobile displays complete source summaries without hiding trailing text behind fixed actions', async ({ page }, testInfo) => {
