@@ -34,3 +34,23 @@ Selection code and tests must keep route metadata outside the sampler input. Any
 ## Amendment — terrain membership (ADR 0006)
 
 "An explicit terrain selected by the user" (item 2 above) has membership defined by the active eligibility profile in `corpus/runtime/eligibility-profiles-v1.json`. That profile is a digest-bound `terrain-index-v1` compiled from release bytes. Terrain membership is not defined by any table in application code. The immediate-repeat guard (item 4) is unchanged.
+
+## Clarification — uniform-with-repeat-guard-v1
+
+The default production ROLL algorithm is **uniform per draw attempt**, not
+unrestricted independent draws across adjacent committed ROLLs. The selection
+transaction binds a trail-scoped previous-ROLL URL and a bounded 30-attempt
+immediate-URL repeat guard. It never suppresses an entire hostname, and after
+30 attempts a matching URL is still accepted. The first ROLL in a new scope
+does not suppress a URL.
+
+The fully specified algorithm, its draw-count provenance, and mathematical
+adjacency expectations are in `SELECTION_TRANSACTION_V2.md` §4. The independent
+Python re-executor implements the same retry limit and verifies recorded
+draw consumption. A domain concentration analysis must report both the
+unrestricted-independent and the guarded-model expectations, rather than
+presenting a zero repeat count as evidence of independently uniform outcomes.
+
+Changing this rule requires an explicit versioned decision; changing corpus
+membership to improve domain diversity is a separate reviewed governance
+action, not a change to this ADR.

@@ -54,6 +54,15 @@ jobs:
           CI: 'true'
         run: npm test
 
+      - name: Upload mobile reel label screenshots
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: reel-label-mobile-${{ github.sha }}
+          path: test-results/**/reel-numeric-*.png
+          if-no-files-found: ignore
+          retention-days: 7
+
       - name: Upload Playwright report
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7

@@ -73,11 +73,58 @@ repeat: t = pool[floor(nextFloat() * |pool|)]; n += 1  until t ≠ reference or 
 route = t ; draw_count = n
 ```
 
-**Small pools** (disclosed in the UI per `TERRAIN_AUTHORITY_CONTRACT.md` §6):
-- With `|pool| == 1`, the route is fixed. A non-null reference consumes 30 draws.
-- With `|pool| == 2`, outcomes alternate after the first ROLL.
+**Statistical contract: uniform attempts, not independent successive landings.**
 
-Both are properties of `uniform-with-repeat-guard-v1` and stay that way until a new sampler version is adopted.
+Each attempt draws uniformly over the ordered eligible URLs. When the previous
+committed ROLL URL is still eligible, attempts that select that exact URL are
+rejected, up to a maximum of 30 attempts **including the final attempt**.
+The thirtieth draw is accepted even if it repeats. Different URLs on the
+*same domain* are not rejected. The first ROLL in a sampling scope has a null
+reference and consumes exactly one draw; if the reference is absent from a
+changed terrain pool, it likewise consumes one draw.
+
+For `R` ROLLs with one **unchanged** eligible pool of `N` distinct URL entries,
+and a previous URL within that pool, the expected adjacent URL repeat count is:
+
+- hypothetical *unrestricted independent draws*: `(R - 1) / N`;
+- the declared 30-attempt guard: `(R - 1) * (1 / N) ** 30`.
+
+For each host `h`, let `n_h` count its eligible URLs. The same-host
+transition expectation is:
+
+- unrestricted independent draws:
+  `(R - 1) * sum(n_h ** 2) / N ** 2`;
+- guarded draws (for `N > 1`), with `q = (1 / N) ** 30`:
+  `(R - 1) * (q + (1 - q) * sum(n_h * (n_h - 1)) / (N * (N - 1)))`.
+
+These are expectations, not evidence that the PRNG is fair or that a
+particular sampled series must hit its expected count. They do not describe
+rolls across changing terrain pools or sampling-scope resets.
+
+**Long-run uniformity within one fixed pool.** Assuming independent uniform
+attempts and `N > 1`, let `q = (1/N) ** 30`. For the next committed ROLL,
+the transition probabilities are `P(i → i) = q` and
+`P(i → j) = (1 - q)/(N - 1)` for every other URL `j`. This matrix is
+symmetric and doubly stochastic, with the uniform distribution as its
+stationary distribution; because `q > 0`, the finite-state chain is also
+aperiodic. So the guard prevents *most immediate URL repeats* without
+weighting any eligible URL in the long-run **fixed-pool** model. This is why
+the honest wording is **uniform eligible URL odds under a documented bounded
+repeat guard**, not independent draws or a guarantee of seed fairness.
+`N = 1` trivially produces that one URL; different terrains, protocol
+filters, resets, and adversarial seed selection do not inherit this
+stationarity statement.
+
+**Small pools** (disclosed in the UI per `TERRAIN_AUTHORITY_CONTRACT.md` §6):
+- With `|pool| == 1`, the URL is fixed. A non-null in-pool reference consumes
+  30 draws and still repeats.
+- With `|pool| == 2`, alternating is *overwhelmingly likely*, but a same-URL
+  repeat remains possible after 30 consecutive rejected draws (probability
+  `2 ** -30` per guarded transition). It is not a strict prohibition.
+
+Both behaviors are properties of `uniform-with-repeat-guard-v1`; changing
+or removing the guard requires an explicit sampler-version and provenance
+contract change.
 
 ## 5. Trail-scoped continuity
 

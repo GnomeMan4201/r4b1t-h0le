@@ -83,6 +83,41 @@
     letter-spacing:.02em;
   }
 
+  /* Numeric/date slug identifiers: both hostname and path must remain visible.
+     The standard single-line art-title layout is unchanged for other entries. */
+  .r4m-reel-name.r4m-reel-name-identifier{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    gap:3px;
+    white-space:normal;
+    text-overflow:clip;
+    line-height:1;
+    letter-spacing:0;
+  }
+  .r4m-reel-name-identifier .r4m-reel-name-host{
+    display:block;
+    max-width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    color:#b9b2a8;
+    font:700 12px/1.15 var(--font-mono,"Courier New",monospace);
+    letter-spacing:.07em;
+  }
+  .r4m-reel-name-identifier .r4m-reel-name-path{
+    display:block;
+    max-width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:clamp(16px,4.8vw,21px);
+    font-weight:900;
+    line-height:1.1;
+    letter-spacing:.005em;
+  }
+
   .r4m-reel-type{
     flex:none;
     max-width:34%;

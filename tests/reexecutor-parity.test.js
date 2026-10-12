@@ -120,6 +120,34 @@ test('independent Python re-executor reproduces JS ROLLs across ALL and typed te
   assert.equal(report.rolls[1].terrain_authority, 'AUTHORITATIVE_ACTIVE');
 });
 
+test('re-executor honors bounded URL retry count and rejects a false retry declaration', async () => {
+  // Pin a known seed that retries at final ROLL #33 within the active ARTICLE terrain.
+  // This is an independent cross-language check, not just two JS implementations.
+  const source = await buildArtifact(Array(33).fill('article'));
+  const retried = source.manifest.steps.filter(
+    step => step.transaction.sampler.draw_count > 1
+  );
+  assert.equal(retried.length, 1, 'pinned seed should exercise an actual repeat retry at the final step');
+  assert.equal(retried[0].index, 33);
+  assert.equal(retried[0].transaction.sampler.draw_count, 2);
+  assert.equal(
+    retried[0].transaction.sampler.repeat_guard.reference,
+    source.manifest.steps[31].route.url
+  );
+
+  const verified = runPython(source);
+  assert.equal(verified.status, 0, verified.stderr || verified.stdout);
+  assert.equal(JSON.parse(verified.stdout).status, 'PROVENANCE_REEXECUTED');
+
+  const altered = structuredClone(source.manifest);
+  altered.steps[32].transaction.sampler.draw_count = 1;
+  const forged = await v03.envelope(altered);
+  await v03.verify(forged);
+  const rejected = runPython(forged);
+  assert.equal(rejected.status, 1, rejected.stdout + rejected.stderr);
+  assert.equal(JSON.parse(rejected.stdout).code, 'DRAW_COUNT_MISMATCH');
+});
+
 test('integrity-valid arbitrary route substitution fails independent re-execution', async () => {
   const source = await buildArtifact(['ALL']);
   const manifest = structuredClone(source.manifest);
