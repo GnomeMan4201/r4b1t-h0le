@@ -95,9 +95,22 @@ function run(options) {
   const digest = 'sha256:' + crypto.createHash('sha256').update(urlBytes).digest('hex');
   if (digest !== active.active.expected_digest) throw new Error('active URL digest mismatch');
   const urls = urlBytes.toString('utf8').trimEnd().split(/\r?\n/);
-  const terrainIndex = JSON.parse(fs.readFileSync(
-    path.join(ROOT, 'corpus/terrains', active.active.release_id, 'terrain-index-v1.json'), 'utf8'
+  const registry = JSON.parse(fs.readFileSync(
+    path.join(ROOT, 'corpus/runtime/eligibility-profiles-v1.json'), 'utf8'
   ));
+  const profile = registry.profiles.find(row => row.promotion_id === active.promotion_id && row.status === 'active');
+  if (!profile || profile.release.urls_digest !== digest ||
+      profile.release.release_id !== active.active.release_id) {
+    throw new Error('active terrain profile does not match corpus promotion');
+  }
+  const indexBytes = fs.readFileSync(path.join(ROOT, profile.terrain_index.path));
+  const terrainDigest = 'sha256:' + crypto.createHash('sha256').update(indexBytes).digest('hex');
+  if (terrainDigest !== profile.terrain_index.digest) throw new Error('terrain index digest mismatch');
+  const terrainIndex = JSON.parse(indexBytes.toString('utf8'));
+  if (terrainIndex.schema !== profile.terrain_index.schema ||
+      terrainIndex.release.urls_digest !== digest) {
+    throw new Error('terrain index is not bound to active URLs');
+  }
   const known = new Set(['ALL', ...terrainIndex.terrains.map(t => t.id)]);
   const results = options.terrain.map((terrain, index) => {
     if (!known.has(terrain)) throw new Error('unknown terrain: ' + terrain);
@@ -130,7 +143,7 @@ function run(options) {
       }]))
     };
   });
-  return { schema: 'r4b1t-reel-domain-audit-v1', authority_digest: digest, release: active.active.release_id,
+  return { schema: 'r4b1t-reel-domain-audit-v1', authority_digest: digest, terrain_digest: terrainDigest, release: active.active.release_id,
     simulation: 'seeded offline URL-uniform sample (not live roll or proof)',
     seed: options.seed, results };
 }
@@ -143,6 +156,7 @@ try {
   } else {
     console.log('R4B1T domain audit — ' + report.release);
     console.log('Verified active digest: ' + report.authority_digest);
+    console.log('Verified terrain digest: ' + report.terrain_digest);
     console.log(report.simulation + '; seed=' + report.seed);
     for (const r of report.results) {
       console.log('\n' + r.terrain + ' — ' + r.pool + ' eligible URLs, ' + r.unique_hosts + ' hosts, ' + r.draws + ' simulated selections');
