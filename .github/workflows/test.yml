@@ -54,6 +54,15 @@ jobs:
           CI: 'true'
         run: npx playwright test --config=playwright.short-result.config.js
 
+      - name: Retain short-result screenshots before the full suite
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: short-result-mobile-${{ github.sha }}
+          path: test-results-short-result/**/short-result-*.png
+          if-no-files-found: ignore
+          retention-days: 7
+
       - name: Run desktop and mobile browser tests
         env:
           BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
@@ -68,7 +77,6 @@ jobs:
           path: |
             test-results/**/reel-numeric-*.png
             test-results/**/mobile-inspect-readability.png
-            test-results-short-result/**/short-result-*.png
           if-no-files-found: ignore
           retention-days: 7
 
