@@ -1332,6 +1332,71 @@ test('desktop KEEP CARD delegates to the existing local card download capability
 });
 
 
+test('compact mobile first viewport exposes full ROLL above fixed navigation without moving the REEL', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  const observations = [];
+  for (const viewport of [
+    { width: 375, height: 667 }, { width: 390, height: 680 },
+    { width: 390, height: 740 }, { width: 390, height: 754 },
+    { width: 430, height: 779 }, { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto('./', { waitUntil: 'domcontentloaded' });
+    await waitReady(page);
+    await expect(page.locator('#r4mRollReel .r4m-reel-window')).toBeVisible();
+    // Save an AFTER-ENTRANCE screenshot. Earlier immediate captures showed
+    // a transient blank stage even at unaffected 390x844, before startup paint.
+    await page.waitForTimeout(1400);
+    const geometry = await page.evaluate(() => {
+      const rect = selector => document.querySelector(selector).getBoundingClientRect();
+      const roll = rect('#r4mRoll');
+      const nav = rect('.r4m-nav');
+      const reel = rect('#r4mRollReel .r4m-reel-window');
+      const mark = rect('#r4mProductionMark');
+      return {
+        viewport: [innerWidth, innerHeight], scrollY, navTop: nav.top,
+        rollTop:roll.top, rollBottom:roll.bottom, rollHeight:roll.height,
+        reelHeight:reel.height, markHeight:mark.height,
+        horizontalOverflow:document.documentElement.scrollWidth-innerWidth,
+        stage:document.documentElement.getAttribute('data-r4m-presentation'),
+        rollOpacity:Number(getComputedStyle(document.getElementById('r4mRoll')).opacity),
+        rollVisibility:getComputedStyle(document.getElementById('r4mRoll')).visibility,
+        centerTarget:document.elementFromPoint(roll.x+roll.width/2,roll.y+roll.height/2)?.closest('button')?.id || null,
+      };
+    });
+    observations.push(geometry);
+    await page.screenshot({path:testInfo.outputPath('roll-clearance-' + viewport.width + 'x' + viewport.height + '.png')});
+  }
+  console.log('ROLL_COMPACT_VIEWPORT_GEOMETRY '+JSON.stringify(observations));
+  for (const g of observations) {
+    expect([null, 'idle']).toContain(g.stage);
+    expect(g.scrollY).toBe(0);
+    expect(g.horizontalOverflow).toBeLessThanOrEqual(1);
+    expect(g.reelHeight).toBe(192);
+    expect(g.rollHeight).toBeGreaterThanOrEqual(112);
+    expect(g.rollOpacity).toBeGreaterThanOrEqual(.95);
+    expect(g.rollVisibility).toBe('visible');
+    expect(g.centerTarget).toBe('r4mRoll');
+    // The button's WHOLE painted box must remain above the fixed nav
+    // without pre-scrolling. Prior 390x844-only coverage missed shorter panes.
+    expect(g.rollBottom, JSON.stringify(g)).toBeLessThanOrEqual(g.navTop-8);
+  }
+  const fullHeight = observations.find(g => g.viewport[1] === 844);
+  expect(fullHeight.rollHeight).toBeGreaterThanOrEqual(200);
+  // The compact visual correction must not intercept the real ROLL authority.
+  await page.setViewportSize({ width: 390, height: 680 });
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await waitReady(page);
+  const beforeSteps = await page.evaluate(async () =>
+    (await window.getTrailManifest()).manifest.steps.length);
+  await page.locator('#r4mRoll').click();
+  await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
+  await expect(page.locator('#r4mRollReel')).toHaveAttribute('data-phase','revealed');
+  await expect.poll(() => page.evaluate(async () =>
+    (await window.getTrailManifest()).manifest.steps.length)).toBe(beforeSteps + 1);
+  await expect(page.locator('#r4mRollAgain')).toBeVisible();
+});
+
 test('fresh mobile landing keeps ROLL above persistent navigation at phone height', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.setViewportSize({ width: 390, height: 844 });
