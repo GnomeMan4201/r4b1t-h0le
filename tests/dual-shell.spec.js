@@ -1332,6 +1332,49 @@ test('desktop KEEP CARD delegates to the existing local card download capability
 });
 
 
+test('compact mobile first viewport exposes full ROLL above fixed navigation without moving the REEL', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  const observations = [];
+  for (const viewport of [
+    { width: 375, height: 667 }, { width: 390, height: 680 },
+    { width: 430, height: 779 }, { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto('./', { waitUntil: 'domcontentloaded' });
+    await waitReady(page);
+    await expect(page.locator('#r4mRollReel .r4m-reel-window')).toBeVisible();
+    const geometry = await page.evaluate(() => {
+      const rect = selector => document.querySelector(selector).getBoundingClientRect();
+      const roll = rect('#r4mRoll');
+      const nav = rect('.r4m-nav');
+      const reel = rect('#r4mRollReel .r4m-reel-window');
+      const mark = rect('#r4mProductionMark');
+      return {
+        viewport: [innerWidth, innerHeight], scrollY, navTop: nav.top,
+        rollTop:roll.top, rollBottom:roll.bottom, rollHeight:roll.height,
+        reelHeight:reel.height, markHeight:mark.height,
+        horizontalOverflow:document.documentElement.scrollWidth-innerWidth,
+        stage:document.documentElement.getAttribute('data-r4m-presentation'),
+      };
+    });
+    observations.push(geometry);
+    await page.screenshot({path:testInfo.outputPath('roll-clearance-' + viewport.width + 'x' + viewport.height + '.png')});
+  }
+  console.log('ROLL_COMPACT_VIEWPORT_GEOMETRY '+JSON.stringify(observations));
+  for (const g of observations) {
+    expect(g.stage).toBe('idle');
+    expect(g.scrollY).toBe(0);
+    expect(g.horizontalOverflow).toBeLessThanOrEqual(1);
+    expect(g.reelHeight).toBe(192);
+    expect(g.rollHeight).toBeGreaterThanOrEqual(112);
+    // The button's WHOLE painted box must remain above the fixed nav
+    // without pre-scrolling. Prior 390x844-only coverage missed shorter panes.
+    expect(g.rollBottom, JSON.stringify(g)).toBeLessThanOrEqual(g.navTop-8);
+  }
+  const fullHeight = observations.find(g => g.viewport[1] === 844);
+  expect(fullHeight.rollHeight).toBeGreaterThanOrEqual(200);
+});
+
 test('fresh mobile landing keeps ROLL above persistent navigation at phone height', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.setViewportSize({ width: 390, height: 844 });
