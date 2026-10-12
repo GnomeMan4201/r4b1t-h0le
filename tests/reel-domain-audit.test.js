@@ -133,3 +133,29 @@ test('expected transition counts are mathematical, not a side effect of the simu
   assert.ok(article.expected_transitions.uniform_with_repeat_guard_v1.same_url < 1e-30);
   assert.ok(article.expected_transitions.independent_iid.same_url > 12);
 });
+
+test('200 independent seeded ARTICLE chains preserve the guarded domain distribution', () => {
+  const sweep = JSON.parse(execFileSync(process.execPath, [
+    script, '--terrain', 'article', '--rolls', '300',
+    '--seeds', '200', '--seed', '4201', '--json'
+  ], {encoding: 'utf8'}));
+  const r = sweep.results[0];
+  const x = r.multi_seed;
+  assert.equal(x.seeds, 200);
+  assert.equal(x.rolls_per_seed, 300);
+  assert.equal(x.total_draws, 60000);
+  assert.ok(Math.abs(x.expected.same_host - 98.58333333333334) < 1e-10);
+  assert.ok(Math.abs(x.expected.same_url - 299 * Math.pow(1/24, 30)) < 1e-48);
+  // Across 200 independent seeded chains the replicate mean must be within
+  // five empirical standard errors (+0.5 count tolerance) of the independently
+  // derived guarded expectation. This tests distribution, not only replay.
+  const delta = Math.abs(x.observed.same_host.mean - x.expected.same_host);
+  assert.ok(delta <= 5 * x.observed.same_host.standard_error + 0.5,
+    'mean same-host transition rate departs from guarded mathematical expectation');
+  assert.ok(x.max_url_frequency_z < 6,
+    'URL marginal counts diverge from the uniform stationary distribution');
+  assert.equal(x.observed.same_url.mean, 0,
+    'with 24 eligible URLs, a 30-draw guard should almost never exhaust');
+  // Diagnostic golden vector remains independently visible.
+  assert.equal(x.observed.same_host.mean, 98.57);
+});
