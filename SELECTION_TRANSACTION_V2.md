@@ -101,6 +101,20 @@ These are expectations, not evidence that the PRNG is fair or that a
 particular sampled series must hit its expected count. They do not describe
 rolls across changing terrain pools or sampling-scope resets.
 
+**Long-run uniformity within one fixed pool.** Assuming independent uniform
+attempts and `N > 1`, let `q = (1/N) ** 30`. For the next committed ROLL,
+the transition probabilities are `P(i → i) = q` and
+`P(i → j) = (1 - q)/(N - 1)` for every other URL `j`. This matrix is
+symmetric and doubly stochastic, with the uniform distribution as its
+stationary distribution; because `q > 0`, the finite-state chain is also
+aperiodic. So the guard prevents *most immediate URL repeats* without
+weighting any eligible URL in the long-run **fixed-pool** model. This is why
+the honest wording is **uniform eligible URL odds under a documented bounded
+repeat guard**, not independent draws or a guarantee of seed fairness.
+`N = 1` trivially produces that one URL; different terrains, protocol
+filters, resets, and adversarial seed selection do not inherit this
+stationarity statement.
+
 **Small pools** (disclosed in the UI per `TERRAIN_AUTHORITY_CONTRACT.md` §6):
 - With `|pool| == 1`, the URL is fixed. A non-null in-pool reference consumes
   30 draws and still repeats.
