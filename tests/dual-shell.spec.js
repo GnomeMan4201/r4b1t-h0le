@@ -1344,6 +1344,9 @@ test('compact mobile first viewport exposes full ROLL above fixed navigation wit
     await page.goto('./', { waitUntil: 'domcontentloaded' });
     await waitReady(page);
     await expect(page.locator('#r4mRollReel .r4m-reel-window')).toBeVisible();
+    // Save an AFTER-ENTRANCE screenshot. Earlier immediate captures showed
+    // a transient blank stage even at unaffected 390x844, before startup paint.
+    await page.waitForTimeout(1400);
     const geometry = await page.evaluate(() => {
       const rect = selector => document.querySelector(selector).getBoundingClientRect();
       const roll = rect('#r4mRoll');
@@ -1356,6 +1359,9 @@ test('compact mobile first viewport exposes full ROLL above fixed navigation wit
         reelHeight:reel.height, markHeight:mark.height,
         horizontalOverflow:document.documentElement.scrollWidth-innerWidth,
         stage:document.documentElement.getAttribute('data-r4m-presentation'),
+        rollOpacity:Number(getComputedStyle(document.getElementById('r4mRoll')).opacity),
+        rollVisibility:getComputedStyle(document.getElementById('r4mRoll')).visibility,
+        centerTarget:document.elementFromPoint(roll.x+roll.width/2,roll.y+roll.height/2)?.closest('button')?.id || null,
       };
     });
     observations.push(geometry);
@@ -1368,6 +1374,9 @@ test('compact mobile first viewport exposes full ROLL above fixed navigation wit
     expect(g.horizontalOverflow).toBeLessThanOrEqual(1);
     expect(g.reelHeight).toBe(192);
     expect(g.rollHeight).toBeGreaterThanOrEqual(112);
+    expect(g.rollOpacity).toBeGreaterThanOrEqual(.95);
+    expect(g.rollVisibility).toBe('visible');
+    expect(g.centerTarget).toBe('r4mRoll');
     // The button's WHOLE painted box must remain above the fixed nav
     // without pre-scrolling. Prior 390x844-only coverage missed shorter panes.
     expect(g.rollBottom, JSON.stringify(g)).toBeLessThanOrEqual(g.navTop-8);
