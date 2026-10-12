@@ -1439,3 +1439,65 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
     min-height:clamp(112px,19dvh,148px)!important;
   }
 }
+
+/* Mini machine controls, v5. A decorative, compressed face of the actual
+   red ROLL mechanism: neither glyph is an extra button. Roles, hit targets,
+   aria labels, action rails and layout placement stay untouched. */
+@media (max-width:900px) {
+  html.r4-mobile-active #r4mRollAgain .r4m-next-aperture,
+  html.r4-mobile-active #r4mNavRoll .r4m-nav-aperture {
+    position:relative;
+    display:block!important;
+    width:26px;
+    height:26px;
+    min-width:26px;
+    flex:0 0 26px;
+    margin:0;
+    border:2px solid #e62a34;
+    border-radius:50%;
+    background:radial-gradient(circle at 48% 34%,#322124 0%,#120709 56%,#030203 100%);
+    box-shadow:inset 0 2px 3px #000,0 0 0 2px #080707,0 2px 0 #4b0b10,0 0 8px rgba(251,1,24,.18);
+    overflow:visible;
+    isolation:isolate;
+    pointer-events:none;
+    transform:none;
+  }
+  html.r4-mobile-active #r4mRollAgain .r4m-next-aperture::before,
+  html.r4-mobile-active #r4mNavRoll .r4m-nav-aperture::before {
+    content:"";
+    position:absolute;
+    inset:4px;
+    border:1px solid #ff7d83;
+    border-radius:50%;
+    background:radial-gradient(circle at 40% 25%,#fc858c 0%,#f02b39 35%,#b50c1d 73%,#6a0710 100%);
+    box-shadow:inset 0 1px 2px rgba(255,255,255,.35),inset 0 -3px 4px rgba(45,0,5,.75),0 1px 0 #4e070e;
+    pointer-events:none;
+  }
+  html.r4-mobile-active #r4mRollAgain .r4m-next-aperture::after,
+  html.r4-mobile-active #r4mNavRoll .r4m-nav-aperture::after {
+    content:"";
+    position:absolute;
+    width:5px;
+    height:2px;
+    left:8px;
+    top:6px;
+    border-radius:50%;
+    background:rgba(255,242,242,.68);
+    transform:rotate(-25deg);
+    pointer-events:none;
+  }
+  html.r4-mobile-active #r4mNavRoll .r4m-nav-aperture {
+    width:24px;
+    height:24px;
+    min-width:24px;
+    flex-basis:24px;
+  }
+  html.r4-mobile-active #r4mRollAgain:active .r4m-next-aperture,
+  html.r4-mobile-active #r4mNavRoll:active .r4m-nav-aperture {
+    box-shadow:inset 0 3px 5px #000,0 0 0 2px #080707,0 1px 0 #36060a;
+  }
+  html.r4-mobile-active #r4mRollAgain:active .r4m-next-aperture::before,
+  html.r4-mobile-active #r4mNavRoll:active .r4m-nav-aperture::before {
+    transform:translateY(1px);
+  }
+}

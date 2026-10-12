@@ -1756,6 +1756,75 @@ test('mobile ROLL AGAIN and bottom ROLL use distinct aperture glyphs for action 
 
 
 
+test('post-reveal ROLL controls use filled mini-machine faces without extra button semantics', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  for (const viewport of [{width:390,height:680},{width:390,height:844}]) {
+    await page.setViewportSize(viewport);
+    await page.goto('./', {waitUntil:'domcontentloaded'});
+    await waitReady(page);
+    const nav = page.locator('#r4mNavRoll');
+    await expect(nav).toBeVisible();
+    await expect(nav.locator('.r4m-nav-aperture')).toHaveAttribute('aria-hidden','true');
+    // Role remains navigation; the mini face is only decorative.
+    await expect(nav.locator('.r4m-nav-aperture')).toHaveAttribute('data-aperture-role','navigation');
+    const stepsBefore = await page.evaluate(async () =>
+      (await window.getTrailManifest()).manifest.steps.length);
+    await page.locator('#r4mRoll').click();
+    await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
+    const again = page.locator('#r4mRollAgain');
+    await expect(again).toBeVisible();
+    await expect(again.locator('.r4m-next-aperture')).toHaveAttribute('aria-hidden','true');
+    await expect(again.locator('.r4m-next-aperture')).toHaveAttribute('data-aperture-role','selection');
+    await expect(again.locator('button')).toHaveCount(0);
+    await expect(nav.locator('button')).toHaveCount(0);
+    await expect(page.locator('nav.r4m-nav button')).toHaveCount(2);
+    const visual = await page.evaluate(() => {
+      const nav = document.getElementById('r4mNavRoll');
+      const again = document.getElementById('r4mRollAgain');
+      const result = (button,child) => {
+        const el=button.querySelector(child), style=getComputedStyle(el);
+        const face=getComputedStyle(el,'::before'), glint=getComputedStyle(el,'::after');
+        const b=el.getBoundingClientRect(),p=button.getBoundingClientRect();
+        return {
+          radius:style.borderTopLeftRadius,
+          width:b.width,height:b.height,
+          face:face.content,faceBackground:face.backgroundImage,
+          glint:glint.content,
+          buttonTop:p.top,buttonBottom:p.bottom,
+          centerTarget:document.elementFromPoint(b.x+b.width/2,b.y+b.height/2)?.closest('button')?.id,
+        };
+      };
+      const navTop=document.querySelector('.r4m-nav').getBoundingClientRect().top;
+      return {
+        again:result(again,'.r4m-next-aperture'),
+        nav:result(nav,'.r4m-nav-aperture'),
+        navTop,scrollWidth:document.documentElement.scrollWidth,innerWidth,
+      };
+    });
+    console.log('MINI_ROLL_FACE '+JSON.stringify({viewport,visual}));
+    for (const key of ['again','nav']) {
+      const item=visual[key];
+      expect(item.radius).toBe('50%');
+      expect(item.width).toBeGreaterThanOrEqual(24);
+      expect(item.height).toBeGreaterThanOrEqual(24);
+      expect(item.face).not.toBe('none');
+      expect(item.faceBackground).toContain('radial-gradient');
+      expect(item.glint).not.toBe('none');
+      expect(item.centerTarget).toBe(key==='nav'?'r4mNavRoll':'r4mRollAgain');
+    }
+    expect(visual.again.buttonBottom).toBeLessThanOrEqual(visual.navTop+1);
+    expect(visual.scrollWidth).toBeLessThanOrEqual(visual.innerWidth+1);
+    await page.screenshot({path:testInfo.outputPath('machined-mini-roll-'+viewport.width+'x'+viewport.height+'.png')});
+    // Press the existing single real parent ROLL AGAIN: no second selection.
+    await again.click();
+    await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
+    await expect.poll(() => page.evaluate(async () =>
+      (await window.getTrailManifest()).manifest.steps.length)).toBe(stepsBefore+2);
+    await nav.click();
+    await expect(page.locator('#r4mRoll')).toBeVisible();
+  }
+});
+
 test('revealed result is free of legacy red rail, generated DESCENT label, and red CTA override', async ({ page }, testInfo) => {
   if (testInfo.project.name !== 'mobile-chromium') test.skip();
   await page.setViewportSize({ width: 512, height: 1108 });
