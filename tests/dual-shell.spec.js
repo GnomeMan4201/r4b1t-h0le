@@ -1780,7 +1780,7 @@ test('post-reveal ROLL AGAIN is a recessed slab and bottom ROLL is navigation', 
     await expect(page.locator('nav.r4m-nav button')).toHaveCount(2);
 
     const read=await page.evaluate(async () => {
-      const settle=async()=>{ await new Promise(resolve=>setTimeout(resolve,90)); };
+      const settle=async()=>{ await new Promise(resolve=>setTimeout(resolve,200)); };
       const again=document.getElementById('r4mRollAgain');
       const nav=document.getElementById('r4mNavRoll');
       const visit=document.querySelector('#r4mRoute [data-mobile-action="visit"]');
