@@ -1779,7 +1779,8 @@ test('post-reveal ROLL AGAIN is a recessed slab and bottom ROLL is navigation', 
     await expect(nav.locator('button')).toHaveCount(0);
     await expect(page.locator('nav.r4m-nav button')).toHaveCount(2);
 
-    const read=await page.evaluate(() => {
+    const read=await page.evaluate(async () => {
+      const settle=async()=>{ await new Promise(resolve=>setTimeout(resolve,90)); };
       const again=document.getElementById('r4mRollAgain');
       const nav=document.getElementById('r4mNavRoll');
       const visit=document.querySelector('#r4mRoute [data-mobile-action="visit"]');
@@ -1800,16 +1801,20 @@ test('post-reveal ROLL AGAIN is a recessed slab and bottom ROLL is navigation', 
         stage:reel.dataset.phase,
       };
       again.classList.add('motion-pressed');
+      await settle(); // CSS transition must finish before sampling physical drop
       const pressed=getComputedStyle(again);
       initial.press={transform:pressed.transform,border:pressed.borderTopColor,shadow:pressed.boxShadow};
       again.classList.remove('motion-pressed');
+      await settle();
       // Existing reel phase is the only hold authority; styling never sets it
       // in production. Snapshot the declarative CSS hook, then restore it.
       const prior=reel.dataset.phase;
       reel.dataset.phase='awaiting-commit';
+      await settle();
       const hold=getComputedStyle(again);
       initial.hold={transform:hold.transform,border:hold.borderTopColor,shadow:hold.boxShadow};
       reel.dataset.phase='spin';
+      await settle();
       const spin=getComputedStyle(again);
       initial.spin={border:spin.borderTopColor,transform:spin.transform};
       reel.dataset.phase=prior;

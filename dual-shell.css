@@ -1477,7 +1477,7 @@ html[data-r4b1t-interface="desktop"] #r4mShellHost{display:none!important}
      Whether the slab stays visible during this interval is owned by the
      existing source application's presentation lifecycle. */
   html.r4-mobile-active #r4mRollAgain:is(:active,.motion-pressed),
-  html.r4-mobile-active:has(#r4mRollReel[data-phase="awaiting-commit"]) #r4mRollAgain:not([hidden]) {
+  html.r4-mobile-active:has(#r4mRollReel[data-phase="awaiting-commit"]) #r4mRollAgain {
     transform:translateY(2px)!important;
     border-color:#ff1a2e!important;
     background:#090203;
