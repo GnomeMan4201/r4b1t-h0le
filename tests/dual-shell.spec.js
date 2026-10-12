@@ -1835,9 +1835,43 @@ test('post-reveal ROLL AGAIN is a recessed slab and bottom ROLL is navigation', 
     expect(read.hold.transform).not.toBe('none');
 
     await page.screenshot({path:testInfo.outputPath('recessed-roll-slab-'+viewport.width+'x'+viewport.height+'.png')});
+    // Diagnostic-only: sample the *real* ROLL AGAIN -> reel handoff under rAF.
+    // Do not manufacture phase changes. This records whether the physical
+    // pressed slab remains visible until spin starts, rather than asserting
+    // CSS support in isolation means users saw it.
+    if (viewport.height === 680) await page.evaluate(() => {
+      const again=document.getElementById('r4mRollAgain');
+      const reel=document.getElementById('r4mRollReel');
+      const probe={samples:[],running:true};
+      window.__slabRealHandoff=probe;
+      let prev='';
+      const sample=() => {
+        if (!probe.running || probe.samples.length>350) return;
+        const style=getComputedStyle(again);
+        const b=again.getBoundingClientRect();
+        const state={
+          phase:reel.dataset.phase||'',presentation:document.documentElement.dataset.r4mPresentation||'',
+          display:style.display,visibility:style.visibility,opacity:style.opacity,
+          border:style.borderTopColor,transform:style.transform,
+          visible:b.width>0&&b.height>0&&style.display!=='none'&&style.visibility!=='hidden'&&Number(style.opacity)>.5,
+          y:Math.round(b.top),
+        };
+        const key=[state.phase,state.presentation,state.display,state.border,state.visible].join('|');
+        if (key!==prev) {probe.samples.push({...state,at:Math.round(performance.now())});prev=key;}
+        requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
     await again.click();
     await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation','revealed');
     await expect.poll(() => page.evaluate(async ()=>(await window.getTrailManifest()).manifest.steps.length)).toBe(stepsBefore+2);
+    if (viewport.height === 680) {
+      const handoff=await page.evaluate(() => {
+        const probe=window.__slabRealHandoff;probe.running=false;return probe.samples;
+      });
+      console.log('ROLL_SLAB_REAL_HANDOFF '+JSON.stringify(handoff));
+      expect(handoff.some(s=>s.phase==='spin'), 'real reel spin observed').toBe(true);
+    }
     await nav.click();
     await expect(nav).toBeVisible();
     await expect.poll(() => page.evaluate(async ()=>(await window.getTrailManifest()).manifest.steps.length)).toBe(stepsBefore+2);
