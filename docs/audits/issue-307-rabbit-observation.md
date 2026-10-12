@@ -1,24 +1,41 @@
-# Issue 307 — rabbit reveal observation diagnostics (RED phase)
+# Issue #307 — rabbit ROLL reveal observation and test deadline
 
-Status: evidence-gathering branch only; no production behavior, SVG, REEL, or UI changes.
+**Disposition:** Test-only bounded-observation correction, verified on the final test-code SHA `3701f6ed26c3cf65403db85340262140d77b3347`. No production JavaScript, SVG, CSS, REEL, selection, Trail or motion-timing changes.
 
-## Repro hypothesis
-The existing `rollOnce()` waits a fixed 2300ms after tapping a real production ROLL, then inspects observations collected from an rAF/MutationObserver sampler. In a contested full test suite, the recorded `presentation:revealed` event is occasionally absent, even though the test passes on retry. This does not prove a production reveal failure.
+**Important branch dependency:** This diagnostic PR #308 targets the validated mobile baseline from draft [PR #285](https://github.com/GnomeMan4201/r4b1t-h0le/pull/285), branch `fix/mobile-reel-stage-spacing-main-20261008` at `b58950ad4697173bd163b0c72bab825bf0a79858`. PR #285 is not merged into `main`. PR #306 (Machine theme) is separately draft and unaffected. A clean mergeability check against this base is **not** merge approval or proof of integration with current `main`.
 
-## Test-only method
-- Preserve the original 2300ms snapshot **as the ONLY assertion input**.
-- Only when one of `commit`, `reveal`, `presentation:revealed`, `result-mounted`, `trail-recorded` is absent at the fixed deadline, collect an immediate snapshot of actual DOM presentation, reel phase, route, recorded history length, rabbit WAAPI state, mark fallback trace and complete instrument event timeline.
-- Perform a bounded (up to 3500ms) diagnostic observation for actual DOM reveal or sampled reveal event, then capture a second snapshot with times. This **does not change the test verdict** or weaken assertions.
-- Run 10 independent mobile-Chromium repetitions with Playwright retries disabled. Also run full normal and exact-head suites; previous evidence has seen this only under load.
-- Classification after data exists: (a) DOM actually reveals late, (b) DOM is revealed but sampler missed event, (c) neither reveals, requiring runtime investigation. Do not infer (a) or (b) from passing retry.
+## What failed (RED)
 
-## Safety / scope
-Branch is based on exact validated mobile baseline `b58950ad4697173bd163b0c72bab825bf0a79858`. The Machine PR #306 remains separately in draft. No main, deployment, production mark animation, selection, proof or Trail changes. This lane should not be merged while the first-attempt flake diagnosis remains incomplete.
+In `tests/production-mark-authority.spec.js`, `rollOnce()` used `page.waitForTimeout(2300)` after tapping ROLL and then asserted all sampled events had arrived. The underlying rAF/MutationObserver sampler sometimes saw `presentation:revealed` slightly after that arbitrary checkpoint, even though the authentic destination and Trail were already committed.
 
-## RED result and bounded wait contract (2026-10-11)
-The exact-head diagnostic workflow [#38191318125](https://github.com/GnomeMan4201/r4b1t-h0le/actions/runs/38191318125) reproduced one first-attempt failure in 10 no-retry repetitions (nine passed, one failed). Captured event timeline: `commit` 75ms, rabbit named `animationend` 1081ms, `reveal`/result-mounted/Trail recorded 1741ms, original fixed snapshot at 2362ms showing phase `reveal` and reel `lock`, then authoritative `presentation:revealed` at 2363ms, followed by observed fully-revealed DOM at 2373ms. This **demonstrates a race with the fixed observation window**; it is neither a missing selection nor proof of frame-pacing smoothness.
+A diagnostic-only commit `dc544ee138546530b463fb7d7d78216d086bab29` retained the original failure behavior and added fixed-window/late snapshots. [10× no-retry diagnostic #38191318125](https://github.com/GnomeMan4201/r4b1t-h0le/actions/runs/38191318125): **9 passed, 1 failed**. In the failure:
+- Rabbit named `animationend` observed 1081ms after start; `reveal`, result-mounted and Trail recorded by 1741ms.
+- 2362ms fixed snapshot: real DOM phase `reveal`, REEL phase `lock`, committed result mounted and one Trail step.
+- 2363ms: sampled `presentation:revealed`; by 2373ms the DOM and REEL were both `revealed`.
 
-GREEN candidate: retain the 2300ms checkpoint **only for diagnostics**; if incomplete, wait up to 3500 additional ms on a **bounded conjunction of actual DOM phase revealed, REEL phase revealed, disclosed mounted result, and all original event observations plus rabbit animation start/end, rolling state and result-on**. If any condition stays missing, fail and emit before/after snapshots. The test continues to enforce unchanged CSS-duration, animation cancellation, commit-before-rabbit-end, result-on-after-rabbit-end assertions. No production/runtime animation, sampler, Trail or release change. Re-run 10 mobile no-retry stress repetitions and the full CI. Do not close #307 from one passing run: follow-up flake monitoring remains useful.
+This proves a fixed-test-deadline race for the observed failure; it does **not** establish a defective production reveal or frame-pacing/smoothness.
 
-## Full-suite GREEN candidate correction — helper scope (2026-10-11)
-The first bounded-wait draft (`ab308565`) passed 10/10 strict normal-motion repetitions but **failed the ordinary full Playwright suite** (run [#38191542310](https://github.com/GnomeMan4201/r4b1t-h0le/actions/runs/38191542310)). The shared `rollOnce()` helper incorrectly demanded `mark-roll-animation-start/end` in both the **mark-disabled** authority-independence test and the **reduced-motion** test. The app reached `revealed` and Trail=1 but intentionally had no normal rabbit animation events. This is an error introduced by the diagnostic test patch, **not** a product regression. Restrict bounded normal-motion requirements to the `rabbit finishes its own 1000ms ROLL` test via explicit `requireNormalMarkTimeline:true`; keep original 2300ms event capture and unmodified assertions for the other two tests. Full-suite rerun is mandatory before accepting PR #308. Do not dismiss missing animation events in the test where they are expected.
+## Corrected test semantics (GREEN)
+
+The normal-motion `rabbit finishes its own 1000ms ROLL` test opts into `rollOnce(page, selector, { requireNormalMarkTimeline:true })`.
+
+1. Keep the original 2300ms observation point for a diagnostic **snapshot only**.
+2. If the required events or actual revealed DOM/REEL state are incomplete, use a bounded additional 3500ms state-driven wait. Require **real** `data-r4m-presentation= revealed`, `#r4mRollReel[data-phase=revealed]`, a disclosed, mounted result, plus every required event: commit, reveal, presentation revealed, result-mounted, trail-recorded, rabbit animationstart/end, mark rolling-on/off and mark-result-on.
+3. Capture the before/after event timelines, phase, reel, mounted-route status, session-history length, WAAPI animation state and rabbit watchdog trace whenever the fixed checkpoint is incomplete. Emit `ISSUE307_OBSERVATION` diagnostic JSON.
+4. On bounded timeout, missing event or missing authentic result, **fail** with `ISSUE307_BOUNDED_REVEAL_FAILED`. Do not silently drop an assertion.
+5. Preserve the original test's CSS animation duration and no-cancel checks, commit-before-rabbit-end order, mark-result-on-after-animationend checks, and repeat ROLL coverage.
+
+The two other uses of the shared helper retain the **original** 2300ms event return and their original assertions: the comparison test intentionally blocks the rabbit SVG, while the reduced-motion test correctly lacks normal rabbit animationstart/end events.
+
+An intermediate candidate `ab308565ae6993474ac13946739c11911f2d439d` incorrectly demanded those animation events in *all* helper users: its focused stress passed but ordinary full Playwright [#38191542310](https://github.com/GnomeMan4201/r4b1t-h0le/actions/runs/38191542310) failed. That was a test-harness mistake, not a production defect. Final test-code commit `3701f6ed26c3cf65403db85340262140d77b3347` explicitly confines strict normal-motion requirements to the normal-motion test.
+
+## Exact-head verification (test-code SHA `3701f6ed`)
+
+- [Diagnostic #38192201211](https://github.com/GnomeMan4201/r4b1t-h0le/actions/runs/38192201211): **10 passed without retries**.
+- [Mobile WebKit REEL #38192201212](https://github.com/GnomeMan4201/r4b1t-h0le/actions/runs/38192201212): **6 passed**.
+- [Ordinary Playwright E2E #38192201238](https://github.com/GnomeMan4201/r4b1t-h0le/actions/runs/38192201238): **248 passed, 148 skipped, no reported flakes**.
+- [Release Exact Head E2E #38192201218](https://github.com/GnomeMan4201/r4b1t-h0le/actions/runs/38192201218): **248 passed, 148 skipped, no reported flakes**.
+
+Critically, the release run *also* caught a real late observation in full-suite contention: at 2378ms the phase was `reveal`, REEL `lock`, missing `presentation:revealed`; at 2389ms the genuine phase and REEL were `revealed` with no missing events, and the corrected test passed.
+
+These are test-observation guarantees, **not** measured iPhone animation frames or assurances about browser paint smoothness. Keep issue #307 open for post-merge monitoring until separately authorized. This branch and its upstream dependency remain **DRAFT**. Do not merge or deploy without explicit approval.
