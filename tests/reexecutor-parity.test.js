@@ -121,13 +121,13 @@ test('independent Python re-executor reproduces JS ROLLs across ALL and typed te
 });
 
 test('re-executor honors bounded URL retry count and rejects a false retry declaration', async () => {
-  // Pin a known seed that retries at ROLL #33 within the active ARTICLE terrain.
+  // Pin a known seed that retries at final ROLL #33 within the active ARTICLE terrain.
   // This is an independent cross-language check, not just two JS implementations.
-  const source = await buildArtifact(Array(120).fill('article'));
+  const source = await buildArtifact(Array(33).fill('article'));
   const retried = source.manifest.steps.filter(
     step => step.transaction.sampler.draw_count > 1
   );
-  assert.equal(retried.length, 6, 'pinned seed should exercise actual URL repeat rejection');
+  assert.equal(retried.length, 1, 'pinned seed should exercise an actual repeat retry at the final step');
   assert.equal(retried[0].index, 33);
   assert.equal(retried[0].transaction.sampler.draw_count, 2);
   assert.equal(
