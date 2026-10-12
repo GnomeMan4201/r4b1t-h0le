@@ -344,6 +344,12 @@
       else if (parts.length) candidate = parts[parts.length - 1];
       if (!candidate || /^(index|home|docs?|documentation|web-security)$/i.test(candidate)) candidate = host.split('.')[0];
       candidate = candidate.replace(/\.(?:html?|md|txt|json)$/i, '').replace(/[-_]+/g, ' ').trim();
+      // URL slugs are not source page titles. A numeric or date-like slug
+      // alone can resemble a broken result; retain the verifiable URL context.
+      // Metadata fetched after reveal must not affect the committed selection.
+      if (/^(?:\d+|(?:19|20)\d{2}(?:[\s.-]+\d{1,4}){1,3})$/.test(candidate)) {
+        return host + (parsed.pathname || '/');
+      }
       return candidate || host || String(url);
     } catch (_) {
       return hostname(url);
