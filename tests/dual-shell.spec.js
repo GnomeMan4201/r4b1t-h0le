@@ -130,7 +130,9 @@ test('opt-in viewport debug reports geometry and stylesheet identity without cha
   const panel = page.locator('#r4mMotionDebug');
   await expect(panel).toContainText('LAYOUT: 390 × 844');
   await expect(panel).toContainText('NAV: 64px / rect 64px');
-  await expect(panel).toContainText('CSS SHA256: 92976e02f7a8e95bec1b82e446706330a638ac8b52f1bde0ce6919e514ead3d4');
+  const stylesheetDigest = require('node:crypto').createHash('sha256')
+    .update(require('node:fs').readFileSync(require('node:path').join(__dirname, '../dual-shell.css'))).digest('hex');
+  await expect(panel).toContainText('CSS SHA256: ' + stylesheetDigest);
   const before = await page.evaluate(async () => JSON.stringify(await window.getTrailManifest()));
   const stored = await page.evaluate(() => JSON.stringify(Object.entries(localStorage).sort()));
   await page.setViewportSize({ width: 375, height: 667 });
