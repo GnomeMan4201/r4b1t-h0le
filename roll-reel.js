@@ -433,6 +433,33 @@
     return item;
   }
 
+  // Numeric/date-only URL slugs have no verified display title at spin time.
+  // Keep the full truthful identifier, but put host and path on distinct
+  // visual lines so single-line ellipsis cannot hide the distinguishing slug.
+  // This is presentation-only: selection, pool order and draw counts are untouched.
+  function renderRowName(label, displayName, url) {
+    try {
+      var parsed = new URL(url, root.location && root.location.href ? root.location.href : undefined);
+      var host = parsed.hostname.replace(/^www\\./i, '');
+      var pathname = parsed.pathname || '/';
+      if (displayName === host + pathname && pathname !== '/') {
+        var hostLine = document.createElement('span');
+        hostLine.className = 'r4m-reel-name-host';
+        hostLine.textContent = host;
+        var pathLine = document.createElement('span');
+        pathLine.className = 'r4m-reel-name-path';
+        pathLine.textContent = pathname;
+        label.textContent = '';
+        label.classList.add('r4m-reel-name-identifier');
+        label.appendChild(hostLine);
+        label.appendChild(pathLine);
+        return;
+      }
+    } catch (_) {}
+    label.classList.remove('r4m-reel-name-identifier');
+    label.textContent = displayName || '—';
+  }
+
   function drawRows(position, speed) {
     var model = spin || {
       labels: ['READY', 'R4B1T H0L3', 'ROLL'],
@@ -451,7 +478,7 @@
       if (row.dataset.logical !== String(logical) || row.dataset.model !== String(model.pool[item] || model.labels[item])) {
         row.dataset.logical = String(logical);
         row.dataset.model = String(model.pool[item] || model.labels[item]);
-        row.querySelector('.r4m-reel-name').textContent = model.labels[item] || '—';
+        renderRowName(row.querySelector('.r4m-reel-name'), model.labels[item] || '—', model.pool[item] || '');
         row.querySelector('.r4m-reel-type').textContent = item < 0 ? '' : model.categories[item] || 'REFERENCE';
         row.dataset.url = model.pool[item] || '';
       }
