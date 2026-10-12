@@ -2219,6 +2219,83 @@ test('Machine compact iPhone browser pane keeps the real invitation and ROLL abo
   await expect(page.locator('#r4mMenuSheet')).toHaveAttribute('aria-hidden', 'false');
 });
 
+test('Machine long result metadata scrolls completely clear of fixed actions on compact and full mobile panes', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile-chromium');
+  const descriptionText = Array.from({ length: 30 }, (_, i) =>
+    'Source description segment ' + (i + 1) + ': detailed context for the selected resource.')
+    .join(' ') + ' END_OF_MACHINE_SOURCE_DESCRIPTION';
+
+  for (const viewport of [{ width: 390, height: 680 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto('./?machine=1', { waitUntil: 'domcontentloaded' });
+    await waitReady(page);
+    const beforeSteps = await page.evaluate(async () =>
+      (await window.getTrailManifest()).manifest.steps.length);
+    await page.locator('#r4mRoll').click();
+    await expect(page.locator('html')).toHaveAttribute('data-r4m-presentation', 'revealed');
+    await expect(page.locator('#r4mRollReel')).toHaveAttribute('data-phase', 'revealed');
+    await expect.poll(() => page.evaluate(async () =>
+      (await window.getTrailManifest()).manifest.steps.length)).toBe(beforeSteps + 1);
+    const beforeUrl = await page.locator('#r4mUrl').textContent();
+
+    // Change only post-reveal source-text projection. Do not change the selected
+    // destination, commitment, Trail or future roll pool.
+    await page.evaluate(text => {
+      document.getElementById('ogTitle').textContent =
+        'A long source-provided resource title for compact presentation review';
+      document.getElementById('ogDesc').textContent = text;
+      window.__r4b1tSyncMobileRoute();
+    }, descriptionText);
+    await expect(page.locator('#r4mDescription')).toHaveText(descriptionText);
+    await expect(page.locator('#r4mUrl')).toHaveText(beforeUrl);
+
+    const beforeScroll = await page.evaluate(() => ({
+      actionsTop: document.querySelector('#r4mRoute .r4m-route-actions').getBoundingClientRect().top,
+      openTop: document.querySelector('#r4mRoute [data-mobile-action="visit"]').getBoundingClientRect().top,
+      rollAgainTop: document.getElementById('r4mRollAgain').getBoundingClientRect().top,
+      descriptionHeight: document.getElementById('r4mDescription').getBoundingClientRect().height,
+      descriptionLineHeight: parseFloat(getComputedStyle(document.getElementById('r4mDescription')).lineHeight),
+      descriptionClamped: getComputedStyle(document.getElementById('r4mDescription')).webkitLineClamp,
+      scrollHeight: document.documentElement.scrollHeight,
+      viewportHeight: innerHeight,
+    }));
+    expect(beforeScroll.descriptionClamped).toBe('none');
+    expect(beforeScroll.descriptionHeight).toBeGreaterThan(beforeScroll.descriptionLineHeight * 8);
+    expect(beforeScroll.scrollHeight).toBeGreaterThan(beforeScroll.viewportHeight);
+
+    // Actual document scroll to bottom must expose both trailing description
+    // and complete source URL BEFORE the fixed action rail, without moving it.
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+    const atEnd = await page.evaluate(() => {
+      const rect = selector => document.querySelector(selector).getBoundingClientRect();
+      const maxScroll = document.documentElement.scrollHeight - innerHeight;
+      return {
+        scrollY: window.scrollY,
+        maxScroll,
+        descriptionBottom: rect('#r4mDescription').bottom,
+        urlTop: rect('#r4mUrl').top,
+        urlBottom: rect('#r4mUrl').bottom,
+        actionsTop: rect('#r4mRoute .r4m-route-actions').top,
+        openTop: rect('#r4mRoute [data-mobile-action="visit"]').top,
+        rollAgainTop: rect('#r4mRollAgain').top,
+        documentWidth: document.documentElement.scrollWidth,
+        viewportWidth: innerWidth,
+      };
+    });
+    expect(atEnd.scrollY).toBeGreaterThanOrEqual(atEnd.maxScroll - 2);
+    expect(atEnd.urlTop).toBeGreaterThanOrEqual(0);
+    expect(atEnd.urlBottom).toBeLessThan(atEnd.actionsTop);
+    expect(atEnd.descriptionBottom).toBeLessThan(atEnd.actionsTop);
+    expect(Math.abs(atEnd.actionsTop - beforeScroll.actionsTop)).toBeLessThanOrEqual(1);
+    expect(Math.abs(atEnd.openTop - beforeScroll.openTop)).toBeLessThanOrEqual(1);
+    expect(Math.abs(atEnd.rollAgainTop - beforeScroll.rollAgainTop)).toBeLessThanOrEqual(1);
+    expect(atEnd.documentWidth).toBeLessThanOrEqual(atEnd.viewportWidth);
+    expect(await page.evaluate(async () =>
+      (await window.getTrailManifest()).manifest.steps.length)).toBe(beforeSteps + 1);
+  }
+});
+
 test('Machine visual opt-in leaves normal mobile presentation default untouched', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile-chromium');
   await page.setViewportSize({ width: 390, height: 844 });

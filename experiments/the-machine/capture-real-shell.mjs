@@ -93,6 +93,42 @@ try {
   await compact.locator('#r4mRoute').waitFor({state:'visible'});
   if (await compact.locator('#r4mHero').isVisible()) throw new Error('Compact invitation hero leaked after reveal');
   const compactResult=await capture(compact,'06-machine-compact-result');
+
+  // Stress genuine selected route projection with unusually long descriptive
+  // metadata. This is presentation-only; the selection and Trail stay intact.
+  const originalUrl=await compact.locator('#r4mUrl').textContent();
+  const trailBeforeScroll=await compact.evaluate(async()=> (await window.getTrailManifest()).manifest.steps.length);
+  const longText=Array.from({length:30},(_,i)=>'Source context segment '+(i+1)+' about this resource.')
+    .join(' ')+' END_OF_MACHINE_SOURCE_DESCRIPTION';
+  await compact.evaluate(text=>{
+    document.getElementById('ogTitle').textContent='A detailed source-provided resource title requiring readable wrapping';
+    document.getElementById('ogDesc').textContent=text;
+    window.__r4b1tSyncMobileRoute();
+  },longText);
+  await compact.locator('#r4mDescription').filter({hasText:'END_OF_MACHINE_SOURCE_DESCRIPTION'}).waitFor();
+  if (await compact.locator('#r4mUrl').textContent()!==originalUrl)
+    throw new Error('Post-reveal metadata stress unexpectedly changed selected URL');
+  await compact.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));
+  await compact.waitForFunction(()=>scrollY>0);
+  const longScrolled=await capture(compact,'07-machine-compact-long-result-scrolled');
+  const clearance=await compact.evaluate(()=>{
+    const rect=s=>document.querySelector(s).getBoundingClientRect();
+    return {
+      descriptionBottom:rect('#r4mDescription').bottom,
+      urlTop:rect('#r4mUrl').top,
+      urlBottom:rect('#r4mUrl').bottom,
+      railTop:rect('#r4mRoute .r4m-route-actions').top,
+      scrollY,scrollMax:document.documentElement.scrollHeight-innerHeight,
+    };
+  });
+  report.compactLongResultClearance=clearance;
+  if(clearance.urlTop<0||clearance.urlBottom>=clearance.railTop||
+    clearance.descriptionBottom>=clearance.railTop||
+    clearance.scrollY<clearance.scrollMax-2)
+    throw new Error('Long result cannot be scrolled completely above fixed action rail: '+JSON.stringify(clearance));
+  if((await compact.evaluate(async()=> (await window.getTrailManifest()).manifest.steps.length))!==trailBeforeScroll)
+    throw new Error('Metadata-only stress changed authoritative Trail count');
+
   if (Math.abs(compactResult.mark.height-compactIdle.mark.height)>1)
     throw new Error('Compact production mark frame jumped between invite and reveal');
   if (Math.abs(compactResult.svgMark.height-compactIdle.svgMark.height)>1)
