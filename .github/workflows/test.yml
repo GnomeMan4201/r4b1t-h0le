@@ -48,6 +48,12 @@ jobs:
             --exclude='test-results' \
             ./ test-site/r4b1t-h0le/
 
+      - name: Check short mobile result visibility
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'true'
+        run: npx playwright test --config=playwright.short-result.config.js
+
       - name: Run desktop and mobile browser tests
         env:
           BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
@@ -62,6 +68,7 @@ jobs:
           path: |
             test-results/**/reel-numeric-*.png
             test-results/**/mobile-inspect-readability.png
+            test-results-short-result/**/short-result-*.png
           if-no-files-found: ignore
           retention-days: 7
 
