@@ -62,7 +62,9 @@ not claim semantic orthogonality or independent proof of relevance.
 
 ## UI state
 
-One full-width destination card updates in place. Branch selections append compact
+Before the first reveal, only the existing main ROLL instrument starts discovery;
+there is no extra ROLL AGAIN prompt. After reveal, one full-width destination card
+updates in place. Branch selections append compact
 receipt-bound route links instead of repeating full cards. Each selected root grows
 another three-way fork automatically, starting at the selected left, center or right
 endpoint. No extra sampler draw or navigation step is required to display those

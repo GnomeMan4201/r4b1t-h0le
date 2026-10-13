@@ -15,7 +15,10 @@ async function ready(page, flow = true) {
 }
 async function first(page) {
   await ready(page);
-  await page.locator('.sprout-start').click();
+  await expect(page.locator('#sproutFlow .sprout-control')).toHaveCount(0);
+  const nativeRoll = page.locator(await page.evaluate(()=>document.documentElement.classList.contains('r4-mobile-active')) ? '#r4mRoll' : '#btnGo');
+  await expect(nativeRoll).toBeVisible();
+  await nativeRoll.click();
   await expect(page.locator('.sprout-card')).toHaveCount(1);
   return page.locator('.sprout-stage').first();
 }
@@ -109,7 +112,8 @@ test('reset clears the view only after ledger persistence succeeds', async ({pag
   await expect(page.locator('.sprout-card')).toHaveCount(1);
   await page.evaluate(()=>{Storage.prototype.setItem=window.__savedStorageSet;window.resetReproducibleTrail();});
   await expect(page.locator('.sprout-card')).toHaveCount(0);
-  await expect(page.locator('.sprout-start')).toBeVisible();
+  await expect(page.locator('#sproutFlow .sprout-control')).toHaveCount(0);
+  await expect(page.locator('.sprout-start')).toHaveCount(0);
   expect((await manifest(page)).manifest.steps).toHaveLength(0);
 });
 
@@ -153,6 +157,7 @@ test('repeat clicks and cancelled machine commits cannot double-land cards', asy
 test('existing keyboard and mobile branch entry stay in the continuous flow',async({page})=>{
   await first(page);
   await expect(page.locator('.sprout-card .sprout-control').last()).toBeEnabled();
+  await page.evaluate(()=>document.activeElement.blur());
   await page.locator('body').press('p');
   await expect(page.locator('.sprout-roots')).toHaveCount(1);
   if(await page.evaluate(()=>document.documentElement.classList.contains('r4-mobile-active'))){

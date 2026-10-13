@@ -56,7 +56,6 @@
       if (active && active.roots) display.sprout.setAttribute('aria-controls', active.section.id + '-targets');
       else display.sprout.removeAttribute('aria-controls');
     }
-    if (host.start) host.start.disabled = locked;
     host.setAttribute('aria-busy', String(busy));
     syncSproutNavigation();
   }
@@ -198,7 +197,6 @@
       if (receipt.kind === 'BRANCH') parent.children.set(receipt.branchLabel, node);
     } else host.insertBefore(section, status);
     active = node;
-    if (host.start) host.start.hidden = true;
     order += 1;
     syncMetadata();
     if (receipt.kind === 'ROLL') { rollRevealed = true; finishRoll(); }
@@ -218,7 +216,6 @@
     clearTimeout(rollTimer); rollTimer = null;
     nodes.forEach(function (node) { node.section.remove(); }); nodes.clear();
     display = null; active = pendingParent = null; busy = false; epoch = nextEpoch; order = 0;
-    if (host && host.start) host.start.hidden = false;
     if (host) { updateControls(); announce('Roll to begin a new descent.'); }
   }
   function placeHost() {
@@ -229,9 +226,8 @@
   }
   function start() {
     host = el('div', 'sprout-flow'); host.id = 'sproutFlow'; host.setAttribute('aria-label', 'Continuous descent');
-    host.start = button('[ ROLL AGAIN ]', roll); host.start.classList.add('sprout-start');
     status = el('p', 'sprout-status', 'Roll. Land. Sprout.'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
-    host.append(host.start, status);
+    host.append(status);
     document.documentElement.classList.add('r4-sprout-flow'); placeHost();
     new MutationObserver(placeHost).observe(document.documentElement, {attributes: true, attributeFilter: ['class']});
     var source = document.getElementById('preview');

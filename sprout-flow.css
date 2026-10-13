@@ -46,7 +46,6 @@ html.r4-sprout-flow .r4m-shell { overflow:visible; }
 .sprout-children > .sprout-stage[data-direction=sideways]:before { left:16.666%; }
 .sprout-children > .sprout-stage[data-direction=opposite]:before { left:83.333%; }
 .sprout-status { color:var(--sprout-dim); font-size:11px; min-height:24px; padding:14px 0; }
-.sprout-start { width:100%; border:1px solid var(--sprout-rule); }
 .sprout-flow [hidden] { display:none!important; }
 @keyframes sprout-grow { to { stroke-dashoffset:0; } }
 @media (max-width:900px) {
