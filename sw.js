@@ -1,4 +1,4 @@
-const CACHE = 'r4b1t-v26-trail-record-integrity';
+const CACHE = 'r4b1t-v27-sprout-flow';
 const PRECACHE = [
   './',
   './index.html',
@@ -23,6 +23,8 @@ const PRECACHE = [
   './branch-core.js',
   './terrain-authority.js',
   './trail-runtime.js',
+  './sprout-flow.js',
+  './sprout-flow.css',
   './blind-manifest.js',
   './blind-runtime.js',
   './trail-topology.js',

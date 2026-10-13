@@ -47,7 +47,7 @@ test('PWA paths are deployment-relative instead of tied to the old repository sl
 
   const sw = read('sw.js');
   assert.ok(!sw.includes("'/r4b1t/"));
-  assert.match(sw, /const CACHE = 'r4b1t-v26-trail-record-integrity'/);
+  assert.match(sw, /const CACHE = 'r4b1t-v27-sprout-flow'/);
 });
 
 
@@ -62,6 +62,8 @@ test('PWA shell prefers current network bytes and uses cache only as offline fal
   assert.ok(sw.includes("'./result-metadata.js'"));
   assert.ok(sw.includes("'./trail-v03.js'"));
   assert.ok(sw.includes("'./branch-core.js'"));
+  assert.ok(sw.includes("'./sprout-flow.js'"));
+  assert.ok(sw.includes("'./sprout-flow.css'"));
   assert.ok(sw.includes("url.pathname.includes('/corpus/releases/')"));
   assert.ok(sw.includes("url.pathname.endsWith('/resources.json')"));
   assert.ok(sw.includes("url.pathname.endsWith('/manifest.json')"));
