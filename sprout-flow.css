@@ -1,4 +1,4 @@
-/* Scoped rollout; the original shell is unchanged when the gate is off. */
+/* Scoped continuous view: use the existing machine's surfaces and control rails. */
 html.r4-sprout-flow #preview,
 html.r4-sprout-flow #modeToggle,
 html.r4-sprout-flow #branchPanel,
@@ -7,36 +7,67 @@ html.r4-mobile-active.r4-sprout-flow:not(.r4m-stage-blind) #r4mRouteMount,
 html.r4-mobile-active.r4-sprout-flow:not(.r4m-stage-blind) #r4mRollAgain { display:none!important; }
 html.r4-sprout-flow .r4m-primary-stage { height:auto!important; max-height:none!important; overflow:visible!important; }
 html.r4-sprout-flow .r4m-shell { overflow:visible; }
-.sprout-flow { width:100%; min-width:0; font:14px/1.6 var(--font-mono); color:var(--text); padding-bottom:calc(96px + env(safe-area-inset-bottom)); }
-.sprout-stage { margin-top:24px; position:relative; scroll-margin-top:24px; }
-.sprout-card { background:var(--surface); border:1px solid var(--border); border-top:2px solid var(--accent); padding:20px; }
-.sprout-step-label { color:var(--text-mid); font-size:12px; letter-spacing:.1em; }
-.sprout-title { font-family:var(--font-head); font-size:26px; line-height:1.2; letter-spacing:.02em; overflow-wrap:anywhere; margin:14px 0; }
-.sprout-snippet { color:var(--text-mid); overflow-wrap:anywhere; margin-bottom:16px; }
-.sprout-url { display:block; overflow-wrap:anywhere; font-size:12px; color:var(--text-mid); }
-.sprout-open { display:inline-block; font-size:12px; letter-spacing:.08em; color:var(--text); padding:12px 0; min-height:44px; }
-.sprout-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
-.sprout-control { font:inherit; background:var(--surface2); color:var(--text); border:1px solid var(--border); min-height:48px; padding:12px 14px; cursor:pointer; }
-.sprout-control:hover { border-color:var(--accent); }
-.sprout-control:focus-visible,.sprout-title:focus-visible,.sprout-open:focus-visible { outline:2px solid var(--accent-hi); outline-offset:3px; }
-.sprout-control:disabled { opacity:.5; cursor:default; }
-.sprout-actions .sprout-control:first-child { box-shadow:inset 0 2px 10px var(--bg); border-bottom-color:var(--accent); }
-.sprout-roots { width:100%; height:100px; display:block; overflow:visible; }
-.sprout-roots path { fill:none; stroke:var(--accent); stroke-width:1.6; vector-effect:non-scaling-stroke; stroke-dasharray:400; stroke-dashoffset:400; animation:sprout-grow .65s ease-out forwards; }
-.sprout-targets { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }
-.sprout-targets .sprout-control { font-size:11px; padding:12px 1px; white-space:nowrap; }
-.sprout-targets .sprout-control[aria-expanded=true] { border-color:var(--accent-hi); }
+.sprout-flow {
+  --sprout-paper:var(--text);
+  --sprout-black:var(--bg);
+  --sprout-dim:var(--text-mid);
+  --sprout-rule:var(--border);
+  --sprout-red:var(--accent);
+  width:100%; min-width:0; font:14px/1.55 var(--font-mono);
+  color:var(--sprout-paper); padding-bottom:calc(96px + env(safe-area-inset-bottom));
+}
+.sprout-stage { margin-top:16px; position:relative; scroll-margin-top:20px; }
+.sprout-card { background:var(--sprout-black); border:0; border-top:1px solid var(--sprout-rule); padding:0; }
+.sprout-step-label { display:block; padding:10px 0; border-bottom:1px solid var(--sprout-rule); color:var(--sprout-dim); font-size:11px; letter-spacing:.1em; }
+.sprout-domain { display:block; padding:14px 0 0; font:700 clamp(28px,8vw,42px)/.98 var(--font-head); letter-spacing:.01em; text-transform:uppercase; overflow-wrap:anywhere; }
+.sprout-domain:after { content:''; display:block; width:58px; height:4px; margin:10px 0 12px; background:var(--sprout-red); }
+.sprout-title { font:700 clamp(20px,5vw,24px)/1.22 var(--font-head); color:var(--sprout-paper); letter-spacing:.015em; overflow-wrap:anywhere; margin:0 0 8px; }
+.sprout-snippet { color:var(--sprout-dim); font-size:14px; overflow-wrap:anywhere; margin:0 0 12px; }
+.sprout-url { display:block; overflow-wrap:anywhere; font:12px/1.5 var(--font-mono); color:var(--sprout-dim); margin:0 0 16px; }
+.sprout-open { display:flex; align-items:center; justify-content:center; min-height:48px; padding:12px; background:var(--sprout-red); color:var(--sprout-paper); font:700 12px/1.3 var(--font-mono); letter-spacing:.06em; text-decoration:none; }
+.sprout-actions { display:grid; grid-template-columns:1fr 1fr; gap:0; margin:0; border-bottom:1px solid var(--sprout-rule); }
+.sprout-control { font:700 12px/1.3 var(--font-mono); letter-spacing:.03em; background:var(--sprout-black); color:var(--sprout-paper); border:0; min-height:48px; padding:12px 8px; cursor:pointer; }
+.sprout-actions .sprout-control + .sprout-control { border-left:1px solid var(--sprout-rule); }
+.sprout-control:hover { color:var(--sprout-red); }
+.sprout-control:focus-visible,.sprout-title:focus-visible,.sprout-open:focus-visible { outline:2px solid var(--sprout-red); outline-offset:3px; }
+.sprout-control:disabled { opacity:.4; cursor:default; }
+.sprout-actions .sprout-control:first-child { box-shadow:inset 0 2px 8px var(--sprout-rule); }
+.sprout-roots { width:100%; height:84px; display:block; overflow:visible; }
+.sprout-roots path { fill:none; stroke:var(--sprout-dim); opacity:.65; stroke-width:1.1; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-dasharray:400; stroke-dashoffset:400; animation:sprout-grow .65s ease-out forwards; }
+.sprout-roots path.sprout-root-followed { stroke:var(--sprout-red); opacity:1; stroke-width:1.5; }
+.sprout-targets { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; border-top:1px solid var(--sprout-rule); border-bottom:1px solid var(--sprout-rule); }
+.sprout-targets .sprout-control { position:relative; min-height:64px; padding:10px 3px 12px; text-align:center; }
+.sprout-targets .sprout-control + .sprout-control { border-left:1px solid var(--sprout-rule); }
+.sprout-target-index { display:block; font:11px/1.3 var(--font-mono); color:var(--sprout-dim); letter-spacing:.1em; }
+.sprout-target-name { display:block; margin-top:5px; font:700 clamp(11px,3.4vw,14px)/1 var(--font-head); letter-spacing:.025em; }
+.sprout-targets .sprout-control[aria-expanded=true]:before { content:''; position:absolute; top:-1px; left:0; right:0; height:2px; background:var(--sprout-red); }
 .sprout-children > .sprout-stage { padding-top:24px; margin-top:0; }
-.sprout-children > .sprout-stage:before { content:''; position:absolute; top:0; height:24px; left:50%; border-left:1px solid var(--accent); }
+.sprout-children > .sprout-stage:before { content:''; position:absolute; top:0; height:24px; left:50%; border-left:1px solid var(--sprout-red); }
 .sprout-children > .sprout-stage[data-direction=sideways]:before { left:16.666%; }
 .sprout-children > .sprout-stage[data-direction=opposite]:before { left:83.333%; }
-.sprout-status { color:var(--text-mid); font-size:12px; min-height:24px; padding:16px 0; }
+.sprout-status { color:var(--sprout-dim); font-size:11px; min-height:24px; padding:14px 0; }
+.sprout-start { width:100%; border:1px solid var(--sprout-rule); }
 .sprout-flow [hidden] { display:none!important; }
 @keyframes sprout-grow { to { stroke-dashoffset:0; } }
-@media (max-width:380px) { .sprout-card { padding:14px; } .sprout-actions .sprout-control { padding:12px 10px; } }
+@media (max-width:900px) {
+  html.r4-mobile-active .sprout-flow {
+    --sprout-paper:var(--r4m-v5-white);
+    --sprout-black:var(--r4m-v5-black);
+    --sprout-dim:var(--r4m-v5-dim);
+    --sprout-rule:var(--r4m-v5-rule);
+    --sprout-red:var(--r4m-v5-red);
+  }
+  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll[data-mobile-action=sprout] {
+    background:var(--r4m-v5-black); color:var(--r4m-v5-white);
+    justify-content:center; padding:0 12px; gap:0;
+  }
+  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll[data-mobile-action=sprout] .r4m-nav-aperture { display:none!important; }
+  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll[data-mobile-action=sprout] b { font:700 15px/1 var(--font-mono); letter-spacing:.14em; }
+  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll[data-mobile-action=sprout]:before { height:1px; background:var(--r4m-v5-rule); }
+  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll[data-mobile-action=sprout][aria-expanded=true]:before { height:2px; background:var(--r4m-v5-red); }
+  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll[data-mobile-action=sprout]:disabled { color:var(--r4m-v5-dim); }
+}
 @media (prefers-reduced-motion:reduce) { .sprout-roots path { animation:none; stroke-dashoffset:0; } }
-
 html.r4-sprout-flow.r4m-stage-blind #sproutFlow { display:none; }
-/* Closed fixed sheets must not paint into the longer scrolling descent. */
 html.r4-mobile-active.r4-sprout-flow .r4m-sheet[aria-hidden="true"] { visibility:hidden!important; pointer-events:none!important; }
 html.r4-mobile-active.r4-sprout-flow #r4mBackdrop[hidden] { display:none!important; }

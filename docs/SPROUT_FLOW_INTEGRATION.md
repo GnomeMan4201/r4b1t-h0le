@@ -71,6 +71,12 @@ In the continuous mobile view, the bottom-left navigation action is SPROUT.
 It expands or focuses roots from the active card; it does not reset the stage or
 consume a sampler draw. It is disabled until a card lands and while motion is
 active. Blind Descent keeps its existing ROLL navigation.
+The continuous cards now share the mobile machine's black, white, red and rule
+tokens, domain-first typography, red destination slab and joined action rails.
+Root controls use compact ordinal tags above readable directional names; neutral
+roots become red after a successful branch landing. The bottom SPROUT action is
+a labeled slab without the old ROLL aperture glyph. These are presentation
+changes only; receipt, sampler, navigation and proof semantics remain unchanged.
 The existing slot machine remains responsible for its animation and disclosure.
 
 The visual tree is intentionally transient: reload starts a new visible descent,

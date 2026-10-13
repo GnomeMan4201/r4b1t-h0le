@@ -97,11 +97,10 @@
     svg.setAttribute('preserveAspectRatio', 'none');
     svg.setAttribute('aria-hidden', 'true');
     [
-      'M300 0 C300 20 294 28 300 42 C310 60 300 74 300 100',
-      'M300 24 C270 50 230 32 196 55 S110 70 100 100',
-      'M300 24 C335 46 370 33 405 58 S488 72 500 100',
-      'M196 55 Q188 68 173 73 M405 58 Q420 65 425 77'
-    ].forEach(function (d) { var path = document.createElementNS(svgNS, 'path'); path.setAttribute('d', d); svg.appendChild(path); });
+      'M300 0 C300 14 296 23 300 34 L300 100',
+      'M300 28 C266 48 199 36 168 53 S100 74 100 100',
+      'M300 28 C334 48 401 36 432 53 S500 74 500 100'
+    ].forEach(function (d, index) { var path = document.createElementNS(svgNS, 'path'); path.setAttribute('d', d); path.dataset.type = ['deeper', 'sideways', 'opposite'][index]; svg.appendChild(path); });
     return svg;
   }
   function sprout(node) {
@@ -117,6 +116,7 @@
       paths.forEach(function (path) {
         var target = node.targets.get(path.type);
         var b = button(path.label, function () { choose(node, path.type); });
+        b.replaceChildren(el('span', 'sprout-target-index', path.label.slice(0, 4)), el('span', 'sprout-target-name', path.label.slice(4)));
         b.dataset.direction = path.direction;
         b.setAttribute('aria-expanded', 'false');
         if (!target) { b.disabled = true; b.dataset.unavailable = 'true'; b.title = 'No route available for this direction'; }
@@ -146,6 +146,8 @@
       if (child) {
         var b = node.branchButtons.get(type);
         b.setAttribute('aria-expanded', 'true'); b.setAttribute('aria-controls', child.section.id);
+        var followed = node.roots.querySelector('[data-type=' + type + ']');
+        if (followed) followed.classList.add('sprout-root-followed');
         child.heading.focus({preventScroll: true});
         child.section.scrollIntoView({behavior: root.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start'});
       }
@@ -170,6 +172,7 @@
     var meta = el('small', 'sprout-step-label', '#' + String(receipt.step).padStart(3, '0') + ' / ' + receipt.kind + (receipt.branchLabel ? ' / ' + (receipt.branchLabel === 'sideways' ? 'ALTERNATIVE' : receipt.branchLabel.toUpperCase()) : ''));
     var heading = el('h2', 'sprout-title', new URL(receipt.url).hostname + new URL(receipt.url).pathname);
     heading.tabIndex = -1;
+    var domain = el('strong', 'sprout-domain', new URL(receipt.url).hostname.replace(/^www\./, ''));
     var snippet = el('p', 'sprout-snippet'); snippet.hidden = true;
     var url = el('code', 'sprout-url', receipt.url);
     var open = el('a', 'sprout-open', 'OPEN DESTINATION ↗');
@@ -179,7 +182,7 @@
     node.roll = button('[ ROLL AGAIN ]', roll);
     node.sprout = button('[ SPROUT ]', function () { sprout(node); });
     node.sprout.setAttribute('aria-expanded', 'false');
-    actions.append(node.roll, node.sprout); card.append(meta, heading, snippet, url, open, actions);
+    actions.append(node.roll, node.sprout); card.append(meta, domain, heading, snippet, url, open, actions);
     var children = el('div', 'sprout-children'); node.childHost = children;
     section.append(card, children);
     nodes.set(receipt.step, node);
