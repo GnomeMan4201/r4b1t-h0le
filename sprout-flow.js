@@ -8,6 +8,7 @@
   var host, status, active = null, epoch = null, busy = false, rollTimer = null;
   var nodes = new Map();
   var order = 0;
+  var display = null;
   var pendingParent = null;
   var rollRevealed = false;
   var svgNS = 'http://www.w3.org/2000/svg';
@@ -56,10 +57,16 @@
   function updateControls() {
     var locked = busy || motionBusy();
     nodes.forEach(function (node) {
-      node.roll.disabled = locked || node !== active;
-      node.sprout.disabled = locked || Boolean(node.roots);
+
       node.branchButtons.forEach(function (b) { b.disabled = locked || b.dataset.unavailable === 'true'; });
     });
+    if (display) {
+      display.roll.disabled = locked;
+      display.sprout.disabled = locked || Boolean(active && active.roots);
+      display.sprout.setAttribute('aria-expanded', String(Boolean(active && active.roots)));
+      if (active && active.roots) display.sprout.setAttribute('aria-controls', active.section.id + '-targets');
+      else display.sprout.removeAttribute('aria-controls');
+    }
     if (host.start) host.start.disabled = locked;
     host.setAttribute('aria-busy', String(busy));
     syncSproutNavigation();
@@ -90,14 +97,14 @@
     if (!motionBusy()) { finishRoll(); if (!rollRevealed) announce('No route revealed. You can retry ROLL.'); return; }
     rollTimer = setTimeout(checkRoll, 100);
   }
-  function rootsSvg() {
+  function rootsSvg(direction) {
     var svg = document.createElementNS(svgNS, 'svg');
     svg.classList.add('sprout-roots');
     svg.setAttribute('viewBox', '0 0 600 100');
     svg.setAttribute('preserveAspectRatio', 'none');
     svg.setAttribute('aria-hidden', 'true');
     [
-      'M300 0 C300 14 296 23 300 34 L300 100',
+      'M' + (direction === 'sideways' ? 100 : direction === 'opposite' ? 500 : 300) + ' 0 C' + (direction === 'sideways' ? 100 : direction === 'opposite' ? 500 : 300) + ' 18 300 14 300 28 L300 100',
       'M300 28 C266 48 199 36 168 53 S100 74 100 100',
       'M300 28 C334 48 401 36 432 53 S500 74 500 100'
     ].forEach(function (d, index) { var path = document.createElementNS(svgNS, 'path'); path.setAttribute('d', d); path.dataset.type = ['deeper', 'sideways', 'opposite'][index]; svg.appendChild(path); });
@@ -112,7 +119,7 @@
       branches.id = node.section.id + '-targets';
       branches.setAttribute('role', 'group');
       branches.setAttribute('aria-label', 'Roots from ' + node.receipt.url);
-      node.roots = rootsSvg();
+      node.roots = rootsSvg(node.receipt.branchLabel);
       paths.forEach(function (path) {
         var target = node.targets.get(path.type);
         var b = button(path.label, function () { choose(node, path.type); });
@@ -123,8 +130,6 @@
         else b.title = target.reason;
         node.branchButtons.set(path.type, b); branches.appendChild(b);
       });
-      node.sprout.setAttribute('aria-expanded', 'true');
-      node.sprout.setAttribute('aria-controls', branches.id);
       node.card.after(node.roots, branches);
       updateControls(); announce('Three roots. Choose a direction.');
     } catch (error) { announce(error.message || 'Roots unavailable. Try again.'); }
@@ -141,7 +146,7 @@
         url: target.url, type: type
       });
       if (!receipt) throw new Error('Branch unavailable or recording failed. SPROUT a fresh card after a corpus change.');
-      // The synchronous reveal event already appended exactly one card.
+      // The reveal event created a receipt-bound junction, never another card.
       var child = nodes.get(receipt.step);
       if (child) {
         var b = node.branchButtons.get(type);
@@ -152,7 +157,7 @@
         child.section.scrollIntoView({behavior: root.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start'});
       }
     } catch (error) { announce(error.message || 'Branch failed. Try again.'); }
-    finally { busy = false; updateControls(); }
+    finally { busy = false; if (child) sprout(child); updateControls(); }
   }
   function safeUrl(value) {
     try { var u = new URL(value); return ['https:', 'http:'].includes(u.protocol) && !u.username && !u.password; }
@@ -168,23 +173,36 @@
     section.dataset.step = receipt.step;
     section.dataset.kind = receipt.kind;
     section.dataset.direction = receipt.kind === 'BRANCH' ? receipt.branchLabel : 'roll';
-    var card = el('article', 'sprout-card');
-    var meta = el('small', 'sprout-step-label', '#' + String(receipt.step).padStart(3, '0') + ' / ' + receipt.kind + (receipt.branchLabel ? ' / ' + (receipt.branchLabel === 'sideways' ? 'ALTERNATIVE' : receipt.branchLabel.toUpperCase()) : ''));
-    var heading = el('h2', 'sprout-title', new URL(receipt.url).hostname + new URL(receipt.url).pathname);
-    heading.tabIndex = -1;
-    var domain = el('strong', 'sprout-domain', new URL(receipt.url).hostname.replace(/^www\./, ''));
-    var snippet = el('p', 'sprout-snippet'); snippet.hidden = true;
-    var url = el('code', 'sprout-url', receipt.url);
-    var open = el('a', 'sprout-open', 'OPEN DESTINATION ↗');
-    open.href = receipt.url; open.target = '_blank'; open.rel = 'noopener noreferrer';
-    var actions = el('div', 'sprout-actions');
-    var node = {receipt: Object.freeze(Object.assign({}, receipt)), section: section, card: card, heading: heading, snippet: snippet, roots: null, children: new Map(), branchButtons: new Map(), targets: new Map()};
-    node.roll = button('[ ROLL AGAIN ]', roll);
-    node.sprout = button('[ SPROUT ]', function () { sprout(node); });
-    node.sprout.setAttribute('aria-expanded', 'false');
-    actions.append(node.roll, node.sprout); card.append(meta, domain, heading, snippet, url, open, actions);
+    var parsed = new URL(receipt.url);
+    var label = '#' + String(receipt.step).padStart(3, '0') + ' / ' + receipt.kind + (receipt.branchLabel ? ' / ' + (receipt.branchLabel === 'sideways' ? 'ALTERNATIVE' : receipt.branchLabel.toUpperCase()) : '');
+    if (!display) {
+      var card = el('article', 'sprout-card');
+      display = {card: card, meta: el('small', 'sprout-step-label'), domain: el('strong', 'sprout-domain'),
+        heading: el('h2', 'sprout-title'), snippet: el('p', 'sprout-snippet'), url: el('code', 'sprout-url'),
+        open: el('a', 'sprout-open', 'OPEN DESTINATION ↗')};
+      display.heading.tabIndex = -1;
+      display.open.target = '_blank'; display.open.rel = 'noopener noreferrer';
+      display.roll = button('[ ROLL AGAIN ]', roll);
+      display.sprout = button('[ SPROUT ]', function () { if (active) root.R4B1TSproutFlow.sproutCurrent(); });
+      var actions = el('div', 'sprout-actions'); actions.append(display.roll, display.sprout);
+      card.append(display.meta, display.domain, display.heading, display.snippet, display.url, display.open, actions);
+      section.appendChild(card);
+    }
+    display.meta.textContent = label;
+    display.domain.textContent = parsed.hostname.replace(/^www\./, '');
+    display.heading.textContent = parsed.hostname + parsed.pathname;
+    display.snippet.textContent = ''; display.snippet.hidden = true;
+    display.url.textContent = receipt.url; display.open.href = receipt.url;
+    var junction = el('div', 'sprout-junction');
+    var route = el('a', 'sprout-route', label + ' · ' + parsed.hostname + parsed.pathname + ' ↗');
+    route.href = receipt.url; route.target = '_blank'; route.rel = 'noopener noreferrer';
+    route.tabIndex = -1;
+    junction.appendChild(route);
+    if (!parent) junction.hidden = true;
+    var node = {receipt: Object.freeze(Object.assign({}, receipt)), section: section, card: junction, heading: route,
+      roots: null, children: new Map(), branchButtons: new Map(), targets: new Map()};
     var children = el('div', 'sprout-children'); node.childHost = children;
-    section.append(card, children);
+    section.append(junction, children);
     nodes.set(receipt.step, node);
     if (parent) {
       parent.childHost.appendChild(section);
@@ -203,14 +221,14 @@
     var url = document.getElementById('previewUrl');
     if (!url || url.textContent.trim() !== active.receipt.url) return;
     var title = document.getElementById('ogTitle'), description = document.getElementById('ogDesc');
-    if (title && title.textContent.trim()) active.heading.textContent = title.textContent.trim();
-    active.snippet.textContent = description ? description.textContent.trim() : '';
-    active.snippet.hidden = !active.snippet.textContent;
+    if (title && title.textContent.trim()) display.heading.textContent = title.textContent.trim();
+    display.snippet.textContent = description ? description.textContent.trim() : '';
+    display.snippet.hidden = !display.snippet.textContent;
   }
   function clear(nextEpoch) {
     clearTimeout(rollTimer); rollTimer = null;
     nodes.forEach(function (node) { node.section.remove(); }); nodes.clear();
-    active = pendingParent = null; busy = false; epoch = nextEpoch; order = 0;
+    display = null; active = pendingParent = null; busy = false; epoch = nextEpoch; order = 0;
     if (host && host.start) host.start.hidden = false;
     if (host) { updateControls(); announce('Roll to begin a new descent.'); }
   }
@@ -258,7 +276,7 @@
         }
         else announce('Roll a card first.');
       },
-      snapshot: function () { return Object.freeze({cards: order, busy: busy, activeStep: active ? active.receipt.step : null}); }
+      snapshot: function () { return Object.freeze({cards: display ? 1 : 0, junctions: order, busy: busy, activeStep: active ? active.receipt.step : null}); }
     });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once: true});

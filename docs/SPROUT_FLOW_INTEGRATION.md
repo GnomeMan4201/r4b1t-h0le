@@ -7,7 +7,7 @@ No deployment, corpus promotion, or proof-format migration is part of this chang
 
 ## Files and responsibility
 
-- `sprout-flow.js`: transient presentation tree, inline cards, SVG roots, accessible
+- `sprout-flow.js`: transient presentation tree, one destination card, SVG roots, accessible
   controls, motion gating and reset synchronization.
 - `sprout-flow.css`: terminal-theme styles, mobile clearance, reduced motion, and
   scoped replacement of the current card/branch/map presentation.
@@ -40,15 +40,15 @@ CI and mobile review. This branch does not merge itself or deploy.
 2. The live ledger records the immutable ROLL transaction as before. Its returned
    receipt includes the recorded step number and epoch; those fields are outside
    the transaction and do not change v0.3 artifact bytes.
-3. A card lands on `r4b1t:route-revealed` at the existing reveal boundary. It waits
+3. The destination card updates on `r4b1t:route-revealed` at the existing reveal boundary. It waits
    until motion settles before accepting the next action. A cancelled roll adds
-   no card, even if the existing authority already recorded a commit.
+   no junction or card update, even if the existing authority already recorded a commit.
 4. SPROUT calls `getSproutTargets(originUrl)`, which uses `branch-core/v1` and the
    active corpus bytes. It creates no navigation step.
 5. A clicked target is revalidated against that same branch authority before
    `selectSproutBranch` asks the ledger to persist it.
 6. The ledger checks the exact recorded parent step, origin URL and epoch. Failed
-   or blocked writes return no receipt and land no card.
+   or blocked writes return no receipt and create no junction or card update.
 7. Successful branch navigation records one BRANCH step with `sampler: null`
    semantics (no ROLL transaction), then reveals the selected URL. No intermediate
    SELECT is created.
@@ -62,16 +62,18 @@ not claim semantic orthogonality or independent proof of relevance.
 
 ## UI state
 
-Cards occupy full stage width, preserving readability at 320px. Alternative,
-deeper and opposite appear left, center and right respectively. Children append
-beneath their parent's root group; each subtree grows in place. Siblings retain
-click order. ROLL continues from the active card. Historic cards retain SPROUT;
-occupied roots focus their existing child and do not append another ledger step.
+One full-width destination card updates in place. Branch selections append compact
+receipt-bound route links instead of repeating full cards. Each selected root grows
+another three-way fork automatically, starting at the selected left, center or right
+endpoint. No extra sampler draw or navigation step is required to display those
+roots. Children grow below their parent's root group; siblings retain click order.
+ROLL updates the same card and creates a fresh junction from the active node.
+Occupied roots focus their existing child without adding another ledger step.
 In the continuous mobile view, the bottom-left navigation action is SPROUT.
 It expands or focuses roots from the active card; it does not reset the stage or
 consume a sampler draw. It is disabled until a card lands and while motion is
 active. Blind Descent keeps its existing ROLL navigation.
-The continuous cards now share the mobile machine's black, white, red and rule
+The destination card shares the mobile machine's black, white, red and rule
 tokens, domain-first typography, red destination slab and joined action rails.
 Root controls use compact ordinal tags above readable directional names; neutral
 roots become red after a successful branch landing. The bottom SPROUT action is

@@ -30,11 +30,15 @@ test('roll -> roots -> recursive branches retain exact v0.3 authority', async ({
   await expect(parent.locator(':scope > .sprout-roots')).toHaveCount(1);
   await expect(parent.locator(':scope > .sprout-targets button')).toHaveText(['/02_ALTERNATIVE', '/01_DEEPER', '/03_OPPOSITE']);
   await parent.locator(':scope > .sprout-targets button').nth(0).click();
-  await expect(page.locator('.sprout-card')).toHaveCount(2);
+  await expect(page.locator('.sprout-card')).toHaveCount(1);
   const child = parent.locator(':scope > .sprout-children > .sprout-stage').first();
-  await child.locator(':scope > .sprout-card .sprout-control').last().click();
+  await expect(child.locator(':scope > .sprout-roots')).toHaveCount(1);
+  await expect(child.locator(':scope > .sprout-junction .sprout-route')).toHaveAttribute('href', /https?:/);
   await child.locator(':scope > .sprout-targets button').nth(2).click();
-  await expect(page.locator('.sprout-card')).toHaveCount(3);
+  await expect(page.locator('.sprout-card')).toHaveCount(1);
+  await expect(page.locator('.sprout-stage')).toHaveCount(3);
+  await expect(page.locator('.sprout-roots')).toHaveCount(3);
+  expect(await child.locator(':scope > .sprout-roots path').first().getAttribute('d')).toMatch(/^M100 0/);
   const after = await manifest(page);
   expect(after.manifest.steps.map(x => x.kind)).toEqual(['ROLL','BRANCH','BRANCH']);
   expect(after.manifest.steps[0].transaction).toEqual(tx);
@@ -43,7 +47,7 @@ test('roll -> roots -> recursive branches retain exact v0.3 authority', async ({
   expect(after.manifest.steps[1]).not.toHaveProperty('transaction');
   expect(await page.evaluate(a=>window.R4b1tTrailV03.verify(a).then(r=>r.trail_id),after)).toBe(after.trail_id);
   await parent.locator(':scope > .sprout-targets button').first().click();
-  await expect(page.locator('.sprout-card')).toHaveCount(3);
+  await expect(page.locator('.sprout-card')).toHaveCount(1);
   expect((await manifest(page)).trail_id).toBe(after.trail_id);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
@@ -51,8 +55,8 @@ test('roll -> roots -> recursive branches retain exact v0.3 authority', async ({
 test('historical duplicate URL binds the chosen step, not latest URL match', async ({page}) => {
   await first(page);
   const origin = await page.locator('.sprout-url').first().textContent();
+  await page.locator('.sprout-card .sprout-control').last().click();
   await page.evaluate(url=>window.selectUrl(url),origin); // Same URL again at step 2.
-  await page.locator('.sprout-stage').first().locator(':scope > .sprout-card .sprout-control').last().click();
   await page.locator('.sprout-targets button').nth(1).click();
   const a=await manifest(page);
   expect(a.manifest.steps).toHaveLength(3);
@@ -69,6 +73,7 @@ test('failed persistence, stale parent and invalid targets produce no ghost card
   });
   await parent.locator(':scope > .sprout-targets button').nth(1).click();
   await expect(page.locator('.sprout-status')).toContainText('recording failed');
+  await expect(page.locator('.sprout-stage')).toHaveCount(1);
   await expect(page.locator('.sprout-card')).toHaveCount(1);
   expect((await manifest(page)).trail_id).toBe(initial.trail_id);
   await page.evaluate(()=>{Storage.prototype.setItem=window.__savedStorageSet;});
@@ -77,7 +82,7 @@ test('failed persistence, stale parent and invalid targets produce no ghost card
   expect(await page.evaluate(()=>window.selectSproutBranch({originUrl:window.getSproutRecordedSteps().steps[0].url,url:'javascript:alert(1)',fromStep:1,type:'deeper',epoch:window.getSproutRecordedSteps().epoch}))).toBeNull();
   expect((await manifest(page)).trail_id).toBe(initial.trail_id);
   await parent.locator(':scope > .sprout-targets button').nth(1).click();
-  await expect(page.locator('.sprout-card')).toHaveCount(2);
+  await expect(page.locator('.sprout-card')).toHaveCount(1);
 });
 
 test('empty targets and metadata text never manufacture navigation', async ({page}) => {
@@ -124,7 +129,7 @@ test('small screen, reduced motion and keyboard keep the flow accessible',async(
   await expect(page.locator('.sprout-roots')).toHaveCount(1);
   expect(await page.locator('.sprout-roots path').first().evaluate(e=>getComputedStyle(e).animationName)).toBe('none');
   await page.locator('.sprout-targets button').nth(1).focus();await page.keyboard.press('Enter');
-  await expect(page.locator('.sprout-card')).toHaveCount(2);
+  await expect(page.locator('.sprout-card')).toHaveCount(1);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 
@@ -133,7 +138,7 @@ test('repeat clicks and cancelled machine commits cannot double-land cards', asy
   const parent=await first(page);
   await parent.locator(':scope > .sprout-card .sprout-control').last().click();
   await parent.locator(':scope > .sprout-targets button').nth(1).evaluate(b=>{b.click();b.click();});
-  await expect(page.locator('.sprout-card')).toHaveCount(2);
+  await expect(page.locator('.sprout-card')).toHaveCount(1);
   expect((await manifest(page)).manifest.steps).toHaveLength(2);
   if (!await page.evaluate(()=>document.documentElement.classList.contains('r4-mobile-active'))) return;
   const roll=page.locator('.sprout-card .sprout-control').filter({hasText:'ROLL AGAIN'}).last();
@@ -141,7 +146,7 @@ test('repeat clicks and cancelled machine commits cannot double-land cards', asy
   await page.waitForFunction(()=>window.R4B1TRollProduction.snapshot()?.committedTransactionId!=null && !window.R4B1TRollProduction.snapshot()?.revealFired);
   await page.evaluate(()=>window.R4B1TRollProduction.cancel('test-cancel'));
   await expect(roll).toBeEnabled();
-  await expect(page.locator('.sprout-card')).toHaveCount(2);
+  await expect(page.locator('.sprout-card')).toHaveCount(1);
 });
 
 
@@ -161,7 +166,8 @@ test('existing keyboard and mobile branch entry stay in the continuous flow',asy
   }
   await page.evaluate(()=>document.activeElement.blur());
   await page.locator('body').press('Space');
-  await expect(page.locator('.sprout-card')).toHaveCount(2);
+  await expect(page.locator('.sprout-stage')).toHaveCount(2);
+  await expect(page.locator('.sprout-card')).toHaveCount(1);
   expect((await manifest(page)).manifest.steps.map(s=>s.kind)).toEqual(['ROLL','ROLL']);
 });
 
@@ -183,8 +189,8 @@ test('bottom-left navigation sprouts the active card without resetting or sampli
   await nav.click();
   await expect(page.locator('.sprout-roots')).toHaveCount(1);
   await page.locator('.sprout-targets button').nth(1).click();
-  await expect(page.locator('.sprout-card')).toHaveCount(2);
-  await expect(nav).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('.sprout-card')).toHaveCount(1);
+  await expect(nav).toHaveAttribute('aria-expanded', 'true');
   const second = await manifest(page);
   await nav.click();
   await expect(page.locator('.sprout-roots')).toHaveCount(2);
