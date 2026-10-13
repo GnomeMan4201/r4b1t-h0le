@@ -35,6 +35,24 @@
     var snapshot = api && api.snapshot();
     return Boolean(snapshot && snapshot.active);
   }
+  function syncSproutNavigation() {
+    var nav = document.getElementById('r4mNavRoll');
+    if (!nav) return;
+    function attribute(name, value) {
+      if (value === null) { if (nav.hasAttribute(name)) nav.removeAttribute(name); }
+      else if (nav.getAttribute(name) !== value) nav.setAttribute(name, value);
+    }
+    var sproutMode = !document.documentElement.classList.contains('r4m-stage-blind');
+    attribute('data-mobile-action', sproutMode ? 'sprout' : 'nav-roll');
+    var label = nav.querySelector('b');
+    var text = sproutMode ? 'SPROUT' : 'ROLL';
+    if (label && label.textContent !== text) label.textContent = text;
+    var disabled = sproutMode && (!active || busy || motionBusy());
+    if (nav.disabled !== disabled) nav.disabled = disabled;
+    attribute('aria-label', sproutMode ? 'SPROUT roots from the active card' : null);
+    attribute('aria-expanded', sproutMode ? String(Boolean(active && active.roots)) : null);
+    attribute('aria-controls', sproutMode && active && active.roots ? active.section.id + '-targets' : null);
+  }
   function updateControls() {
     var locked = busy || motionBusy();
     nodes.forEach(function (node) {
@@ -44,6 +62,7 @@
     });
     if (host.start) host.start.disabled = locked;
     host.setAttribute('aria-busy', String(busy));
+    syncSproutNavigation();
   }
   function finishRoll() {
     clearTimeout(rollTimer); rollTimer = null;
@@ -196,6 +215,7 @@
     var mobile = document.documentElement.classList.contains('r4-mobile-active');
     var parent = mobile ? document.getElementById('r4mPrimaryStage') : document.querySelector('.rig');
     if (parent && host.parentNode !== parent) parent.appendChild(host);
+    syncSproutNavigation();
   }
   function start() {
     host = el('div', 'sprout-flow'); host.id = 'sproutFlow'; host.setAttribute('aria-label', 'Continuous descent');
@@ -226,7 +246,13 @@
       enabled: true,
       roll: roll,
       sproutCurrent: function () {
-        if (active) { sprout(active); active.heading.focus({preventScroll: true}); }
+        if (active) {
+          sprout(active);
+          var target = active.branchButtons.get('deeper');
+          if (!target || target.disabled) target = active.heading;
+          target.focus({preventScroll: true});
+          target.scrollIntoView({behavior: root.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'center'});
+        }
         else announce('Roll a card first.');
       },
       snapshot: function () { return Object.freeze({cards: order, busy: busy, activeStep: active ? active.receipt.step : null}); }

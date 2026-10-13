@@ -67,6 +67,10 @@ deeper and opposite appear left, center and right respectively. Children append
 beneath their parent's root group; each subtree grows in place. Siblings retain
 click order. ROLL continues from the active card. Historic cards retain SPROUT;
 occupied roots focus their existing child and do not append another ledger step.
+In the continuous mobile view, the bottom-left navigation action is SPROUT.
+It expands or focuses roots from the active card; it does not reset the stage or
+consume a sampler draw. It is disabled until a card lands and while motion is
+active. Blind Descent keeps its existing ROLL navigation.
 The existing slot machine remains responsible for its animation and disclosure.
 
 The visual tree is intentionally transient: reload starts a new visible descent,
