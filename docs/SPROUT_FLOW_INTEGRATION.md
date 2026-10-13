@@ -65,7 +65,9 @@ not claim semantic orthogonality or independent proof of relevance.
 Before the first reveal, only the existing main ROLL instrument starts discovery;
 there is no extra ROLL AGAIN prompt. After reveal, one full-width destination card
 updates in place. Branch selections append compact
-receipt-bound route links instead of repeating full cards. Each selected root grows
+receipt-bound route links instead of repeating full cards. Each link separates
+the step/direction, a brighter hostname and a wrapping path for phone readability;
+the full destination remains accessible by keyboard and touch. Each selected root grows
 another three-way fork automatically, starting at the selected left, center or right
 endpoint. No extra sampler draw or navigation step is required to display those
 roots. Children grow below their parent's root group; siblings retain click order.

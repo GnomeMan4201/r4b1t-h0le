@@ -182,9 +182,11 @@
     display.snippet.textContent = ''; display.snippet.hidden = true;
     display.url.textContent = receipt.url; display.open.href = receipt.url;
     var junction = el('div', 'sprout-junction');
-    var route = el('a', 'sprout-route', label + ' · ' + parsed.hostname + parsed.pathname + ' ↗');
+    var route = el('a', 'sprout-route');
+    route.append(el('small', 'sprout-route-step', label),
+      el('strong', 'sprout-route-host', parsed.hostname + ' ↗'),
+      el('span', 'sprout-route-path', parsed.pathname + parsed.search + parsed.hash));
     route.href = receipt.url; route.target = '_blank'; route.rel = 'noopener noreferrer';
-    route.tabIndex = -1;
     junction.appendChild(route);
     if (!parent) junction.hidden = true;
     var node = {receipt: Object.freeze(Object.assign({}, receipt)), section: section, card: junction, heading: route,

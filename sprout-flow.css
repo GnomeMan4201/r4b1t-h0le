@@ -66,16 +66,16 @@ html.r4-sprout-flow.r4m-stage-blind #sproutFlow { display:none; }
 html.r4-mobile-active.r4-sprout-flow .r4m-sheet[aria-hidden="true"] { visibility:hidden!important; pointer-events:none!important; }
 html.r4-mobile-active.r4-sprout-flow #r4mBackdrop[hidden] { display:none!important; }
 
-/* Receipt labels live on the root trail, without repeating destination cards. */
-.sprout-junction { padding:8px 0; min-width:0; }
-.sprout-route { display:block; color:var(--sprout-dim); font:10px/1.6 var(--font-mono); overflow-wrap:anywhere; text-decoration:none; }
-.sprout-route:hover { color:var(--sprout-paper); }
-.sprout-route:focus-visible { outline:1px solid var(--sprout-red); outline-offset:3px; }
-.sprout-children > .sprout-stage { padding-top:0; }
-.sprout-children > .sprout-stage:before { display:none; }
-
-.sprout-junction { position:relative; padding:12px 0; }
+/* Readable route labels stay on the root trail without repeating full cards. */
+.sprout-junction { position:relative; padding:12px 0; min-width:0; }
 .sprout-junction:before { content:''; position:absolute; top:0; bottom:0; left:50%; border-left:1px solid var(--sprout-red); }
 .sprout-stage[data-direction=sideways] > .sprout-junction:before { left:16.666%; }
 .sprout-stage[data-direction=opposite] > .sprout-junction:before { left:83.333%; }
-.sprout-route { position:relative; width:fit-content; max-width:100%; background:var(--sprout-black); padding:2px 4px; }
+.sprout-route { position:relative; display:block; width:fit-content; max-width:100%; min-height:44px; padding:6px 4px; background:var(--sprout-black); color:var(--sprout-paper); font:13px/1.5 var(--font-mono); overflow-wrap:anywhere; text-decoration:none; }
+.sprout-route-step { display:block; color:var(--sprout-dim); font:11px/1.5 var(--font-mono); letter-spacing:.04em; margin-bottom:4px; }
+.sprout-route-host { display:block; font:700 14px/1.5 var(--font-mono); }
+.sprout-route-path { display:block; font:12px/1.5 var(--font-mono); opacity:.8; }
+.sprout-route:hover .sprout-route-host { color:var(--sprout-red); }
+.sprout-route:focus-visible { outline:2px solid var(--sprout-red); outline-offset:3px; }
+.sprout-children > .sprout-stage { padding-top:0; }
+.sprout-children > .sprout-stage:before { display:none; }
