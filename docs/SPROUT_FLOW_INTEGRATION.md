@@ -69,15 +69,14 @@ endpoint. No extra sampler draw or navigation step is required to display those
 roots. Children grow below their parent's root group; siblings retain click order.
 ROLL updates the same card and creates a fresh junction from the active node.
 Occupied roots focus their existing child without adding another ledger step.
-In the continuous mobile view, the bottom-left navigation action is SPROUT.
-It expands or focuses roots from the active card; it does not reset the stage or
-consume a sampler draw. It is disabled until a card lands and while motion is
-active. Blind Descent keeps its existing ROLL navigation.
+The continuous mobile footer contains only MENU; the duplicate bottom-left
+SPROUT control is removed. SPROUT remains beside ROLL AGAIN on the main card,
+and the keyboard/menu branch entries still focus the active roots. Blind Descent
+keeps its existing ROLL navigation.
 The destination card shares the mobile machine's black, white, red and rule
 tokens, domain-first typography, red destination slab and joined action rails.
 Root controls use compact ordinal tags above readable directional names; neutral
-roots become red after a successful branch landing. The bottom SPROUT action is
-a labeled slab without the old ROLL aperture glyph. These are presentation
+roots become red after a successful branch landing. These are presentation
 changes only; receipt, sampler, navigation and proof semantics remain unchanged.
 The existing slot machine remains responsible for its animation and disclosure.
 

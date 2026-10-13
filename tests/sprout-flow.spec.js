@@ -172,29 +172,22 @@ test('existing keyboard and mobile branch entry stay in the continuous flow',asy
 });
 
 
-test('bottom-left navigation sprouts the active card without resetting or sampling', async ({page}, info) => {
+test('mobile footer has only MENU while the card keeps SPROUT', async ({page}, info) => {
   test.skip(info.project.name !== 'mobile-chromium');
-  await ready(page);
+  await first(page);
   const nav = page.locator('#r4mNavRoll');
-  await expect(nav).toHaveText('SPROUT');
-  await expect(nav).toBeDisabled();
-  await page.locator('.sprout-start').click();
-  await expect(nav).toBeEnabled();
-  const first = await manifest(page);
-  await nav.click();
+  await expect(nav).not.toBeVisible();
+  await expect(page.locator('#r4mNavMenu')).toBeVisible();
+  const before = await manifest(page);
+  await page.locator('.sprout-card .sprout-control').last().click();
   await expect(page.locator('.sprout-roots')).toHaveCount(1);
-  await expect(nav).toHaveAttribute('aria-expanded', 'true');
-  await expect(page.locator('#r4mBranchSheet')).not.toBeVisible();
-  expect((await manifest(page)).trail_id).toBe(first.trail_id);
-  await nav.click();
-  await expect(page.locator('.sprout-roots')).toHaveCount(1);
+  expect((await manifest(page)).trail_id).toBe(before.trail_id);
   await page.locator('.sprout-targets button').nth(1).click();
-  await expect(page.locator('.sprout-card')).toHaveCount(1);
-  await expect(nav).toHaveAttribute('aria-expanded', 'true');
-  const second = await manifest(page);
-  await nav.click();
   await expect(page.locator('.sprout-roots')).toHaveCount(2);
-  expect((await manifest(page)).trail_id).toBe(second.trail_id);
-  await page.evaluate(()=>window.resetReproducibleTrail());
-  await expect(nav).toBeDisabled();
+  await expect(nav).not.toBeVisible();
+  await page.locator('#r4mNavMenu').click();
+  await expect(page.locator('#r4mMenuSheet')).toBeVisible();
+  await page.evaluate(()=>document.documentElement.classList.add('r4m-stage-blind'));
+  await expect(nav).toBeVisible();
+  await expect(nav).toHaveAttribute('data-mobile-action', 'nav-roll');
 });

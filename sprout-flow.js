@@ -39,25 +39,14 @@
   function syncSproutNavigation() {
     var nav = document.getElementById('r4mNavRoll');
     if (!nav) return;
-    function attribute(name, value) {
-      if (value === null) { if (nav.hasAttribute(name)) nav.removeAttribute(name); }
-      else if (nav.getAttribute(name) !== value) nav.setAttribute(name, value);
-    }
-    var sproutMode = !document.documentElement.classList.contains('r4m-stage-blind');
-    attribute('data-mobile-action', sproutMode ? 'sprout' : 'nav-roll');
-    var label = nav.querySelector('b');
-    var text = sproutMode ? 'SPROUT' : 'ROLL';
-    if (label && label.textContent !== text) label.textContent = text;
-    var disabled = sproutMode && (!active || busy || motionBusy());
-    if (nav.disabled !== disabled) nav.disabled = disabled;
-    attribute('aria-label', sproutMode ? 'SPROUT roots from the active card' : null);
-    attribute('aria-expanded', sproutMode ? String(Boolean(active && active.roots)) : null);
-    attribute('aria-controls', sproutMode && active && active.roots ? active.section.id + '-targets' : null);
+    // Keep the existing ROLL control available only in Blind Descent.
+    var hidden = !document.documentElement.classList.contains('r4m-stage-blind');
+    if (nav.hidden !== hidden) nav.hidden = hidden;
   }
+
   function updateControls() {
     var locked = busy || motionBusy();
     nodes.forEach(function (node) {
-
       node.branchButtons.forEach(function (b) { b.disabled = locked || b.dataset.unavailable === 'true'; });
     });
     if (display) {

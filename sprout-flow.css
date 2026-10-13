@@ -57,15 +57,10 @@ html.r4-sprout-flow .r4m-shell { overflow:visible; }
     --sprout-rule:var(--r4m-v5-rule);
     --sprout-red:var(--r4m-v5-red);
   }
-  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll[data-mobile-action=sprout] {
-    background:var(--r4m-v5-black); color:var(--r4m-v5-white);
-    justify-content:center; padding:0 12px; gap:0;
-  }
-  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll[data-mobile-action=sprout] .r4m-nav-aperture { display:none!important; }
-  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll[data-mobile-action=sprout] b { font:700 15px/1 var(--font-mono); letter-spacing:.14em; }
-  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll[data-mobile-action=sprout]:before { height:1px; background:var(--r4m-v5-rule); }
-  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll[data-mobile-action=sprout][aria-expanded=true]:before { height:2px; background:var(--r4m-v5-red); }
-  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll[data-mobile-action=sprout]:disabled { color:var(--r4m-v5-dim); }
+  html.r4-mobile-active.r4-sprout-flow:not(.r4m-stage-blind) #r4mNavRoll { display:none!important; }
+  html.r4-mobile-active.r4-sprout-flow:not(.r4m-stage-blind) .r4m-nav-minimal { grid-template-columns:1fr!important; }
+  html.r4-mobile-active.r4-sprout-flow:not(.r4m-stage-blind) #r4mNavMenu { border-left:0; }
+
 }
 @media (prefers-reduced-motion:reduce) { .sprout-roots path { animation:none; stroke-dashoffset:0; } }
 html.r4-sprout-flow.r4m-stage-blind #sproutFlow { display:none; }
