@@ -73,8 +73,12 @@ endpoint. No extra sampler draw or navigation step is required to display those
 roots. Children grow below their parent's root group; siblings retain click order.
 ROLL updates the same card and creates a fresh junction from the active node.
 Occupied roots focus their existing child without adding another ledger step.
-The continuous mobile footer contains only MENU; the duplicate bottom-left
-SPROUT control is removed. SPROUT remains beside ROLL AGAIN on the main card,
+Before the first reveal, the continuous mobile footer contains only MENU.
+After reveal, a persistent 64px ROLL AGAIN control stays beside MENU while
+following roots. It uses the existing continuous-flow roll handler, disables
+during a spin, and returns the viewport to the machine. Reset hides it again;
+Blind Descent retains its existing ROLL navigation. The bottom-left SPROUT
+control remains removed. SPROUT remains beside ROLL AGAIN on the main card,
 and the keyboard/menu branch entries still focus the active roots. Blind Descent
 keeps its existing ROLL navigation.
 The destination card shares the mobile machine's black, white, red and rule
