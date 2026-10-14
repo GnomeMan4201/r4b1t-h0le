@@ -877,6 +877,11 @@
       closeSheets();
       return runRollTransition('roll');
     }
+    if ((action === 'sprout' || action === 'branch' || action === 'branch-generate') && window.R4B1TSproutFlow) {
+      closeSheets();
+      window.R4B1TSproutFlow.sproutCurrent();
+      return;
+    }
     if (action === 'branch-generate') {
       call('sprout');
       window.setTimeout(syncBranch, 180);

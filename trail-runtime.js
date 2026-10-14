@@ -267,6 +267,32 @@
     return false;
   }
 
+  // Exact recorded parent identity, never a last-URL lookup or a UI-inferred step.
+  function commitSproutNavigation(detail) {
+    if (state.preservationBlocked || state.suppressRecord || !detail || detail.epoch !== state.seed) return null;
+    if (!Number.isInteger(detail.from_step) || detail.from_step < 1) return null;
+    var source = state.routes[detail.from_step - 1];
+    if (!source || source.url !== detail.from_url) return null;
+    if (!['deeper', 'sideways', 'opposite'].includes(detail.branch_label)) return null;
+    if (!record(detail.url, 'BRANCH', null, {
+      navigation: { from_step: detail.from_step, branch_label: detail.branch_label }
+    })) return null;
+    return Object.freeze({
+      kind: 'BRANCH', url: detail.url, step: state.routes.length, epoch: state.seed,
+      fromStep: detail.from_step, branchLabel: detail.branch_label
+    });
+  }
+
+  function sproutRecordedSteps() {
+    return Object.freeze({epoch: state.seed, steps: Object.freeze(state.routes.map(function (route, index) {
+      return Object.freeze({
+        step: index + 1, epoch: state.seed, url: route.url, kind: route.action,
+        fromStep: route.navigation ? route.navigation.from_step : null,
+        branchLabel: route.navigation ? route.navigation.branch_label : null
+      });
+    }))});
+  }
+
   // DOM mutation is presentation only. Authoritative provenance is recorded
   // from the immutable ROLL transaction or explicit navigation events.
   function watchSelections() {}
@@ -331,6 +357,8 @@
       return Object.freeze({
         url: result.url,
         transaction: transaction,
+        trail_step: state.routes.length,
+        trail_epoch: state.seed,
         eligiblePool: Array.isArray(result.eligiblePool) ? Object.freeze(result.eligiblePool.slice()) : Object.freeze([])
       });
     };
@@ -568,6 +596,8 @@
     state.restoredCorpusSourceId = null;
     if (!persistScopeChange(previousScope)) return false;
     renderPanel('NEW SEED / TRAIL EMPTY');
+    document.dispatchEvent(new CustomEvent('r4b1t:trail-reset', {detail: {epoch: state.seed}}));
+    return true;
   }
 
   function ensurePanel() {
@@ -787,6 +817,8 @@
   window.replayTrailManifest = replayStep;
   window.forkTrailManifest = forkTrail;
   window.getTrailManifest = currentEnvelope;
+  window.commitSproutNavigation = commitSproutNavigation;
+  window.getSproutRecordedSteps = sproutRecordedSteps;
   window.getLegacyTrailManifest = currentLegacyEnvelope;
   window.resetReproducibleTrail = resetTrail;
   window.getQuarantinedTrailDraft = quarantinedDraft;
@@ -821,7 +853,8 @@
         typeof window.roll === 'function' && window.roll.__r4b1tSeeded) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      window.roll();
+      if (window.R4B1TSproutFlow && !document.documentElement.classList.contains('r4m-stage-blind')) window.R4B1TSproutFlow.roll();
+      else window.roll();
     }
   }, true);
 
