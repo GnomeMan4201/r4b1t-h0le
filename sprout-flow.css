@@ -56,9 +56,12 @@ html.r4-sprout-flow .r4m-shell { overflow:visible; }
     --sprout-rule:var(--r4m-v5-rule);
     --sprout-red:var(--r4m-v5-red);
   }
-  html.r4-mobile-active.r4-sprout-flow:not(.r4m-stage-blind) #r4mNavRoll { display:none!important; }
-  html.r4-mobile-active.r4-sprout-flow:not(.r4m-stage-blind) .r4m-nav-minimal { grid-template-columns:1fr!important; }
-  html.r4-mobile-active.r4-sprout-flow:not(.r4m-stage-blind) #r4mNavMenu { border-left:0; }
+  html.r4-mobile-active.r4-sprout-flow:not(.r4m-stage-blind):not(.r4-sprout-landed) #r4mNavRoll { display:none!important; }
+  html.r4-mobile-active.r4-sprout-flow:not(.r4m-stage-blind):not(.r4-sprout-landed) .r4m-nav-minimal { grid-template-columns:1fr!important; }
+  html.r4-mobile-active.r4-sprout-flow:not(.r4m-stage-blind):not(.r4-sprout-landed) #r4mNavMenu { border-left:0; }
+  html.r4-mobile-active.r4-sprout-flow #r4mNavRoll:disabled { opacity:.4; }
+  /* Include the rail border without clipping the 64px button. */
+  html.r4-mobile-active.r4-sprout-flow.r4-sprout-landed:not(.r4m-stage-blind) .r4m-nav-minimal { height:calc(65px + env(safe-area-inset-bottom)); }
 
 }
 @media (prefers-reduced-motion:reduce) { .sprout-roots path { animation:none; stroke-dashoffset:0; } }

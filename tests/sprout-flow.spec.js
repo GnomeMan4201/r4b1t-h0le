@@ -16,6 +16,9 @@ async function ready(page, flow = true) {
 async function first(page) {
   await ready(page);
   await expect(page.locator('#sproutFlow .sprout-control')).toHaveCount(0);
+  if (await page.evaluate(()=>document.documentElement.classList.contains('r4-mobile-active'))) {
+    await expect(page.locator('#r4mNavRoll')).not.toBeVisible();
+  }
   const nativeRoll = page.locator(await page.evaluate(()=>document.documentElement.classList.contains('r4-mobile-active')) ? '#r4mRoll' : '#btnGo');
   await expect(nativeRoll).toBeVisible();
   await nativeRoll.click();
@@ -177,11 +180,45 @@ test('existing keyboard and mobile branch entry stay in the continuous flow',asy
 });
 
 
-test('mobile footer has only MENU while the card keeps SPROUT', async ({page}, info) => {
+test('every mobile re-spin entry snaps to the reel and preserves the roots', async ({page}, info) => {
+  test.skip(info.project.name !== 'mobile-chromium');
+  await first(page);
+  await page.locator('.sprout-card .sprout-control').last().click();
+  await page.locator('.sprout-targets button').nth(1).click();
+  await page.locator('.sprout-targets button').last().click();
+  const roots = await page.locator('.sprout-roots').count();
+  const nav = page.locator('#r4mNavRoll');
+  for (const entry of ['footer', 'card', 'keyboard']) {
+    await expect(nav).toBeEnabled();
+    const before = await manifest(page);
+    await page.locator('.sprout-stage').last().scrollIntoViewIfNeeded();
+    if (entry === 'footer') await nav.click();
+    else if (entry === 'card') await page.locator('.sprout-card .sprout-control').first().click();
+    else {
+      await page.evaluate(()=>document.activeElement.blur());
+      await page.keyboard.press('Space');
+    }
+    await expect(nav).toBeDisabled();
+    const reel = await page.locator('#r4mRollReel').boundingBox();
+    const rail = await page.locator('.r4m-nav-minimal').boundingBox();
+    expect(reel.y).toBeGreaterThanOrEqual(0);
+    expect(reel.y + reel.height).toBeLessThanOrEqual(rail.y);
+    await expect(nav).toBeEnabled();
+    const after = await manifest(page);
+    expect(after.manifest.steps).toHaveLength(before.manifest.steps.length + 1);
+    expect(after.manifest.steps.at(-1).kind).toBe('ROLL');
+    expect(after.manifest.steps.slice(0,-1)).toEqual(before.manifest.steps);
+    await expect(page.locator('.sprout-roots')).toHaveCount(roots);
+    await expect(page.locator('.sprout-card')).toHaveCount(1);
+  }
+});
+
+test('mobile footer keeps ROLL AGAIN reachable through recursive roots', async ({page}, info) => {
   test.skip(info.project.name !== 'mobile-chromium');
   await first(page);
   const nav = page.locator('#r4mNavRoll');
-  await expect(nav).not.toBeVisible();
+  await expect(nav).toBeVisible();
+  await expect(nav).toContainText('ROLL AGAIN');
   await expect(page.locator('#r4mNavMenu')).toBeVisible();
   const before = await manifest(page);
   await page.locator('.sprout-card .sprout-control').last().click();
@@ -189,10 +226,29 @@ test('mobile footer has only MENU while the card keeps SPROUT', async ({page}, i
   expect((await manifest(page)).trail_id).toBe(before.trail_id);
   await page.locator('.sprout-targets button').nth(1).click();
   await expect(page.locator('.sprout-roots')).toHaveCount(2);
-  await expect(nav).not.toBeVisible();
+  await page.locator('.sprout-targets button').last().click();
+  await expect(page.locator('.sprout-roots')).toHaveCount(3);
+  await expect(nav).toBeVisible();
+  const rect = await nav.boundingBox();
+  const viewport = page.viewportSize();
+  expect(rect.height).toBeGreaterThanOrEqual(64);
+  expect(rect.y).toBeGreaterThanOrEqual(0);
+  expect(rect.y + rect.height).toBeLessThanOrEqual(viewport.height);
+  const beforeRoll = await manifest(page);
+  await nav.click();
+  await expect(nav).toBeDisabled();
+  await expect(nav).toBeEnabled();
+  const afterRoll = await manifest(page);
+  expect(afterRoll.manifest.steps).toHaveLength(beforeRoll.manifest.steps.length + 1);
+  expect(afterRoll.manifest.steps.at(-1).kind).toBe('ROLL');
+  expect(afterRoll.manifest.steps.slice(0,-1)).toEqual(beforeRoll.manifest.steps);
+  await expect(page.locator('.sprout-card')).toHaveCount(1);
   await page.locator('#r4mNavMenu').click();
   await expect(page.locator('#r4mMenuSheet')).toBeVisible();
   await page.evaluate(()=>document.documentElement.classList.add('r4m-stage-blind'));
   await expect(nav).toBeVisible();
   await expect(nav).toHaveAttribute('data-mobile-action', 'nav-roll');
+  await expect(nav).toContainText('ROLL');
+  await page.evaluate(()=>{document.documentElement.classList.remove('r4m-stage-blind');window.resetReproducibleTrail();});
+  await expect(nav).not.toBeVisible();
 });

@@ -1,4 +1,4 @@
-const CACHE = 'r4b1t-v27-sprout-flow';
+const CACHE = 'r4b1t-v28-sprout-persistent-roll';
 const PRECACHE = [
   './',
   './index.html',

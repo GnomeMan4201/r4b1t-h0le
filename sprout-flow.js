@@ -39,9 +39,16 @@
   function syncSproutNavigation() {
     var nav = document.getElementById('r4mNavRoll');
     if (!nav) return;
-    // Keep the existing ROLL control available only in Blind Descent.
-    var hidden = !document.documentElement.classList.contains('r4m-stage-blind');
+    var blind = document.documentElement.classList.contains('r4m-stage-blind');
+    var ready = Boolean(active);
+    document.documentElement.classList.toggle('r4-sprout-landed', ready);
+    // After the first reveal, keep re-spin within reach throughout the roots.
+    var hidden = !blind && !ready;
     if (nav.hidden !== hidden) nav.hidden = hidden;
+    nav.dataset.mobileAction = blind ? 'nav-roll' : 'sprout-roll-again';
+    var label = nav.querySelector('b');
+    if (label) label.textContent = blind ? 'ROLL' : 'ROLL AGAIN';
+    nav.disabled = !blind && (busy || motionBusy());
   }
 
   function updateControls() {
@@ -66,6 +73,11 @@
   }
   function roll() {
     if (busy || motionBusy()) return;
+    // Every entry point frames the same instrument before starting its roll.
+    var instrument = document.documentElement.classList.contains('r4-mobile-active')
+      ? document.getElementById('r4mRollReel') || document.getElementById('r4mRoll')
+      : document.getElementById('btnGo');
+    if (instrument) instrument.scrollIntoView({behavior: 'instant', block: 'center'});
     pendingParent = active;
     rollRevealed = false;
     busy = true; announce('ROLLING…'); updateControls();
