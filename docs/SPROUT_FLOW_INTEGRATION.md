@@ -76,7 +76,8 @@ Occupied roots focus their existing child without adding another ledger step.
 Before the first reveal, the continuous mobile footer contains only MENU.
 After reveal, a persistent 64px ROLL AGAIN control stays beside MENU while
 following roots. It uses the existing continuous-flow roll handler, disables
-during a spin, and returns the viewport to the machine. Reset hides it again;
+during a spin. Every Sprout ROLL entry (card, footer, keyboard or API) instantly
+frames the reel before starting the existing roll authority. Reset hides it again;
 Blind Descent retains its existing ROLL navigation. The bottom-left SPROUT
 control remains removed. SPROUT remains beside ROLL AGAIN on the main card,
 and the keyboard/menu branch entries still focus the active roots. Blind Descent

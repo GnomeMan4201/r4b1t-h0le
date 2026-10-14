@@ -73,6 +73,11 @@
   }
   function roll() {
     if (busy || motionBusy()) return;
+    // Every entry point frames the same instrument before starting its roll.
+    var instrument = document.documentElement.classList.contains('r4-mobile-active')
+      ? document.getElementById('r4mRollReel') || document.getElementById('r4mRoll')
+      : document.getElementById('btnGo');
+    if (instrument) instrument.scrollIntoView({behavior: 'instant', block: 'center'});
     pendingParent = active;
     rollRevealed = false;
     busy = true; announce('ROLLING…'); updateControls();

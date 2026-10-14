@@ -852,8 +852,6 @@
     if (action === 'sprout-roll-again' && window.R4B1TSproutFlow) {
       closeSheets();
       window.R4B1TSproutFlow.roll();
-      var machine = byId('r4mRoll');
-      if (machine) machine.scrollIntoView({behavior: 'instant', block: 'center'});
       return;
     }
     if (action === 'nav-roll') {

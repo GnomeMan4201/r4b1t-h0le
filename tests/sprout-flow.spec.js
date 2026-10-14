@@ -180,6 +180,39 @@ test('existing keyboard and mobile branch entry stay in the continuous flow',asy
 });
 
 
+test('every mobile re-spin entry snaps to the reel and preserves the roots', async ({page}, info) => {
+  test.skip(info.project.name !== 'mobile-chromium');
+  await first(page);
+  await page.locator('.sprout-card .sprout-control').last().click();
+  await page.locator('.sprout-targets button').nth(1).click();
+  await page.locator('.sprout-targets button').last().click();
+  const roots = await page.locator('.sprout-roots').count();
+  const nav = page.locator('#r4mNavRoll');
+  for (const entry of ['footer', 'card', 'keyboard']) {
+    await expect(nav).toBeEnabled();
+    const before = await manifest(page);
+    await page.locator('.sprout-stage').last().scrollIntoViewIfNeeded();
+    if (entry === 'footer') await nav.click();
+    else if (entry === 'card') await page.locator('.sprout-card .sprout-control').first().click();
+    else {
+      await page.evaluate(()=>document.activeElement.blur());
+      await page.keyboard.press('Space');
+    }
+    await expect(nav).toBeDisabled();
+    const reel = await page.locator('#r4mRollReel').boundingBox();
+    const rail = await page.locator('.r4m-nav-minimal').boundingBox();
+    expect(reel.y).toBeGreaterThanOrEqual(0);
+    expect(reel.y + reel.height).toBeLessThanOrEqual(rail.y);
+    await expect(nav).toBeEnabled();
+    const after = await manifest(page);
+    expect(after.manifest.steps).toHaveLength(before.manifest.steps.length + 1);
+    expect(after.manifest.steps.at(-1).kind).toBe('ROLL');
+    expect(after.manifest.steps.slice(0,-1)).toEqual(before.manifest.steps);
+    await expect(page.locator('.sprout-roots')).toHaveCount(roots);
+    await expect(page.locator('.sprout-card')).toHaveCount(1);
+  }
+});
+
 test('mobile footer keeps ROLL AGAIN reachable through recursive roots', async ({page}, info) => {
   test.skip(info.project.name !== 'mobile-chromium');
   await first(page);
