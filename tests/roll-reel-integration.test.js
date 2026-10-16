@@ -196,13 +196,343 @@ test('slam interrupts presentation only and reveals the same committed transacti
 });
 
 
-test('rabbit mark lifecycle is owned by named animationend with a no-start fallback', () => {
+test('rabbit CSS lifecycle is event/WAAPI owned with only 10s emergency truncation', () => {
   assert.match(shell, /rabbit\.addEventListener\('animationstart', markRollOnStart\)/);
   assert.match(shell, /rabbit\.addEventListener\('animationend', markRollOnEnd\)/);
   assert.match(shell, /event\.animationName !== 'r4h-roll-rabbit'/);
-  assert.match(shell, /if \(!animationStarted\) finishProductionMarkRoll\(\)/);
+  assert.match(shell, /finishProductionMarkRoll\('animationend'\)/);
+  assert.match(shell, /MARK_ROLL_ABSOLUTE_CEILING_MS = 3000/);
+  assert.match(shell, /MARK_ROLL_HUNG_CAP_MS = 10000/);
+  assert.match(shell, /finishProductionMarkRoll\('absolute-no-start-ceiling'\)/);
+  assert.match(shell, /finishProductionMarkRoll\('hung-10s-absolute-cap'\)/);
+  assert.match(shell, /animation\.finished\.then\(function \(\)/);
+  assert.match(shell, /animation\.playState === 'finished'/);
+  assert.match(shell, /markRollTrace\.waapiResolvedAt = performance\.now\(\)/);
+  assert.match(shell, /markRollTrace\.waapiObservedFinishedAt = performance\.now\(\)/);
+  assert.match(shell, /markRollRunId \+= 1/);
   assert.match(shell, /MARK_ROLL_MS \+ 300/);
+  assert.match(shell, /rabbit\.getAnimations\(\)/);
+  assert.match(shell, /clearProductionMarkRollWatch\(\)/);
   assert.match(shell, /return startProductionMarkRoll\(\)/);
+});
+
+
+function markFallbackHarness(source = shell, initialTime = 0) {
+  const vm = require('node:vm');
+  const start = source.indexOf('  var MARK_ROLL_MS = 1050;');
+  const end = source.indexOf('  // ── Secondary mark states', start);
+  assert.ok(start >= 0 && end > start, 'extracted only presentation mark logic');
+  const classes = new Set();
+  const timers = new Map();
+  const frames = new Map();
+  const listeners = new Map();
+  const eventCounts = { starts: 0, ends: 0, cancels: 0 };
+  const stored = new Map();
+  const warnings = [];
+  let nextId = 1;
+  let clock = initialTime;
+  let animations = [];
+  const rabbit = {
+    getBoundingClientRect: () => ({ width: 1 }),
+    getAnimations: () => animations,
+    addEventListener: (name, fn) => {
+      if (!listeners.has(name)) listeners.set(name, new Set());
+      listeners.get(name).add(fn);
+    },
+    removeEventListener: (name, fn) => listeners.get(name)?.delete(fn)
+  };
+  const html = {
+    classList: {
+      add: (...names) => names.forEach(name => classes.add(name)),
+      remove: (...names) => names.forEach(name => classes.delete(name)),
+      contains: name => classes.has(name),
+      toggle: (name, force) => {
+        const active = force === undefined ? !classes.has(name) : force;
+        active ? classes.add(name) : classes.delete(name);
+        return active;
+      }
+    },
+    getAttribute: name => name === 'data-r4m-presentation' ? 'revealed' : null
+  };
+  const window = {
+    setTimeout(fn, delay) {
+      const id = nextId++;
+      timers.set(id, { fn, at: clock + delay, delay });
+      return id;
+    },
+    clearTimeout: id => timers.delete(id),
+    requestAnimationFrame(fn) {
+      const id = nextId++;
+      frames.set(id, fn);
+      return id;
+    },
+    cancelAnimationFrame: id => frames.delete(id),
+    matchMedia: () => ({ matches: false }),
+    localStorage: {
+      getItem: key => stored.get(key) || null,
+      setItem: (key, value) => stored.set(key, value)
+    },
+    console: { warn: (...args) => warnings.push(args) }
+  };
+  const context = { window, document: { documentElement: html },
+    performance: { now: () => clock },
+    byId: id => id === 'r4h-roll-rabbit' ? rabbit : id === 'r4h-root' ? {} : null,
+    syncProductionMarkState: () => {} };
+  vm.runInNewContext(
+    source.slice(start, end) +
+      '\nwindow.__markTest = { startProductionMarkRoll, rearmProductionMarkRollIfActive };\n',
+    context
+  );
+  const api = window.__markTest;
+  return {
+    start: () => api.startProductionMarkRoll(),
+    rearm: () => api.rearmProductionMarkRollIfActive(),
+    rolling: () => classes.has('rolling'),
+    trace: () => window.__r4b1tRabbitFallbackTrace,
+    recovery: () => window.__r4b1tRabbitRecoveryDiagnostics,
+    recoveryRecord: () => JSON.parse(stored.get('r4b1t:rabbit-hung-recoveries:v1') || 'null'),
+    warnings: () => warnings.slice(),
+    throwOnStorage: () => {
+      Object.defineProperty(window, 'localStorage', {
+        configurable: true,
+        get() { throw new Error('SecurityError: storage denied'); }
+      });
+    },
+    throwOnStorageWrite: () => {
+      window.localStorage.setItem = () => { throw new Error('QuotaExceededError: storage full'); };
+    },
+    setAnimations: value => { animations = value; },
+    dispatch: kind => {
+      if (kind === 'animationstart') eventCounts.starts++;
+      if (kind === 'animationend') eventCounts.ends++;
+      if (kind === 'animationcancel') eventCounts.cancels++;
+      for (const fn of Array.from(listeners.get(kind) || [])) {
+        fn({ target: rabbit, animationName: 'r4h-roll-rabbit' });
+      }
+    },
+    events: () => ({ ...eventCounts }),
+    tick: delta => {
+      const endTime = clock + delta;
+      for (;;) {
+        const ready = [...timers.entries()].filter(([, job]) => job.at <= endTime)
+          .sort((a,b) => a[1].at - b[1].at || a[0] - b[0])[0];
+        if (!ready) break;
+        timers.delete(ready[0]);
+        clock = ready[1].at;
+        ready[1].fn();
+      }
+      clock = endTime;
+    },
+    frame: () => {
+      const entries = [...frames.entries()];
+      frames.clear();
+      entries.forEach(([, fn]) => fn(clock));
+    },
+    scheduled: () => [...timers.values()].map(x => ({ at: x.at, delay: x.delay }))
+  };
+}
+
+test('rabbit no-frame path clears rolling at the 3000ms no-start ceiling', () => {
+  const harness = markFallbackHarness();
+  assert.equal(harness.start(), true);
+  harness.tick(2999);
+  assert.equal(harness.rolling(), true);
+  harness.tick(1);
+  assert.equal(harness.rolling(), false);
+  assert.equal(harness.trace().finishReason, 'absolute-no-start-ceiling');
+});
+
+test('10-second hung cap emits local counter, console warning, and abnormal reason', () => {
+  const h = markFallbackHarness();
+  h.start();
+  h.frame();
+  h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  h.dispatch('animationstart');
+  h.tick(9999);
+  assert.equal(h.rolling(), true);
+  assert.equal(h.recoveryRecord(), null);
+  assert.equal(h.warnings().length, 0);
+  h.tick(1);
+  assert.equal(h.rolling(), false);
+  assert.equal(h.trace().finishReason, 'hung-10s-absolute-cap');
+  assert.equal(h.recovery().reason, 'hung-10s-absolute-cap');
+  assert.equal(h.recovery().animationStarted, true);
+  assert.equal(h.recoveryRecord().count, 1);
+  assert.equal(h.recoveryRecord().lastReason, 'hung-10s-absolute-cap');
+  assert.equal(h.warnings().length, 1);
+  assert.match(h.warnings()[0][0], /emergency recovery/);
+  assert.equal(JSON.stringify(h.recoveryRecord()).includes('http'), false);
+});
+
+test('10-second recovery still completes when Safari storage access throws', () => {
+  const h = markFallbackHarness();
+  h.throwOnStorage();
+  h.start();
+  h.frame();
+  h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  h.dispatch('animationstart');
+  h.tick(10000);
+  assert.equal(h.rolling(), false, 'storage denial must never trap the rabbit');
+  assert.equal(h.trace().finishReason, 'hung-10s-absolute-cap');
+  assert.equal(h.recovery().reason, 'hung-10s-absolute-cap');
+  assert.equal(h.recovery().storageUnavailable, true);
+  assert.equal(h.recoveryRecord(), null);
+  assert.equal(h.warnings().length, 1, 'warning remains available when persistence is denied');
+});
+
+test('10-second recovery still completes when Safari localStorage write throws', () => {
+  const h = markFallbackHarness();
+  h.throwOnStorageWrite();
+  h.start();
+  h.frame();
+  h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  h.dispatch('animationstart');
+  h.tick(10000);
+  assert.equal(h.rolling(), false);
+  assert.equal(h.trace().finishReason, 'hung-10s-absolute-cap');
+  assert.equal(h.recovery().storageUnavailable, true);
+  assert.equal(h.warnings().length, 1);
+  assert.equal(h.recoveryRecord(), null);
+});
+
+test('normal rabbit animationend never records an emergency or emits warning', () => {
+  const h = markFallbackHarness();
+  h.start();
+  h.frame();
+  h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  h.dispatch('animationstart');
+  h.tick(1100);
+  h.dispatch('animationend');
+  h.tick(10000);
+  assert.equal(h.trace().finishReason, 'animationend');
+  assert.equal(h.recoveryRecord(), null);
+  assert.equal(h.warnings().length, 0);
+});
+
+test('rabbit late start at 2200ms is not truncated by the old 3000ms ceiling', () => {
+  const harness = markFallbackHarness();
+  assert.equal(harness.start(), true);
+  harness.tick(2200);
+  harness.frame();
+  harness.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  harness.dispatch('animationstart');
+  harness.tick(800);
+  assert.equal(harness.rolling(), true, 'canonical CSS animation still running at 3000ms');
+  harness.tick(200);
+  harness.dispatch('animationend');
+  assert.equal(harness.rolling(), false);
+  assert.equal(harness.trace().finishReason, 'animationend');
+});
+
+test('rabbit WAAPI-running guard survives a delayed animationstart event', () => {
+  const harness = markFallbackHarness();
+  assert.equal(harness.start(), true);
+  harness.frame();
+  harness.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  harness.tick(1350);
+  assert.equal(harness.rolling(), true, 'soft fallback must not cancel running CSS animation');
+  assert.equal(harness.trace().softFallbackAnimationCount, 1);
+  harness.dispatch('animationstart');
+  harness.tick(1000);
+  harness.dispatch('animationend');
+  assert.equal(harness.trace().finishReason, 'animationend');
+});
+
+test('stale first-roll watchdog cannot remove second roll rolling class', () => {
+  const harness = markFallbackHarness();
+  assert.equal(harness.start(), true);
+  harness.tick(150);
+  assert.equal(harness.rearm(), true);
+  harness.tick(2850);
+  assert.equal(harness.rolling(), true, 'first roll ceiling must not finish second roll');
+  harness.dispatch('animationstart');
+  harness.tick(1000);
+  harness.dispatch('animationend');
+  assert.equal(harness.trace().finishReason, 'animationend');
+});
+
+
+test('late WebKit event timeline: start at 4455, end at 5800, no forced cancel', () => {
+  const h = markFallbackHarness(shell, 4455);
+  h.start();
+  h.frame();
+  h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  h.dispatch('animationstart');
+  h.tick(1344);
+  assert.equal(h.rolling(), true, 'no fixed 1250ms completion deadline');
+  h.tick(1);
+  h.dispatch('animationend');
+  assert.equal(h.rolling(), false);
+  assert.equal(h.trace().animationEndAt, 5800);
+  assert.deepEqual(h.events(), { starts: 1, ends: 1, cancels: 0 });
+  assert.equal(h.trace().finishReason, 'animationend');
+});
+
+test('WAAPI finished resolves before delayed DOM animationend without cancellation', async () => {
+  let resolveFinished;
+  const finished = new Promise(resolve => { resolveFinished = resolve; });
+  const animation = { animationName: 'r4h-roll-rabbit', playState: 'running', finished };
+  const h = markFallbackHarness();
+  h.start();
+  h.frame();
+  h.setAnimations([animation]);
+  h.dispatch('animationstart');
+  h.tick(1000);
+  animation.playState = 'finished';
+  resolveFinished();
+  await finished;
+  await new Promise(setImmediate);
+  assert.equal(h.rolling(), true, 'finished evidence must not cancel pending animationend');
+  assert.notEqual(h.trace().waapiResolvedAt, null);
+  h.dispatch('animationend');
+  assert.equal(h.rolling(), false);
+  assert.equal(h.trace().finishReason, 'animationend');
+});
+
+test('late prior-roll WAAPI promise cannot end a second run', async () => {
+  let resolveFirst;
+  const stalePromise = new Promise(resolve => { resolveFirst = resolve; });
+  const oldAnimation = { animationName: 'r4h-roll-rabbit', playState: 'running', finished: stalePromise };
+  const h = markFallbackHarness();
+  h.start(); h.frame(); h.setAnimations([oldAnimation]); h.dispatch('animationstart');
+  h.tick(150);
+  assert.equal(h.rearm(), true);
+  h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+  h.frame(); h.dispatch('animationstart');
+  oldAnimation.playState = 'finished';
+  resolveFirst();
+  await stalePromise;
+  await new Promise(setImmediate);
+  assert.equal(h.rolling(), true, 'old promise cannot remove the second ROLL');
+  h.dispatch('animationend');
+  assert.equal(h.trace().finishReason, 'animationend');
+});
+
+
+test('fallback regression tests independently reject disabling ceiling or guard', () => {
+  const noCeiling = shell.replace(
+    'MARK_ROLL_ABSOLUTE_CEILING_MS = 3000',
+    'MARK_ROLL_ABSOLUTE_CEILING_MS = 300000'
+  );
+  assert.notEqual(noCeiling, shell, 'ceiling mutation changed source');
+  assert.throws(() => {
+    const h = markFallbackHarness(noCeiling);
+    h.start(); h.tick(3000);
+    assert.equal(h.rolling(), false);
+  }, /true !== false/, 'disabling the ceiling must make the safety test red');
+
+  const noGuard = shell.replace(
+    "if (snapshot.running || snapshot.finished) {\n        armCompletionWatchdog('animation-active-at-soft-fallback', snapshot);",
+    "if (false) {\n        armCompletionWatchdog('animation-active-at-soft-fallback', snapshot);"
+  );
+  assert.notEqual(noGuard, shell, 'guard mutation changed source');
+  assert.throws(() => {
+    const h = markFallbackHarness(noGuard);
+    h.start(); h.frame();
+    h.setAnimations([{ animationName: 'r4h-roll-rabbit', playState: 'running' }]);
+    h.tick(1350);
+    assert.equal(h.rolling(), true);
+  }, /false !== true/, 'disabling the running-animation guard must make the safety test red');
 });
 
 

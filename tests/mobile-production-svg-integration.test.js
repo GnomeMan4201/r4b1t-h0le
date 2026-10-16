@@ -24,7 +24,10 @@ test('production mark remains presentation-only and follows authoritative ROLL p
   assert.match(source, /rabbit\.addEventListener\('animationstart', markRollOnStart\)/);
   assert.match(source, /rabbit\.addEventListener\('animationend', markRollOnEnd\)/);
   assert.match(source, /event\.animationName !== 'r4h-roll-rabbit'/);
-  assert.match(source, /if \(!animationStarted\) finishProductionMarkRoll\(\)/);
+  assert.match(source, /finishProductionMarkRoll\('no-start-after-frame'\)/);
+  assert.match(source, /MARK_ROLL_ABSOLUTE_CEILING_MS = 3000/);
+  assert.match(source, /MARK_ROLL_HUNG_CAP_MS = 10000/);
+  assert.match(source, /animation\.finished\.then/);
   assert.match(source, /MARK_ROLL_MS \+ 300/);
   assert.match(source, /if \(markRollActive\) return;\s*root\.classList\.toggle\('result-ready', resultReady\)/);
   // only the reduced-motion branch may mirror the phases directly

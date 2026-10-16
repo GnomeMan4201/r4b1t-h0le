@@ -1,0 +1,69 @@
+name: WebKit Canonical Rabbit Controlled Phase 20x
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/webkit-rabbit-phase-seek.yml'
+      - 'tests/roll-reel-phase-seek.spec.js'
+      - 'playwright.reel-webkit-phase-seek.config.js'
+      - 'r4b1t-h0l3-production.svg'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rabbit-phase-seek-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phase-seek-20:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Verify exact diagnostic head
+        run: test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha || github.sha }}"
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: npm ci
+      - run: npx playwright install --with-deps webkit
+      - name: Stage unchanged production site under original base URL
+        run: |
+          mkdir -p test-site/r4b1t-h0le
+          rsync -a --exclude='.git' --exclude='node_modules' --exclude='test-site' --exclude='playwright-report' --exclude='test-results' ./ test-site/r4b1t-h0le/
+      - name: Inspect canonical CSS phases at 20 independent fresh browser pages
+        env:
+          BASE_URL: http://127.0.0.1:8080/r4b1t-h0le/
+          CI: 'true'
+        shell: bash
+        run: |
+          set +e
+          npx playwright test --config=playwright.reel-webkit-phase-seek.config.js --project=mobile-webkit --repeat-each=20 --workers=4 --reporter=json > rabbit-phase-seek.json
+          code=$?
+          set -e
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const report=JSON.parse(fs.readFileSync('rabbit-phase-seek.json','utf8'));
+          const trials=[];
+          function walk(suites){for(const s of suites||[]){for(const p of s.specs||[])for(const t of p.tests||[])trials.push({title:p.title,status:t.status,errors:(t.results||[]).flatMap(r=>r.error?.message?[r.error.message.slice(0,5000)]:[])});walk(s.suites)}}
+          walk(report.suites);
+          const failed=trials.filter(t=>t.status!=='expected');
+          console.log(JSON.stringify({sha:process.env.GITHUB_SHA,phaseTrials:trials.length,failed:failed.length,failures:failed},null,2));
+          if(trials.length!==20||failed.length>0)process.exitCode=1;
+          NODE
+          if [[ "$code" -ne 0 ]]; then exit "$code"; fi
+      - name: Archive exact measured phase evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: phase-seek-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            rabbit-phase-seek.json
+            test-results/
+          if-no-files-found: warn
+          retention-days: 14
