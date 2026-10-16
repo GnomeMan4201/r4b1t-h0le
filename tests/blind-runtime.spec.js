@@ -124,21 +124,47 @@ test('blind interface remains within the mobile viewport', async ({ page }, test
   expect(overflow).toBe(false);
 });
 
-test('descend and reveal have equal visual weight while return remains secondary', async ({ page }) => {
+test('Blind primary controls expose only transitions valid for the current state', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => typeof window.openBlindDescent === 'function');
   await page.evaluate(() => window.openBlindDescent());
 
-  const styles = await page.evaluate(() => {
-    const read = (action) => {
-      const style = getComputedStyle(document.querySelector(`[data-blind-action="${action}"]`));
-      return { background: style.backgroundColor, color: style.color, border: style.borderColor };
-    };
-    return { descend: read('descend'), reveal: read('reveal'), back: read('return') };
-  });
+  const descend = page.locator('[data-blind-action="descend"]');
+  const reveal = page.locator('[data-blind-action="reveal"]');
+  const back = page.locator('[data-blind-action="return"]');
 
-  expect(styles.descend).toEqual(styles.reveal);
-  expect(styles.back).not.toEqual(styles.descend);
+  await expect(descend).toBeEnabled();
+  await expect(descend).toHaveText('DESCEND BLIND');
+  await expect(reveal).toBeDisabled();
+  await expect(back).toBeDisabled();
+
+  await page.evaluate(() => window.blindDescend());
+
+  await expect(descend).toBeEnabled();
+  await expect(descend).toHaveText('DESCEND DEEPER');
+  await expect(reveal).toBeEnabled();
+  await expect(back).toBeEnabled();
+
+  const committed = await page.evaluate(async () => {
+    const snapshot = await window.getBlindManifest();
+    return snapshot.manifest.steps;
+  });
+  expect(committed).toHaveLength(1);
+  expect(committed[0].state).toBe('concealed');
+
+  await page.evaluate(() => window.blindReveal(0));
+
+  await expect(descend).toBeEnabled();
+  await expect(descend).toHaveText('DESCEND DEEPER');
+  await expect(reveal).toBeDisabled();
+  await expect(back).toBeEnabled();
+
+  await page.evaluate(() => window.blindReturn());
+  await expect(back).toBeDisabled();
+
+  for (const action of ['export', 'topology', 'reset', 'close']) {
+    await expect(page.locator('[data-blind-action="' + action + '"]')).toBeEnabled();
+  }
 });
 
 test('wear is persistent and descend, return, and reveal remain visually distinct', async ({ page }) => {
