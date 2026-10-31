@@ -1,10 +1,10 @@
 # Daily corpus maintenance
 
-Generated: 2026-10-29T17:26:45.181627+00:00
+Generated: 2026-10-31T16:06:38.671097+00:00
 
-Checked 1000 of 7033 active URLs: 988 reachable, 0 missing, 12 indeterminate; 205 redirected.
+Checked 1000 of 7033 active URLs: 985 reachable, 0 missing, 15 indeterminate; 80 redirected.
 
-381 unreviewed discoveries; 0 retirement candidates; 0 quarantined candidates.
+388 unreviewed discoveries; 0 retirement candidates; 0 quarantined candidates.
 
 0 previously queued links excluded by discovery policy reviewed-host-and-navigation-v2. New discovery is restricted to each source's reviewed destination hosts and excludes obvious roots, navigation and account/comment controls. New hosts and ambiguous routes require explicit source review.
 
@@ -12,11 +12,11 @@ Review `corpus/maintenance/proposals.json` and its bound history in `state.json`
 
 Retirement needs GET-confirmed 404/410 on at least three distinct UTC days spanning 48 hours, with the newest observation within 36 hours. Authentication, throttling, network errors and server errors break the missing streak. Missing bursts quarantine affected host proposals.
 
-Cumulative latest observations: 7033 of 7033 active URLs checked; 5846 reachable, 43 missing, 1144 indeterminate, 0 unchecked. Operational states: 14 retry, 1173 suspect, 0 retirement candidates. 1811 URLs are due now. These are persisted observations, not a current full sweep.
+Cumulative latest observations: 7033 of 7033 active URLs checked; 5833 reachable, 43 missing, 1157 indeterminate, 0 unchecked. Operational states: 26 retry, 1174 suspect, 0 retirement candidates. 830 URLs are due now. These are persisted observations, not a current full sweep.
 
 ## URLs needing review
 
-Showing 100 of 1187 latest missing or indeterminate results. Full records are in `proposals.json` under `health_summary.issues`. Missing days count the latest consecutive GET-confirmed streak; readiness still requires the full timing policy.
+Showing 100 of 1200 latest missing or indeterminate results. Full records are in `proposals.json` under `health_summary.issues`. Missing days count the latest consecutive GET-confirmed streak; readiness still requires the full timing policy.
 
 | URL | Latest UTC observation | State | Failure class | Result | Final URL | Missing days | Proposal |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -30,12 +30,13 @@ Showing 100 of 1187 latest missing or indeterminate results. Full records are in
 | http://w3af.org/ | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | timeout | indeterminate / ReadTimeout |  | 0 | await evidence |
 | http://www.alienvault.com/open-threat-exchange/dashboard | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | server&#95;error | indeterminate / 503 | https://cybersecurity.att.com/open-threat-exchange/dashboard | 0 | await evidence |
 | http://www.fail2ban.org/wiki/index.php/Main&#95;Page | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | http&#95;missing | missing / 404 | https://github.com/fail2ban/fail2banwiki/index.php/Main&#95;Page | 5 | await evidence |
+| http://www.fuzzing.org/ | 2026-10-31T16:06:38.671097+00:00 | RETRY | target&#95;guard&#95;or&#95;dns | indeterminate / TargetGuardError |  | 0 | await evidence |
 | http://www.leakedin.com/ | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | timeout | indeterminate / ConnectTimeout |  | 0 | await evidence |
 | http://www.ntop.org/products/packet-capture/pf&#95;ring/pf&#95;ring-zc-zero-copy | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | http&#95;missing | missing / 404 | https://www.ntop.org/products/packet-capture/pf&#95;ring/pf&#95;ring-zc-zero-copy | 5 | await evidence |
 | http://www.ntop.org/products/traffic-analysis/ntop | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | http&#95;missing | missing / 404 | https://www.ntop.org/products/traffic-analysis/ntop | 5 | await evidence |
 | http://www.openvas.org/openvas-nvt-feed.html | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | http&#95;missing | missing / 404 | https://www.openvas.org/openvas-nvt-feed.html | 5 | await evidence |
 | http://www.packtpub.com/networking-and-servers/advanced-penetration-testing-highly-secured-environments-ultimate-security-gu | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | access&#95;control | indeterminate / 403 | https://www.packtpub.com/networking-and-servers/advanced-penetration-testing-highly-secured-environments-ultimate-security-gu | 0 | await evidence |
-| http://www.pentest-standard.org/ | 2026-10-24T14:34:27.721601+00:00 | RETRY | timeout | indeterminate / ConnectTimeout |  | 0 | await evidence |
+| http://www.pentest-standard.org/ | 2026-10-31T16:06:38.671097+00:00 | SUSPECT | timeout | indeterminate / ConnectTimeout |  | 0 | await evidence |
 | http://www.securiteam.com/ | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | access&#95;control | indeterminate / 403 | https://www.fortra.com/product-lines/beyond-security | 0 | await evidence |
 | http://www.securityfocus.com/bid | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | server&#95;error | indeterminate / 500 | https://www.securityfocus.com/bid | 0 | await evidence |
 | http://www.vulnerabilityassessment.co.uk/Penetration%20Test.html | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | http&#95;missing | missing / 404 | http://www.vulnerabilityassessment.co.uk/Penetration%20Test.html | 5 | await evidence |
@@ -119,11 +120,10 @@ Showing 100 of 1187 latest missing or indeterminate results. Full records are in
 | https://redcanary.com/blog/threat-detection/entra-id-ai-workflows | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | rate&#95;limited | indeterminate / 429 | https://www.zscaler.com/blogs/cybersecurity-best-practices/entra-id-ai-workflows | 0 | await evidence |
 | https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-assistive-agents | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | rate&#95;limited | indeterminate / 429 | https://www.zscaler.com/blogs/cybersecurity-best-practices/entra-id-ai-workflows-assistive-agents | 0 | await evidence |
 | https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-teams | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | rate&#95;limited | indeterminate / 429 | https://www.zscaler.com/blogs/cybersecurity-best-practices/entra-id-ai-workflows-teams | 0 | await evidence |
-| https://redcanary.com/blog/threat-detection/entra-id-oauth-attacks | 2026-10-26T17:24:00.806277+00:00 | SUSPECT | rate&#95;limited | indeterminate / 429 | https://www.zscaler.com/blogs/cybersecurity-best-practices/entra-id-oauth-attacks | 0 | await evidence |
 
 ## Discovery queue
 
-Showing 100 of 381 unreviewed discoveries. Full records are in `proposals.json` under `new_unreviewed`.
+Showing 100 of 388 unreviewed discoveries. Full records are in `proposals.json` under `new_unreviewed`.
 
 | URL | Source | Discovered UTC |
 | --- | --- | --- |
@@ -131,6 +131,7 @@ Showing 100 of 381 unreviewed discoveries. Full records are in `proposals.json` 
 | https://0xdf.gitlab.io/2026/10/10/htb-devhub.html | 0xdf-v1 | 2026-10-10T16:14:49.928235+00:00 |
 | https://0xdf.gitlab.io/2026/10/17/htb-eloquia.html | 0xdf-v1 | 2026-10-18T14:35:44.764963+00:00 |
 | https://0xdf.gitlab.io/2026/10/24/htb-checkpoint.html | 0xdf-v1 | 2026-10-25T14:57:40.255421+00:00 |
+| https://0xdf.gitlab.io/2026/10/31/htb-makesense.html | 0xdf-v1 | 2026-10-31T16:06:38.671097+00:00 |
 | https://arxiv.org/IgnoreMe | strange-guriarxiv-v1 | 2026-10-21T15:58:14.038396+00:00 |
 | https://arxiv.org/submit | strange-guriarxiv-v1 | 2026-10-21T15:58:14.038396+00:00 |
 | https://blog.doyensec.com/2017/03/02/training-burp.html | doyensec-archive-v1 | 2026-10-27T16:40:55.546665+00:00 |
@@ -226,7 +227,6 @@ Showing 100 of 381 unreviewed discoveries. Full records are in `proposals.json` 
 | https://blog.doyensec.com/2025/09/25/yet-another-random-story.html | doyensec-archive-v1 | 2026-10-27T16:40:55.546665+00:00 |
 | https://blog.doyensec.com/2025/10/08/ksmbd-3.html | doyensec-archive-v1 | 2026-10-27T16:40:55.546665+00:00 |
 | https://blog.doyensec.com/2025/12/02/inql-v610.html | doyensec-archive-v1 | 2026-10-27T16:40:55.546665+00:00 |
-| https://blog.doyensec.com/2026/01/22/frida-instrumentation.html | doyensec-archive-v1 | 2026-10-27T16:40:55.546665+00:00 |
 
 ## Source collection issues
 
